@@ -1,0 +1,311 @@
+1
+00:00:00,000 --> 00:00:07,936
+This is ECE 358, video 6, part a. The topic is DNS, the Domain Name System.
+
+2
+00:00:08,386 --> 00:00:30,978
+After this video, you can explain the DNS services and the DNS hierarchy. You can draw the iterative and the recursive name resolution, message by message. You can explain caching, resource records and the message format. Part b solves the DNS questions of the question bank, and problem 4 of problem set 2.
+
+3
+00:00:31,428 --> 00:00:55,620
+Internet hosts and routers have two identifiers. The first is the name, for example ece dot uwaterloo dot ca. Humans use the name. The second is the IP address, a 32-bit number such as 129.97.56.100. The network uses the IP address to address datagrams.
+
+4
+00:00:56,070 --> 00:01:05,307
+So we need a map from the name to the IP address. Web browsing and email need this map for each new name. DNS gives this map.
+
+5
+00:01:05,757 --> 00:01:14,781
+DNS is a distributed database. It is a hierarchy of many name servers. No single server keeps all the names.
+
+6
+00:01:15,231 --> 00:01:34,495
+DNS is also an application-layer protocol. Hosts and DNS servers send messages to resolve names. This is a core Internet function, but it runs at the edge of the network, not in the routers. The slides call this complexity at the network's edge.
+
+7
+00:01:34,945 --> 00:01:43,009
+DNS gives four services. The first is hostname-to-IP-address translation. This is the main service.
+
+8
+00:01:43,459 --> 00:02:05,326
+The second is host aliasing. A host has one canonical name, the true official name, and it can have alias names. In the slide example, uwaterloo.ca is the canonical name, and www.uwaterloo.ca is an alias. DNS gives the canonical name for an alias.
+
+9
+00:02:05,776 --> 00:02:21,797
+The third is mail server aliasing. Waterloo users have email addresses at uwaterloo.ca, but the mail server is in Office 365. DNS gives the name of the mail server for the domain.
+
+10
+00:02:22,247 --> 00:02:40,786
+The fourth is load distribution. A busy site has replicated Web servers. Many IP addresses correspond to one name. DNS can give different addresses to different clients, so the load is shared. The name cnn dot com here is only an example.
+
+11
+00:02:41,236 --> 00:02:48,873
+Why not keep all names in one central DNS server? Every host in the world would send its queries to it.
+
+12
+00:02:49,323 --> 00:02:56,086
+First, it is a single point of failure. If this server fails, the whole Internet cannot resolve names.
+
+13
+00:02:56,536 --> 00:03:12,429
+Second, the traffic volume is too high. The Comcast DNS servers alone get 600 billion queries per day. That is 6.94 million queries per second. Akamai servers get 2.2 trillion per day.
+
+14
+00:03:12,879 --> 00:03:24,762
+Third, the database is far from most clients, so the delay is long. Fourth, one central database is hard to maintain, because every change goes to one place.
+
+15
+00:03:25,212 --> 00:03:43,921
+So a central design does not scale. DNS is a huge distributed database, with about one billion records and trillions of queries per day. There are many more reads than writes, and milliseconds count. Millions of organizations each keep their own records.
+
+16
+00:03:44,371 --> 00:03:58,622
+DNS is a hierarchy with three levels. At the top are the root DNS servers. There are 13 root servers in total, named A to M. Each root is a cluster of many physical servers.
+
+17
+00:03:59,072 --> 00:04:08,971
+Under the root are the top level domain servers, or TLD servers. There are servers for dot com, dot org, dot edu, and so on.
+
+18
+00:04:09,421 --> 00:04:24,311
+Under the TLD servers are the authoritative DNS servers of each organization. For example, the amazon.com DNS servers and the umass.edu DNS servers.
+
+19
+00:04:24,761 --> 00:04:40,292
+Now a client wants the IP address of www.amazon.com. As a first approximation, the client first queries a root server. The root server gives the dot com DNS server.
+
+20
+00:04:40,742 --> 00:04:48,123
+Next, the client queries the dot com DNS server. It gives the amazon.com DNS server.
+
+21
+00:04:48,573 --> 00:05:02,568
+Last, the client queries the amazon.com DNS server. It gives the IP address of www.amazon.com. Each level knows only the next level down.
+
+22
+00:05:03,018 --> 00:05:15,135
+The root name servers are the contact of last resort. A name server that cannot resolve a name contacts a root server. There are 13 logical root servers, A to M.
+
+23
+00:05:15,585 --> 00:05:37,665
+Each logical server is replicated many times. There are about 1700 root instances in 170 countries. ICANN manages the root DNS domain. DNSSEC gives security: origin authentication and message integrity. The Internet cannot work without the root servers.
+
+24
+00:05:38,115 --> 00:05:57,977
+The top level domain servers are responsible for dot com, dot org, dot net, dot edu, and all country domains, such as dot ca and dot uk. Network Solutions is the registry for dot com and dot net. CIRA, in Ottawa, is responsible for dot ca.
+
+25
+00:05:58,427 --> 00:06:16,816
+The authoritative DNS servers belong to an organization. They give the official answer for the named hosts of that organization. For example, Waterloo has its own authoritative DNS servers. The organization or a service provider can keep them.
+
+26
+00:06:17,266 --> 00:06:27,463
+Each ISP has a local DNS name server. When a host makes a DNS query, the query goes to its local DNS server.
+
+27
+00:06:27,913 --> 00:06:38,687
+The local server first looks in its local cache of recent name-to-address pairs. If it finds the name, it replies at once. This answer can be out of date.
+
+28
+00:06:39,137 --> 00:06:53,750
+If the name is not in the cache, the local server forwards the query into the DNS hierarchy, and returns the answer to the host. The local DNS server does not strictly belong to the hierarchy.
+
+29
+00:06:54,200 --> 00:07:03,651
+To find your local DNS server, type scutil --dns on MacOS. On Windows, type ipconfig /all.
+
+30
+00:07:04,101 --> 00:07:28,421
+How does the OS know the address of the local DNS server? This part is extra. At power on, the OS runs the DHCP protocol. The DHCP reply gives your IP address, the local DNS servers' IP addresses, the subnet mask, and the default gateway. The network layer chapter explains DHCP.
+
+31
+00:07:28,871 --> 00:07:46,705
+Now the details of name resolution. A DNS query has a header and a query part. The query part contains the domain name. The host sends the query to the IP address of the local DNS server, on UDP port 53.
+
+32
+00:07:47,155 --> 00:08:05,566
+DNS has two kinds of queries. In a recursive query, the client asks the server, called the resolver, for the final answer. That is the IP address, not a referral to another server. The client sets the RD flag, recursion desired, in the header.
+
+33
+00:08:06,016 --> 00:08:16,853
+A recursive reply has the RA flag, recursion available. The resolver can also decline. Then it sets RA to false and returns a referral.
+
+34
+00:08:17,303 --> 00:08:28,503
+In an iterative query, the server replies with the best information it has. That is a referral to another DNS server, or the IP address if it knows it.
+
+35
+00:08:28,953 --> 00:08:42,863
+With an iterative query, the client then queries the referred server, and repeats until the name is resolved. A host almost always sends a recursive query to its local DNS server.
+
+36
+00:08:43,313 --> 00:09:03,025
+Here is the first resolution example of slide 40. A host at ece.uwaterloo.ca wants the IP address of gaia.cs.umass.edu. This is the worst case: the local DNS server knows no server except a root server.
+
+37
+00:09:03,475 --> 00:09:19,155
+Message 1. The host sends a recursive query to its local DNS server, dns.uwaterloo.ca, on UDP port 53. Blue arrows are queries. Green arrows are replies.
+
+38
+00:09:19,605 --> 00:09:33,365
+Message 2. The local server sends an iterative query to a root server. Message 3. The root server does not know the name, but it replies with the address of the dot edu TLD server.
+
+39
+00:09:33,815 --> 00:09:49,729
+Message 4. The local server queries the TLD server. Message 5. The TLD server replies with the name of the authoritative server of umass, dns.cs.umass.edu.
+
+40
+00:09:50,179 --> 00:10:03,705
+Message 6. The local server queries the authoritative server. Message 7. The authoritative server replies with the IP address of gaia.cs.umass.edu.
+
+41
+00:10:04,155 --> 00:10:11,472
+Message 8. The local server returns the IP address to the host. That is 8 messages in total.
+
+42
+00:10:11,922 --> 00:10:26,365
+The queries from the local server are iterated queries. Each contacted server replies with the name of the next server to contact: I do not know this name, but ask this server. The local server does the work.
+
+43
+00:10:26,815 --> 00:10:35,369
+Slide 41 shows the same name with full recursion. This is a hypothetical example. It is not done in practice.
+
+44
+00:10:35,819 --> 00:10:41,110
+Message 1 is the same recursive query from the host to the local server.
+
+45
+00:10:41,560 --> 00:10:57,731
+Message 2. The local server sends a recursive query to the root server. Message 3. The root server sends a recursive query to the TLD server. Message 4. The TLD server sends it to the authoritative server.
+
+46
+00:10:58,181 --> 00:11:09,594
+Messages 5, 6 and 7. The answer comes back along the same path: authoritative to TLD, TLD to root, and root to the local server.
+
+47
+00:11:10,044 --> 00:11:17,041
+Message 8. The local server gives the IP address to the host. Again, there are 8 messages.
+
+48
+00:11:17,491 --> 00:11:39,550
+A recursive query puts the burden of name resolution on the contacted name server. Here the root server must keep the state of each query and wait for the answer. With trillions of queries, the upper levels of the hierarchy get a very heavy load. So the root and TLD servers answer with referrals, as in example 1.
+
+49
+00:11:40,000 --> 00:11:53,909
+Name resolution takes many messages. So DNS uses caching. When any name server learns a mapping, it caches the mapping. It then answers the next query for this name at once, from the cache.
+
+50
+00:11:54,359 --> 00:12:17,058
+Here is an example with added numbers, not from the slides. The RTT from the local server to a root server is 40 milliseconds, to the TLD server 30, and to the authoritative server 50. The host to local server RTT is 2. With an empty cache, the response time is 122 milliseconds.
+
+51
+00:12:17,508 --> 00:12:27,855
+Local servers typically cache the addresses of the TLD servers. Then the root server is not needed, and the time drops to 82 milliseconds.
+
+52
+00:12:28,305 --> 00:12:37,350
+If the local server has the name itself in its cache, the answer takes only 2 milliseconds. So caching improves the response time.
+
+53
+00:12:37,800 --> 00:12:47,827
+Cache entries do not stay forever. Each entry has a time to live, the TTL. After the TTL, the entry times out and disappears.
+
+54
+00:12:48,277 --> 00:13:06,090
+Cached entries can be out of date. If a named host changes its IP address, the old copy stays in caches. The change may not be known Internet-wide until all TTLs expire. So DNS gives best-effort name-to-address translation.
+
+55
+00:13:06,540 --> 00:13:20,641
+The DNS database stores resource records, or RRs. Each RR has four fields: name, TTL, type and value. The type sets the meaning of the name and the value.
+
+56
+00:13:21,091 --> 00:13:41,614
+Type A, for address. The name is a hostname, and the value is its IP address. For example, relay1.bar.foo.com has the address 145.37.93.126, with a TTL of 3600 seconds.
+
+57
+00:13:42,064 --> 00:13:55,525
+Type NS, for name server. The name is a domain, such as foo.com. The value is the hostname of the authoritative name server for this domain, here dns.foo.com.
+
+58
+00:13:55,975 --> 00:14:09,266
+Type CNAME, for canonical name. The name is an alias. The value is the canonical, real name. Here foo.com is an alias for relay1.bar.foo.com.
+
+59
+00:14:09,716 --> 00:14:23,305
+Type MX, for mail exchange. The value is the name of the SMTP mail server for the name. Here mail.bar.foo.com is the mail server for foo.com.
+
+60
+00:14:23,755 --> 00:14:34,721
+Another CNAME example from the slide: www.ibm.com is really servereast.backup2.ibm.com.
+
+61
+00:14:35,171 --> 00:14:49,315
+DNS query and reply messages have the same format. The first 12 bytes are the header. It has six fields, and each field is 2 bytes. After the header come four sections of variable length.
+
+62
+00:14:49,765 --> 00:15:01,711
+The identification field is a 16-bit number for the query. The reply to this query uses the same number. So the client can match each reply to its query.
+
+63
+00:15:02,161 --> 00:15:19,356
+The flags field says if the message is a query or a reply. It also has the recursion desired flag, the recursion available flag, and a flag that says the reply is authoritative. The next four fields count the entries in the four sections.
+
+64
+00:15:19,806 --> 00:15:32,158
+The questions section has the name and type fields for a query. For example, ece.uwaterloo.ca with type A, or uwaterloo.ca with type MX.
+
+65
+00:15:32,608 --> 00:15:40,309
+The answers section has the RRs in response to the query, each with name, TTL, type and value.
+
+66
+00:15:40,759 --> 00:15:44,621
+The authority section has records for authoritative servers.
+
+67
+00:15:45,071 --> 00:16:01,327
+The additional info section has helpful records that the client may use. For example, for an MX query, it contains the type A RR with the IP address of the mail server. Then the client needs no second query.
+
+68
+00:16:01,777 --> 00:16:23,515
+Slide 46 shows how a new company enters the DNS. A new startup, Network Utopia, registers the name networkutopia.com at a DNS registrar, such as Network Solutions. It gives the names and IP addresses of its authoritative name servers, primary and secondary.
+
+69
+00:16:23,965 --> 00:16:49,736
+The registrar inserts two RRs into the dot com TLD server. An NS record: the authoritative server for networkutopia.com is dns1.networkutopia.com. And an A record: dns1.networkutopia.com has the address 212.212.212.1.
+
+70
+00:16:50,186 --> 00:17:10,133
+Then the company creates its authoritative server locally, at 212.212.212.1. It adds a type A record for its web server, www.networkutopia.com, and a type MX record for networkutopia.com.
+
+71
+00:17:10,583 --> 00:17:27,521
+Now anybody can resolve www.networkutopia.com. The TLD server gives the NS record and the A record of dns1. dns1 gives the A record of the web server.
+
+72
+00:17:27,971 --> 00:17:38,894
+Here is the recap. One. DNS maps names to IP addresses. It also gives host aliasing, mail server aliasing and load distribution.
+
+73
+00:17:39,344 --> 00:17:49,776
+Two. DNS is a distributed hierarchy: root servers, TLD servers and authoritative servers. A central server does not scale.
+
+74
+00:17:50,226 --> 00:18:03,197
+Three. A host sends a recursive query to its local DNS server, on UDP port 53. The local server answers from its cache, or else it asks the hierarchy.
+
+75
+00:18:03,647 --> 00:18:15,657
+Four. A recursive query asks for the final answer. An iterative query gets a referral or the IP address. Both examples on the slides use 8 messages.
+
+76
+00:18:16,107 --> 00:18:22,123
+Five. Caching with a TTL makes answers faster, but cached entries can be stale.
+
+77
+00:18:22,573 --> 00:18:36,056
+Six. A resource record has a name, TTL, type and value. The four types are A, NS, CNAME and MX. A DNS message has a 12-byte header and four sections.
+
+78
+00:18:36,506 --> 00:18:53,722
+Seven. For a new domain, the registrar puts NS and A records into the TLD server. The authoritative server holds the A, MX and CNAME records. That is the end of video 6, part a. Part b solves the exam questions.

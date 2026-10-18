@@ -1,0 +1,299 @@
+1
+00:00:00,000 --> 00:00:12,288
+This is ECE 358, video 8 a. The topic is reliable data transfer with stop-and-wait. It covers Chapter 3, slides 25 to 31.
+
+2
+00:00:12,738 --> 00:00:29,826
+After this video, you can name the four problems of a channel and the four mechanisms that fix them. You can draw the stop-and-wait time diagrams. And you can calculate the sender utilization, the throughput, and the efficiency, as in problem set 3.
+
+3
+00:00:30,276 --> 00:00:42,671
+Start with the problem. Packets travel over an unreliable channel. The channel can do four bad things. First, it can corrupt a packet. A bit flips. This is a bit error.
+
+4
+00:00:43,121 --> 00:00:49,051
+Second, it can deliver packets out of order. Here packet 2 arrives before packet 1.
+
+5
+00:00:49,501 --> 00:00:53,320
+Third, it can lose a packet. Packet 3 never arrives.
+
+6
+00:00:53,770 --> 00:01:00,746
+Fourth, it can deliver the same packet more than once. Packet 4 arrives twice. This is a duplicate.
+
+7
+00:01:01,196 --> 00:01:08,769
+The slide gives a mnemonic: BOLD. B for bit errors, O for out of order, L for loss, D for duplicates.
+
+8
+00:01:09,219 --> 00:01:20,462
+How do we get reliable data transfer over this channel? First, the sender needs feedback. The receiver sends an acknowledgement, an ACK, for a packet that it received.
+
+9
+00:01:20,912 --> 00:01:32,347
+Sequence numbers solve two problems: out-of-order packets and duplicate packets. With a number in each packet, the receiver can put packets in order and find copies.
+
+10
+00:01:32,797 --> 00:01:47,666
+Timers solve the problem of lost packets. If no ACK comes before the timer expires, the sender retransmits. Protocols that do this are called automatic repeat request protocols, or ARQ.
+
+11
+00:01:48,116 --> 00:01:57,737
+Error detection codes, such as a checksum, detect bit errors. The receiver discards a bad packet. In this course, this part is implicit.
+
+12
+00:01:58,187 --> 00:02:13,142
+The simplest ARQ protocol is stop-and-wait. The main idea has three parts. Send a packet. Start a timer. Wait for an ACK. If the timer expires before the ACK comes, retransmit the packet.
+
+13
+00:02:13,592 --> 00:02:23,939
+The sender sends packet 0 and starts its timer. The receiver gets packet 0 and sends ack 0. The sender gets ack 0 and stops the timer.
+
+14
+00:02:24,389 --> 00:02:28,677
+Now the sender sends packet 1. The receiver sends ack 1.
+
+15
+00:02:29,127 --> 00:02:46,833
+Then the sender sends the next packet with sequence number 0 again. Only one packet is in flight at a time. So one bit is enough for the sequence number: 0, 1, 0, 1. This is why stop-and-wait is also called the alternating bit protocol.
+
+16
+00:02:47,283 --> 00:02:56,542
+Case b: a packet is lost. Packet 0 and ack 0 arrive normally. Then the sender sends packet 1, and the channel loses it.
+
+17
+00:02:56,992 --> 00:03:09,877
+The receiver does not know about packet 1. So it sends nothing. The sender's timer runs, and no ACK comes. The timer expires. This is a timeout. The sender resends packet 1.
+
+18
+00:03:10,327 --> 00:03:19,735
+This time packet 1 arrives. The receiver sends ack 1. The sender gets ack 1 and sends packet 0. The timer found the loss.
+
+19
+00:03:20,185 --> 00:03:28,292
+Case c: an ACK is lost. Packet 1 arrives, and the receiver sends ack 1. But the channel loses ack 1.
+
+20
+00:03:28,742 --> 00:03:34,054
+The sender does not get an ACK. Its timer expires, and it resends packet 1.
+
+21
+00:03:34,504 --> 00:03:46,173
+The receiver gets packet 1 again. The sequence number tells it that this is a duplicate. So it discards the packet and does not give it to the app again. It sends ack 1 again.
+
+22
+00:03:46,623 --> 00:03:54,773
+The sender gets ack 1 and continues with packet 0. Here, the sequence number prevents a duplicate delivery.
+
+23
+00:03:55,223 --> 00:04:03,031
+Case d: a premature timeout. Packet 1 arrives, and the receiver sends ack 1. But ack 1 is delayed.
+
+24
+00:04:03,481 --> 00:04:10,649
+The timer expires before ack 1 arrives. The timeout is too early. The sender resends packet 1.
+
+25
+00:04:11,099 --> 00:04:23,920
+Now ack 1 arrives. The sender sends packet 0. At the same time, the receiver gets the second packet 1. It is a duplicate, so the receiver discards it and sends ack 1 again.
+
+26
+00:04:24,370 --> 00:04:41,842
+The sender gets this second ack 1. It is a duplicate ACK, so the sender ignores it. The receiver gets packet 0 and sends ack 0. The rule of the slide: any duplicate packet at the receiver, or duplicate ACK at the sender, is discarded.
+
+27
+00:04:42,292 --> 00:05:03,092
+Stop-and-wait is correct. But is it fast? Here is the example of slide 29. A sender and a receiver use a 1 gigabit per second link, so R is 10 to the power 9 bits per second. The propagation delay is 15 ms. A packet has L equal to 8000 bits.
+
+28
+00:05:03,542 --> 00:05:18,603
+The time to transmit the packet into the channel is L over R. 8000 bits divided by 10 to the power 9 bits per second is 8 microseconds. That is 0 point 008 ms.
+
+29
+00:05:19,053 --> 00:05:28,419
+To measure the performance, the slides use the sender utilization, U sender. It is the fraction of time that the sender is busy sending.
+
+30
+00:05:28,869 --> 00:05:40,602
+Here is the time diagram of slide 30. It is not to scale. The sender transmits the first bit at time 0. It transmits the last bit at time L over R.
+
+31
+00:05:41,052 --> 00:05:56,775
+The bits travel for the propagation delay. The first bit arrives after d prop. The last bit arrives at L over R plus d prop. Then the receiver sends the ACK. The slides take the ACK transmission time as zero.
+
+32
+00:05:57,225 --> 00:06:08,595
+The ACK travels back for another d prop. It arrives at the sender at RTT plus L over R. RTT is the round-trip time, 2 times d prop.
+
+33
+00:06:09,045 --> 00:06:22,315
+Only then can the sender send the next packet. So in each cycle of RTT plus L over R, the sender is busy for only L over R. For the rest of the cycle, it is idle.
+
+34
+00:06:22,765 --> 00:06:29,997
+From the diagram, U sender equals L over R, divided by RTT plus L over R.
+
+35
+00:06:30,447 --> 00:06:54,383
+Put in the numbers. L over R is 0 point 008 ms. RTT is 2 times 15, which is 30 ms. So U sender is 0 point 008 divided by 30 point 008. That is 0 point 0 0 0 2 7, or 0 point 0 2 7 percent.
+
+36
+00:06:54,833 --> 00:07:10,043
+The bar shows one cycle to scale. The blue part, where the sender is busy, is too thin to see. It is 1 part in 3751 of the cycle. The sender waits for the ACK almost all the time.
+
+37
+00:07:10,493 --> 00:07:35,261
+The throughput is the utilization times the link speed. 0 point 0 0 0 2 7 times 10 to the power 9 is 270 kilobits per second, over a 1 gigabit per second link. With the exact value of U, it is 266 point 6 kilobits per second. The protocol limits the performance of the link.
+
+38
+00:07:35,711 --> 00:07:41,727
+Now the question bank. Here are questions 19 and 20. Pause the video and try them.
+
+39
+00:07:42,177 --> 00:07:54,252
+Question 19. The channel can corrupt packets with bit errors. It can deliver them out of order. It can lose them. And it can deliver duplicates. B, O, L, D.
+
+40
+00:07:54,702 --> 00:08:04,750
+Question 20. The four mechanisms are: error detection, such as a checksum. Acknowledgements from the receiver. Sequence numbers. And timers.
+
+41
+00:08:05,200 --> 00:08:16,272
+Question 21. Pause the video and try it. Here is a good answer: draw the packet loss case. The sender sends a packet, starts a timer, and waits for the ACK.
+
+42
+00:08:16,722 --> 00:08:26,407
+Mechanism 1 is the sequence number. The packets carry 0, 1, 0, and so on. The receiver uses it to find duplicates.
+
+43
+00:08:26,857 --> 00:08:35,327
+Mechanism 2 is the ACK. Ack 0 and ack 1 tell the sender that the packet arrived. Then it sends the next packet.
+
+44
+00:08:35,777 --> 00:08:44,694
+Mechanism 3 is the timer. Packet 1 is lost, so no ACK comes. At the timeout, the sender retransmits packet 1.
+
+45
+00:08:45,144 --> 00:08:55,448
+Mechanism 4 is the checksum. The receiver checks each packet. It discards a packet with bit errors, so the sender's timer handles it like a loss.
+
+46
+00:08:55,898 --> 00:09:01,146
+Questions 22, 23 and 24. Pause the video and try them.
+
+47
+00:09:01,596 --> 00:09:14,887
+Question 22. ARQ means automatic repeat request. The sender retransmits a packet automatically when no ACK arrives before the timeout. The receiver does not need to ask.
+
+48
+00:09:15,337 --> 00:09:30,206
+Question 23. The main drawback is low sender utilization. The sender is idle while it waits for each ACK. In the slide example, it is busy only 0 point 0 2 7 percent of the time.
+
+49
+00:09:30,656 --> 00:09:40,107
+Question 24. One packet. Stop-and-wait has only one unACKed packet, so a timeout resends only that packet.
+
+50
+00:09:40,557 --> 00:09:44,930
+Questions 25 and 26. Pause the video and try them.
+
+51
+00:09:45,380 --> 00:10:02,852
+Question 25. The receiver sends a duplicate ACK when a duplicate packet arrives. This happens after an ACK loss, as here, or after a premature timeout, when the ACK is only delayed. The receiver discards the copy and sends the ACK again.
+
+52
+00:10:03,302 --> 00:10:14,075
+Question 26. The metric is the sender utilization, U sender: the fraction of time the sender is busy sending. The throughput is U times R.
+
+53
+00:10:14,525 --> 00:10:22,717
+Now problem set 3. Problem 1. Stop-and-go is another name for stop-and-wait. Pause the video and try it.
+
+54
+00:10:23,167 --> 00:10:37,823
+Use the solution's symbols. d is the time to transmit a data frame, L over C. P is the propagation delay. The data frame is 840 bytes, which is 6720 bits.
+
+55
+00:10:38,273 --> 00:10:47,127
+a is the time to transmit the ACK frame. The ACK is 40 bytes, which is 320 bits. It also travels for P.
+
+56
+00:10:47,577 --> 00:11:02,873
+So one cycle takes T equals d plus 2 P plus a. The throughput is 1 over T packets per second. The efficiency is d over T. This is U sender, but this time the ACK transmission time is included.
+
+57
+00:11:03,323 --> 00:11:30,907
+At 1 kilobit per second, d is 6720 over 1000, which is 6 point 7 2 seconds. a is 0 point 3 2 seconds. T is 6 point 7 2 plus 0 point 0 1 6 plus 0 point 3 2, which is 7 point 0 5 6 seconds. The throughput is 0 point 1 4 2 packets per second. The efficiency is 95 point 2 percent.
+
+58
+00:11:31,357 --> 00:11:50,578
+At 100 kilobits per second, d is 67 point 2 ms and a is 3 point 2 ms. T is 86 point 4 ms. The throughput is 11 point 6 packets per second, and the efficiency is 77 point 8 percent.
+
+59
+00:11:51,028 --> 00:12:12,617
+At 10 megabits per second, d is 0 point 6 7 2 ms and a is 0 point 0 3 2 ms. T is 16 point 7 0 4 ms. The throughput is 59 point 9 packets per second, and the efficiency is 4 point 0 2 percent.
+
+60
+00:12:13,067 --> 00:12:29,601
+At 1 gigabit per second, d is 6 point 7 2 microseconds. T is about 16 ms. The throughput is 62 point 5 packets per second, and the efficiency is 0 point 0 4 2 percent.
+
+61
+00:12:30,051 --> 00:12:50,147
+The bars show why. At a high rate, d becomes very small. But the two propagation delays, 16 ms, do not change. So the sender waits almost all the time. The throughput cannot go above 1 over 16 ms, 62 point 5 packets per second.
+
+62
+00:12:50,597 --> 00:12:58,533
+Problem 2. ABP is the alternating bit protocol, so stop-and-wait again. Pause the video and try it.
+
+63
+00:12:58,983 --> 00:13:09,265
+The propagation delay P is 5 kilometers divided by 2 times 10 to the power 8 meters per second. That is 25 microseconds.
+
+64
+00:13:09,715 --> 00:13:25,417
+The packet and the ACK are both 1500 bits. So d and a are both 1500 divided by 10 to the power 7. That is 150 microseconds. This diagram is to scale.
+
+65
+00:13:25,867 --> 00:13:41,611
+T is 150 plus 2 times 25 plus 150, which is 350 microseconds. So the sender transmits 1 over T, about 2857 packets per second.
+
+66
+00:13:42,061 --> 00:13:50,999
+Problem 2 b. Pause the video and try it. Five identical links are connected in series. There is a buffer at each connection.
+
+67
+00:13:51,449 --> 00:14:11,972
+Each link runs its own alternating bit protocol. When a packet arrives at a buffer, it can go on at once on the next link. So every link carries one packet per T at the same time. End to end, the rate is still 1 over T, about 2857 packets per second.
+
+68
+00:14:12,422 --> 00:14:38,065
+Now a packet or its ACK is corrupted with probability p on each link. The solution assumes that each try takes T and succeeds with probability 1 minus p. So the rate is 1 minus p, over T. For p equal to 0 point 0 1, that is about 2829 packets per second. The solution writes about 2828.
+
+69
+00:14:38,515 --> 00:14:59,101
+Compare one 25-kilometer link. P is 125 microseconds. T is 150 plus 2 times 125 plus 150, which is 550 microseconds. The rate is about 1818 packets per second.
+
+70
+00:14:59,551 --> 00:15:12,053
+So 5 short links in series give a higher rate than one long link. On a short link, the sender waits only 2 P, 50 microseconds, for each ACK, not 250.
+
+71
+00:15:12,503 --> 00:15:24,919
+Here is the recap. One. The channel can cause bit errors, out-of-order delivery, loss, and duplicates. The mechanisms are the checksum, the ACK, the sequence number, and the timer.
+
+72
+00:15:25,369 --> 00:15:36,569
+Two. Stop-and-wait sends one packet, starts a timer, and waits for the ACK. On a timeout, it resends. The sequence number alternates between 0 and 1.
+
+73
+00:15:37,019 --> 00:15:48,432
+Three. A duplicate packet comes after an ACK loss or a premature timeout. The receiver discards it and sends the ACK again. The sender ignores a duplicate ACK.
+
+74
+00:15:48,882 --> 00:16:00,445
+Four. U sender is L over R, divided by RTT plus L over R. It is very small when RTT is large compared with L over R.
+
+75
+00:16:00,895 --> 00:16:16,489
+Five. In the problem set form, T is d plus 2 P plus a. The throughput is 1 over T. The efficiency is d over T. The next video covers pipelining and Go-Back-N. That is the end of video 8 a.

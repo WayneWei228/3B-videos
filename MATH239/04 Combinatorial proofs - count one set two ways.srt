@@ -1,0 +1,295 @@
+1
+00:00:00,000 --> 00:00:08,384
+This is MATH 239, video 4. The topic is combinatorial proofs: we count one set in two ways.
+
+2
+00:00:08,834 --> 00:00:34,327
+After this video, you can prove an identity by counting one set in two ways. You can read a sum as a split into disjoint cases, and a product as a sequence of choices. You can prove the Vandermonde convolution formula. And you can solve tutorial questions T1-2 and T1-3 b, assignment question A1-2, and Practice Midterm question 1.
+
+3
+00:00:34,777 --> 00:00:53,359
+In video 3, we proved that two sets have the same size with a bijection. A second method uses only one set. We count it in two different ways. Both counts give the size of the same set, so they are equal. Here is the set of all subsets of 1, 2, 3.
+
+4
+00:00:53,809 --> 00:01:13,606
+Count 1: sort the subsets by size. Each subset has exactly one size, so the groups are disjoint. Disjoint cases, joined with OR, give a sum. The sizes give 3 choose 0, plus 3 choose 1, and so on. That is 1 plus 3 plus 3 plus 1, which is 8.
+
+5
+00:01:14,056 --> 00:01:26,984
+Count 2: decide for each element whether it is in or out. These are 3 choices, joined with AND. A sequence of choices gives a product: 2 times 2 times 2, which is 8.
+
+6
+00:01:27,434 --> 00:01:42,047
+Both counts give the size of the same set. So the sum over k of n choose k equals 2 to the n. This is Example 1.6 of the notes. The notes call this method: think of what the numbers mean.
+
+7
+00:01:42,497 --> 00:01:58,519
+Here is a set that we can count in two orders. Its elements are pairs S, a. S is a 3 element subset of 1 to 5, and a is one marked element of S. Each row is one subset S. Each blue cell is one pair.
+
+8
+00:01:58,969 --> 00:02:10,169
+Count 1: choose S first, then a. There are 5 choose 3, which is 10, rows. Each row has 3 cells. So there are 10 times 3, which is 30, pairs.
+
+9
+00:02:10,619 --> 00:02:26,576
+Count 2: choose a first. Look at the cells with a equal to 1, in orange. There are 6 of them. Each one is a subset that contains 1, and its other 2 elements come from 2, 3, 4, 5. That is 4 choose 2, which is 6.
+
+10
+00:02:27,026 --> 00:02:33,831
+The same holds for each of the 5 values of a. So there are 5 times 6, which is 30, pairs.
+
+11
+00:02:34,281 --> 00:02:41,812
+Both counts give the size of the same set. So 3 times 5 choose 3 equals 5 times 4 choose 2.
+
+12
+00:02:42,262 --> 00:02:55,787
+Tutorial question T1-2. By counting one set in two ways, prove that 7 times n choose 7 equals n times n minus 1 choose 6. Pause the video and try it.
+
+13
+00:02:56,237 --> 00:03:16,717
+The 7 and the n suggest a marked element. Let P be the set of pairs S, a. S is a 7 element subset of an n element set, and a is an element of S. Count 1: choose S in n choose 7 ways, then a in 7 ways. So P has 7 times n choose 7 elements.
+
+14
+00:03:17,167 --> 00:03:30,159
+Count 2: choose a first, in n ways. Then choose the other 6 elements of S from the remaining n minus 1 elements. So P has n times n minus 1 choose 6 elements.
+
+15
+00:03:30,609 --> 00:03:36,284
+Both expressions count the same set P, so they are equal. This is the full solution.
+
+16
+00:03:36,734 --> 00:03:56,233
+Check with n equals 9. 7 times 36 is 252, and 9 times 28 is 252. The same proof, with k in place of 7, shows that k times n choose k equals n times n minus 1 choose k minus 1.
+
+17
+00:03:56,683 --> 00:04:08,843
+Notes Exercise 1.7 a uses the same set, but S can have any size. Here n is 3. Each row is one subset, and each blue cell is one pair S, a.
+
+18
+00:04:09,293 --> 00:04:25,186
+Count 1: split by the size k of S. The cases are disjoint, so we add. A size k gives n choose k subsets, with k cells each. For n equals 3: 0 plus 3 plus 6 plus 3, which is 12.
+
+19
+00:04:25,636 --> 00:04:40,292
+Count 2: choose a first, in n ways. The rest of S is any subset of the other n minus 1 elements. That gives 2 to the n minus 1 choices. For n equals 3: 3 times 4, which is 12.
+
+20
+00:04:40,742 --> 00:04:55,846
+So the sum over k of k times n choose k equals n times 2 to the n minus 1. The notes ask for a bijective proof. This double count is the same proof: both sides count one set of pairs.
+
+21
+00:04:56,296 --> 00:05:21,213
+Example 1.19 is the Vandermonde convolution formula. m plus n choose k equals the sum over j of m choose j times n choose k minus j. Take m equals 4, n equals 2, and k equals 3. The left side is 6 choose 3, which is 20. Split 1 to 6 into M, the first 4 numbers, and N, the last 2.
+
+22
+00:05:21,663 --> 00:05:34,741
+Sort the 20 subsets by j, the number of their elements in M. j equals 1: one element from M in 4 ways, and both elements of N in 1 way. That is 4 subsets.
+
+23
+00:05:35,191 --> 00:05:42,529
+j equals 2: two elements from M in 6 ways, and one from N in 2 ways. That is 12 subsets.
+
+24
+00:05:42,979 --> 00:05:49,145
+j equals 3: all three from M in 4 ways, and none from N. That is 4 subsets.
+
+25
+00:05:49,595 --> 00:06:03,248
+j equals 0 would need 3 elements from N, which has only 2. So 2 choose 3 is 0. The total is 0 plus 4 plus 12 plus 4, which is 20. The two sides agree.
+
+26
+00:06:03,698 --> 00:06:24,135
+Here is the proof in the notes. The left side counts the k element subsets S of 1 to m plus n. The right side counts a choice of j, AND a j element subset A of M, AND a k minus j element subset B of N. Here m is 4, n is 2, and S is 2, 4, 5.
+
+27
+00:06:24,585 --> 00:06:38,111
+The map cuts S into two parts. A is S intersect M, which is 2, 4. B is S intersect N, which is 5. So j is 2, and B has k minus j, which is 1, element.
+
+28
+00:06:38,561 --> 00:06:44,321
+The inverse map joins the parts. A union B is 2, 4, 5, which is S again.
+
+29
+00:06:44,771 --> 00:07:01,240
+M and N have no common element, and together they are all of 1 to m plus n. So cutting and joining undo each other. By Proposition 1.11, both sides count the same number of objects. This proves the formula.
+
+30
+00:07:01,690 --> 00:07:16,687
+Assignment question A1-2. By counting one set in two ways, prove that 2 n choose n equals the sum over k of n choose k times n choose n minus k. Pause the video and try it.
+
+31
+00:07:17,137 --> 00:07:35,911
+The left side suggests the set S of all n element subsets of 1 to 2 n. Count 1 is the definition: S has 2 n choose n elements. The picture uses n equals 3, so the first half is 1, 2, 3, and the second half is 4, 5, 6.
+
+32
+00:07:36,361 --> 00:07:50,761
+Count 2: split S by k, the number of elements in the first half. Let S k be the subsets with exactly k elements in 1 to n. For k equals 0, all 3 elements come from the second half.
+
+33
+00:07:51,211 --> 00:08:08,939
+To build a member of S k, choose k elements from the first half, AND n minus k elements from the second half. So S k has n choose k times n choose n minus k elements. For k equals 1, that is 3 times 3, which is 9.
+
+34
+00:08:09,389 --> 00:08:13,165
+k equals 2 gives 3 times 3 again, which is 9.
+
+35
+00:08:13,615 --> 00:08:27,737
+k equals 3 gives 1. Each subset is in exactly one S k, so S is a disjoint union and its size is the sum. 1 plus 9 plus 9 plus 1 is 20, which is 6 choose 3.
+
+36
+00:08:28,187 --> 00:08:32,582
+Here is the written solution. First, name the set, and give count 1.
+
+37
+00:08:33,032 --> 00:08:47,389
+Second, define the parts S k. Say why the parts are disjoint and cover S: each subset has exactly one number of elements in the first half. So the size of S is the sum of the sizes of the parts.
+
+38
+00:08:47,839 --> 00:08:54,815
+Third, count one part. Choose k elements from the first half, and n minus k from the second half.
+
+39
+00:08:55,265 --> 00:09:04,887
+Fourth, put the two counts together. This is the identity. This is the special case m equals n equals k of the Vandermonde formula.
+
+40
+00:09:05,337 --> 00:09:23,129
+The bonus parts of A1-2 are short. Part a: the identity is the same as 2 n choose n equals the sum of the squares of n choose k. Here n is 3 and k is 1. We choose n minus k, which is 2, elements of the second half.
+
+41
+00:09:23,579 --> 00:09:36,571
+Choosing the 2 elements that are in is the same as choosing the 1 element that is out. The map, take the complement, is a bijection. So n choose n minus k equals n choose k.
+
+42
+00:09:37,021 --> 00:09:48,135
+So each product n choose k times n choose n minus k is a square. For n equals 3: 1 plus 9 plus 9 plus 1 equals 20.
+
+43
+00:09:48,585 --> 00:10:10,729
+Part b: cut 1 to n after position l, not after position n over 2. Let i be the number of elements in the first part. The same argument gives n choose k equals the sum over i of l choose i times n minus l choose k minus i. This is the Vandermonde formula with m equals l.
+
+44
+00:10:11,179 --> 00:10:30,251
+Tutorial question T1-3 has two parts. Part a: explain why the number of k element multisets from 1 to n plus 1 is n plus k choose k. Here is an example with n equals 2 and k equals 3. The multiset is 1, 3, 3.
+
+45
+00:10:30,701 --> 00:10:43,053
+Write a star for each element and a bar between neighbouring types. Type 1 has one star. Then a bar. Type 2 has no star. Then a bar. Type 3 has two stars.
+
+46
+00:10:43,503 --> 00:10:52,250
+The stars between the bars give the multiplicity vector: m 1 equals 1, m 2 equals 0, m 3 equals 2.
+
+47
+00:10:52,700 --> 00:11:12,689
+There are k stars and n bars, so n plus k positions. A multiset is the same as a choice of the k star positions. So there are n plus k choose k multisets. Here that is 5 choose 3, which is 10. This is Theorem 1.9 with t equals n plus 1 types.
+
+48
+00:11:13,139 --> 00:11:24,915
+Part b: count the same multisets in a second way. Split them by j, the number of elements from 1 to n, counted with multiplicity. Pause the video and try it.
+
+49
+00:11:25,365 --> 00:11:43,925
+Fix j. The j elements from 1 to n form a j element multiset with n types. By Theorem 1.9, there are n plus j minus 1 choose j of them. Here n is 2, and j equals 0 gives one multiset: 3, 3, 3.
+
+50
+00:11:44,375 --> 00:11:58,135
+The other k minus j elements must all be copies of n plus 1. There is only one way to do that. In the picture, the copies of 3 are purple. j equals 1 gives 2 multisets.
+
+51
+00:11:58,585 --> 00:12:02,916
+j equals 2 gives 3 choose 2, which is 3, multisets.
+
+52
+00:12:03,366 --> 00:12:10,854
+j equals 3 gives 4 choose 3, which is 4, multisets. None of them uses the element 3.
+
+53
+00:12:11,304 --> 00:12:27,645
+Every multiset has exactly one value of j, from 0 to k. So the total is the sum over j. Here 1 plus 2 plus 3 plus 4 equals 10, which is 5 choose 3. With part a, this proves the identity.
+
+54
+00:12:28,095 --> 00:12:46,741
+Practice Midterm question 1, worth 10 marks. S is the set of pairs A, B, where A and B are k element subsets of 1 to n. Count S in two ways to prove the identity. The hint says: look at the size of A intersect B. Pause the video and try it.
+
+55
+00:12:47,191 --> 00:13:00,823
+Count 1 is direct. Choose A in n choose k ways, and then B in n choose k ways. B does not depend on A. So S has n choose k squared elements. This is the left side.
+
+56
+00:13:01,273 --> 00:13:17,891
+Count 2 follows the hint. Each pair has one value of i, the size of A intersect B. i is between 0 and k. So S is a disjoint union of the sets of pairs with a given i, and its size is a sum over i.
+
+57
+00:13:18,341 --> 00:13:31,952
+In the picture, A and B share i elements. So A has k minus i elements outside B, and B has k minus i elements outside A. Now count the pairs for one value of i.
+
+58
+00:13:32,402 --> 00:13:49,789
+Build a pair with a given i in three steps. The example has n equals 5, k equals 2 and i equals 1. First, choose the common part, A intersect B. That is i elements from n, in n choose i ways. Here we choose 3.
+
+59
+00:13:50,239 --> 00:14:06,921
+Second, choose the rest of A, that is A minus B. It has k minus i elements. It cannot use the common part, so it comes from the other n minus i elements. That is n minus i choose k minus i ways. Here we choose 1.
+
+60
+00:14:07,371 --> 00:14:24,779
+Third, choose the rest of B, that is B minus A. It has k minus i elements, and it must avoid all of A. A has k elements, so n minus k elements are left. That is n minus k choose k minus i ways. Here we choose 4.
+
+61
+00:14:25,229 --> 00:14:48,440
+So A is 1, 3, and B is 3, 4. For n equals 5 and i equals 1, there are 5 times 4 times 3, which is 60, pairs. Each pair is built exactly once: the three parts are determined by A and B, and they give back A and B. So the number of pairs with this i is the product of the three binomial coefficients.
+
+62
+00:14:48,890 --> 00:14:58,063
+Check the formula with n equals 5 and k equals 2. For i equals 0: 1 times 10 times 3, which is 30.
+
+63
+00:14:58,513 --> 00:15:03,164
+For i equals 1: 5 times 4 times 3, which is 60.
+
+64
+00:15:03,614 --> 00:15:07,881
+For i equals 2: 10 times 1 times 1, which is 10.
+
+65
+00:15:08,331 --> 00:15:18,037
+The sum is 100, which is 10 squared, and 10 is 5 choose 2. A computer check lists all pairs for n up to 8 and agrees.
+
+66
+00:15:18,487 --> 00:15:33,847
+Now the written solution. Count 1: choose A, then B. Count 2: define S i as the pairs with i common elements. The S i are disjoint and cover S, so the size of S is the sum of their sizes.
+
+67
+00:15:34,297 --> 00:15:40,100
+Count one S i with the three choices. Say why each pair arises exactly once.
+
+68
+00:15:40,550 --> 00:15:46,758
+The two counts give the size of the same set S. So they are equal. This is the identity.
+
+69
+00:15:47,208 --> 00:15:55,443
+Here is the form of a combinatorial proof. Part 1: define one set S. Describe its objects in words.
+
+70
+00:15:55,893 --> 00:16:11,893
+Part 2: count S in a first way, and get one side. Usually the simpler side tells you the set. 2 n choose n gives the n element subsets of 1 to 2 n. A factor like 7 or n suggests a marked element.
+
+71
+00:16:12,343 --> 00:16:25,441
+Part 3: count S in a second way, and get the other side. A sum means disjoint cases: say why every object is in exactly one case. A product means a sequence of choices.
+
+72
+00:16:25,891 --> 00:16:31,310
+Part 4: conclude that the two sides are equal, because they count the same set.
+
+73
+00:16:31,760 --> 00:16:41,936
+To recap. A combinatorial proof counts one set in two ways. A sum means disjoint cases. A product means a sequence of choices.
+
+74
+00:16:42,386 --> 00:17:02,354
+We used a marked element for T1-2. We split a set into two parts for Vandermonde, A1-2 and T1-3 b. And we split by the size of the overlap for Practice Midterm question 1. In the next video, we count sets with overlaps: inclusion and exclusion.

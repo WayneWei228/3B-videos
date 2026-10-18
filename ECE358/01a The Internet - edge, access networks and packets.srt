@@ -1,0 +1,267 @@
+1
+00:00:00,000 --> 00:00:08,939
+This is ECE 358, video 1 a. The topic is the Internet, its edge, access networks, and packets.
+
+2
+00:00:09,389 --> 00:00:30,274
+After this video, you can name the parts of the Internet, and define a protocol. You can describe access networks. You can calculate the packet transmission delay, L over R. And you can answer questions 1 to 3 and 7 to 9 of the question bank, Introduction part. Video 1 b covers the physical media.
+
+3
+00:00:30,724 --> 00:00:46,383
+Billions of devices must exchange messages. Chapter 1 gives the big picture of how they do it. It has five topics. The Internet and protocols, the network edge, the network core, performance, and protocol layers.
+
+4
+00:00:46,833 --> 00:01:04,326
+Videos 1 a and 1 b cover the first two topics, slides 1 to 17. What is the Internet, what is a protocol, and the network edge with hosts, access networks, and physical media. We also solve questions 1 to 15 of the question bank.
+
+5
+00:01:04,776 --> 00:01:10,707
+The goal of Chapter 1 is the big picture and the terms. Later chapters add the details.
+
+6
+00:01:11,157 --> 00:01:31,253
+The first view of the Internet is the nuts and bolts view. It describes the Internet by its hardware parts. The first part is the host, also called the end system. There are billions of hosts: laptops, phones, servers, and cars. A host runs network applications at the edge of the Internet.
+
+7
+00:01:31,703 --> 00:01:46,551
+The second part is the packet switch. A packet switch forwards packets. A packet is a chunk of data. There are two kinds of packet switches: routers, and switches. The slides also call the switch an L2 switch.
+
+8
+00:01:47,001 --> 00:01:58,798
+The third part is the communication link. Links are fiber, copper, radio, or satellite. Each link has a transmission rate. The slides also call it the bandwidth.
+
+9
+00:01:59,248 --> 00:02:16,699
+The fourth part is the network. A network is a collection of devices, L2 switches, routers, and links. One organization manages it. The figure shows home, enterprise, and mobile networks, two ISPs, and a content provider network.
+
+10
+00:02:17,149 --> 00:02:30,674
+Here is an example. A laptop in an enterprise network gets a web page from a server. First, find the hosts. The laptop and the server run the network applications. So there are 2 hosts.
+
+11
+00:02:31,124 --> 00:02:41,556
+Next, find the packet switches. Four devices are between the hosts. They are one L2 switch and three routers, R1, R2, and R3.
+
+12
+00:02:42,006 --> 00:02:47,446
+Then count the links. Each link connects two neighbor devices. There are 5 links.
+
+13
+00:02:47,896 --> 00:03:03,832
+Last, find the networks. The enterprise manages host A, the switch, and R1. A regional ISP manages R2. The content provider manages R3 and the server. So the path crosses 3 networks.
+
+14
+00:03:04,282 --> 00:03:18,959
+The result is 2 hosts, 4 packet switches, 5 links, and 3 networks. A check: on a path with no branches, the number of links is the number of devices minus 1. 6 devices give 5 links.
+
+15
+00:03:19,409 --> 00:03:32,551
+Slide 4 lists many devices that are not computers. For example, a smart speaker, a refrigerator, a camera, a pacemaker, a toaster, and cars. All of them connect to the Internet.
+
+16
+00:03:33,001 --> 00:03:39,721
+Is such a device a host? Use three checks. First, the device connects to a network by a link.
+
+17
+00:03:40,171 --> 00:03:46,997
+Second, the device runs a network application. For example, the Tweet-a-watt reports energy use.
+
+18
+00:03:47,447 --> 00:04:02,103
+Third, the device does not forward packets for other devices. If all three checks pass, the device is a host. The definition uses what the device does, not what the device is. So a toaster can be a host.
+
+19
+00:04:02,553 --> 00:04:11,556
+Slide 5 adds three facts. First, the Internet is a network of networks. It is many ISPs that connect to each other.
+
+20
+00:04:12,006 --> 00:04:28,369
+Second, protocols are everywhere. A protocol is a set of communication rules. Protocols control the sending and the receiving of all messages. Here, HTTP for the Web, and TCP, act between the two hosts.
+
+21
+00:04:28,819 --> 00:04:42,920
+Other protocols act on smaller parts of the path. IP acts between routers. Ethernet acts on one link, here from host A to the switch. One message uses many protocols at the same time.
+
+22
+00:04:43,370 --> 00:05:07,093
+Third, Internet standards. An R F C, a request for comments, is a public document that gives the rules of a protocol. For example, RFC 9293 specifies TCP. The IETF, the Internet Engineering Task Force, is the group of expert committees that writes the RFCs.
+
+23
+00:05:07,543 --> 00:05:23,457
+The second view of the Internet is the services view. Here the Internet is an infrastructure that gives services to applications. The applications are the Web, streaming video, teleconferencing, email, games, e-commerce, and more.
+
+24
+00:05:23,907 --> 00:05:35,833
+The Internet gives a programming interface to distributed applications. The slide calls these functions hooks. An application uses them to connect to the Internet transport service.
+
+25
+00:05:36,283 --> 00:05:52,816
+The slide names five functions of the TCP interface: Listen, Connect, Send, Close, and Reset. Here, the server application calls Listen. The client calls Connect. Both call Send. The client calls Close at the end.
+
+26
+00:05:53,266 --> 00:06:07,901
+The Internet also gives service options. The slide compares them to the postal service: unacknowledged, acknowledged, and expedited. An application that must get all its data selects the acknowledged service.
+
+27
+00:06:08,351 --> 00:06:24,991
+What is a protocol? Start with a human protocol. A person says hi. The other person says hi. Then the first person asks the time, and gets an answer. The rules give the messages to send, and the actions to take when a message arrives.
+
+28
+00:06:25,441 --> 00:06:45,046
+A network protocol does the same thing between two entities. An entity is a host, a router, or an application. Here, a client sends a TCP connection request. The server sends a response. Then the client sends GET with a file name, and the server sends the file.
+
+29
+00:06:45,496 --> 00:06:56,163
+The protocol defines three things. First, the format of the messages. For example, the GET message has two parts: the word GET and the name of the file.
+
+30
+00:06:56,613 --> 00:07:04,186
+Second, the order of the messages. The connection request comes first. The GET comes after the connection response.
+
+31
+00:07:04,636 --> 00:07:17,713
+Third, the actions. When GET arrives, the server sends the file. The protocol must also give an action for other events. For example, if no reply arrives, send the request again.
+
+32
+00:07:18,163 --> 00:07:40,777
+So, a protocol defines the format of messages, the order of messages sent and received among network entities, and the actions taken on message transmission and receipt. Two examples from the slide: DHCP gives a host an IP address. TCP reliably transfers data between two applications.
+
+33
+00:07:41,227 --> 00:07:53,600
+Slides 9 to 11 divide the Internet into three parts. The first part is the network edge. It holds the hosts: clients and servers. Servers are often in data centers.
+
+34
+00:07:54,050 --> 00:08:09,922
+The second part is the access network and the physical media. The access network is the front portion of the network. It connects the user with the Internet. It contains links, switches, and routers. The links are wired or wireless.
+
+35
+00:08:10,372 --> 00:08:21,743
+The third part is the network core. It is the set of interconnected routers. It connects many networks, so it is a network of networks. Video 2 covers the core.
+
+36
+00:08:22,193 --> 00:08:31,025
+So a path from a laptop to a server goes through the edge, an access network, the core, a second access network, and the edge again.
+
+37
+00:08:31,475 --> 00:08:53,213
+How does an end system connect to its edge router? Slide 12 gives three types of access network. The first type is the residential access network, in a home. A WiFi access point and a router connect the hosts. A coaxial cable or a fibre link connects the home to the system of the local ISP.
+
+38
+00:08:53,663 --> 00:09:14,997
+The second type is the institutional access network, in a school or a company. The slide gives two chains. In the first chain, the host uses WiFi to an access point, then an Ethernet link, an L2 switch, another Ethernet link, and the router. In the second chain, the host uses an Ethernet link to the switch.
+
+39
+00:09:15,447 --> 00:09:26,071
+The third type is the mobile access network. A mobile host uses WiFi, or a 4G or 5G cellular radio link, to a base station.
+
+40
+00:09:26,521 --> 00:09:32,835
+Each chain ends at the edge router. The edge router connects the access network to the network core.
+
+41
+00:09:33,285 --> 00:09:44,464
+A packet is a fundamental concept on the Internet. Slide 13 gives the sending function of a host. First, the host takes an application message, M.
+
+42
+00:09:44,914 --> 00:09:57,735
+Second, the host breaks M into smaller chunks, called packets. A packet is a structured sequence of bits. Each packet here has L bits. Each packet has a header, H, and a part of the data.
+
+43
+00:09:58,185 --> 00:10:11,220
+Third, the host transmits a packet into the first link of the access network, bit by bit. The link has a transmission rate R, in bits per second. So one bit takes 1 over R seconds.
+
+44
+00:10:11,670 --> 00:10:20,587
+The host puts the bits on the link one after the other. All L bits take L times 1 over R seconds. That is L over R.
+
+45
+00:10:21,037 --> 00:10:33,816
+This time is the packet transmission delay. It equals L in bits, divided by R in bits per second. The slides also call R the link capacity, or the link bandwidth.
+
+46
+00:10:34,266 --> 00:10:53,402
+Slide 14 is an extra slide with the units. Rate R is in bits per second. K is kilo, 10 to the power 3. M is mega, 10 to the power 6. G is giga, 10 to the power 9. The transmission delay is in microseconds, milliseconds, or seconds.
+
+47
+00:10:53,852 --> 00:11:09,297
+The slide shows a packet of 24 bits. The host transmits the packet one bit at a time. Suppose R is 1 kilobit per second. Then one bit takes 1 millisecond. After 8 milliseconds, 8 bits are on the link.
+
+48
+00:11:09,747 --> 00:11:13,566
+After 16 milliseconds, 16 bits are on the link.
+
+49
+00:11:14,016 --> 00:11:28,800
+After 24 milliseconds, all 24 bits are on the link. So the transmission delay is 24 bits divided by 1000 bits per second, which is 24 milliseconds. This is L over R.
+
+50
+00:11:29,250 --> 00:11:41,623
+Now the slide example. The packet is 1500 bytes. The rate is 100 megabits per second. Find the transmission delay. Pause the video and try it.
+
+51
+00:11:42,073 --> 00:11:54,212
+First, write L in bits. 1500 bytes times 8 is 12000 bits. Then write R in bits per second. 100 times 10 to the power 6.
+
+52
+00:11:54,662 --> 00:12:15,035
+Divide. 12000 divided by 100 times 10 to the power 6 is 120 times 10 to the power minus 6 seconds. So the transmission delay is 120 microseconds. Always change bytes to bits, and the prefix to a power of 10, before you divide.
+
+53
+00:12:15,485 --> 00:12:38,013
+Here is a practice question. Use the same packet of 12000 bits. Find L over R at 100 megabits per second, at 1 gigabit per second, and at 10 gigabits per second. Pause the video and try it. At 100 megabits per second, the delay is 120 microseconds, as on slide 14.
+
+54
+00:12:38,463 --> 00:12:45,887
+At 1 gigabit per second, 12000 divided by 10 to the power 9 is 12 microseconds.
+
+55
+00:12:46,337 --> 00:13:00,460
+At 10 gigabits per second, the delay is 1.2 microseconds. When the rate is 10 times larger, the delay is 10 times smaller. These rates come from the twisted pair cables on the next slide.
+
+56
+00:13:00,910 --> 00:13:24,441
+Now the question bank. The question bank has no published answers, so these answers use the slides only. Question 1. What are the main hardware components of the Internet? Pause the video and try it. The answer, from slide 3: hosts, or end systems, packet switches, which are routers and L2 switches, communication links, and networks.
+
+57
+00:13:24,891 --> 00:13:41,147
+Question 2. What are the communication software components of the Internet called? They are protocols. Examples are HTTP, TCP, IP, WiFi, 4G, and Ethernet. RFCs specify them.
+
+58
+00:13:41,597 --> 00:13:48,402
+Question 3. What is a communication protocol, and what does it define? Pause the video and try it.
+
+59
+00:13:48,852 --> 00:14:05,023
+A protocol is a set of communication rules. Two entities communicate by exchanging messages under these rules. It defines the format of messages, the order of messages, and the actions taken on transmission and receipt.
+
+60
+00:14:05,473 --> 00:14:30,603
+Questions 7, 8, and 9 ask for units and names. Pause the video and try them. Question 7. The units of link transmission rate are bps, bits per second. Kbps, kilobits per second, 10 to the power 3. Mbps, megabits per second, 10 to the power 6. And Gbps, gigabits per second, 10 to the power 9.
+
+61
+00:14:31,053 --> 00:14:41,912
+Question 8. Three units of delay are microseconds, 10 to the power minus 6 seconds, milliseconds, 10 to the power minus 3 seconds, and seconds.
+
+62
+00:14:42,362 --> 00:14:51,429
+Question 9. The two other names of the link transmission rate are the link capacity and the link bandwidth. They come from slide 13.
+
+63
+00:14:51,879 --> 00:14:58,428
+Here is the recap. One. The nuts and bolts view: hosts, packet switches, links, and networks.
+
+64
+00:14:58,878 --> 00:15:05,491
+Two. The services view: the Internet gives services to applications through a programming interface.
+
+65
+00:15:05,941 --> 00:15:13,344
+Three. A protocol defines the format and the order of messages, and the actions on transmission and receipt.
+
+66
+00:15:13,794 --> 00:15:20,578
+Four. A path goes from the edge, through an access network, the core, another access network, to the edge.
+
+67
+00:15:21,028 --> 00:15:36,537
+Five. A host breaks a message into packets of L bits. The packet transmission delay is L over R. Change bytes to bits first. Video 1 b covers the physical media. That is the end of video 1 a.

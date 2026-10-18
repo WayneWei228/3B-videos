@@ -1,0 +1,291 @@
+1
+00:00:00,000 --> 00:00:15,573
+This is MATH 239, video 5 a. The topic is the Principle of Inclusion and Exclusion, from Section 1.1.6 of the notes, and its use for derangements, from Section 1.2.5.
+
+2
+00:00:16,023 --> 00:00:33,495
+After this video, you can count a union of overlapping sets with Theorem 1.15. You can explain why the formula counts each element once. You can count the elements that are in none of the sets. And you can count surjections and derangements.
+
+3
+00:00:33,945 --> 00:00:48,388
+Section 1.1.6 starts with this problem. Each flower in a bouquet is fresh, fragrant, or colourful, or more than one of these. We know seven counts, a to g. How many flowers are in the bouquet?
+
+4
+00:00:48,838 --> 00:01:03,451
+Draw one circle for each property. A flower is inside each circle for a property that it has. Each flower is in at least one circle. The circles overlap, because one flower can have two or three properties.
+
+5
+00:01:03,901 --> 00:01:16,787
+So we cannot just add 11, 7 and 8. The sum 26 counts a flower in two circles two times, and a flower in all three circles three times. The red labels show this.
+
+6
+00:01:17,237 --> 00:01:27,583
+Example 1.14 counts each region of the diagram. Start at the centre. Item g says that 2 flowers have all three properties.
+
+7
+00:01:28,033 --> 00:01:47,596
+Next, the regions with exactly two properties. Item f says 2 flowers are fragrant and colourful. The 2 flowers in the centre are part of them. So 2 minus 2, which is 0, are fragrant and colourful but not fresh. The same step gives 3 and 4 for the other two regions.
+
+8
+00:01:48,046 --> 00:02:07,587
+Now the regions with one property only. The colourful circle has 8 flowers. Four regions make up this circle. Subtract the three known regions: 8 minus 2 minus 0 minus 3 is 3. In the same way, we get 1 fragrant only flower and 2 fresh only flowers.
+
+9
+00:02:08,037 --> 00:02:16,315
+The seven regions do not overlap, and together they make the bouquet. So the total is their sum, which is 15 flowers.
+
+10
+00:02:16,765 --> 00:02:37,735
+The notes then give a shorter calculation. Add the three single counts. Subtract the three pair counts. Add the triple count. 11 plus 7 plus 8, minus 6, 5 and 2, plus 2, is 15. This is the same answer. Here is why it works. We follow how many times each region is counted.
+
+11
+00:02:38,185 --> 00:02:49,833
+Add a, b and c. A region with one property is counted 1 time. A region with two properties is counted 2 times. The centre is counted 3 times.
+
+12
+00:02:50,283 --> 00:03:03,147
+Subtract d, e and f. A region with two properties is in exactly one pair set, so it drops to 1. The centre is in all three pair sets, so it drops from 3 to 0.
+
+13
+00:03:03,597 --> 00:03:20,899
+Add g. Only the centre is in the triple set, so it goes back to 1. Now every region is counted exactly once. So the short formula gives the number of flowers. With more sets, the regions are hard to draw. The short formula still works.
+
+14
+00:03:21,349 --> 00:03:39,887
+Now the general theorem. Let A 1 to A m be finite sets. For a nonempty set S of indices, A sub S is the intersection of the sets A i with i in S. For example, A sub the set 2, 3, 5 is A 2 intersect A 3 intersect A 5.
+
+15
+00:03:40,337 --> 00:03:56,487
+For the flowers, m is 3. Let A 1 be the fresh flowers, A 2 the fragrant flowers, and A 3 the colourful flowers. The sets S of size 1 give A 1, A 2 and A 3, with 11, 7 and 8 flowers. Their sign is plus.
+
+16
+00:03:56,937 --> 00:04:04,105
+The sets S of size 2 give the pair intersections, with 6, 5 and 2 flowers. Their sign is minus.
+
+17
+00:04:04,555 --> 00:04:11,040
+The set 1, 2, 3 gives the triple intersection, with 2 flowers. Its sign is plus again.
+
+18
+00:04:11,490 --> 00:04:31,735
+Theorem 1.15 says: the size of the union is the sum over all nonempty S of minus 1 to the size of S minus 1, times the size of A sub S. There are 2 to the m minus 1 terms. Odd sizes get a plus sign. Even sizes get a minus sign.
+
+19
+00:04:32,185 --> 00:04:45,881
+Why does the theorem work for any m? Take one element x. Say x is in exactly k of the sets. Then x is in A sub S exactly when every index in S is one of those k indices.
+
+20
+00:04:46,331 --> 00:04:57,211
+Take k equal to 3: x is in A 1, A 2 and A 3. The three sets S of size 1 each count x once, with a plus sign. That gives plus 3.
+
+21
+00:04:57,661 --> 00:05:04,424
+The three sets S of size 2 each count x once, with a minus sign. That gives minus 3.
+
+22
+00:05:04,874 --> 00:05:12,895
+The set 1, 2, 3 counts x once more, with a plus sign. The total is 3 minus 3 plus 1, which is 1.
+
+23
+00:05:13,345 --> 00:05:38,263
+For any k, there are k choose j sets S of size j. So x is counted the sum of minus 1 to the j minus 1, times k choose j, times. By the Binomial Theorem, this is 1 minus the quantity 1 minus 1 to the k. That is 1, because k is at least 1. The rows show k from 1 to 5. Section 2.5 of the notes gives the full proof.
+
+24
+00:05:38,713 --> 00:05:49,230
+An element that is in none of the sets is in no A sub S. So it is counted zero times. Thus the sum counts each element of the union exactly once.
+
+25
+00:05:49,680 --> 00:06:02,352
+Many problems ask for the objects with none of some bad properties. Put all the sets inside one set U of all objects. The green region is the set of objects in none of the sets A i.
+
+26
+00:06:02,802 --> 00:06:22,599
+Its size is the size of U minus the size of the union. Apply Theorem 1.15 to the union, and change all the signs. If we agree that A sub the empty set is U, then we get one sum over all subsets S, with the sign minus 1 to the size of S.
+
+27
+00:06:23,049 --> 00:06:38,025
+So the plan is: name each bad property as a set A i. Count every intersection A sub S. Then subtract with inclusion and exclusion. The derangement problem later in this video uses exactly this form.
+
+28
+00:06:38,475 --> 00:06:48,843
+Here is an example to practise. How many integers from 1 to 100 are divisible by at least one of 2, 3 and 5? Pause the video and try it.
+
+29
+00:06:49,293 --> 00:06:57,635
+Let A 1 be the multiples of 2. Every second number is in A 1, so A 1 has 50 elements. The blue dots mark them.
+
+30
+00:06:58,085 --> 00:07:07,535
+Let A 2 be the multiples of 3. There are 33 of them, because 3 times 33 is 99. The purple dots mark them.
+
+31
+00:07:07,985 --> 00:07:18,460
+Let A 3 be the multiples of 5. There are 20 of them. The orange dots mark them. Some cells have two or three dots. These are the overlaps.
+
+32
+00:07:18,910 --> 00:07:36,339
+A number is divisible by 2 and by 3 exactly when it is divisible by 6. So A 1 intersect A 2 has 16 elements. In the same way, multiples of 10 give 10, and multiples of 15 give 6. Multiples of 30 give 3.
+
+33
+00:07:36,789 --> 00:07:52,405
+By inclusion and exclusion, the answer is 50 plus 33 plus 20, minus 16, 10 and 6, plus 3. That is 74. The green cells are the 74 numbers. The 26 gray cells have no dot.
+
+34
+00:07:52,855 --> 00:08:03,629
+One more short example, with only two sets. How many binary strings of length 8 start with 1 1 or end with 0 0? Pause the video and try it.
+
+35
+00:08:04,079 --> 00:08:16,559
+Let A 1 be the strings that start with 1 1. Two positions are fixed. Each of the other 6 positions is 0 or 1. So A 1 has 2 to the 6, which is 64, strings.
+
+36
+00:08:17,009 --> 00:08:24,369
+Let A 2 be the strings that end with 0 0. By the same reasoning, it also has 64 strings.
+
+37
+00:08:24,819 --> 00:08:40,925
+A string in both sets has four fixed positions, so the intersection has 2 to the 4, which is 16, strings. With two sets, the theorem gives 64 plus 64 minus 16. The answer is 112.
+
+38
+00:08:41,375 --> 00:08:58,079
+This is practice problem P1-7 from Assignment 1. A has three elements, a, b and c. B has five elements. Count all functions from A to B, the injective ones, and the surjective ones. Pause the video and try it.
+
+39
+00:08:58,529 --> 00:09:14,295
+Part a. A function gives each element of A one value in B. Draw one arrow from each element of A. Each of the three arrows has 5 choices. By the AND rule, there are 5 cubed, which is 125, functions.
+
+40
+00:09:14,745 --> 00:09:30,403
+Part b. An injective function gives different elements different values. The arrow from a has 5 choices. Then the arrow from b has 4 choices, and the arrow from c has 3. So there are 60 injective functions.
+
+41
+00:09:30,853 --> 00:09:46,853
+Part c. A surjective function reaches every element of B. But there are only 3 arrows, so at most 3 elements of B get an arrow. At least two elements, here in red, get no arrow. So there are 0 surjective functions.
+
+42
+00:09:47,303 --> 00:10:11,687
+Inclusion and exclusion also counts surjections when the answer is not zero. Count the surjections from a set of 4 elements to the set 1, 2, 3. Pause the video and try it. Let U be all functions. There are 3 to the 4, which is 81. Let A i be the functions with no arrow to i. A function is surjective when it is in none of the sets A i.
+
+43
+00:10:12,137 --> 00:10:32,468
+Take a set S of k values. A function in A sub S uses only the other 3 minus k values. Each of the 4 elements has 3 minus k choices. So the size of A sub S is 3 minus k to the 4. It depends only on k, and there are 3 choose k such sets S.
+
+44
+00:10:32,918 --> 00:10:49,558
+Fill the table. For k equal to 1: 3 sets, 16 functions each, so minus 48. For k equal to 2: 3 sets, 1 function each, so plus 3. For k equal to 3: no value is left, so the term is 0.
+
+45
+00:10:50,008 --> 00:11:01,016
+The sum is 81 minus 48 plus 3, which is 36. A list of all 81 functions by computer also gives 36 surjections.
+
+46
+00:11:01,466 --> 00:11:10,597
+As a check, use the same method for P1-7 part c. Now the domain has 3 elements and B has 5 elements.
+
+47
+00:11:11,047 --> 00:11:19,921
+The terms are minus 1 to the k, times 5 choose k, times 5 minus k cubed, for k from 0 to 5.
+
+48
+00:11:20,371 --> 00:11:35,859
+125 minus 320 plus 270 minus 80 plus 5 minus 0 is 0. This agrees with the direct argument. Use the direct argument on an exam when it is shorter.
+
+49
+00:11:36,309 --> 00:11:54,037
+Now the classical application in Section 1.2.5. Eight people check their coats at a restaurant. The clerk returns the coats in a random order. What is the probability that no person gets the correct coat? We solve it for any number n of people.
+
+50
+00:11:54,487 --> 00:12:13,154
+List the people P 1 to P n. Record the result as a sequence c 1 to c n. c i equals j means that person i got the coat of person j. Each number from 1 to n appears exactly once. So the sequence is a permutation of 1 to n.
+
+51
+00:12:13,604 --> 00:12:27,556
+Person i gets the correct coat exactly when c i equals i. Here c 2 equals 2, so person 2 is lucky. A permutation with c i different from i for every i is a derangement.
+
+52
+00:12:28,006 --> 00:12:45,307
+Let A i be the set of permutations with c i equal to i. The union of the A i is the set where at least one person gets the correct coat. So the number of derangements is n factorial minus the size of the union. This is the complement form.
+
+53
+00:12:45,757 --> 00:13:04,616
+We need the size of every A sub S. The notes use the example n equals 8 and S equal to the set 2, 3, 6. A permutation in A sub S has 2 in position 2, 3 in position 3, and 6 in position 6. The stars are the free positions.
+
+54
+00:13:05,066 --> 00:13:16,586
+The numbers 1, 4, 5, 7 and 8 fill the five free positions in some order. Each order is a list of these five numbers. Here is one of them in green.
+
+55
+00:13:17,036 --> 00:13:25,505
+There are 5 factorial lists of five numbers. So A sub the set 2, 3, 6 has 120 permutations.
+
+56
+00:13:25,955 --> 00:13:45,177
+In general, if S has k elements, fix the k positions in S. The other n minus k numbers form a list in the other positions. So the size of A sub S is n minus k factorial. It depends only on k, and there are n choose k sets S of size k.
+
+57
+00:13:45,627 --> 00:14:01,605
+Now apply Theorem 1.15. Group the sets S by their size k. Each of the n choose k sets of size k gives the same term: minus 1 to the k minus 1, times n minus k factorial.
+
+58
+00:14:02,055 --> 00:14:27,826
+Simplify n choose k times n minus k factorial. n choose k is n factorial over k factorial times n minus k factorial. The factor n minus k factorial cancels. What is left is n factorial over k factorial. So the union has n factorial times the sum of minus 1 to the k minus 1 over k factorial.
+
+59
+00:14:28,276 --> 00:14:40,841
+Subtract from n factorial. Each sign changes. The result is n factorial times the sum, for k from 0 to n, of minus 1 to the k over k factorial.
+
+60
+00:14:41,291 --> 00:14:48,801
+The k equal to 0 term is n factorial. It is the term for the empty set S, which is all of U.
+
+61
+00:14:49,251 --> 00:14:58,253
+Check with n equal to 4. The terms are 24, minus 24, plus 12, minus 4, plus 1. The sum is 9.
+
+62
+00:14:58,703 --> 00:15:10,437
+A computer list of all 24 permutations of 1, 2, 3, 4 finds exactly these 9 derangements. In each one, no number is in its own position.
+
+63
+00:15:10,887 --> 00:15:33,372
+All n factorial permutations are equally likely. So the probability of a derangement is the count over n factorial. This is D n, the sum of minus 1 to the k over k factorial, for k from 0 to n. The table shows some exact values. The blue points show D n for n from 0 to 10.
+
+64
+00:15:33,822 --> 00:15:52,809
+The sum is the start of the series for e to the x, at x equal to minus 1. So D n approaches 1 over e, about 0.367879. The purple line marks this value. From n equal to 7 on, D n changes very little.
+
+65
+00:15:53,259 --> 00:16:10,347
+For the eight people of Example 1.23, the probability is 2119 over 5760. That is about 0.367882, or close to 36.79 percent.
+
+66
+00:16:10,797 --> 00:16:22,274
+A last practice question. How many lists of 1 to 5 have 1 in position 1, or 2 in position 2, or 3 in position 3? Pause the video and try it.
+
+67
+00:16:22,724 --> 00:16:39,577
+Let A i be the lists with i in position i. Fix 1 in position 1. The other four numbers form a list of the other four positions, so A 1 has 4 factorial, which is 24, lists. A 2 and A 3 also have 24.
+
+68
+00:16:40,027 --> 00:16:47,515
+Fix two positions. Three numbers are free, so each pair intersection has 3 factorial, which is 6, lists.
+
+69
+00:16:47,965 --> 00:16:55,517
+Fix all three positions. Two numbers are free, so the triple intersection has 2 factorial, which is 2, lists.
+
+70
+00:16:55,967 --> 00:17:15,167
+Here is the written solution. Define the sets A i. Give the size of A sub S with a reason. Name the theorem. Then 3 times 24, minus 3 times 6, plus 2, is 56. A computer list of all 120 lists also finds 56.
+
+71
+00:17:15,617 --> 00:17:31,084
+To recap. When sets overlap, the sum of their sizes counts shared elements more than once. Theorem 1.15 corrects this with alternating signs. Each element of the union is counted exactly once.
+
+72
+00:17:31,534 --> 00:17:45,443
+To count the objects in none of the sets, use the complement form, with A sub the empty set equal to U. When the size of A sub S depends only on the size k, group the terms with m choose k.
+
+73
+00:17:45,893 --> 00:18:02,149
+This gives the count of surjections, and the count of derangements. The probability of a derangement approaches 1 over e. The next video, 5 b, uses counting to find probabilities: birthdays, Wine Gums and poker hands.

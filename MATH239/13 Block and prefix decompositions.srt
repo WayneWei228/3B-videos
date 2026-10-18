@@ -1,0 +1,395 @@
+1
+00:00:00,000 --> 00:00:09,792
+This is MATH 239, video 13. The topic is block decompositions and prefix decompositions of binary strings.
+
+2
+00:00:10,242 --> 00:00:30,210
+After this video, you can cut a string into blocks. You can build unambiguous expressions from the block decomposition and from prefix decompositions. You can find and check the generating series. And you can solve practice problem P4-2 and question 6 c of the practice midterm.
+
+3
+00:00:30,660 --> 00:00:44,847
+Recall Theorem 3.13 from the last video. If an expression R is unambiguous, the rational function that R leads to is the generating series of its strings, with respect to length.
+
+4
+00:00:45,297 --> 00:00:57,243
+The expression, one or one one, star, is ambiguous. It produces the string 1 1 1 in three ways: 1, 1, 1. Or 1, then 1 1. Or 1 1, then 1.
+
+5
+00:00:57,693 --> 00:01:08,339
+The set it produces is all strings of 1s. There is one string of each length. But the expression leads to one over one minus x minus x squared.
+
+6
+00:01:08,789 --> 00:01:25,322
+That series has coefficients 1, 1, 2, 3, 5, 8. From length 2 on, they are wrong. They count the ways, not the strings. So we need expressions that produce each string exactly once. Block and prefix decompositions give them.
+
+7
+00:01:25,772 --> 00:01:30,764
+Here is the string of Example 3.16. It has 26 bits.
+
+8
+00:01:31,214 --> 00:01:42,073
+A block is a nonempty run of equal bits that cannot be made longer. So a block ends where the bit changes. The purple bars cut the string at each change.
+
+9
+00:01:42,523 --> 00:01:54,981
+The block lengths are 2, 3, 1, 1, 3, 2, 1, 3, 4, 2, 1, 1, 2. The blocks of 1s have purple brackets, and the blocks of 0s have gray brackets.
+
+10
+00:01:55,431 --> 00:02:09,469
+Two blocks next to each other always have different bits. So the blocks alternate: a block of 0s, a block of 1s, a block of 0s, and so on. Each string has exactly one way to cut it into blocks.
+
+11
+00:02:09,919 --> 00:02:23,999
+Proposition 3.17 gives an expression that builds every string block by block. It is zero star, then a repeated pair, one star one, zero star zero, then one star at the end.
+
+12
+00:02:24,449 --> 00:02:40,342
+Use the string 0 0 1 1 1 0 1 0 0 1 1. The first part, zero star, produces the first block of 0s: here 0 0. It may be empty, because a string can start with 1.
+
+13
+00:02:40,792 --> 00:02:59,160
+Each pass through the repeated part produces one block of 1s and then one block of 0s. One star one is a block of 1s, with length at least 1. Zero star zero is a block of 0s. Here the passes are 1 1 1, 0 and 1, 0 0.
+
+14
+00:02:59,610 --> 00:03:06,373
+The last part, one star, produces the last block of 1s: here 1 1. It may also be empty.
+
+15
+00:03:06,823 --> 00:03:14,908
+Each pass starts with a 1 and ends with a 0. This fact makes the cut points unique. The next slide shows why.
+
+16
+00:03:15,358 --> 00:03:33,214
+Here is the proof. The middle part, one star one, zero star zero, produces a block of 1s and then a block of 0s. Each of the two parts produces its block in exactly one way. Look at the first row: 0 0 1 1 0 1.
+
+17
+00:03:33,664 --> 00:03:49,941
+Each pass through the star starts with a 1 and ends with a 0. So the passes are exactly the pairs of a block of 1s followed by a block of 0s. In the second row, the string ends with 0, so the last 1 star is empty.
+
+18
+00:03:50,391 --> 00:04:08,290
+Zero star equals epsilon, or zero star zero. So the first block of 0s is allowed, but not required. The third row starts with 1, so the first 0 star is empty. The last block of 1s works the same way, as in row four.
+
+19
+00:04:08,740 --> 00:04:12,964
+The empty string uses no pass, and both end parts are empty.
+
+20
+00:04:13,414 --> 00:04:25,403
+So the blocks fix every part of the expression. Every binary string is produced exactly once. The second expression of the proposition is the same with 0 and 1 swapped.
+
+21
+00:04:25,853 --> 00:04:36,157
+Now translate the block decomposition into a series, with Definition 3.11. Zero star leads to one over one minus x.
+
+22
+00:04:36,607 --> 00:04:45,525
+One star one is a block of 1s. It leads to one over one minus x, times x, which is x over one minus x.
+
+23
+00:04:45,975 --> 00:04:51,841
+Zero star zero, a block of 0s, also leads to x over one minus x.
+
+24
+00:04:52,291 --> 00:04:58,585
+The pair is a concatenation, so we multiply: x squared over one minus x, squared.
+
+25
+00:04:59,035 --> 00:05:07,269
+The star around the pair leads to one over one minus that. The last one star leads to one over one minus x.
+
+26
+00:05:07,719 --> 00:05:16,402
+Multiply the three factors. The middle factor is one minus x squared, over one minus x squared minus x squared.
+
+27
+00:05:16,852 --> 00:05:34,665
+One minus x, squared, minus x squared, equals one minus 2 x. The two factors one over one minus x cancel the numerator. The result is one over one minus 2 x. There are 2 to the n strings of length n, so this is correct.
+
+28
+00:05:35,115 --> 00:05:49,067
+Many sets of strings are defined by conditions on the lengths of the blocks. Here is a list of expressions for one block of 1s. Any block: one star one, which leads to x over one minus x.
+
+29
+00:05:49,517 --> 00:05:57,816
+Odd length: one one, star, then one. The lengths are 1, 3, 5. It leads to x over one minus x squared.
+
+30
+00:05:58,266 --> 00:06:07,226
+Even length: one one, then one one star. The lengths are 2, 4, 6. It leads to x squared over one minus x squared.
+
+31
+00:06:07,676 --> 00:06:14,268
+Length at least 3: three 1s, then one star. It leads to x cubed over one minus x.
+
+32
+00:06:14,718 --> 00:06:18,750
+Length exactly 1: the single bit 1. It leads to x.
+
+33
+00:06:19,200 --> 00:06:36,352
+The method: in the block decomposition, replace each block by the expression for its allowed lengths. Each block is still produced in one way, so the new expression is still unambiguous. The end parts may be empty, so write epsilon, or the block.
+
+34
+00:06:36,802 --> 00:06:50,093
+Example 3.19. G is the set of strings in which every block of 1s has odd length. The string at the top is in G. Its blocks of 1s have lengths 3, 1 and 3.
+
+35
+00:06:50,543 --> 00:06:57,156
+The string 0 1 1 0 1 is not in G. Its first block of 1s has length 2.
+
+36
+00:06:57,606 --> 00:07:11,409
+Start from the block decomposition. The middle one star one becomes one one star, one. The last one star is epsilon or one star one. It becomes epsilon, or one one star one.
+
+37
+00:07:11,859 --> 00:07:28,733
+So G is zero star, then the pair with an odd block of 1s, repeated, then epsilon or an odd block. This is a restriction of the block decomposition, so it is unambiguous. Each string of G is produced exactly once.
+
+38
+00:07:29,183 --> 00:07:44,799
+Translate each part. The odd block of 1s leads to x over one minus x squared. A block of 0s leads to x over one minus x. The last part leads to 1 plus x over one minus x squared.
+
+39
+00:07:45,249 --> 00:08:03,020
+Clear the small fractions. Multiply the top and the bottom of the middle factor by one minus x squared, times one minus x. And one plus x over one minus x squared is one plus x minus x squared, over one minus x squared.
+
+40
+00:08:03,470 --> 00:08:17,059
+The factors cancel. The result is one plus x minus x squared, over one minus x minus 2 x squared plus x cubed. This is the generating series, by Theorem 3.13.
+
+41
+00:08:17,509 --> 00:08:33,787
+Check it. Count the strings of G by brute force for n from 0 to 8: 1, 2, 3, 6, 10, 19, 33, 61, 108. Expand the series: the same numbers. These match the table in the notes.
+
+42
+00:08:34,237 --> 00:08:52,583
+The denominator gives the recurrence g n equals g n minus 1, plus 2 g n minus 2, minus g n minus 3, for n at least 3. For example, 6 plus 2 times 3 minus 2 is 10. Chapter 4 explains this step.
+
+43
+00:08:53,033 --> 00:09:15,497
+Example 3.20. H is the set of strings in which each block of 0s has length one. The first block of 0s is epsilon or 0. Each pair is a block of 1s and then one 0. The last block of 1s is one star. This leads to one plus x over one minus x minus x squared.
+
+44
+00:09:15,947 --> 00:09:23,542
+Check the coefficient of x to the 5 by listing the strings of length 5. With no 0, there is one string.
+
+45
+00:09:23,992 --> 00:09:29,795
+With one 0, the 0 can be in any of 5 positions. So there are 5 strings.
+
+46
+00:09:30,245 --> 00:09:35,983
+With two 0s, the two 0s must not be next to each other. There are 6 such strings.
+
+47
+00:09:36,433 --> 00:09:40,721
+With three 0s, there is only 0 1 0 1 0.
+
+48
+00:09:41,171 --> 00:09:55,358
+The total is 1 plus 5 plus 6 plus 1, which is 13. The series gives 13 too. These are the Fibonacci numbers: h n equals f n plus 1, in the notation of the notes.
+
+49
+00:09:55,808 --> 00:10:03,424
+Here is the method as a chain. Start from the block decomposition, which produces all strings block by block.
+
+50
+00:10:03,874 --> 00:10:08,119
+Restrict each block, so that it produces only the allowed lengths.
+
+51
+00:10:08,569 --> 00:10:14,991
+Then the expression is unambiguous, because it is a restriction of an unambiguous expression.
+
+52
+00:10:15,441 --> 00:10:22,523
+Then translate it into a series. Theorem 3.13 says the result is the generating series.
+
+53
+00:10:22,973 --> 00:10:41,064
+On an exam, write these four parts. Name Proposition 3.17. Explain each restriction, also for the first and the last block. Say why the expression is unambiguous. And cite the theorem, or the Sum, Product and String Lemmas, for the series.
+
+54
+00:10:41,514 --> 00:10:50,239
+Practice problem P4-2 part a. Pause the video and try it. The set is all strings with exactly five 0s.
+
+55
+00:10:50,689 --> 00:10:55,319
+Look at the five 0s. They cut the string into six runs of 1s.
+
+56
+00:10:55,769 --> 00:11:02,190
+Each run of 1s may be empty. Here the third run is empty. So each run is one star.
+
+57
+00:11:02,640 --> 00:11:22,544
+The expression is one star, zero, one star, zero, and so on, with five 0s and six one stars. Each run of 1s is produced in one way, so it is unambiguous. By the Product Lemma, the series is one over one minus x, to the 6, times x to the 5.
+
+58
+00:11:22,994 --> 00:11:46,567
+Now count directly. A string of length n with five 0s is a choice of the 5 positions of the 0s. So there are n choose 5 strings. The negative binomial series gives x to the 5 over one minus x to the 6. Both methods agree. Brute force also gives 1, 6, 21, 56 for n from 5 to 8.
+
+59
+00:11:47,017 --> 00:12:01,780
+Part b. Pause the video and try it. Every block of 1s must have even length. The string 0 1 1 0 0 1 1 1 1 0 is in the set. Its blocks of 1s have lengths 2 and 4.
+
+60
+00:12:02,230 --> 00:12:11,659
+An even block of 1s is one one, then one one star. The last block of 1s is optional, so it is epsilon or an even block.
+
+61
+00:12:12,109 --> 00:12:29,197
+The expression is zero star, then the pair, one one, one one star, zero zero star, repeated, then epsilon or an even block. It is a restriction of the block decomposition, so it is unambiguous. This is the posted answer.
+
+62
+00:12:29,647 --> 00:12:48,741
+The series is not asked, but it is a good check. The even block leads to x squared over one minus x squared. After simplifying, the result is one over one minus x minus x squared. Brute force gives 1, 1, 2, 3, 5, 8, the same numbers.
+
+63
+00:12:49,191 --> 00:12:56,977
+Part c. Pause the video and try it. The set is all strings of odd length. Take the first bit: 0 or 1.
+
+64
+00:12:57,427 --> 00:13:04,382
+The rest has even length, so cut it into pairs of bits. Each pair is 0 or 1, then 0 or 1.
+
+65
+00:13:04,832 --> 00:13:21,045
+The expression is zero or one, then the pair, repeated. The cut points depend only on the position, so each string is produced once. The series is 2 x over one minus 4 x squared. This does not use blocks at all.
+
+66
+00:13:21,495 --> 00:13:40,226
+Practice midterm, question 6 c. Pause the video and try it. Here is the string 0 1 1 0 0 0 1 1 1. Its even block 1 1 is followed by the block 0 0 0. Its last block 1 1 1 is odd. So it is in the set.
+
+67
+00:13:40,676 --> 00:13:48,996
+The string 0 1 1 0 0 is not in the set. The even block 1 1 is followed by only two 0s.
+
+68
+00:13:49,446 --> 00:14:00,838
+The string 0 0 1 1 is not in the set either. The even block 1 1 is the last block. No block of 0s follows it. This case is easy to miss.
+
+69
+00:14:01,288 --> 00:14:15,773
+So: after an odd block of 1s, any block of 0s may follow, or nothing. After an even block of 1s, a block of at least three 0s must follow. So the last block of 1s, if there is one, must be odd.
+
+70
+00:14:16,223 --> 00:14:31,605
+Build the expression from the block decomposition. Each pass is a block of 1s and then a block of 0s. Type 1: an odd block of 1s, one one star one, followed by any block of 0s, zero star zero.
+
+71
+00:14:32,055 --> 00:14:41,825
+Type 2: an even block of 1s, one one, one one star, followed by a block of at least three 0s. Three 0s, then zero star.
+
+72
+00:14:42,275 --> 00:14:52,003
+The two types cannot produce the same pass. The length of the block of 1s is odd in one, and even in the other. So the union is disjoint.
+
+73
+00:14:52,453 --> 00:15:00,667
+The full expression: zero star, then type 1 or type 2, repeated, then epsilon or an odd block of 1s.
+
+74
+00:15:01,117 --> 00:15:12,167
+Write the explanation in this form. It is a restriction of the block decomposition, and the union in the middle is disjoint. So the expression is unambiguous.
+
+75
+00:15:12,617 --> 00:15:31,327
+The question asks only for the expression. A series check finds mistakes, so compute it. The two pair types lead to x over one minus x squared times x over one minus x, plus x squared over one minus x squared times x cubed over one minus x.
+
+76
+00:15:31,777 --> 00:15:37,345
+Put the parts together, with the first block of 0s and the optional last odd block.
+
+77
+00:15:37,795 --> 00:15:48,525
+After simplifying, the series is one plus x minus x squared, over one minus x minus 2 x squared plus x cubed minus x to the 5.
+
+78
+00:15:48,975 --> 00:16:06,874
+Brute force: list all strings of each length and test the condition. For length 4, six strings fail, so 10 are left. The counts are 1, 2, 3, 6, 10, 20, 36, 69. The series gives the same numbers. So the expression is correct.
+
+79
+00:16:07,324 --> 00:16:23,729
+Now a different kind of decomposition. Example 3.21 uses the expression zero star one, star, then zero star. Each piece zero star one is some 0s and then one 1. Here is the string from the notes.
+
+80
+00:16:24,179 --> 00:16:28,787
+The rule: cut the string after each 1. The purple bars show the cuts.
+
+81
+00:16:29,237 --> 00:16:42,976
+Each piece ends with its only 1. So each piece is zero star one. The string can end with some 0s. The final zero star produces them. Here the final run is 0 0 0.
+
+82
+00:16:43,426 --> 00:16:59,341
+So the string is 0 0 1, 1, 1, 0 1, 0 1, 1, 0 0 0 1, 0 1, 1, then 0 0 0. The rule gives the cuts, so there is only one way to produce the string.
+
+83
+00:16:59,791 --> 00:17:15,279
+The series is one over one minus x over one minus x, times one over one minus x. This is one over one minus 2 x again. So this is a second unambiguous expression for all binary strings.
+
+84
+00:17:15,729 --> 00:17:24,795
+In general, a prefix decomposition is an expression A star B. The string is chopped into initial pieces, each produced by A.
+
+85
+00:17:25,245 --> 00:17:30,131
+There can be a final piece produced by B. B can also be epsilon.
+
+86
+00:17:30,581 --> 00:17:45,557
+To show that A star B is unambiguous, check two things. First, there is at most one way for a string to begin with a piece produced by A. In Example 3.21, the first piece ends at the first 1.
+
+87
+00:17:46,007 --> 00:18:02,049
+Second, if the string does not begin with a piece of A, then B produces it. In Example 3.21, a string with no 1 is all 0s, and the final zero star produces it. Also, A and B must be unambiguous.
+
+88
+00:18:02,499 --> 00:18:09,859
+A postfix decomposition has the form A, B star. It has the same idea, with the pieces at the end.
+
+89
+00:18:10,309 --> 00:18:24,539
+Here is a postfix example from the notes: one star, then zero one star, repeated. It also produces every binary string. Take the string 1 1 0 1 0 0 1 1 1.
+
+90
+00:18:24,989 --> 00:18:34,546
+Cut before each 0. The first piece is the run of 1s at the start: here 1 1. Each later piece is one 0 and the 1s after it.
+
+91
+00:18:34,996 --> 00:18:48,351
+Each piece zero one star contains exactly one 0, at its start. So the 0s fix the cuts, and the expression is unambiguous. Its series is one over one minus 2 x.
+
+92
+00:18:48,801 --> 00:18:58,529
+Use a prefix decomposition for the strings with no substring 0 0. Take 1 0 1 1 0 1 0 1 1 0.
+
+93
+00:18:58,979 --> 00:19:02,712
+Cut after each 1, as in Example 3.21.
+
+94
+00:19:03,162 --> 00:19:15,215
+A piece is some 0s, then a 1. At most one 0 can come before each 1. So each piece is 1 or 0 1. After the last 1, there is nothing or one 0.
+
+95
+00:19:15,665 --> 00:19:32,071
+So the expression is one or zero one, star, then epsilon or zero. The pieces 1 and 0 1 end at the first 1, so there is one way to cut. The series is one plus x, over one minus x minus x squared.
+
+96
+00:19:32,521 --> 00:19:47,369
+This is the series of Example 3.20. It is the same set: no 0 0 means every block of 0s has length one. Different unambiguous expressions for one set give the same series.
+
+97
+00:19:47,819 --> 00:20:01,600
+To recap. A block is a maximal run of equal bits, and blocks alternate. The block decomposition produces every string exactly once, because each pass starts with 1 and ends with 0.
+
+98
+00:20:02,050 --> 00:20:14,935
+For conditions on block lengths, replace each block by an expression for its allowed lengths. A restriction of the block decomposition is unambiguous. Take care with the first and the last block.
+
+99
+00:20:15,385 --> 00:20:36,377
+A prefix decomposition, A star B, cuts each string into pieces from the left. Show that there is one way to start with a piece of A, and that B produces the rest. Then translate with Theorem 3.13, and check the counts. The next video covers recursive decompositions and excluded substrings.

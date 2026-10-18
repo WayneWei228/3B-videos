@@ -1,0 +1,391 @@
+1
+00:00:00,000 --> 00:00:09,301
+This is ECE 320, video 7: control signals and single-cycle performance, from lecture 4, part 2.
+
+2
+00:00:09,751 --> 00:00:22,637
+After this video, you can name each control signal. You can fill a row of the control table. You can explain how the control is built. And you can find the clock period from component delays.
+
+3
+00:00:23,087 --> 00:00:34,436
+Here is the full datapath from video 6. The Control block reads the instruction, inst 31 to 0. Its output signals are at the bottom of the drawing.
+
+4
+00:00:34,886 --> 00:00:44,059
+Four signals select a mux input: PCSel, ASel, BSel and WBSel. Each one picks which value goes through.
+
+5
+00:00:44,509 --> 00:00:57,437
+Three signals select the operation of a block. ImmSel picks the immediate format. ALUSel picks the ALU operation. BrUn picks a signed or unsigned compare.
+
+6
+00:00:57,887 --> 00:01:07,082
+Two signals are write enables. RegWEn lets the register file write. MemRW selects a read or a write of DMEM.
+
+7
+00:01:07,532 --> 00:01:20,887
+BrEq and BrLT go the other way. Branch Comp. makes them, and the control reads them. So 9 signals control this datapath. A modern processor can have hundreds.
+
+8
+00:01:21,337 --> 00:01:32,174
+To find the control values of an instruction, ask four questions in order. First: does it write a register? The answer sets RegWEn and WBSel.
+
+9
+00:01:32,624 --> 00:01:45,957
+Second: what goes into the ALU? Input A is a register or the PC. Input B is a register or the immediate. The answer sets ASel, BSel, ImmSel and ALUSel.
+
+10
+00:01:46,407 --> 00:01:51,805
+Third: does it write memory? Only stores do. The answer sets MemRW.
+
+11
+00:01:52,255 --> 00:02:05,716
+Fourth: what is the next PC? It is PC plus 4, or the ALU result. The answer sets PCSel. For a branch, PCSel depends on BrEq or BrLT.
+
+12
+00:02:06,166 --> 00:02:16,555
+A star means don't care. Any value gives the same result. For example, sw writes no register, so its WBSel is a star.
+
+13
+00:02:17,005 --> 00:02:24,856
+Slide 3 finds the control for add. Blue is the path that add uses. The table row below starts empty.
+
+14
+00:02:25,306 --> 00:02:34,053
+Question 1. add writes the ALU result to rd. So RegWEn is 1, and WBSel selects ALU.
+
+15
+00:02:34,503 --> 00:02:46,151
+Question 2. Both ALU inputs are registers. ASel and BSel select Reg, and ALUSel is Add. add has no immediate, so ImmSel is a star.
+
+16
+00:02:46,601 --> 00:02:51,571
+Question 3. add does not write memory, so MemRW is Read.
+
+17
+00:02:52,021 --> 00:03:04,523
+Question 4. The next PC is PC plus 4, so PCSel is plus 4. add is not a branch, so BrUn, BrEq and BrLT are stars.
+
+18
+00:03:04,973 --> 00:03:13,442
+Slide 4 shows sub. It uses the same path as add. Only one control value changes: ALUSel is Sub.
+
+19
+00:03:13,892 --> 00:03:18,799
+Here are the two rows together. They differ only in the ALUSel column.
+
+20
+00:03:19,249 --> 00:03:32,497
+Slide 5 covers every register-register instruction in one row. ALUSel is the operation that funct3 and funct7 name. All the other values are the same as for add.
+
+21
+00:03:32,947 --> 00:03:42,568
+Slide 6 finds the control for sw. sw stores Reg rs2 at the address Reg rs1 plus the immediate.
+
+22
+00:03:43,018 --> 00:03:53,706
+Question 1. sw writes no register. So RegWEn is 0. The write back mux output goes nowhere, so WBSel is a star.
+
+23
+00:03:54,156 --> 00:04:06,828
+Question 2. Input A is Reg rs1, and input B is the immediate. So ASel is Reg, BSel is Imm, and ImmSel is S. The ALU adds, to make the address.
+
+24
+00:04:07,278 --> 00:04:12,206
+Question 3. sw writes memory, so MemRW is Write.
+
+25
+00:04:12,656 --> 00:04:18,587
+Question 4. The next PC is PC plus 4. The branch signals are stars.
+
+26
+00:04:19,037 --> 00:04:25,693
+Slide 7 finds the control for beq. Here the branch is taken: the two registers are equal.
+
+27
+00:04:26,143 --> 00:04:32,756
+Question 1. beq writes no register. RegWEn is 0, and WBSel is a star.
+
+28
+00:04:33,206 --> 00:04:45,089
+Question 2. The ALU computes the branch target, PC plus the immediate. So ASel is PC, BSel is Imm, ImmSel is B, and ALUSel is Add.
+
+29
+00:04:45,539 --> 00:04:50,445
+Question 3. beq does not write memory. MemRW is Read.
+
+30
+00:04:50,895 --> 00:05:07,322
+Question 4. Branch Comp. compares the registers. Equal registers give BrEq equal to 1, so PCSel selects the ALU. BrUn is a star: equality is the same for signed and unsigned numbers.
+
+31
+00:05:07,772 --> 00:05:16,007
+If the registers are not equal, BrEq is 0. PCSel selects plus 4, and the branch is not taken.
+
+32
+00:05:16,457 --> 00:05:22,387
+So beq has two rows in the table. The only differences are BrEq and PCSel.
+
+33
+00:05:22,837 --> 00:05:32,011
+Slide 8 collects the rows in one table. Here are the rows that we built: add, sub, register-register, sw, and beq.
+
+34
+00:05:32,461 --> 00:05:46,967
+bne is the opposite of beq. It branches when BrEq is 0. With BrEq 0, bne has PCSel equal to ALU. With BrEq 1, PCSel is plus 4.
+
+35
+00:05:47,417 --> 00:05:56,100
+blt branches when BrLT is 1. Its BrEq is a star. The table shows only the taken row.
+
+36
+00:05:56,550 --> 00:06:06,491
+blt and bltu differ only in BrUn. BrUn is 0 for a signed compare, and 1 for an unsigned compare.
+
+37
+00:06:06,941 --> 00:06:19,144
+The last rows are addi, lw, jalr, jal and auipc. The worked problems find most of them with the four questions. The slide marks this table as incomplete.
+
+38
+00:06:19,594 --> 00:06:29,023
+Slide 10 shows the encoding of every instruction in our ISA. Here is add x1, x2, x3, one bit per box.
+
+39
+00:06:29,473 --> 00:06:35,809
+Here is sub x1, x2, x3. Only one bit differs: instruction bit 30.
+
+40
+00:06:36,259 --> 00:06:53,646
+The control needs only 9 bits to find the instruction type: bit 30, bits 14 to 12, and bits 6 to 2. These are part of funct7, funct3, and the opcode. Bits 1 and 0 are always 1 1, so the control can ignore them.
+
+41
+00:06:54,096 --> 00:07:11,760
+So the control has 11 inputs: 9 instruction bits, BrEq and BrLT. The register numbers go straight to the register file. The fence, ecall and CSR instructions on the slide are not in ECE 320.
+
+42
+00:07:12,210 --> 00:07:23,495
+Slides 9 and 11 ask how to build the control. Each instruction has its own set of control values. The control reads the 9 bits and makes the signals.
+
+43
+00:07:23,945 --> 00:07:35,700
+Some information is in the instruction itself. The register numbers go straight to the register file. This makes the control simpler, but the ISA needs a careful design.
+
+44
+00:07:36,150 --> 00:07:41,889
+Option 1 uses the instruction type to look up the control signals in a table.
+
+45
+00:07:42,339 --> 00:07:52,813
+Option 2 is a finite state machine whose outputs are the control signals. Both options have one goal: turn the instruction into control signals.
+
+46
+00:07:53,263 --> 00:08:07,471
+Option 1 can use a ROM, a read only memory. It is like a RAM, but no one can write it. The bits in each data word are control signals. CISC microcode uses this method.
+
+47
+00:08:07,921 --> 00:08:15,708
+The ROM address is the 11 control inputs: 9 instruction bits, BrEq and BrLT.
+
+48
+00:08:16,158 --> 00:08:27,145
+Each word has 15 data bits. ImmSel has 3 bits, ALUSel has 4, and WBSel has 2. The other 6 signals have 1 bit each.
+
+49
+00:08:27,595 --> 00:08:37,749
+An 11-bit address gives 2048 words. With 15 bits per word, the ROM holds 30,720 bits.
+
+50
+00:08:38,199 --> 00:08:49,933
+Inside the ROM, an address decoder selects one word. Each word holds the control values of one instruction: add, sub, or, and so on, up to jal.
+
+51
+00:08:50,383 --> 00:09:01,839
+For add, the decoder selects the add word. The ROM outputs the add row of the table: PCSel plus 4, ASel Reg, BSel Reg, and so on.
+
+52
+00:09:02,289 --> 00:09:17,841
+BrEq and BrLT are address bits too. So beq has two addresses and two words: one with PCSel plus 4, and one with PCSel ALU. Each row of the table is one ROM word.
+
+53
+00:09:18,291 --> 00:09:26,632
+Slide 15 compares the two methods. A control ROM is fine for 7 instructions and 9 control signals.
+
+54
+00:09:27,082 --> 00:09:38,751
+A real machine has more than 100 instructions and more than 300 control signals. That is more than 30,000 control bits, about 4 kilobytes.
+
+55
+00:09:39,201 --> 00:09:47,585
+This size is not huge, but a large ROM is hard to make fast. The control must be faster than the datapath.
+
+56
+00:09:48,035 --> 00:10:02,990
+The other method is combinational logic. Each signal uses only the gates that it needs. For example, the table gives RegWEn equal to NOT, store OR branch. In the lab, you build the control from logic.
+
+57
+00:10:03,440 --> 00:10:18,096
+Slide 16 gives the performance of the single-cycle processor. It is easy to calculate: CPI is 1. Seconds per program is instructions per program, times 1, times the cycle time.
+
+58
+00:10:18,546 --> 00:10:33,117
+The clock period must fit the longest operation. In our datapath, that is lw. It goes through five structures in series: instruction memory, register read, ALU, data memory, and register write.
+
+59
+00:10:33,567 --> 00:10:42,719
+Other instructions use fewer structures. sw does not write a register. add does not use data memory. beq uses neither.
+
+60
+00:10:43,169 --> 00:10:54,369
+But every cycle has the same length. So every instruction gets the lw cycle time, and the clock is slow. Video 8 shows how pipelining fixes this.
+
+61
+00:10:54,819 --> 00:11:04,269
+Worked problem 1. Fill the control row for addi x5, x6, 20. Use the four questions. Pause the video and try it.
+
+62
+00:11:04,719 --> 00:11:13,018
+Question 1. addi writes the ALU result to x5. RegWEn is 1, and WBSel is ALU.
+
+63
+00:11:13,468 --> 00:11:25,159
+Question 2. Input A is x6, and input B is the I immediate, 20. So ASel is Reg, BSel is Imm, ImmSel is I, and ALUSel is Add.
+
+64
+00:11:25,609 --> 00:11:37,641
+Questions 3 and 4. MemRW is Read, and PCSel is plus 4. The branch signals are stars. Compared with add, only ImmSel and BSel change.
+
+65
+00:11:38,091 --> 00:11:45,941
+Worked problem 2. Fill the control row for lw x5, 8 of x6. Pause the video and try it.
+
+66
+00:11:46,391 --> 00:11:54,434
+Question 1. lw writes the memory data to x5. RegWEn is 1, and WBSel is Mem.
+
+67
+00:11:54,884 --> 00:12:06,916
+Question 2. The ALU adds x6 and the I immediate, 8, to make the address. ASel is Reg, BSel is Imm, ImmSel is I, and ALUSel is Add.
+
+68
+00:12:07,366 --> 00:12:18,993
+Questions 3 and 4. lw reads memory, so MemRW is Read. PCSel is plus 4. Compared with addi, only WBSel changes.
+
+69
+00:12:19,443 --> 00:12:30,088
+Worked problem 3. Fill each question mark. Rows a and b are the same beq instruction, with different register values. Pause the video and try it.
+
+70
+00:12:30,538 --> 00:12:48,479
+add writes the ALU result, so RegWEn is 1 and WBSel is ALU. BSel is Reg. sw writes memory and no register: RegWEn is 0, WBSel is a star, MemRW is Write, and ImmSel is S.
+
+71
+00:12:48,929 --> 00:13:05,015
+In row a, x5 and x6 are both 7. Branch Comp. gives BrEq equal to 1. The branch is taken, so PCSel is ALU. ASel is PC, because the ALU computes PC plus the immediate.
+
+72
+00:13:05,465 --> 00:13:17,646
+In row b, 7 and 9 are not equal, so BrEq is 0, and PCSel is plus 4. RegWEn is 0 in both rows: a branch writes no register.
+
+73
+00:13:18,096 --> 00:13:30,832
+Worked problem 4. Fill the control row for jal x1, L. jal saves PC plus 4 in rd, and jumps to PC plus the immediate. Pause the video and try it.
+
+74
+00:13:31,282 --> 00:13:40,029
+Question 1. jal writes PC plus 4 to x1. RegWEn is 1, and WBSel is PC plus 4.
+
+75
+00:13:40,479 --> 00:13:51,785
+Question 2. The ALU computes the target, PC plus the immediate. ASel is PC, BSel is Imm, ImmSel is J, and ALUSel is Add.
+
+76
+00:13:52,235 --> 00:14:06,507
+Questions 3 and 4. MemRW is Read. The jump always happens, so PCSel is ALU. jal needs no compare, so BrUn, BrEq and BrLT are stars.
+
+77
+00:14:06,957 --> 00:14:15,192
+Worked problem 5. Fill the control row for jalr x1, 0 of x5. Pause the video and try it.
+
+78
+00:14:15,642 --> 00:14:24,517
+Question 1. jalr writes PC plus 4 to x1. RegWEn is 1, and WBSel is PC plus 4.
+
+79
+00:14:24,967 --> 00:14:34,929
+Question 2. The target is x5 plus the I immediate. ASel is Reg, BSel is Imm, ImmSel is I, and ALUSel is Add.
+
+80
+00:14:35,379 --> 00:14:44,809
+Questions 3 and 4. MemRW is Read, and PCSel is ALU. Compared with jal, only ASel and ImmSel change.
+
+81
+00:14:45,259 --> 00:15:03,029
+Worked problem 6 is optional. lui is not in the slide table. lui x5, hex 1 2 3 4 5 writes the U immediate into x5. That value is hex 1 2 3 4 5 0 0 0. Pause the video and try it.
+
+82
+00:15:03,479 --> 00:15:12,418
+Question 1. lui writes the immediate to x5 through the ALU. RegWEn is 1, and WBSel is ALU.
+
+83
+00:15:12,868 --> 00:15:25,263
+Question 2. BSel is Imm, and ImmSel is U. Assume an ALU operation that passes input B to the output. Then ALUSel is B, and ASel is a star.
+
+84
+00:15:25,713 --> 00:15:37,510
+Questions 3 and 4. MemRW is Read, and PCSel is plus 4. Compare auipc in the slide table: it uses ASel PC and ALUSel Add.
+
+85
+00:15:37,960 --> 00:15:57,693
+Worked problem 7. The slides give no delays, so here are example delays. IMEM takes 3 nanoseconds. Register read takes 1, the ALU 2, DMEM 3, and register write 1. Find each path delay, the clock period and the clock rate. Pause the video and try it.
+
+86
+00:15:58,143 --> 00:16:06,357
+lw goes through all five structures: 3 plus 1 plus 2 plus 3 plus 1. That is 10 nanoseconds.
+
+87
+00:16:06,807 --> 00:16:20,076
+sw has no register write: 9 nanoseconds. add has no DMEM: 7 nanoseconds. beq uses only IMEM, register read and the ALU: 6 nanoseconds.
+
+88
+00:16:20,526 --> 00:16:32,729
+The clock period must fit the slowest instruction, lw. So the period is 10 nanoseconds, and the clock rate is 1 over 10 nanoseconds, 100 megahertz.
+
+89
+00:16:33,179 --> 00:16:49,627
+Worked problem 8. A program runs 1 million instructions on this processor. Find the CPU time. Then DMEM gets faster: 1 nanosecond. Find the new period, CPU time and speedup. Pause the video and try it.
+
+90
+00:16:50,077 --> 00:17:00,829
+CPI is 1 and the period is 10 nanoseconds. CPU time is 1 million times 1 times 10 nanoseconds: 10 milliseconds.
+
+91
+00:17:01,279 --> 00:17:17,641
+With the faster DMEM, lw takes 3 plus 1 plus 2 plus 1 plus 1: 8 nanoseconds. sw takes 7, and add takes 7. lw uses every structure that the others use, so it stays the slowest.
+
+92
+00:17:18,091 --> 00:17:27,201
+The new period is 8 nanoseconds. CPU time is 8 milliseconds. The speedup is 10 over 8: 1.25.
+
+93
+00:17:27,651 --> 00:17:40,003
+Recap. One. Nine control signals steer the datapath: mux selects, block operations, and write enables. BrEq and BrLT come back from Branch Comp.
+
+94
+00:17:40,453 --> 00:17:45,935
+Two. Four questions give any row of the control table. A star means don't care.
+
+95
+00:17:46,385 --> 00:17:55,431
+Three. A branch computes PC plus the immediate in the ALU. BrEq or BrLT then picks PCSel.
+
+96
+00:17:55,881 --> 00:18:02,302
+Four. The control reads only 9 instruction bits, plus BrEq and BrLT.
+
+97
+00:18:02,752 --> 00:18:11,200
+Five. A ROM holds one word per table row. Combinational logic is faster, and the lab uses logic.
+
+98
+00:18:11,650 --> 00:18:21,655
+Six. CPI is 1, but lw sets a long clock period. In video 8, pipelining fixes this. That is the end of video 7.

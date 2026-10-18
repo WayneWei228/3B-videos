@@ -1,0 +1,323 @@
+1
+00:00:00,000 --> 00:00:12,032
+This is MATH 239, video 19. It starts Part 2 of the course: graph theory. The topics are the definition of a graph, isomorphism, and degree.
+
+2
+00:00:12,482 --> 00:00:24,301
+After this video, you can state the definition of a graph. You can decide if two graphs are isomorphic, and prove your answer. You can use the Handshaking Lemma to count edges.
+
+3
+00:00:24,751 --> 00:00:39,300
+Here is the definition. A graph G is a finite nonempty set of vertices, V of G. It also has a set E of G of unordered pairs of distinct vertices. These pairs are the edges.
+
+4
+00:00:39,750 --> 00:00:47,366
+In the example of the notes, the vertex set is the numbers 1 to 5. We draw each vertex as a small circle.
+
+5
+00:00:47,816 --> 00:00:57,096
+The edge set has 8 pairs. The first three are 1 2, 1 3 and 1 4. For each pair, we draw a line between the two circles.
+
+6
+00:00:57,546 --> 00:01:01,322
+The next three pairs are 2 3, 2 5 and 3 4.
+
+7
+00:01:01,772 --> 00:01:07,959
+The last two pairs are 3 5 and 4 5. Now the drawing shows all 8 edges.
+
+8
+00:01:08,409 --> 00:01:18,990
+This is the drawing of the graph. The only rule: a line must not go through the circle of another vertex. Otherwise, the drawing could show a wrong edge.
+
+9
+00:01:19,440 --> 00:01:32,816
+Some words. Let e be the edge 2 5. Then the vertices 2 and 5 are adjacent. The edge e is incident with the vertices 2 and 5. We also say that e joins 2 and 5.
+
+10
+00:01:33,266 --> 00:01:47,965
+The neighbours of a vertex u are the vertices adjacent to u. The set of neighbours is N of u. Vertex 3 is adjacent to 1, 2, 4 and 5. So N of 3 is the set 1, 2, 4, 5.
+
+11
+00:01:48,415 --> 00:01:57,503
+Vertex 1 has the neighbours 2, 3 and 4. Vertex 5 is not a neighbour of 1, because the pair 1 5 is not an edge.
+
+12
+00:01:57,953 --> 00:02:10,262
+The graph is fixed by the pairs of vertices that are adjacent. The position and shape of a line in a drawing have no meaning. The line only tells us that two vertices are adjacent.
+
+13
+00:02:10,712 --> 00:02:19,715
+Here are three drawings. Each drawing has the same five vertices and the same eight edges. So the three drawings show the same graph.
+
+14
+00:02:20,165 --> 00:02:31,215
+In drawing two, the edge 1 4 crosses the edges 2 5 and 3 5. A crossing point is not a vertex. The two lines only pass over each other.
+
+15
+00:02:31,665 --> 00:02:43,207
+A graph is planar if it has a drawing in which no two edges cross. Drawing one has no crossings. So this graph is planar. Planar graphs come back in a later video.
+
+16
+00:02:43,657 --> 00:02:53,555
+In drawing three, the edge 1 4 is a curve. A curve is also a correct drawing of an edge. Only the two end vertices are important.
+
+17
+00:02:54,005 --> 00:03:08,640
+Graphs come from many places. In the word graph W n, the vertices are the English words with n letters. Two words are adjacent if they differ in exactly one position. Here are nine words with three letters.
+
+18
+00:03:09,090 --> 00:03:25,026
+These are all the edges between the nine words. In the subset graph S n k, the vertices are the k element subsets of 1 to n. Two subsets are adjacent if they have exactly k minus 1 elements in common.
+
+19
+00:03:25,476 --> 00:03:39,215
+For example, cat and car differ only in the last letter. So they are adjacent in W 3. In S 4 2, the sets 1 2 and 1 3 have one element in common. So they are adjacent.
+
+20
+00:03:39,665 --> 00:03:53,787
+The sets 1 2 and 3 4 have no element in common. So they are not adjacent. Each vertex of S 4 2 has four neighbours. The notes also make graphs from street maps and from maps of countries.
+
+21
+00:03:54,237 --> 00:04:09,512
+The definition has four important points. First, an edge is an unordered pair. The edge u v is the same as the edge v u. It has no direction. With ordered pairs, we get a different object, a directed graph.
+
+22
+00:04:09,962 --> 00:04:20,949
+Second, E of G is a set. A set contains a pair once or not at all. So a graph has no multiple edges, like the two red edges between a and b.
+
+23
+00:04:21,399 --> 00:04:33,409
+Third, an edge joins two distinct vertices. So a graph has no loop, like the red loop at c. If we allow loops or multiple edges, we use the word multigraph.
+
+24
+00:04:33,859 --> 00:04:41,539
+Fourth, the vertex set is finite. So the edge set is also finite. In this course, all graphs are finite.
+
+25
+00:04:41,989 --> 00:04:53,083
+Here is the graph G of Figure 4.7. Its vertices are p, q, r and s. Its edges are p q, p r, q r and q s.
+
+26
+00:04:53,533 --> 00:05:01,447
+Here is the graph H. Its vertices are a, b, c and d. Its edges are a b, a c, a d and c d.
+
+27
+00:05:01,897 --> 00:05:14,079
+G and H are not equal, because their vertex sets are different. But they have the same structure. Each one is a triangle with one extra edge. We need a precise word for this.
+
+28
+00:05:14,529 --> 00:05:37,654
+Here is the definition. Two graphs G 1 and G 2 are isomorphic if there is a bijection f from the vertices of G 1 to the vertices of G 2, with this property. f of u and f of v are adjacent in G 2 if and only if u and v are adjacent in G 1. We say that f preserves adjacency.
+
+29
+00:05:38,104 --> 00:05:54,637
+The notes give this bijection g from G to H. g of p is c. g of q is vertex a. g of r is d. g of s is b. The colours show the pairs: each vertex of G and its image in H have the same colour.
+
+30
+00:05:55,087 --> 00:06:05,391
+Now check the edges. The edge p q goes to c a, which is an edge of H. The edge q s goes to a b, which is also an edge of H.
+
+31
+00:06:05,841 --> 00:06:16,145
+The edge p r goes to c d. The edge q r goes to a d. Both are edges of H. So every edge of G goes to an edge of H.
+
+32
+00:06:16,595 --> 00:06:27,795
+The definition says if and only if. So check the non-edges too. p s goes to c b, and r s goes to d b. Neither is an edge of H. Good.
+
+33
+00:06:28,245 --> 00:06:42,539
+So g preserves adjacency. It is an isomorphism, and G is isomorphic to H. A short check: g is a bijection, and g maps the four edges of G onto the four edges of H.
+
+34
+00:06:42,989 --> 00:06:57,730
+An isomorphism is often not unique. The notes give a second one, h. h of p is d, h of q is vertex a, h of r is c, and h of s is b. Check the edges in the same way.
+
+35
+00:06:58,180 --> 00:07:15,012
+We checked all 24 bijections from the vertices of G to the vertices of H by computer. Exactly two of them are isomorphisms, g and h. Each one must send q, the only vertex of degree 3, to vertex a.
+
+36
+00:07:15,462 --> 00:07:23,697
+An isomorphism from a graph to itself is an automorphism. The identity map is always an automorphism.
+
+37
+00:07:24,147 --> 00:07:42,792
+In G, swap p and r, and fix q and s. The edges p q and r q swap, and p r stays. So this map is an automorphism. G has exactly two automorphisms. This is why there are exactly two isomorphisms from G to H.
+
+38
+00:07:43,242 --> 00:07:55,359
+Here is a famous graph, the Petersen graph. It has 10 vertices and 15 edges. Every vertex has degree 3. The notes give a bijection f to a second drawing.
+
+39
+00:07:55,809 --> 00:08:04,172
+This is the second drawing, H. It looks very different. It has a ring of nine vertices and one vertex j inside.
+
+40
+00:08:04,622 --> 00:08:17,123
+Check f on the outer cycle 1, 2, 3, 4, 5. Its images are a, b, c, h, i. The five blue edges in H connect these vertices in the same order.
+
+41
+00:08:17,573 --> 00:08:30,928
+Next the five spokes, in green. For example, the spoke 1 6 goes to the edge from vertex a to j. The spoke 3 7 goes to c d. All five images are edges of H.
+
+42
+00:08:31,378 --> 00:08:40,487
+Last, the five inner edges, in purple. For example, 6 10 goes to j g. All five images are edges of H.
+
+43
+00:08:40,937 --> 00:08:53,545
+So all 15 edges of G go to edges of H. Both graphs have 15 edges, and f is a bijection. So f is an isomorphism. We checked this by computer too.
+
+44
+00:08:53,995 --> 00:09:13,195
+All graphs that are isomorphic to G form the isomorphism class of G. We usually regard isomorphic graphs as the same graph. Here we sort the graphs on 4 vertices by their number of edges, q. With 0 edges or 1 edge, there is one class each.
+
+45
+00:09:13,645 --> 00:09:31,331
+With 2 edges, there are two classes. The two edges share a vertex, or they do not. These two graphs are not isomorphic. Their degrees are 2, 1, 1, 0 and 1, 1, 1, 1. An isomorphism keeps the degree of each vertex.
+
+46
+00:09:31,781 --> 00:09:37,946
+With 3 edges, there are three classes: a triangle and one more vertex, a star, and a path.
+
+47
+00:09:38,396 --> 00:09:52,348
+With 4, 5 and 6 edges, there are 2, 1 and 1 classes. In total, there are exactly 11 isomorphism classes of graphs on 4 vertices. This is Figure 4.9 of the notes.
+
+48
+00:09:52,798 --> 00:10:09,267
+On the vertex set 1, 2, 3, 4, there are 6 possible edges, so 2 to the 6, which is 64, graphs. The blue numbers show how many of the 64 are in each class. They add to 64. We checked this by computer.
+
+49
+00:10:09,717 --> 00:10:15,840
+The degree of a vertex v is the number of edges incident with v. We write deg of v.
+
+50
+00:10:16,290 --> 00:10:24,247
+In the graph G of Figure 4.7, p and r have degree 2. q has degree 3. s has degree 1.
+
+51
+00:10:24,697 --> 00:10:28,367
+In the Petersen graph, every vertex has degree 3.
+
+52
+00:10:28,817 --> 00:10:39,633
+The notes use p for the number of vertices and q for the number of edges. Do not mix up this p and q with the vertex names p and q of the last graph.
+
+53
+00:10:40,083 --> 00:10:49,384
+Here is the first theorem of graph theory. For any graph G, the sum of the degrees of all vertices is two times the number of edges.
+
+54
+00:10:49,834 --> 00:11:00,202
+Proof. Each edge has two ends. The edge 1 2 has one end at vertex 1 and one end at vertex 2. The orange dots mark the two ends.
+
+55
+00:11:00,652 --> 00:11:05,815
+Mark both ends of every edge. There are 8 edges, so there are 16 ends.
+
+56
+00:11:06,265 --> 00:11:24,483
+Now count the same ends again, vertex by vertex. The number of ends at a vertex is its degree. 3 plus 3 plus 4 plus 3 plus 3 is 16. In general, the sum of the degrees counts each edge twice, once for each end. This proves the theorem.
+
+57
+00:11:24,933 --> 00:11:32,656
+This result is the Handshaking Lemma, or the Degree-Sum Formula. It counts one set, the edge ends, in two ways.
+
+58
+00:11:33,106 --> 00:11:38,141
+A corollary. In any graph, the number of vertices of odd degree is even.
+
+59
+00:11:38,591 --> 00:11:49,599
+Proof. The sum of all degrees is 2 q, which is even. Split the vertices into two groups. The vertices of even degree, in blue, have an even sum.
+
+60
+00:11:50,049 --> 00:11:58,091
+The total is even, and the blue part is even. So the vertices of odd degree, in orange, also have an even sum.
+
+61
+00:11:58,541 --> 00:12:12,131
+A sum of odd numbers is even only when the number of terms is even. So there is an even number of vertices of odd degree. In our example, there are 4: the vertices 1, 2, 4 and 5.
+
+62
+00:12:12,581 --> 00:12:20,367
+Here is a typical question. Is there a graph with 7 vertices, each of degree 3? Pause the video and try it.
+
+63
+00:12:20,817 --> 00:12:29,735
+Each vertex needs 3 edge ends. The orange stubs show them. In total, there are 7 times 3, which is 21, ends.
+
+64
+00:12:30,185 --> 00:12:46,099
+But each edge uses exactly two ends. So the sum of the degrees is 2 q, an even number. 21 is odd. So no such graph exists. The answer names the theorem: by the Handshaking Lemma, the degree sum must be even.
+
+65
+00:12:46,549 --> 00:13:11,211
+The same test shows that no graph on 5 vertices has all degrees 3, because 15 is odd. We confirmed this by a computer search over all 1024 graphs on 5 vertices. On 6 vertices, the sum is 18, and such a graph exists, with 9 edges. An even sum is necessary. It does not prove that a graph exists.
+
+66
+00:13:11,661 --> 00:13:29,005
+Divide the Handshaking Lemma by the number of vertices. The average degree is 2 times the number of edges, over the number of vertices. A graph is k regular if every vertex has degree k. For example, the Petersen graph is 3 regular.
+
+67
+00:13:29,455 --> 00:13:44,879
+In the complete graph K n, every two distinct vertices are adjacent. Here are K 1 to K 5. Each vertex is adjacent to the other n minus 1 vertices. So K n is n minus 1 regular.
+
+68
+00:13:45,329 --> 00:14:04,230
+By the Handshaking Lemma, n times n minus 1 equals 2 q. So K n has n times n minus 1 over 2 edges, which is n choose 2. This also follows directly: each pair of vertices is one edge. The counts are 0, 1, 3, 6 and 10.
+
+69
+00:14:04,680 --> 00:14:14,835
+Here is an exercise from the notes. Find the number of vertices and the number of edges of the subset graph S n k. Pause the video and try it.
+
+70
+00:14:15,285 --> 00:14:23,583
+Step 1. The vertices are the k element subsets of a set with n elements. So there are n choose k vertices.
+
+71
+00:14:24,033 --> 00:14:42,807
+Step 2. Take a vertex A. A neighbour shares exactly k minus 1 elements with A. So we remove one element of A, and add one element that is not in A. There are k ways to remove and n minus k ways to add. The grid shows this for A equal to 1 2.
+
+72
+00:14:43,257 --> 00:14:57,699
+Step 3. Different choices give different sets, and every neighbour comes from one choice. So the degree of each vertex is k times n minus k. In S 4 2, the vertex 1 2 has 4 neighbours.
+
+73
+00:14:58,149 --> 00:15:20,485
+Step 4. The graph is regular. By the Handshaking Lemma, n choose k times k times n minus k equals 2 q. So q is one half of n choose k times k times n minus k. For S 4 2, this gives 6 vertices and 12 edges. We checked the formula by computer for all n up to 7.
+
+74
+00:15:20,935 --> 00:15:45,917
+To prove that two graphs are isomorphic, give a bijection and check the edges. To prove that they are not isomorphic, find a property that an isomorphism keeps, and that only one graph has. An isomorphism keeps the number of vertices, the number of edges, the degree of each vertex, and triangles. A triangle is three vertices that are adjacent in pairs.
+
+75
+00:15:46,367 --> 00:15:55,753
+Here are two graphs. Both have 6 vertices and 9 edges. Both are 3 regular. So these first tests do not show a difference.
+
+76
+00:15:56,203 --> 00:16:01,409
+The graph on the right, the prism, has a triangle: the vertices 1, 2 and 3.
+
+77
+00:16:01,859 --> 00:16:22,019
+The graph on the left is K 3 3. The next video explains this name. It has no triangle. Its top vertices are not adjacent to each other. Its bottom vertices are not adjacent to each other. So any three vertices include two on the same side, and these two are not adjacent.
+
+78
+00:16:22,469 --> 00:16:43,930
+An isomorphism maps three mutually adjacent vertices to three mutually adjacent vertices. So the two graphs are not isomorphic. Write the answer in this form: name the property, and show that one graph has it and the other does not. These two graphs are the only 3 regular graphs on 6 vertices.
+
+79
+00:16:44,380 --> 00:16:58,887
+To recap. A graph is a finite nonempty vertex set and a set of edges. Each edge is an unordered pair of distinct vertices. A drawing shows a graph, but only the adjacent pairs matter.
+
+80
+00:16:59,337 --> 00:17:15,145
+Two graphs are isomorphic if a bijection between their vertex sets preserves adjacency in both directions. To show that two graphs are not isomorphic, find a property that an isomorphism keeps and that only one of them has.
+
+81
+00:17:15,595 --> 00:17:35,755
+The Handshaking Lemma says the degree sum is two times the number of edges. So the number of vertices of odd degree is even, and a k regular graph on p vertices has k p over 2 edges. The next video covers bipartite graphs, matrices of a graph, and paths and cycles.

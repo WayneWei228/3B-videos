@@ -1,0 +1,431 @@
+1
+00:00:00,000 --> 00:00:11,968
+This is ECE 358, video 11. The topic is TCP congestion control. It covers Chapter 3, slides 73 to 89.
+
+2
+00:00:12,418 --> 00:00:35,501
+After this video, you can explain congestion and the TCP mechanisms that control it. You can apply the Tahoe and Reno rules. You can read a C wind plot round by round. This is the 2016 final question and problem set 3, problem 4. And you can calculate the TCP rate and the average throughput of Reno.
+
+3
+00:00:35,951 --> 00:00:47,471
+Three senders send data through one router. The router has one output link with rate R. When the input rate is less than R, the output buffer stays almost empty.
+
+4
+00:00:47,921 --> 00:00:56,454
+When the senders send faster than R, packets wait in the output buffer. The queue grows. So the queueing delay becomes long.
+
+5
+00:00:56,904 --> 00:01:04,285
+When the buffer is full, the router drops the next packet that arrives. This is packet loss from buffer overflow.
+
+6
+00:01:04,735 --> 00:01:10,687
+This is congestion: too many sources sending too much data too fast for the network to handle.
+
+7
+00:01:11,137 --> 00:01:23,532
+The solution is congestion control. The senders notice the congestion and control their data rate. The slide calls it a service to the underlying network, for the common good of all.
+
+8
+00:01:23,982 --> 00:01:34,009
+Flow control solves a different problem. One sender is too fast for one receiver. The receive buffer fills. The beneficiary is the receiver.
+
+9
+00:01:34,459 --> 00:01:45,829
+Congestion control solves the problem in the network. Many senders together are too fast for a router and its link. The full buffer is in the router, not in the receiver.
+
+10
+00:01:46,279 --> 00:02:00,722
+Keep the two apart. Flow control protects the receiver and uses R wind, which the receiver sends. Congestion control protects the network and uses C wind, which the sender keeps. You will see C wind next.
+
+11
+00:02:01,172 --> 00:02:17,513
+There are two basic approaches. The first is end-to-end congestion control. The network gives no explicit feedback. The sender sees only the data and the ACKs. It infers congestion from the loss and the delay that it observes.
+
+12
+00:02:17,963 --> 00:02:20,459
+This is the approach that TCP takes.
+
+13
+00:02:20,909 --> 00:02:34,541
+The second approach is network-assisted congestion control. A congested router gives direct feedback to the hosts whose flows pass through it. The red arrows show this explicit congestion information.
+
+14
+00:02:34,991 --> 00:02:48,645
+The feedback can give the congestion level, or it can set the sending rate. Examples are TCP E C N, which uses bits in the TCP header, A T M, and the deck bit protocol.
+
+15
+00:02:49,095 --> 00:02:54,471
+Here is the sender's sequence number space. The green bytes are already acknowledged.
+
+16
+00:02:54,921 --> 00:03:05,481
+The orange bytes are sent but not yet acknowledged. They are in flight. The difference between last byte sent and last byte acked is the number of bytes in flight.
+
+17
+00:03:05,931 --> 00:03:16,917
+C wind is the congestion window. It is a window over the sequence number space. The sender can send the blue bytes too, because they are still inside C wind.
+
+18
+00:03:17,367 --> 00:03:31,981
+So the TCP sender limits its transmission. Last byte sent minus last byte acked must be at most the minimum of C wind and R wind. This equation joins congestion control and flow control.
+
+19
+00:03:32,431 --> 00:03:46,191
+C wind is kept by the sender. The sender changes it when it sees congestion, that is, triple duplicate ACKs or a timeout. R wind comes from the receiver, in the segment header, for flow control.
+
+20
+00:03:46,641 --> 00:03:53,126
+How fast does a TCP sender send? Roughly, it sends C wind bytes into the network.
+
+21
+00:03:53,576 --> 00:03:58,589
+Then it waits about one RTT, until the ACKs for these bytes come back.
+
+22
+00:03:59,039 --> 00:04:11,605
+Then it sends the next C wind bytes. So the sender sends one window per RTT. The TCP rate is about C wind divided by RTT, in bytes per second.
+
+23
+00:04:12,055 --> 00:04:24,535
+Here is the example from slide 80. C wind is 20 MSS. One MSS is 1500 bytes. The RTT is 200 ms.
+
+24
+00:04:24,985 --> 00:04:40,089
+The rate is 20 times 1500 times 8 bits, divided by 0 point 2 seconds. That is 1 point 2 Mbps. So to change the sending rate, TCP changes C wind.
+
+25
+00:04:40,539 --> 00:04:57,328
+TCP uses AIMD. The approach: increase the sending rate until packet loss occurs, then decrease it. Additive increase: C wind grows by 1 MSS every RTT, until the sender detects a loss.
+
+26
+00:04:57,778 --> 00:05:07,037
+Multiplicative decrease: at a loss event, the sender cuts C wind, for example in half. Here C wind drops from 14 to 7.
+
+27
+00:05:07,487 --> 00:05:17,343
+Then additive increase starts again. The result is a sawtooth. The sender probes for the available bandwidth, backs off at a loss, and probes again.
+
+28
+00:05:17,793 --> 00:05:33,707
+Why AIMD? AIMD is a distributed, asynchronous algorithm. Each sender acts alone. It has been shown to optimize congested flow rates network-wide, and to be stable, with fairness for all flows.
+
+29
+00:05:34,157 --> 00:05:46,467
+How does a TCP sender detect a loss? There are two mechanisms. The first is triple duplicate ACKs. Host A sends segments 1 to 5. Segment 2 is lost.
+
+30
+00:05:46,917 --> 00:06:03,706
+Host B acknowledges segment 1 with ACK 2. ACK 2 means: the next segment I expect is segment 2. Segments 3, 4 and 5 arrive out of order. For each one, Host B sends ACK 2 again. These are 3 duplicate ACKs.
+
+31
+00:06:04,156 --> 00:06:10,471
+After 3 duplicate ACKs, Host A resends segment 2. It does not wait for the timer.
+
+32
+00:06:10,921 --> 00:06:20,670
+The second mechanism is a timeout. Segment 2 is lost, and no ACK comes back. The timer of segment 2 runs out, and Host A resends it.
+
+33
+00:06:21,120 --> 00:06:36,693
+The reaction depends on the mechanism. On triple duplicate ACKs, Reno cuts C wind in half. On a timeout, Reno and Tahoe cut C wind to 1 MSS. A timeout is the stronger signal of congestion.
+
+34
+00:06:37,143 --> 00:06:53,783
+A new connection does not know the available bandwidth. So it starts with slow start. At the start, C wind is 1 MSS. S S thresh, the slow start threshold, has an initial value, for example 64 kilobytes.
+
+35
+00:06:54,233 --> 00:07:05,924
+In round 1, the sender sends one segment. One ACK comes back. For every ACK received, the sender adds 1 MSS to C wind. So C wind becomes 2.
+
+36
+00:07:06,374 --> 00:07:13,457
+In round 2, the sender sends two segments. Two ACKs come back, so C wind grows by 2, to 4.
+
+37
+00:07:13,907 --> 00:07:20,264
+In round 3, the sender sends four segments. Four ACKs come back, so C wind becomes 8.
+
+38
+00:07:20,714 --> 00:07:35,711
+So adding 1 MSS for every ACK doubles C wind every RTT. The initial rate is slow, but it ramps up exponentially fast. Slow start continues until C wind reaches S S thresh.
+
+39
+00:07:36,161 --> 00:07:51,009
+When does exponential growth stop? It stops when C wind reaches S S thresh. In this example from slide 82, S S thresh is 8. C wind grows 1, 2, 4, 8 in rounds 1 to 4.
+
+40
+00:07:51,459 --> 00:08:03,641
+At 8, C wind has reached S S thresh. The sender switches to linear growth, the additive increase of AIMD. C wind becomes 9, 10, 11 and 12.
+
+41
+00:08:04,091 --> 00:08:08,549
+After round 8, at C wind 12, the sender detects a loss.
+
+42
+00:08:08,999 --> 00:08:23,805
+S S thresh is not a constant. It is a variable. On a loss event, the sender sets S S thresh to half of C wind just before the loss. Here the new S S thresh is 12 divided by 2, which is 6.
+
+43
+00:08:24,255 --> 00:08:35,967
+Here S S thresh is 4. C wind has reached 4, so the connection is in the congestion avoidance phase, C A. The sender sends 4 segments, and 4 ACKs come back.
+
+44
+00:08:36,417 --> 00:08:51,371
+In C A, the sender adds 1 MSS to C wind only when all the segments of the previous C wind are acknowledged. So after the 4 ACKs, C wind becomes 5. The sender sends 5 segments.
+
+45
+00:08:51,821 --> 00:09:05,709
+After those 5 ACKs, C wind becomes 6. So in slow start, C wind doubles every RTT. In congestion avoidance, it grows by only 1 MSS every RTT.
+
+46
+00:09:06,159 --> 00:09:22,287
+This table is question 47 of the transport part of the question bank. Fill it row by row. TCP Tahoe, triple duplicate ACKs: S S thresh becomes C wind over 2, and C wind becomes 1 MSS.
+
+47
+00:09:22,737 --> 00:09:28,049
+TCP Tahoe, timeout: the same. Tahoe always sets C wind to 1.
+
+48
+00:09:28,499 --> 00:09:37,374
+TCP Reno, timeout: also C wind over 2 and 1 MSS. A timeout always goes back to slow start.
+
+49
+00:09:37,824 --> 00:09:54,251
+TCP Reno, triple duplicate ACKs: this is the one different cell. S S thresh equals C wind over 2, and C wind equals S S thresh. So C wind is cut in half, and Reno stays in congestion avoidance.
+
+50
+00:09:54,701 --> 00:10:01,442
+Duplicate ACKs show that the network can still deliver some segments. So Reno only halves C wind.
+
+51
+00:10:01,892 --> 00:10:08,441
+Slide 85 compares Reno and Tahoe. In rounds 1 to 8, both behave the same.
+
+52
+00:10:08,891 --> 00:10:19,046
+After round 8, at C wind 12, the sender gets triple duplicate ACKs. Both variants set S S thresh to 12 over 2, which is 6.
+
+53
+00:10:19,496 --> 00:10:34,280
+Tahoe sets C wind to 1 MSS. Slow start gives 1, 2, 4. The next doubling would give 8, but it stops at S S thresh, which is 6. Then C wind grows by 1: 7, 8, 9.
+
+54
+00:10:34,730 --> 00:10:44,330
+Reno sets C wind to S S thresh, which is 6, in round 9. Then it grows linearly: 7, 8, up to 12 in round 15.
+
+55
+00:10:44,780 --> 00:10:53,100
+The Reno line is always above the Tahoe line after the loss. So Reno sends more data in rounds 9 to 15.
+
+56
+00:10:53,550 --> 00:11:14,030
+What is the average throughput of TCP Reno? Ignore slow start, and assume that the sender always has data to send. W is the window size, in bytes, where a loss occurs. Losses come from triple duplicate ACKs only, so C wind drops from W to W over 2.
+
+57
+00:11:14,480 --> 00:11:24,016
+In each tooth, C wind climbs in a straight line from W over 2 back to W. It grows by 1 MSS per RTT.
+
+58
+00:11:24,466 --> 00:11:40,125
+The average of a straight line is the middle of its two ends. W over 2 plus W, divided by 2, is three quarters of W. So on average, three quarters of W bytes are in flight in each RTT.
+
+59
+00:11:40,575 --> 00:11:58,431
+So the average TCP throughput is three quarters times W divided by RTT, in bytes per second. This is the answer to question 49 of the question bank. Question 49 has no timeouts, so every loss gives this sawtooth.
+
+60
+00:11:58,881 --> 00:12:16,971
+Is there a better way than AIMD to probe for bandwidth? TCP CUBIC uses this idea. W max is the sending rate at which the sender detected a congestion loss. The congestion state of the bottleneck link has probably not changed much since then.
+
+61
+00:12:17,421 --> 00:12:27,363
+Classic TCP cuts the window to W max over 2. Then it climbs back in a straight line, slowly, all the way to W max.
+
+62
+00:12:27,813 --> 00:12:39,866
+CUBIC also cuts to W max over 2. But then it ramps up to W max fast at first. Near W max, it slows down and approaches W max carefully.
+
+63
+00:12:40,316 --> 00:12:48,615
+So CUBIC spends more time near W max. In this example, CUBIC has a higher throughput than classic TCP.
+
+64
+00:12:49,065 --> 00:12:58,622
+Slide 88 gives the details. K is the point in time when the TCP window will reach W max. K itself is tunable.
+
+65
+00:12:59,072 --> 00:13:10,293
+CUBIC increases W as a function of the cube of the distance between the current time and K. Far from K, the cube is large, so the increase is large.
+
+66
+00:13:10,743 --> 00:13:17,933
+Near K, the cube is small, so the increase is small and careful. The curve becomes flat at W max.
+
+67
+00:13:18,383 --> 00:13:26,532
+After K, the distance grows again, so the window grows faster. CUBIC probes for more bandwidth above W max.
+
+68
+00:13:26,982 --> 00:13:37,990
+This is the cubic part that question 50 asks for. TCP CUBIC is the default in Linux, and the most popular TCP for popular Web servers.
+
+69
+00:13:38,440 --> 00:13:55,037
+Now the questions. This plot is from the fall 2016 final, on slide 89. Problem 4 of problem set 3 is the same question. It shows C wind, in segments, for each transmission round of TCP Reno.
+
+70
+00:13:55,487 --> 00:14:01,653
+There are ten parts, a to j. Read each part, and use the plot. Pause the video and try it.
+
+71
+00:14:02,103 --> 00:14:13,260
+Parts a and b. Use the shape of the curve. In slow start, C wind doubles each round. In congestion avoidance, C wind grows by 1 each round.
+
+72
+00:14:13,710 --> 00:14:30,862
+From round 1 to round 6, C wind goes 1, 2, 4, 8, 16, 32. It doubles. So slow start runs in rounds 1 to 6. From round 23 to 26, C wind goes 1, 2, 4, 8. That is slow start again.
+
+73
+00:14:31,312 --> 00:14:50,128
+From round 6 to round 16, C wind goes from 32 to 42, one more each round. From round 17 to round 22, it goes from 21 to 26. So congestion avoidance runs in rounds 6 to 16, and 17 to 22.
+
+74
+00:14:50,578 --> 00:15:08,114
+Part c. After round 16, C wind falls from 42 to 21. That is half. In Reno, only triple duplicate ACKs cut C wind in half. So the loss was detected by a triple duplicate ACK. A timeout would set C wind to 1.
+
+75
+00:15:08,564 --> 00:15:16,927
+Part d. After round 22, C wind falls from 26 to 1. So the loss was detected by a timeout.
+
+76
+00:15:17,377 --> 00:15:29,025
+The rule to remember. In Reno, triple duplicate ACKs set C wind to S S thresh, which is half of C wind. A timeout sets C wind to 1 MSS.
+
+77
+00:15:29,475 --> 00:15:43,683
+Part e. Slow start stops and congestion avoidance begins when C wind reaches S S thresh. That happens at C wind 32, in round 6. So the initial S S thresh is 32.
+
+78
+00:15:44,133 --> 00:15:57,509
+Part f. The loss after round 16 sets S S thresh to half of C wind just before the loss. That is 42 over 2, which is 21. It stays 21 in round 18.
+
+79
+00:15:57,959 --> 00:16:08,433
+Part g. The timeout after round 22 sets S S thresh to 26 over 2, which is 13. It stays 13 in round 24.
+
+80
+00:16:08,883 --> 00:16:19,934
+Check the result. In rounds 23 to 26, C wind goes up to 8, which is less than 13. So the plot is still in slow start, as part a says.
+
+81
+00:16:20,384 --> 00:16:26,763
+Part h. Each round sends C wind segments. Count them. Round 1 sends segment 1.
+
+82
+00:16:27,213 --> 00:16:30,669
+Round 2 sends 2 segments, numbers 2 and 3.
+
+83
+00:16:31,119 --> 00:16:34,383
+Round 3 sends 4 segments, 4 to 7.
+
+84
+00:16:34,833 --> 00:16:38,203
+Round 4 sends 8 segments, 8 to 15.
+
+85
+00:16:38,653 --> 00:16:42,877
+Round 5 sends 16 segments, 16 to 31.
+
+86
+00:16:43,327 --> 00:16:51,925
+Round 6 sends 32 segments, 32 to 63. So rounds 1 to 6 send 63 segments in total.
+
+87
+00:16:52,375 --> 00:17:02,956
+Round 7 has C wind 33. It sends segments 64 to 96. Segment 70 is in this range. So the answer is round 7.
+
+88
+00:17:03,406 --> 00:17:13,689
+The problem set solution writes 15 to 31 for round 5. It should be 16 to 31. The answer, round 7, does not change.
+
+89
+00:17:14,139 --> 00:17:35,536
+Part i. A loss after round 26 is detected by a triple duplicate ACK. Just before the loss, C wind is 8. Reno sets S S thresh to 8 over 2, which is 4, and sets C wind to S S thresh. So C wind is 4 and S S thresh is 4. This matches the answer on the slide.
+
+90
+00:17:35,986 --> 00:17:49,618
+Part j. Now use Tahoe, with triple duplicate ACKs at round 16. S S thresh becomes 42 over 2, which is 21. But Tahoe always sets C wind to 1 MSS.
+
+91
+00:17:50,068 --> 00:18:00,180
+Then slow start runs again. C wind is 1 in round 17, 2 in round 18, and 4 in round 19. All are below 21.
+
+92
+00:18:00,630 --> 00:18:09,419
+So at round 19, S S thresh is 21 and C wind is 4. This matches the slide answer, 21 and 4.
+
+93
+00:18:09,869 --> 00:18:27,875
+Problem 6 of problem set 3. There is no loss. TCP uses AIMD without slow start. C wind grows by 1 MSS each time a batch of ACKs arrives, that is, once per RTT. Pause the video and try it.
+
+94
+00:18:28,325 --> 00:18:45,583
+Part a. C wind starts at 1 MSS. After 1 RTT it is 2, after 2 RTTs it is 3, and so on. It reaches 6 MSS after 5 RTTs. So the answer is 5 RTT.
+
+95
+00:18:46,033 --> 00:18:54,204
+Part b. In each RTT, the sender sends one window. In the first RTT, it sends 1 MSS.
+
+96
+00:18:54,654 --> 00:19:01,630
+Then it sends 2, 3, 4 and 5. The total up to 5 RTT is 15 MSS.
+
+97
+00:19:02,080 --> 00:19:13,387
+The average throughput is 15 MSS divided by 5 RTT. That is 3 MSS per RTT. This matches the problem set solution.
+
+98
+00:19:13,837 --> 00:19:36,279
+The question bank also has descriptive questions. Pause the video and try it. Question 43 asks for the purpose and the mechanism. The purpose: the sender must not send too fast for the network, that is, the routers and links. The mechanism is end-to-end. The sender keeps C wind and changes it when it detects a loss.
+
+99
+00:19:36,729 --> 00:19:49,849
+Question 44 asks for the equation that joins congestion control and flow control. Last byte sent minus last byte acked is at most the minimum of C wind and R wind.
+
+100
+00:19:50,299 --> 00:19:58,214
+Question 46 asks how the sender infers a loss. There are two ways: triple duplicate ACKs, and a timeout.
+
+101
+00:19:58,664 --> 00:20:13,661
+Question 45 asks for the general idea of AIMD. Use the earlier slides: slow start to S S thresh, then congestion avoidance, then the loss reaction from the Tahoe and Reno table.
+
+102
+00:20:14,111 --> 00:20:19,359
+The question bank has no published answers. These answers use the slides only.
+
+103
+00:20:19,809 --> 00:20:35,745
+Question 48 asks how the value of S S thresh increases. Pause the video and try it. S S thresh does not grow round by round, as C wind does. It changes only at a loss event. Here it starts at 8.
+
+104
+00:20:36,195 --> 00:20:48,846
+At a loss, the new S S thresh is half of C wind just before the loss. In this example, the loss occurs at C wind 12, so S S thresh becomes 6. It went down.
+
+105
+00:20:49,296 --> 00:21:11,696
+Then C wind grows linearly for a long time, up to 22. The next loss sets S S thresh to 22 over 2, which is 11. So S S thresh increases when the loss occurs at a C wind larger than 2 times the old S S thresh. This example is ours. The rule is from slide 82.
+
+106
+00:21:12,146 --> 00:21:22,023
+Summary. Congestion means delays and losses in the routers. TCP uses end-to-end control, with C wind kept by the sender.
+
+107
+00:21:22,473 --> 00:21:30,217
+Slow start doubles C wind every RTT. Congestion avoidance adds 1 MSS per RTT.
+
+108
+00:21:30,667 --> 00:21:40,630
+At a loss, S S thresh becomes half of C wind, and C wind follows the Tahoe and Reno table. The next video starts the network layer.

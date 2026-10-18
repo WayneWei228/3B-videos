@@ -1,0 +1,303 @@
+1
+00:00:00,000 --> 00:00:11,712
+This is ECE 358, video 22 a. The topic is multiple access protocols, part 1: TDMA, FDMA and ALOHA.
+
+2
+00:00:12,162 --> 00:00:27,501
+After this video, you can explain the problem of a shared broadcast channel. You can calculate rates and times on TDMA and FDMA channels. And you can use the ALOHA efficiencies to find the rate of each node.
+
+3
+00:00:27,951 --> 00:00:40,559
+There are two types of links. A point-to-point link has one sender and one receiver. Examples are the link between a host and an Ethernet switch, and P P P for dial-up access.
+
+4
+00:00:41,009 --> 00:00:55,558
+A broadcast link is a shared wire or a shared medium. Many nodes connect to the same channel. Examples are old-fashioned Ethernet on a shared cable, and the upstream channel of a cable access network.
+
+5
+00:00:56,008 --> 00:01:08,915
+Radio is also a shared medium: WiFi, 4G and 5G, and satellite. On a broadcast link, every node receives every frame. So the nodes must share the channel.
+
+6
+00:01:09,365 --> 00:01:16,447
+Here, four hosts share one channel. When node A sends a frame, the signal reaches every node on the channel.
+
+7
+00:01:16,897 --> 00:01:26,924
+Now A and C transmit at the same time. Node B receives two signals at the same time. This is a collision. B cannot use either frame.
+
+8
+00:01:27,374 --> 00:01:41,454
+A multiple access protocol is a distributed algorithm. It decides when a node can transmit. The nodes must agree on this through the channel itself. There is no separate channel for coordination.
+
+9
+00:01:41,904 --> 00:01:55,365
+What does an ideal multiple access protocol do? The channel has a rate of R bits per second. First property: when only one node wants to transmit, it can send at the full rate R.
+
+10
+00:01:55,815 --> 00:02:09,831
+Second property: when M nodes want to transmit, each node gets an average rate of R over M. Each frame is still sent at rate R. Here, M is 4, so each node gets R over 4.
+
+11
+00:02:10,281 --> 00:02:21,396
+Third property: the protocol is fully decentralized. There is no special node that coordinates, and there is no synchronization of clocks or time slots.
+
+12
+00:02:21,846 --> 00:02:29,718
+Fourth property: it is simple. That is, plug-and-play. These are the four properties that the question bank asks for.
+
+13
+00:02:30,168 --> 00:02:35,971
+There are three broad classes of MAC protocols. MAC means medium access control.
+
+14
+00:02:36,421 --> 00:02:50,863
+The first class is channel partitioning. It divides the channel into smaller pieces: time slots or frequency bands. Each node gets a piece for its exclusive use. Cellular networks use this class.
+
+15
+00:02:51,313 --> 00:03:07,207
+The second class is random access. The channel is not divided. A node transmits at the full rate R, so collisions can occur. The protocol must recover from collisions. Ethernet on the fixed Internet uses this class.
+
+16
+00:03:07,657 --> 00:03:16,894
+The third class is taking turns. The nodes take turns, and nodes with more to send can take longer turns. Bluetooth is an example.
+
+17
+00:03:17,344 --> 00:03:33,899
+The first partitioning protocol is TDMA, time division multiple access. Time is cut into slots. The slots are grouped, and each group is a frame. Access to the channel is in rounds. Here each frame has 6 slots.
+
+18
+00:03:34,349 --> 00:03:47,917
+Each station gets a fixed slot in each round. Station 1 always uses slot 1, station 2 always uses slot 2, and so on. The length of a slot is the time to send one packet.
+
+19
+00:03:48,367 --> 00:04:02,212
+In the slide example, only stations 1, 3 and 4 have packets. Slots 2, 5 and 6 go idle. No other station can use them. This is the cost of TDMA at low load.
+
+20
+00:04:02,662 --> 00:04:12,006
+Look at the word frame. It has two meanings. It can mean a data frame. In TDMA it also means a block of consecutive slots.
+
+21
+00:04:12,456 --> 00:04:25,896
+The second partitioning protocol is FDMA, frequency division multiple access. The frequency spectrum of the channel is divided into frequency bands. Here there are 6 bands.
+
+22
+00:04:26,346 --> 00:04:38,463
+Each station gets a fixed frequency band, like a radio station. It can send at any time, but only in its band. So with 6 bands, each band carries R over 6.
+
+23
+00:04:38,913 --> 00:04:53,612
+Again, stations 1, 3 and 4 have packets. Bands 2, 5 and 6 go idle. So FDMA divides frequency, and TDMA divides time. In both, an unused piece is wasted.
+
+24
+00:04:54,062 --> 00:05:13,454
+Here is question 28 of the link layer question bank. A TDMA channel has a rate of 1 Mbps. A slot is 1 ms, and a frame has 10 slots. 6 nodes are active, and they always have data. There are five parts. Pause the video and try it.
+
+25
+00:05:13,904 --> 00:05:27,984
+Part a. In one slot, a node sends at the full channel rate for 1 ms. 10 to the power 6 bits per second, times 10 to the power minus 3 seconds, is 1000 bits per slot.
+
+26
+00:05:28,434 --> 00:05:45,159
+Part b. The efficiency is the number of slots that carry data, divided by the total number of slots. 6 of the 10 slots carry data. So the efficiency is point 6, or 60 percent. The 4 idle slots are wasted.
+
+27
+00:05:45,609 --> 00:06:09,417
+Part c. Each node sends 1000 bits in each frame, and a frame lasts 10 slots, which is 10 ms. 1000 bits per 10 ms is 100 kbps. Over one hour, that is 100 kbps times 3600 seconds, which is 3 point 6 times 10 to the power 8 bits.
+
+28
+00:06:09,867 --> 00:06:24,097
+Part d. Inside its own slot, a node sends at the full rate of 1 Mbps. But over time, its average rate is only 100 kbps, because it gets one slot in ten.
+
+29
+00:06:24,547 --> 00:06:40,077
+Part e. 1 megabit is 10 to the power 6 bits. Each frame carries 1000 bits of this node. So the node needs 1000 frames. 1000 frames times 10 ms is about 10 seconds.
+
+30
+00:06:40,527 --> 00:06:59,706
+Question 29 uses FDMA with the same numbers. The channel rate is 1 Mbps, and it has 10 frequency bands. 6 nodes are active. How many bits can a node send in one second? And how long does 1 megabit take? Pause the video and try it.
+
+31
+00:07:00,156 --> 00:07:12,999
+The 10 bands share the rate equally. So each band carries 1 Mbps divided by 10, which is 100 kbps. A node sends in its band all the time.
+
+32
+00:07:13,449 --> 00:07:21,513
+In one second, a node sends 100 kbps times 1 second, which is 100,000 bits.
+
+33
+00:07:21,963 --> 00:07:38,624
+1 megabit divided by 100 kbps is 10 seconds. This is the same as in TDMA. TDMA gives the full rate for one tenth of the time. FDMA gives one tenth of the rate all the time.
+
+34
+00:07:39,074 --> 00:07:49,847
+Now the second class: random access. When a node has a frame, it transmits at the full channel rate R. There is no coordination before it sends.
+
+35
+00:07:50,297 --> 00:07:59,812
+If two nodes transmit at the same time, the frames collide. A receiver gets two signals at the same time, and both frames are lost.
+
+36
+00:08:00,262 --> 00:08:15,750
+So a random access protocol specifies two things. How to detect collisions. And how to recover from them, for example with delayed retransmissions. Each node waits a random delay, so the next tries do not collide.
+
+37
+00:08:16,200 --> 00:08:37,021
+Examples are ALOHA and slotted ALOHA from 1970, CSMA, and CSMA/CD, which Ethernet used from 1973. WiFi uses CSMA/CA. Modern wired LANs use layer 2 switches, so they have no collisions.
+
+38
+00:08:37,471 --> 00:09:06,911
+The first random access protocols were the ALOHA protocols, from the University of Hawaii in the 1970s. There are two types: slotted ALOHA and pure ALOHA. Slotted ALOHA makes these assumptions. All frames have the same size. Time is cut into slots, and one slot is the time to send one frame. Nodes start only at the start of a slot. The nodes are synchronized. And all nodes detect a collision in the slot.
+
+39
+00:09:07,361 --> 00:09:18,433
+Both nodes get a fresh frame during slot 1. Each node waits for the start of the next slot and transmits. Both transmit in slot 2, so there is a collision.
+
+40
+00:09:18,883 --> 00:09:35,758
+After a collision, each node retransmits in each later slot with probability p. In slot 3, node 1 waits, with probability 1 minus p. Node 2 transmits. Only one node transmits, so slot 3 is a success.
+
+41
+00:09:36,208 --> 00:09:44,635
+In slot 4, node 1 transmits and succeeds. When a node has no collision, it can send a new frame in the next slot.
+
+42
+00:09:45,085 --> 00:09:55,709
+Why is the choice random? If both nodes always retransmitted in the next slot, they would collide again in every slot. The random choice separates them.
+
+43
+00:09:56,159 --> 00:10:11,028
+Here is the example from slide 28, with three nodes. C means collision, S means success, and E means empty. In slot 1, all three nodes transmit, so the slot is a collision. Slot 2 is empty.
+
+44
+00:10:11,478 --> 00:10:18,817
+In slot 3, nodes 1 and 2 transmit: collision. In slot 4, only node 2 transmits: success.
+
+45
+00:10:19,267 --> 00:10:25,731
+Slot 5 is empty. In slot 6, nodes 1 and 3 collide. Slot 7 is empty.
+
+46
+00:10:26,181 --> 00:10:40,794
+In slot 8, only node 1 transmits, and in slot 9, only node 3. Both are successes. So only 3 of the 9 slots carry a frame. The others are wasted by collisions or are empty.
+
+47
+00:10:41,244 --> 00:10:55,687
+Pros: a single active node can send at the full rate. The protocol is highly decentralized and simple. Cons: collisions and idle slots waste the channel, and the nodes need clock synchronization.
+
+48
+00:10:56,137 --> 00:11:08,937
+The efficiency of slotted ALOHA is the long-run fraction of successful slots. For example, if 2000 of 10,000 slots are successful, the efficiency is point 2.
+
+49
+00:11:09,387 --> 00:11:31,147
+The slide gives a derivation, and says you can skip its details. Suppose N nodes, and each sends in a slot with probability p. One given node succeeds when it sends and the other N minus 1 nodes do not. That is p times 1 minus p to the power N minus 1. Any node succeeds with N times that.
+
+50
+00:11:31,597 --> 00:11:42,434
+The plot shows this for N equals 10. The maximum is at p equals 1 over N, which is point 1. The efficiency there is point 3 8 7.
+
+51
+00:11:42,884 --> 00:11:54,105
+For N equals 50, the maximum is point 3 7 2. As N becomes very large, the maximum goes to 1 over e, which is point 3 7.
+
+52
+00:11:54,555 --> 00:12:01,766
+Remember this number. At best, slotted ALOHA uses 37 percent of the time for useful frames.
+
+53
+00:12:02,216 --> 00:12:17,277
+Pure ALOHA is simpler. It has no slots and no synchronization. When a frame arrives, the node transmits it immediately. Take frame i, which starts at time t zero. The time unit is one frame time.
+
+54
+00:12:17,727 --> 00:12:27,242
+A frame that started at any time after t zero minus 1 is still on the channel at t zero. It overlaps the start of frame i.
+
+55
+00:12:27,692 --> 00:12:34,220
+A frame that starts at any time before t zero plus 1 overlaps the end of frame i.
+
+56
+00:12:34,670 --> 00:12:57,689
+So frame i collides with any frame sent in the interval from t zero minus 1 to t zero plus 1. This window is 2 frame times long. In slotted ALOHA, it is only one slot. So the efficiency of pure ALOHA is half: 1 over 2 e, which is point 1 8, or 18 percent. Remember this number too.
+
+57
+00:12:58,139 --> 00:13:16,571
+Slide 43 solves a problem with these numbers. 100 nodes share a medium with slotted ALOHA. The rate of the medium is 10 Mbps. What is the maximum average rate at which one node can successfully send frames? Pause the video and try it.
+
+58
+00:13:17,021 --> 00:13:27,602
+The blue bar is the channel rate: 10 Mbps. Treat 100 nodes as a large number. So the maximum efficiency is point 3 7.
+
+59
+00:13:28,052 --> 00:13:40,425
+Only 37 percent of the time carries successful frames. So the useful rate is point 3 7 times 10 Mbps, which is 3 point 7 Mbps.
+
+60
+00:13:40,875 --> 00:13:53,121
+The 100 nodes share this useful rate equally. 3 point 7 Mbps divided by 100 is 37 kbps. That is the answer.
+
+61
+00:13:53,571 --> 00:14:11,277
+Questions 37 and 38 of the question bank are the same type. 100 nodes share a 1 Mbps link. Find the average successful rate of one node, first with slotted ALOHA, then with pure ALOHA. Pause the video and try it.
+
+62
+00:14:11,727 --> 00:14:29,114
+Question 37, slotted ALOHA. The useful rate is point 3 7 times 1 Mbps, which is 370 kbps. Divide by 100 nodes. Each node gets 3 point 7 kbps.
+
+63
+00:14:29,564 --> 00:14:46,673
+Question 38, pure ALOHA. The efficiency is point 1 8. Point 1 8 times 1 Mbps is 180 kbps. Divided by 100 nodes, each node gets 1 point 8 kbps.
+
+64
+00:14:47,123 --> 00:15:06,302
+So slotted ALOHA gives each node twice the rate of pure ALOHA. With the exact values, 1 over e and 1 over 2 e, the answers are 3 point 6 8 and 1 point 8 4 kbps. The slides use point 3 7 and point 1 8.
+
+65
+00:15:06,752 --> 00:15:15,989
+Now the descriptive questions of the question bank, from question 20. Read questions 20 to 23. Pause the video and try it.
+
+66
+00:15:16,439 --> 00:15:33,570
+Question 20. Multiple access means that many nodes share, or access, one broadcast channel. Question 21. If two nodes start at the same time, there is a collision. Receivers get two signals at once, and both frames are lost.
+
+67
+00:15:34,020 --> 00:15:51,151
+Question 22. The protocol decides when a node can transmit. Question 23. The four attributes: one node sends at rate R. M nodes each get R over M on average. It is fully decentralized. And it is simple.
+
+68
+00:15:51,601 --> 00:15:59,387
+Questions 24 to 27 are about the classes and about channel partitioning. Pause the video and try it.
+
+69
+00:15:59,837 --> 00:16:24,200
+Question 24. Channel partitioning divides the channel into pieces, such as time slots or frequency bands, for exclusive use. Random access does not divide the channel. Nodes send at the full rate, collisions occur, and the protocol detects and recovers. In taking turns, nodes take turns, and nodes with more to send can take longer turns.
+
+70
+00:16:24,650 --> 00:16:45,685
+Question 25. Partition by time or by frequency. Question 26. In TDMA, time is slotted, and each node gets a fixed slot in each round. Question 27. In FDMA, each node gets a fixed frequency band. In both, unused pieces go idle.
+
+71
+00:16:46,135 --> 00:16:52,364
+Questions 30 to 36 are about random access and ALOHA. Pause the video and try it.
+
+72
+00:16:52,814 --> 00:17:10,094
+Question 30. A frame collision occurs when two or more nodes transmit at the same time, and a receiver gets both signals at once. Question 31. A random access protocol specifies how to detect collisions and how to recover from them.
+
+73
+00:17:10,544 --> 00:17:24,496
+Question 32. In pure ALOHA, a node transmits a new frame immediately. There are no slots. Question 33. Its max efficiency is 1 over 2 e, which is 18 percent.
+
+74
+00:17:24,946 --> 00:17:51,741
+Question 34. In slotted ALOHA, a node sends in the next slot. After a collision, it retransmits in each later slot with probability p. Question 35. Its max efficiency is 1 over e, 37 percent. Question 36. Slotted ALOHA is better because frames start only at slot boundaries. So the vulnerable window is one slot, not two frame times.
+
+75
+00:17:52,191 --> 00:18:05,353
+To recap. A broadcast link needs a multiple access protocol, which decides when a node can transmit. There are three classes: channel partitioning, random access, and taking turns.
+
+76
+00:18:05,803 --> 00:18:29,569
+TDMA gives each node a fixed slot, and FDMA a fixed band. Slotted ALOHA reaches at most 37 percent, and pure ALOHA 18 percent. For the rate per node, multiply the efficiency by R, and divide by the number of nodes. The next video covers CSMA/CD and the taking turns protocols.

@@ -1,0 +1,275 @@
+1
+00:00:00,000 --> 00:00:07,531
+This is ECE 320, video 1. It is an overview of computer systems and their trends.
+
+2
+00:00:07,981 --> 00:00:24,834
+After this video, you can explain five things. The computer systems stack. The ISA and the microarchitecture. General-purpose and application-specific chips. Technology trends and the four revolutions. And what this course covers.
+
+3
+00:00:25,284 --> 00:00:32,324
+A computer system starts with an application. Examples are Facebook, Firefox and the game Fortnite.
+
+4
+00:00:32,774 --> 00:00:40,390
+At the bottom is the technology. That is the silicon chip inside a desktop computer or a mobile phone.
+
+5
+00:00:40,840 --> 00:00:50,163
+There is a big gap between the application and the technology. One design step cannot get an application to execute on a silicon chip.
+
+6
+00:00:50,613 --> 00:00:58,101
+The fix is a stack of ten abstraction levels, from the application at the top to the technology at the bottom.
+
+7
+00:00:58,551 --> 00:01:06,359
+Each level uses the level below it. It does not need to know how the levels below work. This gives effective layering.
+
+8
+00:01:06,809 --> 00:01:13,123
+So people can design each level separately. The slides call this separation of concerns.
+
+9
+00:01:13,573 --> 00:01:22,789
+Broadly, computer architecture is the development of these layers. They let us deploy applications efficiently on existing technologies.
+
+10
+00:01:23,239 --> 00:01:28,807
+Here are examples. Linux, Mac OS X and Windows are operating systems.
+
+11
+00:01:29,257 --> 00:01:40,116
+ARM, RISC-V, MIPS and x86 are instruction-set architectures. The code is a RISC-V program that adds up an array. Video 3 explains it.
+
+12
+00:01:40,566 --> 00:01:50,123
+The register-transfer level is the data flow through the hardware. Circuits combine Boolean logic gates into functions that do useful work.
+
+13
+00:01:50,573 --> 00:01:56,611
+Devices are the transistors and wires. The technology is the silicon process.
+
+14
+00:01:57,061 --> 00:02:09,690
+More specifically, computer architecture is defining and implementing an ISA. The slides mark three levels: the ISA, the microarchitecture and the register-transfer level.
+
+15
+00:02:10,140 --> 00:02:18,396
+The ISA, or instruction-set architecture, defines what software can use: the instructions, the registers and the memory.
+
+16
+00:02:18,846 --> 00:02:26,377
+The microarchitecture is the design of the processor, memory and I/O that implement the ISA.
+
+17
+00:02:26,827 --> 00:02:38,645
+One ISA can have many microarchitectures, for example a single-cycle datapath and a pipelined datapath. Both give the same results for the same program.
+
+18
+00:02:39,095 --> 00:02:47,543
+Two forces act on the architecture. Application requirements come from the top. They suggest how to improve the architecture.
+
+19
+00:02:47,993 --> 00:02:56,676
+Technology constraints come from the bottom. They restrict what one can do. New technology also leads to new architectures.
+
+20
+00:02:57,126 --> 00:03:03,398
+The architect manages both demands, and guides the direction of applications and technology.
+
+21
+00:03:03,848 --> 00:03:17,693
+This course is about general-purpose CPUs. A general-purpose CPU can do anything and run a full operating system. Examples are Intel, AMD and ARM processors.
+
+22
+00:03:18,143 --> 00:03:31,157
+An application-specific integrated circuit, or ASIC, puts the functions of one domain into hardware. Examples are the TPU, AI accelerators and video encoders.
+
+23
+00:03:31,607 --> 00:03:42,807
+In reality, a CPU chip mixes both. Intel Core Ultra has performance cores, efficiency cores, a GPU, and an N P U for AI.
+
+24
+00:03:43,257 --> 00:03:53,369
+The basic element of technology is the transistor. It is an electrical switch. The gate turns the channel between the source and the drain on or off.
+
+25
+00:03:53,819 --> 00:04:05,467
+An integrated circuit, or IC, puts many transistors and wires on one chip. ICs are fast, reliable, cheap and low power, and allow mass production.
+
+26
+00:04:05,917 --> 00:04:18,866
+There are several IC families. SRAM and logic are optimized for speed, for processors. DRAM is optimized for density, for memory. Flash is non-volatile memory.
+
+27
+00:04:19,316 --> 00:04:24,201
+Disks, optical storage, ethernet and fiber do not use transistors.
+
+28
+00:04:24,651 --> 00:04:30,859
+Moore's law says that the density of transistors on an IC roughly doubles every year.
+
+29
+00:04:31,309 --> 00:04:48,099
+The improvements differ. Per year, SRAM and logic density grows about 30 percent, and speed 20 percent. DRAM density grows 60 percent, but speed only 4 percent. Disk density grows 60 percent, and speed 10 percent.
+
+30
+00:04:48,549 --> 00:04:51,173
+So density increases faster than speed.
+
+31
+00:04:51,623 --> 00:04:59,623
+The trade-offs are constantly changing. The architect must re-evaluate and re-design for each technology generation.
+
+32
+00:05:00,073 --> 00:05:11,529
+Now the four revolutions. In the 1970s, about 25 thousand transistors fit on one chip. That is enough for a 16-bit processor.
+
+33
+00:05:11,979 --> 00:05:25,461
+Before, a processor used several chips. Signals between chips are slow. One chip has fewer slow chip-crossings, so it is faster. It is also one stamped-out part, so it is much cheaper.
+
+34
+00:05:25,911 --> 00:05:34,509
+Microprocessors created new markets, such as laptops, game consoles and phones. They also replaced mainframes.
+
+35
+00:05:34,959 --> 00:05:50,361
+The first microprocessor was the Intel 4004 from 1971. It had 2300 transistors, a 108 kilohertz clock, 4-bit data, and a single-cycle datapath.
+
+36
+00:05:50,811 --> 00:06:01,115
+Here are four chips on a log scale. The Intel 4004 had 2300 transistors and a 108 kilohertz clock.
+
+37
+00:06:01,565 --> 00:06:16,541
+The Pentium 4 from 2003 was the pinnacle of single-core processors. It had 55 million transistors, a 3.4 gigahertz clock, a 22-stage pipeline, and two levels of cache.
+
+38
+00:06:16,991 --> 00:06:29,407
+The Core i7 from 2011 had 774 million transistors and a clock of up to 3.9 gigahertz. It had 4 cores with 2 threads each.
+
+39
+00:06:29,857 --> 00:06:41,932
+From 2003 to 2011, the transistor count grew 14 times, but the clock almost did not change. The extra transistors became more cores.
+
+40
+00:06:42,382 --> 00:06:49,486
+Now, Intel Meteor Lake uses a multi-tile chiplet design, with 6 P-cores and 8 E-cores.
+
+41
+00:06:49,936 --> 00:07:01,712
+The growing transistor counts were used in several ways. First, widen the datapath, from 4 bits in the 4004 to 64 bits in the Pentium 4.
+
+42
+00:07:02,162 --> 00:07:14,621
+Second, add more powerful instructions. A powerful instruction does more work for one fetch and decode. It also made programming simpler, because people wrote programs by hand.
+
+43
+00:07:15,071 --> 00:07:27,081
+Revolution two extracts implicit instruction-level parallelism. The hardware provides parallel resources and figures out how to use them. The software is oblivious.
+
+44
+00:07:27,531 --> 00:07:35,745
+It started with pipelining. The steps of several instructions overlap. Pipelining enabled a higher clock frequency.
+
+45
+00:07:36,195 --> 00:07:42,957
+Caches became necessary as the clock frequency increased. Floating-point units moved onto the chip.
+
+46
+00:07:43,407 --> 00:07:53,690
+Then came deeper pipelines with branch speculation, superscalar multiple issue, and out-of-order execution. This course covers most of these.
+
+47
+00:07:54,140 --> 00:08:10,076
+Revolution three supports explicit data and thread parallelism. The hardware provides parallel resources, and the software specifies how to use them. The reason: instruction-level parallelism gave diminishing returns.
+
+48
+00:08:10,526 --> 00:08:18,718
+First came vector instructions, such as Intel's SSE. One instruction does 4 multiplies in parallel.
+
+49
+00:08:19,168 --> 00:08:28,405
+Then came multi-threaded programs, with hardware synchronization. Chips first ran two threads on one core. Now they have many cores.
+
+50
+00:08:28,855 --> 00:08:34,615
+GPUs are highly parallel. They are converging with general-purpose CPUs.
+
+51
+00:08:35,065 --> 00:08:45,199
+Revolution four combines multiple kinds of compute engines on one die. A system-on-chip, or SoC, in a phone is a common example.
+
+52
+00:08:45,649 --> 00:08:55,590
+Beside the CPU cores, there is a GPU. It is a throughput-oriented multicore processor for gaming, machine learning and computer vision.
+
+53
+00:08:56,040 --> 00:09:02,269
+There is also special-purpose logic, for example media codecs, radios and encryption.
+
+54
+00:09:02,719 --> 00:09:10,143
+This gives excellent energy efficiency and performance. But these chips can be extremely complicated to program.
+
+55
+00:09:10,593 --> 00:09:16,588
+The architect must consider all application requirements and all technology constraints.
+
+56
+00:09:17,038 --> 00:09:25,038
+How to manage this? With institutional knowledge, experience and rules of thumb, abstraction and layering, and this course.
+
+57
+00:09:25,488 --> 00:09:34,619
+This course is mostly about microarchitecture: the design of the processor, memory and I/O that implement the ISA.
+
+58
+00:09:35,069 --> 00:09:48,167
+Lecture 2 measures performance. Lecture 3 defines the RISC-V ISA. Lectures 4 to 7 build the microarchitecture: the datapath, the pipeline, interrupts, and caches.
+
+59
+00:09:48,617 --> 00:10:03,209
+Check yourself. Which level is each item? A: ARM, RISC-V and x86. B: the design of the processor, memory and I/O. C: Boolean logic gates. Pause the video and try it.
+
+60
+00:10:03,659 --> 00:10:10,379
+A is the instruction-set architecture. B is the microarchitecture. C is the circuits level.
+
+61
+00:10:10,829 --> 00:10:21,240
+Second check. DRAM density grows about 60 percent per year, but speed only 4 percent. What does this mean for the architect? Pause and try it.
+
+62
+00:10:21,690 --> 00:10:30,799
+Density grows faster than speed. So the trade-offs keep changing, and the architect must re-design for each technology generation.
+
+63
+00:10:31,249 --> 00:10:44,519
+Last check. Which revolution is each item? A: the software is oblivious. B: the software specifies the parallel work. C: many kinds of engines on one die. Pause and try it.
+
+64
+00:10:44,969 --> 00:10:50,281
+A is revolution two. B is revolution three. C is revolution four.
+
+65
+00:10:50,731 --> 00:10:57,899
+Here is the recap. One. Ten abstraction levels fill the gap from the application to the technology.
+
+66
+00:10:58,349 --> 00:11:02,658
+Two. Computer architecture defines and implements an ISA.
+
+67
+00:11:03,108 --> 00:11:10,724
+Three. Applications suggest improvements, and technology restricts them. Density grows faster than speed.
+
+68
+00:11:11,174 --> 00:11:20,454
+Four. The four revolutions: the microprocessor, implicit parallelism, explicit parallelism, and heterogeneous processing.
+
+69
+00:11:20,904 --> 00:11:26,707
+Five. This course is mostly about microarchitecture. That is the end of video 1.

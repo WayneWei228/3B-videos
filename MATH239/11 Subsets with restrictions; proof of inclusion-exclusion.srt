@@ -1,0 +1,399 @@
+1
+00:00:00,000 --> 00:00:09,173
+This is MATH 239, video 11. The topics are subsets with restrictions, and the proof of inclusion exclusion.
+
+2
+00:00:09,623 --> 00:00:24,301
+After this video, you can change a subset into a composition and back, and find generating series of subsets with gap conditions. You can solve assignment 3, question 1. And you can prove inclusion exclusion.
+
+3
+00:00:24,751 --> 00:00:41,497
+Here is the problem of Example 2.24. r sub n is the number of subsets of 1 to n with no two consecutive numbers. On the left are all 16 subsets of 1 to 4. A filled cell is an element of the subset.
+
+4
+00:00:41,947 --> 00:00:47,878
+Mark the subsets that contain two consecutive numbers, such as 2 and 3. They are red.
+
+5
+00:00:48,328 --> 00:00:51,933
+8 subsets are bad. So r sub 4 is 8.
+
+6
+00:00:52,383 --> 00:01:02,645
+We want the generating series R of x. The tool of this section changes each subset into a composition. Then the lemmas for compositions apply.
+
+7
+00:01:03,095 --> 00:01:17,516
+The set U contains the pairs n, A, where A is a subset of 1 to n. We keep n in the pair, because the same set A is a subset of many sets 1 to n. Our example is 7 and the set 2, 3, 6.
+
+8
+00:01:17,966 --> 00:01:27,289
+Draw n plus 1 cells in a row. Here n is 7, so there are 8 cells. Between the cells are 7 boundaries, numbered 1 to 7.
+
+9
+00:01:27,739 --> 00:01:32,709
+The set A tells us where to cut. A contains 2, so cut at boundary 2.
+
+10
+00:01:33,159 --> 00:01:36,573
+A also contains 3 and 6. Cut there too.
+
+11
+00:01:37,023 --> 00:01:51,487
+The cuts make 4 parts: 2, 1, 3, 2. This is the composition of the pair. In the notes, c sub i equals a sub i minus a sub i minus 1, with end points 0 and n plus 1.
+
+12
+00:01:51,937 --> 00:02:02,305
+Now the proof. Put the points a sub 0 to a sub 4 on a number line. They increase strictly, so each gap c sub i is a positive integer.
+
+13
+00:02:02,755 --> 00:02:06,979
+The first gap goes from 0 to 2. So c sub 1 is 2.
+
+14
+00:02:07,429 --> 00:02:23,173
+The other gaps are 1, 3 and 2. Add all the gaps. The sum telescopes: each middle point is added once and subtracted once. Only n plus 1 minus 0 stays. So the size of gamma is n plus 1.
+
+15
+00:02:23,623 --> 00:02:35,527
+A has k elements, and there are k plus 1 gaps. So the length of gamma is the size of A plus 1. The length is at least 1, so gamma is not the empty composition.
+
+16
+00:02:35,977 --> 00:02:46,750
+The table in the notes: n is the size of gamma minus 1, and the size of A is the length of gamma minus 1. Remember the minus 1 in the size.
+
+17
+00:02:47,200 --> 00:02:52,683
+Now go back. Start with a nonempty composition. Here it is 2, 1, 3, 2.
+
+18
+00:02:53,133 --> 00:02:58,402
+Add the parts from the left. These are the partial sums. The first one is 2.
+
+19
+00:02:58,852 --> 00:03:03,673
+The next partial sums are 3 and 6. They are the positions of the cuts.
+
+20
+00:03:04,123 --> 00:03:14,918
+The last partial sum is 8, the size of gamma. It is not a cut, so we drop it. A is the set 2, 3, 6, and n is 8 minus 1, which is 7.
+
+21
+00:03:15,368 --> 00:03:27,016
+So we get the start pair back. Each map undoes the other, so by Proposition 1.11 both maps are bijections. The details are Exercise 2.18.
+
+22
+00:03:27,466 --> 00:03:40,138
+Here is the map for all subsets of 1, 2, 3. So n is 3, and each composition has size 4. The empty set has no cut. It gives the composition with one part, 4.
+
+23
+00:03:40,588 --> 00:03:47,799
+Each set with one element makes one cut. It gives two parts: 1, 3, then 2, 2, then 3, 1.
+
+24
+00:03:48,249 --> 00:03:51,022
+Each set with two elements gives three parts.
+
+25
+00:03:51,472 --> 00:03:58,341
+The full set gives 1, 1, 1, 1. These are all 8 compositions of 4, each one time.
+
+26
+00:03:58,791 --> 00:04:07,303
+Each pair gives size n plus 1, which is at least 1. So no pair maps to the empty composition. That is why we remove it.
+
+27
+00:04:07,753 --> 00:04:20,404
+Check the bijection with generating series. Give the pair n, A the weight n. There are 2 to the n subsets of 1 to n. So the series of U is 1 over 1 minus 2 x.
+
+28
+00:04:20,854 --> 00:04:32,203
+Nonempty compositions, by size, have the series x over 1 minus 2 x, from video 10. The second row is the first row moved one place to the right.
+
+29
+00:04:32,653 --> 00:04:43,043
+So the series of the compositions is x times the series of U, because the size is n plus 1. We use this shift in every problem of this section.
+
+30
+00:04:43,493 --> 00:04:57,466
+Now use the bijection for Example 2.24. Take n equals 7 and A equals 2, 4, 7. The parts are 2, 2, 3, 1. A middle part is the gap between two elements of A.
+
+31
+00:04:57,916 --> 00:05:12,679
+Now take A equals 2, 3, 6. It contains 2 and 3. Their gap is a middle part equal to 1, in red. Two consecutive elements of A give a middle part equal to 1, and the converse is also true.
+
+32
+00:05:13,129 --> 00:05:25,033
+So the pair is in R exactly when every middle part is at least 2. The first part is 1 when 1 is in A. The last part is 1 when n is in A. Both are allowed.
+
+33
+00:05:25,483 --> 00:05:38,837
+Now write the solution in the course form. R sub n is the set of pairs n, A with no two consecutive numbers in A. R is the union over all n, and the weight of a pair is n.
+
+34
+00:05:39,287 --> 00:05:43,810
+M is the set of compositions that correspond to the pairs in R.
+
+35
+00:05:44,260 --> 00:05:54,287
+The size of gamma is n plus 1. So M of x equals x times R of x. We find M of x first, and then divide by x.
+
+36
+00:05:54,737 --> 00:06:08,177
+Split M by the number of parts, l. For l equals 1, there is one part, of any positive size. Its series is x plus x squared plus and so on, which is x over 1 minus x.
+
+37
+00:06:08,627 --> 00:06:20,104
+For l at least 2, there is a first part, l minus 2 middle parts, and a last part. A middle part is at least 2. Its series is x squared over 1 minus x.
+
+38
+00:06:20,554 --> 00:06:30,751
+By the Product Lemma, the series for l parts is the product of the part series. That is x to the 2 l minus 2, over 1 minus x to the l.
+
+39
+00:06:31,201 --> 00:06:40,609
+The lengths are disjoint cases. So by the Sum Lemma, x R of x is the l equals 1 term, plus the sum over l at least 2.
+
+40
+00:06:41,059 --> 00:06:56,697
+Put j equals l minus 2. What is left is a geometric series in x squared over 1 minus x. The table shows its powers. That series has no constant term, so each column has finitely many terms.
+
+41
+00:06:57,147 --> 00:07:03,419
+Sum the geometric series. It is 1 over 1 minus x squared over 1 minus x.
+
+42
+00:07:03,869 --> 00:07:22,173
+Bring both terms to the denominator 1 minus x, times 1 minus x minus x squared. The numerators add to x minus x cubed. Cancel the factor 1 minus x. We get x plus x squared over 1 minus x minus x squared.
+
+43
+00:07:22,623 --> 00:07:33,119
+Divide by x. R of x equals 1 plus x, over 1 minus x minus x squared. This is the answer of Example 2.24.
+
+44
+00:07:33,569 --> 00:07:41,910
+Expand the answer as a power series. The coefficients are 1, 2, 3, 5, 8, 13, 21, 34.
+
+45
+00:07:42,360 --> 00:07:48,909
+Direct counts for n up to 7 agree. For n equals 4 we get 8, as on the first slide.
+
+46
+00:07:49,359 --> 00:08:02,117
+Each number is the sum of the two numbers before it. These are the Fibonacci numbers. Chapter 4 shows how a denominator such as 1 minus x minus x squared gives such a rule.
+
+47
+00:08:02,567 --> 00:08:08,860
+Here is the method for any condition on the gaps. Step 1: write the condition on the set A.
+
+48
+00:08:09,310 --> 00:08:22,046
+Step 2: change it into a condition on the parts. A middle part is the gap between two elements. The first part is a sub 1. The last part is n plus 1 minus a sub k.
+
+49
+00:08:22,496 --> 00:08:25,803
+Step 3: for each length l, use the Product Lemma.
+
+50
+00:08:26,253 --> 00:08:37,495
+Step 4: add over all lengths with the Sum Lemma. When only the middle parts have a condition, you always get this form, with P of x the series of one middle part.
+
+51
+00:08:37,945 --> 00:08:45,796
+Step 5: divide by x, because the size is n plus 1. Then check the first few coefficients by hand.
+
+52
+00:08:46,246 --> 00:08:59,793
+Now an exercise from the notes. Pause the video and try it. Consecutive elements must differ by at most 2. 1, 3, 4 is allowed. 1, 4 is not, because its gap is 3.
+
+53
+00:09:00,243 --> 00:09:13,000
+Consecutive elements give the middle parts. So a middle part is 1 or 2, and its series P of x is x plus x squared. The first and last parts can be any positive integer.
+
+54
+00:09:13,450 --> 00:09:16,031
+Put P into the formula of the method.
+
+55
+00:09:16,481 --> 00:09:20,236
+Divide by x, and bring the terms to one denominator.
+
+56
+00:09:20,686 --> 00:09:35,001
+The numerator is 1 minus x plus x cubed. The coefficients are 1, 2, 4, 8, 15, 27. For n equals 4, only 1, 4 fails, so the count is 15, which agrees.
+
+57
+00:09:35,451 --> 00:09:52,987
+Now assignment 3, question 1. It also uses gaps. Pause the video and try it. S is the set of triples a, b, c of natural numbers with a at most b at most c. The weight is a plus b plus c. The figure shows 1, 3, 4.
+
+58
+00:09:53,437 --> 00:10:00,797
+Cut each bar at the heights a and b. The bottom piece has height x equals a. It is in all three bars.
+
+59
+00:10:01,247 --> 00:10:06,964
+The middle piece has height y equals b minus a. It is in the bars of b and c.
+
+60
+00:10:07,414 --> 00:10:15,734
+The top piece z equals c minus b is only in the bar of c. x, y and z are any natural numbers.
+
+61
+00:10:16,184 --> 00:10:24,973
+So a plus b plus c equals 3 x plus 2 y plus z. For 1, 3, 4: 3 plus 4 plus 1 is 8.
+
+62
+00:10:25,423 --> 00:10:41,999
+Here is the posted solution. Let T be N cubed, all triples x, y, z of natural numbers. Give T the weight w prime equals 3 x plus 2 y plus z. On the left are the 4 triples in S of weight 4.
+
+63
+00:10:42,449 --> 00:10:53,436
+g takes a, b, c to a, b minus a, c minus b. Its inverse f takes partial sums. The question lets you state the inverse without a proof.
+
+64
+00:10:53,886 --> 00:11:01,097
+g keeps the weight: 3 a plus 2 times b minus a, plus c minus b, is a plus b plus c.
+
+65
+00:11:01,547 --> 00:11:10,101
+So g is a bijection between the elements of weight n in S and in T, for every n. So the two series are equal.
+
+66
+00:11:10,551 --> 00:11:33,655
+T is a Cartesian product of three copies of N. The weight is a sum: 3 x, plus 2 y, plus z. So the Product Lemma applies. N with the weight i times m has the series 1 over 1 minus x to the i. The product is 1 over 1 minus x, times 1 minus x squared, times 1 minus x cubed.
+
+67
+00:11:34,105 --> 00:11:50,255
+Check: the coefficient of x to the 4 is 4, and S has 4 triples of weight 4. In a written answer, define T and w prime, give the bijection and its inverse, show that it keeps the weight, and name the Product Lemma.
+
+68
+00:11:50,705 --> 00:12:10,353
+Section 2.5 proves inclusion exclusion from video 5. A sub S is the intersection of the sets A sub i for i in S. The size of the union is the sum over nonempty S of minus 1 to the size of S minus 1, times the size of A sub S.
+
+69
+00:12:10,803 --> 00:12:19,059
+For three sets, first add the sizes of A 1, A 2 and A 3. The numbers show how often each region is counted.
+
+70
+00:12:19,509 --> 00:12:27,722
+Subtract the three pairwise intersections. Now the pair regions are counted once. The center is counted zero times.
+
+71
+00:12:28,172 --> 00:12:35,745
+Add the triple intersection. Now every region is counted exactly once. The proof shows this for any m.
+
+72
+00:12:36,195 --> 00:12:51,065
+The proof needs one lemma. For a nonempty set T, the sum over nonempty subsets S of minus 1 to the size of S minus 1 is 1. The figure shows the 8 subsets of T equals 1, 2, 3.
+
+73
+00:12:51,515 --> 00:13:00,027
+From the proof of the binomial theorem, the sum over all subsets S of x to the size of S is 1 plus x to the n.
+
+74
+00:13:00,477 --> 00:13:15,154
+Both sides are polynomials, so put x equals minus 1. The right side is 0 to the n, which is 0 because n is at least 1. In the figure: 1 minus 3 plus 3 minus 1 is 0.
+
+75
+00:13:15,604 --> 00:13:26,889
+The empty set gives the term 1. Move it out of the sum, and multiply by minus 1. The sum is 1. In the figure: 3 minus 3 plus 1 is 1.
+
+76
+00:13:27,339 --> 00:13:33,867
+Now the proof. Let V be the union. We find how much one element v adds to the right side.
+
+77
+00:13:34,317 --> 00:13:48,419
+Let T of v be the set of indices i with v in A sub i. v is in the union, so T of v is not empty. In the figure, v is in A 1 and A 3 only. So T of v is 1, 3.
+
+78
+00:13:48,869 --> 00:13:58,319
+v is in A sub S exactly when v is in every A sub i with i in S. That means S is a nonempty subset of T of v.
+
+79
+00:13:58,769 --> 00:14:11,249
+So v is counted in A 1, A 3, and A 1 3, with signs plus, plus, minus. The total is 1. In general, v adds the sum in Lemma 2.25, which is 1.
+
+80
+00:14:11,699 --> 00:14:24,798
+Here is the whole proof in one table, for three small sets. Each row is an element v. Each column is a nonempty set S. A cell has the sign of S when v is in A sub S.
+
+81
+00:14:25,248 --> 00:14:33,269
+The right side of the theorem adds the table column by column. Each column gives the size of A sub S with its sign.
+
+82
+00:14:33,719 --> 00:14:35,298
+These add to 7.
+
+83
+00:14:35,748 --> 00:14:48,207
+Now add the same table row by row. A row contains the sets S with S a nonempty subset of T of v. By Lemma 2.25, each row adds to 1.
+
+84
+00:14:48,657 --> 00:14:58,257
+So the total is the number of rows, which is the size of V. The notes write this swap of the two sums in three lines. This completes the proof.
+
+85
+00:14:58,707 --> 00:15:11,315
+Example 2.27 uses inclusion exclusion. Euler's function phi of n is the number of b from 1 to n with gcd of b and n equal to 1.
+
+86
+00:15:11,765 --> 00:15:23,050
+Take n equals 12, which is 2 squared times 3. b shares a factor with 12 exactly when 2 or 3 divides b. A 1 is the 6 multiples of 2.
+
+87
+00:15:23,500 --> 00:15:26,252
+A 2 is the 4 multiples of 3.
+
+88
+00:15:26,702 --> 00:15:36,729
+A 1 intersect A 2 is the 2 multiples of 6. By inclusion exclusion, the union has 6 plus 4 minus 2, which is 8 elements.
+
+89
+00:15:37,179 --> 00:15:46,331
+The other numbers are coprime to 12. phi of 12 is 12 minus 8, which is 4. They are 1, 5, 7 and 11.
+
+90
+00:15:46,781 --> 00:16:00,882
+Now any n, with different primes p 1 to p m. b is in A sub S exactly when the product of the p sub i for i in S divides b. So the size of A sub S is n over that product.
+
+91
+00:16:01,332 --> 00:16:06,857
+phi of n is n minus the size of the union. Put in inclusion exclusion.
+
+92
+00:16:07,307 --> 00:16:23,926
+Move n into the sum as the term for the empty set. On the right, expand a product of two factors. Each term picks 1 or minus 1 over p i from each factor. S is the set of factors where we pick minus 1 over p i.
+
+93
+00:16:24,376 --> 00:16:36,984
+So the sum is the expanded product. phi of n equals n times the product of 1 minus 1 over p i. For 12: 12 times one half times two thirds is 4.
+
+94
+00:16:37,434 --> 00:16:44,794
+Try one more. Pause the video and find phi of 60. 60 is 2 squared times 3 times 5.
+
+95
+00:16:45,244 --> 00:16:56,764
+The product formula gives 60 times one half times two thirds times four fifths. That is 16. The green cells are the 16 numbers coprime to 60.
+
+96
+00:16:57,214 --> 00:17:15,390
+Inclusion exclusion gives the same number. Subtract the multiples of 2, 3 and 5: 30, 20 and 12. Add back the multiples of 6, 10 and 15: 10, 6 and 4. Subtract the multiples of 30: 2. The result is 16.
+
+97
+00:17:15,840 --> 00:17:26,699
+To recap. The parts are the gaps, with end points 0 and n plus 1. The size is n plus 1, so M of x equals x times R of x.
+
+98
+00:17:27,149 --> 00:17:35,575
+A gap condition is a condition on the middle parts. Use the Product Lemma for each length, and the Sum Lemma over all lengths.
+
+99
+00:17:36,025 --> 00:17:42,511
+For assignment 3 question 1, a bijection that keeps the weight moves the problem to N cubed.
+
+100
+00:17:42,961 --> 00:17:54,822
+In inclusion exclusion, each element adds exactly 1, by Lemma 2.25. It gives phi of n. The next video starts Chapter 3, binary strings.

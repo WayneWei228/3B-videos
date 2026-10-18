@@ -1,0 +1,187 @@
+1
+00:00:00,000 --> 00:00:13,333
+This is ECE 358, video 10 b. The topic is TCP flow control and connection management. Video 10 a covered segments, ACKs, and retransmission.
+
+2
+00:00:13,783 --> 00:00:36,375
+After this video, you can explain why TCP needs flow control, and calculate r wind. You can trace the in-flight data against r wind over time. You can write the 3-way handshake and the close. At the end, we solve question bank questions 36 and 40 to 42, and problem 5 of problem set 3.
+
+3
+00:00:36,825 --> 00:00:57,732
+Slides 63 to 66 give the motivation for flow control. This is the receiver protocol stack. Data from the sender comes up through the I P code and the TCP code into the TCP socket receiver buffers. The application process removes, or reads, data from the top.
+
+4
+00:00:58,182 --> 00:01:04,945
+What happens if the network layer delivers data faster than the application reads it? The buffer fills up.
+
+5
+00:01:05,395 --> 00:01:12,307
+When the buffer is full, it has no space for new data. New data is lost. This is buffer overflow.
+
+6
+00:01:12,757 --> 00:01:31,743
+Flow control solves this. The receiver gives feedback to the sender, to control its data rate. So the sender does not overflow the receiver's buffer. The tool is the receive window field in the TCP header. It gives the number of bytes that the receiver is willing to accept.
+
+7
+00:01:32,193 --> 00:01:48,599
+Slide 67 gives the mechanism. The receive buffer, RcvBuffer, has a fixed size. Socket options set it. The typical default is 4096 bytes. Many operating systems adjust it automatically.
+
+8
+00:01:49,049 --> 00:02:12,686
+Part of the buffer holds data that the application has not read yet. Here, 1500 bytes. The rest is free buffer space. This free space is r wind. So r wind equals RcvBuffer minus the buffered data: 4096 minus 1500, which is 2596 bytes.
+
+9
+00:02:13,136 --> 00:02:23,931
+The receiver advertises r wind. It writes the value in the receive window field of the TCP header, in every segment that it sends to the other side.
+
+10
+00:02:24,381 --> 00:02:46,461
+The sender limits the amount of unACKed, or in-flight, data to the r wind that it received. Here, 1000 bytes are in flight. So the sender can send only 2596 minus 1000, which is 1596 more bytes. Then it must wait for an ACK.
+
+11
+00:02:46,911 --> 00:02:54,463
+The in-flight data is never more than the free space. This guarantees that the receive buffer does not overflow.
+
+12
+00:02:54,913 --> 00:03:18,891
+Here is flow control over time. The numbers come from the handshake on slide 70. The server has a receive buffer of 5000 bytes, so the client got r wind 5000. The client data starts at byte 8001. The client sends segment A: 2500 bytes. Now 2500 bytes are in flight.
+
+13
+00:03:19,341 --> 00:03:34,168
+The client sends segment B, sequence number 10501, another 2500 bytes. Now 5000 bytes are in flight. This equals r wind, so the client must stop.
+
+14
+00:03:34,618 --> 00:03:50,938
+At the server, segment A arrives: the buffer holds 2500 bytes. The application reads 1000 bytes: 1500 remain. Then segment B arrives: the buffer holds 4000 bytes.
+
+15
+00:03:51,388 --> 00:04:01,265
+The server sends one cumulative ACK, 13001. Its new r wind is 5000 minus 4000, which is 1000.
+
+16
+00:04:01,715 --> 00:04:22,686
+All bytes are ACKed, so the client has 0 bytes in flight and may send 1000 bytes. It sends segment C, sequence number 13001, 1000 bytes, and stops again. When C arrives, the buffer holds exactly 5000 bytes. It is full, but no byte is lost.
+
+17
+00:04:23,136 --> 00:04:38,624
+Slide 69 names four header fields that open a connection. The SYN flag requests a connection. The initial sequence number, ISN, is the first sequence number. The ACK. And the initial receive window size.
+
+18
+00:04:39,074 --> 00:05:01,965
+Why is the ISN needed? In the early days, a connection closed, and a new connection opened right away between the same two end points. Both numbered their bytes from 0. A late segment of the old connection, for example sequence number 1001, then has a valid number. The new connection accepts old data as new data.
+
+19
+00:05:02,415 --> 00:05:21,124
+The solution: the first data byte is not numbered 0. The ISN is randomly generated. With ISN 15000, the new connection expects bytes from 15001. The late segment 1001 is outside, so it is not accepted.
+
+20
+00:05:21,574 --> 00:05:41,179
+Slide 70 shows the 3-way handshake. The server does a passive open: it calls listen and waits. The client does an active open: it calls connect. The client picks a random ISN, 8000. Segment 1 has sequence number 8000 and the SYN flag.
+
+21
+00:05:41,629 --> 00:06:04,029
+The server picks its own random ISN, 15000. Segment 2 has sequence number 15000, ACK 8001, and the SYN and ACK flags. 8001 is the client ISN plus 1: the first data byte that the server expects. R wind is 5000, the server's receive buffer.
+
+22
+00:06:04,479 --> 00:06:20,010
+The connection is now open at the client. Segment 3 has sequence number 8001 and ACK 15001, the server ISN plus 1. Its r wind is 10,000, the client's receive buffer.
+
+23
+00:06:20,460 --> 00:06:28,311
+When segment 3 arrives, the connection is open at the server too. Now data transfer starts, in both directions.
+
+24
+00:06:28,761 --> 00:06:53,657
+Slide 71 lists the contents. The SYN segment: SYN is 1, a random ISN, r wind undefined, and options. The SYN plus ACK segment: SYN is 1, a random ISN, ACK is 1, and the ACK number is the first data byte to be received. It carries r wind. The last ACK acknowledges the second SYN and carries r wind.
+
+25
+00:06:54,107 --> 00:07:11,813
+Slide 72 explains the close. Each side closes its own side of the connection when it needs to. It sends a segment with the FIN bit set to 1. FIN means: the sender of FIN has no more data to send. Here, the client sends FIN.
+
+26
+00:07:12,263 --> 00:07:24,018
+The other side responds to the FIN with an ACK. The server still has data, so it sends this data. The client can still receive, because only the client side is closed.
+
+27
+00:07:24,468 --> 00:07:34,879
+When the server has no more data, it sends its own FIN. The client responds with an ACK. Both FINs are ACKed, so the connection is closed.
+
+28
+00:07:35,329 --> 00:07:53,867
+If the server has no more data when the FIN arrives, it combines its ACK with its own FIN. Then three segments close the connection. Both sides can also send FIN at the same time. TCP can handle this case too: each side ACKs the FIN that it receives.
+
+29
+00:07:54,317 --> 00:08:02,744
+Now the question bank. Question 36 asks you to explain eight features of TCP. Pause the video and try it.
+
+30
+00:08:03,194 --> 00:08:28,133
+a: point-to-point means one sender and one receiver per connection. b: reliable byte stream means that TCP numbers each byte, and delivers all bytes in order, with no message boundaries. c: full duplex means data in both directions in one connection. d: cumulative ACK means that ACK n confirms all bytes up to n minus 1.
+
+31
+00:08:28,583 --> 00:08:57,169
+e: pipelining means many unACKed segments at the same time. Flow control and congestion control set the window. f: connection oriented means that a handshake sets the state before the data: window sizes, MSS, and ISN. g: flow controlled means that the sender does not overwhelm the receiver. h: congestion controlled means that the sender tries not to overwhelm the routers and links.
+
+32
+00:08:57,619 --> 00:09:05,299
+Question 40 asks for the purpose and the mechanism of TCP flow control. Pause the video and try it.
+
+33
+00:09:05,749 --> 00:09:18,869
+The purpose: the network layer can deliver data faster than the application reads it. Then the receive buffer overflows. Flow control keeps the sender from overflowing the receiver's buffer.
+
+34
+00:09:19,319 --> 00:09:44,983
+The mechanism has two sides. The receiver calculates r wind as RcvBuffer minus the buffered data, and advertises it in the receive window field. The sender keeps its in-flight data at or below r wind. For example, 4096 minus 1500 gives 2596 bytes. So the buffer cannot overflow.
+
+35
+00:09:45,433 --> 00:09:57,209
+Question 41 asks for two parameters exchanged at connection set-up. Question 42 asks how the FIN bit closes a connection. Pause the video and try them.
+
+36
+00:09:57,659 --> 00:10:16,411
+Question 41. Each side sends its initial sequence number: 8000 and 15000 on slide 70. And each side sends its receive window size: 5000 and 10,000. The SYN can also carry options, such as the MSS.
+
+37
+00:10:16,861 --> 00:10:39,133
+Question 42. A side with no more data sends a segment with FIN equal to 1. The other side ACKs it. If it also has no more data, it combines the ACK with its own FIN. Otherwise it sends its data first, and then its FIN, which the first side ACKs. When both FINs are ACKed, the connection is closed.
+
+38
+00:10:39,583 --> 00:11:07,871
+Problem 5 of problem set 3. Host A sends an enormous file to host B over TCP. There is no loss, and the timers never expire. The link of host A has rate R. The process can write into its socket at S, which is 10 R. The receive buffer holds the entire file. The send buffer holds only 1 percent of the file. What stops the process from writing at rate S all the time? Pause the video and try it.
+
+39
+00:11:08,321 --> 00:11:17,004
+Is it flow control? No. The receive buffer can hold the whole file. So it never fills, and r wind never stops the sender.
+
+40
+00:11:17,454 --> 00:11:26,009
+Is it congestion control? No. There is no loss and no timeout. So congestion control does not throttle the sender.
+
+41
+00:11:26,459 --> 00:11:43,824
+It is something else: the send buffer. Data enters it at S and leaves it at most at the link rate R. So it fills at 9 R, and it is full very soon. After that, the process can write only as fast as TCP sends data out: rate R.
+
+42
+00:11:44,274 --> 00:11:52,338
+So the process passes data at an average rate of R, much less than S. This matches the problem set solution.
+
+43
+00:11:52,788 --> 00:12:00,767
+Here is the recap. One. Flow control: the receiver controls the sender, so the receive buffer does not overflow.
+
+44
+00:12:01,217 --> 00:12:13,910
+Two. R wind is RcvBuffer minus the buffered data. The receiver advertises it in the receive window field. The sender keeps its in-flight data at or below r wind.
+
+45
+00:12:14,360 --> 00:12:20,717
+Three. The ISN is random, so data of an old connection is not accepted in a new one.
+
+46
+00:12:21,167 --> 00:12:31,727
+Four. The handshake: SYN, then SYN plus ACK, then ACK. Each ACK number is the other ISN plus 1. Each side sends its receive window.
+
+47
+00:12:32,177 --> 00:12:44,807
+Five. Each side closes its own side with a FIN, and the other side ACKs it. Video 11 covers TCP congestion control. That is the end of video 10 b.

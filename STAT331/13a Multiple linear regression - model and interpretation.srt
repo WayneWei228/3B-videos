@@ -1,0 +1,219 @@
+1
+00:00:00,000 --> 00:00:09,557
+This is STAT 331, video 13 a. The topic is multiple linear regression: the model, and what its coefficients mean.
+
+2
+00:00:10,007 --> 00:00:26,178
+After this video, you can write the model in matrix form, and give the shape of each part. You can interpret each coefficient. And you can write the least squares criterion S of beta, and expand it. Video 13 b finds the estimate.
+
+3
+00:00:26,628 --> 00:00:42,436
+Lecture 6 starts with a recap of three tools. We use all three in this video. First, matrix calculus. z equals a transpose y is one number. Its derivative with respect to the vector y is the vector a.
+
+4
+00:00:42,886 --> 00:00:53,425
+For a quadratic form, z equals y transpose A y, the derivative is A y plus A transpose y. If A is symmetric, this is 2 A y.
+
+5
+00:00:53,875 --> 00:01:08,744
+Second, random vectors. For a constant matrix A, the expected value of A y is A times the expected value of y. The variance of A y is A, times the variance of y, times A transpose.
+
+6
+00:01:09,194 --> 00:01:28,394
+Third, the multivariate normal. Take z with independent standard normal entries. Then A z plus mu is multivariate normal, with mean mu and variance A A transpose. A linear function C y plus d of an M V N vector is also M V N.
+
+7
+00:01:28,844 --> 00:01:44,439
+Here is the data example of Lecture 6. The file satisfaction dot csv has data on 46 hospital patients. The response is satisfaction with the quality of care. A higher value means more satisfied.
+
+8
+00:01:44,889 --> 00:01:55,534
+There are three covariates. Age is in years. Severity is a score for the condition of the patient. Stress is the stress level that the patient reports.
+
+9
+00:01:55,984 --> 00:02:08,805
+So each patient is one row. We have n equals 46 rows. The table shows the first 6 rows. We want to explain satisfaction with all three covariates at the same time.
+
+10
+00:02:09,255 --> 00:02:25,469
+A pairs plot shows a scatter plot for each pair of variables. In row i and column j, the vertical axis is variable i and the horizontal axis is variable j. The diagonal gives the names and the ranges.
+
+11
+00:02:25,919 --> 00:02:42,644
+The first row has satisfaction on the vertical axis. All three plots go down. The correlations are minus 0.79 with age, minus 0.60 with severity, and minus 0.64 with stress.
+
+12
+00:02:43,094 --> 00:02:55,297
+The covariates are also correlated with each other. For example, severity and stress have a correlation of 0.67. Older patients also tend to have more stress.
+
+13
+00:02:55,747 --> 00:03:07,715
+So when stress goes up, age also tends to go up. A plot of satisfaction against stress alone mixes the two effects. We need one model that contains all the covariates.
+
+14
+00:03:08,165 --> 00:03:22,607
+Lecture 6 asks these questions. First: is mean satisfaction associated with stress, conditional on age and severity? In the model, this is a question about beta 3, the coefficient of stress.
+
+15
+00:03:23,057 --> 00:03:34,897
+Second: how does mean satisfaction differ between older and younger patients, with the same severity and stress? This is a question about beta 1, the coefficient of age.
+
+16
+00:03:35,347 --> 00:03:43,582
+Third: given the age, severity, and stress of a patient, can we predict the satisfaction? This uses the full equation.
+
+17
+00:03:44,032 --> 00:03:53,035
+Later, we ask if the association with stress is different for older patients. That needs a new term in the model. Later lectures show it.
+
+18
+00:03:53,485 --> 00:04:07,586
+Here is the multiple linear regression model. Observation i has the response y i, and p covariates, x i 1 to x i p. We stack the n responses into the vector y.
+
+19
+00:04:08,036 --> 00:04:16,377
+The intercept beta 0 multiplies the number 1 in every row. So the first column of X is a column of ones.
+
+20
+00:04:16,827 --> 00:04:25,062
+The next column holds covariate 1 for all n observations: x 1 1, x 2 1, to x n 1.
+
+21
+00:04:25,512 --> 00:04:36,392
+We add one column for each covariate, up to covariate p. The result is the design matrix X. It has n rows and p plus 1 columns.
+
+22
+00:04:36,842 --> 00:04:49,749
+The parameters beta 0 to beta p form the vector beta. The errors epsilon 1 to epsilon n form the vector epsilon. So y equals X beta plus epsilon.
+
+23
+00:04:50,199 --> 00:05:06,903
+The errors are independent normal with variance sigma squared. In vector form, epsilon is M V N, with mean 0 and variance sigma squared times the identity. By linearity, y is M V N with mean X beta.
+
+24
+00:05:07,353 --> 00:05:20,537
+Always check the shapes. y is n by 1. X is n by p plus 1. beta is p plus 1 by 1. So X beta is n by 1, the same as y and epsilon.
+
+25
+00:05:20,987 --> 00:05:35,643
+Row i of X times beta gives beta 0, plus beta 1 x i 1, and so on, plus beta p x i p. So row i of the matrix equation is the model for observation i.
+
+26
+00:05:36,093 --> 00:05:44,669
+For the satisfaction data, n is 46 and p is 3. So X is 46 by 4, and beta has 4 entries.
+
+27
+00:05:45,119 --> 00:05:52,329
+The slides assume p plus 1 is less than n. We need more observations than unknown coefficients.
+
+28
+00:05:52,779 --> 00:06:00,929
+With one covariate, the mean of y is a line. With two covariates, we need three axes: x 1, x 2, and y.
+
+29
+00:06:01,379 --> 00:06:06,904
+Each observation is one point in this space. The points here are our own example.
+
+30
+00:06:07,354 --> 00:06:21,114
+The mean of y is beta 0, plus beta 1 x 1, plus beta 2 x 2. This is a plane. With more covariates it is a flat surface in more dimensions, but the ideas are the same.
+
+31
+00:06:21,564 --> 00:06:32,316
+The error epsilon i is the vertical distance from the point to the plane. Points above the plane have a positive error. Points below have a negative error.
+
+32
+00:06:32,766 --> 00:06:48,019
+To interpret a parameter, isolate it. Set every covariate to 0. Then every term with a covariate is 0, and only beta 0 stays. So beta 0 is the mean outcome when all covariates are 0.
+
+33
+00:06:48,469 --> 00:07:04,000
+This may not have a meaning. The data can be far from 0. In the satisfaction data, age 0 is not possible for an adult patient. Then beta 0 only places the plane. It is not interesting by itself.
+
+34
+00:07:04,450 --> 00:07:14,669
+Now beta 1. Take a point with covariate values x 1, x 2, and so on. The mean outcome is the height of the plane above this point.
+
+35
+00:07:15,119 --> 00:07:24,740
+Now increase x 1 by 1. Keep x 2 and all other covariates the same. The mean outcome is the height of the plane at the new point.
+
+36
+00:07:25,190 --> 00:07:31,739
+The plane goes up by beta 1. This rise is the same at every point, because the plane is flat.
+
+37
+00:07:32,189 --> 00:07:49,597
+Subtract the two means. beta 0 cancels. The terms with x 2 to x p cancel, because these values did not change. Only beta 1 times x 1 plus 1, minus beta 1 times x 1, stays. That is beta 1.
+
+38
+00:07:50,047 --> 00:08:02,826
+In general, beta j is the difference in mean outcome for a one-unit change in covariate j, holding the other covariates fixed. Always say: holding the other covariates fixed.
+
+39
+00:08:03,276 --> 00:08:27,937
+Here are the estimates for the satisfaction data. Lecture 6 page 37 computes them, and we got the same numbers from the data. Beta hat 1 for age is minus 1.1416. Beta hat 3 for stress is minus 13.4702. The green line is the fitted mean against age, at stress 2.3 and severity 50.
+
+40
+00:08:28,387 --> 00:08:43,150
+Take two patients with the same severity and stress. One is 10 years older. The fitted mean satisfaction of the older patient is 11.4 lower. That is 10 times 1.1416.
+
+41
+00:08:43,600 --> 00:09:02,651
+Now fix age and severity, and increase stress by 0.5. The line moves down by 0.5 times 13.47, which is 6.74. The lines are parallel. The age effect is the same at every stress level in this model.
+
+42
+00:09:03,101 --> 00:09:19,015
+Added, not on the slides. A simple regression of satisfaction on stress alone gives a slope of minus 37.12. This slope also contains the effect of age and severity, because they go up with stress.
+
+43
+00:09:19,465 --> 00:09:31,924
+The multiple regression slope is minus 13.47. It compares patients with the same age and severity. This is why we must say: holding the other covariates fixed.
+
+44
+00:09:32,374 --> 00:09:50,657
+We do not know beta. We estimate it with least squares. For any candidate beta, y minus X beta is the vector of differences between the data and the candidate means. S of beta is this vector times itself. That is the sum of the squared differences.
+
+45
+00:09:51,107 --> 00:10:06,317
+Here is a picture with our own small data set, with one covariate. Take the candidate beta 0 equals 3 and beta 1 equals 0.3. Each orange square has the area of one squared difference.
+
+46
+00:10:06,767 --> 00:10:18,031
+S is a function of beta. On the right, each gray curve joins the values of beta with the same S. The candidate gives S equal to 5.55.
+
+47
+00:10:18,481 --> 00:10:34,716
+The least squares estimate beta hat is the value of beta with the smallest S. Here it is 1.3 and 0.9, with S equal to 1.9. The squares are smaller. Next, we find beta hat with calculus.
+
+48
+00:10:35,166 --> 00:10:51,379
+First, expand S of beta. The transpose of y minus X beta is y transpose, minus beta transpose X transpose. The reason is that the transpose of a product A B is B transpose A transpose.
+
+49
+00:10:51,829 --> 00:11:01,557
+Multiply the two brackets. Each part of the first bracket multiplies each part of the second. This gives four terms. The grid shows them.
+
+50
+00:11:02,007 --> 00:11:14,786
+Look at the term y transpose X beta. Its shape is 1 by n, times n by p plus 1, times p plus 1 by 1. So it is 1 by 1. It is one number.
+
+51
+00:11:15,236 --> 00:11:27,012
+A number is equal to its transpose. The transpose of y transpose X beta is beta transpose X transpose y. So the two yellow terms are equal.
+
+52
+00:11:27,462 --> 00:11:38,918
+Add the two middle terms. S of beta equals y transpose y, minus 2 y transpose X beta, plus beta transpose X transpose X beta.
+
+53
+00:11:39,368 --> 00:11:54,408
+To recap. The model is y equals X beta plus epsilon. X has n rows and p plus 1 columns, with a first column of ones. Beta 0 is the mean outcome when all covariates are 0.
+
+54
+00:11:54,858 --> 00:12:03,583
+Beta j is the difference in mean outcome for a one-unit change in covariate j, holding the other covariates fixed.
+
+55
+00:12:04,033 --> 00:12:13,676
+Least squares minimizes S of beta. We expanded it into three terms. Video 13 b takes the derivative and finds beta hat.

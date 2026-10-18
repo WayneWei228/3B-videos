@@ -1,0 +1,219 @@
+1
+00:00:00,000 --> 00:00:08,832
+This is STAT 331, video 5 a. The topics are maximum likelihood, fitted values, and residuals.
+
+2
+00:00:09,282 --> 00:00:28,439
+After this video, you can write the likelihood of the simple linear regression model. You can show that it gives the least squares estimates. You can calculate fitted values and residuals, and tell residuals from errors. And you can find the maximum likelihood estimator of sigma squared.
+
+3
+00:00:28,889 --> 00:00:51,183
+In the last video, we minimized the sum of squares. This gave beta one hat equals S x y over S x x, and beta zero hat equals y bar minus beta one hat times x bar. The plot shows five points of our own, and their least squares line. It is y hat equals 2.2 plus 0.6 x.
+
+4
+00:00:51,633 --> 00:01:01,702
+The orange segments are the vertical distances from the points to the line. We could add their absolute values. For this line, the sum is 3.2.
+
+5
+00:01:02,152 --> 00:01:12,776
+Least squares adds the squares of the distances instead. Each orange square has the area of one squared distance. Here the sum of squares is 2.4.
+
+6
+00:01:13,226 --> 00:01:26,026
+The slide asks: why minimize the sum of squares, and not some other objective function? The answer comes from the normal model. Maximum likelihood estimation leads to least squares.
+
+7
+00:01:26,476 --> 00:01:37,207
+Here is the idea of the likelihood. Take a candidate line, here the green line. The model says: at each x i, the mean of y i is on the line.
+
+8
+00:01:37,657 --> 00:01:51,075
+Around each mean, y i has a normal distribution with variance sigma squared. Each orange curve is that normal density, drawn sideways. For this picture, sigma is 0.7.
+
+9
+00:01:51,525 --> 00:02:09,531
+For each point, read the height of its density at the observed y i. These are the blue segments. The points are independent. So the joint density is the product of the heights. This product is the likelihood. Here it is 5.19 times 10 to the minus 3.
+
+10
+00:02:09,981 --> 00:02:13,970
+Now try a different line: the flat line y equals 4.
+
+11
+00:02:14,420 --> 00:02:18,580
+Each point gets a new normal curve, centred on the flat line.
+
+12
+00:02:19,030 --> 00:02:42,006
+Point 1 is far from its curve's centre. Its height is only 0.010. The product is 0.13 times 10 to the minus 3. That is about 40 times smaller. The data are much less probable under the flat line. Maximum likelihood picks the parameters that make the product as large as possible.
+
+13
+00:02:42,456 --> 00:02:55,896
+Now write this as a formula. Under the model, y i is normal with mean beta zero plus beta one x i, and variance sigma squared. This is the density of one y i.
+
+14
+00:02:56,346 --> 00:03:07,461
+The likelihood L is the product of the n densities. It is a function of the parameters beta zero, beta one, and sigma squared, for the observed data y.
+
+15
+00:03:07,911 --> 00:03:24,828
+Each factor has the constant 1 over the square root of 2 pi sigma squared. n of these give 2 pi sigma squared to the power minus n over 2. The exponentials multiply, so their exponents add. This gives one exponential of a sum.
+
+16
+00:03:25,278 --> 00:03:45,097
+It is more convenient to work with the log-likelihood, l. The log of the constant gives minus n over 2 log 2 pi, and minus n over 2 log sigma squared. The log of the exponential gives its exponent: minus 1 over 2 sigma squared, times the sum of squares.
+
+17
+00:03:45,547 --> 00:03:57,195
+The left plot shows the likelihood of the small data as a function of beta one. Beta zero is y bar minus beta one x bar, and sigma is 0.7.
+
+18
+00:03:57,645 --> 00:04:01,250
+The right plot shows the log-likelihood of the same data.
+
+19
+00:04:01,700 --> 00:04:08,249
+Both curves have their maximum at beta one equals 0.6. This is not by chance.
+
+20
+00:04:08,699 --> 00:04:25,275
+The log function is increasing. A larger L always gives a larger l. So the maximum of l is at the same point as the maximum of L. The log also turns the product into a sum. A sum is much easier to differentiate.
+
+21
+00:04:25,725 --> 00:04:41,704
+To find the maximum, take the partial derivative with respect to each parameter. Write u i for y i minus beta zero minus beta one x i. Only the last term of l depends on beta zero and beta one.
+
+22
+00:04:42,154 --> 00:05:04,426
+For beta zero, use the chain rule. The derivative of u i squared is 2 u i, times the inner derivative. The inner derivative of u i with respect to beta zero is minus 1. The 2 and the two minus signs cancel. We get 1 over sigma squared, times the sum of the u i. Call this equation star.
+
+23
+00:05:04,876 --> 00:05:16,695
+For beta one, the inner derivative is minus x i. So we get 1 over sigma squared, times the sum of u i times x i. Call this equation double star.
+
+24
+00:05:17,145 --> 00:05:35,833
+For sigma squared, treat sigma squared as one variable. The derivative of minus n over 2 log sigma squared is minus n over 2 sigma squared. The derivative of minus the sum over 2 sigma squared is plus the sum, over 2 times sigma squared, squared.
+
+25
+00:05:36,283 --> 00:05:47,013
+Compare the two objective functions. On the left is a candidate line with slope 0. Its sum of squares S is 6. Its log-likelihood is low.
+
+26
+00:05:47,463 --> 00:05:54,375
+A slope of 0.3 gives a smaller S, 3.3, and a larger log-likelihood.
+
+27
+00:05:54,825 --> 00:06:00,116
+A slope of 1 gives S equals 4. The log-likelihood goes down again.
+
+28
+00:06:00,566 --> 00:06:09,377
+The slope 0.6 gives the minimum of S, 2.4. At the same slope, the log-likelihood has its maximum.
+
+29
+00:06:09,827 --> 00:06:33,528
+The reason: for a fixed sigma squared, l is a constant minus S over 2 sigma squared. A smaller S always gives a larger l. So setting star and double star to 0 gives the same equations as least squares. The least squares estimators and the maximum likelihood estimators are equal. From now on, we call them beta hat.
+
+30
+00:06:33,978 --> 00:06:53,157
+The equations star and double star also tell us something about the residuals. Set star to 0 at the estimates. The sum of y i minus beta zero hat minus beta one hat x i is 0. This is the first line of the least squares derivation in Lecture 2.
+
+31
+00:06:53,607 --> 00:07:12,508
+Each term is a residual e i. So the residuals always add up to 0. The bars show the five residuals of the small data: minus 0.8, 0.6, 1, minus 0.6, and minus 0.2. Their sum is 0.
+
+32
+00:07:12,958 --> 00:07:22,302
+Now set double star to 0. The sum of the residuals times x i is 0. The purple bars show x i times e i.
+
+33
+00:07:22,752 --> 00:07:30,965
+Their sum is also 0: minus 0.8 plus 1.2 plus 3, minus 2.4, minus 1.
+
+34
+00:07:31,415 --> 00:07:40,226
+So the residuals satisfy two linear constraints. Video 5 b uses these two constraints to explain the n minus 2.
+
+35
+00:07:40,676 --> 00:07:45,391
+Now we define two important quantities. Here are the small data again.
+
+36
+00:07:45,841 --> 00:07:58,619
+The fitted value y i hat is the point on the fitted line at x i. It is beta zero hat plus beta one hat x i. The hollow green circles are the fitted values.
+
+37
+00:07:59,069 --> 00:08:13,917
+The residual e i is the observed value minus the fitted value: y i minus y i hat. It is the vertical distance from the point to the fitted line. A point above the line has a positive residual.
+
+38
+00:08:14,367 --> 00:08:20,469
+The table gives all the values. The fitted line is 2.2 plus 0.6 x.
+
+39
+00:08:20,919 --> 00:08:34,892
+For example, for point 1, x is 1. y 1 hat is 2.2 plus 0.6, which is 2.8. y 1 is 2. So e 1 is 2 minus 2.8, which is minus 0.8.
+
+40
+00:08:35,342 --> 00:08:47,779
+Do not mix up residuals and errors. These eight points come from our own simulation. We know the true line, because we chose it: beta zero is 1 and beta one is 0.8.
+
+41
+00:08:48,229 --> 00:09:01,691
+The errors epsilon i are the vertical distances from the points to the true line. They are the gray dashed segments. In real data, the true line is unknown. So the errors are never observed.
+
+42
+00:09:02,141 --> 00:09:10,973
+The residuals e i are the distances to the fitted line. They are the orange segments. We can always calculate them from the data.
+
+43
+00:09:11,423 --> 00:09:20,959
+For point 3, the error and the residual are different numbers. The fitted line is not the true line, so e i is not epsilon i.
+
+44
+00:09:21,409 --> 00:09:32,865
+The residuals add up to 0, as we showed. The errors do not. Here they add up to minus 4.54. We use the residuals to learn about the errors.
+
+45
+00:09:33,315 --> 00:09:47,459
+Now the brainhead data from the slides. There are 236 people. x is head size in cubic centimetres, and y is brain weight in grams. The six blue points are the first six people.
+
+46
+00:09:47,909 --> 00:10:05,317
+The fitted line is y hat equals 335.4323 plus 0.2608207 x. The table gives the first six fitted values. They are the values on the last slide of Lecture 2.
+
+47
+00:10:05,767 --> 00:10:26,972
+Check the first one by hand. x 1 is 4512. 335.4323, plus 0.2608207 times 4512, equals 1512.255 grams.
+
+48
+00:10:27,422 --> 00:10:51,358
+Now the residuals. e 1 is 1530 minus 1512.255, which is 17.745 grams. Person 5 has the largest residual of the six: 165.12 grams. Person 3 is 111.789 grams below the line.
+
+49
+00:10:51,808 --> 00:11:02,667
+Now estimate sigma squared. Set the derivative of l with respect to sigma squared to 0. Put in the estimates beta zero hat and beta one hat.
+
+50
+00:11:03,117 --> 00:11:12,631
+Multiply both sides by 2 times sigma squared, squared. We get minus n sigma squared, plus the sum of squares, equals 0.
+
+51
+00:11:13,081 --> 00:11:27,759
+So the maximum likelihood estimator of sigma squared is the sum of squares divided by n. Each term is a squared residual. So sigma squared hat M L is the sum of e i squared, over n.
+
+52
+00:11:28,209 --> 00:11:44,358
+For the small data, the sum of squared residuals is 2.4, and n is 5. So sigma squared hat M L is 0.48. The plot shows l as a function of sigma squared. Its maximum is at 0.48.
+
+53
+00:11:44,808 --> 00:11:56,691
+To recap. The log-likelihood of the model has a constant part and minus the sum of squares over 2 sigma squared. So maximum likelihood gives the least squares estimates.
+
+54
+00:11:57,141 --> 00:12:09,194
+Fitted values are on the fitted line. Residuals are y minus y hat. They add up to 0, and so do x i times e i. Residuals are not the errors.
+
+55
+00:12:09,644 --> 00:12:21,996
+The maximum likelihood estimator of sigma squared is the sum of squared residuals over n. Video 5 b shows why we usually divide by n minus 2 instead.

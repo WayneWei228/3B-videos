@@ -1,0 +1,179 @@
+1
+00:00:00,000 --> 00:00:06,827
+This is STAT 331, video 10 a. The topic is the prediction of a new response.
+
+2
+00:00:07,277 --> 00:00:27,543
+After this video, you can tell the difference between estimating a mean and predicting one new y. You can derive the mean and the variance of the prediction error. You can derive the prediction interval. And you can compare confidence bands with prediction bands. Video 10 b solves the exam problems.
+
+3
+00:00:27,993 --> 00:00:35,161
+Here are the brainhead data again. There are 236 people. The green line is the fitted line.
+
+4
+00:00:35,611 --> 00:00:44,017
+Take a new person with head size x new equal to 4200. As always, we treat x new as fixed.
+
+5
+00:00:44,467 --> 00:01:07,336
+In video 9, we estimated the mean response mu 0 at this x. Now we want more: the brain weight of this one new person. The model gives y new equals beta 0, plus beta 1 x new, plus epsilon new. So y new is spread around the mean. The orange curve shows this normal spread, with variance sigma squared.
+
+6
+00:01:07,786 --> 00:01:19,903
+The predicted value is y new hat. It equals beta 0 hat plus beta 1 hat times x new. This is the same number as mu 0 hat, the estimated mean.
+
+7
+00:01:20,353 --> 00:01:31,553
+So the point estimate does not change. But a new y also has its own error, epsilon new. The interval must take this additional uncertainty into account.
+
+8
+00:01:32,003 --> 00:01:38,553
+Why is there additional uncertainty? The gray dashed line is the true line. We do not know it.
+
+9
+00:01:39,003 --> 00:01:54,363
+Source 1. Each sample gives different estimates. Here are fitted lines from 9 simulated samples. So y new hat changes from sample to sample. This is the uncertainty of the estimated mean, from video 9.
+
+10
+00:01:54,813 --> 00:02:02,898
+Source 2. The new response has its own error, epsilon new. Even with the true line, y new is not on the line.
+
+11
+00:02:03,348 --> 00:02:18,857
+So the prediction must include both parts. The green bar is the spread of y new hat. The orange bar is the spread of y new. Its variance is sigma squared. For the brainhead data, the orange part is much larger.
+
+12
+00:02:19,307 --> 00:02:34,049
+To build an interval, define the prediction error. It is y new hat minus y new. Both parts are random. The green curve is the distribution of y new hat. Its centre is mu 0, and its spread is small.
+
+13
+00:02:34,499 --> 00:02:52,675
+Take the expected value. Write y new hat as beta 0 hat plus beta 1 hat x new. Write y new as beta 0, plus beta 1 x new, plus epsilon new. The orange curve is the distribution of y new. Its centre is also mu 0.
+
+14
+00:02:53,125 --> 00:03:10,575
+The estimators are unbiased, and epsilon new has mean 0. So the expected value is beta 0 plus beta 1 x new, minus the same thing. That is 0. The purple curve is the distribution of the difference. Its centre is 0.
+
+15
+00:03:11,025 --> 00:03:19,729
+Next, the variance. The two parts are independent, so their variances add. The purple curve is wider than both curves above it.
+
+16
+00:03:20,179 --> 00:03:38,334
+Why are y new hat and y new independent? y new hat is a function of y 1 to y n. So it depends only on epsilon 1 to epsilon n. y new depends only on epsilon new. The errors are independent, so the two parts are independent.
+
+17
+00:03:38,784 --> 00:03:52,373
+For independent random variables, the variance of a difference is the sum of the variances. The minus sign does not change this, because the variance of minus Y equals the variance of Y.
+
+18
+00:03:52,823 --> 00:04:16,546
+The first variance is from video 9: sigma squared, times 1 over n, plus x new minus x bar squared, over S x x. The second variance is sigma squared, because the only random part of y new is epsilon new. Take sigma squared out as a common factor. Inside the bracket, we get 1 plus 1 over n plus the x term.
+
+19
+00:04:16,996 --> 00:04:30,756
+Here are the pieces for the brainhead data at x 0 equal to 3000, in units of sigma squared. For the mean, 1 over n plus the x term is only 0.0175.
+
+20
+00:04:31,206 --> 00:04:42,385
+For the prediction, we add 1, from epsilon new. The total is 1.0175. The orange part is much larger than the other two parts.
+
+21
+00:04:42,835 --> 00:04:54,248
+This is the scale, in units of sigma squared. So for a large sample, the prediction variance is close to sigma squared. More data cannot remove epsilon new.
+
+22
+00:04:54,698 --> 00:05:07,114
+We know the distribution of the prediction error. It is a sum of normal random variables, so it is normal. Its mean is 0. Its variance is sigma squared times the bracket.
+
+23
+00:05:07,564 --> 00:05:15,159
+Subtract the mean and divide by the standard deviation. The result has a standard normal distribution.
+
+24
+00:05:15,609 --> 00:05:41,529
+But sigma is unknown. Replace sigma with sigma hat. The logic is the same as before. n minus 2, times sigma hat squared over sigma squared, has a chi squared distribution with n minus 2 degrees of freedom, and it is independent of the numerator. So the ratio has a t distribution with n minus 2 degrees of freedom. The curve on the right is this t density.
+
+25
+00:05:41,979 --> 00:05:58,491
+So with probability 1 minus alpha, the ratio T is between minus t and plus t. Here t is the 1 minus alpha over 2 quantile of t with n minus 2 degrees of freedom. The green area is 1 minus alpha.
+
+26
+00:05:58,941 --> 00:06:21,810
+Each red tail has area alpha over 2. Multiply the inequality by the denominator, and solve for y new. The result is the 100 times 1 minus alpha percent prediction interval. y new hat, plus or minus t, times sigma hat, times the square root of 1 plus 1 over n plus the x term.
+
+27
+00:06:22,260 --> 00:06:29,193
+Compare the two intervals. The confidence interval is for the mean mu 0. The mean is a fixed number.
+
+28
+00:06:29,643 --> 00:06:45,089
+The prediction interval is for one new response. y new is a random variable. The formulas have the same centre and the same t quantile. The only difference is the 1 under the square root. It comes from epsilon new.
+
+29
+00:06:45,539 --> 00:07:04,717
+An example with the brainhead data, at x equal to 3000. The centre of both intervals is 335.4323 plus 0.2608 times 3000. That is 1117.89 grams.
+
+30
+00:07:05,167 --> 00:07:20,698
+The 95 percent confidence interval for the mean is 1099.0 to 1136.8 grams. It is narrow, because 236 people give a precise line.
+
+31
+00:07:21,148 --> 00:07:40,135
+The 95 percent prediction interval is 974.1 to 1261.7 grams. It is about 7.6 times as wide. Individual brains vary around the mean with sigma hat of about 72 grams.
+
+32
+00:07:40,585 --> 00:07:46,814
+Now compute both intervals at a grid of x values from the smallest to the largest head size.
+
+33
+00:07:47,264 --> 00:07:53,387
+The green band joins the 95 percent confidence intervals for the mean. It is narrow.
+
+34
+00:07:53,837 --> 00:08:06,402
+The orange band joins the 95 percent prediction intervals. The prediction intervals are much wider than the confidence intervals. Most of the data points are inside the orange band.
+
+35
+00:08:06,852 --> 00:08:19,204
+The lines are not parallel. Both bands are narrowest at x bar, and slightly wider at the edges. The red bars show the prediction intervals at the smallest and the largest x.
+
+36
+00:08:19,654 --> 00:08:35,782
+This plot shows the half-width of each interval as a function of x 0. The green curve is for the CI. At x bar, the x term is zero, so the half-width is t times sigma hat over root n. That is 9.3 grams.
+
+37
+00:08:36,232 --> 00:08:49,096
+The orange curve is for the PI. At x bar, the half-width is t times sigma hat times the square root of 1 plus 1 over n. That is 142.8 grams.
+
+38
+00:08:49,546 --> 00:09:03,626
+Both curves have their minimum at x bar. The term x 0 minus x bar squared, over S x x, grows as x 0 moves away from x bar. So both bands are wider at the edges.
+
+39
+00:09:04,076 --> 00:09:20,545
+Look at the formulas for a large n. 1 over n and the x term become small. So the CI width goes to 0. But the PI width does not go to 0, because the 1 stays. A larger sample cannot remove epsilon new.
+
+40
+00:09:20,995 --> 00:09:40,835
+What does 95 percent mean here? This is our own simulation. We use the brainhead fit as the true model, and generate 20 new data sets. For each data set, we compute a 95 percent prediction interval at x equal to 4200. These are the orange bars.
+
+41
+00:09:41,285 --> 00:09:57,968
+For each data set, we also generate one new response at x equal to 4200. The dots are these new responses. A blue dot is inside its interval. The red dot, in data set 4, is outside its interval.
+
+42
+00:09:58,418 --> 00:10:12,455
+Here 19 of 20 intervals contain their new y. Over many repetitions, 95 percent of the intervals contain the new response. Both the interval and y new are random in this statement.
+
+43
+00:10:12,905 --> 00:10:27,177
+To recap. The predicted value is beta 0 hat plus beta 1 hat x new. It is the same number as the estimated mean. The prediction error has mean 0, and its two parts are independent.
+
+44
+00:10:27,627 --> 00:10:42,497
+The variance of the prediction error is sigma squared times 1 plus 1 over n plus the x term. The 1 comes from epsilon new. The prediction interval uses the t quantile with n minus 2 degrees of freedom.
+
+45
+00:10:42,947 --> 00:10:58,627
+The prediction interval is always wider than the confidence interval. Both are narrowest at x bar. The next video, 10 b, solves Tutorial 2, the Lecture 4 practice questions, and Assignment 1 question 3.

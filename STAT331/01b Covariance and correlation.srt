@@ -1,0 +1,203 @@
+1
+00:00:00,000 --> 00:00:09,707
+This is STAT 331, video 1, part b. The topic is covariance and correlation. Part a covered the mean and the variance.
+
+2
+00:00:10,157 --> 00:00:33,410
+After this video, you can calculate a covariance with both forms, and use its properties. You can find the variance of a sum and of a difference. You can calculate the sample covariance and the correlation by hand. And you can write the correlation with the sums S x y, S x x, and S y y. All of regression uses these sums.
+
+3
+00:00:33,860 --> 00:00:55,193
+Covariance measures how two random variables change together. The covariance of X and Y is the expectation of X minus its mean, times Y minus its mean. As an example, take the first 5 people as a whole population. Pick one person at random, each with probability one fifth.
+
+4
+00:00:55,643 --> 00:01:13,841
+The purple lines are the means, 4093 and 1406.8. They cut the plane into four parts. Top right, both deviations are positive. Bottom left, both are negative. In the other two parts, the signs differ.
+
+5
+00:01:14,291 --> 00:01:27,816
+Each product of deviations is the area of a rectangle from the mean point to the data point. Same signs give a positive product, in blue. Opposite signs give a negative product, in red.
+
+6
+00:01:28,266 --> 00:01:35,583
+Here are the five products. Four are positive. One is negative: minus 12062.4.
+
+7
+00:01:36,033 --> 00:01:55,127
+The covariance is the average product. The sum is 133363. Divide by 5: the covariance is 26672.6. It is positive, so a larger head usually goes with a heavier brain.
+
+8
+00:01:55,577 --> 00:02:01,678
+The slide gives a second form. Expand the product. X times Y gives X Y.
+
+9
+00:02:02,128 --> 00:02:20,560
+The other three terms are minus X times the mean of Y, minus the mean of X times Y, and plus the product of the means. Take the expectation with linearity. The means are constants. So the last three terms become minus, minus, plus the product of the means.
+
+10
+00:02:21,010 --> 00:02:30,674
+Two of them cancel. So the covariance equals the expectation of X Y, minus the expectation of X times the expectation of Y.
+
+11
+00:02:31,124 --> 00:02:56,041
+Check it on the 5 people. The mean of X is 4093. The mean of Y is 1406.8. The products x i y i add to 28923525. Divide by 5: the expectation of X Y is 5784705.
+
+12
+00:02:56,491 --> 00:03:15,094
+Subtract 4093 times 1406.8, which is 5758032.4. The result is 26672.6. Both forms give the same covariance.
+
+13
+00:03:15,544 --> 00:03:26,189
+Property 1. The covariance of X with itself is the variance of X. The rectangle has two equal sides. So it is a square of the deviation.
+
+14
+00:03:26,639 --> 00:03:48,015
+Property 2. The covariance of a Y plus c with b X plus d is a b times the covariance of X and Y. The factors stretch the sides of each rectangle, so the area is multiplied by a b. A shift moves each point and its mean by the same amount. So the deviations do not change.
+
+15
+00:03:48,465 --> 00:04:00,967
+Property 3. The covariance of a sum with a sum splits into pairs. Each term on the left goes with each term on the right. Two terms times two terms give four covariances.
+
+16
+00:04:01,417 --> 00:04:11,145
+One more fact follows from the definition. The order does not matter: the covariance of Y and X equals the covariance of X and Y.
+
+17
+00:04:11,595 --> 00:04:18,400
+The slide asks an exercise: what is the variance of X plus Y? Pause the video and try it.
+
+18
+00:04:18,850 --> 00:04:26,253
+Use property 1 backwards. The variance of X plus Y is the covariance of X plus Y with itself.
+
+19
+00:04:26,703 --> 00:04:35,364
+Use property 3. The grid has four cells: covariance of X with X, X with Y, Y with X, and Y with Y.
+
+20
+00:04:35,814 --> 00:04:52,433
+The diagonal cells are the variances, by property 1. The two other cells are equal, because the order does not matter. So the variance of X plus Y is the variance of X, plus the variance of Y, plus 2 times the covariance.
+
+21
+00:04:52,883 --> 00:05:15,539
+When X and Y are independent, the covariance is 0. Then we get property 2 of the variance. For the 5 people, the variances are 87344.4 and 16305.36. The result is 156994.96.
+
+22
+00:05:15,989 --> 00:05:30,495
+For observed pairs, the sample covariance is 1 over n minus 1, times the sum of y i minus y bar, times x i minus x bar. Now we treat the 5 people as a sample.
+
+23
+00:05:30,945 --> 00:05:43,084
+Find x bar, 4093, and y bar, 1406.8. Then find the deviations. Each set of deviations adds to 0.
+
+24
+00:05:43,534 --> 00:05:49,273
+Multiply the two deviations of each person. These are the signed rectangles again.
+
+25
+00:05:49,723 --> 00:05:56,699
+The products are the same as before. Their sum is 133363.
+
+26
+00:05:57,149 --> 00:06:15,005
+Now divide by n minus 1, which is 4, not by 5. The sample covariance is 33340.75. It is larger than 26672.6 only because of the divisor.
+
+27
+00:06:15,455 --> 00:06:17,993
+Now all 236 people.
+
+28
+00:06:18,443 --> 00:06:31,499
+The purple lines are x bar, 3637.864, and y bar, 1284.263. They make four quadrants.
+
+29
+00:06:31,949 --> 00:06:37,901
+Blue points have a positive product of deviations. Red points have a negative product.
+
+30
+00:06:38,351 --> 00:06:47,610
+Quadrants 1 and 3 have 91 and 97 people. Quadrants 2 and 4 have 24 each. So most products are positive.
+
+31
+00:06:48,060 --> 00:07:11,655
+The sum of the products in each quadrant is shown. The positive sums are much larger. The total is S x y, 7993433.4. Divide by 235. The sample covariance is 34014.61, in grams times cubic centimeters.
+
+32
+00:07:12,105 --> 00:07:30,046
+The covariance has a problem: it depends on the units. In grams and cubic centimeters it is 34014.61. In kilograms and litres it is 0.034. The data is the same. Only the number changed.
+
+33
+00:07:30,496 --> 00:07:46,901
+The correlation coefficient rho divides the covariance by the two standard deviations. The units cancel. So the correlation has no unit, and it is the same in both unit systems: 0.7937.
+
+34
+00:07:47,351 --> 00:08:01,751
+For data, we use three sums. S x y is the sum of the products of deviations. S x x is the sum of squared deviations of x. S y y is the sum of squared deviations of y.
+
+35
+00:08:02,201 --> 00:08:12,612
+The sample correlation r puts the sample covariance over the two sample standard deviations. Each one has a factor 1 over n minus 1.
+
+36
+00:08:13,062 --> 00:08:32,475
+The square roots of the two factors multiply to 1 over n minus 1. It cancels with the numerator. So r equals S x y over the square root of S x x times S y y. The sums S x x and S x y come back in every regression lecture.
+
+37
+00:08:32,925 --> 00:08:45,213
+Correlation measures the strength of a linear relationship. r is always between minus 1 and 1. Here the points are close to a rising line. r is 0.96.
+
+38
+00:08:45,663 --> 00:08:52,533
+The brainhead data has r equals 0.79: a clear rising trend, with more spread.
+
+39
+00:08:52,983 --> 00:08:56,993
+Here there is no linear trend. r is small: 0.12.
+
+40
+00:08:57,443 --> 00:09:03,097
+Here the points fall from left to right. r is negative: minus 0.79.
+
+41
+00:09:03,547 --> 00:09:29,467
+Now calculate r for the 5 people. S x y is 133363. S x x is 436722. S y y is 81526.8. So r is 133363 over the square root of their product. That is 0.7068.
+
+42
+00:09:29,917 --> 00:09:57,479
+For all 236 people, S x y is 7993433.4, S x x is 30647233.7, and S y y is 3309753.7. So r is 0.7937. This is a strong positive linear relationship.
+
+43
+00:09:57,929 --> 00:10:05,140
+Two more practice questions with the summaries of all 236 people. Pause the video and try them.
+
+44
+00:10:05,590 --> 00:10:29,163
+Question 4. Write x minus y as x plus minus 1 times y. The grid gives the variance of X, the variance of Y, and two covariance cells. Each covariance cell has the factor minus 1. So the variance of X minus Y is the variance of X, plus the variance of Y, minus 2 times the covariance.
+
+45
+00:10:29,613 --> 00:10:47,555
+Put in the numbers: 130413.76 plus 14084.06 minus 2 times 34014.61. The result is 76468.60.
+
+46
+00:10:48,005 --> 00:11:06,650
+Question 5. The sample covariance is S x y over n minus 1. So S x y is 235 times 34014.61. That is 7993433.35.
+
+47
+00:11:07,100 --> 00:11:20,881
+Then r is S x y over the square root of S x x times S y y. The result is 0.7937. The small difference in S x y comes from rounding.
+
+48
+00:11:21,331 --> 00:11:32,745
+To recap. The outcome y is the variable whose mean we explain. The covariate x explains or predicts it. Row i gives the point x i, y i.
+
+49
+00:11:33,195 --> 00:11:51,819
+Expectation is linear. The sample mean is the balance point of the data. The variance is the expected squared deviation. It equals the expectation of Y squared minus the squared expectation. The sample variance is S y y over n minus 1.
+
+50
+00:11:52,269 --> 00:12:08,183
+The covariance is the expectation of X Y minus the product of the means. The variance of a sum or a difference has a term 2 times the covariance. The sample covariance is S x y over n minus 1.
+
+51
+00:12:08,633 --> 00:12:27,065
+The correlation r is S x y over the square root of S x x times S y y. It has no unit. For the brainhead data, r is 0.7937. The next video reviews four distributions, and the idea of a regression line.

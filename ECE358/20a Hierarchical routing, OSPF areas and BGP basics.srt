@@ -1,0 +1,251 @@
+1
+00:00:00,000 --> 00:00:11,051
+This is ECE 358, video 20a. The topic is hierarchical routing, OSPF areas, and the basics of BGP.
+
+2
+00:00:11,501 --> 00:00:35,842
+After this video, you can explain why the Internet splits routing into two levels. You can describe hierarchical OSPF and its router types. You can explain how BGP advertises paths, and how BGP and OSPF together fill a forwarding table. Video 20b continues with route selection, policy, and the question bank.
+
+3
+00:00:36,292 --> 00:00:47,833
+Up to now, our routing study was ideal. All routers were identical, and the network was flat. Every router knew every other router. This is not true in practice.
+
+4
+00:00:48,283 --> 00:01:03,131
+The first problem is scale. The Internet has billions of destinations. No router can store all of them in a table. Also, the exchange of routing tables between all routers would use up the capacity of the links.
+
+5
+00:01:03,581 --> 00:01:13,949
+The second problem is administrative autonomy. The Internet is a network of networks. Each network admin wants to control routing in its own network.
+
+6
+00:01:14,399 --> 00:01:33,109
+The solution is to group the routers into autonomous systems, or ASes. Each AS has one admin. The picture shows three ASes. Routing now has two levels: routing inside an AS, and routing between ASes.
+
+7
+00:01:33,559 --> 00:01:47,852
+Here are three autonomous systems: AS1, AS2 and AS3. Each AS is a group of routers under one admin. Thick lines connect gateway routers of different ASes.
+
+8
+00:01:48,302 --> 00:01:56,793
+Inside each AS, an intra-AS routing algorithm runs. The admin of each AS selects this algorithm.
+
+9
+00:01:57,243 --> 00:02:05,797
+Between the ASes, an inter-AS routing algorithm runs. It goes over the links between the gateway routers.
+
+10
+00:02:06,247 --> 00:02:11,538
+Each router has one forwarding table. Here is the table of router 1d.
+
+11
+00:02:11,988 --> 00:02:25,215
+Intra-AS routing sets the entries for destinations inside the AS. For destinations outside the AS, inter-AS routing and intra-AS routing set the entries together.
+
+12
+00:02:25,665 --> 00:02:44,033
+Here AS1 has two gateways. Gateway 1b connects to AS3. Gateway 1c connects to AS2. Router 1d gets a datagram for destination Z, outside AS1. 1d must send it to a gateway router. But which one?
+
+13
+00:02:44,483 --> 00:03:00,141
+So AS1 inter-domain routing must do two jobs. Job 1: learn which destinations are reachable through AS2, and which are reachable through AS3. Here, Z is reachable through AS3.
+
+14
+00:03:00,591 --> 00:03:10,703
+Job 2: propagate this reachability information to all routers in AS1. The purple arrows show the gateways telling the other routers.
+
+15
+00:03:11,153 --> 00:03:21,905
+Now 1d knows that Z goes through gateway 1b. It forwards the datagram toward 1b. In the Internet, BGP does these two jobs.
+
+16
+00:03:22,355 --> 00:03:40,531
+Inside an AS, three intra-AS routing protocols are common. The first is RIP, the Routing Information Protocol. It is classic distance vector. Neighbours exchange distance vectors every 30 seconds. RIP is no longer widely used.
+
+17
+00:03:40,981 --> 00:03:52,245
+The second is EIGRP. It is also based on distance vectors. It was Cisco-proprietary for decades. It became open in 2013.
+
+18
+00:03:52,695 --> 00:04:07,287
+The third is OSPF, Open Shortest Path First. It is widely used. It is link-state routing. The IS-IS protocol is an ISO standard and is about the same as OSPF.
+
+19
+00:04:07,737 --> 00:04:12,281
+From here on, we use OSPF as the intra-AS protocol.
+
+20
+00:04:12,731 --> 00:04:23,590
+OSPF means Open Shortest Path First. Open means that the protocol is publicly available. The picture shows the routers of one AS.
+
+21
+00:04:24,040 --> 00:04:43,432
+OSPF is classic link-state routing. Each router floods OSPF link-state advertisements to all other routers in the entire AS. OSPF sends these advertisements directly over IP. It does not use TCP or UDP.
+
+22
+00:04:43,882 --> 00:04:50,197
+The link costs can use different metrics, for example bandwidth or delay. The admin sets them.
+
+23
+00:04:50,647 --> 00:04:59,927
+So each router has the full topology of the AS. Each router runs Dijkstra's algorithm on it and computes its forwarding table.
+
+24
+00:05:00,377 --> 00:05:07,502
+For security, all OSPF messages are authenticated. This prevents malicious intrusion.
+
+25
+00:05:07,952 --> 00:05:26,725
+A large AS has many routers. Flooding link-state advertisements to all of them costs much traffic. Hierarchical OSPF reduces this flooding overhead. It uses a two-level hierarchy: local areas, and one backbone, called area 0.
+
+26
+00:05:27,175 --> 00:05:46,354
+Link-state advertisements are flooded only inside one area, or only inside the backbone. The orange arrows show a flood that stays in area 1. Each router knows the detailed topology of its own area. For other destinations, it only knows the direction.
+
+27
+00:05:46,804 --> 00:06:02,953
+There are four types of routers. Local routers, also called internal routers, flood link state in their area only. They compute routes inside the area. They forward packets for outside destinations to the area border router.
+
+28
+00:06:03,403 --> 00:06:15,350
+Area border routers belong to an area and to the backbone. They summarize the distances to destinations in their own area. They advertise these summaries in the backbone.
+
+29
+00:06:15,800 --> 00:06:19,661
+Backbone routers run OSPF limited to the backbone.
+
+30
+00:06:20,111 --> 00:06:31,866
+Boundary routers connect the AS to other ASes. One more rule from the slide: both sides of a link always belong to the same OSPF area.
+
+31
+00:06:32,316 --> 00:06:51,900
+BGP, the Border Gateway Protocol, is the de facto inter-domain routing protocol. The slides call it the glue that holds the Internet together. BGP lets a border router advertise its existence, and the destinations it can reach, to the rest of the Internet.
+
+32
+00:06:52,350 --> 00:07:19,145
+Here is the slide example. The University of Waterloo network is AS 12093. Its main IPv4 block is 129 dot 97 dot 0 dot 0, slash 16. It connects to ORION, AS 26677. A BGP router in UW sends this advertisement to a BGP router of ORION.
+
+33
+00:07:19,595 --> 00:07:38,773
+BGP has two parts. eBGP is external BGP. With eBGP, BGP routers get subnet reachability information from neighbouring ASes. This information is a sequence of ASes and the networks at the end.
+
+34
+00:07:39,223 --> 00:08:00,322
+iBGP is internal BGP. With iBGP, BGP routers propagate this reachability information to the other BGP routers in the same AS, and to some configured internal routers. So iBGP carries external routes inside the AS.
+
+35
+00:08:00,772 --> 00:08:10,948
+Together, eBGP and iBGP find good routes to other networks. They use two inputs: reachability information, and policy.
+
+36
+00:08:11,398 --> 00:08:17,009
+Here are the three ASes again. The solid lines are physical links.
+
+37
+00:08:17,459 --> 00:08:29,469
+eBGP sessions connect routers in different ASes. Here, 1c talks to 2a, and 2c talks to 3a. The red dashed lines show them.
+
+38
+00:08:29,919 --> 00:08:44,426
+iBGP sessions connect the routers inside one AS. They are logical connections. Each pair of routers in an AS has one. An iBGP session can go over several physical links.
+
+39
+00:08:44,876 --> 00:08:57,975
+The gateway routers, 1c, 2a, 2c and 3a, run both protocols. They run eBGP to the neighbour AS, and iBGP inside their own AS.
+
+40
+00:08:58,425 --> 00:09:12,099
+In a BGP session, two BGP routers, called peers, exchange BGP messages. They use a semi-permanent TCP connection. Here 2c and 3a are peers.
+
+41
+00:09:12,549 --> 00:09:23,515
+With these messages, a router advertises paths to different destination network prefixes that it can reach. So BGP is a path vector protocol.
+
+42
+00:09:23,965 --> 00:09:42,738
+Example: AS3 gateway 3a advertises the path AS3, X to AS2 gateway 2c. X is a destination network prefix. With this advertisement, AS3 promises AS2 that it will forward datagrams toward X.
+
+43
+00:09:43,188 --> 00:09:54,985
+Next, AS2 gateway 2a advertises the path AS2, AS3, X to AS1 gateway 1c. AS2 adds its own number at the front.
+
+44
+00:09:55,435 --> 00:10:08,641
+Now AS1 can send datagrams for X to AS2. Data flows in the opposite direction of the advertisements: from AS1, through AS2 and AS3, to X.
+
+45
+00:10:09,091 --> 00:10:18,115
+An advertised BGP route has two parts: a prefix and attributes. The prefix is the destination network, here X.
+
+46
+00:10:18,565 --> 00:10:34,202
+The first important attribute is AS-PATH. It is the list of ASes that the advertisement has passed through. The route that AS2 sends to AS1 has the AS-PATH AS2, AS3.
+
+47
+00:10:34,652 --> 00:10:52,401
+The second important attribute is NEXT-HOP. It gives the IP address of the advertising router's interface that is used for the eBGP session. Here it is the interface of router 2a. So NEXT-HOP names the router at the start of the next AS.
+
+48
+00:10:52,851 --> 00:11:11,902
+BGP does policy-based routing, with two types of policy. A gateway that receives an advertisement uses its import policy to accept or decline the path. Example: never route through AS Y. If a path contains AS Y, do not use it.
+
+49
+00:11:12,352 --> 00:11:22,827
+The policy of an AS also decides whether to advertise a learned path to other neighbour ASes. This is the export policy.
+
+50
+00:11:23,277 --> 00:11:36,375
+Let us follow one advertisement. AS2 router 2c receives the path advertisement AS3, X from AS3 router 3a, by eBGP.
+
+51
+00:11:36,825 --> 00:11:53,444
+AS2 has an import policy. Based on it, 2c accepts the path AS3, X. Then 2c propagates the path by iBGP to all gateway routers and iBGP-configured routers in AS2.
+
+52
+00:11:53,894 --> 00:12:07,526
+AS2 also has an export policy. Based on it, AS2 router 2a advertises the path AS2, AS3, X to AS1 router 1c, by eBGP.
+
+53
+00:12:07,976 --> 00:12:22,739
+Now add a link between 1c and 3a. A gateway router can learn more than one path to a destination. First, AS1 gateway 1c learns the path AS2, AS3, X from 2a.
+
+54
+00:12:23,189 --> 00:12:27,946
+Second, 1c learns the path AS3, X directly from 3a.
+
+55
+00:12:28,396 --> 00:12:32,791
+Based on policy, 1c chooses the path AS3, X.
+
+56
+00:12:33,241 --> 00:12:44,633
+Then 1c advertises this path inside AS1, by iBGP. Now 1a, 1b and 1d know that the path to X goes through 1c.
+
+57
+00:12:45,083 --> 00:12:58,459
+Recall: 1a, 1b and 1d learn by iBGP from 1c that the path to X goes through 1c. The red numbers are the local interface numbers at 1a and 1d.
+
+58
+00:12:58,909 --> 00:13:07,421
+Now look at router 1d. OSPF intra-domain routing tells 1d: to get to 1c, use interface 1.
+
+59
+00:13:07,871 --> 00:13:18,217
+So at 1d, to get to X, use interface 1. BGP gives the gateway, 1c. OSPF gives the interface toward that gateway.
+
+60
+00:13:18,667 --> 00:13:27,393
+Now router 1a. OSPF tells 1a: to get to 1c, use interface 2. Here the path goes through 1d.
+
+61
+00:13:27,843 --> 00:13:36,056
+So at 1a, to get to X, use interface 2. The entry for X always copies the entry for the gateway 1c.
+
+62
+00:13:36,506 --> 00:13:56,239
+Recap. The Internet groups routers into autonomous systems, for scale and for administrative autonomy. Inside an AS, OSPF runs, with areas and a backbone. Between ASes, BGP runs, with eBGP and iBGP.
+
+63
+00:13:56,689 --> 00:14:18,385
+A BGP route is a prefix plus attributes, such as AS-PATH and NEXT-HOP. Each AS adds its number to the AS-PATH. In the forwarding table, BGP gives the gateway, and OSPF gives the interface toward it. Video 20b continues with route selection and policy.

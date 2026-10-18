@@ -1,0 +1,359 @@
+1
+00:00:00,000 --> 00:00:08,171
+This is ECE 358, video 3. The topic is network performance: delay, loss, and throughput.
+
+2
+00:00:08,621 --> 00:00:28,098
+After this video, you can name and calculate the four types of packet delay. You can use traffic intensity to judge the queueing delay. You can find the throughput from the bottleneck link. And you can solve four problems from Problem Set 1, and the question bank questions 32 to 43.
+
+3
+00:00:28,548 --> 00:00:42,628
+A router receives packets from hosts A and B. It sends them out on one output link with rate R. The router transmits one packet at a time. The time to push it onto the link is the transmission delay.
+
+4
+00:00:43,078 --> 00:00:54,833
+Sometimes packets arrive faster than the output link can send them. Then the packets wait in the router's buffer. The buffer is memory. The waiting time is the queueing delay.
+
+5
+00:00:55,283 --> 00:01:04,008
+The queue length is the number of packets that wait. It grows while the arrival rate is above the link rate. Here the buffer is now full.
+
+6
+00:01:04,458 --> 00:01:16,874
+A packet that arrives at a full buffer is dropped. This is packet loss. So delay and loss have the same cause: the arrival rate is higher than the output link rate for some time.
+
+7
+00:01:17,324 --> 00:01:29,036
+A packet goes from one router to the next router. Four delays add up on this hop. The picture shows the first router, its output buffer, the link, and the next router.
+
+8
+00:01:29,486 --> 00:01:40,494
+First, nodal processing, d proc. The router checks the packet for bit errors. It also decides the output link. This takes less than a few microseconds.
+
+9
+00:01:40,944 --> 00:01:52,528
+Second, queueing delay, d queue. The packet waits at the output link for its turn. It depends on the congestion level of the router. It can be zero, or very large.
+
+10
+00:01:52,978 --> 00:02:06,098
+Third, transmission delay, d trans. The router must push all bits of the packet onto the link. A packet of L bits on a link of rate R bits per second takes L over R seconds.
+
+11
+00:02:06,548 --> 00:02:17,599
+Fourth, propagation delay, d prop. One bit must travel the length of the link. A link of length d, with propagation speed s, takes d over s seconds.
+
+12
+00:02:18,049 --> 00:02:30,465
+The nodal delay is the sum of the four parts. d nodal equals d proc, plus d queue, plus d trans, plus d prop. Learn this equation. Most delay questions start from it.
+
+13
+00:02:30,915 --> 00:02:42,072
+This diagram is a space-time diagram. Distance runs across, and time runs down. At time 0, the sender puts the first bit of the packet on the link.
+
+14
+00:02:42,522 --> 00:02:54,597
+The first bit travels at speed s. It arrives at the receiver after d over s seconds. This is the propagation delay. It depends only on the link length and the medium.
+
+15
+00:02:55,047 --> 00:03:11,196
+The sender pushes one bit every one over R seconds. So the last bit leaves after L over R seconds. This is the transmission delay. It depends only on the packet length and the link rate. The blue band is the packet on the link.
+
+16
+00:03:11,646 --> 00:03:25,342
+The last bit arrives at L over R plus d over s. Only then does the receiver have the full packet. Do not mix up the two delays. One is about the rate. The other is about the distance.
+
+17
+00:03:25,792 --> 00:03:42,773
+The propagation speed in a guided medium is about two thirds of the speed of light. The speed of light in free space is about 3 times 10 to the power 8 meters per second. So s is about 2 times 10 to the power 8 meters per second.
+
+18
+00:03:43,223 --> 00:03:53,698
+On a university campus, d is 100 meters. 100 divided by 2 times 10 to the power 8 is 0.5 microseconds.
+
+19
+00:03:54,148 --> 00:04:06,543
+Toronto to Montreal is about 500 kilometers. 5 times 10 to the power 5, divided by 2 times 10 to the power 8, is 2.5 milliseconds.
+
+20
+00:04:06,993 --> 00:04:19,985
+London to Tokyo is about 12,000 kilometers. The propagation delay is 60 milliseconds. The axis is logarithmic. Each grid line is ten times the one before it.
+
+21
+00:04:20,435 --> 00:04:35,645
+Here is an example with our own numbers. A packet of 1500 bytes crosses a link of 500 kilometers. 1500 bytes is 12,000 bits, because one byte is 8 bits.
+
+22
+00:04:36,095 --> 00:04:44,885
+At 10 megabits per second, d trans is 12,000 divided by 10 to the power 7. That is 1.2 milliseconds.
+
+23
+00:04:45,335 --> 00:04:54,487
+At 1 gigabit per second, d trans is 12,000 divided by 10 to the power 9. That is only 12 microseconds.
+
+24
+00:04:54,937 --> 00:05:09,529
+d prop for 500 kilometers is 2.5 milliseconds at any rate. So on a fast link, propagation is the larger delay. On a slow link, transmission can be larger. Always calculate both.
+
+25
+00:05:09,979 --> 00:05:29,499
+Now look at the queueing delay more closely. Packets arrive at an average rate a, in packets per second. Each packet has L bits. So bits arrive at L times a bits per second. The link sends R bits per second. The ratio L a over R is the traffic intensity.
+
+26
+00:05:29,949 --> 00:05:39,911
+The graph shows the average queueing delay as a function of the traffic intensity. It is not linear. It grows slowly at first, and then very fast.
+
+27
+00:05:40,361 --> 00:05:48,809
+When L a over R is near 0, few bits arrive. A packet seldom finds a queue. The average queueing delay is small.
+
+28
+00:05:49,259 --> 00:06:02,977
+When L a over R goes near 1, the average queueing delay becomes large. Packets arrive in bursts, not at a steady rate. A burst fills the queue, and the link has no spare time to empty it.
+
+29
+00:06:03,427 --> 00:06:17,784
+When L a over R is more than 1, more work arrives than the link can serve. The queue grows without limit. The average delay is infinite. So design rule: keep the traffic intensity below 1.
+
+30
+00:06:18,234 --> 00:06:27,322
+The traceroute program measures real delays. It measures the round trip delay from the source to each router on the path to the destination.
+
+31
+00:06:27,772 --> 00:06:42,577
+For router 1, the sender sends three packets with the time-to-live field set to 1. Router 1 returns the packets. The sender measures t 2 minus t 1. This is the round trip delay to router 1.
+
+32
+00:06:43,027 --> 00:06:48,745
+For router 2, the sender sets the time-to-live to 2. Router 2 returns the packets.
+
+33
+00:06:49,195 --> 00:06:57,024
+This continues for router 3, 4, and so on, to the destination. Each router gives 3 delay measurements.
+
+34
+00:06:57,474 --> 00:07:04,173
+Here is part of a real traceroute, from the University of Massachusetts to a host in France.
+
+35
+00:07:04,623 --> 00:07:23,311
+From router 7 to router 8, the delay jumps from about 22 milliseconds to about 105 milliseconds. This is the trans-oceanic link. Its propagation delay is large. A normal transcontinental round trip is one to two hundred milliseconds.
+
+36
+00:07:23,761 --> 00:07:38,737
+A star means no response. The probe was lost, or the router did not reply. Some delays later in the path are smaller than earlier ones. The reason is that queueing delays change from one probe to the next.
+
+37
+00:07:39,187 --> 00:07:48,723
+The buffer in front of a link has a finite capacity. A packet that arrives at a full buffer is dropped. We also say that the packet is lost.
+
+38
+00:07:49,173 --> 00:08:05,386
+There are three possible results. The previous node can retransmit the packet. The source end system can retransmit it. Or nobody retransmits it. The protocol decides. Later chapters show which protocols retransmit.
+
+39
+00:08:05,836 --> 00:08:18,679
+Throughput is the rate, in bits per time unit, at which the receiver gets bits from the sender. Here a server sends a file of F bits to a client through two links with rates R s and R c.
+
+40
+00:08:19,129 --> 00:08:26,339
+The instantaneous throughput is the rate at one point in time, over a short period. It changes with time.
+
+41
+00:08:26,789 --> 00:08:35,067
+The average throughput is the rate over a longer period. For a file, it is F bits divided by the total transfer time.
+
+42
+00:08:35,517 --> 00:08:47,186
+Case 1: R s is smaller than R c. The server link can carry only R s bits per second. The client link cannot receive more than the server link gives it.
+
+43
+00:08:47,636 --> 00:08:49,535
+So the throughput is R s.
+
+44
+00:08:49,985 --> 00:09:00,737
+Case 2: R s is larger than R c. The server pushes bits fast, but the client link carries only R c. Bits queue in front of the client link.
+
+45
+00:09:01,187 --> 00:09:14,797
+So the throughput is R c. In both cases the throughput is the minimum of the two rates. The link that sets this minimum is the bottleneck link. It is the link on the path that limits the end-to-end throughput.
+
+46
+00:09:15,247 --> 00:09:22,074
+Now 10 servers send to 10 clients. All 10 connections cross one backbone link with rate R.
+
+47
+00:09:22,524 --> 00:09:27,687
+The connections share the backbone fairly. So each connection gets R over 10.
+
+48
+00:09:28,137 --> 00:09:41,171
+The per-connection throughput is the minimum of R c, R s, and R over 10. In practice, R c or R s is often the bottleneck, because the backbone rate is very high.
+
+49
+00:09:41,621 --> 00:10:01,077
+A short check. R s is 2 megabits per second, R c is 1 megabit per second, and R is 5 megabits per second. R over 10 is 0.5 megabits per second. The minimum is 500 kilobits per second. Here the backbone is the bottleneck.
+
+50
+00:10:01,527 --> 00:10:10,807
+Now the question bank. These are short descriptive questions. Pause the video and try them. The answers come from the slides of this video.
+
+51
+00:10:11,257 --> 00:10:23,716
+Question 32. Delay is the time a packet needs to reach its destination. Loss is the dropping of packets at full buffers. Throughput is the rate at which the receiver gets bits.
+
+52
+00:10:24,166 --> 00:10:38,843
+Question 33. The four delays are processing, queueing, transmission, and propagation. Question 34. The two router functions in processing delay are: check bit errors, and determine the output link.
+
+53
+00:10:39,293 --> 00:10:54,760
+Question 35. A packet waits because the arrival rate is above the output link rate for some time. Question 36. Transmission delay exists because the router must push all L bits onto the link at rate R.
+
+54
+00:10:55,210 --> 00:11:12,511
+Question 37. The physical link causes the propagation delay. Question 38. In free space, signals travel at about 3 times 10 to the power 8 meters per second. In guided media, about 2 times 10 to the power 8.
+
+55
+00:11:12,961 --> 00:11:21,644
+Question 39. Traffic intensity is L a over R: the arrival rate of bits divided by the service rate of bits.
+
+56
+00:11:22,094 --> 00:11:39,523
+Question 40. The queueing delay can be very high even when the average input rate equals the output rate. The reason: packets arrive in bursts. At a traffic intensity near 1, a burst fills the queue, and the link has no spare capacity to empty it.
+
+57
+00:11:39,973 --> 00:11:52,496
+Question 41. A transcontinental round trip delay is one to two hundred milliseconds. The traceroute example showed about 105 to 135 milliseconds.
+
+58
+00:11:52,946 --> 00:12:02,951
+Question 42. Instantaneous throughput is the rate at one point in time. Long-term average throughput is the rate over a longer period.
+
+59
+00:12:03,401 --> 00:12:17,119
+Question 43. The bottleneck link is the link with the smallest rate on the path. The end-to-end throughput equals its rate. So to analyze the throughput for a receiving host, you find this one link.
+
+60
+00:12:17,569 --> 00:12:31,905
+Problem 5 of Problem Set 1. N packets arrive at the same time at an empty link. Each packet has L bits, and the link rate is R. Find the average queueing delay. Pause the video and try it.
+
+61
+00:12:32,355 --> 00:12:41,933
+The link sends one packet at a time. The first packet starts at once. Its queueing delay is 0. Its transmission takes L over R.
+
+62
+00:12:42,383 --> 00:12:47,525
+The second packet waits for the first packet. Its queueing delay is L over R.
+
+63
+00:12:47,975 --> 00:12:53,180
+The third packet waits for two packets. Its queueing delay is 2 L over R.
+
+64
+00:12:53,630 --> 00:13:02,547
+In general, packet n waits n minus 1 times L over R. Here N is 4, so the last packet waits 3 L over R.
+
+65
+00:13:02,997 --> 00:13:21,643
+Add the delays and divide by N. The sum 0 plus 1 up to N minus 1 is N times N minus 1, over 2. So the average queueing delay is N minus 1, times L, over 2 R. For N equal to 4, that is 1.5 L over R.
+
+66
+00:13:22,093 --> 00:13:39,949
+Problem 6 of Problem Set 1. Host A and host B are 10,000 kilometers apart. The link rate is 1 gigabit per second, and the propagation speed is 2.5 times 10 to the power 8 meters per second. Pause the video and try it.
+
+67
+00:13:40,399 --> 00:13:51,257
+First, the propagation delay. 10 to the power 7 meters, divided by 2.5 times 10 to the power 8, is 0.04 seconds.
+
+68
+00:13:51,707 --> 00:14:07,835
+Part a. The bandwidth-delay product is R times d prop. 10 to the power 9 times 0.04 is 4 times 10 to the power 7 bits. This is the number of bits in the link when the link is full of bits.
+
+69
+00:14:08,285 --> 00:14:25,224
+Part b. The file has only 400,000 bits. This is less than 4 times 10 to the power 7. So the last bit leaves A before the first bit arrives at B. The maximum number of bits in the link is 400,000.
+
+70
+00:14:25,674 --> 00:14:39,946
+Part c. The link is 10 to the power 7 meters long, and it can hold 4 times 10 to the power 7 bits. So one bit is 0.25 meters wide. This also equals s over R.
+
+71
+00:14:40,396 --> 00:14:53,943
+Problem 1 of Problem Set 1. A and B are connected by n links through n minus 1 routers. Each link has capacity C. Propagation delay is zero. Pause the video and try it.
+
+72
+00:14:54,393 --> 00:15:11,950
+Part a. A router must receive the full packet before it sends it on. This is store-and-forward. So each link adds one transmission time, L over C. With n links, one packet takes n times L over C. The diagram shows n equal to 3.
+
+73
+00:15:12,400 --> 00:15:41,051
+Part b. Now the file of S bits is cut into k packets. Each packet carries S over k data bits plus a header of H bits. The links work in parallel: while packet 2 is on link 1, packet 1 is on link 2. The first packet arrives after n packet times. Then one more packet arrives every packet time. So the total is n plus k minus 1 packet times. Each packet time is S over k plus H, over C.
+
+74
+00:15:41,501 --> 00:15:52,551
+Multiply out C times T of k. You get n minus 1 times S over k, plus n minus 1 times H, plus S, plus k times H.
+
+75
+00:15:53,001 --> 00:16:06,441
+Take the derivative with respect to k, and set it to zero. The S term and the constant term disappear. You get minus n minus 1 times S over k squared, plus H, equals zero.
+
+76
+00:16:06,891 --> 00:16:12,993
+So the best number of packets is the square root of n minus 1, times S, over H.
+
+77
+00:16:13,443 --> 00:16:32,536
+k star is usually not an integer. So evaluate T at the integer below and the integer above, and take the better one. This is the trade-off. Small packets give more parallel use of the links, but more header overhead. Large packets give less overhead, but less parallel use.
+
+78
+00:16:32,986 --> 00:16:51,311
+The plot uses our own numbers: S is 10,000 bits, H is 100 bits, and n is 3. Then k star is the square root of 200, which is 14.1. T of 14 is a little smaller than T of 15, so the best k is 14.
+
+79
+00:16:51,761 --> 00:17:07,441
+Problem 3 of Problem Set 1. Host A sends a large file to host B over three links. The rates are 500 kilobits per second, 2 megabits per second, and 1 megabit per second. Pause the video and try it.
+
+80
+00:17:07,891 --> 00:17:11,433
+The first link is the slowest, so it is the bottleneck.
+
+81
+00:17:11,883 --> 00:17:30,272
+Case 1, the fluid case. Bits flow like water through pipes. The throughput is the minimum rate, 500 kilobits per second. The file has 4 million bytes, which is 3.2 times 10 to the power 7 bits. So the time is 64 seconds.
+
+82
+00:17:30,722 --> 00:17:56,535
+Case 2, message switching. The whole file is one message. Each router must receive all of it before it sends it on. So the times add: 64, plus 16, plus 32, which is 112 seconds. The throughput is M over this time: 1 over the sum of 1 over R i. That is 285.7 kilobits per second, much less than 500.
+
+83
+00:17:56,985 --> 00:18:13,839
+Case 3, packet switching. The file is cut into K small packets. The links work in parallel. Only the bottleneck time K L over R 1 is large. So the time is about 64 seconds, and the throughput is about R 1.
+
+84
+00:18:14,289 --> 00:18:29,606
+With message switching, each link waits until the previous link has sent the full message. So the three transmission times are in series: 64, 16, and 32 seconds. The total is 112 seconds.
+
+85
+00:18:30,056 --> 00:18:48,168
+With packet switching, the second and third links forward each packet while the first link sends the next packet. Only the last packet adds L over R 2 plus L over R 3. With small packets, this is very short. So the total is about 64 seconds.
+
+86
+00:18:48,618 --> 00:19:05,621
+The published solution gives 285 kilobits per second and 112.3 seconds. It rounds the throughput down first. The exact values are 285.7 kilobits per second and 112 seconds.
+
+87
+00:19:06,071 --> 00:19:15,841
+To recap. The nodal delay is the sum of four delays. Transmission delay is L over R. Propagation delay is d over s.
+
+88
+00:19:16,291 --> 00:19:25,465
+Traffic intensity L a over R controls the queueing delay. Keep it below 1. A packet that arrives at a full buffer is lost.
+
+89
+00:19:25,915 --> 00:19:38,395
+Throughput is the rate of the bottleneck link. With store-and-forward, one packet over n links takes n L over R, and k packets take n plus k minus 1 packet times.
+
+90
+00:19:38,845 --> 00:19:50,983
+N packets that arrive together have an average queueing delay of N minus 1, times L, over 2 R. The next video covers protocol layers and encapsulation.

@@ -1,0 +1,275 @@
+1
+00:00:00,000 --> 00:00:10,773
+This is ECE 358, video 10 a. The topic is TCP reliable data transfer: segments, ACKs, and retransmission.
+
+2
+00:00:11,223 --> 00:00:36,482
+After this video, you can explain the fields of the TCP segment. You can find TCP sequence numbers and ACK numbers. You can trace lost ACKs, premature timeouts, and fast retransmit. You can apply the four ACK rules of the receiver. At the end, we solve question bank questions 37 to 39. Video 10 b covers flow control and connections.
+
+3
+00:00:36,932 --> 00:00:47,855
+Slide 52 lists the features of TCP. First, TCP is point-to-point. One connection has exactly one sender and one receiver.
+
+4
+00:00:48,305 --> 00:01:08,422
+Second, TCP gives a reliable, in-order byte stream. TCP gives a number to each byte, not to each message. There are no message boundaries. A segment can carry any number of data bytes, up to a maximum. Here, 12 bytes go in three segments of 3, 4, and 5 bytes.
+
+5
+00:01:08,872 --> 00:01:22,675
+Third, TCP is full duplex. Data flows in both directions in the same connection. The MSS, the maximum segment size, is the largest number of data bytes in one segment.
+
+6
+00:01:23,125 --> 00:01:43,818
+Fourth, TCP uses cumulative ACKs. One ACK number confirms all the bytes before it. And TCP uses pipelining. Many segments can wait for an ACK at the same time. Congestion control and flow control set the size of this window. The orange frame shows bytes in flight.
+
+7
+00:01:44,268 --> 00:02:11,041
+Last, TCP is connection-oriented. A handshake sets the state of both sides before the data: window sizes, MSS, and the initial sequence number, ISN. TCP is flow controlled, so the sender does not overwhelm the receiver. And TCP is congestion controlled, so the sender tries not to overwhelm the routers and links. Video 11 covers congestion control.
+
+8
+00:02:11,491 --> 00:02:27,086
+Slide 53 shows the TCP segment. Each header row is 32 bits wide. TCP is full duplex. So one segment can carry data from A to B, and also the ACK for the data from B to A.
+
+9
+00:02:27,536 --> 00:02:37,691
+The first row holds the source port number and the destination port number. They identify the sockets. Video 7 used them for demultiplexing.
+
+10
+00:02:38,141 --> 00:02:53,863
+The sequence number is the byte-stream number of the first data byte in the segment. It counts bytes, not segments. The acknowledgement number is the sequence number of the next byte that is expected. The A bit says that this segment is an ACK.
+
+11
+00:02:54,313 --> 00:03:11,977
+The head len field gives the length of the TCP header. Its unit is 4 bytes. So a value of 5 means 20 bytes. The R S F bits are reset, SYN, and FIN. They manage the connection. The C and E bits are congestion notification.
+
+12
+00:03:12,427 --> 00:03:19,617
+The receive window field is for flow control. It gives the number of bytes that the receiver is willing to accept.
+
+13
+00:03:20,067 --> 00:03:34,019
+The checksum is the Internet checksum. The options have a variable length. One example is the MSS. Last comes the application data, which the application wrote into the TCP socket.
+
+14
+00:03:34,469 --> 00:03:51,258
+Slide 54 uses a byte stream of 12 bytes, numbered 0 to 11. The sender cuts it into three segments. The sequence number of a segment is the number of its first data byte. So the sequence numbers are 0, 3, and 7.
+
+15
+00:03:51,708 --> 00:04:04,572
+The ACK number is the sequence number of the next byte that the receiver expects. Segment 1 brings bytes 0 to 2. The next expected byte is 3. So the receiver sends ACK 3.
+
+16
+00:04:05,022 --> 00:04:12,489
+Segment 2 brings bytes 3 to 6. The next expected byte is 7. So the receiver sends ACK 7.
+
+17
+00:04:12,939 --> 00:04:22,432
+TCP ACKs are cumulative. When the sender gets ACK 7, it knows that all data up to and including byte 6 arrived correctly.
+
+18
+00:04:22,882 --> 00:04:36,023
+Segment 3 brings bytes 7 to 11. The receiver sends ACK 12. The rule: the ACK number equals the sequence number plus the number of data bytes, when no earlier byte is missing.
+
+19
+00:04:36,473 --> 00:04:46,799
+What does the receiver do with a segment that arrives out of order? Use the same stream. Segment 1 arrives in order. The receiver sends ACK 3.
+
+20
+00:04:47,249 --> 00:05:10,779
+Now segment 3 arrives before segment 2. There is a gap: bytes 3 to 6 are missing. The TCP specification does not say what to do. The implementor decides. There are two choices. Discard the segment, which is inefficient. Or buffer it, which is used in practice. In both cases the ACK number stays 3, the first missing byte.
+
+21
+00:05:11,229 --> 00:05:26,483
+Then segment 2 arrives and fills the gap. Bytes 7 to 11 are already in the buffer. So the next expected byte jumps to 12, and the receiver sends ACK 12. The ACK number never jumps past a gap.
+
+22
+00:05:26,933 --> 00:05:45,002
+Slide 56 shows a simple telnet scenario. The user on host A types the letter C. Host A numbers its bytes from 42, and host B numbers its bytes from 79. So A sends sequence number 42, ACK 79, with the data C.
+
+23
+00:05:45,452 --> 00:06:02,199
+Host B receives 1 byte at 42. It expects byte 43 next, so its ACK number is 43. In the same segment, B echoes C back. This is byte 79 of B's own stream, so the sequence number is 79.
+
+24
+00:06:02,649 --> 00:06:14,702
+Host A receives 1 byte at 79. So it sends ACK 80. Its own next byte is 43, so the sequence number is 43. This segment carries no data.
+
+25
+00:06:15,152 --> 00:06:27,888
+The red curves link each sequence number to the ACK in the reply. Each direction has its own byte numbers. The ACK number in a reply equals the sequence number received plus its data bytes.
+
+26
+00:06:28,338 --> 00:06:52,957
+Slide 57 gives the TCP sender. It has three events. The first event is data from the application. The sender creates a segment. Its sequence number is the number of its first data byte. Here, A sends sequence number 92 with 8 bytes, and starts the timer. Then A sends sequence number 100 with 20 bytes. The timer already runs.
+
+27
+00:06:53,407 --> 00:07:11,945
+TCP has only one retransmit timeout timer, R T O, per connection. Think of it as the timer of the oldest unACKed segment. Its expiration interval is called TimeOutInterval. Send base is the oldest unACKed byte.
+
+28
+00:07:12,395 --> 00:07:28,673
+The second event is an ACK. ACK 100 acknowledges earlier unACKed bytes. So send base becomes 100. Bytes 100 to 119 are still unACKed, so the sender starts the timer again.
+
+29
+00:07:29,123 --> 00:07:38,488
+Then ACK 120 arrives. Send base becomes 120. Nothing is unACKed now, so no timer runs.
+
+30
+00:07:38,938 --> 00:07:48,474
+The third event is a timeout. The sender retransmits the segment that caused the timeout, and restarts the timer. The next slides show this.
+
+31
+00:07:48,924 --> 00:08:15,463
+This slide is optional. It is not on the section 003 slides. Slide 57 only names the interval, TimeOutInterval. The timer must be longer than the round trip time. If it is too short, premature timeouts occur. If it is too long, the sender reacts slowly to a loss. The R T T changes, so TCP measures it. Each measurement is a sample R T T.
+
+32
+00:08:15,913 --> 00:08:40,318
+TCP keeps a moving average, the estimated R T T. It is 1 minus alpha times the old value, plus alpha times the new sample. Alpha is typically point 1 2 5. Example: the old estimate is 100 milliseconds, and the new sample is 120. The new estimate is 102 point 5 milliseconds.
+
+33
+00:08:40,768 --> 00:09:05,685
+TCP also keeps the deviation, dev R T T. It is 1 minus beta times the old value, plus beta times the distance between the sample and the estimate. Beta is typically point 2 5. With an old value of 5, this gives 8 point 1 2 5 milliseconds. Here we use the new estimate, 102 point 5, as the textbook does.
+
+34
+00:09:06,135 --> 00:09:23,863
+The timeout interval is the estimated R T T plus 4 times dev R T T. That is 102 point 5 plus 32 point 5, which is 135 milliseconds. A large variation gives a large safety margin.
+
+35
+00:09:24,313 --> 00:09:52,345
+Slide 58 gives the ACK rules of the TCP receiver. There are two motivations. One: send fewer small IP packets, because each separate ACK is its own IP packet. Two: deal with lost segments fast, for better throughput. So the receiver sometimes delays an ACK, and sometimes sends it immediately. It must not delay too much, or the sender's timer expires. Example: the receiver expects byte 92.
+
+36
+00:09:52,795 --> 00:10:10,801
+Rule 1. An in-order segment arrives, and all earlier data is already ACKed. Here, sequence number 92 with 8 bytes. The receiver delays the ACK. It waits up to 500 ms for the next segment. If none comes, it sends the ACK.
+
+37
+00:10:11,251 --> 00:10:27,293
+Rule 2. An in-order segment arrives, and one other segment has an ACK pending. Here, sequence number 100 arrives in time. The receiver immediately sends one cumulative ACK for both segments: ACK 120.
+
+38
+00:10:27,743 --> 00:10:46,730
+Rule 3. A segment arrives with a sequence number higher than expected. Here, 135. There is a gap, bytes 120 to 134. The receiver immediately sends a duplicate ACK, with the next expected byte: ACK 120 again.
+
+39
+00:10:47,180 --> 00:11:12,908
+Rule 4. A segment arrives that partly or completely fills the gap, and starts at its lower end. Here, sequence number 120 with 15 bytes. Bytes 135 to 144 are in the buffer. So the receiver immediately sends ACK 145. Rules 1 and 2 serve motivation 1. Rules 3 and 4 serve motivation 2.
+
+40
+00:11:13,358 --> 00:11:26,649
+Slide 59 shows two retransmission scenarios. The first is a lost ACK. Host A sends sequence number 92 with 8 bytes, and starts the timer. Send base is 92.
+
+41
+00:11:27,099 --> 00:11:37,915
+Host B receives bytes 92 to 99. It sends ACK 100, because 92 plus 8 is 100. The network loses this ACK.
+
+42
+00:11:38,365 --> 00:11:46,535
+Host A gets no ACK. The timer expires. Host A retransmits sequence number 92 and restarts the timer.
+
+43
+00:11:46,985 --> 00:12:06,249
+Host B already has bytes 92 to 99. So its next expected byte stays 100, and it sends ACK 100 again. Now host A sets send base to 100. The sender cannot tell a lost segment from a lost ACK. So it retransmits after every timeout.
+
+44
+00:12:06,699 --> 00:12:23,425
+The second scenario of slide 59 is a premature timeout. Host A sends sequence number 92 with 8 bytes, then sequence number 100 with 20 bytes. One timer runs, for 92. In this scenario, nothing is lost.
+
+45
+00:12:23,875 --> 00:12:40,579
+Host B sends ACK 100 and ACK 120. But the ACKs are slow. The timer expires before ACK 100 arrives. So host A retransmits sequence number 92. This timeout is too early: it is premature.
+
+46
+00:12:41,029 --> 00:12:50,927
+Then ACK 100 arrives, and send base becomes 100. ACK 120 arrives, and send base becomes 120.
+
+47
+00:12:51,377 --> 00:13:09,233
+The copy of segment 92 reaches host B. B already expects byte 120. So B sends the cumulative ACK 120. Send base stays 120. The retransmission was not necessary, but it causes no error.
+
+48
+00:13:09,683 --> 00:13:19,305
+Slide 60 shows a third scenario. Host A sends sequence number 92 with 8 bytes, and sequence number 100 with 20 bytes.
+
+49
+00:13:19,755 --> 00:13:38,080
+The network loses ACK 100. But ACK 120 arrives before the timer expires. ACK 120 means that all bytes up to 119 arrived. This includes bytes 92 to 99. So send base becomes 120.
+
+50
+00:13:38,530 --> 00:13:49,538
+Host A does not retransmit. It sends new data, sequence number 120 with 15 bytes. The cumulative ACK covers for the earlier lost ACK.
+
+51
+00:13:49,988 --> 00:14:10,852
+Slide 61 gives fast retransmit. The motivation: if the sender gets an indication of a loss, it does not need to wait for the timeout. Here, host A sends five segments. The segment with sequence number 100 is lost. The sizes of the last three segments are added for this example.
+
+52
+00:14:11,302 --> 00:14:22,523
+Segment 92 arrives. Host B sends ACK 100. This is the first ACK 100. It is not a duplicate. Send base becomes 100.
+
+53
+00:14:22,973 --> 00:14:37,459
+Segments 120, 135 and 145 arrive after the gap. For each one, rule 3 gives a duplicate ACK 100. So host A gets three duplicate ACKs.
+
+54
+00:14:37,909 --> 00:14:54,335
+The rule: if the sender receives 3 additional ACKs, 4 in total, for the same data, it resends the unACKed segment with the smallest sequence number. That is 100. It does this right away. The timer has not expired.
+
+55
+00:14:54,785 --> 00:15:12,876
+Segment 100 fills the gap at host B. Bytes 120 to 149 are in the buffer. So rule 4 gives ACK 150. Three duplicate ACKs mean that three segments arrived after a missing segment. So a loss is likely.
+
+56
+00:15:13,326 --> 00:15:28,921
+Now the question bank. Question 37 asks for the purpose of each field in the TCP header. You can ignore the U, P, C and E bits and the urgent pointer. Pause the video and try it. Draw the header first.
+
+57
+00:15:29,371 --> 00:15:48,293
+One: the ports identify the sending socket and the receiving socket. Two: the sequence number is the byte number of the first data byte. Three: the acknowledgement number is the next byte expected from the other side. Four: head len is the header length in units of 4 bytes.
+
+58
+00:15:48,743 --> 00:16:09,970
+Five: the A bit says the segment is an ACK. Reset, SYN and FIN manage the connection. Six: the receive window is the number of bytes the receiver will accept, for flow control. Seven: the checksum detects bit errors. Eight: the options, for example the MSS. Nine: the data from the application.
+
+59
+00:16:10,420 --> 00:16:16,927
+Question 38 asks for the four ACK rules and their motivations. Pause the video and try it.
+
+60
+00:16:17,377 --> 00:16:40,502
+Rule 1: an in-order segment arrives, and all earlier data is ACKed. Delay the ACK, up to 500 ms. Rule 2: an in-order segment arrives, and one ACK is pending. Send one cumulative ACK for both, immediately. These two rules serve motivation 1: fewer small IP packets, for router efficiency.
+
+61
+00:16:40,952 --> 00:17:05,677
+Rule 3: an out-of-order segment arrives, so there is a gap. Immediately send a duplicate ACK with the next expected byte. Rule 4: a segment fills the gap and starts at its lower end. Immediately send an ACK. These rules serve motivation 2: deal with lost segments fast, for better throughput. The delay must stay short, so that the sender's timer does not expire.
+
+62
+00:17:06,127 --> 00:17:14,789
+Question 39 asks for the two conditions that trigger a retransmission at the TCP sender. Pause the video and try it.
+
+63
+00:17:15,239 --> 00:17:27,057
+Condition 1 is a timeout. The R T O timer of the oldest unACKed segment expires. The sender retransmits that segment and restarts the timer.
+
+64
+00:17:27,507 --> 00:17:43,721
+Condition 2 is triple duplicate ACKs. The sender gets 3 additional ACKs, 4 in total, for the same data. It retransmits the unACKed segment with the smallest sequence number right away. This is fast retransmit.
+
+65
+00:17:44,171 --> 00:17:54,261
+Here is the recap. One. The sequence number is the number of the first data byte. The ACK number is the next expected byte. It is cumulative.
+
+66
+00:17:54,711 --> 00:18:00,557
+Two. Each direction has its own byte numbers. One segment can carry data and an ACK.
+
+67
+00:18:01,007 --> 00:18:08,111
+Three. The sender keeps one timer, for the oldest unACKed segment. A new ACK moves send base.
+
+68
+00:18:08,561 --> 00:18:22,235
+Four. The receiver delays an in-order ACK up to 500 ms. It ACKs two in-order segments at once. It sends a duplicate ACK when it sees a gap, and an ACK at once when the gap fills.
+
+69
+00:18:22,685 --> 00:18:35,528
+Five. The sender retransmits after a timeout, or after three duplicate ACKs. That is fast retransmit. Video 10 b continues with flow control and connection management.

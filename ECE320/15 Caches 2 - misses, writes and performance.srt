@@ -1,0 +1,331 @@
+1
+00:00:00,000 --> 00:00:07,957
+This is ECE 320, video 15. It is part 2 of caches: misses, writes and performance.
+
+2
+00:00:08,407 --> 00:00:25,837
+After this video, you can compare three ways to access tags and data. You can classify misses and use the A B C rules. You can explain the write policies. And you can calculate the average access time and the CPI of a machine with caches.
+
+3
+00:00:26,287 --> 00:00:39,471
+So far, a frame held its tag and its data together. In real hardware, the tags are in their own array. This example is a 4-way cache with 4 sets, so the index has 2 bits.
+
+4
+00:00:39,921 --> 00:00:46,427
+The data blocks are in a second, physically separate array. It has the same 4 sets and 4 ways.
+
+5
+00:00:46,877 --> 00:00:56,989
+So how do we access the tags and the data? One after the other, which is serial? At the same time, which is parallel? Or something with the best of both?
+
+6
+00:00:57,439 --> 00:01:09,130
+Serial tag access: match the tag first. The 2-bit index selects a set in the tag array. The cache reads the 4 tags and compares them with the address tag.
+
+7
+00:01:09,580 --> 00:01:21,569
+The comparators give the hit way, as a 2-bit number. The 2-bit way and the 2-bit index together form a 4-bit address. It selects one of the 16 blocks in the data array.
+
+8
+00:01:22,019 --> 00:01:27,651
+Only that one block is read from the data array. Then the offset selects the data in it.
+
+9
+00:01:28,101 --> 00:01:36,635
+The advantage: only one block is read. The disadvantage: it is slow, because the data read must wait for the tag match.
+
+10
+00:01:37,085 --> 00:01:43,293
+Parallel access: the index goes to the tag array and to the data array at the same time.
+
+11
+00:01:43,743 --> 00:01:50,036
+The data array reads all 4 blocks of the set, one per way. Four blocks are transferred.
+
+12
+00:01:50,486 --> 00:01:58,934
+When the tag compare finishes, the hit way selects one of the 4 blocks in a 4-to-1 mux. Then the offset selects the data.
+
+13
+00:01:59,384 --> 00:02:09,965
+The advantage: it is faster, because the tag and data reads overlap. The disadvantages: 4 block reads instead of 1, and a 4-to-1 mux.
+
+14
+00:02:10,415 --> 00:02:22,426
+Can we get the best of both? Way prediction predicts the way of the block. The predictor uses the index plus some tag bits. Its output is only a hint: a 2-bit way number.
+
+15
+00:02:22,876 --> 00:02:32,647
+The predicted way and the index select one block in the data array at once. So the cache reads one block, and does not wait for the tag compare.
+
+16
+00:02:33,097 --> 00:02:45,065
+In parallel, the tag compare finds the real hit way. If it equals the prediction, the data is good. If not, the cache must access again, which looks like an extra miss.
+
+17
+00:02:45,515 --> 00:02:59,915
+The advantages: fast and low power. The disadvantage: more misses. Way prediction is about 90 percent accurate for a 2-way cache. The predictor is updated on a mis-prediction or a replacement.
+
+18
+00:03:00,365 --> 00:03:17,047
+To improve a cache, first ask why each miss happens. The 3 C model divides misses into three classes. A compulsory, or cold, miss is the first access to a block. The block was never seen before, for example at startup.
+
+19
+00:03:17,497 --> 00:03:30,617
+A capacity miss happens because the cache is too small. Between two accesses to the block, the program accessed at least N other distinct blocks, where N is the number of frames in the cache.
+
+20
+00:03:31,067 --> 00:03:37,254
+A conflict miss is every other miss. It happens because the associativity is too low.
+
+21
+00:03:37,704 --> 00:03:45,448
+There is a fourth class, coherence misses. They happen only in shared-memory multiprocessors, in a later lecture.
+
+22
+00:03:45,898 --> 00:04:02,773
+Apply this to the tables of assignment 5, question 2. The direct-mapped cache had 10 misses: 8 compulsory and 2 conflict misses, at 2 0 4 and 2 0 6. The other two caches had only the 8 compulsory misses.
+
+23
+00:04:03,223 --> 00:04:11,607
+Here is the take-away for the A B Cs. Higher associativity decreases conflict misses, but increases t hit.
+
+24
+00:04:12,057 --> 00:04:25,945
+A larger block size decreases compulsory misses, because one miss brings in more neighbours. But it increases conflict misses, because there are fewer frames. Its effect on t hit is negligible.
+
+25
+00:04:26,395 --> 00:04:35,568
+A larger capacity decreases capacity misses, but increases t hit. So every change that lowers the miss rate has a cost.
+
+26
+00:04:36,018 --> 00:04:54,791
+Conflict misses come from too little associativity. High associativity is expensive, and it is rarely needed. The slide's case: three blocks, X, Y and Z, map to the same 2-way set and are accessed again and again. With LRU, every access misses.
+
+27
+00:04:55,241 --> 00:05:10,900
+The fix is a victim buffer, V B. It is a small fully associative cache, for example 8 entries. It sits on the miss path of the I cache or D cache. Blocks that are kicked out of the cache go into the victim buffer.
+
+28
+00:05:11,350 --> 00:05:25,750
+On a miss, the cache checks the victim buffer. If the block is there, it goes back into the cache. Else, the normal miss starts. Now only the first three accesses miss. All the later ones hit in the victim buffer.
+
+29
+00:05:26,200 --> 00:05:39,789
+The victim buffer acts as 8 extra ways shared by all sets. Only a few sets need extra ways at any time. The buffer is small, so it is very fast. It is very effective in practice.
+
+30
+00:05:40,239 --> 00:05:52,570
+So far we looked at reads, the loads. Stores write into the cache, and that brings four new issues. First, tag and data access: can a write go in parallel with the tag check?
+
+31
+00:05:53,020 --> 00:05:57,991
+Second, write-through or write-back: when does the next level get the new value?
+
+32
+00:05:58,441 --> 00:06:03,518
+Third, write-allocate or write-not-allocate: what happens on a write miss?
+
+33
+00:06:03,968 --> 00:06:11,925
+Fourth, inclusion or exclusion: is a block of the L 1 also in the L 2? We take the issues in order.
+
+34
+00:06:12,375 --> 00:06:23,661
+Reads access the tag and the data in parallel. If the tag does not match, the data is garbage. That is OK: the load stalls until the good data arrives.
+
+35
+00:06:24,111 --> 00:06:34,436
+Can a write also read the tag and write the data in parallel? No. If the tag does not match, the write has already clobbered the data of another block.
+
+36
+00:06:34,886 --> 00:06:42,481
+So a write is a two-step process. Step 1: match the tag. Step 2: write the data into the matching way.
+
+37
+00:06:42,931 --> 00:06:49,501
+The two steps are pipelined. The tag match of the next store overlaps with the data write of this store.
+
+38
+00:06:49,951 --> 00:07:12,117
+When does the new value go to the lower level? Option 1 is write-through: immediately. Every store also sends the write to the next level. Three stores to one block give three bus writes. It is conceptually simple, and the latency on misses is uniform: a miss is always 1 transaction. But it needs more bus bandwidth.
+
+39
+00:07:12,567 --> 00:07:29,100
+Option 2 is write-back: the value goes down when the block is replaced. Each block needs an extra dirty bit. A store only writes the cache and sets the dirty bit. So the bus bandwidth is minimal: only dirty blocks are written back.
+
+40
+00:07:29,550 --> 00:07:42,030
+But the miss latency is not uniform. A clean miss needs 1 transaction, the fill. A dirty miss needs 2 transactions: first write back the dirty block, then fill the new one.
+
+41
+00:07:42,480 --> 00:07:49,477
+How is a write miss handled? Write-allocate fills the block from the next level, then writes the value into it.
+
+42
+00:07:49,927 --> 00:07:59,975
+The next read of the same block hits, so there are fewer read misses. But the fill needs bandwidth. Write-allocate is used with write-back caches.
+
+43
+00:08:00,425 --> 00:08:13,716
+Write-not-allocate only writes the value to the next level. It does not bring the block into the cache. So a later read may miss. But it uses less bandwidth. It is used with write-through caches.
+
+44
+00:08:14,166 --> 00:08:27,350
+A write buffer, W B, sits between the cache and memory. With a write-through cache, it helps to send data to memory. A store writes into the buffer, so the processor does not wait for memory.
+
+45
+00:08:27,800 --> 00:08:39,107
+With a write-back cache, the write buffer helps with dirty misses. It lets the cache do the read first. Step 1: send the fill request for the new block to the next level.
+
+46
+00:08:39,557 --> 00:08:44,634
+Step 2: while the cache waits, it writes the dirty block into the write buffer.
+
+47
+00:08:45,084 --> 00:08:49,308
+Step 3: when the new block arrives, the cache puts it into the frame.
+
+48
+00:08:49,758 --> 00:08:57,011
+Step 4: the write buffer writes its contents to the next level. So the dirty write-back does not delay the miss.
+
+49
+00:08:57,461 --> 00:09:07,851
+On a read miss, the load cannot go on without the data, so it must stall. On a write miss, technically no instruction waits for the data. So why stall?
+
+50
+00:09:08,301 --> 00:09:18,861
+A store buffer, S B, is a small buffer between the processor and the D cache. A store puts its address and value into the store buffer and keeps going.
+
+51
+00:09:19,311 --> 00:09:23,663
+The store buffer writes the stores into the D cache in the background.
+
+52
+00:09:24,113 --> 00:09:36,443
+A load must search the store buffer as well as the D cache, because the newest value may still be in the buffer. The result: the store buffer removes most stalls on write misses.
+
+53
+00:09:36,893 --> 00:09:56,883
+The first level is split: instructions and data are in different caches. Fetch and memory access happen in the same cycle. Two caches avoid the structural hazard and keep t hit small. A larger unified first-level cache would be slow, and a second port would make it even slower.
+
+54
+00:09:57,333 --> 00:10:17,834
+The second and third levels are unified: instructions and data together. This minimizes the miss rate. There are fewer capacity misses, because unused instruction space can hold data. There are more conflict misses between instructions and data, but this effect is much smaller in large caches.
+
+55
+00:10:18,284 --> 00:10:23,255
+What if the I cache and the D cache miss at the same time? This is quite rare.
+
+56
+00:10:23,705 --> 00:10:31,769
+The last write issue is about the hierarchy. With inclusion, a block in the L 1 is always also in the L 2.
+
+57
+00:10:32,219 --> 00:10:37,744
+With exclusion, a block is either in the L 1 or in the L 2, never in both.
+
+58
+00:10:38,194 --> 00:10:45,511
+A non-inclusive hierarchy is somewhere in between. It has no strict rule for inclusion or exclusion.
+
+59
+00:10:45,961 --> 00:10:59,849
+Recall the memory performance equation. It holds for any memory component M: t average equals t hit plus the miss rate times t miss. Here t miss is the time to read the data into M.
+
+60
+00:11:00,299 --> 00:11:11,670
+In a hierarchy, the miss time of one level is the average access time of the next level. t miss of M 1 is t average of M 2, and so on down.
+
+61
+00:11:12,120 --> 00:11:28,696
+So substitute. t average equals t hit of M 1, plus the miss rate of M 1 times the whole bracket for M 2: t hit of M 2 plus the miss rate of M 2 times t miss of M 2. Repeat this for every level.
+
+62
+00:11:29,146 --> 00:11:40,410
+An example with numbers that are not from the slides. Work from the bottom up. The L 2 average is 10 plus point 2 times 100, which is 30 cycles.
+
+63
+00:11:40,860 --> 00:11:57,692
+Then the L 1 average is 1 plus point 1 times 30, which is 4 cycles. The miss part, 3 cycles, has two pieces: 1 cycle for the L 1 misses that hit in L 2, and 2 cycles for the accesses that go to memory.
+
+64
+00:11:58,142 --> 00:12:18,985
+Assignment 5, question 3. The I cache misses 4 percent and the D cache 6 percent. 40 percent of the instructions are loads and stores. The CPI without memory stalls is 2, and every miss costs 80 cycles. How much faster is a perfect cache? Pause the video and try it.
+
+65
+00:12:19,435 --> 00:12:36,011
+Count the misses per instruction. Every instruction is fetched, so the I cache gives point 0 4 misses per instruction. Only loads and stores use the D cache: point 4 times point 0 6, which is point 0 2 4.
+
+66
+00:12:36,461 --> 00:12:50,007
+Each miss costs 80 cycles. So the stall cycles per instruction are point 0 6 4 times 80, which is 5.12. With a perfect cache, the CPI is the base, 2.
+
+67
+00:12:50,457 --> 00:13:00,761
+Stack the bars: the base 2, plus 3.2 for the I cache, plus 1.92 for the D cache. The real CPI is 7.12.
+
+68
+00:13:01,211 --> 00:13:21,627
+The instruction count and the clock are the same. So the perfect cache is 7.12 divided by 2, which is 3.56 times faster. The solution file writes point 2 4 for the D cache misses. That is a typo for point 0 2 4. Its final numbers are right.
+
+69
+00:13:22,077 --> 00:13:42,173
+Spring 2020 quiz 2, question 1. Pause the video and try parts A and B. The table gives, for memory instructions, where each access is served and its latency. Assume that each latency is the total time of an access served at that level, and state this in the exam.
+
+70
+00:13:42,623 --> 00:14:02,250
+Part A is a weighted average over the levels. L 1: point 6 times 5 is 3. L 2: point 2 times 10 is 2. Local memory: point 2 times 300 is 60. So the CPI of the memory instructions is 65. Memory dominates the bar.
+
+71
+00:14:02,700 --> 00:14:12,919
+Part B. Arithmetic and logical instructions are 50 percent and branches are 10 percent. So memory instructions are the other 40 percent.
+
+72
+00:14:13,369 --> 00:14:26,254
+The overall CPI: point 5 times 4 is 2, point 1 times 2 is point 2, and point 4 times 65 is 26. The CPI is 28.2.
+
+73
+00:14:26,704 --> 00:14:44,155
+Part C, 4 marks. The optimization makes arithmetic instructions 2 times faster. But half of the local-memory accesses now go to remote memory, at 450 cycles. Does program P benefit? Pause the video and try it.
+
+74
+00:14:44,605 --> 00:15:05,277
+First the new memory CPI. L 1 and L 2 do not change: 3 and 2. Local memory is now point 1 times 300, which is 30. Remote memory is point 1 times 450, which is 45. The memory CPI grows from 65 to 80.
+
+75
+00:15:05,727 --> 00:15:28,660
+Now the overall CPI. Arithmetic takes 4 divided by 2, which is 2 cycles: point 5 times 2 is 1. Branches stay point 2. Memory is point 4 times 80, which is 32. The new CPI is 33.2. The arithmetic part saved 1 cycle, but the memory part added 6.
+
+76
+00:15:29,110 --> 00:15:46,646
+The instruction count and the clock do not change. 33.2 is more than 28.2, so program P does not benefit. It is slower: the speedup is 28.2 divided by 33.2, which is point 8 5.
+
+77
+00:15:47,096 --> 00:15:59,875
+The recap. One. Serial access reads one block but is slow. Parallel access is fast but reads all the ways. Way prediction is fast and is about 90 percent accurate.
+
+78
+00:16:00,325 --> 00:16:10,565
+Two. The 3 C model: compulsory misses are first accesses, capacity misses come after N other blocks, and conflict misses are the rest.
+
+79
+00:16:11,015 --> 00:16:26,503
+Three. Associativity removes conflict misses. Larger blocks remove compulsory misses but add conflicts. A larger capacity removes capacity misses. Associativity and capacity make t hit longer.
+
+80
+00:16:26,953 --> 00:16:31,795
+Four. A victim buffer keeps kicked-out blocks and removes conflict misses.
+
+81
+00:16:32,245 --> 00:16:43,381
+Five. Write-through goes with write-not-allocate. Write-back, with a dirty bit, goes with write-allocate. Write buffers and store buffers hide the write latency.
+
+82
+00:16:43,831 --> 00:16:50,103
+Six. In a hierarchy, the miss time of a level is the average access time of the next level.
+
+83
+00:16:50,553 --> 00:17:03,055
+Seven. The CPI is the base CPI plus the misses per instruction times the miss penalty, for each cache. Draw it as a stacked bar. That is the end of the cache videos.

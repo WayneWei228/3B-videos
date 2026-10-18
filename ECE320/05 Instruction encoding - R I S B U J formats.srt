@@ -1,0 +1,471 @@
+1
+00:00:00,000 --> 00:00:09,109
+This is ECE 320, video 5. The topic is how RISC-V encodes instructions as 32-bit words.
+
+2
+00:00:09,559 --> 00:00:24,663
+After this video, you can encode an instruction of any of the six formats to hex, and decode a hex word. You can find a branch offset. And you can build a 32-bit constant with load upper immediate and add immediate.
+
+3
+00:00:25,113 --> 00:00:42,244
+Every RV32 instruction is one 32-bit word. Slide 37 shows six formats. The R-format has three register fields, rs1, rs2 and rd, plus opcode, funct3 and funct7.
+
+4
+00:00:42,694 --> 00:00:52,401
+The I-format has a 12-bit immediate in place of rs2 and funct7. Add immediate, loads, and jump and link register use it.
+
+5
+00:00:52,851 --> 00:00:59,059
+The S-format is for stores. It has two source registers. The immediate is in two parts.
+
+6
+00:00:59,509 --> 00:01:06,271
+The B-format is for branches. It is like the S-format, but the immediate bits are in a different order.
+
+7
+00:01:06,721 --> 00:01:14,209
+The U-format and the J-format have a 20-bit immediate and rd. The J-format is for jump and link.
+
+8
+00:01:14,659 --> 00:01:28,803
+Look at the dashed lines. rs1, rs2, rd, funct3 and opcode are in the same bits in every format that has them. So the hardware can read the registers before it knows the format.
+
+9
+00:01:29,253 --> 00:01:44,997
+Bit 31 is the sign bit of every immediate. Each field has a fixed colour in this video: opcode gray, rd blue, funct3 purple, rs1 green, rs2 orange, funct7 pink, and the immediate yellow.
+
+10
+00:01:45,447 --> 00:02:00,167
+Slide 38 shows the R-format. The word has six fields. On top are the bit positions. Below each field is its width: 7 plus 5 plus 5 plus 3 plus 5 plus 7 is 32.
+
+11
+00:02:00,617 --> 00:02:12,436
+The opcode partially specifies the instruction. All R-format register-register arithmetic instructions have the opcode 0 1 1 0 0 1 1.
+
+12
+00:02:12,886 --> 00:02:29,398
+funct7 and funct3, with the opcode, select the operation. rs1 and rs2 name the source registers. rd names the destination. Each register field is a 5-bit unsigned number, 0 to 31.
+
+13
+00:02:29,848 --> 00:02:49,539
+Slide 39 asks: why not one 17-bit field for opcode, funct7 and funct3? The other formats use bits 31 to 25 for immediate bits. With separate fields, opcode and funct3 stay in the same place in the R, I, S and B formats.
+
+14
+00:02:49,989 --> 00:03:00,741
+Slide 41 encodes add x18, x19, x10. Fill the fields one by one. Each arrow shows where a part of the assembly goes.
+
+15
+00:03:01,191 --> 00:03:08,188
+add is a register-register operation. So the opcode is 0 1 1 0 0 1 1.
+
+16
+00:03:08,638 --> 00:03:12,094
+For add, funct7 and funct3 are all zeros.
+
+17
+00:03:12,544 --> 00:03:19,989
+The destination is x18, so rd is 18. In 5 bits, that is 1 0 0 1 0.
+
+18
+00:03:20,439 --> 00:03:26,967
+The first source is x19, so rs1 is 19: 1 0 0 1 1.
+
+19
+00:03:27,417 --> 00:03:38,361
+The second source is x10, so rs2 is 10: 0 1 0 1 0. Note that rs2 is to the left of rs1 in the word.
+
+20
+00:03:38,811 --> 00:03:47,963
+For hex, read the bits in groups of 4, from bit 31 down. The word is hex 0 0 A 9 8 9 3 3.
+
+21
+00:03:48,413 --> 00:03:57,672
+Slide 42 lists the ten R-format instructions. They have the same opcode. funct7 and funct3 select the operation.
+
+22
+00:03:58,122 --> 00:04:04,927
+funct7 is all zeros, except for subtract and shift right arithmetic. They set bit 30.
+
+23
+00:04:05,377 --> 00:04:22,871
+Example: add x10, x10, x4 is hex 0 0 4 5 0 5 3 3. Subtract is hex 4 0 4 5 0 5 3 3. Only bit 30 changes, so only the first hex digit changes.
+
+24
+00:04:23,321 --> 00:04:37,742
+Add immediate needs one source register, a destination and a constant. It does not need rs2 or funct7. Slide 43: in the I-format, a 12-bit signed immediate replaces them.
+
+25
+00:04:38,192 --> 00:04:49,456
+rs1, funct3, rd and opcode stay the same. The immediate holds values from minus 2048 to plus 2047.
+
+26
+00:04:49,906 --> 00:05:01,789
+Before it is used, the immediate is always sign-extended to 32 bits. Here is minus 50 in 12 bits. Its top bit, bit 11, is 1. That is the sign bit.
+
+27
+00:05:02,239 --> 00:05:12,607
+Sign extension copies the sign bit into the 20 upper bits. The result is hex F F F F F F C E, which is minus 50 in 32 bits.
+
+28
+00:05:13,057 --> 00:05:18,710
+Slide 44 encodes add immediate x15, x1, minus 50.
+
+29
+00:05:19,160 --> 00:05:29,187
+First the immediate. Write 50 in 12 bits, invert every bit, and add 1. This gives minus 50. It goes into bits 31 to 20.
+
+30
+00:05:29,637 --> 00:05:35,077
+rd is 15, and rs1 is 1. Write each one in 5 bits.
+
+31
+00:05:35,527 --> 00:05:43,249
+funct3 is 0 0 0, the add function. The opcode is OP-Imm, for arithmetic with an immediate.
+
+32
+00:05:43,699 --> 00:05:47,219
+The word is hex F C E 0 8 7 9 3.
+
+33
+00:05:47,669 --> 00:05:56,715
+Slide 45 lists the I-format arithmetic instructions. They have the same opcode, and funct3 selects the operation.
+
+34
+00:05:57,165 --> 00:06:06,359
+The shifts by an immediate use only the low 5 bits of the immediate, the shift amount. So they shift by 0 to 31 bits.
+
+35
+00:06:06,809 --> 00:06:24,239
+Bit 30 tells shift right logical from shift right arithmetic. Shift right logical x11, x12, 2 is hex 0 0 2 6 5 5 9 3. The arithmetic one is hex 4 0 2 6 5 5 9 3.
+
+36
+00:06:24,689 --> 00:06:38,534
+Slide 46. Loads also use the I-format. The immediate is added to the base address in rs1. The sum is a memory address. The value loaded from memory goes into rd.
+
+37
+00:06:38,984 --> 00:06:55,880
+Slide 47 encodes load word x14, 8 of x2. The offset 8 is the immediate. The base, x2, is rs1. funct3 is 0 1 0 for a word. x14 is rd. The opcode is LOAD.
+
+38
+00:06:56,330 --> 00:07:00,362
+The word is hex 0 0 8 1 2 7 0 3.
+
+39
+00:07:00,812 --> 00:07:19,052
+Slide 48 lists the loads. funct3 gives the size and the signedness. Load byte and load half sign-extend the data. The unsigned versions zero-extend it. RV32 has no unsigned load word, because a word fills the register.
+
+40
+00:07:19,502 --> 00:07:31,065
+A store reads two registers: rs1 for the base address, and rs2 for the data. It also needs an offset. It writes no register, so it has no rd.
+
+41
+00:07:31,515 --> 00:07:39,344
+rs2 must stay in bits 24 to 20, as in the R-format. So the immediate cannot use those bits.
+
+42
+00:07:39,794 --> 00:07:54,237
+So the low 5 bits of the immediate go where rd is in the other formats. imm 11 to 5 stay in bits 31 to 25. Register names are more critical than immediate bits in the hardware design.
+
+43
+00:07:54,687 --> 00:08:06,036
+Slide 50 encodes store word x14, 8 of x2. x14 is the data, so it is rs2. x2 is the base, so it is rs1.
+
+44
+00:08:06,486 --> 00:08:09,366
+Write the offset 8 as a 12-bit number.
+
+45
+00:08:09,816 --> 00:08:25,005
+Split it. The upper 7 bits, offset 11 to 5, go into bits 31 to 25. The lower 5 bits, offset 4 to 0, go into bits 11 to 7. They are 0 1 0 0 0.
+
+46
+00:08:25,455 --> 00:08:33,669
+rs2 is 14, and rs1 is 2. funct3 is 0 1 0 for a word. The opcode is STORE.
+
+47
+00:08:34,119 --> 00:08:43,463
+The word is hex 0 0 E 1 2 4 2 3. Slide 51: store byte, half and word differ only in funct3.
+
+48
+00:08:43,913 --> 00:08:56,201
+A branch, like branch if equal x1, x2, Label, reads two registers and writes none. How does the instruction say where Label is? A 32-bit address does not fit.
+
+49
+00:08:56,651 --> 00:09:07,595
+The answer is PC-relative addressing. The immediate is a two's-complement offset to the P C. Branches usually change the P C by a small amount.
+
+50
+00:09:08,045 --> 00:09:22,765
+If the branch is not taken, the P C becomes P C plus 4. If it is taken, the P C becomes P C plus numinsn times 4. numinsn is positive to go forward, and negative to go backward.
+
+51
+00:09:23,215 --> 00:09:43,865
+Slide 55. RISC-V extensions add 16-bit compressed instructions. So RISC-V counts the branch offset in 2-byte steps, even with no 16-bit instructions. In this class, all instructions are 32 bits. So half of the targets, marked with a cross, are errors.
+
+52
+00:09:44,315 --> 00:10:02,662
+Slide 56. The B-format is like the S-format. But the immediate stores bits 12 to 1 of an even byte offset. Bit 0 is always zero, so it is not stored. The range is minus 4096 to plus 4094 bytes.
+
+53
+00:10:03,112 --> 00:10:09,491
+Slide 61 lists the six branches. They have the same opcode, and differ in funct3.
+
+54
+00:10:09,941 --> 00:10:20,053
+Slide 57. Branch if equal x19, x10, End is at Loop. Its P C is the address of the branch itself. Where is End?
+
+55
+00:10:20,503 --> 00:10:29,591
+Count the instructions from the branch to the target: 1, 2, 3, 4. The offset is 4 times 4 bytes, which is 16 bytes.
+
+56
+00:10:30,041 --> 00:10:41,518
+An offset of 0 branches to the branch itself. The jump back to Loop is at P C plus 12. So its offset is 0 minus 12, which is minus 12.
+
+57
+00:10:41,968 --> 00:10:57,797
+Slide 58 encodes the branch. rs2 is x10, rs1 is x19, funct3 is 0 0 0 for branch if equal, and the opcode is BRANCH. The immediate bits are still unknown.
+
+58
+00:10:58,247 --> 00:11:11,901
+Slide 59. Write the offset 16 as a 13-bit immediate, imm 12 to 0. Bit 0 is always zero, so it is discarded. The other 12 bits are scattered into the word.
+
+59
+00:11:12,351 --> 00:11:15,764
+imm 12, the sign bit, goes into bit 31.
+
+60
+00:11:16,214 --> 00:11:19,862
+imm 10 to 5 go into bits 30 to 25.
+
+61
+00:11:20,312 --> 00:11:25,709
+imm 4 to 1 go into bits 11 to 8. They are 1 0 0 0.
+
+62
+00:11:26,159 --> 00:11:28,314
+imm 11 goes into bit 7.
+
+63
+00:11:28,764 --> 00:11:32,241
+The word is hex 0 0 A 9 8 8 6 3.
+
+64
+00:11:32,691 --> 00:11:47,881
+Slide 60 shows how the hardware gathers the 32-bit immediate. Each column is a part of the immediate. Each box says which instruction bits fill it. For the I-format, the upper bits are copies of inst 31.
+
+65
+00:11:48,331 --> 00:11:54,539
+For the S-format, the low 5 bits come from inst 11 to 7, the old rd place.
+
+66
+00:11:54,989 --> 00:12:00,919
+For the B-format, bit 0 is always 0, and imm 11 comes from inst 7.
+
+67
+00:12:01,369 --> 00:12:12,825
+Two rules. The upper bits are always copies of inst 31. And only inst 7 changes its role between S and B. Few changes mean less hardware.
+
+68
+00:12:13,275 --> 00:12:22,513
+The U and J immediates follow the same idea. U takes inst 31 to 12 as the upper 20 bits, with zeros below.
+
+69
+00:12:22,963 --> 00:12:38,173
+A 12-bit immediate cannot hold a 32-bit constant. Slide 62. The U-format has a 20-bit immediate in the upper bits, and rd. Load upper immediate and add upper immediate to P C use it.
+
+70
+00:12:38,623 --> 00:12:54,581
+Slide 63. Load upper immediate writes the upper 20 bits of rd, and clears the lower 12 bits. So lui x10, hex 8 7 6 5 4, gives hex 8 7 6 5 4 0 0 0.
+
+71
+00:12:55,031 --> 00:13:07,297
+Then add immediate sets the low 12 bits. Hex 3 2 1 is positive, because bit 11 is 0. The result is hex 8 7 6 5 4 3 2 1.
+
+72
+00:13:07,747 --> 00:13:18,990
+The encoding has the 20 immediate bits, rd equal to 10, and the LUI opcode. The word is hex 8 7 6 5 4 5 3 7.
+
+73
+00:13:19,440 --> 00:13:28,293
+Slide 64. How do you set hex D E A D B E E F? First try: load upper immediate hex D E A D B.
+
+74
+00:13:28,743 --> 00:13:36,743
+Then add immediate hex E E F. But the result is hex D E A D A E E F. One digit is wrong.
+
+75
+00:13:37,193 --> 00:13:51,124
+Why? The add immediate immediate is always sign-extended. Hex E E F has bit 11 set. So it becomes minus 273. Adding it subtracts 1 from the upper 20 bits.
+
+76
+00:13:51,574 --> 00:14:07,105
+Slide 65 gives the fix. Add 1 to the upper 20 bits: use hex D E A D C. Then hex D E A D C 0 0 0 minus 273 is hex D E A D B E E F.
+
+77
+00:14:07,555 --> 00:14:17,496
+Rule: if bit 11 of the low 12 bits is 1, add 1 to the upper 20 bits. The pseudo-op load immediate, l i, does this for you.
+
+78
+00:14:17,946 --> 00:14:27,802
+Slide 66. Add upper immediate to P C shifts the immediate left by 12 bits, adds the P C, and puts the result in rd.
+
+79
+00:14:28,252 --> 00:14:44,508
+Example: Label, auipc x10, 0. The immediate is 0, so x10 gets the address of Label. With an example address hex 1 0 0 0 and an immediate of 2, x10 is hex 3 0 0 0.
+
+80
+00:14:44,958 --> 00:14:54,643
+Slide 67. Jump and link uses the J-format. It writes rd and reads no register. So 20 bits are free for the offset.
+
+81
+00:14:55,093 --> 00:15:10,517
+Jump and link saves P C plus 4 in rd. Then it sets the P C to P C plus the offset. The pseudo-instruction j is jump and link with rd equal to x0. It discards the return address.
+
+82
+00:15:10,967 --> 00:15:22,253
+The 20 bits store offset bits 20 to 1. Bit 0 is not stored, as in branches. So the range is plus or minus 2 to the 18 instructions.
+
+83
+00:15:22,703 --> 00:15:38,447
+Example from slide 24. Jump and link sum is at 1008, and sum is at 2000. The offset is 2000 minus 1008, which is 992. rd is x1, R A.
+
+84
+00:15:38,897 --> 00:15:53,553
+Scatter the offset bits. imm 20 goes into bit 31. imm 10 to 1 go into bits 30 to 21. imm 11 goes into bit 20. imm 19 to 12 go into bits 19 to 12.
+
+85
+00:15:54,003 --> 00:16:02,429
+The word is hex 3 E 0 0 0 0 E F. The bit order is like the branch, to reduce hardware cost.
+
+86
+00:16:02,879 --> 00:16:19,669
+Slide 68. A return must jump to an address in a register. Jump and link cannot do that. Jump and link register uses the I-format. It writes P C plus 4 to rd, and sets the P C to rs plus the immediate.
+
+87
+00:16:20,119 --> 00:16:26,156
+It uses the same immediates as arithmetic and loads. They are not multiplied by 2.
+
+88
+00:16:26,606 --> 00:16:41,027
+Jump register R A is jump and link register with rd equal to x0, rs equal to R A, and immediate 0. Its word is hex 0 0 0 0 8 0 6 7.
+
+89
+00:16:41,477 --> 00:16:56,965
+Compare the three. A branch goes to P C plus offset and writes nothing. Jump and link goes to P C plus offset and writes rd. Jump and link register goes to rs1 plus the immediate and writes rd.
+
+90
+00:16:57,415 --> 00:17:10,045
+Practice. Encode add immediate x3, x4, minus 10, from slide 5. And store word s1, 4 of S P, from slide 28. Pause the video and try it.
+
+91
+00:17:10,495 --> 00:17:23,103
+Part a is I-format. Write minus 10 in 12 bits. rs1 is x4, rd is x3, funct3 is 0 0 0, and the opcode is OP-Imm.
+
+92
+00:17:23,553 --> 00:17:28,993
+Group the bits by 4. The word is hex F F 6 2 0 1 9 3.
+
+93
+00:17:29,443 --> 00:17:47,981
+Part b is S-format. First change the names to numbers. s1 is x9, the data, so it is rs2. S P is x2, the base, so it is rs1. The offset 4 splits into 0 in the upper part and 4 in the lower part. The opcode is STORE.
+
+94
+00:17:48,431 --> 00:17:52,143
+The word is hex 0 0 9 1 2 2 2 3.
+
+95
+00:17:52,593 --> 00:17:58,460
+Practice. Decode hex 0 2 A 6 A 4 2 3. Pause the video and try it.
+
+96
+00:17:58,910 --> 00:18:01,171
+Write each hex digit as 4 bits.
+
+97
+00:18:01,621 --> 00:18:12,779
+Always start with the opcode, bits 6 to 0. This is the STORE opcode, so the format is S. funct3 is 0 1 0, so it is store word.
+
+98
+00:18:13,229 --> 00:18:28,802
+Now read the fields. rs1 is 13 and rs2 is 10. Join the two immediate parts: 32 plus 8 is 40. So the instruction is store word x10, 40 of x13, from slide 8.
+
+99
+00:18:29,252 --> 00:18:35,652
+Second decode. Hex F F 5 F F 0 6 F. Pause the video and try it.
+
+100
+00:18:36,102 --> 00:18:41,307
+Write the bits. The colours show the four groups of immediate bits of the J-format.
+
+101
+00:18:41,757 --> 00:18:52,232
+The opcode is JAL, so this is the J-format. rd is x0, so the return address is discarded. This is the pseudo-instruction j.
+
+102
+00:18:52,682 --> 00:19:13,098
+Gather the immediate. Bit 31 gives imm 20. Bits 19 to 12 give imm 19 to 12. Bit 20 gives imm 11. Bits 30 to 21 give imm 10 to 1. The sign bit is 1, and the value is minus 12. This is the jump back to Loop on slide 57.
+
+103
+00:19:13,548 --> 00:19:30,572
+Practice. This branch is from the code of the spring 2020 quiz 2. Branch if less than a0, a1 is at address hex 1 C. Its target is hex 1 0. Find the offset and encode the instruction. Pause the video and try it.
+
+104
+00:19:31,022 --> 00:19:41,091
+The offset is the target minus the address of the branch. That is 16 minus 28, which is minus 12 bytes, or 3 instructions back.
+
+105
+00:19:41,541 --> 00:19:58,757
+Write minus 12 as a 13-bit two's-complement number. Scatter it as before. imm 12 goes to bit 31, and imm 10 to 5 to bits 30 to 25. imm 4 to 1 go to bits 11 to 8, and imm 11 to bit 7.
+
+106
+00:19:59,207 --> 00:20:09,917
+a0 is x10, so it is rs1. a1 is x11, so it is rs2. funct3 is 1 0 0 for branch if less than.
+
+107
+00:20:10,367 --> 00:20:13,545
+The word is hex F E B 5 4 A E 3.
+
+108
+00:20:13,995 --> 00:20:24,363
+Last practice. Build hex 1 2 3 4 5 F F F in x10 with load upper immediate and add immediate. Pause the video and try it.
+
+109
+00:20:24,813 --> 00:20:32,771
+The low 12 bits are hex F F F. Bit 11 is 1. So add immediate sign-extends it to minus 1.
+
+110
+00:20:33,221 --> 00:20:40,090
+So add 1 to the upper 20 bits: hex 1 2 3 4 6. Then add immediate minus 1.
+
+111
+00:20:40,540 --> 00:20:57,415
+Check: hex 1 2 3 4 6 0 0 0 minus 1 is hex 1 2 3 4 5 F F F. The two words are hex 1 2 3 4 6 5 3 7, and hex F F F 5 0 5 1 3.
+
+112
+00:20:57,865 --> 00:21:07,657
+Here is the recap. One. The register fields, funct3 and opcode are in fixed places. The sign of every immediate is bit 31.
+
+113
+00:21:08,107 --> 00:21:13,611
+Two. The I-format puts a 12-bit immediate in place of funct7 and rs2.
+
+114
+00:21:14,061 --> 00:21:26,306
+Three. The S-format has no rd, so the low 5 immediate bits move to bits 11 to 7. The B-format is like S, but it stores bits 12 to 1 of the offset.
+
+115
+00:21:26,756 --> 00:21:38,041
+Four. A branch or jump offset is the target address minus the address of the instruction. Jump and link register jumps to rs1 plus the immediate.
+
+116
+00:21:38,491 --> 00:21:46,769
+Five. The U-format holds the upper 20 bits. The J-format holds offset bits 20 to 1, for jump and link.
+
+117
+00:21:47,219 --> 00:21:55,560
+Six. For load upper immediate plus add immediate: if bit 11 of the low part is 1, add 1 to the upper part.
+
+118
+00:21:56,010 --> 00:22:01,322
+Seven. To decode a word, read the opcode first. That is the end of video 5.

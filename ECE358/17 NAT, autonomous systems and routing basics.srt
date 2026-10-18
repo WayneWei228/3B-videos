@@ -1,0 +1,359 @@
+1
+00:00:00,000 --> 00:00:09,088
+This is ECE 358, video 17. The topics are NAT, autonomous systems, and the basics of routing.
+
+2
+00:00:09,538 --> 00:00:30,146
+After this video, you can tell public and private IP addresses apart. You can fill a NAT translation table. You can explain an autonomous system and name its routing protocols. You can model a router network as a graph. And you can answer question bank Network questions 68 to 80.
+
+3
+00:00:30,596 --> 00:00:40,665
+Before we study NAT, we need two kinds of IP addresses. A public IP address is globally unique. Routers everywhere know how to reach it.
+
+4
+00:00:41,115 --> 00:00:49,841
+So any host on the Internet can open a TCP connection to a machine with a public address. Here, the server is public.
+
+5
+00:00:50,291 --> 00:01:08,104
+A private IP address is unique only inside one organization. Routers outside the organization do not know it, because it is not advertised outside. So an outside host cannot open a TCP connection to a host with a private address.
+
+6
+00:01:08,554 --> 00:01:30,570
+Private addresses have two advantages. First, addresses are reused. For example, the University of Waterloo and another university can use the same private address. NAT makes this possible. Second, they add security. Someone outside cannot open a connection to an organization server with a private address.
+
+7
+00:01:31,020 --> 00:01:54,977
+RFC 1918 reserves three blocks for private addresses. The first block is 10 dot 0 dot 0 dot 0, slash 8. The first 8 bits are fixed. Valid addresses go from 10 dot 0 dot 0 dot 1 to 10 dot 255 dot 255 dot 254.
+
+8
+00:01:55,427 --> 00:02:14,649
+The second block is 172 dot 16 dot 0 dot 0, slash 12. Valid addresses go from 172 dot 16 dot 0 dot 1 to 172 dot 31 dot 255 dot 254.
+
+9
+00:02:15,099 --> 00:02:36,709
+The third block is 192 dot 168 dot 0 dot 0, slash 16. Valid addresses go from 192 dot 168 dot 0 dot 1 to 192 dot 168 dot 255 dot 254.
+
+10
+00:02:37,159 --> 00:02:51,431
+Each range leaves out the network ID and the broadcast address at the two ends. The University of Waterloo uses 172 dot 16 slash 12, and 10 slash 8 for WiFi.
+
+11
+00:02:51,881 --> 00:03:18,121
+NAT means network address translation. With NAT, all devices in a local network share one IPv4 address, as far as the outside world is concerned. Here the local network is 10 dot 0 dot 0 dot 0, slash 24. The NAT router has the public address 138 dot 76 dot 29 dot 7 on the Internet side.
+
+12
+00:03:18,571 --> 00:03:27,339
+Inside the local network, datagrams use the 10 dot 0 dot 0 addresses for source and destination, as usual.
+
+13
+00:03:27,789 --> 00:03:40,824
+Every datagram that leaves the local network has the same source address, 138 dot 76 dot 29 dot 7. But each one gets a new, different source port number.
+
+14
+00:03:41,274 --> 00:03:49,573
+So NAT maps the private addresses to one public address and different layer 4 ports. The port number tells the hosts apart.
+
+15
+00:03:50,023 --> 00:04:05,255
+All devices in the local network use private addresses from the three blocks. NAT has four advantages. First, the local network needs just one IP address from its provider ISP, for all devices.
+
+16
+00:04:05,705 --> 00:04:12,254
+Second, the network can change the address of a local host without notifying the outside world.
+
+17
+00:04:12,704 --> 00:04:22,475
+Third, the network can change its ISP without changing the addresses of the local devices. Only the one public address changes.
+
+18
+00:04:22,925 --> 00:04:31,287
+Fourth, security. Devices inside the local network are not directly addressable or visible from the outside world.
+
+19
+00:04:31,737 --> 00:04:48,975
+The NAT router does three jobs. Job 1 is for outgoing datagrams. The router replaces the source IP address and port number of every outgoing datagram with the NAT IP address and a new port number. The rewritten field is orange.
+
+20
+00:04:49,425 --> 00:05:01,542
+Job 2. The router remembers every translation pair in the NAT translation table. One pair is the source IP address and port, and the NAT IP address and new port.
+
+21
+00:05:01,992 --> 00:05:15,197
+Job 3 is for incoming datagrams. The router replaces the NAT IP address and new port in the destination fields with the matching source IP address and port from the NAT table.
+
+22
+00:05:15,647 --> 00:05:29,130
+Remote clients and servers reply to the NAT IP address and the new port. They never see the private address. The router does all three jobs transparently. The hosts do not know that NAT is there.
+
+23
+00:05:29,580 --> 00:05:52,577
+Here is the example from slide 70. Host 10 dot 0 dot 0 dot 1 wants to talk to a web server at 128 dot 119 dot 40 dot 186, port 80. The NAT router has the public address 138 dot 76 dot 29 dot 7. The table is empty.
+
+24
+00:05:53,027 --> 00:06:10,969
+Step 1. The host sends a datagram. The source is 10 dot 0 dot 0 dot 1, port 3345. The destination is 128 dot 119 dot 40 dot 186, port 80.
+
+25
+00:06:11,419 --> 00:06:34,053
+Step 2. The NAT router changes the source address from 10 dot 0 dot 0 dot 1, port 3345, to 138 dot 76 dot 29 dot 7, port 5001. It writes this pair into the NAT translation table. Then it sends the datagram to the Internet.
+
+26
+00:06:34,503 --> 00:06:48,242
+Step 3. The reply arrives. Its source is the server, port 80. Its destination is 138 dot 76 dot 29 dot 7, port 5001.
+
+27
+00:06:48,692 --> 00:07:10,879
+Step 4. The router looks up 138 dot 76 dot 29 dot 7, port 5001 in the table. The table gives 10 dot 0 dot 0 dot 1, port 3345. The router writes this into the destination fields, and the datagram reaches the host.
+
+28
+00:07:11,329 --> 00:07:17,622
+Only the address and port of the inside host change. The server never sees the private address.
+
+29
+00:07:18,072 --> 00:07:26,179
+Some people do not like NAT. First, a router should process a datagram only up to layer 3, the network layer.
+
+30
+00:07:26,629 --> 00:07:39,194
+But a NAT router also changes the port number, which is in the layer 4 header. This violates the end-to-end argument, because a network-layer device changes port numbers.
+
+31
+00:07:39,644 --> 00:07:53,959
+Second, some say that IPv6 should solve the address shortage, not NAT. Third, there is the NAT traversal problem: a client that wants to connect to a server behind NAT. The class skips this part.
+
+32
+00:07:54,409 --> 00:08:03,539
+But NAT is here to stay. Home networks, institutional networks, and 4G and 5G cellular networks use it extensively.
+
+33
+00:08:03,989 --> 00:08:14,763
+An autonomous system, or AS, is a set of routers under a single technical administration. One organization owns and manages everything in it.
+
+34
+00:08:15,213 --> 00:08:23,703
+Inside the AS, the routers use an interior gateway protocol, with common metrics, to route packets within the AS.
+
+35
+00:08:24,153 --> 00:08:32,580
+To route packets to other ASes, the AS uses an exterior gateway protocol. The red routers at the edges do this.
+
+36
+00:08:33,030 --> 00:08:40,241
+Each AS has an identifier called the AS number. It was 16 bits. Now it is 32 bits.
+
+37
+00:08:40,691 --> 00:08:54,173
+Slide 74 is an extra slide. It shows the Internet as a set of autonomous systems. Each pink area is one AS. Inside each AS are ordinary internal routers.
+
+38
+00:08:54,623 --> 00:09:01,855
+The blue routers are BGP routers, at the borders of the ASes. They connect the ASes to each other.
+
+39
+00:09:02,305 --> 00:09:15,255
+BGP routers talk to each other over logical connections, which are TCP connections. So the Internet has two levels: routing inside each AS, and routing among ASes.
+
+40
+00:09:15,705 --> 00:09:26,009
+Slide 75 is an extra slide about the University of Waterloo. UW is autonomous system number 12093.
+
+41
+00:09:26,459 --> 00:09:47,109
+UW connects to three other ASes: ORION, the Ontario Research and Innovation Optical Network, AS 26677. Beanfield Tech, AS 21949. And Rogers Communications, AS 812.
+
+42
+00:09:47,559 --> 00:10:14,183
+UW advertises three prefixes: 129 dot 97 dot 0 dot 0, slash 16, and 129 dot 97 dot 248 dot 0, slash 21, for IPv4, and one slash 47 prefix for IPv6. The number of BGP routers in the UW AS is not publicly known.
+
+43
+00:10:14,633 --> 00:10:32,639
+Routing protocols build the routing tables. There are two groups. Intra-AS routing works within one AS. Its protocols are interior gateway protocols. The first is OSPF, Open Shortest Path First. It is a link-state protocol.
+
+44
+00:10:33,089 --> 00:10:39,979
+Or the AS can use RIP, the Routing Information Protocol. It is a distance vector protocol.
+
+45
+00:10:40,429 --> 00:10:47,533
+Or E I G R P, the Enhanced Interior Gateway Routing Protocol. It came from Cisco.
+
+46
+00:10:47,983 --> 00:11:02,298
+Inter-AS routing works among ASes. Its protocols are exterior gateway protocols. The Internet uses only one: BGP, the Border Gateway Protocol. There is no second protocol.
+
+47
+00:11:02,748 --> 00:11:19,964
+Slide 77 is an extra slide. It shows where the routing protocols run inside a router. OSPF runs directly on top of IP, in the network layer, next to ICMP, the Internet Control Message Protocol.
+
+48
+00:11:20,414 --> 00:11:30,377
+RIP is an application layer protocol that uses UDP. BGP is an application layer protocol that uses TCP.
+
+49
+00:11:30,827 --> 00:11:46,677
+All of them read, write, and delete entries in the routing tables. The system administrator can also configure entries. Forwarding then uses the routing tables to send each arriving IP packet out on the correct link.
+
+50
+00:11:47,127 --> 00:11:59,479
+Now we move to routing protocols. The goal of a routing protocol is to find good paths, also called routes, from sending hosts to receiving hosts, through the network of routers.
+
+51
+00:11:59,929 --> 00:12:12,537
+A path is the sequence of routers that packets traverse from the initial source host to the final destination host. The green line is one path, from u through x and y to z.
+
+52
+00:12:12,987 --> 00:12:16,571
+Good means least cost, fastest, or least congested.
+
+53
+00:12:17,021 --> 00:12:22,760
+Routing is one of the top 10 challenges in networking. It still has research interest.
+
+54
+00:12:23,210 --> 00:12:39,466
+To design routing algorithms, we model the network of routers as a graph, G equals N comma E. N is the set of nodes, which are the routers: u, v, w, x, y, and z. E is the set of edges, which are the links.
+
+55
+00:12:39,916 --> 00:12:53,420
+Each link has a cost. c a b is the cost of the direct link between a and b. For example, c w z is 5. u and z have no direct link, so c u z is infinity.
+
+56
+00:12:53,870 --> 00:13:03,001
+The network operator defines the cost. It could always be 1. Or it could be inversely related to bandwidth, or to congestion.
+
+57
+00:13:03,451 --> 00:13:17,829
+One detail. The figure shows 10 links, including the cost 5 link from u to w on top. The edge list on the slide has only 9. It leaves out u w. This video uses the figure.
+
+58
+00:13:18,279 --> 00:13:35,581
+Routing algorithms are classified on two axes. The first axis asks: global or decentralized information? In a global algorithm, all routers have the complete topology and all link costs. These are link state algorithms.
+
+59
+00:13:36,031 --> 00:13:52,116
+In a decentralized algorithm, the computation is iterative, with exchange of information with neighbors. At first, each router knows only the costs of the links to its attached neighbors. These are distance vector algorithms.
+
+60
+00:13:52,566 --> 00:14:09,014
+The second axis asks: how fast do routes change? In a static algorithm, routes change slowly over time. In a dynamic algorithm, routes change more quickly, with periodic updates or in response to link cost changes.
+
+61
+00:14:09,464 --> 00:14:17,272
+The next videos teach the two main classes: link state, with Dijkstra and OSPF, and then distance vector.
+
+62
+00:14:17,722 --> 00:14:28,282
+Now we solve question bank Network questions 68 to 80. Each question appears first. Pause the video and try it. Then compare with the solution.
+
+63
+00:14:28,732 --> 00:14:34,279
+The question bank has no published answers. These solutions come from the slides only.
+
+64
+00:14:34,729 --> 00:14:44,329
+Question 68. Identify the key differences between public IP addresses and private IP addresses. Pause the video and try it.
+
+65
+00:14:44,779 --> 00:15:19,909
+From slide 65. A public address is globally unique, a private address is unique only inside the organization. Routers everywhere recognize a public address. Routers outside the organization do not recognize a private address, because it is not advertised. Any host can open a TCP connection to a public address. An outside host cannot open a TCP connection to a private address. And private addresses come from the three RFC 1918 blocks.
+
+66
+00:15:20,359 --> 00:15:30,961
+Question 69. What are the advantages for an enterprise that uses a combination of public and private IP addresses? Pause the video and try it.
+
+67
+00:15:31,411 --> 00:15:57,395
+From slides 65 and 68. First, reuse of addresses. Private addresses can be reused in many organizations with NAT, so the enterprise needs only a few public addresses. Second, security. Servers with private addresses cannot receive a TCP connection from outside. The enterprise keeps public addresses for the machines that must be reachable.
+
+68
+00:15:57,845 --> 00:16:04,309
+Question 70. Give two examples of private IP addresses. Pause the video and try it.
+
+69
+00:16:04,759 --> 00:16:22,253
+Take any valid address from the three blocks. For example, 10 dot 0 dot 0 dot 1, and 192 dot 168 dot 1 dot 5. 172 dot 16 dot 0 dot 1 is also correct.
+
+70
+00:16:22,703 --> 00:16:39,279
+Question 71. Two routers, R1 and R2, are directly connected with one physical link. How many interfaces are in the subnet? What is the prefix length? Are there subnets with a smaller prefix length? Pause the video and try it.
+
+71
+00:16:39,729 --> 00:16:57,521
+Part a. A subnet is the set of interfaces that can reach each other without a router in between. This link has one interface on R1 and one on R2. So the subnet has 2 interfaces. The addresses shown are an example. The question gives none.
+
+72
+00:16:57,971 --> 00:17:15,251
+Part b. We need 2 addresses for the interfaces, plus the network ID, plus the broadcast address. That is 4 addresses, which is 2 to the power 2. So the host part has 2 bits, and the prefix length is 32 minus 2, which is slash 30.
+
+73
+00:17:15,701 --> 00:17:33,450
+Part c. Yes. A smaller prefix length gives a larger block. Slash 29 has 6 usable addresses, and slash 28 has 14. They also hold 2 interfaces, but they waste addresses. Slash 30 is the longest prefix that works.
+
+74
+00:17:33,900 --> 00:18:00,609
+Questions 72 and 73. What is the main function of the NAT protocol? And state the NAT protocol in terms of input and output IP packets. Pause the video and try it. Question 72. The main function of NAT is to let all devices in a local network share one public IPv4 address. NAT maps their private addresses to that one address, with different port numbers.
+
+75
+00:18:01,059 --> 00:18:15,481
+Question 73. For an outgoing packet, the input has a private source address and port. The output has the NAT IP address and a new port as the source. The router stores this pair in the NAT table.
+
+76
+00:18:15,931 --> 00:18:29,584
+For an incoming packet, the input has the NAT IP address and the new port as the destination. The router looks up the pair, and the output has the stored private address and port as the destination.
+
+77
+00:18:30,034 --> 00:18:34,919
+All other fields stay the same. This answer comes from slide 69.
+
+78
+00:18:35,369 --> 00:18:47,679
+Questions 74 and 75. Recall the four types of packet delay. Does NAT have an impact on packet delay? If yes, which component? Pause the video and try it.
+
+79
+00:18:48,129 --> 00:19:04,449
+Question 74. The four delays at each node are d proc, the processing delay; d queue, the queueing delay; d trans, the transmission delay, which is L over R; and d prop, the propagation delay, which is d over s.
+
+80
+00:19:04,899 --> 00:19:19,448
+Question 75. Yes. NAT adds to d proc at the NAT router. For every datagram, the router must look up the NAT table and rewrite the IP address and port number. Then the checksums must change too.
+
+81
+00:19:19,898 --> 00:19:32,911
+This answer is reasoning from slide 69 and Chapter 1. No single slide states it. d trans and d prop do not change, because the length of the datagram and the link stay the same.
+
+82
+00:19:33,361 --> 00:19:46,631
+Questions 76 and 77. What is an autonomous system? Name one intra-AS routing protocol and one inter-AS routing protocol. Pause the video and try it.
+
+83
+00:19:47,081 --> 00:20:07,923
+Question 76. From slide 73. An autonomous system is a set of routers under a single technical administration. It uses an interior gateway protocol to route packets inside the AS, and an exterior gateway protocol to route packets to other ASes. It has an AS number.
+
+84
+00:20:08,373 --> 00:20:17,568
+Question 77. For intra-AS routing, OSPF. RIP is also correct. For inter-AS routing, BGP.
+
+85
+00:20:18,018 --> 00:20:27,511
+Questions 78 to 80. What is the goal of routing protocols? What is a path? What is a good path? Pause the video and try it.
+
+86
+00:20:27,961 --> 00:20:43,663
+Question 78. From slide 78. The goal is to determine good paths, or routes, from sending hosts to receiving hosts, through the network of routers. The routing protocols put the results into the routing tables.
+
+87
+00:20:44,113 --> 00:20:53,627
+Question 79. A path is the sequence of routers that packets traverse from the initial source host to the final destination host.
+
+88
+00:20:54,077 --> 00:21:11,784
+Question 80. A good path has the least cost, or is the fastest, or is the least congested. In the graph, the least cost path from u to z is u, x, y, z, with cost 1 plus 1 plus 2, which is 4. The path through w costs 10.
+
+89
+00:21:12,234 --> 00:21:31,263
+To recap. Private addresses come from three blocks and are not advertised outside. A NAT router rewrites the source of outgoing datagrams, stores the pair, and maps incoming destinations back. NAT adds processing delay, and it changes a layer 4 field.
+
+90
+00:21:31,713 --> 00:21:58,465
+An autonomous system is a set of routers under one administration. OSPF, RIP, or E I G R P route inside an AS. BGP routes among ASes. Routing algorithms work on a graph with link costs. Global algorithms are link state, and decentralized algorithms are distance vector. The next video teaches Dijkstra's algorithm and OSPF.

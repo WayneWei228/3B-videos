@@ -1,0 +1,239 @@
+1
+00:00:00,000 --> 00:00:15,488
+This is MATH 239, video 23 b. The topics are two applications of breadth-first search, and minimum spanning trees. We follow sections 5.5 and 5.6 of the graph theory notes.
+
+2
+00:00:15,938 --> 00:00:29,805
+After this video, you can use breadth-first search to find an odd cycle or a bipartition. You can use it to find distances. You can run Prim's algorithm, and prove that it gives a minimum spanning tree.
+
+3
+00:00:30,255 --> 00:00:54,127
+Theorem 5.5.1 turns the bipartite test into an algorithm. Take a connected graph G and a breadth-first search tree T. G has an odd cycle if and only if some non-tree edge joins two vertices at the same level. Here is the B F S tree of Figure 5.4 again, with the four non-tree edges dashed.
+
+4
+00:00:54,577 --> 00:01:07,419
+The edge 3 10 joins two vertices at level 1. The tree path from 3 to 10 goes up to 9 and down again. With the edge 3 10, it closes a cycle of length 3.
+
+5
+00:01:07,869 --> 00:01:25,320
+The edge 5 6 joins two vertices at level 2. The tree path 5, 8, 6 and the edge close another 3-cycle. So this graph is not bipartite. The other two non-tree edges join adjacent levels and give no odd cycle.
+
+6
+00:01:25,770 --> 00:01:39,615
+Now the proof. Part i: a same-level non-tree edge gives an odd cycle. We use the B F S tree of problem set 5.4, number 3, from video 23 a. The root is 1.
+
+7
+00:01:40,065 --> 00:01:48,300
+Take a non-tree edge u v with both ends at the same level. Here u is 3 and v is 7, both at level 3.
+
+8
+00:01:48,750 --> 00:02:07,374
+Follow the parent arrows up from u and from v. The two paths first meet at some vertex, m levels higher. Since u and v are different, m is at least 1. Here they meet at vertex 2, at level 1. So m equals 2. The meeting vertex can also be the root.
+
+9
+00:02:07,824 --> 00:02:18,960
+The tree path from u to v goes up m levels and down m levels. So it has 2 m edges. Here the path is 3, 4, 2, 6, 7, with 4 edges.
+
+10
+00:02:19,410 --> 00:02:32,743
+Add the edge u v. The result is a cycle of length 2 m plus 1, which is odd. Here it is a 5-cycle. The edge 7 9 at level 3 gives a 7-cycle in the same way.
+
+11
+00:02:33,193 --> 00:02:47,103
+Part ii: if no non-tree edge joins equal levels, G is bipartite. Here is breadth-first search on the 3-cube from 0 0 0. The level of each vertex is its number of ones.
+
+12
+00:02:47,553 --> 00:03:11,233
+There is no same-level edge. Tree edges join levels that differ by exactly 1. By the primary property, every other edge joins levels that differ by at most 1, and not 0, so also by 1. So each edge joins an odd level to an even level. Put the odd levels in A and the even levels in B. This is a bipartition.
+
+13
+00:03:11,683 --> 00:03:28,195
+So G is bipartite, and by Theorem 5.3.2 it has no odd cycle. Together, parts i and ii prove the theorem. The proof is constructive: B F S gives either an odd cycle or a bipartition.
+
+14
+00:03:28,645 --> 00:03:47,930
+We do not need the whole tree first. The notes check during the search. Each time you look at the vertex at the head of the queue, check whether it has an edge to a tree vertex at the same level. Here is B F S from vertex 1 again. After 1 is exhausted, the head is 2, at level 1.
+
+15
+00:03:48,380 --> 00:04:03,121
+Vertex 14 is already in the tree, also at level 1, and 2 14 is an edge. So the paths up to the root give the odd cycle 2, 1, 14, 2. We can stop: the graph is not bipartite.
+
+16
+00:04:03,571 --> 00:04:25,929
+The second application is shortest paths. Theorem 5.5.2: in a connected graph, the length of a shortest path from u to v equals the level of v in any breadth-first search tree with root u. If v is at level k, the tree path from v up to u has k edges. So the distance is at most k.
+
+17
+00:04:26,379 --> 00:04:44,149
+Now take any path from u to v in G. It starts at level 0 and ends at level k. By the primary property, no edge joins vertices more than one level apart. So each edge moves at most one level, and the path has at least k edges.
+
+18
+00:04:44,599 --> 00:04:53,346
+So the distance from u to v equals the level of v. The length of a shortest path is called the distance between the vertices.
+
+19
+00:04:53,796 --> 00:05:10,137
+Here is the graph of problem set 5.4, number 3. The purple numbers are the distances from vertex 1. They are the levels of the B F S tree from video 23 a. For example, vertex 8 is at distance 4.
+
+20
+00:05:10,587 --> 00:05:34,417
+Problem set 5.5, number 3 asks for an algorithm for the diameter. The diameter is the largest distance between two vertices. One algorithm: run breadth-first search from every vertex. Each search gives all distances from its root. The largest level over all searches is the diameter. It works by Theorem 5.5.2.
+
+21
+00:05:34,867 --> 00:05:44,808
+For this graph, the largest level is 3 or 4 for each root. So the diameter is 4. For example, the distance from 1 to 8 is 4.
+
+22
+00:05:45,258 --> 00:06:01,151
+An exercise from the notes. Pause the video and try it. A connected graph has m vertices at distance n from a vertex v, with n at least 1. Prove that some spanning tree has at least m vertices of degree 1.
+
+23
+00:06:01,601 --> 00:06:21,591
+Take a breadth-first search tree with root v. By Theorem 5.5.2, distance equals level. So the m vertices are exactly the vertices at level n. In the example, v is 1 and n is 3. The orange vertices 3, 7 and 9 are at level 3.
+
+24
+00:06:22,041 --> 00:06:42,393
+Start at one of these vertices and go down to a child, again and again, until a vertex has no child. This vertex is a leaf. Its level is at least n, which is at least 1, so it is not the root. A non-root leaf has degree 1. From 3 we reach 8. 7 and 9 are leaves already.
+
+25
+00:06:42,843 --> 00:06:55,536
+Vertices below different level-n vertices are different, because each vertex has only one parent. So the m leaves are different, and T has at least m vertices of degree 1.
+
+26
+00:06:55,986 --> 00:07:14,781
+Another exercise. Pause the video and try it. Describe a procedure to find a maximal bipartite subgraph of a connected graph. Maximal means no edge of G can be added back without losing the property. The notes do not ask for a proof, but we give the reason.
+
+27
+00:07:15,231 --> 00:07:26,943
+Build a breadth-first search tree. Then delete every non-tree edge that joins two vertices at the same level. In this graph, delete 3 10 and 5 6, in red.
+
+28
+00:07:27,393 --> 00:07:46,145
+Every remaining edge joins levels one apart, so odd levels and even levels give a bipartition. If we put back a deleted edge, the proof of Theorem 5.5.1 gives an odd cycle. So no deleted edge can come back, and the subgraph is maximal.
+
+29
+00:07:46,595 --> 00:08:03,512
+Section 5.6 is about the minimum spanning tree problem, or M S T. We have a connected graph G, and a weight on each edge. The weight of a subgraph is the sum of the weights of its edges. We want a spanning tree with the smallest weight.
+
+30
+00:08:03,962 --> 00:08:18,767
+Here is the example of the notes. The blue spanning tree uses the edges a c, c e, c d, d b and d f. Its weight is 4 plus 8 plus 8 plus 8 plus 3, which is 31.
+
+31
+00:08:19,217 --> 00:08:31,271
+The notes ask: is there a spanning tree of smaller weight? The edge weights could be costs to build links in a network. A minimum spanning tree connects every location at the least cost.
+
+32
+00:08:31,721 --> 00:08:48,958
+We need one tool from video 22, Theorem 5.2.3. If T is a spanning tree and e is an edge not in T, then T plus e has exactly one cycle. If we remove any edge of that cycle, we get a spanning tree again.
+
+33
+00:08:49,408 --> 00:08:54,720
+Use it on the tree of weight 31. Add the edge a e, with weight 5.
+
+34
+00:08:55,170 --> 00:09:02,317
+T plus a e has one cycle: a, c, e, and back to a. It uses a c, c e and the new edge.
+
+35
+00:09:02,767 --> 00:09:18,105
+Remove c e, which has weight 8. The result is a spanning tree of weight 31 plus 5 minus 8, which is 28. So 31 was not the minimum. Prim's algorithm avoids this trial and error.
+
+36
+00:09:18,555 --> 00:09:41,361
+Prim's algorithm grows the tree one edge at a time, like Algorithm 5.4.1. Start with any vertex. While T is not spanning, look at the edges in the cut induced by the vertex set of T. These are the edges with one end in T and one end outside. Pick one with the smallest weight, and add it with its new vertex.
+
+37
+00:09:41,811 --> 00:09:55,229
+Why is there always an edge to pick? T is not spanning, so its vertex set is a nonempty proper subset. G is connected, so by Theorem 4.8.5 the cut is not empty.
+
+38
+00:09:55,679 --> 00:10:08,949
+Here is Prim's algorithm on the example, starting at a, as in the notes. Orange dashed edges are the cut. The thick orange edge is the one we pick. Green edges are already in the tree.
+
+39
+00:10:09,399 --> 00:10:16,268
+The cut of a is a b 9, a c 4 and a e 5. The smallest is a c, weight 4. Add c.
+
+40
+00:10:16,718 --> 00:10:30,201
+Now the cut of a, c is a e 5, c d 8, c e 8 and a b 9. Pick a e, weight 5. The total is 9. Note that c e is no longer a candidate after e joins.
+
+41
+00:10:30,651 --> 00:10:37,285
+The cut is now e f 7, c d 8 and a b 9. Pick e f. The total is 16.
+
+42
+00:10:37,735 --> 00:10:44,925
+With f in the tree, d f 3 enters the cut. It is the smallest. Pick it. The total is 19.
+
+43
+00:10:45,375 --> 00:10:53,375
+Only b is left. The cut is b f 7, b d 8 and a b 9. Pick b f. The total is 26.
+
+44
+00:10:53,825 --> 00:11:08,011
+The tree is spanning, so the algorithm stops. The weight is 26, which is less than 31 and 28. This graph has 75 spanning trees, and none of them has a weight less than 26.
+
+45
+00:11:08,461 --> 00:11:38,093
+Why does this greedy choice give a minimum spanning tree? Theorem 5.6.1 says Prim's algorithm produces a minimum spanning tree. Let T 1 up to T n be the trees in the algorithm. T k plus 1 is T k plus the edge e k. We prove by induction that some minimum spanning tree contains T k. For k equals 1, T 1 is one vertex, and every M S T contains it. The blue region is the vertex set of T k.
+
+46
+00:11:38,543 --> 00:11:55,013
+Induction step. Let T star be an M S T that contains T k. If T star also contains e k, it contains T k plus 1, and we are done. If not, look at T star plus e k. The orange edge is e k.
+
+47
+00:11:55,463 --> 00:12:13,532
+By Theorem 5.2.3, T star plus e k has exactly one cycle C. Remove e k from C. What is left is a path in T star between the two ends of e k. One end is in T k and the other is not. The green path shows it.
+
+48
+00:12:13,982 --> 00:12:31,305
+The path starts inside V of T k and ends outside. So at least one of its edges, e prime, crosses the cut. It is red. By Theorem 5.2.3, T prime equals T star plus e k minus e prime is a spanning tree.
+
+49
+00:12:31,755 --> 00:12:47,157
+Prim's algorithm chose e k as an edge of smallest weight in this cut. e prime is also in the cut, so w of e prime is at least w of e k. So the weight of T prime is at most the weight of T star.
+
+50
+00:12:47,607 --> 00:13:07,106
+T star is a minimum spanning tree, so w of T prime cannot be smaller. So the weights are equal, and T prime is also a minimum spanning tree. It contains T k plus 1. By induction, some M S T contains T n. T n is spanning, so it is that M S T.
+
+51
+00:13:07,556 --> 00:13:18,095
+An exercise. Pause the video and try it. Run Prim's algorithm on the same graph, but start at d. Give the edges in order, and the total weight.
+
+52
+00:13:18,545 --> 00:13:24,390
+The cut of d is d f 3, b d 8 and c d 8. Pick d f, weight 3.
+
+53
+00:13:24,840 --> 00:13:33,672
+The cut of d, f has b f 7 and e f 7. This is a tie. Either one is allowed. We pick b f. The total is 10.
+
+54
+00:13:34,122 --> 00:13:38,794
+Now e f 7 is the smallest. Pick it. The total is 17.
+
+55
+00:13:39,244 --> 00:13:45,559
+With e in the tree, a e 5 enters the cut. It is the smallest. The total is 22.
+
+56
+00:13:46,009 --> 00:13:54,457
+Last, the cut of the five vertices is a c 4, c d 8 and c e 8. Pick a c. The total is 26.
+
+57
+00:13:54,907 --> 00:14:05,296
+We get the same five edges and the same weight 26, in a different order. This agrees with the theorem: every start gives a minimum spanning tree.
+
+58
+00:14:05,746 --> 00:14:24,029
+To recap. In a breadth-first search tree, the graph has an odd cycle exactly when a non-tree edge joins two vertices at the same level. That edge and the tree path give a cycle of length 2 m plus 1. Otherwise the odd and even levels give a bipartition.
+
+59
+00:14:24,479 --> 00:14:34,463
+The level of a vertex is its distance from the root. So breadth-first search finds shortest paths, and running it from every vertex gives the diameter.
+
+60
+00:14:34,913 --> 00:14:52,342
+A minimum spanning tree has the least total weight. Prim's algorithm grows a tree and always adds a cheapest edge of the cut. The proof exchanges one edge of an optimal tree, and the weight does not increase. The next video starts planar graphs.

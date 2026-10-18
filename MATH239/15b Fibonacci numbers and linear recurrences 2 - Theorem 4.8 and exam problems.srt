@@ -1,0 +1,191 @@
+1
+00:00:00,000 --> 00:00:14,613
+This is MATH 239, video 15b. It continues video 15a, on homogeneous linear recurrence relations. This is the course notes, pages 98 to 101.
+
+2
+00:00:15,063 --> 00:00:32,301
+After this video, you can state and prove Theorem 4.8. You can go from a rational generating series to a recurrence and its initial conditions. You can count compositions with a recurrence. And you can solve question 10 of the practice midterm.
+
+3
+00:00:32,751 --> 00:01:00,420
+In video 15a, the denominator came from the recurrence, and the numerator from the initial conditions. Theorem 4.8 says this always happens. Two statements are equivalent. Part a: the sequence satisfies a homogeneous linear recurrence, for all n at least N, with initial conditions g sub 0 to g sub N minus 1. Part b: G of x is a quotient of two polynomials, P over Q.
+
+4
+00:01:00,870 --> 00:01:12,646
+The denominator Q has the coefficients of the recurrence. The term a j g sub n minus j, shifted back by j, gives the term a j x to the j.
+
+5
+00:01:13,096 --> 00:01:27,496
+The numerator P has degree at most N minus 1. Its coefficient b sub k is the left side of the recurrence at n equals k, with the convention that g sub n is zero for negative n.
+
+6
+00:01:27,946 --> 00:01:39,295
+The theorem works in both directions. From a recurrence, we get the generating series. From a rational generating series, we get a recurrence and its initial conditions.
+
+7
+00:01:39,745 --> 00:01:54,785
+Here is the proof. It is the calculation of Example 4.7 from video 15a, done in general. Put a sub 0 equal to 1. Assume part a, and multiply Q of x by G of x.
+
+8
+00:01:55,235 --> 00:02:08,910
+Multiply out. Each term a j x to the j times G gives a copy of the sequence, times a j, moved j places to the right. The figure shows the rows for d equals 2.
+
+9
+00:02:09,360 --> 00:02:27,792
+Re-index with k equals n plus j. The coefficient of x to the k is the sum over j of a j g sub k minus j. This uses the convention that g is zero at negative indices. In the figure, this is the sum of column k.
+
+10
+00:02:28,242 --> 00:02:42,194
+This sum is exactly the left side of the recurrence at n equals k. So for k at least N it is zero. For k at most N minus 1 it is b sub k, by the definition of b sub k.
+
+11
+00:02:42,644 --> 00:02:57,172
+So Q times G equals P, a polynomial of degree at most N minus 1. Q has constant term 1, so it is invertible, and G equals P over Q. This proves that a implies b.
+
+12
+00:02:57,622 --> 00:03:24,737
+For the converse, assume part b. Then Q times G equals P. Compare the coefficients of x to the k on both sides. For k at most N minus 1, b sub k equals g sub k plus a 1 g sub k minus 1, and so on. These equations give g sub 0, then g sub 1, and so on up to g sub N minus 1, one at a time. These are the initial conditions.
+
+13
+00:03:25,187 --> 00:03:41,379
+For k at least N, the coefficient of x to the k in P is zero. So g sub k plus a 1 g sub k minus 1, and so on, equals zero for all k at least N. That is the recurrence. So b implies a.
+
+14
+00:03:41,829 --> 00:03:59,621
+Now use Theorem 4.8 the other way. Example 4.9. Pause the video and try it. D of x is one minus 3 x plus 4 x squared, over one minus 2 x plus 3 x cubed. Find a recurrence and initial conditions.
+
+15
+00:04:00,071 --> 00:04:20,679
+Read the recurrence from the denominator: d sub n minus 2 d sub n minus 1 plus 3 d sub n minus 3. There is no x squared term, so there is no d sub n minus 2 term. Read the right side from the numerator: 1, minus 3, 4, and then zero for n at least 3.
+
+16
+00:04:21,129 --> 00:04:42,227
+Use the convention that d is zero at negative indices, and solve one equation at a time. d sub 0 is 1. Then d sub 1 minus 2 equals minus 3, so d sub 1 is minus 1. Then d sub 2 plus 2 equals 4, so d sub 2 is 2. These are the orange cells.
+
+17
+00:04:42,677 --> 00:05:04,480
+So the answer is: d sub 0 equals 1, d sub 1 equals minus 1, d sub 2 equals 2, and d sub n equals 2 d sub n minus 1 minus 3 d sub n minus 3 for n at least 3. For example, d sub 5 is 2 times 5 minus 3 times 2, which is 4.
+
+18
+00:05:04,930 --> 00:05:17,090
+One warning. The table in the notes prints 1 for d sub 2. The text and the recurrence give 2. All the later values in the table agree with d sub 2 equal to 2.
+
+19
+00:05:17,540 --> 00:05:38,276
+Example 4.10. Pause the video and try it. s sub 0 is 1, s sub 1 is 2, s sub 2 is 1, and s sub n minus s sub n minus 1 minus 2 s sub n minus 3 equals zero for n at least 3. Find the generating series S of x.
+
+20
+00:05:38,726 --> 00:05:48,049
+First, a few values. s sub 3 is s sub 2 plus 2 s sub 0, which is 3. Then 7, 9, 15, 29.
+
+21
+00:05:48,499 --> 00:05:57,053
+By Theorem 4.8, the denominator has the coefficients of the recurrence: one minus x minus 2 x cubed.
+
+22
+00:05:57,503 --> 00:06:22,058
+For the numerator, evaluate the left side of the recurrence at n equals 0, 1 and 2, with s equal to zero at negative indices. We get 1, then 2 minus 1 which is 1, then 1 minus 2 which is minus 1. So S of x is one plus x minus x squared, over one minus x minus 2 x cubed. No sums to re-index.
+
+23
+00:06:22,508 --> 00:06:45,207
+Example 4.11 counts compositions. Q is the set of compositions where each part is at least 2, and the number of parts is even. Example 2.22 found its generating series with the String Lemma: one minus 2 x plus x squared, over one minus 2 x plus x squared minus x to the 4.
+
+24
+00:06:45,657 --> 00:07:08,249
+By Theorem 4.8, q sub n minus 2 q sub n minus 1 plus q sub n minus 2 minus q sub n minus 4 equals 1, minus 2, 1 for n equals 0, 1, 2, and zero for n at least 3. This gives q sub 0 equals 1, and q sub 1 and q sub 2 equal 0.
+
+25
+00:07:08,699 --> 00:07:23,355
+Then the recurrence computes the rest. The row shows q sub 0 to q sub 14. For n equals 8 we get 6. The figure lists the six compositions: five with two parts, and one with four parts.
+
+26
+00:07:23,805 --> 00:07:33,554
+q sub 14 is 116. We know that there are 116 such compositions of 14, and we did not list them.
+
+27
+00:07:34,004 --> 00:07:59,071
+Now the practice midterm, question 10 part a. Pause the video and try it. a sub n minus 7 a sub n minus 1 plus 6 a sub n minus 2 equals zero for n at least 2. a sub 0 is 5 and a sub 1 is 10. Find a formula for a sub n. The plan is the Fibonacci method: generating series, partial fractions, geometric series.
+
+28
+00:07:59,521 --> 00:08:09,505
+Let A of x be the sum of a sub n x to the n. By Theorem 4.8, the denominator is one minus 7 x plus 6 x squared.
+
+29
+00:08:09,955 --> 00:08:25,571
+The numerator has degree at most 1, because N is 2. b sub 0 is a sub 0, which is 5. b sub 1 is a sub 1 minus 7 a sub 0, which is 10 minus 35, which is minus 25.
+
+30
+00:08:26,021 --> 00:08:48,122
+So A of x is 5 minus 25 x, over one minus 7 x plus 6 x squared. Factor the denominator. The auxiliary polynomial is t squared minus 7 t plus 6, which is t minus 1 times t minus 6. So the denominator is one minus x, times one minus 6 x.
+
+31
+00:08:48,572 --> 00:09:05,937
+By the Partial Fractions Theorem there are constants A and B, as shown. Multiply by the denominator: 5 minus 25 x equals A times one minus 6 x, plus B times one minus x. This holds for every value of x.
+
+32
+00:09:06,387 --> 00:09:16,158
+Put x equals 1. The B term is zero. 5 minus 25 is minus 20, and the A term is minus 5 A. So A is 4.
+
+33
+00:09:16,608 --> 00:09:33,483
+Put x equals one sixth. The A term is zero. 5 minus 25 over 6 is 5 over 6, and the B term is B times 5 over 6. So B is 1. Choosing x to kill a term is faster than comparing coefficients.
+
+34
+00:09:33,933 --> 00:09:55,970
+So A of x is 4 over one minus x, plus 1 over one minus 6 x. By the geometric series, the coefficient of x to the n is 4 plus 6 to the n. The rows show 5, 10, 40, 220, 1300. So a sub n equals 4 plus 6 to the n, for all n.
+
+35
+00:09:56,420 --> 00:10:15,044
+Always check. a sub 0 is 4 plus 1, which is 5. a sub 1 is 4 plus 6, which is 10. And the recurrence gives a sub 2 equals 7 times 10 minus 6 times 5, which is 40. The formula gives 4 plus 36, also 40.
+
+36
+00:10:15,494 --> 00:10:38,235
+Part b goes the other way. Pause the video and try it. b sub n equals 3 to the n plus n minus 4 times minus 2 to the n. Find a homogeneous recurrence and initial conditions. The idea: show that B of x is a quotient of polynomials. Then Theorem 4.8, b implies a, gives the recurrence.
+
+37
+00:10:38,685 --> 00:10:49,971
+The term 3 to the n gives the geometric series one over one minus 3 x. For the second term, write n minus 4 as n plus 1, minus 5.
+
+38
+00:10:50,421 --> 00:11:09,471
+By the binomial series from video 6, the sum of n plus 1 times y to the n is one over one minus y squared. With y equals minus 2 x, the sum of n plus 1 times minus 2 to the n, x to the n, is one over one plus 2 x, squared.
+
+39
+00:11:09,921 --> 00:11:16,748
+The last part, minus 5 times minus 2 to the n, gives minus 5 over one plus 2 x.
+
+40
+00:11:17,198 --> 00:11:36,462
+Add the three rows. We get minus 3, 9, 1, 35, 81. These are the values of b sub n from the formula. So B of x is one over one minus 3 x, plus one over one plus 2 x all squared, minus 5 over one plus 2 x.
+
+41
+00:11:36,912 --> 00:11:51,248
+Put the three fractions over a common denominator: one minus 3 x, times one plus 2 x all squared. Multiply out. It is one plus x minus 8 x squared minus 12 x cubed.
+
+42
+00:11:51,698 --> 00:12:08,253
+The numerator is one plus 2 x all squared, plus one minus 3 x, minus 5 times one minus 3 x times one plus 2 x. Multiply out and collect: minus 3 plus 6 x plus 34 x squared.
+
+43
+00:12:08,703 --> 00:12:16,148
+The numerator has degree 2, which is less than 3. So Theorem 4.8 applies with N equal to 3.
+
+44
+00:12:16,598 --> 00:12:39,446
+The answer: b sub n plus b sub n minus 1 minus 8 b sub n minus 2 minus 12 b sub n minus 3 equals zero, for all n at least 3. The initial conditions are b sub 0 equals minus 3, b sub 1 equals 9, b sub 2 equals 1. Compute them from the formula for b sub n.
+
+45
+00:12:39,896 --> 00:12:58,093
+Check with b sub 3. The recurrence gives minus b sub 2, plus 8 b sub 1, plus 12 b sub 0. That is minus 1 plus 72 minus 36, which is 35. The formula gives 27 plus 8, also 35.
+
+46
+00:12:58,543 --> 00:13:22,885
+To recap. The Fibonacci numbers have the generating series one over one minus x minus x squared. Inverse roots, partial fractions and the geometric series give f sub n as A alpha to the n plus B beta to the n. To find inverse roots, substitute x equals one over t: they are the roots of the auxiliary polynomial.
+
+47
+00:13:23,335 --> 00:13:41,916
+Theorem 4.8 says a sequence satisfies a homogeneous linear recurrence exactly when its generating series is P over Q. Q has the coefficients of the recurrence. The coefficients of P are the left side of the recurrence at small n.
+
+48
+00:13:42,366 --> 00:13:56,233
+Always check your formula with the initial conditions and one step of the recurrence. The next video proves the Partial Fractions Theorem, and gives the Main Theorem, which goes straight from a recurrence to a formula.

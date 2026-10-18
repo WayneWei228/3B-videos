@@ -1,0 +1,223 @@
+1
+00:00:00,000 --> 00:00:13,376
+This is STAT 331, video 5 b. In video 5 a, we found the maximum likelihood estimator of sigma squared: the sum of squared residuals, divided by n.
+
+2
+00:00:13,826 --> 00:00:33,389
+After this video, you can explain why that estimator is biased. You can use the unbiased estimator, which divides by n minus 2. You can read sigma hat from regression output. And you can prove that S squared is unbiased. This is Tutorial 1, questions 2 b and 3.
+
+3
+00:00:33,839 --> 00:00:44,740
+The slides do not use the maximum likelihood estimator. They use sigma squared hat: the sum of e i squared, divided by n minus 2. Why?
+
+4
+00:00:45,190 --> 00:01:04,390
+Here is our own simulation. We take the five x values 1 to 5. We generate y from a true line with sigma squared equal to 1. We repeat this 20,000 times. Each time, we calculate sigma squared hat M L. The histogram shows the 20,000 values.
+
+5
+00:01:04,840 --> 00:01:18,515
+The purple line is the true value, 1. The red line is the average of the estimates: 0.60. So the maximum likelihood estimator is too small on average. It is biased.
+
+6
+00:01:18,965 --> 00:01:33,130
+Now divide by n minus 2, which is 3, instead of 5. The average of these estimates is 1.00. This estimator is unbiased: its expected value is sigma squared.
+
+7
+00:01:33,580 --> 00:01:42,668
+The slide gives the reason. We want to show that the expected value of the sum of e i squared over n minus 2 is sigma squared.
+
+8
+00:01:43,118 --> 00:01:56,515
+The slide uses one fact. The sum of e i squared, divided by sigma squared, has a chi squared distribution with n minus 2 degrees of freedom. The proof comes later in the course.
+
+9
+00:01:56,965 --> 00:02:15,632
+The mean of a chi squared distribution is its degrees of freedom. The plot shows the chi squared density with 3 degrees of freedom, for n equals 5. Its mean is 3. The blue histogram is the sum of squared residuals from our simulation. It follows the curve.
+
+10
+00:02:16,082 --> 00:02:29,351
+Now take the expectation. Take sigma squared outside. Then take 1 over n minus 2 outside. The expectation that remains is n minus 2. So the result is sigma squared.
+
+11
+00:02:29,801 --> 00:02:45,055
+With the same fact, the expected value of sigma squared hat M L is n minus 2 over n, times sigma squared. For n equals 5, this is 0.6 sigma squared. This agrees with the simulation.
+
+12
+00:02:45,505 --> 00:02:56,427
+This slide is optional. It is not on the slides. It gives a picture of the n minus 2. Take n equals 5. Suppose you know three of the residuals.
+
+13
+00:02:56,877 --> 00:03:07,779
+The two constraints, sum of e i equals 0 and sum of x i e i equals 0, are two linear equations. They fix the last two residuals.
+
+14
+00:03:08,229 --> 00:03:22,309
+So only n minus 2 residuals are free. We estimated two parameters, beta zero and beta one. Each one uses up one degree of freedom. This is why the denominator is n minus 2.
+
+15
+00:03:22,759 --> 00:03:35,580
+The two estimators differ only in the denominator. Their ratio is n over n minus 2. For n equals 5, the ratio is 1.67. The difference is large.
+
+16
+00:03:36,030 --> 00:03:46,419
+For n equals 50, the ratio is only 1.04. This is why the slide says: often it does not matter when n is 50 or more.
+
+17
+00:03:46,869 --> 00:03:53,653
+The brainhead data have n equals 236. The ratio is 1.009.
+
+18
+00:03:54,103 --> 00:04:06,946
+For the brainhead data, sigma hat is 72.35 grams. The maximum likelihood version is 72.04 grams. The two values are almost equal.
+
+19
+00:04:07,396 --> 00:04:20,879
+Here are all 236 people with the fitted line. Beta zero hat is 335.4323, and beta one hat is 0.2608.
+
+20
+00:04:21,329 --> 00:04:35,686
+Sigma hat is the square root of the sum of squared residuals over n minus 2. It is 72.35 grams. The green band goes from sigma hat below the line to sigma hat above the line.
+
+21
+00:04:36,136 --> 00:04:44,947
+On the right is a histogram of the 236 residuals. They are centred at 0. Their sum is exactly 0.
+
+22
+00:04:45,397 --> 00:05:02,591
+The dashed lines are at minus and plus sigma hat. Sigma hat measures the typical size of a residual. In these data, 166 of the 236 residuals, about 70 percent, are inside these lines.
+
+23
+00:05:03,041 --> 00:05:30,583
+Tutorial 1, question 2 b. The data are 100 Boeing 787 aircraft. y is the maintenance cost in thousands of dollars, and x is the number of flight hours. The question gives this output. Verify the estimate of sigma. Pause the video and try it. The residual standard error is the estimate sigma hat. The output gives 426, on 98 degrees of freedom.
+
+24
+00:05:31,033 --> 00:05:38,883
+The question also gives the sum of squared residuals: 17,818,085.
+
+25
+00:05:39,333 --> 00:05:55,248
+Divide by n minus 2. n is 100, so n minus 2 is 98. This is the 98 degrees of freedom in the output. Sigma squared hat is 181,817.2.
+
+26
+00:05:55,698 --> 00:06:07,794
+Take the square root. Sigma hat is 426.40, in thousands of dollars. Rounded, this is 426. It agrees with the output.
+
+27
+00:06:08,244 --> 00:06:20,703
+If you divide by n, you get the maximum likelihood value, 422.11. That is not the value in the output. The output uses n minus 2.
+
+28
+00:06:21,153 --> 00:06:45,217
+Tutorial 1, question 3. Show that S squared, the sum of squared residuals over n minus 2, is an unbiased estimator of sigma squared. Pause the video and try it. The plan: show that the expected sum of squared residuals is n minus 2 times sigma squared. We do not use the chi squared fact. We use only means and variances.
+
+29
+00:06:45,667 --> 00:06:54,435
+First, write the fitted value in a new form. Put in beta zero hat equals y bar minus beta one hat x bar.
+
+30
+00:06:54,885 --> 00:07:12,634
+Collect the terms. y i hat is y bar plus beta one hat times x i minus x bar. In the picture, the fitted line goes through the point x bar, y bar. The green part is beta one hat times x i minus x bar.
+
+31
+00:07:13,084 --> 00:07:28,295
+So the residual is y i minus y bar, minus beta one hat times x i minus x bar. In the picture, the blue distance y i minus y bar is the green part plus the orange residual.
+
+32
+00:07:28,745 --> 00:07:41,865
+Square the residual and add over i. Expand the square of a difference. We get S y y, minus 2 beta one hat S x y, plus beta one hat squared S x x.
+
+33
+00:07:42,315 --> 00:07:57,269
+Beta one hat is S x y over S x x. So S x y equals beta one hat times S x x. Put this into the middle term. It becomes minus 2 beta one hat squared S x x.
+
+34
+00:07:57,719 --> 00:08:25,730
+So the sum of squared residuals is S y y minus beta one hat squared S x x. The bars check this with the brainhead data. S y y is 3,309,754. Beta one hat squared S x x is 2,084,853. The difference, 1,224,901, is the sum of squared residuals.
+
+35
+00:08:26,180 --> 00:08:41,028
+Next, find the expected value of S y y. Write y i with the model. Its mean y bar is beta zero plus beta one x bar plus epsilon bar. Subtract. Beta zero cancels.
+
+36
+00:08:41,478 --> 00:08:45,510
+Square and add over i. S y y has three terms.
+
+37
+00:08:45,960 --> 00:08:54,472
+The first term, beta one squared S x x, is a constant, because the x i are fixed. Its expectation is itself.
+
+38
+00:08:54,922 --> 00:09:06,634
+The middle term is a sum of fixed numbers times epsilon i minus epsilon bar. Each epsilon has mean 0. By linearity, its expectation is 0.
+
+39
+00:09:07,084 --> 00:09:26,028
+The last term is the sum of epsilon i minus epsilon bar, squared. Its expectation is n minus 1 times sigma squared. The next slide shows why. So the expected S y y is beta one squared S x x plus n minus 1 sigma squared.
+
+40
+00:09:26,478 --> 00:09:39,491
+Expand the square. The middle term has the sum of epsilon i, which is n epsilon bar. So the sum is the sum of epsilon i squared, minus n epsilon bar squared.
+
+41
+00:09:39,941 --> 00:09:55,579
+Each epsilon i has mean 0 and variance sigma squared. So the expected epsilon i squared is sigma squared. The n terms give n sigma squared. These are the five orange blocks, for n equals 5.
+
+42
+00:09:56,029 --> 00:10:17,255
+Epsilon bar also has mean 0. The epsilons are independent, so the variance of their sum is n sigma squared. Divide by n squared: the variance of epsilon bar is sigma squared over n. So n epsilon bar squared has expectation sigma squared. This removes one block.
+
+43
+00:10:17,705 --> 00:10:27,668
+So the expectation is n minus 1 times sigma squared. This is the same reason that the sample variance divides by n minus 1.
+
+44
+00:10:28,118 --> 00:10:47,809
+Now the second part, the expected value of beta one hat squared times S x x. First write beta one hat as a linear function of the y i. The sum of x i minus x bar, times y bar, is 0. So we can drop y bar. This step is on the slides.
+
+45
+00:10:48,259 --> 00:11:08,419
+Take the expectation. The expected y i is beta zero plus beta one x i. The sum of x i minus x bar times beta zero is 0. The sum of x i minus x bar times x i is S x x. So the expected beta one hat is beta one.
+
+46
+00:11:08,869 --> 00:11:13,541
+So the distribution of beta one hat has its centre at beta one.
+
+47
+00:11:13,991 --> 00:11:29,543
+The y i are independent, each with variance sigma squared. The variance of a sum of constants times y i is the sum of the squared constants times sigma squared. This gives sigma squared over S x x.
+
+48
+00:11:29,993 --> 00:11:45,502
+For any random variable W, the expected W squared is its variance plus its mean squared. So the expected beta one hat squared, times S x x, is sigma squared plus beta one squared S x x.
+
+49
+00:11:45,952 --> 00:12:06,603
+Now combine the two results. The expected sum of squared residuals is the expected S y y, minus the expected beta one hat squared S x x. The top row is the expected S y y: beta one squared S x x, plus n minus 1 blocks of sigma squared.
+
+50
+00:12:07,053 --> 00:12:13,474
+The second row is what we subtract: beta one squared S x x, plus one sigma squared.
+
+51
+00:12:13,924 --> 00:12:20,303
+The beta one squared S x x terms cancel. One block of sigma squared also cancels.
+
+52
+00:12:20,753 --> 00:12:30,438
+What remains is n minus 2 blocks of sigma squared. So the expected sum of squared residuals is n minus 2 times sigma squared.
+
+53
+00:12:30,888 --> 00:12:48,787
+Divide by n minus 2. The expected S squared is sigma squared. So S squared is an unbiased estimator of sigma squared. Note that we did not use normality here. We used only the means, the variances, and the independence of the errors.
+
+54
+00:12:49,237 --> 00:13:01,951
+To recap. The maximum likelihood estimator of sigma squared divides by n. It is too small on average. The estimator that divides by n minus 2 is unbiased.
+
+55
+00:13:02,401 --> 00:13:13,601
+For 50 or more observations, the difference is small. In regression output, the residual standard error is sigma hat, with n minus 2 degrees of freedom.
+
+56
+00:13:14,051 --> 00:13:34,318
+To prove unbiasedness, write the sum of squared residuals as S y y minus beta one hat squared S x x. Take the expectation of each part. The result is n minus 2 times sigma squared. The next video covers the mean, variance, and distribution of beta one hat.

@@ -1,0 +1,235 @@
+1
+00:00:00,000 --> 00:00:14,357
+This is STAT 331, video 17 b. It continues video 17 a. The topic is prediction in multiple linear regression: an example and the practice questions of Lecture 8.
+
+2
+00:00:14,807 --> 00:00:34,605
+After this video, you can compute many intervals at once with the matrix X new. You can read the confidence and prediction intervals of the satisfaction example. You can answer questions from regression output. And you can solve practice questions 2 and 3. You need the formulas of video 17 a.
+
+3
+00:00:35,055 --> 00:00:51,716
+Often we want intervals at many covariate vectors, for example to plot a trend. Stack K new rows into a matrix X new. It has K rows and p plus 1 columns. Then the vector of predictions is X new times beta hat.
+
+4
+00:00:52,166 --> 00:01:01,915
+The variance of this vector uses the same rule. X new, times sigma squared X transpose X inverse, times X new transpose.
+
+5
+00:01:02,365 --> 00:01:09,512
+The shapes: K by p plus 1, then p plus 1 by p plus 1, then p plus 1 by K.
+
+6
+00:01:09,962 --> 00:01:12,394
+The result is a K by K matrix.
+
+7
+00:01:12,844 --> 00:01:26,817
+We need only the variance of each prediction. That is the k-th diagonal entry. The off-diagonal entries are covariances between predictions. We do not need them for pointwise intervals.
+
+8
+00:01:27,267 --> 00:01:49,283
+Here is the example of the slides. The model is Satisfaction on Age, Severity and Stress. Age and Stress are fixed at their means. Severity takes five values from 41 to 62. sigma hat is 10.06, and the t quantile with 42 degrees of freedom is 2.018.
+
+9
+00:01:49,733 --> 00:02:11,067
+Row 1. Severity 41. The prediction is 65.74. The quadratic form h is 0.2347. The confidence interval is 55.90 to 75.57. The prediction interval is 43.18 to 88.29.
+
+10
+00:02:11,517 --> 00:02:22,802
+The other rows use the same formulas. The predictions go down as Severity goes up, because beta 2 hat is negative. These numbers match the slide table.
+
+11
+00:02:23,252 --> 00:02:44,756
+Check row 1 by hand. The CI half-width is 2.018 times 10.06 times the square root of 0.2347. That is 9.83. For the PI, use the square root of 1 plus 0.2347. That gives 22.56.
+
+12
+00:02:45,206 --> 00:03:00,481
+The bar chart compares the half-widths. The CI half-width changes a lot with h. The PI half-width is always at least t times sigma hat, which is about 20.3. The new error is the largest part.
+
+13
+00:03:00,931 --> 00:03:11,619
+Now draw the fitted mean response as a line over Severity. Age and Stress stay at their means. The five green points are the five rows of the table.
+
+14
+00:03:12,069 --> 00:03:26,703
+Compute the confidence interval at every Severity value. The green band is the pointwise 95 percent confidence band. It answers: where is the mean satisfaction of all patients with these covariates?
+
+15
+00:03:27,153 --> 00:03:38,417
+The purple band is the 95 percent prediction band. It answers: where is the satisfaction of one new patient? It is much wider, because it adds the new error.
+
+16
+00:03:38,867 --> 00:03:49,171
+Both bands are narrowest near the mean Severity, 50.4. Far from the center of the data, h is larger, so both intervals are wider.
+
+17
+00:03:49,621 --> 00:04:00,053
+Practice question 1 gives this regression output. Water usage is regressed on temperature, production, and hours. Read the five parts on the right.
+
+18
+00:04:00,503 --> 00:04:23,373
+Beta 1 is TEMP, beta 2 is PROD, and beta 3 is HOUR. Each row gives the estimate, its standard error, the t value for the null hypothesis beta j equals 0, and its two-sided p-value. The bottom shows sigma hat, 3.543, with 13 degrees of freedom. Pause the video and try it.
+
+19
+00:04:23,823 --> 00:04:40,399
+Part a. The output says 13 degrees of freedom. In multiple regression, the degrees of freedom are n minus p plus 1. There are 3 covariates, so p plus 1 is 4. 13 equals n minus 4, so n is 17.
+
+20
+00:04:40,849 --> 00:04:57,809
+Part b. The matrix X transpose X inverse has rows and columns for beta 0 to beta 3. The first diagonal entry is for beta 0. So the second diagonal entry is V 1 1, the entry for beta 1, TEMP.
+
+21
+00:04:58,259 --> 00:05:08,989
+The standard error of beta 1 hat is sigma hat times the square root of V 1 1. Solve for V 1 1: divide by sigma hat, then square.
+
+22
+00:05:09,439 --> 00:05:23,989
+V 1 1 equals 0.0659507 divided by 3.543, all squared. That is 3.465 times 10 to the minus 4.
+
+23
+00:05:24,439 --> 00:05:41,719
+Part c. The null value is 0.2, not 0. So we cannot use the t value in the output. Compute it. t obs equals beta 1 hat minus 0.2, divided by the standard error. That is minus 1.508.
+
+24
+00:05:42,169 --> 00:06:02,350
+The alternative is beta 1 less than 0.2. So only small values of t are evidence against the null. The rejection region is the left tail. The critical value is the 0.01 quantile of t with 13 degrees of freedom: minus 2.650.
+
+25
+00:06:02,800 --> 00:06:14,725
+t obs is minus 1.508. It is not in the red region, because minus 1.508 is greater than minus 2.650.
+
+26
+00:06:15,175 --> 00:06:30,749
+So we do not reject the null hypothesis at the 0.01 level. The one-sided p-value is the area to the left of t obs. It is 0.078, which is more than 0.01.
+
+27
+00:06:31,199 --> 00:06:45,385
+Part d. A 90 percent interval has alpha equal to 0.1. So we need the 0.95 quantile of t with 13 degrees of freedom. It is 1.771.
+
+28
+00:06:45,835 --> 00:07:02,774
+The interval is beta 2 hat plus or minus 1.771 times the standard error. Start from the estimate, 0.0008046. On the number line, the unit is 10 to the minus 3.
+
+29
+00:07:03,224 --> 00:07:18,627
+The half-width is 1.771 times 0.0002527. The interval is 0.000357 to 0.001252.
+
+30
+00:07:19,077 --> 00:07:25,157
+0 is not in the interval. This agrees with the small p-value of PROD in the output.
+
+31
+00:07:25,607 --> 00:07:44,273
+Part e. beta 1 hat plus beta 3 hat is a linear combination of beta hat. So it is normal, and the usual interval works if we know its variance. Its variance is sigma squared times V 1 1, plus V 3 3, plus 2 times V 1 3.
+
+32
+00:07:44,723 --> 00:07:50,953
+We know V 1 1 and V 3 3. They come from the standard errors, as in part b.
+
+33
+00:07:51,403 --> 00:07:59,680
+But V 1 3 is the covariance term. It is not in the output. So we do not have enough information to build the interval.
+
+34
+00:08:00,130 --> 00:08:14,125
+Practice question 2. The model has two groups of covariates, X and Z. The columns of X are orthogonal to the columns of Z: X transpose Z is 0. Pause the video and try it.
+
+35
+00:08:14,575 --> 00:08:30,532
+Part a. Put X and Z side by side in one design matrix W. Stack beta and alpha into one vector theta. Then y equals W theta plus epsilon. This is a usual MLR model.
+
+36
+00:08:30,982 --> 00:08:43,355
+Least squares needs W transpose W. Multiply in blocks. The blocks are X transpose X, X transpose Z, Z transpose X, and Z transpose Z.
+
+37
+00:08:43,805 --> 00:08:54,387
+X transpose Z is 0. Z transpose X is its transpose, so it is 0 too. W transpose W is block diagonal.
+
+38
+00:08:54,837 --> 00:09:06,890
+The inverse of a block diagonal matrix is block diagonal, with the inverse of each block. And W transpose y stacks X transpose y on Z transpose y.
+
+39
+00:09:07,340 --> 00:09:13,783
+So theta hat equals W transpose W inverse, times W transpose y.
+
+40
+00:09:14,233 --> 00:09:30,531
+Multiply the blocks. The top part is beta hat equals X transpose X inverse, X transpose y. The bottom part is alpha hat equals Z transpose Z inverse, Z transpose y. This is what we had to show.
+
+41
+00:09:30,981 --> 00:09:42,971
+Part b. Both estimators are a constant matrix times y. For A y and B y, the covariance is A, times the variance of y, times B transpose.
+
+42
+00:09:43,421 --> 00:09:50,482
+Here the variance of y is sigma squared I. In the middle we get sigma squared times X transpose Z.
+
+43
+00:09:50,932 --> 00:09:55,711
+X transpose Z is 0. So the covariance matrix is 0.
+
+44
+00:09:56,161 --> 00:10:06,486
+Stack the two estimators. The stack is one matrix times y, and y is multivariate normal. So the two estimators are jointly normal.
+
+45
+00:10:06,936 --> 00:10:15,043
+For jointly normal vectors, zero covariance means independence. So beta hat and alpha hat are independent.
+
+46
+00:10:15,493 --> 00:10:36,527
+Practice question 3 is a simulation. The true model is known: the mean is 1 plus 0.9 x 1 plus 2 x 2, and the variance is 2. At the new point, the true mean is 1 plus 4.95 plus 40, which is 45.95. Pause the video and try it.
+
+47
+00:10:36,977 --> 00:10:57,841
+Parts a and b. We simulate 10 responses and fit the model. In our run, beta hat is 2.137, 0.632 and 2.010. sigma hat is 1.032. The estimates are not equal to the true values, because the data are random.
+
+48
+00:10:58,291 --> 00:11:18,451
+Part c. The quadratic form h is 0.2567. The prediction is 45.82. With 7 degrees of freedom, the t quantile is 2.365. The 95 percent prediction interval is 43.08 to 48.55.
+
+49
+00:11:18,901 --> 00:11:29,013
+Part d. We draw a new observation from the true model. It is 46.04. It is inside the interval, so the interval covers it.
+
+50
+00:11:29,463 --> 00:11:53,549
+Part e. Repeat parts a to d 2000 times. Each repeat has new data and a new y new. The picture shows 20 intervals. A blue dot is the new y. A red interval missed it. Over 2000 repeats, 0.955 of the intervals cover the new observation. This is close to 0.95, as it should be.
+
+51
+00:11:53,999 --> 00:12:10,852
+Part f. Now draw y new once, and keep it fixed. Only the data change. In our run the fixed y new is 45.95. The intervals cover it 0.999 of the time. This is not 0.95.
+
+52
+00:12:11,302 --> 00:12:21,371
+Why? The 95 percent statement is about the pair: new data and a new y new. With y new fixed, the coverage depends on where it is.
+
+53
+00:12:21,821 --> 00:12:29,096
+The green curve shows the coverage for each fixed value of y new. The red line is 0.95.
+
+54
+00:12:29,546 --> 00:12:34,090
+Our fixed value is near the true mean. So the coverage is near 1.
+
+55
+00:12:34,540 --> 00:12:47,831
+A fixed value far from the mean has low coverage. If we average the green curve over the distribution of y new, the purple curve, we get 0.95 again. That is part e.
+
+56
+00:12:48,281 --> 00:12:59,289
+To recap. The hat matrix maps y to the fitted values. I minus H maps y to the residuals. Both matrices are symmetric and idempotent.
+
+57
+00:12:59,739 --> 00:13:10,213
+The fitted values have mean X beta and variance sigma squared H. The residuals have mean 0 and variance sigma squared times I minus H.
+
+58
+00:13:10,663 --> 00:13:24,914
+The confidence interval for a mean response and the prediction interval for a new response have the same center. The prediction interval has an extra 1 under the square root, for the new error. So it is always wider.
+
+59
+00:13:25,364 --> 00:13:44,095
+For questions with regression output: the degrees of freedom give n. The diagonal of X transpose X inverse is the standard error over sigma hat, squared. And a sum of coefficients needs their covariance. The next video reviews exam problems for Midterm 1.

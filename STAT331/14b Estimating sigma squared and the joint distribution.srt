@@ -1,0 +1,239 @@
+1
+00:00:00,000 --> 00:00:11,307
+This is STAT 331, video 14 b. The topic is the estimate of sigma squared, and the joint distribution of beta hat and the residuals.
+
+2
+00:00:11,757 --> 00:00:31,746
+After this video, you can derive the M L E of sigma squared, and explain why we divide by n minus p plus 1 instead. You can find the mean and the variance of beta hat and e together. You can show that they are independent. And you can solve Tutorial 2, question 3.
+
+3
+00:00:32,196 --> 00:00:55,577
+Now we estimate sigma squared. Start with maximum likelihood. The errors are independent normal. The log-likelihood is minus n over 2 log 2 pi, minus n over 2 log sigma squared, minus 1 over 2 sigma squared, times the sum of squares y minus X beta, transpose, y minus X beta.
+
+4
+00:00:56,027 --> 00:01:12,667
+Take the derivative with respect to sigma squared. Treat sigma squared as one variable. The derivative of log sigma squared is 1 over sigma squared. The derivative of 1 over sigma squared is minus 1 over sigma squared, squared.
+
+5
+00:01:13,117 --> 00:01:22,717
+Set the derivative to zero. Multiply both sides by 2 times sigma squared, squared. The sum of squares equals n sigma squared.
+
+6
+00:01:23,167 --> 00:01:37,887
+The M L E of beta is beta hat, from video 13. Put it in. The M L E of sigma squared is 1 over n, times e transpose e. That is the sum of squared residuals over n.
+
+7
+00:01:38,337 --> 00:01:57,665
+The picture shows the log-likelihood as a function of sigma squared, for data set 1. The sum of squared residuals is 2.85, and n is 5. The maximum is at 2.85 over 5, which is 0.57. There, the slope is zero.
+
+8
+00:01:58,115 --> 00:02:14,030
+The M L E divides the sum of squared residuals by n. Instead, we usually divide by n minus p plus 1. This is the number of observations minus the number of coefficients. The slide asks why.
+
+9
+00:02:14,480 --> 00:02:34,021
+The picture is a simulation with data set 1. The true sigma squared is 1. We simulate 20,000 data sets and compute the M L E for each one. The red histogram shows the results. Their mean is only 0.4. The M L E is too small on average.
+
+10
+00:02:34,471 --> 00:02:46,077
+The green histogram shows sigma squared hat, which divides by n minus 3, that is 2. Its mean is 1.00. This estimator is unbiased.
+
+11
+00:02:46,527 --> 00:03:13,300
+The reason: the expected sum of squared residuals is n minus p plus 1, times sigma squared. Beta hat is chosen to make the residuals small, so they are smaller than the true errors. Video 15 proves that e transpose e over sigma squared has a chi square distribution with n minus p plus 1 degrees of freedom. A chi square variable has a mean equal to its degrees of freedom.
+
+12
+00:03:13,750 --> 00:03:21,878
+Beta hat is a constant matrix times y. The residual vector e is also a constant matrix times y.
+
+13
+00:03:22,328 --> 00:03:39,864
+So we can stack them. The vector beta hat over e equals one big matrix times y. The top block is X transpose X inverse X transpose. The bottom block is I minus H. The stacked vector has p plus 1 plus n entries.
+
+14
+00:03:40,314 --> 00:03:50,063
+y is multivariate normal. A constant matrix times an M V N vector is M V N. So the stacked vector is M V N.
+
+15
+00:03:50,513 --> 00:04:00,647
+Why stack them? One calculation now gives the mean and the variance of beta hat, the mean and the variance of e, and the covariance between them.
+
+16
+00:04:01,097 --> 00:04:11,209
+First, the mean. We know that the expectation of beta hat is beta. Now find the expectation of e. e is I minus H, times y.
+
+17
+00:04:11,659 --> 00:04:15,989
+I minus H is constant. It moves out of the expectation.
+
+18
+00:04:16,439 --> 00:04:18,978
+The expectation of y is X beta.
+
+19
+00:04:19,428 --> 00:04:28,815
+Multiply out the bracket. We get X beta minus H X beta. H moves a vector to the nearest point of the column space of X.
+
+20
+00:04:29,265 --> 00:04:36,987
+Put in the formula for H. In the middle, X transpose X inverse times X transpose X is the identity.
+
+21
+00:04:37,437 --> 00:04:49,405
+So H X beta equals X beta. X beta is already in the column space, so H does not change it. The difference is zero. The residuals have mean zero.
+
+22
+00:04:49,855 --> 00:04:55,359
+Together: the mean of the stacked vector is beta on top, and the zero vector below.
+
+23
+00:04:55,809 --> 00:05:02,444
+Now the variance. The variance of the stacked vector is the variance of the big matrix times y.
+
+24
+00:05:02,894 --> 00:05:15,246
+Use the rule: the matrix on the left, the variance of y in the middle, and the transpose on the right. The transpose of a column of two blocks is a row of two transposed blocks.
+
+25
+00:05:15,696 --> 00:05:29,648
+Sigma squared moves to the front. The transpose of X transpose X inverse X transpose is X, X transpose X inverse. H is symmetric, so I minus H is also symmetric.
+
+26
+00:05:30,098 --> 00:05:39,463
+Multiply the column of blocks by the row of blocks. Each block of the result is one block of the column times one block of the row.
+
+27
+00:05:39,913 --> 00:05:53,737
+Call the four blocks A, B, C and D. A is the variance of beta hat. D is the variance of e. B and C are the covariances between beta hat and e. C is B transpose.
+
+28
+00:05:54,187 --> 00:06:09,867
+Block A. X transpose X inverse, times X transpose X, times X transpose X inverse. The middle pair gives the identity. So A is X transpose X inverse. This agrees with video 14 a.
+
+29
+00:06:10,317 --> 00:06:15,245
+Block B. Multiply out I minus H, and put in the formula for H.
+
+30
+00:06:15,695 --> 00:06:29,242
+In the second term, X transpose X times its inverse is the identity. So the second term equals the first term. B is the zero matrix. C is B transpose, so C is also zero.
+
+31
+00:06:29,692 --> 00:06:44,711
+Before block D, one fact. H times H transpose equals H. H is symmetric. In the product H H, the middle part X transpose X, times its inverse, is the identity. What is left is H.
+
+32
+00:06:45,161 --> 00:06:51,198
+Block D is I minus H, times its transpose. Multiply out the four terms.
+
+33
+00:06:51,648 --> 00:07:01,504
+The two middle terms are each H. The last term is H, from the aside. So D is I minus 2 H plus H, which is I minus H.
+
+34
+00:07:01,954 --> 00:07:21,303
+Put the results together. The stacked vector is multivariate normal, with mean beta and zero, and a block diagonal variance matrix. Read three facts from it. First, the top block: beta hat is normal with mean beta and variance sigma squared X transpose X inverse.
+
+35
+00:07:21,753 --> 00:07:28,943
+Second, the bottom block: e is normal with mean zero and variance sigma squared times I minus H.
+
+36
+00:07:29,393 --> 00:07:44,326
+Third, the off-diagonal blocks are zero. For the multivariate normal, zero covariance means independence. This is the independence property of Lecture 5. So beta hat and e are independent.
+
+37
+00:07:44,776 --> 00:08:02,141
+One more point for video 15. I minus H is not diagonal. So the residuals are correlated. And the variance of e i is sigma squared times 1 minus h i i, the diagonal entry of H. It is not sigma squared.
+
+38
+00:08:02,591 --> 00:08:23,391
+Now Tutorial 2, question 3. Two types of promotion were tested in five regions. P 1 is point of sale, and P 2 is newspaper advertising. y is the increase in market share. The picture shows the data. The model has no intercept. Pause the video and try parts a and b.
+
+39
+00:08:23,841 --> 00:08:38,881
+Part a. Without an intercept, the mean of y is zero when both x values are zero. So the model assumes that a region with no promotion has no change in market share, on average. This is reasonable here.
+
+40
+00:08:39,331 --> 00:08:59,897
+Part b. Each row of X is one region. Column 1 is 1 when P 1 is used. Column 2 is 1 when P 2 is used. Region 1 used both, so its row is 1, 1. There is no column of ones, because the model has no intercept. y is 11, 2, 8, 4, 6.
+
+41
+00:09:00,347 --> 00:09:22,469
+Part c. Pause the video and try it. Each entry of X transpose X is one column times another column. Column 1 times itself counts the regions with P 1: that is 3. Column 2 times itself is also 3. Column 1 times column 2 counts the regions with both promotions: that is 1.
+
+42
+00:09:22,919 --> 00:09:39,069
+The determinant is 3 times 3, minus 1, which is 8. Swap the diagonal entries and negate the off-diagonal entries. X transpose X inverse is one eighth of the matrix 3, minus 1, minus 1, 3.
+
+43
+00:09:39,519 --> 00:09:54,943
+Part d. X transpose y adds the y values of the regions that use each promotion. For P 1: 11 plus 2 plus 4 is 17. For P 2: 11 plus 8 plus 6 is 25.
+
+44
+00:09:55,393 --> 00:10:14,422
+Multiply. Beta 1 hat is 3 times 17 minus 25, over 8. That is 26 over 8, or 3.25. Beta 2 hat is minus 17 plus 3 times 25, over 8. That is 58 over 8, or 7.25.
+
+45
+00:10:14,872 --> 00:10:23,640
+The bars show the fitted value of each region. Blue is beta 1 hat for P 1. Green is beta 2 hat for P 2.
+
+46
+00:10:24,090 --> 00:10:35,333
+Region 1 used both. Its fitted value is 3.25 plus 7.25, which is 10.5. The observed value is 11.
+
+47
+00:10:35,783 --> 00:10:57,223
+Part e. Pause the video and try it. Beta 2 hat is 7.25. In a region that uses newspaper advertising, the estimated mean increase in market share is 7.25 higher than in a region that does not use it. The comparison holds the point of sale promotion fixed.
+
+48
+00:10:57,673 --> 00:11:16,211
+Part f. First we need sigma squared hat. The residuals are y minus the fitted values: 0.5, minus 1.25, 0.75, 0.75, minus 1.25. The orange segments show them.
+
+49
+00:11:16,661 --> 00:11:19,755
+The sum of squared residuals is 4.5.
+
+50
+00:11:20,205 --> 00:11:40,471
+This model has 2 coefficients and no intercept. So the degrees of freedom are n minus 2, which is 3. The rule n minus p plus 1 counts the intercept as a coefficient. Here, count the columns of X. Sigma squared hat is 4.5 over 3, which is 1.5.
+
+51
+00:11:40,921 --> 00:12:03,065
+The estimated variance matrix is sigma squared hat times X transpose X inverse. That is 1.5 over 8, times the matrix 3, minus 1, minus 1, 3. The variances are 0.5625. The covariance is minus 0.1875.
+
+52
+00:12:03,515 --> 00:12:19,878
+Is there a significant association between P 2 and the change in market share? Pause the video and try it. The standard error of beta 2 hat is the square root of 0.5625, which is 0.75.
+
+53
+00:12:20,328 --> 00:12:40,019
+Test the hypothesis that beta 2 is zero. The t statistic is 7.25 over 0.75, which is 9.67. Video 15 shows that this statistic has a t distribution, with the residual degrees of freedom. Here that is 3.
+
+54
+00:12:40,469 --> 00:13:03,295
+The critical value t 0.975 with 3 degrees of freedom is 3.182. 9.67 is far beyond it. The p-value is about 0.0024. So there is strong evidence that newspaper advertising is associated with a larger increase in market share.
+
+55
+00:13:03,745 --> 00:13:22,711
+Part g. A region that uses both promotions has expected change beta 1 plus beta 2. The estimate is 3.25 plus 7.25, which is 10.5. This is a combination a transpose beta, with a equal to 1, 1.
+
+56
+00:13:23,161 --> 00:13:43,107
+Its variance is a transpose, times the variance matrix, times a. That is the two variances plus two times the covariance: 0.5625 plus 0.5625 minus 0.375. The result is 0.75.
+
+57
+00:13:43,557 --> 00:13:54,544
+The standard error is the square root of 0.75, which is 0.866. The negative covariance makes this standard error smaller.
+
+58
+00:13:54,994 --> 00:14:09,543
+To recap. The M L E of sigma squared divides by n, and it is too small on average. We divide by n minus p plus 1. In general, that is n minus the number of columns of X.
+
+59
+00:14:09,993 --> 00:14:22,089
+Beta hat and e, stacked, are a constant matrix times y. So they are multivariate normal. The covariance blocks are zero, so beta hat and e are independent.
+
+60
+00:14:22,539 --> 00:14:36,790
+For a combination of coefficients, the variance is a transpose, times the variance matrix, times a. Video 15 proves that e transpose e over sigma squared has a chi square distribution.

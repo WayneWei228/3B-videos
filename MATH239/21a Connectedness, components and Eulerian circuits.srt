@@ -1,0 +1,267 @@
+1
+00:00:00,000 --> 00:00:08,875
+This is MATH 239, video 21 a. The topic is connected graphs, components, cuts and Eulerian circuits.
+
+2
+00:00:09,325 --> 00:00:24,834
+After this video, you can use equivalence relations and components. You can prove that a graph is connected, and that a graph is not connected. You can decide if a graph has an Eulerian circuit, and you can prove the theorem of Euler.
+
+3
+00:00:25,284 --> 00:00:45,593
+A relation on a set S is a subset of the pairs S times S. We write x related to y when the pair is in the subset. Here is the relation, is adjacent to, on the path a, b, c. The grid has one row and one column for each vertex. A dot means that the pair is related.
+
+4
+00:00:46,043 --> 00:00:59,675
+A relation is reflexive if each element is related to itself. Then the diagonal of the grid is full. No vertex is adjacent to itself. So, is adjacent to, is not reflexive.
+
+5
+00:01:00,125 --> 00:01:15,635
+A relation is symmetric if a related to b gives b related to a. Then the grid is equal to its mirror image in the diagonal. If a is adjacent to b, then b is adjacent to a. So this relation is symmetric.
+
+6
+00:01:16,085 --> 00:01:32,085
+A relation is transitive if a related to b, and b related to c, give a related to c. Here a is adjacent to b, and b is adjacent to c. But a is not adjacent to c. So, is adjacent to, is not transitive.
+
+7
+00:01:32,535 --> 00:01:48,471
+Another example: divides, on 1, 2, 3, 4. Each number divides itself, so the diagonal is full. 1 divides 2, but 2 does not divide 1. So divides is reflexive, not symmetric, and it is transitive.
+
+8
+00:01:48,921 --> 00:02:01,550
+An equivalence relation is a relation that is reflexive, symmetric and transitive. Equality is the standard example. Congruence modulo m on the integers is another one.
+
+9
+00:02:02,000 --> 00:02:23,333
+In a graph, use the relation: x is joined by a walk to y. It is reflexive, because a walk of length 0 joins x to x. It is symmetric, because we can reverse a walk. It is transitive, because we can follow one walk and then the other. So it is an equivalence relation. The grid shows it for this graph.
+
+10
+00:02:23,783 --> 00:02:36,135
+The class of a, written C of a, is the set of all v that are related to a. In the grid, the classes are the purple blocks: 1, 2, 3, then 4, 5, then 6 alone.
+
+11
+00:02:36,585 --> 00:02:52,265
+Two classes are equal or disjoint. So the classes partition the set. For example, congruence modulo 5 splits the integers into five classes. Here, the walk relation splits the vertices into three classes.
+
+12
+00:02:52,715 --> 00:03:01,889
+A graph G is connected if, for each two vertices x and y, there is a path from x to y. This graph has 6 vertices.
+
+13
+00:03:02,339 --> 00:03:17,720
+Theorem 4.8.2 gives an easier test. Fix one vertex v. If there is a path from v to each vertex w, then G is connected. The orange edges show one path from v to each vertex.
+
+14
+00:03:18,170 --> 00:03:34,170
+Here is the proof. Take any two vertices, for example d and e. Reverse the path from v to d. This gives d, b, v. Then follow the path from v to e: b, d, e. Together, they give a walk from d to e.
+
+15
+00:03:34,620 --> 00:03:50,215
+This walk repeats vertices, so it is not a path. But by Corollary 4.6.3, a walk from x to y contains a path from x to y. Here the path is d, e. So G is connected, by the definition.
+
+16
+00:03:50,665 --> 00:04:05,982
+With the definition, we must give a path for each pair of vertices. For 6 vertices, that is 6 choose 2, which is 15 paths. With the theorem, we give only n paths, one from v to each vertex. That is 6 paths.
+
+17
+00:04:06,432 --> 00:04:21,643
+Here is a problem from the notes. Pause the video and try it. The n-cube has the binary strings of length n as vertices. Two strings are adjacent if they differ in exactly one position. This is the 3-cube.
+
+18
+00:04:22,093 --> 00:04:32,781
+We use Theorem 4.8.2. Take v 0 as the string of n zeros. We must give a path from v 0 to each other vertex x.
+
+19
+00:04:33,231 --> 00:04:52,345
+Let x have k ones, in positions i 1 to i k. Let v j be the string with ones in the first j of these positions, and zeros elsewhere. For x equal to 1 0 1, the sequence is 0 0 0, then 1 0 0, then 1 0 1.
+
+20
+00:04:52,795 --> 00:05:19,270
+v j minus 1 and v j differ only in position i j, so they are adjacent. v j has exactly j ones, so the strings are all different. So v 0 to v k is a path from v 0 to x. By Theorem 4.8.2, the n-cube is connected. For n equal to 0, the cube has one vertex, and it is connected. Python checked these paths for n up to 6.
+
+21
+00:05:19,720 --> 00:05:34,248
+A component of G is a subgraph C with two properties. First, C is connected. Second, no connected subgraph of G properly contains C. We say that C is maximal, subject to being connected.
+
+22
+00:05:34,698 --> 00:05:44,938
+This graph has three components. There is a path between any two vertices in the same component. There is no path between vertices in different components.
+
+23
+00:05:45,388 --> 00:05:57,036
+The single edge f g is a connected subgraph. But it is properly contained in component 2, which is also connected. So the edge f g is not a component.
+
+24
+00:05:57,486 --> 00:06:10,243
+The vertex sets of the components are the classes of the relation, is joined by a walk to. So the components partition the vertex set of G. Each vertex is in exactly one component.
+
+25
+00:06:10,693 --> 00:06:28,997
+It is easy to show that a path exists: draw it. But how do we show that no path exists? We use cuts. Let X be a set of vertices. The cut induced by X is the set of edges with exactly one end in X. Here X is 1, 2, 3, in orange.
+
+26
+00:06:29,447 --> 00:06:43,485
+In G 1, the edges 3 4, 3 5 and 2 5 have exactly one end in X. So the cut has these 3 edges. The edges inside X, and the edges outside X, are not in the cut.
+
+27
+00:06:43,935 --> 00:06:58,697
+In G 2, with the same X, no edge has exactly one end in X. The cut is empty. Then a walk that starts in X can never leave X. So there is no path from 1 to 4, and G 2 is not connected.
+
+28
+00:06:59,147 --> 00:07:16,406
+Theorem 4.8.5 says this test always works. G is not connected if and only if there is a proper, nonempty subset X of the vertices whose cut is empty. Python checked it on all graphs with up to 5 vertices.
+
+29
+00:07:16,856 --> 00:07:30,061
+Here is the proof of the first half. Suppose G is connected, and let X be a proper, nonempty subset of the vertices. Choose a vertex u in X, and a vertex v outside X.
+
+30
+00:07:30,511 --> 00:07:38,981
+G is connected, so there is a path x 0 to x n from u to v. The path can go in and out of X many times.
+
+31
+00:07:39,431 --> 00:07:54,897
+Choose k as large as possible, such that x k is in X. Here, x 0, x 1 and x 3 are in X, so k is 3. The last vertex x n is v, and v is not in X. So k is less than n.
+
+32
+00:07:55,347 --> 00:08:10,686
+x k is in X. x k plus 1 is not in X, because k is the largest such index. So the edge x k, x k plus 1 has exactly one end in X. It is in the cut, and the cut is not empty.
+
+33
+00:08:11,136 --> 00:08:22,336
+So, if G is connected, then no proper nonempty X has an empty cut. This is the same as: if some X has an empty cut, then G is not connected.
+
+34
+00:08:22,786 --> 00:08:34,221
+Now the converse. Suppose G is not connected. Let C be a component of G. Let X be the vertex set of C, and let Y be all the other vertices.
+
+35
+00:08:34,671 --> 00:08:46,340
+X is not empty, because C has a vertex. X is not all of V of G, because C is connected and G is not. So X is a proper, nonempty subset.
+
+36
+00:08:46,790 --> 00:09:06,950
+Suppose a vertex y is adjacent to a vertex of C. Then C, plus y and this edge, is a larger connected subgraph. This is not possible, because C is a component. So y is in C. So no edge has exactly one end in X, and the cut induced by X is empty.
+
+37
+00:09:07,400 --> 00:09:19,240
+Here is an example. Pause the video and try it. The graph has 9 vertices and 9 edges. Is it connected? The drawing has many crossings, so it is hard to see.
+
+38
+00:09:19,690 --> 00:09:24,170
+Start at vertex 1, and grow the set of vertices that we can reach.
+
+39
+00:09:24,620 --> 00:09:27,991
+The neighbours of 1 are 5 and 7. Add them.
+
+40
+00:09:28,441 --> 00:09:42,115
+The new neighbours are 9, from 5, and 3, from 7. Add them. Now the set is 1, 3, 5, 7, 9. No vertex in the set has a neighbour outside the set. So the growth stops.
+
+41
+00:09:42,565 --> 00:10:04,944
+Write the solution. Let X be 1, 3, 5, 7, 9. X is proper and nonempty. Each edge has both ends in X, or both ends outside X. So the cut induced by X is empty. By Theorem 4.8.5, G is not connected. X is the certificate. The marker can check it edge by edge.
+
+42
+00:10:05,394 --> 00:10:21,522
+One of the first problems of graph theory is about the city of Königsberg. A river with two islands, A and B, cuts the city. Seven bridges cross the river. Can a person leave home, cross each bridge exactly once, and return home?
+
+43
+00:10:21,972 --> 00:10:38,633
+Make a graph. Each land area is a vertex: the north shore, the south shore, and the islands A and B. Each bridge is an edge between the two land areas that it joins. Two bridges join A and N, so the graph has multiple edges.
+
+44
+00:10:39,083 --> 00:10:46,486
+The degrees are 5 for A, and 3 for N, S and B. The sum is 14, which is two times 7 edges.
+
+45
+00:10:46,936 --> 00:10:53,251
+In graph terms, the question is: is there a closed walk that uses every edge exactly once?
+
+46
+00:10:53,701 --> 00:11:05,285
+An Eulerian circuit of a graph G is a closed walk that contains every edge of G exactly once. Here is a graph with two triangles that share the vertex c.
+
+47
+00:11:05,735 --> 00:11:09,788
+Walk a, b, c, d. These are edges 1, 2 and 3.
+
+48
+00:11:10,238 --> 00:11:21,011
+Then d, e, c, a. These are edges 4, 5 and 6. The walk is closed, and it uses each edge exactly once. So it is an Eulerian circuit.
+
+49
+00:11:21,461 --> 00:11:44,757
+Each time the walk goes through a vertex, it uses two edges: one to arrive and one to leave. The walk goes through c twice: in on 2, out on 3, then in on 5, out on 6. So c has degree 4. The start vertex a uses the first edge out and the last edge in. So, if G has an Eulerian circuit, each degree is even.
+
+50
+00:11:45,207 --> 00:11:54,402
+In Königsberg, every degree is odd. So there is no Eulerian circuit. Euler noted this in 1736.
+
+51
+00:11:54,852 --> 00:12:18,041
+Theorem 4.9.2 says: let G be connected. Then G has an Eulerian circuit if and only if every vertex has even degree. We proved the forward direction. For the converse, we use strong induction on m, the number of edges. If m is 0, then G is one vertex, and the walk of length 0 is an Eulerian circuit.
+
+52
+00:12:18,491 --> 00:12:33,787
+Assume the result for all connected graphs with fewer than m edges, where m is at least 1. Let G be connected with m edges, and with all degrees even. Here m is 13. The blue numbers are the degrees.
+
+53
+00:12:34,237 --> 00:12:51,133
+G is connected and has an edge, so every vertex has degree at least 1. The degree is even, so it is at least 2. By Theorem 4.6.4, G has a cycle C. Here C is the orange cycle v 1 to v 6.
+
+54
+00:12:51,583 --> 00:13:06,538
+Delete the edges of C, and then delete the isolated vertices. Call the result G prime. Each vertex is on 0 or 2 edges of C. So each degree drops by 0 or 2, and it stays even.
+
+55
+00:13:06,988 --> 00:13:23,180
+G prime has components C 1 to C l. Here there are two. Each component is connected, has even degrees, and has fewer than m edges. By the induction hypothesis, each C i has an Eulerian circuit W i.
+
+56
+00:13:23,630 --> 00:13:44,110
+Each component C i has a vertex on the cycle C. If not, there is no path from C i to C, and G is not connected. Pick one such vertex v a i for each component, and order the components so that a 1 is less than a 2, and so on. Let W i start and end at v a i.
+
+57
+00:13:44,560 --> 00:13:57,253
+Here W 1 is v 2, a, b, v 2. C 2 meets the cycle at v 4 and at v 6. We pick v 4. W 2 is v 4, c, v 6, d, v 4.
+
+58
+00:13:57,703 --> 00:14:11,506
+Now walk along the cycle C. When we reach v a i, we first walk the detour W i, and then we continue on C. Edges 1 to 5: v 1 to v 2, then the detour a, b, v 2.
+
+59
+00:14:11,956 --> 00:14:29,812
+Then v 3, v 4, the detour c, v 6, d, v 4, then v 5, v 6, and back to v 1. The walk is closed. It uses each edge of C once, and each edge of each W i once. So it is an Eulerian circuit of G.
+
+60
+00:14:30,262 --> 00:14:47,649
+In general, the circuit is: v 1 up to v a 1 minus 1, then W 1, then on to W 2, and so on, up to W l, then the rest of C, back to v 1. Python checked the theorem on all graphs with up to 5 vertices.
+
+61
+00:14:48,099 --> 00:14:55,011
+Pause the video and try it. Which of these three graphs has an Eulerian circuit? Give a reason for each.
+
+62
+00:14:55,461 --> 00:15:15,002
+K 5 is connected, and every vertex has degree 4. By Theorem 4.9.2, it has an Eulerian circuit. Here is one: 1, 2, 3, 4, 5, 1, 3, 5, 2, 4, 1. It uses all 10 edges once. The circuit itself is the certificate.
+
+63
+00:15:15,452 --> 00:15:25,372
+In K 4, every vertex has degree 3. An odd degree is not possible in a graph with an Eulerian circuit. So K 4 has none.
+
+64
+00:15:25,822 --> 00:15:42,078
+In the two triangles, every degree is 2. But the graph is not connected, so the theorem does not apply. A walk never leaves its component. So no closed walk uses the edges of both triangles. There is no Eulerian circuit.
+
+65
+00:15:42,528 --> 00:15:56,139
+To recap. An equivalence relation is reflexive, symmetric and transitive, and its classes partition the set. The components of a graph are the classes of the relation, is joined by a walk to.
+
+66
+00:15:56,589 --> 00:16:07,917
+To prove that a graph is connected, give a path from one vertex to every vertex. To prove that a graph is not connected, give a proper nonempty set X with an empty cut.
+
+67
+00:16:08,367 --> 00:16:22,788
+A connected graph has an Eulerian circuit if and only if every degree is even. The proof takes a cycle, and joins the circuits of the other components to it as detours. The next video is about bridges.

@@ -1,0 +1,287 @@
+1
+00:00:00,000 --> 00:00:10,581
+This is ECE 358, video 20b. It continues video 20a. The topic is BGP route selection and policy.
+
+2
+00:00:11,031 --> 00:00:25,858
+After this video, you can name the BGP messages and the route selection order. You can explain hot potato routing and policy-based routing. Then we answer question bank questions 86 to 100.
+
+3
+00:00:26,308 --> 00:00:43,140
+BGP peers exchange BGP messages over a TCP connection. There are four message types. The first is OPEN. It opens the TCP connection to the remote BGP peer, and it authenticates the sending peer.
+
+4
+00:00:43,590 --> 00:00:48,347
+The second is KEEPALIVE. One use is to acknowledge the OPEN request.
+
+5
+00:00:48,797 --> 00:00:54,387
+The third is UPDATE. It advertises a new path, or it withdraws an old path.
+
+6
+00:00:54,837 --> 00:01:01,941
+KEEPALIVE has a second use. When there are no UPDATE messages, KEEPALIVE messages keep the connection alive.
+
+7
+00:01:02,391 --> 00:01:10,071
+The fourth is NOTIFICATION. It reports errors in a previous message. It is also used to close the connection.
+
+8
+00:01:10,521 --> 00:01:23,321
+A BGP router may learn more than one route to the same destination. It must select one. It uses rules in a fixed order. It goes to the next rule only if there is still a tie.
+
+9
+00:01:23,771 --> 00:01:30,811
+Rule 1: the local preference value attribute. This is a policy decision of the AS admin.
+
+10
+00:01:31,261 --> 00:01:37,639
+Rule 2: the shortest AS-PATH, that is, the path through the fewest ASes.
+
+11
+00:01:38,089 --> 00:01:45,513
+Rule 3: the closest NEXT-HOP router. This is called hot potato routing. The next slide explains it.
+
+12
+00:01:45,963 --> 00:01:55,734
+Rule 4: additional criteria. Example: prefer the oldest path, for stability. A newer path must be stable before it is used.
+
+13
+00:01:56,184 --> 00:02:17,347
+What does a BGP router do when it gets two routes for the same destination network? Here, 2a gets the path AS1, AS3, X from AS1. And 2c gets the path AS3, X from AS3. The orange numbers are OSPF link weights inside AS2.
+
+14
+00:02:17,797 --> 00:02:26,010
+Router 2d learns by iBGP that it can route to X through gateway 2a, or through gateway 2c.
+
+15
+00:02:26,460 --> 00:02:35,249
+The intra-domain cost from 2d to 2a is 201. The cost from 2d to 2c is 263.
+
+16
+00:02:35,699 --> 00:02:53,214
+Hot potato routing chooses the local gateway with the least intra-domain cost. So 2d chooses 2a, because 201 is less than 263. It does this even though the path through 2a has more AS hops to X.
+
+17
+00:02:53,664 --> 00:03:13,269
+Hot potato routing does not consider the inter-domain cost. It gets the packet out of its own AS as fast as possible. Note: this slide applies hot potato alone. In the full BGP selection order, local preference and the shortest AS-PATH come first.
+
+18
+00:03:13,719 --> 00:03:36,269
+BGP uses advertisements to apply policy. A, B and C are provider networks. w, x and y are customer networks. A typical policy: an ISP only wants to route traffic to and from its own customer networks. It does not want to carry transit traffic between other ISPs.
+
+19
+00:03:36,719 --> 00:03:41,113
+Provider A advertises the path A, w to B and to C.
+
+20
+00:03:41,563 --> 00:03:54,193
+B chooses not to advertise the path B, A, w to C. B would get no revenue for routing C, B, A, w. None of C, A and w are customers of B.
+
+21
+00:03:54,643 --> 00:03:58,653
+So C does not learn about the path C, B, A, w.
+
+22
+00:03:59,103 --> 00:04:03,946
+C routes C, A, w to reach w. It does not use B.
+
+23
+00:04:04,396 --> 00:04:12,289
+Here is a second policy example. Customer network x is dual-homed. It is attached to two networks, B and C.
+
+24
+00:04:12,739 --> 00:04:18,393
+The policy to enforce: x does not want to route traffic from B to C through x.
+
+25
+00:04:18,843 --> 00:04:24,880
+So x will not advertise to B a route to C. Then B never learns a path B, x, C.
+
+26
+00:04:25,330 --> 00:04:35,549
+x still advertises its own prefix to B and to C. So both providers can reach x, but no traffic between B and C goes through x.
+
+27
+00:04:35,999 --> 00:04:45,001
+Why does the Internet use one kind of routing inside an AS and another kind between ASes? There are three reasons.
+
+28
+00:04:45,451 --> 00:05:01,921
+The first reason is policy. Between ASes, an admin wants control over how its traffic is routed, and over who routes through its network. Inside an AS, there is a single admin. So policy is a non-issue.
+
+29
+00:05:02,371 --> 00:05:08,835
+The second reason is scale. Hierarchical routing gives smaller tables and less update traffic.
+
+30
+00:05:09,285 --> 00:05:20,591
+The third reason is performance. Inside an AS, routing can focus on performance. Between ASes, policy dominates over performance.
+
+31
+00:05:21,041 --> 00:05:29,617
+Here is the Internet approach to scalable routing. The Internet is partitioned into an interconnected set of autonomous systems.
+
+32
+00:05:30,067 --> 00:05:50,099
+For intra-AS routing, the AS admin chooses one intra-AS routing protocol. OSPF allows two-level hierarchical routing. Some routers, for example Cisco routers, also let an admin run more than one intra-AS protocol in the same AS.
+
+33
+00:05:50,549 --> 00:06:04,565
+For inter-AS routing, all BGP routers run BGP, both eBGP and iBGP. The AS admin controls the packet flow with import and export policies.
+
+34
+00:06:05,015 --> 00:06:11,949
+Also, routers continually aggregate routing table entries, as we saw with address aggregation.
+
+35
+00:06:12,399 --> 00:06:33,049
+Now the question bank. The question bank has no published answers. These answers come from the slides. Question 86: what is the main idea in hierarchical OSPF? Question 87: what are the four types of routers in hierarchical OSPF? Pause the video and try it.
+
+36
+00:06:33,499 --> 00:06:52,593
+Answer to 86. Hierarchical OSPF uses a two-level hierarchy: local areas and a backbone. Link-state advertisements are flooded only inside one area, or inside the backbone. This reduces the flooding overhead in a large AS.
+
+37
+00:06:53,043 --> 00:07:07,037
+Answer to 87. The four types are: local routers, also called internal routers. Area border routers. Backbone routers. And boundary routers, which connect to other ASes.
+
+38
+00:07:07,487 --> 00:07:22,314
+Questions 88 to 91. What is the main function of BGP? What are the two parts of BGP? What are the two parts of a BGP route? What is an AS-PATH? Pause the video and try it.
+
+39
+00:07:22,764 --> 00:07:41,367
+Answer to 88. BGP is the inter-AS routing protocol. With BGP, an AS advertises the prefixes that it can reach. Each router learns paths to other networks and selects good paths from reachability information and policy.
+
+40
+00:07:41,817 --> 00:07:56,323
+Answer to 89. eBGP gets subnet reachability information from neighbouring ASes. iBGP propagates this information to the routers inside the same AS.
+
+41
+00:07:56,773 --> 00:08:09,232
+Answer to 90. A BGP route is a prefix plus attributes. The prefix is the destination network. The two important attributes are AS-PATH and NEXT-HOP.
+
+42
+00:08:09,682 --> 00:08:20,690
+Answer to 91. The AS-PATH is the list of ASes that the prefix advertisement has passed through. Example: AS2, AS3.
+
+43
+00:08:21,140 --> 00:08:34,281
+Question 92. A BGP router learns many paths to the same destination prefix. Which factors does it use to select one? List them in order. Pause the video and try it.
+
+44
+00:08:34,731 --> 00:08:55,425
+Answer. First, the local preference value, which is a policy decision. Second, the shortest AS-PATH. Third, the closest NEXT-HOP router, which is hot potato routing. Fourth, additional criteria, for example the oldest path. The router uses the next factor only when there is a tie.
+
+45
+00:08:55,875 --> 00:09:11,491
+Questions 93 to 95. Explain policy-based routing by BGP. How is it different from routing on reachability information? What are the two kinds of BGP policies? Pause the video and try it.
+
+46
+00:09:11,941 --> 00:09:35,343
+Answer to 93 and 95. The admin of an AS controls routes with two kinds of policy. An import policy accepts or declines a received path. An export policy decides whether to advertise a learned path to a neighbour. Example: an ISP does not carry transit traffic between other ISPs.
+
+47
+00:09:35,793 --> 00:09:49,681
+Answer to 94. Reachability information only tells that a path to a prefix exists. Policy can reject a reachable path, even the shortest one, for administrative or business reasons.
+
+48
+00:09:50,131 --> 00:09:56,318
+Question 96. Briefly explain hot potato routing. Pause the video and try it.
+
+49
+00:09:56,768 --> 00:10:19,019
+Answer. A router learns by iBGP that it can reach a destination through more than one gateway of its own AS. Hot potato routing chooses the gateway with the least intra-domain cost. In the slide example, 2d chooses 2a, with cost 201, not 2c, with cost 263.
+
+50
+00:10:19,469 --> 00:10:30,498
+The router does not consider the inter-domain cost, for example the number of AS hops. It sends the packet out of its own AS as fast as possible.
+
+51
+00:10:30,948 --> 00:10:43,129
+Question 97. What are the benefits of using BGP between ASes and hierarchical OSPF inside an AS? Pause the video and try it.
+
+52
+00:10:43,579 --> 00:11:08,582
+Answer, from slide 136. First, policy. BGP lets each AS control how its traffic is routed and who routes through it. Inside one AS there is a single admin, so OSPF does not need policy. Second, scale. The hierarchy gives smaller tables and less update traffic. OSPF areas also limit the flooding.
+
+53
+00:11:09,032 --> 00:11:20,595
+Third, performance. Inside the AS, OSPF can focus on performance and use least-cost paths. Between ASes, policy comes first.
+
+54
+00:11:21,045 --> 00:11:46,239
+Question 98. Here is the topology from the question bank. A, B, C, A2, B2 and C2 are provider ASes. w, x, y, w2, x2 and y2 are customer ASes. Design policies for B2, so that B2 does not carry packets between w and x2. Pause the video and try it.
+
+55
+00:11:46,689 --> 00:12:04,865
+Step 1. Find the paths from w to x2 that use B2. There are two: w, A, C, B2, x2. And w, A, A2, B2, x2. These paths exist only if B2 advertises a path to x2 to its neighbours.
+
+56
+00:12:05,315 --> 00:12:17,198
+Step 2. x2 is dual-homed. It is attached to B2 and to C2. So w can still reach x2 without B2: w, A, A2, C2, x2.
+
+57
+00:12:17,648 --> 00:12:36,656
+Step 3. Export policy 1. B2 does not advertise any path to x2 to its provider neighbours C, A2 and C2. BGP advertises per destination prefix. So no AS on the side of w learns a path to x2 through B2.
+
+58
+00:12:37,106 --> 00:12:56,306
+Step 4. The other direction, from x2 to w. Export policy 2: B2 does not advertise to x2 any path to w. Or, with an import policy, B2 rejects the paths to w. Then x2 sends its packets for w through C2.
+
+59
+00:12:56,756 --> 00:13:13,588
+Result: traffic between w and x2 goes through C2 in both directions. This uses the method of slides 138 and 139. It is one possible answer. The question bank has no published answer.
+
+60
+00:13:14,038 --> 00:13:23,147
+Question 99. Identify and explain four network layer strategies that make the Internet scalable. Pause the video and try it.
+
+61
+00:13:23,597 --> 00:13:39,107
+Answer, from slide 140. Strategy 1: the Internet is partitioned into autonomous systems. Routing has two levels, intra-AS and inter-AS. No router needs the full topology of the Internet.
+
+62
+00:13:39,557 --> 00:13:49,775
+Strategy 2: hierarchical OSPF. An AS is split into areas and a backbone. Link-state flooding stays inside one area.
+
+63
+00:13:50,225 --> 00:14:06,375
+Strategy 3: BGP between ASes. BGP routers exchange reachability, as prefixes with AS-PATHs, not the full topology. Import and export policies limit which paths spread.
+
+64
+00:14:06,825 --> 00:14:23,827
+Strategy 4: route aggregation. Hierarchical, CIDR addresses let a router advertise one prefix for many subnets. This makes forwarding tables smaller. NAT is one more strategy from earlier: it saves IPv4 address space.
+
+65
+00:14:24,277 --> 00:14:31,381
+Question 100. Compare OSPF and BGP in a table. Pause the video and try it.
+
+66
+00:14:31,831 --> 00:14:51,650
+Row 1, scope. OSPF is intra-AS. BGP is inter-AS. Be careful: the example row in the question bank shows these two swapped. The slides say OSPF is intra-AS routing, and BGP is routing among ASes.
+
+67
+00:14:52,100 --> 00:15:13,903
+Row 2, the algorithm. OSPF is link-state routing with Dijkstra's algorithm. BGP is a path vector protocol. Row 3, the information. OSPF floods link-state advertisements. BGP sends prefixes with attributes such as AS-PATH and NEXT-HOP.
+
+68
+00:15:14,353 --> 00:15:25,339
+Row 4, transport. OSPF messages go directly over IP. BGP messages go over TCP connections between peers.
+
+69
+00:15:25,789 --> 00:15:39,784
+Row 5, route choice. OSPF picks least-cost paths, with costs such as bandwidth or delay. BGP uses policy first, then the shortest AS-PATH, then hot potato.
+
+70
+00:15:40,234 --> 00:15:51,306
+Row 6, structure. OSPF can use two levels: areas and a backbone. BGP has two parts: eBGP and iBGP.
+
+71
+00:15:51,756 --> 00:16:20,364
+Recap. The Internet groups routers into autonomous systems, for scale and for administrative autonomy. Inside an AS, OSPF runs, with areas and a backbone. Between ASes, BGP runs, with eBGP and iBGP. A BGP router selects a route by local preference, then the shortest AS-PATH, then hot potato. Import and export policies control the routes.
+
+72
+00:16:20,814 --> 00:16:37,881
+Each forwarding table combines both levels. BGP gives the gateway, and OSPF gives the interface toward it. Advertisements go in one direction, and data goes in the other direction. This is the end of video 20b.

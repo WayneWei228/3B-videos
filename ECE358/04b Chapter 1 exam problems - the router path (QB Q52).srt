@@ -1,0 +1,203 @@
+1
+00:00:00,000 --> 00:00:14,443
+This is ECE 358, video 4 b. We solve the long Chapter 1 question of the question bank, question 52. It uses delay, throughput, queues, and encapsulation together.
+
+2
+00:00:14,893 --> 00:00:33,709
+After this video, you can calculate the transmission and propagation delay on each link. You can find the bottleneck throughput and the router with the longest queue. You can find when B receives the first frame and a later frame. And you can find which frames a router with a full memory drops.
+
+3
+00:00:34,159 --> 00:01:01,209
+Now the long question, question 52 of the question bank. Hosts A and B are connected by four routers, R1 to R4, and five links. Each link has a length and a rate. The first link is 100 Mbps, 500 meters. The three middle links are 1 Gbps. The link R2 to R3 is 10000 kilometers long. The last link is 10 Mbps.
+
+4
+00:01:01,659 --> 00:01:18,022
+The signal speed is 2 times 10 to the power 8 meters per second. The transmission rate of each interface equals the rate of its link. The processing delay is 0. Each frame is 1000 bytes, which is 8000 bits.
+
+5
+00:01:18,472 --> 00:01:31,571
+For parts 1 to 6, host A sends frames as fast as it can, and the routers have infinite buffers. The question suggests a timing diagram. We use it for parts 5, 6 and 7.
+
+6
+00:01:32,021 --> 00:01:43,285
+Part 1 asks how long host A takes to transmit one frame. Part 2 asks for the propagation time from R2 to R3. Pause the video and try it.
+
+7
+00:01:43,735 --> 00:01:59,841
+Part 1 is a transmission delay. A transmits on its own link, at 100 Mbps. d trans is L over R. L is 8000 bits, and R is 100 times 10 to the power 6 bits per second.
+
+8
+00:02:00,291 --> 00:02:06,158
+This gives 80 times 10 to the power minus 6 seconds. That is 80 microseconds.
+
+9
+00:02:06,608 --> 00:02:31,163
+Part 2 is a propagation delay. d prop is the distance d over the speed s. The link R2 to R3 is 10000 kilometers, which is 10 to the power 7 meters. Divide by 2 times 10 to the power 8. The result is 0.05 seconds, which is 50 milliseconds. The link rate does not matter for propagation.
+
+10
+00:02:31,613 --> 00:02:40,146
+Part 3 asks for the average throughput at B, and the instantaneous throughput during one frame. Pause the video and try it.
+
+11
+00:02:40,596 --> 00:02:59,732
+The throughput of a path is the rate of its bottleneck link. That is the smallest rate on the path. The rates are 100 Mbps, three times 1 Gbps, and 10 Mbps. The smallest is 10 Mbps, on the link R4 to B.
+
+12
+00:03:00,182 --> 00:03:04,065
+So the average throughput at B is 10 Mbps.
+
+13
+00:03:04,515 --> 00:03:21,453
+While B receives one frame, the bits arrive over the link R4 to B, at 10 Mbps. A sends without a pause, so R4 always has a frame to send. So the instantaneous throughput is also 10 Mbps.
+
+14
+00:03:21,903 --> 00:03:26,959
+Part 4 asks which router has the longest queue. Pause the video and try it.
+
+15
+00:03:27,409 --> 00:03:43,921
+A sends one frame every 80 microseconds. R1, R2 and R3 send at 1 Gbps. They need only 8 microseconds per frame. So they finish each frame before the next one arrives. They have no queue.
+
+16
+00:03:44,371 --> 00:04:02,163
+R4 receives one frame every 80 microseconds. But it needs 800 microseconds to send one frame on the 10 Mbps link. The arrival rate, 100 Mbps, is more than the output rate, 10 Mbps.
+
+17
+00:04:02,613 --> 00:04:15,883
+So R4 has the longest queue. In each 800 microseconds, 10 frames arrive and only 1 leaves. The queue grows by about 9 frames every 800 microseconds.
+
+18
+00:04:16,333 --> 00:04:35,682
+Part 5. A starts the first frame at time 0. When does B have the complete frame? Pause the video and try it. Each router uses store-and-forward. It receives the whole frame, then transmits it. The processing delay is 0, and the first frame never waits in a queue.
+
+19
+00:04:36,132 --> 00:04:51,791
+Link A to R1. A transmits for 80 microseconds. The last bit then propagates 500 meters, which takes 2.5 microseconds. So R1 has the whole frame at 82.5 microseconds.
+
+20
+00:04:52,241 --> 00:05:08,774
+Link R1 to R2. R1 transmits at 1 Gbps for 8 microseconds. Propagation over 10 kilometers is 50 microseconds. R2 has the frame at 140.5 microseconds.
+
+21
+00:05:09,224 --> 00:05:24,008
+Link R2 to R3. 8 microseconds of transmission, and 50000 microseconds of propagation. R3 has the frame at 50148.5 microseconds.
+
+22
+00:05:24,458 --> 00:05:35,082
+Link R3 to R4. 8 plus 50 microseconds. R4 has the frame at 50206.5 microseconds.
+
+23
+00:05:35,532 --> 00:05:51,809
+Link R4 to B. R4 transmits at 10 Mbps, which takes 800 microseconds. Then 2.5 microseconds of propagation. B has the whole frame at 51009 microseconds.
+
+24
+00:05:52,259 --> 00:06:11,907
+Check with the sums. All transmission delays add to 904 microseconds. All propagation delays add to 50105 microseconds. The total is 51009 microseconds, which is 51.009 milliseconds.
+
+25
+00:06:12,357 --> 00:06:28,933
+Here is the formula for part 5. Add the transmission delay and the propagation delay of each of the 5 links. The result is 904 plus 50105, which is 51009 microseconds.
+
+26
+00:06:29,383 --> 00:06:43,762
+Draw the two parts to scale. The transmission part is the thin blue piece at the left. Propagation is almost all of the time. The link R2 to R3 alone gives 50000 microseconds.
+
+27
+00:06:44,212 --> 00:06:53,108
+Remember the conditions. This sum is correct only for the first frame. It has no queueing delay, and the processing delay is 0.
+
+28
+00:06:53,558 --> 00:06:58,379
+Part 6 asks when B has the 4th frame. Pause the video and try it.
+
+29
+00:06:58,829 --> 00:07:20,781
+Look at R4. Measure the time from the moment the first frame reaches R4. A sends frames back to back, one every 80 microseconds. The 1 Gbps links do not slow them. So the first four frames reach R4 at 0, 80, 160, and 240 microseconds.
+
+30
+00:07:21,231 --> 00:07:32,837
+R4 needs 800 microseconds for each frame. When it finishes one frame, the next frame is already waiting. So R4 sends the four frames back to back.
+
+31
+00:07:33,287 --> 00:07:47,153
+B has each frame 2.5 microseconds after R4 finishes it. The 4th frame is complete at 3202.5 microseconds after the first frame reached R4.
+
+32
+00:07:47,603 --> 00:08:08,830
+So B gets one frame every 800 microseconds after the first one. The 4th frame arrives 3 times 800 after the first. 51009 plus 2400 is 53409 microseconds, which is 53.409 milliseconds.
+
+33
+00:08:09,280 --> 00:08:22,592
+Part 7 changes one fact. R4 can hold a total of four IP packets. A numbers its frames from 0. Which frame does R4 drop first? Pause the video and try it.
+
+34
+00:08:23,042 --> 00:08:49,837
+Use time after frame 0 reaches R4. Frames arrive every 80 microseconds. Frame 0 arrives at time 0, and R4 starts to send it. It takes 800 microseconds. Frames 1, 2 and 3 arrive at 80, 160 and 240. Now R4 holds 4 frames: frame 0, which it is sending, and frames 1, 2 and 3. The memory is full.
+
+35
+00:08:50,287 --> 00:09:00,783
+Frame 4 arrives at 320 microseconds. There is no space. So R4 drops frame 4. The answer to part a is frame 4.
+
+36
+00:09:01,233 --> 00:09:10,705
+Frames 5 to 9 arrive at 400 to 720 microseconds. The memory is still full, so R4 drops them too.
+
+37
+00:09:11,155 --> 00:09:18,941
+Part b. After R4 starts to drop, which is the first frame that B receives? Pause the video and try it.
+
+38
+00:09:19,391 --> 00:09:34,410
+At 800 microseconds, R4 finishes frame 0. This frees one place in the memory. At the same moment, frame 10 arrives. 10 times 80 is 800. So R4 stores frame 10.
+
+39
+00:09:34,860 --> 00:09:46,743
+Frames 1, 2 and 3 were already in the memory, and B receives them. The first frame after the dropped frames is frame 10. So the answer to part b is frame 10.
+
+40
+00:09:47,193 --> 00:10:05,091
+The pattern repeats. Frames 11 to 19 are dropped, and frame 20 is stored at 1600 microseconds. So 1 frame in 10 passes. This matches the rates: 10 Mbps out of 100 Mbps.
+
+41
+00:10:05,541 --> 00:10:27,515
+The QB does not give answers, so state your assumptions. We count the frame in transmission as one of the four. And when a frame leaves at the same moment as another arrives, the space is free first. If the four places do not include the frame in transmission, the first drop is frame 5. Part b is frame 10 in both cases.
+
+42
+00:10:27,965 --> 00:10:40,189
+The last part, part 8. The headers are 20, 20 and 14 bytes. How many bytes of application message fit in one 1000-byte frame? Pause the video and try it.
+
+43
+00:10:40,639 --> 00:10:52,415
+Write the frame structure. The frame is the link header, the network header, the transport header, and the message. Together they are 1000 bytes. The bar is drawn to scale.
+
+44
+00:10:52,865 --> 00:10:57,750
+Add the headers. 14 plus 20 plus 20 is 54 bytes.
+
+45
+00:10:58,200 --> 00:11:10,040
+The message is the rest. 1000 minus 54 is 946 bytes. The overhead is 54 out of 1000, which is 5.4 percent.
+
+46
+00:11:10,490 --> 00:11:21,626
+Here is the recap. One. The transmission delay on each link is L over R. The propagation delay is d over s, and it does not depend on the rate.
+
+47
+00:11:22,076 --> 00:11:27,772
+Two. The throughput is the rate of the bottleneck link. Here it is 10 Mbps.
+
+48
+00:11:28,222 --> 00:11:34,430
+Three. A queue grows where the arrival rate is more than the output rate. Here that is R4.
+
+49
+00:11:34,880 --> 00:11:51,861
+Four. The first frame takes the sum of the transmission and propagation delays of all links, 51009 microseconds. After that, frames arrive one per transmission time of the bottleneck link, 800 microseconds.
+
+50
+00:11:52,311 --> 00:12:03,362
+Five. When the memory of R4 is full, it drops frames 4 to 9 and stores frame 10. In questions without published answers, state your assumptions.
+
+51
+00:12:03,812 --> 00:12:16,441
+Six. A 1000-byte frame with 54 bytes of headers carries 946 bytes of message. That is the end of video 4 b, and the end of Chapter 1.

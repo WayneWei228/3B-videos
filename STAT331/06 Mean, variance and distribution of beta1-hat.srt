@@ -1,0 +1,275 @@
+1
+00:00:00,000 --> 00:00:08,512
+This is STAT 331, video 6. The topic is the mean, the variance, and the distribution of beta one hat.
+
+2
+00:00:08,962 --> 00:00:32,621
+After this video, you can write beta one hat as a weighted sum of the y values, and explain why it is Normal. You can prove that its mean is beta one, and that its variance is sigma squared over S x x. You can state the distributions of beta one hat and beta zero hat. And you can solve Assignment 1, question 1, parts a and b.
+
+3
+00:00:33,071 --> 00:00:50,372
+Here is an own example. The gray dashed line is the true line, y equals 2 plus 0.5 x. In practice, it is unknown. We take one sample of 10 points and fit the least squares line. The slope estimate is 0.600.
+
+4
+00:00:50,822 --> 00:00:58,225
+A second sample from the same model gives different points. Its slope estimate is 0.359.
+
+5
+00:00:58,675 --> 00:01:07,528
+A third sample gives 0.611. So each sample gives a different estimate. The right panel collects the estimates.
+
+6
+00:01:07,978 --> 00:01:19,690
+Now take 2000 samples, and fit a line to each one. The histogram shows the 2000 slope estimates. This is the sampling distribution of beta one hat.
+
+7
+00:01:20,140 --> 00:01:38,913
+The estimates are centred near the true slope, 0.5. In two different samples, we get different estimates. To describe this uncertainty, we need the distribution of beta one hat. Standard errors, confidence intervals, and hypothesis tests all come from it.
+
+8
+00:01:39,363 --> 00:02:08,654
+Start from the least squares slope. Recall that y i is Normal, with mean beta zero plus beta one x i, and variance sigma squared. The y i are independent. Beta one hat is the sum of y i minus y bar, times x i minus x bar, over the sum of x j minus x bar squared. The picture uses five own x values: 1, 3, 5, 7 and 9. Here x bar is 5, and S x x is 40.
+
+9
+00:02:09,104 --> 00:02:25,360
+First, the y bar term goes away. y bar is a constant in the sum, so it comes out. The sum of x i minus x bar is always zero. So the numerator is the sum of y i times x i minus x bar.
+
+10
+00:02:25,810 --> 00:02:46,226
+Now divide each term by the denominator. Call the result w i. Then beta one hat is the sum of w i times y i. For our five x values, the weights are minus 0.1, minus 0.05, 0, 0.05 and 0.1.
+
+11
+00:02:46,676 --> 00:03:04,447
+Each weight is x i minus x bar, over S x x. It uses only the x values. In the model, the x values are fixed. So the weights are fixed with respect to y. Beta one hat is a linear combination of the y i, with fixed weights.
+
+12
+00:03:04,897 --> 00:03:20,726
+Here is the model picture. At each x i, y i has a Normal distribution. Its mean is on the true line. Its variance is sigma squared. The orange curves show these distributions. The y i are independent.
+
+13
+00:03:21,176 --> 00:03:35,661
+Beta one hat multiplies each y i by its fixed weight w i. The weights are minus 0.1, minus 0.05, 0, 0.05 and 0.1.
+
+14
+00:03:36,111 --> 00:03:41,658
+Then it adds the products. So beta one hat is the sum of w i y i.
+
+15
+00:03:42,108 --> 00:03:58,641
+Use this rule. A linear combination of independent Normal variables is Normal. Its mean is the sum of a i times mu i. Its variance is the sum of a i squared times sigma i squared. So beta one hat is Normal.
+
+16
+00:03:59,091 --> 00:04:24,201
+Put in a i equals w i, mu i equals beta zero plus beta one x i, and sigma i squared equals sigma squared. Beta one hat is Normal, with mean the sum of w i times beta zero plus beta one x i, and variance sigma squared times the sum of w i squared. Next, we simplify the mean and the variance.
+
+17
+00:04:24,651 --> 00:04:48,608
+Now the mean. The mean of beta one hat is the sum of w i times beta zero plus beta one x i. This comes from the Normal distribution on the last slide. You can also get it from the linearity of expectation: the expected value of the sum of w i y i is the sum of w i times the expected value of y i.
+
+18
+00:04:49,058 --> 00:04:57,378
+Write out the weight w i. It is x i minus x bar, over the sum of x j minus x bar squared.
+
+19
+00:04:57,828 --> 00:05:11,396
+Split the sum into two parts. The beta zero part has the sum of x i minus x bar in the numerator. The beta one part has the sum of x i times x i minus x bar.
+
+20
+00:05:11,846 --> 00:05:34,971
+The first numerator is zero. The picture shows it for our five x values: minus 4, minus 2, 0, 2 and 4 add to zero. In the second numerator, we can write x i as x i minus x bar. The reason is that the extra term, x bar times the sum of x i minus x bar, is also zero.
+
+21
+00:05:35,421 --> 00:05:55,837
+So the second numerator is the sum of x i minus x bar squared. This is S x x, the same as the denominator. The picture checks it: minus 4, minus 6, 0, 14 and 36 add to 40, which is S x x. The fraction is 1, and the mean is beta one.
+
+22
+00:05:56,287 --> 00:06:02,965
+Hence beta one hat is unbiased. Its expected value equals the parameter that it estimates.
+
+23
+00:06:03,415 --> 00:06:10,113
+Here are the 2000 slope estimates from the simulation again. Each sample gives one estimate.
+
+24
+00:06:10,563 --> 00:06:13,891
+The purple line is the true slope, 0.5.
+
+25
+00:06:14,341 --> 00:06:31,749
+The average of the 2000 estimates is 0.497. This is very near 0.5. One estimate can be far from beta one. But on average, over many samples, the estimates are correct. This is what unbiased means.
+
+26
+00:06:32,199 --> 00:06:51,613
+Now the variance. It is sigma squared times the sum of w i squared. This step uses two assumptions. Independence lets us add the variances of the terms. Equal variance gives each y i the same variance, sigma squared. A constant weight comes out squared.
+
+27
+00:06:52,063 --> 00:06:54,132
+Write out w i squared.
+
+28
+00:06:54,582 --> 00:07:02,006
+Square the numerator and the denominator. The picture shows w i squared for our five x values.
+
+29
+00:07:02,456 --> 00:07:11,501
+The denominator does not depend on i. So it comes out of the sum. The numerator is the sum of x i minus x bar squared.
+
+30
+00:07:11,951 --> 00:07:28,207
+The numerator is one copy of the denominator. So one copy cancels. The variance is sigma squared over S x x. The picture checks it: the five squares add to 0.025, which is 1 over 40.
+
+31
+00:07:28,657 --> 00:07:44,465
+The formula tells us how to get a precise slope. On the left, the 10 x values are close together. S x x is 16.3. We draw 15 samples from the true line and fit 15 lines. The lines turn a lot.
+
+32
+00:07:44,915 --> 00:07:55,774
+On the right, the 10 x values are spread out from 1 to 10. S x x is 82.5. The 15 fitted lines stay close to the true line.
+
+33
+00:07:56,224 --> 00:08:12,096
+Here are the two sampling distributions of beta one hat. With x close together, the standard deviation is 0.248. With x spread out, it is 0.110. Both are centred at the true slope.
+
+34
+00:08:12,546 --> 00:08:24,407
+So the variance is small when sigma squared is small, or when S x x is large. S x x grows when we add points, or when the x values are more spread out.
+
+35
+00:08:24,857 --> 00:08:37,956
+Put the mean and the variance together. Beta one hat is Normal, with mean beta one, and variance sigma squared over S x x. The green curve is this density for our own example.
+
+36
+00:08:38,406 --> 00:08:46,854
+The standard deviation of beta one hat is sigma over the square root of S x x. Here it is 0.110.
+
+37
+00:08:47,304 --> 00:08:56,861
+The blue bars are the 2000 simulated estimates. They follow the green Normal curve. So the simulation agrees with the formula.
+
+38
+00:08:57,311 --> 00:09:11,626
+This result has three parts. Beta one hat is Normal. Its mean is beta one. Its variance is sigma squared over S x x. The next video uses all three parts to make confidence intervals.
+
+39
+00:09:12,076 --> 00:09:19,948
+The slide asks: what about beta zero hat? Here are 20 samples from our own model, and their 20 fitted lines.
+
+40
+00:09:20,398 --> 00:09:34,521
+Every least squares line goes through the point x bar, y bar. At x bar, the lines are close together. There, the only uncertainty is in y bar. Its variance is sigma squared over n.
+
+41
+00:09:34,971 --> 00:09:51,717
+Beta zero hat is the height of the line at x equals 0. Here x equals 0 is 5.5 units from x bar. An error in the slope moves the line more and more as we go away from x bar. So the intercepts spread out a lot.
+
+42
+00:09:52,167 --> 00:10:19,047
+This gives the distribution of beta zero hat. It is Normal, with mean beta zero. Its variance is sigma squared times 1 over n, plus x bar squared over S x x. The 1 over n term is the spread at x bar. The x bar squared over S x x term is the slope error, times the distance from x bar to 0. Assignment 1 asks you to derive this variance. We do it now.
+
+43
+00:10:19,497 --> 00:10:31,273
+Here is Assignment 1, question 1, part a. Use the usual simple linear regression model. Derive the variance of beta zero hat. Pause the video and try it.
+
+44
+00:10:31,723 --> 00:10:43,755
+Here is the plan. We did the same for beta one hat. Write beta zero hat as a sum of c i times y i, with fixed weights c i. Then use the variance rule.
+
+45
+00:10:44,205 --> 00:11:01,848
+Start from beta zero hat equals y bar minus beta one hat x bar. y bar is the sum of 1 over n times y i. Each y i has the weight 1 over n. For our five x values, n is 5, so each weight is 0.2.
+
+46
+00:11:02,298 --> 00:11:26,511
+Beta one hat is the sum of w i y i. So the second term is x bar times the sum of w i y i. With the minus sign, the weights are minus x bar times w i. With x bar equal to 5, they are 0.5, 0.25, 0, minus 0.25, and minus 0.5.
+
+47
+00:11:26,961 --> 00:11:49,340
+Collect the two parts for each y i. The weight is c i equals 1 over n minus x bar w i. For our x values, the c i are 0.7, 0.45, 0.2, minus 0.05, and minus 0.3. They use only x, so they are fixed.
+
+48
+00:11:49,790 --> 00:12:06,579
+Now take the variance. The y i are independent, so the variances add. Each weight comes out squared. Each y i has variance sigma squared. So the variance of beta zero hat is sigma squared times the sum of c i squared.
+
+49
+00:12:07,029 --> 00:12:23,456
+Expand one square. c i squared is 1 over n squared, minus 2 x bar over n times w i, plus x bar squared times w i squared. The picture shows c i squared for our five x values.
+
+50
+00:12:23,906 --> 00:12:32,717
+Add over i. The first term appears n times, so it gives n over n squared. The constants come out of the other two sums.
+
+51
+00:12:33,167 --> 00:12:51,513
+Use the two facts about the weights. The sum of w i is zero. The sum of w i squared is 1 over S x x, from the variance of beta one hat. So the sum of c i squared is 1 over n plus x bar squared over S x x.
+
+52
+00:12:51,963 --> 00:13:12,102
+So the variance of beta zero hat is sigma squared times 1 over n plus x bar squared over S x x. The picture checks the number: the five squares add to 0.825. And 1 over 5 plus 25 over 40 is also 0.825.
+
+53
+00:13:12,552 --> 00:13:23,411
+Assignment 1, question 1, part b. If the normality assumption does not hold, is beta zero hat unbiased? Explain. Pause the video and try it.
+
+54
+00:13:23,861 --> 00:13:30,346
+Follow the chain of the proof. We keep the other assumptions. So each error still has mean zero.
+
+55
+00:13:30,796 --> 00:13:40,033
+Then the expected value of y i is beta zero plus beta one x i. This uses only the linearity of expectation.
+
+56
+00:13:40,483 --> 00:13:53,923
+The mean of beta one hat is the sum of w i times the expected value of y i. The two facts about the weights give beta one. This step uses only the mean of y i.
+
+57
+00:13:54,373 --> 00:14:09,349
+Beta zero hat is y bar minus beta one hat x bar. The expected value of y bar is beta zero plus beta one x bar. So the expected value of beta zero hat is beta zero.
+
+58
+00:14:09,799 --> 00:14:16,370
+Normality is not used anywhere in this chain. Normality only gives the shape of the distribution.
+
+59
+00:14:16,820 --> 00:14:31,817
+So the answer is yes. Beta zero hat is still unbiased. The expected value of beta zero hat is beta zero plus beta one x bar, minus x bar times beta one, which is beta zero.
+
+60
+00:14:32,267 --> 00:14:44,619
+Here is a check with our own simulation. The errors are not Normal. They are skewed, but their mean is still 0. The true line is still y equals 2 plus 0.5 x.
+
+61
+00:14:45,069 --> 00:14:50,979
+We take 2000 samples with these errors, and compute beta zero hat for each one.
+
+62
+00:14:51,429 --> 00:15:05,786
+The true beta zero is 2. The average of the 2000 estimates is 2.010. So the estimates are still centred at beta zero. The estimator is unbiased without normality.
+
+63
+00:15:06,236 --> 00:15:13,553
+Here is a summary of what each result needs. Unbiasedness needs only linearity and errors with mean zero.
+
+64
+00:15:14,003 --> 00:15:23,774
+The variance formula, sigma squared over S x x, also needs independence and equal variance. We used them to add the variances.
+
+65
+00:15:24,224 --> 00:15:30,453
+The Normal distribution of beta one hat needs all four assumptions, also normality.
+
+66
+00:15:30,903 --> 00:15:43,533
+The same holds for beta zero hat. Assignment 1, question 1 c asks what happens without independence. We answer it in the next video, after we build the confidence interval.
+
+67
+00:15:43,983 --> 00:16:02,095
+To recap. Beta one hat is a weighted sum of the y i, with fixed weights. The weights add to zero. The weights times x i add to 1. The squared weights add to 1 over S x x. A linear combination of independent Normals is Normal.
+
+68
+00:16:02,545 --> 00:16:19,803
+So beta one hat is Normal with mean beta one, and variance sigma squared over S x x. Beta zero hat is Normal with mean beta zero, and variance sigma squared times 1 over n, plus x bar squared over S x x.
+
+69
+00:16:20,253 --> 00:16:36,595
+Unbiasedness needs only errors with mean zero. The variance formulas need independence and equal variance. The Normal shape needs normality. In the next video, we use these results to build confidence intervals for beta one.

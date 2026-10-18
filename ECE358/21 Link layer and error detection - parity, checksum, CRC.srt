@@ -1,0 +1,439 @@
+1
+00:00:00,000 --> 00:00:10,176
+This is ECE 358, video 21. We start Chapter 6, the link layer. This video covers slides 1 to 17.
+
+2
+00:00:10,626 --> 00:00:21,399
+After this video, you can name the link-layer services, compute parity and CRC bits, and answer the question-bank Link Layer questions 1 to 19.
+
+3
+00:00:21,849 --> 00:00:31,172
+First, some terms. Hosts and routers are both called nodes. Here, host A sends to host B through routers R1 and R2.
+
+4
+00:00:31,622 --> 00:00:42,374
+The communication channels that connect adjacent nodes along the path are called links. A link can be wired, wireless, or a LAN with a layer 2 switch.
+
+5
+00:00:42,824 --> 00:00:54,493
+The layer 2 packet is a frame. A frame encapsulates an IP datagram. The yellow header and trailer belong to the link layer. The purple part is the datagram.
+
+6
+00:00:54,943 --> 00:01:07,786
+The link layer has one job. It moves a datagram from one node to the physically adjacent node, over one link. So a datagram from A to B crosses three links, one hop at a time.
+
+7
+00:01:08,236 --> 00:01:14,423
+The same datagram travels over every link of the path. The network layer does not change it.
+
+8
+00:01:14,873 --> 00:01:29,849
+But each link can use a different link protocol. For example, WiFi on the first link, a point-to-point protocol on the next link, and Ethernet on the last link. Each link puts the datagram in its own type of frame.
+
+9
+00:01:30,299 --> 00:01:40,688
+Each link protocol provides different services. For example, one protocol may provide reliable data transfer over its link, and another may not.
+
+10
+00:01:41,138 --> 00:01:54,706
+The slide's travel example: the tourist is the datagram, each transport segment is a link, the transportation mode is the link-layer protocol, and the travel agent is the routing algorithm.
+
+11
+00:01:55,156 --> 00:02:01,172
+The first service is framing. The link layer gets an IP datagram from the network layer.
+
+12
+00:02:01,622 --> 00:02:12,566
+It encapsulates the datagram in a frame. It adds a header in front. Header fields are, for example, the destination address, the source address and a type field.
+
+13
+00:02:13,016 --> 00:02:20,312
+It also adds a trailer at the end. The trailer carries the error checking code, for example a CRC.
+
+14
+00:02:20,762 --> 00:02:34,906
+The second service is link access. If the medium is shared, several nodes use the same channel. The protocol must find the best time to send, so that the frame reaches the destination with no collision.
+
+15
+00:02:35,356 --> 00:02:47,068
+The addresses in the frame header are MAC addresses, also called hardware addresses. MAC means medium access control. A MAC address is different from an IP address.
+
+16
+00:02:47,518 --> 00:03:02,601
+The third service is reliable delivery between adjacent nodes. We already know how to do this. Use the tools of Chapter 3: stop-and-wait or a pipelined protocol, with sequence numbers, ACKs and timeouts.
+
+17
+00:03:03,051 --> 00:03:20,565
+Whether a link uses it depends on the bit error rate, B E R. The B E R is the number of bit errors divided by the number of bits sent. A B E R of 10 to the power minus 12 means 1 bit error per 10 to the power 12 bits.
+
+18
+00:03:21,015 --> 00:03:32,173
+Ethernet has a B E R of 10 to the power minus 12 or less. Errors are very rare. So Ethernet does not use reliable delivery at the link level.
+
+19
+00:03:32,623 --> 00:03:49,817
+WiFi has a B E R from 10 to the power minus 6 to 10 to the power minus 4. So WiFi uses reliable delivery. At 10 to the power minus 4, a 1500-byte frame has about 1.2 bit errors.
+
+20
+00:03:50,267 --> 00:04:07,270
+Why both link-level and end-to-end reliability? The link level fixes errors on one bad link quickly. But datagrams are also lost inside routers, when a buffer is full. Only TCP, end to end, recovers from that.
+
+21
+00:04:07,720 --> 00:04:22,611
+The fourth service is flow control. It is pacing between adjacent sending and receiving nodes. The receiver sets the pace of the sender. Ethernet has no flow control. WiFi has flow control with stop-and-wait.
+
+22
+00:04:23,061 --> 00:04:33,322
+The fifth service is error detection. Signal attenuation and noise cause bit errors. The receiver detects the error with the check bits in the frame.
+
+23
+00:04:33,772 --> 00:04:39,596
+What happens next depends on the link. A WiFi receiver signals a retransmission.
+
+24
+00:04:40,046 --> 00:04:46,617
+An Ethernet receiver drops the frame. Then TCP recovers the lost segment end to end.
+
+25
+00:04:47,067 --> 00:05:06,395
+The sixth service is error correction. The receiver identifies and corrects the bit errors without a retransmission. 4G and LTE networks do this with Forward Error Correction, F E C. The Internet model with TCP, IP and Ethernet does not use it.
+
+26
+00:05:06,845 --> 00:05:24,807
+The last service on slide 8 is the duplex mode. On a half-duplex link, the nodes at both ends can transmit, but not at the same time. They send one at a time. In the picture, A sends, then B, then A again. The dashed boxes are idle time.
+
+27
+00:05:25,257 --> 00:05:32,532
+On a full-duplex link, both end nodes can transmit at the same time. Both lanes are always busy.
+
+28
+00:05:32,982 --> 00:05:36,438
+So a full-duplex link carries twice the total data.
+
+29
+00:05:36,888 --> 00:05:49,645
+Where is the link layer implemented? Here is a host. The CPU and the memory sit on the host bus. The application, transport and network layers run on the CPU, in software.
+
+30
+00:05:50,095 --> 00:06:08,143
+The link layer is in each and every host and router. It is implemented in the network interface card, the N I C, or on a chip. Examples are an Ethernet card or a WiFi chip. The N I C implements the link layer and the physical layer.
+
+31
+00:06:08,593 --> 00:06:13,607
+The N I C attaches to the host's system bus, for example P C I.
+
+32
+00:06:14,057 --> 00:06:18,665
+So the link layer is a combination of hardware, software and firmware.
+
+33
+00:06:19,115 --> 00:06:26,325
+Now two interfaces communicate. On each side, the link controller in the N I C connects to the link.
+
+34
+00:06:26,775 --> 00:06:31,618
+On the sending side, the network layer gives a datagram to the N I C.
+
+35
+00:06:32,068 --> 00:06:46,511
+The sending side encapsulates the datagram in a frame. It adds the error checking bits. If the link uses them, it also does reliable data transfer and flow control. Then it sends the frame over the link.
+
+36
+00:06:46,961 --> 00:06:59,377
+The receiving side looks for errors. If the link uses them, it does reliable data transfer and flow control. Then it extracts the datagram and passes it up to the network layer.
+
+37
+00:06:59,827 --> 00:07:13,352
+How does a receiver detect bit errors? D is the data that the check protects. It can include header fields. E D C is a set of error detection and correction bits. These are redundant bits.
+
+38
+00:07:13,802 --> 00:07:20,138
+The sender computes E D C from D and sends both. They cross a link that can flip bits.
+
+39
+00:07:20,588 --> 00:07:26,007
+The receiver gets D prime and E D C prime. Here one bit of D changed.
+
+40
+00:07:26,457 --> 00:07:37,038
+The receiver computes the check again on D prime and compares. If all bits are OK, it passes the datagram up. Otherwise, an error is detected.
+
+41
+00:07:37,488 --> 00:07:49,264
+Error detection is not 100 percent reliable. The protocol may miss some errors, but rarely. A larger E D C field gives better detection and correction.
+
+42
+00:07:49,714 --> 00:08:08,935
+The slide gives a small example: one third F E C. Each data bit is sent with 2 E D C bits, so each bit is sent 3 times. If one copy flips, the receiver takes the majority. Two of the three bits are 1, so the bit was 1. The receiver corrects the error.
+
+43
+00:08:09,385 --> 00:08:23,188
+The simplest check is a single parity bit. The sender has d data bits. It adds one parity bit. The slide uses odd parity: the total number of 1s, parity bit included, must be odd.
+
+44
+00:08:23,638 --> 00:08:31,702
+Count the 1s in the data. There are 9. That is already odd. So the parity bit is 0, and the total stays odd.
+
+45
+00:08:32,152 --> 00:08:41,709
+Now one bit flips on the link. The receiver counts 10 ones. That is even, so the odd parity check fails. The receiver detects the error.
+
+46
+00:08:42,159 --> 00:08:49,989
+Now two bits flip. The receiver counts 11 ones. That is odd, so the check passes. The two errors are missed.
+
+47
+00:08:50,439 --> 00:09:04,476
+So single-bit parity detects a single bit error. It cannot tell which bit is wrong, so it cannot correct the error. With even parity, the sender chooses the bit so that the total number of 1s is even.
+
+48
+00:09:04,926 --> 00:09:19,091
+Two-dimensional parity can also correct an error. Organize the data bits as a matrix. The slide uses 15 bits of D and splits them into 3 rows of 5 bits. It uses even parity.
+
+49
+00:09:19,541 --> 00:09:31,979
+Compute one parity bit for each row. Row 1 has three 1s, so its parity bit is 1. Row 2 has four 1s, so its bit is 0. Row 3 has three 1s, so its bit is 1.
+
+50
+00:09:32,429 --> 00:09:43,714
+Then compute one parity bit for each column, and a corner bit for the parity bits. The column parities are 0 0 1 0 1. The corner bit is 0.
+
+51
+00:09:44,164 --> 00:09:51,375
+The sender transmits D, then the parity bits, in the slide's order: row parities, corner, column parities.
+
+52
+00:09:51,825 --> 00:10:05,265
+On the slide, the second received frame has one flipped bit. The receiver checks every row and every column. Row 2 now has an odd number of 1s, so it fails. Column 2 also fails.
+
+53
+00:10:05,715 --> 00:10:18,536
+The error is where the bad row and the bad column cross: row 2, column 2. The receiver flips that bit back. So two-dimensional parity detects and corrects a single bit error.
+
+54
+00:10:18,986 --> 00:10:35,775
+The Internet checksum is a review from Chapter 3. Its goal is to detect flipped bits in a segment. The sender treats the UDP segment, with the UDP header fields and the IP addresses, as a sequence of 16-bit integers.
+
+55
+00:10:36,225 --> 00:10:44,993
+The checksum is the one's complement sum of the words. In this optional example, the sum of two words has a carry out of the top bit.
+
+56
+00:10:45,443 --> 00:10:51,737
+The carry wraps around to the lowest bit. Then flip all the bits. The result is the checksum.
+
+57
+00:10:52,187 --> 00:11:06,224
+The receiver computes the checksum of the received segment and compares it with the field. If they are not equal, an error is detected. If they are equal, no error is detected. But there may still be errors.
+
+58
+00:11:06,674 --> 00:11:24,722
+A cyclic redundancy check, or CRC, is a more powerful error detection code. Think of the data bits D as a binary number. G is a bit pattern of r plus 1 bits, called the generator. G is public: the sender and the receiver both know it.
+
+59
+00:11:25,172 --> 00:11:39,935
+The sender appends r CRC bits, called R, to D. In numbers: shift D left by r bits, which is D times 2 to the power r. Then XOR R into the r zero bits at the end.
+
+60
+00:11:40,385 --> 00:11:49,665
+The sender chooses R so that the whole bit pattern, D followed by R, is exactly divisible by G, in mod 2 arithmetic.
+
+61
+00:11:50,115 --> 00:11:57,240
+The receiver divides the received bits by G. If the remainder is not zero, it detects an error.
+
+62
+00:11:57,690 --> 00:12:10,191
+A CRC detects all burst errors of fewer than r plus 1 bits. Ethernet and 802.11 WiFi use it, with r equal to 32.
+
+63
+00:12:10,641 --> 00:12:26,236
+To compute R, we need mod 2 arithmetic. Each bit is added on its own, with no carries. This is the XOR operation. 0 XOR 0 is 0. 0 XOR 1 is 1. 1 XOR 1 is 0.
+
+64
+00:12:26,686 --> 00:12:40,489
+For example, 1 0 1 1 XOR 1 0 0 1 is 0 0 1 0. In mod 2 there are no borrows either. So addition and subtraction are the same operation: XOR.
+
+65
+00:12:40,939 --> 00:12:49,643
+Now the slide's derivation. We want D times 2 to the power r, XOR R, to be a multiple of G: n times G.
+
+66
+00:12:50,093 --> 00:13:00,034
+XOR both sides with R. Because R XOR R is zero, D times 2 to the power r equals n G XOR R.
+
+67
+00:13:00,484 --> 00:13:11,492
+So if we divide D times 2 to the power r by G, the remainder is R. And D times 2 to the power r is simply D followed by r zeros.
+
+68
+00:13:11,942 --> 00:13:29,286
+Here is the example of slide 17. D is 1 0 1 1 1 0, six bits. G is 1 0 0 1, four bits, so r is 3. Append three zeros to D. Then divide by G with mod 2 long division.
+
+69
+00:13:29,736 --> 00:13:40,211
+Take the first four bits, 1 0 1 1. The leading bit is 1, so the quotient bit is 1. XOR with G gives 0 0 1 0.
+
+70
+00:13:40,661 --> 00:13:52,586
+Drop the leading zero and bring down the next bit. The bits are 0 1 0 1. The leading bit is 0, so the quotient bit is 0, and we XOR with zeros.
+
+71
+00:13:53,036 --> 00:14:01,505
+Bring down the next bit: 1 0 1 0. The leading bit is 1. XOR with G gives 0 0 1 1.
+
+72
+00:14:01,955 --> 00:14:08,078
+Bring down a bit: 0 1 1 0. The leading bit is 0. The quotient bit is 0.
+
+73
+00:14:08,528 --> 00:14:15,013
+Bring down a bit: 1 1 0 0. XOR with G gives 0 1 0 1.
+
+74
+00:14:15,463 --> 00:14:24,701
+Bring down the last bit: 1 0 1 0. XOR with G gives 0 0 1 1. There are no more bits to bring down.
+
+75
+00:14:25,151 --> 00:14:38,527
+The remainder is the last r bits: R equals 0 1 1. We do not need the quotient. The sender transmits D followed by R: 1 0 1 1 1 0, 0 1 1.
+
+76
+00:14:38,977 --> 00:14:51,137
+The receiver divides the 9 received bits by G with the same long division. If no bit changed, the remainder is 0 0 0, and the receiver accepts the frame.
+
+77
+00:14:51,587 --> 00:14:57,005
+If one bit flips, the remainder is not zero. The receiver detects the error.
+
+78
+00:14:57,455 --> 00:15:06,373
+Here three adjacent bits flip. This is a burst error of 3 bits. The remainder is not zero, so the error is detected.
+
+79
+00:15:06,823 --> 00:15:22,140
+But if the error bits are exactly G, shifted, the received word is still a multiple of G. The remainder is 0 0 0, and the error is missed. Here the burst is 4 bits long, 1 0 0 1.
+
+80
+00:15:22,590 --> 00:15:33,427
+This matches slide 16. With r equal to 3, a CRC detects every burst of fewer than 4 bits. A longer burst can be missed, but rarely.
+
+81
+00:15:33,877 --> 00:15:48,107
+Now a practice question. It is not from the question bank, but exams ask this type. D is 1 0 1 1 0 1 and G is 1 1 0 1. Find R. Pause the video and try it.
+
+82
+00:15:48,557 --> 00:16:06,818
+r is 3, so append three zeros. The first window, 1 0 1 1, starts with 1: XOR with G gives 0 1 1 0. Bring down a bit: 1 1 0 0. It starts with 1: XOR with G gives 0 0 0 1.
+
+83
+00:16:07,268 --> 00:16:22,137
+Bring down a bit: 0 0 1 1. It starts with 0, so the quotient bit is 0, and we XOR with zeros. Bring down a bit: 0 1 1 0. It starts with 0 again: quotient bit 0.
+
+84
+00:16:22,587 --> 00:16:37,371
+Bring down a bit: 1 1 0 0. It starts with 1: XOR with G gives 0 0 0 1. Bring down the last bit: 0 0 1 0. It starts with 0: quotient bit 0.
+
+85
+00:16:37,821 --> 00:16:47,976
+The remainder is 0 1 0. So R is 0 1 0, and the sender transmits 1 0 1 1 0 1, 0 1 0.
+
+86
+00:16:48,426 --> 00:16:55,935
+Always check your answer. Divide the 9 transmitted bits by G. The remainder must be zero, and it is.
+
+87
+00:16:56,385 --> 00:17:03,937
+Now the question bank. Link Layer questions 1 to 5 are short definitions. Pause the video and try them.
+
+88
+00:17:04,387 --> 00:17:16,569
+Question 1. A link is a communication channel that connects adjacent nodes along the path. Nodes are hosts and routers. A link can be wired, wireless, or a LAN.
+
+89
+00:17:17,019 --> 00:17:27,707
+Question 2. The services are framing, link access, reliable delivery, flow control, error detection, error correction, and half or full duplex.
+
+90
+00:17:28,157 --> 00:17:36,839
+Question 3. Framing means: encapsulate the IP datagram in a frame. The link layer adds a header and a trailer.
+
+91
+00:17:37,289 --> 00:17:44,564
+Question 4. Typical header fields are the destination MAC address, the source MAC address, and the type.
+
+92
+00:17:45,014 --> 00:17:51,457
+Question 5. The trailer carries the error checking code, for example the CRC bits.
+
+93
+00:17:51,907 --> 00:17:58,947
+Questions 6 to 9 are about the bit error rate and reliable delivery. Pause the video and try them.
+
+94
+00:17:59,397 --> 00:18:16,527
+Question 6. The bit error rate is the number of bit errors divided by the number of bits sent. For example, 10 to the power minus 12 means one error per 10 to the power 12 bits. It is a ratio of bits to bits, so it has no unit.
+
+95
+00:18:16,977 --> 00:18:32,103
+Question 7. Reliable delivery means frames reach the adjacent node with no bit error, no loss, no duplicate, and in order. The link layer uses sequence numbers, ACKs and timeouts, as in Chapter 3.
+
+96
+00:18:32,553 --> 00:18:50,409
+Questions 8 and 9. On both links, the CRC catches bit errors. Ethernet drops bad frames and does not retransmit, so frames can be lost. WiFi uses stop-and-wait, so it also gives no loss, no duplicates and no reordering.
+
+97
+00:18:50,859 --> 00:19:06,496
+Why: on Ethernet, errors are very rare, so ACKs cost more than they save, and TCP recovers the rare loss. On WiFi, errors are frequent, so it retransmits on the link. The starred cells are our inference.
+
+98
+00:19:06,946 --> 00:19:10,637
+Questions 10 to 15. Pause the video and try them.
+
+99
+00:19:11,087 --> 00:19:19,876
+Question 10. Flow control is pacing between adjacent sending and receiving nodes. The receiver sets the pace of the sender.
+
+100
+00:19:20,326 --> 00:19:30,843
+Question 11. On a half-duplex link, both ends can send, but not at the same time. On a full-duplex link, both ends can send at the same time.
+
+101
+00:19:31,293 --> 00:19:45,331
+Question 12. First, detect the error and retransmit: WiFi on the link, or TCP after Ethernet drops the frame. Second, correct the error at the receiver with forward error correction.
+
+102
+00:19:45,781 --> 00:19:56,661
+Question 13. Error correction means the receiver identifies and corrects the bit errors without a retransmission. 4G and LTE do this.
+
+103
+00:19:57,111 --> 00:20:09,569
+Questions 14 and 15. The link layer is in every host and router, in the network interface card or on a chip. It is a combination of hardware, software and firmware.
+
+104
+00:20:10,019 --> 00:20:13,945
+Questions 16 to 19. Pause the video and try them.
+
+105
+00:20:14,395 --> 00:20:29,008
+Question 16. In error detection, the sender computes error detection bits from the data and sends both. The receiver computes the check again and compares. Detection is not 100 percent reliable.
+
+106
+00:20:29,458 --> 00:20:45,735
+Question 17. The sender adds one parity bit so that the number of 1s is even, or odd. One flipped bit changes the count, so the receiver detects it. Two-dimensional parity can also find and correct a single bit error.
+
+107
+00:20:46,185 --> 00:21:06,025
+Question 18. Chapter 1, slide 15: guided media, where signals propagate in solid media such as copper and fiber, and unguided media, where signals propagate freely, such as radio. Chapter 6 slide 19 also names point-to-point and broadcast links.
+
+108
+00:21:06,475 --> 00:21:24,289
+Question 19. In a CRC, the sender appends r bits R so that the whole pattern is exactly divisible by the generator G, in mod 2 arithmetic. The receiver divides by G. A remainder that is not zero means an error.
+
+109
+00:21:24,739 --> 00:21:35,320
+To recap. The link layer moves a datagram over one link, inside a frame. It is implemented in the network interface card of every host and router.
+
+110
+00:21:35,770 --> 00:21:50,426
+A parity bit detects one error. Two-dimensional parity corrects one error. A CRC divides by G with XOR, and the remainder is R. The next video covers multiple access protocols.

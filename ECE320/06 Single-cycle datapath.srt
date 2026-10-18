@@ -1,0 +1,487 @@
+1
+00:00:00,000 --> 00:00:07,701
+This is ECE 320, video 6: the single-cycle datapath, from lecture 4, part 1.
+
+2
+00:00:08,151 --> 00:00:24,493
+After this video, you can build the datapath for eight instructions, one part at a time. You can trace an instruction and say which value flows on each wire. You can build the I, S and B immediates. And you can read a timing diagram.
+
+3
+00:00:24,943 --> 00:00:38,020
+A processor has two parts. The first part is the datapath: the functional units such as the ALU, the registers, and the memory. Data flows through it from the PC to the write back.
+
+4
+00:00:38,470 --> 00:00:48,689
+The second part is the control. It sets the mux select signals and the write enable signals. They decide where data flows, and which state changes.
+
+5
+00:00:49,139 --> 00:00:59,848
+The control reads the instruction, and translates the opcode into control signals. This video builds the datapath. Video 7 builds the control.
+
+6
+00:01:00,298 --> 00:01:14,335
+This processor executes one instruction on every clock tick. The state elements are the PC, the instruction memory, the register file, and the data memory. Their current values drive the logic.
+
+7
+00:01:14,785 --> 00:01:21,377
+The combinational logic computes with these values. Its outputs settle before the next clock edge.
+
+8
+00:01:21,827 --> 00:01:29,294
+At the rising clock edge, all state elements store the outputs of the logic. Then the next cycle starts.
+
+9
+00:01:29,744 --> 00:01:39,771
+So reads are combinational, and a state element changes only at the rising edge. One clock period must be long enough for the whole instruction.
+
+10
+00:01:40,221 --> 00:01:52,679
+Every instruction runs through up to five phases. This is the full datapath that we build in this video. Phase 1 is fetch. The PC gives the address to the instruction memory.
+
+11
+00:01:53,129 --> 00:02:02,687
+Phase 2 is decode and register read. The register file reads the source registers, and the immediate generator builds the immediate.
+
+12
+00:02:03,137 --> 00:02:08,683
+Phase 3 is execute. The ALU computes, and the branch comparator compares.
+
+13
+00:02:09,133 --> 00:02:14,296
+Phase 4 is memory. A load reads the data memory, and a store writes it.
+
+14
+00:02:14,746 --> 00:02:21,594
+Phase 5 is register write. In this processor, all five phases happen in one clock cycle.
+
+15
+00:02:22,044 --> 00:02:34,140
+How do we build a processor for an ISA? Look at the ISA, and make sure that the datapath can do every instruction. The slides use these seven instructions, in this order.
+
+16
+00:02:34,590 --> 00:02:48,691
+Each instruction adds some hardware, shown in orange. add needs the register file and the ALU. sub needs the ALU select signal. addi needs the immediate generator and a mux. And so on.
+
+17
+00:02:49,141 --> 00:02:55,520
+Most other instructions are similar from the datapath point of view. At the end, we check jal.
+
+18
+00:02:55,970 --> 00:03:12,930
+The datapath needs elements that keep values between cycles. A register is an array of D flip-flops with a shared clock and a write enable. It stores D at the rising edge, only if the write enable is 1. The PC is a register.
+
+19
+00:03:13,380 --> 00:03:25,924
+The ISA registers are in a register file, with two read ports and one write port. That is the most that one instruction needs: an R-type reads two registers and writes one.
+
+20
+00:03:26,374 --> 00:03:34,886
+The data buses are 32 bits wide. The address buses are 5 bits wide, because there are 32 registers.
+
+21
+00:03:35,336 --> 00:03:45,171
+The memory has one address, one data input for writes, and one data output for reads. It has one port: one read or one write per cycle.
+
+22
+00:03:45,621 --> 00:03:52,234
+Reads are combinational. Writes happen at the rising edge, only when the write enable is 1.
+
+23
+00:03:52,684 --> 00:04:07,553
+Every instruction starts with fetch. The PC is a register. It holds the address of the current instruction. It gives this address to the instruction memory, IMEM. IMEM returns the 32 instruction bits.
+
+24
+00:04:08,003 --> 00:04:20,910
+An adder computes PC plus 4. This is the default next PC. Memory is byte addressed, and one instruction is 4 bytes, so the next instruction is 4 addresses later.
+
+25
+00:04:21,360 --> 00:04:31,301
+At the rising clock edge, the PC stores PC plus 4. Now the PC is 1004, and IMEM gives the next instruction.
+
+26
+00:04:31,751 --> 00:04:43,698
+The first instruction is add. Register rd gets register rs1 plus register rs2. Here is add x1, x2, x3 in the R-format.
+
+27
+00:04:44,148 --> 00:04:56,927
+The rs1 field, bits 19 to 15, goes straight to address port A. Here it is 2. The rs2 field, bits 24 to 20, goes to address port B. Here it is 3.
+
+28
+00:04:57,377 --> 00:05:02,753
+The rd field, bits 11 to 7, goes to the write address. Here it is 1.
+
+29
+00:05:03,203 --> 00:05:13,123
+funct7, funct3 and the opcode go to the control. The register numbers sit at the same bits in every format, so they need no decoding.
+
+30
+00:05:13,573 --> 00:05:25,626
+Here is the datapath for add. The new parts are orange: the register file, the ALU, and their wires. One new control signal is RegWEn, the register write enable.
+
+31
+00:05:26,076 --> 00:05:37,319
+Trace add x1, x2, x3 with example values. The PC is 1000. IMEM gives the instruction. The adder gives 1004.
+
+32
+00:05:37,769 --> 00:05:42,825
+The register file reads x2 and x3. Here they are 10 and 20.
+
+33
+00:05:43,275 --> 00:05:46,603
+The ALU adds them. Its output is 30.
+
+34
+00:05:47,053 --> 00:05:56,909
+The sum goes back to DataD. RegWEn is 1, so at the rising edge, x1 becomes 30, and the PC becomes 1004.
+
+35
+00:05:57,359 --> 00:06:07,791
+Slide 18 shows the timing of two add instructions. Time runs to the right. At the first rising edge, the PC becomes 1000.
+
+36
+00:06:08,241 --> 00:06:18,993
+A short time later, the adder gives 1004, and IMEM gives the instruction. Each value settles a short time after the value that it depends on.
+
+37
+00:06:19,443 --> 00:06:23,261
+Next, the register file outputs Reg 2 and Reg 3.
+
+38
+00:06:23,711 --> 00:06:27,594
+Then the ALU output settles at Reg 2 plus Reg 3.
+
+39
+00:06:28,044 --> 00:06:39,287
+Reg 1 keeps its old value during the whole cycle. It changes only at the next rising edge, because RegWEn is 1. Then the second add starts.
+
+40
+00:06:39,737 --> 00:06:54,883
+Here is a short check. x1 is 5. The processor runs add x1, x1, x1. Which value of x1 does the ALU read, and what is x1 after the edge? Pause the video and try it.
+
+41
+00:06:55,333 --> 00:07:06,235
+During the cycle, the register file reads x1 on both ports. The write has not happened yet. So both inputs are 5, and the ALU output is 10.
+
+42
+00:07:06,685 --> 00:07:13,789
+At the rising edge, x1 becomes 10. A read in the same cycle always sees the old value.
+
+43
+00:07:14,239 --> 00:07:25,503
+The second instruction is sub. Its meaning is: register rd gets register rs1 minus register rs2. Compare its encoding with add.
+
+44
+00:07:25,953 --> 00:07:34,955
+Only one bit is different: bit 30. It is 0 for add and 1 for sub. So sub uses exactly the same wires as add.
+
+45
+00:07:35,405 --> 00:07:48,141
+The only change is in the ALU. A new control signal, ALUSel, selects the ALU operation: add or subtract. The control sets ALUSel from bit 30.
+
+46
+00:07:48,591 --> 00:07:58,170
+The other R-format instructions work the same way. All of them have the same opcode. The fields funct7 and funct3 tell them apart.
+
+47
+00:07:58,620 --> 00:08:08,049
+So the datapath does not change. The control decodes funct3 and funct7, and sets ALUSel to the right ALU function.
+
+48
+00:08:08,499 --> 00:08:26,547
+The third instruction is addi. Here is addi x15, x1, minus 50. The immediate is in bits 31 to 20. rd gets rs1 plus the immediate. So ALU input B must now take the immediate, not register rs2.
+
+49
+00:08:26,997 --> 00:08:43,339
+Two values want the same input, so add a mux. The BSel mux selects rs2 on input 0, or the immediate on input 1. The new immediate generator builds the 32-bit immediate. ImmSel gives the format.
+
+50
+00:08:43,789 --> 00:08:53,239
+Trace it with x1 equal to 100. The register file reads 100. The immediate generator outputs minus 50.
+
+51
+00:08:53,689 --> 00:09:02,991
+BSel is 1, so the ALU adds 100 and minus 50. The result, 50, goes to x15 at the rising edge.
+
+52
+00:09:03,441 --> 00:09:10,033
+The other I-format arithmetic instructions use the same path. Only ALUSel changes.
+
+53
+00:09:10,483 --> 00:09:19,656
+How does the immediate generator build the I immediate? Start with the instruction bits of addi x15, x1, minus 50.
+
+54
+00:09:20,106 --> 00:09:27,765
+The high 12 bits of the instruction, bits 31 to 20, are copied to the low 12 bits of the immediate.
+
+55
+00:09:28,215 --> 00:09:39,372
+The upper 20 bits of the immediate are copies of instruction bit 31. This is sign extension. Here bit 31 is 1, so the upper bits are all 1.
+
+56
+00:09:39,822 --> 00:09:46,969
+The result is hex F F F F F F C E. That is minus 50, the same value as the 12-bit field.
+
+57
+00:09:47,419 --> 00:09:59,728
+The fourth instruction is load word. Here is lw x14, 8 of x2, in the I-format. rd gets the memory word at address rs1 plus the immediate.
+
+58
+00:10:00,178 --> 00:10:12,061
+Two parts are new. The data memory gets its address from the ALU. And the write data now has two sources, memory or ALU, so we add the WBSel mux.
+
+59
+00:10:12,511 --> 00:10:21,257
+Trace it with example values. The register file reads x2, which is 2000. The immediate generator outputs 8.
+
+60
+00:10:21,707 --> 00:10:27,126
+The address is computed as in addi: 2000 plus 8 is 2008.
+
+61
+00:10:27,576 --> 00:10:36,024
+The address goes to DMEM. MemRW is Read. DMEM outputs the word at 2008, which is 42 here.
+
+62
+00:10:36,474 --> 00:10:47,994
+WBSel is 0, so the memory data goes to DataD. At the rising edge, x14 becomes 42. lw uses all five phases.
+
+63
+00:10:48,444 --> 00:11:03,932
+All loads have the same opcode. funct3 gives the size and the signedness. Byte and halfword loads need extra circuits. They take the correct byte or halfword, and extend it to 32 bits before the write back.
+
+64
+00:11:04,382 --> 00:11:21,918
+The fifth instruction is store word. Here is sw x14, 8 of x2. Memory at rs1 plus the immediate gets register rs2. A store has two source registers, so rs2 must stay at bits 24 to 20.
+
+65
+00:11:22,368 --> 00:11:32,651
+So the S-format splits the offset. Bits 11 to 5 are at the top. Bits 4 to 0 are where rd would be. Together, the offset is 8.
+
+66
+00:11:33,101 --> 00:11:40,567
+One wire is new: from DataB, the second register output, to DataW, the memory data input.
+
+67
+00:11:41,017 --> 00:11:57,529
+Trace it. The ALU computes the address 2008, with ImmSel equal to S. DataB carries 42 to DataW. MemRW is Write, so at the rising edge, memory at 2008 becomes 42.
+
+68
+00:11:57,979 --> 00:12:07,771
+A store must not change a register, so RegWEn is 0. Then the WBSel value has no effect. The star means don't care.
+
+69
+00:12:08,221 --> 00:12:14,579
+Now the immediate generator must handle two formats. Compare the I-format and the S-format.
+
+70
+00:12:15,029 --> 00:12:26,741
+Immediate bits 11 to 5 are at the top in both. But bits 4 to 0 are in two places: bits 24 to 20 in I, and bits 11 to 7 in S.
+
+71
+00:12:27,191 --> 00:12:37,452
+In both outputs, bit 31 fills the upper bits, and bits 30 to 25 go to immediate bits 10 to 5. These are fixed wires.
+
+72
+00:12:37,902 --> 00:12:48,249
+Only the low five bits have two sources. A 5-bit mux selects one. ImmSel drives it: I for addi and lw, S for sw.
+
+73
+00:12:48,699 --> 00:13:09,477
+The sixth instruction is beq. If rs1 equals rs2, the next PC is PC plus the B immediate. Otherwise it is PC plus 4. Three parts are new: a branch comparator, the ASel mux for the PC on ALU input A, and the PCSel mux for the next PC.
+
+74
+00:13:09,927 --> 00:13:23,879
+Trace beq x1, x2, 16 at PC 1000. The register file reads x1 and x2, both 5 here. The branch comparator outputs BrEq equal to 1.
+
+75
+00:13:24,329 --> 00:13:35,359
+In the same cycle, the ALU computes the target. ASel selects the PC and BSel the immediate: 1000 plus 16 is 1016.
+
+76
+00:13:35,809 --> 00:13:48,587
+BrEq is 1, so the branch is taken. PCSel selects the ALU, and the PC becomes 1016. A branch writes no register: RegWEn is 0.
+
+77
+00:13:49,037 --> 00:14:04,589
+Now let x2 be 7. BrEq is 0, and PCSel selects PC plus 4. The next PC is 1004. The ALU still computes 1016, but the mux does not select it.
+
+78
+00:14:05,039 --> 00:14:20,122
+The branch comparator compares A and B. BrEq is 1 if A equals B. BrLT is 1 if A is less than B. BrUn equal to 1 selects an unsigned comparison for BrLT.
+
+79
+00:14:20,572 --> 00:14:34,524
+These two outputs serve all six branches. beq is taken when BrEq is 1, bne when BrEq is 0. blt and bltu are taken when BrLT is 1.
+
+80
+00:14:34,974 --> 00:14:40,457
+bge is taken when A is not less than B. bne is the opposite of beq.
+
+81
+00:14:40,907 --> 00:14:52,811
+Branch offsets are multiples of 2 bytes, so offset bit 0 is always 0. The instruction does not store it. The B-format holds offset bits 12 to 1.
+
+82
+00:14:53,261 --> 00:14:56,695
+Here is the S immediate again, for comparison.
+
+83
+00:14:57,145 --> 00:15:13,295
+RISC-V keeps immediate bits 10 to 1 in the same place as in S, and wires a zero into bit 0. Instruction bit 7, which was bit 0 in S, becomes bit 11 in B. The sign comes from bit 31.
+
+84
+00:15:13,745 --> 00:15:24,134
+So only bit 7 changes its role between S and B. The range is minus 4096 to plus 4094 bytes.
+
+85
+00:15:24,584 --> 00:15:40,093
+The seventh instruction is jalr. rd gets PC plus 4, and the PC gets rs1 plus the I immediate, with bit 0 cleared. The new part is a third input of the write back mux: PC plus 4.
+
+86
+00:15:40,543 --> 00:15:55,007
+Trace jalr x1, 4 of x5 at PC 1000, with x5 equal to 3000. ASel selects the register, BSel the immediate. The ALU computes 3004.
+
+87
+00:15:55,457 --> 00:16:10,988
+PCSel selects the ALU, so the next PC is 3004. WBSel is 2, so 1004 goes into x1. An AND unit clears bit 0 of the target. The slides do not draw it.
+
+88
+00:16:11,438 --> 00:16:30,147
+jal needs no new paths. rd gets PC plus 4, and the PC gets PC plus the J immediate. ASel selects the PC as in beq. PCSel and WBSel are as in jalr. Only the immediate generator needs the J format.
+
+89
+00:16:30,597 --> 00:16:39,899
+With PC 1000 and offset 200, the next PC is 1200, and x1 gets 1004.
+
+90
+00:16:40,349 --> 00:17:01,597
+Worked problem 1. The processor runs lw x5, minus 4 of x6, at PC 400. x6 is 3000, and memory at 2996 holds 7. Which parts does it use, which values flow, and what changes at the edge? Pause the video and try it.
+
+91
+00:17:02,047 --> 00:17:14,121
+Fetch: the PC is 400, and the adder gives 404. The register file reads x6: 3000. The immediate generator outputs minus 4.
+
+92
+00:17:14,571 --> 00:17:25,686
+ASel selects the register and BSel the immediate. The ALU outputs 2996. DMEM reads that address and outputs 7.
+
+93
+00:17:26,136 --> 00:17:32,557
+WBSel selects the memory output. RegWEn is 1. PCSel is plus 4.
+
+94
+00:17:33,007 --> 00:17:43,226
+DataB and the branch comparator result are not used. At the rising edge, x5 becomes 7 and the PC becomes 404.
+
+95
+00:17:43,676 --> 00:18:03,580
+Worked problem 2. beq x5, x6, minus 8 is at PC 1040. Find the ALU output, BrEq, PCSel and the next PC, with x6 equal to 3, and then with x6 equal to 4. x5 is 3. Pause the video and try it.
+
+96
+00:18:04,030 --> 00:18:16,190
+The ALU always computes the target: 1040 minus 8 is 1032. In case a, both registers are 3, so BrEq is 1.
+
+97
+00:18:16,640 --> 00:18:22,293
+So PCSel selects the ALU, and the next PC is 1032.
+
+98
+00:18:22,743 --> 00:18:31,895
+In case b, BrEq is 0. PCSel selects PC plus 4, and the next PC is 1044.
+
+99
+00:18:32,345 --> 00:18:37,145
+In both cases RegWEn is 0. A branch writes no register.
+
+100
+00:18:37,595 --> 00:18:44,294
+Worked problem 3. For each instruction, mark the parts whose output it needs. Pause and try it.
+
+101
+00:18:44,744 --> 00:18:55,581
+add uses IMEM, the register read, the ALU and the register write. addi also uses the immediate generator. lw adds a memory read.
+
+102
+00:18:56,031 --> 00:19:04,970
+sw writes memory but no register. beq uses the comparator and the ALU, but no memory and no register write.
+
+103
+00:19:05,420 --> 00:19:09,516
+jalr writes PC plus 4. jal reads no register.
+
+104
+00:19:09,966 --> 00:19:17,518
+Only lw uses all five structures in series. Video 7 shows that it sets the clock period.
+
+105
+00:19:17,968 --> 00:19:30,725
+Worked problem 4. The word is hex F E 5 3 2 A 2 3. Which ImmSel does the control choose, and what does the immediate generator output? Pause the video and try it.
+
+106
+00:19:31,175 --> 00:19:37,895
+The opcode, bits 6 to 0, is the store opcode. So the format is S, and ImmSel is S.
+
+107
+00:19:38,345 --> 00:19:50,207
+Immediate bits 11 to 5 come from bits 31 to 25: seven ones. Bits 4 to 0 come from bits 11 to 7: 1 0 1 0 0.
+
+108
+00:19:50,657 --> 00:20:03,030
+Bit 31 is 1, so sign extension fills the upper bits with ones. The result is minus 12. The instruction is sw x5, minus 12 of x6.
+
+109
+00:20:03,480 --> 00:20:16,045
+Worked problem 5. The word is hex F E 2 0 8 C E 3, a branch, so ImmSel is B. What does the immediate generator output? Pause the video and try it.
+
+110
+00:20:16,495 --> 00:20:29,381
+Label the bits. Bit 31 gives immediate bit 12. Bit 7 gives bit 11. Bits 30 to 25 give bits 10 to 5. Bits 11 to 8 give bits 4 to 1.
+
+111
+00:20:29,831 --> 00:20:35,975
+Put them in order, and add a zero for bit 0. The 13-bit value is minus 8.
+
+112
+00:20:36,425 --> 00:20:45,299
+Sign extend from bit 31. The output is minus 8, so the target is the PC minus 8, two instructions back.
+
+113
+00:20:45,749 --> 00:20:59,104
+Worked problem 6. The immediate generator gets hex 0 0 2 0 8 0 E 3. What is its output with ImmSel equal to S, and with B? Pause the video and try it.
+
+114
+00:20:59,554 --> 00:21:10,455
+Only instruction bit 7 is 1 in the immediate fields. With ImmSel equal to S, bit 7 goes to immediate bit 0. The output is 1.
+
+115
+00:21:10,905 --> 00:21:17,625
+With ImmSel equal to B, bit 7 goes to bit 11. The output is 2048.
+
+116
+00:21:18,075 --> 00:21:26,225
+Recap. One. One instruction per cycle. Reads are combinational. State changes only at the rising edge.
+
+117
+00:21:26,675 --> 00:21:31,411
+Two. The phases are fetch, decode, execute, memory, and write back.
+
+118
+00:21:31,861 --> 00:21:37,407
+Three. The register numbers sit at fixed bits, so they go straight to the register file.
+
+119
+00:21:37,857 --> 00:21:44,940
+Four. When two values want one input, add a mux: BSel, WBSel, ASel or PCSel.
+
+120
+00:21:45,390 --> 00:21:50,105
+Five. Each instruction adds a few parts, in the order of the slides.
+
+121
+00:21:50,555 --> 00:21:57,360
+Six. The immediate takes its sign from bit 31. Only the low bits and bit 11 need a choice.
+
+122
+00:21:57,810 --> 00:22:08,861
+Seven. Stores and branches write no register. The ALU computes the branch target. In video 7, we build the control. That is the end of video 6.

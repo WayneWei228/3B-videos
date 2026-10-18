@@ -1,0 +1,263 @@
+1
+00:00:00,000 --> 00:00:10,496
+This is STAT 331, video 16, part a. The topic is inference for one coefficient, beta j, in multiple linear regression.
+
+2
+00:00:10,946 --> 00:00:32,002
+After this part, you can explain why the standardized beta j hat has a t distribution. You can find the standard errors. And you can test a hypothesis about beta j and find the p-value. Part b covers confidence intervals, linear combinations, and the practice questions of Lecture 7.
+
+3
+00:00:32,452 --> 00:00:38,575
+Here is the recap. We have n observations. The response vector y has n rows.
+
+4
+00:00:39,025 --> 00:00:47,899
+The design matrix X has one row for each observation. Its first column is all ones. This column gives the intercept.
+
+5
+00:00:48,349 --> 00:00:56,797
+Then X has one column for each covariate, x 1 to x p. So X has n rows and p plus 1 columns.
+
+6
+00:00:57,247 --> 00:01:09,109
+The vector beta has p plus 1 entries: beta 0 to beta p. The error vector epsilon has n entries. So y equals X beta plus epsilon.
+
+7
+00:01:09,559 --> 00:01:23,617
+The errors are multivariate normal with mean 0 and variance sigma squared times I. This is the same as: y is multivariate normal with mean X beta and variance sigma squared I.
+
+8
+00:01:24,067 --> 00:01:31,363
+The least squares estimator is beta hat equals X transpose X inverse, times X transpose y.
+
+9
+00:01:31,813 --> 00:01:41,776
+Beta hat is normal. Its mean is beta, so it is unbiased. Its variance matrix is sigma squared times X transpose X inverse.
+
+10
+00:01:42,226 --> 00:01:59,527
+We call the matrix X transpose X inverse V. Its rows and columns are numbered 0 to p, like the coefficients. The diagonal entries give the variances: the variance of beta j hat is sigma squared times V j j.
+
+11
+00:01:59,977 --> 00:02:10,132
+So one coefficient alone is normal too. For example, beta 2 hat is normal with mean beta 2 and variance sigma squared V 2 2.
+
+12
+00:02:10,582 --> 00:02:21,142
+From Lecture 7, we also know that the residual vector e is normal, and that beta hat and e are independent. We need this independence soon.
+
+13
+00:02:21,592 --> 00:02:31,832
+Why do we estimate sigma squared with e transpose e over n minus p plus 1, and not with the MLE, e transpose e over n?
+
+14
+00:02:32,282 --> 00:02:46,874
+Last class we proved that e transpose e over sigma squared has a chi squared distribution with n minus p plus 1 degrees of freedom. The blue curve is this density for 42 degrees of freedom.
+
+15
+00:02:47,324 --> 00:02:53,745
+The mean of a chi squared variable with nu degrees of freedom is nu. The purple line marks the mean.
+
+16
+00:02:54,195 --> 00:02:59,187
+Now take the expectation of sigma hat squared. Start from the definition.
+
+17
+00:02:59,637 --> 00:03:05,739
+Multiply and divide by sigma squared. The constant moves out of the expectation.
+
+18
+00:03:06,189 --> 00:03:23,853
+The expectation of the chi squared variable is n minus p plus 1. It cancels. So the expectation of sigma hat squared is sigma squared. Sigma hat squared is unbiased. The MLE divides by n, so it is too small on average.
+
+19
+00:03:24,303 --> 00:03:42,436
+One coefficient, beta j hat, is normal with mean beta j and variance sigma squared V j j. Subtract the mean and divide by the standard deviation. The result is standard normal. The gray dashed curve is this N 0 1 density.
+
+20
+00:03:42,886 --> 00:03:56,305
+But sigma is unknown. So we replace sigma with sigma hat. This adds uncertainty. The red curve is a t density with 3 degrees of freedom. Its tails are heavier than the normal tails.
+
+21
+00:03:56,755 --> 00:04:15,123
+The result is: beta j hat minus beta j, over the square root of sigma hat squared V j j, has a t distribution with n minus p plus 1 degrees of freedom. The blue curve has 42 degrees of freedom. It is almost the normal curve.
+
+22
+00:04:15,573 --> 00:04:22,634
+So the price for an unknown sigma is heavier tails. With many degrees of freedom, the price is small.
+
+23
+00:04:23,084 --> 00:04:32,129
+Here is why. Start with Z. Z is beta j hat minus beta j, over sigma root V j j. Z is standard normal.
+
+24
+00:04:32,579 --> 00:04:41,667
+Next, W is e transpose e over sigma squared. W is chi squared with n minus p plus 1 degrees of freedom.
+
+25
+00:04:42,117 --> 00:04:51,867
+Z is a function of beta hat. W is a function of e. Beta hat and e are independent, so Z and W are independent.
+
+26
+00:04:52,317 --> 00:05:03,431
+A standard normal, divided by the square root of an independent chi squared over its degrees of freedom, has a t distribution. That is the definition of t.
+
+27
+00:05:03,881 --> 00:05:19,156
+In this ratio, sigma cancels. The denominator becomes sigma hat root V j j. So the ratio uses only numbers that we can calculate, except beta j. This is why we can use it for tests and intervals.
+
+28
+00:05:19,606 --> 00:05:32,235
+This result is the same as in simple linear regression. There, the standard error was sigma hat over root S x x, and the t distribution had n minus 2 degrees of freedom.
+
+29
+00:05:32,685 --> 00:05:44,995
+In multiple regression, only two things change. The standard error is the square root of sigma hat squared V j j. And the degrees of freedom are n minus p plus 1.
+
+30
+00:05:45,445 --> 00:05:57,135
+With p equal to 1, n minus p plus 1 is n minus 2. So simple regression is a special case. The test and the interval have the same form as before.
+
+31
+00:05:57,585 --> 00:06:14,033
+Here is the example of Lectures 7 and 8. 46 hospital patients give a satisfaction score. The covariates are age, severity of illness, and an anxiety or stress score. The response vector y has 46 entries.
+
+32
+00:06:14,483 --> 00:06:18,366
+To build X, start with a column of ones for the intercept.
+
+33
+00:06:18,816 --> 00:06:28,821
+Then add one column for each covariate: age, severity, and stress. X has 46 rows and 4 columns. So p equals 3.
+
+34
+00:06:29,271 --> 00:06:49,794
+Solve the normal equations. Beta 0 hat is about 158 point 5. Beta 1 hat, for age, is minus 1 point 1 4. Beta 2 hat, for severity, is minus 0 point 4 4. Beta 3 hat, for stress, is minus 13 point 4 7.
+
+35
+00:06:50,244 --> 00:07:07,460
+Now the standard errors. First, sigma hat squared. The residuals give e transpose e equal to 4248 point 8 4. Divide by n minus p plus 1, which is 46 minus 4, or 42.
+
+36
+00:07:07,910 --> 00:07:15,398
+Take the diagonal of V, which is X transpose X inverse. There is one entry for each coefficient.
+
+37
+00:07:15,848 --> 00:07:23,187
+Multiply each entry by sigma hat squared. This gives the estimated variance of each beta j hat.
+
+38
+00:07:23,637 --> 00:07:35,263
+Take the square root. This gives the standard errors: 18 point 1 3, 0 point 2 1 5, 0 point 4 9 2, and 7 point 1 0.
+
+39
+00:07:35,713 --> 00:07:48,279
+Sigma hat squared is 101 point 1 6. So sigma hat is about 10 point 0 6. Each standard error is sigma hat times the square root of V j j.
+
+40
+00:07:48,729 --> 00:08:02,617
+We want to test the null hypothesis beta j equals theta 0, against the alternative beta j is not equal to theta 0. Theta 0 is a fixed number. Often it is 0.
+
+41
+00:08:03,067 --> 00:08:12,005
+If beta j hat is much larger than theta 0, then beta j hat minus theta 0 is a large positive number.
+
+42
+00:08:12,455 --> 00:08:19,090
+If beta j hat is much smaller than theta 0, the difference is a large negative number.
+
+43
+00:08:19,540 --> 00:08:30,953
+For a two-sided test, both cases are evidence against the null hypothesis. So the evidence is the absolute difference between beta j hat and theta 0.
+
+44
+00:08:31,403 --> 00:08:46,550
+But how large is large? We measure the difference in units of its standard error. This gives the statistic T. Under the null hypothesis, T has a t distribution with n minus p plus 1 degrees of freedom.
+
+45
+00:08:47,000 --> 00:09:03,533
+These two panels have the same difference between beta j hat and theta 0. Only the standard error is different. On the left, the standard error is small. The purple curve is the distribution of beta j hat if the null is true.
+
+46
+00:09:03,983 --> 00:09:18,490
+Beta j hat is far out in the tail. The absolute t is 3 point 2. This result is surprising if the true beta j is theta 0. So a large absolute T is evidence against the null.
+
+47
+00:09:18,940 --> 00:09:23,868
+On the right, the standard error is large. The null distribution is wide.
+
+48
+00:09:24,318 --> 00:09:39,614
+Now the same beta j hat is near the center. The absolute t is only 1. When the standard error is large, there is much uncertainty, and nothing surprises us. So we compare t obs with the null distribution.
+
+49
+00:09:40,064 --> 00:09:54,635
+The p-value is the probability, under the null, of a test statistic as extreme as the one we observed, or more extreme. Under the null, T has a t distribution with 42 degrees of freedom.
+
+50
+00:09:55,085 --> 00:10:10,850
+Example: test beta 3 equals 0 for stress. T obs is beta 3 hat over its standard error. That is minus 13 point 4 7 over 7 point 1 0, or minus 1 point 8 9 7.
+
+51
+00:10:11,300 --> 00:10:18,916
+Values at least this far below 0 are in the left tail. Its area is 0 point 0 3 2 3.
+
+52
+00:10:19,366 --> 00:10:26,961
+Values at least this far above 0 are just as extreme. By symmetry, the right tail has the same area.
+
+53
+00:10:27,411 --> 00:10:43,283
+So the p-value is 2 times 0 point 0 3 2 3, which is 0 point 0 6 4 7. In general, the p-value is 2 times the probability that T is larger than the absolute value of t obs.
+
+54
+00:10:43,733 --> 00:11:02,826
+If the null is true, small p-values are rare. Use alpha equal to 0 point 0 5. The red tails each have area alpha over 2. The cut point is t 0 point 9 7 5 with 42 degrees of freedom, which is 2 point 0 1 8.
+
+55
+00:11:03,276 --> 00:11:18,295
+By convention, we reject the null if the p-value is less than alpha. This is the same as: the absolute value of t obs is larger than the cut point. If the p-value is at least alpha, we fail to reject.
+
+56
+00:11:18,745 --> 00:11:27,790
+For age, t obs is minus 5 point 3 1. It is in the red region. Reject the null that beta 1 equals 0.
+
+57
+00:11:28,240 --> 00:11:47,845
+For stress, t obs is minus 1 point 9 0. It is not in the red region, and the p-value 0 point 0 6 5 is larger than 0 point 0 5. We fail to reject. This does not prove that beta 3 is 0. We only lack evidence.
+
+58
+00:11:48,295 --> 00:12:07,303
+What happens if the null hypothesis is really true? Here is our own simulation. We made 2000 data sets from the model with beta 3 equal to 0. For each data set, we fit the model and calculated t obs for beta 3. The bars show the histogram.
+
+59
+00:12:07,753 --> 00:12:15,156
+The histogram follows the t density with 42 degrees of freedom. This checks the result of this lecture.
+
+60
+00:12:15,606 --> 00:12:35,659
+The red lines are the cut points plus and minus 2 point 0 1 8. 80 of 2000 t values are outside. That is close to 5 percent. So if the null is true, we reject alpha times 100 percent of the time by chance alone. This is the type 1 error rate.
+
+61
+00:12:36,109 --> 00:12:54,755
+Now test beta j equals 0 for every coefficient. The numerator is beta j hat. The denominator is its standard error. For the intercept, t obs is 8 point 7 4. The p-value is about 5 times 10 to the minus 11. Reject.
+
+62
+00:12:55,205 --> 00:13:10,245
+For age, t obs is minus 5 point 3 1. The p-value is 3 point 8 times 10 to the minus 6. Reject. Age is related to mean satisfaction when severity and stress stay the same.
+
+63
+00:13:10,695 --> 00:13:19,548
+For severity, t obs is minus 0 point 9 0. The p-value is 0 point 3 7. We fail to reject.
+
+64
+00:13:19,998 --> 00:13:36,147
+For stress, t obs is minus 1 point 9 0. The p-value is 0 point 0 6 5. We fail to reject at the 5 percent level. Each test is about one coefficient, with the other covariates in the model.
+
+65
+00:13:36,597 --> 00:13:52,960
+Summary of part a. Beta j hat minus beta j, over sigma hat root V j j, has a t distribution with n minus p plus 1 degrees of freedom. The standard error is sigma hat times the square root of V j j.
+
+66
+00:13:53,410 --> 00:14:14,551
+To test beta j equals theta 0, calculate t obs and the two-sided p-value, and reject if it is less than alpha. If the null is true, we reject alpha times 100 percent of the time. Part b continues with confidence intervals, linear combinations, and the practice questions.

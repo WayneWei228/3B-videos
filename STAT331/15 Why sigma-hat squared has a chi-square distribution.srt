@@ -1,0 +1,291 @@
+1
+00:00:00,000 --> 00:00:09,621
+This is STAT 331, video 15. The topic is the distribution of sigma squared hat in multiple linear regression.
+
+2
+00:00:10,071 --> 00:00:33,389
+After this video, you can explain why the t test needs a chi square result and an independence result. You can follow each step of the proof. You can show that the eigenvalues of an idempotent matrix are 0 or 1, and find the trace of I minus H. And you can explain why sigma squared hat divides by n minus p plus 1.
+
+3
+00:00:33,839 --> 00:00:52,015
+Recall simple linear regression. Beta 1 hat minus beta 1, over sigma over root S x x, is standard normal. But sigma is unknown. So we replace it by sigma hat. We used three facts. Fact 1: Z is standard normal. We showed this.
+
+4
+00:00:52,465 --> 00:01:03,793
+Fact 2: V, the sum of squared residuals over sigma squared, has a chi square distribution with n minus 2 degrees of freedom. We only claimed this.
+
+5
+00:01:04,243 --> 00:01:08,787
+Fact 3: Z and V are independent. We also only claimed this.
+
+6
+00:01:09,237 --> 00:01:19,882
+With these three facts, Z over the square root of V over its degrees of freedom has a t distribution. This is the definition of the t distribution.
+
+7
+00:01:20,332 --> 00:01:34,305
+The sigmas cancel. What is left is beta 1 hat minus beta 1, over sigma hat over root S x x. So this statistic has a t distribution with n minus 2 degrees of freedom.
+
+8
+00:01:34,755 --> 00:01:51,630
+In multiple linear regression, the same argument works. From video 14, beta j hat is normal with mean beta j and variance sigma squared V j j. So fact 1 holds: the standardized beta j hat is standard normal.
+
+9
+00:01:52,080 --> 00:02:05,883
+We still need fact 2: e transpose e over sigma squared has a chi square distribution with n minus p plus 1 degrees of freedom. And fact 3: beta hat and e are independent.
+
+10
+00:02:06,333 --> 00:02:22,183
+Then, by the same argument, beta j hat minus beta j, over the square root of sigma squared hat V j j, has a t distribution with n minus p plus 1 degrees of freedom. Now we prove facts 2 and 3.
+
+11
+00:02:22,633 --> 00:02:39,145
+Why does this matter? The t distribution has heavier tails than the normal, when the degrees of freedom are small. For data set 1 there are only 2 degrees of freedom. The critical value is 4.303, not 1.96.
+
+12
+00:02:39,595 --> 00:02:51,563
+Fact 3 is short. In video 14 b, we found the joint distribution of beta hat and e. It is multivariate normal, and the covariance blocks are zero.
+
+13
+00:02:52,013 --> 00:02:59,608
+For the multivariate normal, zero covariance means independence. So e is independent of beta hat.
+
+14
+00:03:00,058 --> 00:03:14,927
+e transpose e over sigma squared is a function of e only. A function of e is independent of beta hat too. So sigma squared hat is independent of every beta j hat. Fact 3 is done.
+
+15
+00:03:15,377 --> 00:03:36,327
+Now fact 2. We want: e transpose e over sigma squared has a chi square distribution with n minus p plus 1 degrees of freedom. Recall the definition from Lecture 1. If Z 1 to Z nu are independent standard normal, the sum of their squares is chi square with nu degrees of freedom.
+
+16
+00:03:36,777 --> 00:03:48,339
+The picture shows the chi square density for 1, 2 and 5 terms. Each extra squared term moves the density to the right. The degrees of freedom count the terms.
+
+17
+00:03:48,789 --> 00:03:58,987
+So the plan is: write e transpose e over sigma squared as a sum of squared independent standard normal variables. Then count the terms.
+
+18
+00:03:59,437 --> 00:04:07,501
+A first try: e transpose e over sigma squared is the sum of e i over sigma, squared. There are n terms.
+
+19
+00:04:07,951 --> 00:04:20,537
+The problem: the e i are not independent. From video 14 b, the variance matrix of e is sigma squared times I minus H. This matrix is not diagonal.
+
+20
+00:04:20,987 --> 00:04:33,723
+Here is I minus H for data set 1. Blue entries are positive, red entries are negative. The off-diagonal entries are not zero. So the residuals are correlated.
+
+21
+00:04:34,173 --> 00:04:44,947
+The diagonal entries are less than 1. So each residual has a variance smaller than sigma squared. e i over sigma is not standard normal either.
+
+22
+00:04:45,397 --> 00:05:03,573
+The smallest case shows it clearly. Take n equal to 2, with an intercept only. Then e i is y i minus y bar. The two residuals always add up to zero. Every simulated pair lies on the orange line. If you know e 1, you know e 2.
+
+23
+00:05:04,023 --> 00:05:14,113
+So the first try fails. The solution is to rewrite e transpose e over sigma squared as a sum of squared normal variables that are independent.
+
+24
+00:05:14,563 --> 00:05:32,035
+The tool is the eigen decomposition. I minus H is symmetric. So it can be written as gamma transpose, D, gamma. Gamma inverse equals gamma transpose. D is a diagonal matrix of the eigenvalues lambda 1 to lambda n.
+
+25
+00:05:32,485 --> 00:05:52,112
+The rows of gamma are the eigenvectors of I minus H. They have length 1, and they are perpendicular to each other. In the n equals 2 case, v 1 points along the direction 1, 1, with eigenvalue 0. v 2 points along 1, minus 1, with eigenvalue 1.
+
+26
+00:05:52,562 --> 00:06:00,178
+Define e tilde as gamma times e. Each entry of e tilde is e measured along one eigenvector.
+
+27
+00:06:00,628 --> 00:06:19,487
+In the n equals 2 case, gamma rotates the picture by 45 degrees. e tilde 1 is e 1 plus e 2, over root 2. This is always zero. e tilde 2 is e 1 minus e 2, over root 2. All the variation is now on one axis.
+
+28
+00:06:19,937 --> 00:06:31,158
+Now find the distribution of e tilde. First the mean. Gamma is constant, so it moves out. The mean of e is zero. So the mean of e tilde is zero.
+
+29
+00:06:31,608 --> 00:06:39,373
+Next the variance. Use the rule: gamma on the left, the variance of e in the middle, gamma transpose on the right.
+
+30
+00:06:39,823 --> 00:06:43,706
+The variance of e is sigma squared times I minus H.
+
+31
+00:06:44,156 --> 00:07:01,265
+Put in the eigen decomposition. Gamma times gamma transpose is the identity, on both sides. What is left is sigma squared times D. For data set 1, D has the entries 1, 1, 0, 0, 0 on the diagonal.
+
+32
+00:07:01,715 --> 00:07:13,897
+e tilde is a constant matrix times e, and e is multivariate normal. So e tilde is multivariate normal, with mean zero and variance sigma squared D.
+
+33
+00:07:14,347 --> 00:07:30,155
+D is diagonal. So all covariances are zero. For the multivariate normal, this means the e tilde i are independent. Each e tilde i is normal, with mean zero and variance sigma squared lambda i.
+
+34
+00:07:30,605 --> 00:07:47,010
+Why is this useful? e tilde transpose e tilde equals gamma e, transpose, gamma e. That is e transpose, gamma transpose gamma, e. Gamma transpose gamma is the identity. So the result is e transpose e.
+
+35
+00:07:47,460 --> 00:07:56,505
+In the picture, the rotation does not change the length of a vector. The green vector has the same length before and after the rotation.
+
+36
+00:07:56,955 --> 00:08:10,353
+So e transpose e over sigma squared equals e tilde transpose e tilde over sigma squared. That is the sum of e tilde i over sigma, squared. Call each term Z i squared.
+
+37
+00:08:10,803 --> 00:08:20,829
+Each Z i is e tilde i over sigma. So the Z i are independent, and Z i is normal with mean zero and variance lambda i.
+
+38
+00:08:21,279 --> 00:08:29,173
+This is progress. The terms are independent now. But a chi square needs standard normal terms, with variance 1.
+
+39
+00:08:29,623 --> 00:08:45,004
+So e transpose e over sigma squared is a sum of n independent squared normal variables. Two things are still missing. The terms must have variance 1. And there must be exactly n minus p plus 1 of them.
+
+40
+00:08:45,454 --> 00:08:54,585
+So we will show: exactly n minus p plus 1 of the eigenvalues equal 1, and all the other eigenvalues equal 0.
+
+41
+00:08:55,035 --> 00:09:14,107
+A term with lambda i equal to 0 has variance zero. So that Z i is always zero, and it adds nothing to the sum. For data set 1 the eigenvalues are 1, 1, 0, 0, 0. Two terms are left, and 2 is n minus p plus 1.
+
+42
+00:09:14,557 --> 00:09:37,298
+Step 1. Show that every eigenvalue is 0 or 1. We know that I minus H times I minus H equals I minus H. A matrix with this property is idempotent. By definition, an eigenvalue lambda i with eigenvector v i satisfies lambda i v i equals I minus H, times v i.
+
+43
+00:09:37,748 --> 00:09:42,292
+Start from lambda i v i equals I minus H, times v i.
+
+44
+00:09:42,742 --> 00:09:49,569
+I minus H is idempotent. So we can replace it by I minus H, times I minus H.
+
+45
+00:09:50,019 --> 00:09:58,232
+The right part, I minus H times v i, is lambda i v i. Lambda i is a number, so it moves to the front.
+
+46
+00:09:58,682 --> 00:10:06,063
+Again, I minus H times v i is lambda i v i. So the result is lambda i squared v i.
+
+47
+00:10:06,513 --> 00:10:25,116
+So lambda i v i equals lambda i squared v i. Move everything to one side: lambda i times 1 minus lambda i, times v i, is zero. An eigenvector is not the zero vector. So lambda i times 1 minus lambda i is zero.
+
+48
+00:10:25,566 --> 00:10:36,894
+The picture shows the line lambda and the curve lambda squared. They meet only at 0 and at 1. So every eigenvalue of I minus H is 0 or 1.
+
+49
+00:10:37,344 --> 00:10:47,563
+Step 2. Count the eigenvalues that equal 1. Each eigenvalue is 0 or 1. So the number of ones is the sum of the eigenvalues.
+
+50
+00:10:48,013 --> 00:11:08,215
+The sum of the eigenvalues is the trace of D. Gamma times gamma transpose is the identity, so we can put it after D. The trace of a product does not change when we move the first factor to the end. So this is the trace of gamma transpose D gamma, which is the trace of I minus H.
+
+51
+00:11:08,665 --> 00:11:12,185
+The trace of a difference is the difference of the traces.
+
+52
+00:11:12,635 --> 00:11:20,315
+The trace of the n by n identity is n. H is X, X transpose X inverse, X transpose.
+
+53
+00:11:20,765 --> 00:11:37,640
+Use the rule: the trace of A B equals the trace of B A. Move X from the front to the end. The product becomes X transpose X inverse, times X transpose X. This is a small matrix, p plus 1 by p plus 1.
+
+54
+00:11:38,090 --> 00:11:47,839
+It is the identity of size p plus 1. Its trace is p plus 1. So the trace of I minus H is n minus p plus 1.
+
+55
+00:11:48,289 --> 00:11:54,817
+So exactly n minus p plus 1 eigenvalues equal 1, and the others equal 0.
+
+56
+00:11:55,267 --> 00:12:13,998
+Check this with data set 1. Here n is 5 and p is 2. The diagonal entries of I minus H are 0.15, 0.45, 0.8, 0.45 and 0.15. Their sum, the trace, is 2.
+
+57
+00:12:14,448 --> 00:12:24,475
+The eigenvalues of I minus H are 1, 1, 0, 0 and 0. Each one is 0 or 1, as step 1 says. Their sum is 2.
+
+58
+00:12:24,925 --> 00:12:32,903
+n minus p plus 1 is 5 minus 3, which is 2. The trace and the number of ones agree, as step 2 says.
+
+59
+00:12:33,353 --> 00:12:38,857
+The trace of H is 3, which is p plus 1: one for each column of X.
+
+60
+00:12:39,307 --> 00:12:53,323
+Here is the proof in three steps. One: after the rotation, e transpose e over sigma squared is a sum of n squared independent normal variables Z i, with variances lambda i.
+
+61
+00:12:53,773 --> 00:13:03,672
+Two: I minus H is idempotent. So each lambda i is 0 or 1. Each Z i is standard normal, or it is always zero.
+
+62
+00:13:04,122 --> 00:13:14,874
+Three: the trace shows that the eigenvalues add up to n minus p plus 1. So exactly n minus p plus 1 of the Z i are standard normal.
+
+63
+00:13:15,324 --> 00:13:30,513
+So e transpose e over sigma squared is a sum of n minus p plus 1 squared independent standard normal variables. It has a chi square distribution with n minus p plus 1 degrees of freedom.
+
+64
+00:13:30,963 --> 00:13:46,451
+A simulation checks this. We use data set 1, with sigma equal to 1, and 20,000 simulated data sets. The histogram of e transpose e agrees with the chi square density with 2 degrees of freedom.
+
+65
+00:13:46,901 --> 00:14:06,443
+The mean of a chi square variable is its degrees of freedom. So the expected value of e transpose e is n minus p plus 1 times sigma squared. This is why sigma squared hat divides by n minus p plus 1. It answers the question from video 14 b.
+
+66
+00:14:06,893 --> 00:14:29,485
+This completes the result of slide 44. Beta j hat minus beta j, over the square root of sigma squared hat V j j, has a t distribution with n minus p plus 1 degrees of freedom. Video 16 uses it for tests and confidence intervals. Now four short questions. Pause the video and try them.
+
+67
+00:14:29,935 --> 00:14:38,831
+Why are the residuals not independent? Their variance matrix is sigma squared times I minus H, which is not diagonal.
+
+68
+00:14:39,281 --> 00:14:52,763
+Why are sigma squared hat and beta hat independent? Beta hat and e are jointly multivariate normal, with a zero covariance block. Sigma squared hat is a function of e only.
+
+69
+00:14:53,213 --> 00:15:01,427
+Why are the eigenvalues 0 or 1? I minus H is idempotent, so lambda v equals lambda squared v.
+
+70
+00:15:01,877 --> 00:15:11,306
+Why n minus p plus 1 degrees of freedom? The trace of I minus H is n minus the trace of the p plus 1 identity.
+
+71
+00:15:11,756 --> 00:15:22,785
+To recap. The t test for one coefficient needs three facts. Beta hat and e are multivariate normal with zero covariance, so they are independent.
+
+72
+00:15:23,235 --> 00:15:39,534
+For the chi square result, we rotate e with the eigenvectors of I minus H. The length does not change, and the new entries are independent. Idempotent means each eigenvalue is 0 or 1, and the trace counts the ones.
+
+73
+00:15:39,984 --> 00:15:52,784
+The mean of the chi square gives the expected sum of squared residuals. So sigma squared hat is unbiased. Video 16 uses these results for inference on each coefficient.

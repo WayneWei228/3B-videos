@@ -1,0 +1,411 @@
+1
+00:00:00,000 --> 00:00:11,285
+This is ECE 320, video 3. It is the first part of the RISC-V instruction set architecture: instructions, memory, and branches.
+
+2
+00:00:11,735 --> 00:00:30,743
+After this video, you can translate C code with arithmetic, arrays, if statements and loops into RISC-V. You can compute byte addresses. You can predict register values after loads, shifts and compares. And you can solve assignment 2, question 1, parts a, b and c.
+
+3
+00:00:31,193 --> 00:00:42,777
+RISC-V has 32 registers. Their names are x0 to x31. A register holds one value. The registers together form the register file.
+
+4
+00:00:43,227 --> 00:00:47,835
+Register x0 is special. It always holds the value zero.
+
+5
+00:00:48,285 --> 00:00:55,496
+Each register is 32 bits wide. This is the RV32 variant of the RISC-V ISA.
+
+6
+00:00:55,946 --> 00:01:10,026
+Why 32 registers? A smaller register file is faster, but too few registers is bad. Also, an instruction names a register with a 5-bit number. 2 to the power 5 is 32.
+
+7
+00:01:10,476 --> 00:01:16,812
+Each instruction has an operation code, or opcode, and operands. Here the opcode is add.
+
+8
+00:01:17,262 --> 00:01:23,427
+The first operand is the destination register. The result goes there. Here it is x1.
+
+9
+00:01:23,877 --> 00:01:30,320
+The next two operands are the first and second source registers. Here they are x2 and x3.
+
+10
+00:01:30,770 --> 00:01:38,706
+A hash sign starts a comment. The assembler ignores it. The comment says x1 equals x2 plus x3.
+
+11
+00:01:39,156 --> 00:01:50,527
+Here is what it does, with example values. The hardware reads x2 and x3, adds them, and writes the result into x1. 5 plus 7 is 12.
+
+12
+00:01:50,977 --> 00:02:00,939
+How do we compile a equals b plus c plus d minus e? One RISC-V instruction does only one operation, on two source registers.
+
+13
+00:02:01,389 --> 00:02:09,475
+So break the statement into several instructions. The first add puts b plus c into x10, a temporary value.
+
+14
+00:02:09,925 --> 00:02:14,639
+The second add reads x10, adds d, and writes x10 again.
+
+15
+00:02:15,089 --> 00:02:18,567
+The sub subtracts e. Now x10 holds a.
+
+16
+00:02:19,017 --> 00:02:26,505
+A long expression becomes a chain of instructions. The destination register can also be one of the sources.
+
+17
+00:02:26,955 --> 00:02:29,899
+The add instruction takes two source registers.
+
+18
+00:02:30,349 --> 00:02:52,130
+Programs often use a constant, for example f equals g minus 10. An immediate is a numerical constant. Add immediate, written a d d i, has the same syntax, but the last operand is a number. Here x3 gets x4 plus minus 10. With g equal to 25, f becomes 15.
+
+19
+00:02:52,580 --> 00:03:05,785
+The constant is stored inside the instruction word. In the I-type format on slide 37, it takes the top 12 bits. So no extra instruction or register is necessary for it.
+
+20
+00:03:06,235 --> 00:03:15,302
+Memory is an array of bytes. A byte is an 8-bit chunk. Each byte has its own address. So memory addresses count bytes.
+
+21
+00:03:15,752 --> 00:03:26,035
+One word is 4 bytes. The address of a word is the address of its first byte. So word addresses are 4 apart: 0, 4, 8, 12.
+
+22
+00:03:26,485 --> 00:03:39,370
+Here is the slide's picture: one row per word. RISC-V uses the little-endian convention. The least-significant byte of a word, bits 7 to 0, gets the smallest address.
+
+23
+00:03:39,820 --> 00:03:53,857
+An example. The word at address 8 holds hex 1 1 2 2 3 3 4 4. Byte 8 holds 4 4, the least-significant byte. Byte 11 holds 1 1, the most-significant byte.
+
+24
+00:03:54,307 --> 00:04:06,275
+Arrays live in memory. Here C adds A of 3 to h. But add works only on registers. So first, a load instruction must copy A of 3 into a register.
+
+25
+00:04:06,725 --> 00:04:21,040
+Register x13 holds the address of A of 0. It is the base register. In this example it is 1000. An int is 4 bytes, so A of i is at x13 plus 4 times i.
+
+26
+00:04:21,490 --> 00:04:35,015
+The load word instruction, l w, adds the offset 12 to the base register. 12 is 3 times 4 bytes. The address is 1000 plus 12, which is 1012.
+
+27
+00:04:35,465 --> 00:04:41,588
+The word at address 1012, that is A of 3, moves into register x10.
+
+28
+00:04:42,038 --> 00:04:45,921
+Then a normal add computes g equals h plus x10.
+
+29
+00:04:46,371 --> 00:04:54,157
+The offset is in bytes. It must be a constant known at assembly time, because it is stored inside the instruction.
+
+30
+00:04:54,607 --> 00:05:01,711
+Now the C code writes to memory: A of 10 equals h plus A of 3. It needs three instructions.
+
+31
+00:05:02,161 --> 00:05:08,924
+First, load word gets A of 3 into x10. Then add puts h plus A of 3 into x10.
+
+32
+00:05:09,374 --> 00:05:27,465
+The store word instruction, s w, copies x10 into memory. The address is x13 plus 40, which is 1040. That is A of 10, because 10 times 4 is 40. Note the order: the first operand is the data, not the destination.
+
+33
+00:05:27,915 --> 00:05:42,272
+The slide adds a rule. x13 plus 12 and x13 plus 40 must be multiples of 4. A word must start at a word address. A word at 1014 would cross two words.
+
+34
+00:05:42,722 --> 00:06:00,749
+RISC-V also has byte transfers, load byte, l b, and store byte, s b. The format is the same as for words. Here the address is x11 plus 3. With x11 equal to 2000, that is the byte at 2003, hex F 6.
+
+35
+00:06:01,199 --> 00:06:13,743
+A byte has only 8 bits, but the register has 32. The byte is copied into the low byte position of x10, bits 7 to 0. What goes into the 24 upper bits?
+
+36
+00:06:14,193 --> 00:06:29,894
+Load byte copies bit 7 of the byte into all upper bits. This is sign extension. Bit 7 is 1, so x10 becomes hex F F F F F F F 6, which is minus 10. The signed value of the byte stays the same.
+
+37
+00:06:30,344 --> 00:06:38,621
+Load byte unsigned, l b u, fills the upper bits with zeros instead. Then x10 is 246.
+
+38
+00:06:39,071 --> 00:06:48,885
+Store byte writes only the low byte of the register into memory. Here byte 2001 becomes A B. The other bytes do not change.
+
+39
+00:06:49,335 --> 00:07:03,649
+Shift left logical immediate, s l l i, moves all bits to the left. Here x12 is 5. Shift by 2: the bits move 2 places, and 2 zeros enter at the right. The result is 20.
+
+40
+00:07:04,099 --> 00:07:13,571
+Each place to the left multiplies by 2. So a shift by 2 multiplies by 4. This turns an array index into a byte offset.
+
+41
+00:07:14,021 --> 00:07:28,549
+Shift right logical, s r l i, is the opposite shift. Zero bits enter at the left. The right bits fall off. For x12 equal to minus 16, the result is a large positive number.
+
+42
+00:07:28,999 --> 00:07:39,879
+Shift right arithmetic, s r a i, inserts copies of the sign bit at the left instead. So minus 16 becomes minus 4. The sign stays.
+
+43
+00:07:40,329 --> 00:07:50,356
+Instructions are 4 bytes long and sit in memory one after another. Normally, after one instruction, the next one at address plus 4 runs.
+
+44
+00:07:50,806 --> 00:08:08,619
+A branch changes the control flow. A conditional branch compares two registers. Branch if equal, b e q, jumps to label L if x1 equals x2. This is the taken case. Otherwise it is not taken, and the next instruction runs.
+
+45
+00:08:09,069 --> 00:08:18,712
+There are four basic conditional branches: branch if equal, branch if not equal, branch if less than, and branch if greater than or equal.
+
+46
+00:08:19,162 --> 00:08:25,285
+An unconditional branch always jumps. The RISC-V instruction for this is jump, j.
+
+47
+00:08:25,735 --> 00:08:40,455
+Here is an if statement. If i equals j, then f equals g plus h. The registers are given: f in x10, g in x11, h in x12, i in x13, and j in x14.
+
+48
+00:08:40,905 --> 00:08:47,241
+Draw the control flow. If i equals j, the then-part runs. Both paths meet at Exit.
+
+49
+00:08:47,691 --> 00:08:57,227
+A branch can only jump away. So the code branches on the opposite condition. Branch if not equal jumps over the then-part to Exit.
+
+50
+00:08:57,677 --> 00:09:04,013
+If i equals j, b n e is not taken. The add runs, and the code reaches Exit.
+
+51
+00:09:04,463 --> 00:09:11,289
+If i is not equal to j, b n e is taken. It jumps to Exit, and the add does not run.
+
+52
+00:09:11,739 --> 00:09:24,582
+Now an if-else statement, with the same registers. If i equals j, f equals g plus h. Else, f equals g minus h. Exactly one of the two parts must run.
+
+53
+00:09:25,032 --> 00:09:31,859
+Again, branch on the opposite condition. If i is not equal to j, branch to the label Else.
+
+54
+00:09:32,309 --> 00:09:38,837
+After the then-part, the code must not fall into the else-part. So jump, j, goes to Exit.
+
+55
+00:09:39,287 --> 00:09:45,751
+If i equals j: b n e is not taken, the add runs, and j jumps to Exit.
+
+56
+00:09:46,201 --> 00:09:53,262
+If i is not equal to j: b n e is taken, the sub at Else runs, and the code reaches Exit.
+
+57
+00:09:53,712 --> 00:10:03,909
+Branch on less than, b l t, jumps to the label if register 1 is less than register 2. It treats the registers as signed integers.
+
+58
+00:10:04,359 --> 00:10:12,189
+Branch on less than unsigned, b l t u, does the same, but treats the registers as unsigned integers.
+
+59
+00:10:12,639 --> 00:10:31,156
+The difference matters. Let x1 be 32 ones, and x2 be 1. As signed numbers, x1 is minus 1, which is less than 1, so b l t is taken. As unsigned numbers, x1 is about 4.3 billion, so b l t u is not taken.
+
+60
+00:10:31,606 --> 00:10:48,651
+Set less than, s l t, is in the R-format list on slide 42. It writes 1 into rd if r s 1 is less than r s 2, and 0 otherwise. For our values, s l t gives 1, and s l t u gives 0.
+
+61
+00:10:49,101 --> 00:10:59,683
+There is no branch if greater than in this list. To branch if x2 is greater than x1, swap the operands: branch if x1 is less than x2.
+
+62
+00:11:00,133 --> 00:11:09,605
+This C loop adds the 20 elements of array A. The control flow has three parts: the setup, the loop body, and a test that goes back.
+
+63
+00:11:10,055 --> 00:11:27,975
+The setup uses x0 as the zero register. add x9, x8, x0 copies the address of A of 0 into x9. Adding x0 and x0 sets sum and i to 0. addi puts the limit 20 into x13.
+
+64
+00:11:28,425 --> 00:11:36,105
+The label Loop marks the body. Load word gets A of i through the pointer x9. Then add adds it to sum.
+
+65
+00:11:36,555 --> 00:11:41,824
+Then x9 moves 4 bytes, to the next word, and i increases by 1.
+
+66
+00:11:42,274 --> 00:11:47,138
+Finally, branch if less than goes back to Loop while i is less than 20.
+
+67
+00:11:47,588 --> 00:12:03,716
+Trace it. Each pass moves x9 by 4. In pass 20, i becomes 20, so blt is not taken and the loop ends. In total, 4 plus 5 times 20, that is 104 instructions execute.
+
+68
+00:12:04,166 --> 00:12:20,977
+The assembler turns assembly text into instructions. It has helpful features. First, symbolic register names. For example, a0 to a7 are the argument registers x10 to x17, and zero is x0.
+
+69
+00:12:21,427 --> 00:12:33,565
+Second, pseudo-instructions. They are shorthand for common idioms. Move, m v, copies a register. The assembler turns it into add immediate with the constant 0.
+
+70
+00:12:34,015 --> 00:12:42,357
+Load immediate, l i, puts a constant into a register. The assembler turns it into add immediate from x0.
+
+71
+00:12:42,807 --> 00:12:53,900
+Slide 17 gives the full table. The hardware understands the numbers x0 to x31. Assembly code can use the human-friendly names instead.
+
+72
+00:12:54,350 --> 00:13:16,601
+The names show the use of each register. a registers hold function arguments, and a0 and a1 also hold return values. t registers are temporaries. s registers are saved registers. r a holds the return address, and s p is the stack pointer. Function calls, later in lecture 3, use these.
+
+73
+00:13:17,051 --> 00:13:37,360
+Each instruction is stored as one 32-bit word. Slide 37 shows the six formats. The R-type is for instructions like add and sub. It has three 5-bit register fields, r s 1, r s 2 and r d, plus the opcode and two function fields.
+
+74
+00:13:37,810 --> 00:13:51,890
+The I-type replaces r s 2 and funct7 with a 12-bit immediate. add immediate, loads and shifts use it. The S-type for stores has no r d, so its immediate is split in two parts.
+
+75
+00:13:52,340 --> 00:14:06,143
+The B, U and J types hold larger or split immediates for branches and jumps. In all formats, the register fields stay in the same bits. The encoding details come later in lecture 3.
+
+76
+00:14:06,593 --> 00:14:19,222
+Now assignment 2, question 1 a. Compile f equals abs of g. The solution puts g in x11 and the result f in x10. Pause the video and try it.
+
+77
+00:14:19,672 --> 00:14:28,440
+The plan: first compute minus g. If that is greater than or equal to zero, it is the answer. If not, flip the sign again.
+
+78
+00:14:28,890 --> 00:14:37,487
+sub x10, x0, x11 computes 0 minus g. x0 is always zero, so this negates g.
+
+79
+00:14:37,937 --> 00:14:46,641
+Branch if greater than or equal, b g e, compares x10 with zero. If x10 is not negative, it jumps to done.
+
+80
+00:14:47,091 --> 00:14:53,427
+Otherwise, the second sub flips the sign again: x10 equals 0 minus x10.
+
+81
+00:14:53,877 --> 00:15:02,368
+Check it with g equal to 5. x10 is minus 5. b g e is not taken. The second sub gives 5.
+
+82
+00:15:02,818 --> 00:15:17,581
+Now g equal to minus 3. x10 is 3. b g e is taken, so x10 stays 3. Note: line 4 of the posted solution misses a comma. Write sub x10, x0, x10.
+
+83
+00:15:18,031 --> 00:15:25,071
+Question 1 b. Compile f equals g minus A of B of 4. Pause the video and try it.
+
+84
+00:15:25,521 --> 00:15:43,334
+The solution's registers: x15 holds the address of B of 0, and x14 holds the address of A of 0. g is in x1, and f is in x2. All elements are 4-byte ints. Here are both arrays, with example addresses.
+
+85
+00:15:43,784 --> 00:15:55,987
+First load B of 4. Its offset is 4 times 4, which is 16. So, load word x10 from 16 of x15. In the example, B of 4 is 3.
+
+86
+00:15:56,437 --> 00:16:11,306
+B of 4 is an index, not a byte offset. Its value is known only when the program runs, so it cannot be the constant offset. Shift left by 2 multiplies it by 4. x10 becomes 12.
+
+87
+00:16:11,756 --> 00:16:18,391
+Add the base address of A. x10 becomes 2012. That is the address of A of 3.
+
+88
+00:16:18,841 --> 00:16:26,798
+Load the word at that address, with offset 0. x10 now holds A of B of 4. In the example it is 50.
+
+89
+00:16:27,248 --> 00:16:34,011
+Finally, sub x2, x1, x10 computes f equals g minus A of B of 4.
+
+90
+00:16:34,461 --> 00:16:43,826
+Question 1 c. Compile the function swap. It exchanges v of k and v of k plus 1. Pause the video and try it.
+
+91
+00:16:44,276 --> 00:17:01,876
+The solution passes the address of v of 0 in a2 and k in a3. Register r a holds the return address. It uses t0, t1 and t2 as temporaries. In the example, v starts at 3000 and k is 2.
+
+92
+00:17:02,326 --> 00:17:13,227
+k is an index, so shift it left by 2 to get the byte offset 8. Add a2. Now t0 holds 3008, the address of v of k.
+
+93
+00:17:13,677 --> 00:17:27,523
+Load v of k with offset 0, and v of k plus 1 with offset 4. One word is 4 bytes, so the next element is 4 bytes higher. t1 gets 7, and t2 gets 9.
+
+94
+00:17:27,973 --> 00:17:32,175
+Store t2 at offset 0. v of k becomes 9.
+
+95
+00:17:32,625 --> 00:17:39,473
+Store t1 at offset 4. v of k plus 1 becomes 7. The two values are swapped.
+
+96
+00:17:39,923 --> 00:17:47,881
+Finally, jump register with r a returns to the caller. Slides 18 to 25 explain function calls.
+
+97
+00:17:48,331 --> 00:17:58,805
+Here is the recap. One. There are 32 registers of 32 bits, and x0 is always zero. Each instruction does one operation.
+
+98
+00:17:59,255 --> 00:18:06,978
+Two. Add immediate adds a constant from the instruction. Memory addresses count bytes, and a word is 4 bytes.
+
+99
+00:18:07,428 --> 00:18:22,169
+Three. Load word and store word use the address base register plus offset. For A of i, the offset is 4 times i. If the index is known only at run time, shift it left by 2 and add the base.
+
+100
+00:18:22,619 --> 00:18:34,523
+Four. Load byte sign-extends, and load byte unsigned zero-extends. Shift right logical inserts zeros, and shift right arithmetic inserts the sign bit.
+
+101
+00:18:34,973 --> 00:18:44,275
+Five. For an if, branch on the opposite condition. For an if-else, also jump to Exit after the then-part. A loop branches back.
+
+102
+00:18:44,725 --> 00:18:53,962
+Six. blt and slt are signed. bltu and sltu are unsigned. For greater than, swap the operands.
+
+103
+00:18:54,412 --> 00:19:00,897
+Seven. The assembler gives pseudo-instructions and symbolic names. That is the end of video 3.

@@ -1,0 +1,271 @@
+1
+00:00:00,000 --> 00:00:07,872
+This is MATH 239, video 26 b. It is part 2 of matchings, covers and König's Theorem.
+
+2
+00:00:08,322 --> 00:00:31,362
+Here are the definitions from part 1. G is bipartite with bipartition A, B, and M is a matching. X 0 is the set of vertices of A that M does not saturate. Z is the set of vertices joined to X 0 by an alternating path, P of v. X is A intersect Z, and Y is B intersect Z.
+
+3
+00:00:31,812 --> 00:00:40,623
+After this video, you can prove König's Theorem. You can use it in a proof. And you can run the matching algorithm and write the answer.
+
+4
+00:00:41,073 --> 00:00:52,763
+Look at an alternating path from X 0. It starts in A, with an edge not in M. Then the edges alternate, and the vertices alternate between A and B.
+
+5
+00:00:53,213 --> 00:01:04,328
+So a path to a vertex of X has even length, and its last edge is in M. If v is in X 0, the path has no edges, and there is nothing to check.
+
+6
+00:01:04,778 --> 00:01:10,261
+A path to a vertex of Y has odd length, and its last edge is not in M.
+
+7
+00:01:10,711 --> 00:01:21,143
+One more fact. Each vertex w on a path P of v is itself joined to X 0 by the first part of that path. So w is in Z.
+
+8
+00:01:21,593 --> 00:01:31,065
+Lemma 8.3.2 is the core of the proof. The figure splits A into X and A minus X, and B into Y and B minus Y.
+
+9
+00:01:31,515 --> 00:01:35,099
+Part a: no edge of G joins X to B minus Y.
+
+10
+00:01:35,549 --> 00:01:42,461
+Part b: the set C, equal to Y union A minus X, is a cover. It is the green outline.
+
+11
+00:01:42,911 --> 00:01:46,687
+Part c: no edge of M joins Y to A minus X.
+
+12
+00:01:47,137 --> 00:01:57,654
+Part d: the size of M equals the size of C minus the size of U. Here U is the set of vertices of Y that M does not saturate.
+
+13
+00:01:58,104 --> 00:02:02,541
+Part e: for each vertex of U, there is an augmenting path to it.
+
+14
+00:02:02,991 --> 00:02:22,021
+Proof of part a. Suppose u is in X, v is in B minus Y, and u v is an edge. The path P of u has even length. Its last edge is the matching edge at u, or u is in X 0 and has no matching edge. In both cases, u v is not in M.
+
+15
+00:02:22,471 --> 00:02:38,407
+So we can add v to the end of P of u. v is not on the path, because the path is inside Z. The result is an alternating path of odd length to v. So v is in Y. This contradicts v in B minus Y.
+
+16
+00:02:38,857 --> 00:02:52,339
+Part b. Every edge joins A to B. An edge with no end in C has its A end in X and its B end in B minus Y. By part a, no such edge exists. So C is a cover.
+
+17
+00:02:52,789 --> 00:03:11,456
+Part c. Suppose u v is in M, with u in Y and v in A minus X. P of u has odd length, and its last edge is not in M. Add the matching edge u v. We get an alternating path of even length to v. So v is in X. Contradiction.
+
+18
+00:03:11,906 --> 00:03:28,930
+Part d. An edge of M that starts in X must end in Y, by part a. An edge of M that starts in Y must end in X, by part c. So each edge of M joins Y to X, or joins A minus X to B minus Y.
+
+19
+00:03:29,380 --> 00:03:40,239
+Count the first type. Each saturated vertex of Y has exactly one edge of M, and it goes to X. So there are Y minus U edges of this type.
+
+20
+00:03:40,689 --> 00:03:54,470
+Count the second type. X 0 is inside X, so every vertex of A minus X is saturated. Its matching edge goes to B minus Y. So there are A minus X edges of this type.
+
+21
+00:03:54,920 --> 00:04:03,837
+Add the two counts. The size of M is Y minus U plus A minus X. That is the size of C minus the size of U.
+
+22
+00:04:04,287 --> 00:04:16,063
+Part e. If v is in U, then P of v starts at a vertex of X 0 and ends at v. Neither end is saturated. So P of v is an augmenting path.
+
+23
+00:04:16,513 --> 00:04:32,812
+Check the lemma on the first example. Y is all of B, and A minus X is empty. The vertices g and j are not saturated, so U is g, j. Part d says 4 equals 6 minus 2 plus 0. That is true.
+
+24
+00:04:33,262 --> 00:04:41,817
+Part e says that there are augmenting paths to g and to j. Two of them are b i c g and b i c j.
+
+25
+00:04:42,267 --> 00:04:49,819
+Use the path b i c j. Swap its edges: remove c i from M, and add b i and c j.
+
+26
+00:04:50,269 --> 00:05:03,645
+The result is the matching of Figure 8.4. Now U is empty, Y is i, l, and A minus X is a, c, e. Part d says 5 equals 2 minus 0 plus 3.
+
+27
+00:05:04,095 --> 00:05:13,460
+So C is i, l, a, c, e. It is a cover with 5 vertices, the same size as M. This is the cover that we used before.
+
+28
+00:05:13,910 --> 00:05:20,246
+Now the proof of König's Theorem. Let M be a maximum matching of the bipartite graph G.
+
+29
+00:05:20,696 --> 00:05:32,173
+By Lemma 8.1.1, a maximum matching has no augmenting path. By part e, each vertex of U has an augmenting path. So U is empty.
+
+30
+00:05:32,623 --> 00:05:42,031
+By part b, C equal to Y union A minus X is a cover. By part d, its size is the size of M minus 0.
+
+31
+00:05:42,481 --> 00:05:56,689
+So M and C have the same size. By Lemma 8.2.2, C is a minimum cover. So the maximum size of a matching equals the minimum size of a cover. This completes the proof.
+
+32
+00:05:57,139 --> 00:06:12,798
+Here is Problem 8.3.3 of the notes. G is bipartite, both sides have n vertices, and G has q edges. Prove that G has a matching of size at least q over n. Pause the video and try it.
+
+33
+00:06:13,248 --> 00:06:26,155
+We need the maximum size of a matching. By König's Theorem, it equals the minimum size of a cover. So it is enough to show that every cover has at least q over n vertices.
+
+34
+00:06:26,605 --> 00:06:42,391
+Take a cover C. The other side has n vertices, so each vertex of C has at most n edges. So at most n times C edges meet C. In the example, n is 4. The colours show the edges of each cover vertex.
+
+35
+00:06:42,841 --> 00:06:56,153
+C is a cover, so every one of the q edges meets C. So n times C is at least q, and C is at least q over n. This is true for every cover, so it is true for the minimum cover.
+
+36
+00:06:56,603 --> 00:07:14,033
+In the example, n is 4 and q is 10. So there is a matching of size at least 2.5, so at least 3. This graph has a matching of size 3. A brute force check of all bipartite graphs with n equal to 3 also agrees.
+
+37
+00:07:14,483 --> 00:07:29,800
+The XY construction also gives an algorithm. Step 0: start with any matching M. Step 1: X hat is the set of unsaturated vertices of A. Y hat is empty. No vertex has a parent yet.
+
+38
+00:07:30,250 --> 00:07:41,471
+Step 2: for each vertex v of B, not yet in Y hat, that has an edge to some u in X hat: add v to Y hat, and set the parent of v to u.
+
+39
+00:07:41,921 --> 00:07:51,244
+Step 3: if step 2 added nothing, stop. M is a maximum matching, and Y hat union A minus X hat is a minimum cover.
+
+40
+00:07:51,694 --> 00:08:06,670
+Step 4: if step 2 added an unsaturated vertex v, follow the parents back from v to X hat. This is an augmenting path. Swap its edges to get a larger matching. Then go back to step 1.
+
+41
+00:08:07,120 --> 00:08:18,619
+Step 5: for each vertex v of A, not in X hat, whose matching edge goes to some u in Y hat: add v to X hat, with parent u. Then go to step 2.
+
+42
+00:08:19,069 --> 00:08:35,069
+Here is the example of the notes, Figure 8.5. A is 1, 2, 3, 4. M has the two edges 2 6 and 3 7. Step 1: the unsaturated vertices of A are 1 and 4. So X hat is 1, 4.
+
+43
+00:08:35,519 --> 00:08:43,711
+Step 2: from 1 and 4, we reach 7. Its parent is 1. The vertex 7 is saturated, so we go to step 5.
+
+44
+00:08:44,161 --> 00:08:50,475
+Step 5: the matching edge at 7 goes to 3. Add 3 to X hat, with parent 7.
+
+45
+00:08:50,925 --> 00:08:57,923
+Step 2 again: from 3 we reach 5 and 8. Both get parent 3. Both are unsaturated.
+
+46
+00:08:58,373 --> 00:09:12,389
+Step 4: take 5. Follow the parents: 5, 3, 7, 1. This is an augmenting path. Swap its edges. The new matching is 2 6, 3 5 and 1 7. It has 3 edges.
+
+47
+00:09:12,839 --> 00:09:20,348
+Round 2 starts from step 1 with no parents. Only 4 is unsaturated in A. So X hat is 4.
+
+48
+00:09:20,798 --> 00:09:25,406
+Step 2: from 4 we reach 7, with parent 4. It is saturated.
+
+49
+00:09:25,856 --> 00:09:32,427
+Step 5: the matching edge at 7 now goes to 1. Add 1 to X hat, with parent 7.
+
+50
+00:09:32,877 --> 00:09:47,063
+Step 2: the only neighbour of 1 and 4 is 7, which is already in Y hat. Nothing is added. Step 3: stop. The cover is A minus X hat, which is 2 and 3, union Y hat, which is 7.
+
+51
+00:09:47,513 --> 00:09:58,329
+Check it. Every edge has an end in 2, 3 or 7. The cover and the matching both have size 3. So the matching is maximum, by Lemma 8.2.2.
+
+52
+00:09:58,779 --> 00:10:16,870
+Now a practice question. It is Problem Set 8.3 number 5 in the notes. Find a maximum matching and a minimum cover of Figure 8.6, with the algorithm. Start with the matching 3 b, 4 d, 5 e. Pause the video and try it.
+
+53
+00:10:17,320 --> 00:10:21,480
+Step 1: the unsaturated vertices of A are 1 and 2.
+
+54
+00:10:21,930 --> 00:10:29,162
+Step 2: from 1 we reach b, with parent 1. From 2 we reach e, with parent 2. Both are saturated.
+
+55
+00:10:29,612 --> 00:10:37,911
+Step 5: the matching edge at b goes to 3. The matching edge at e goes to 5. Add 3 and 5 to X hat.
+
+56
+00:10:38,361 --> 00:10:46,382
+Step 2: from 3 we reach a, c and d, all with parent 3. The vertices a and c are not saturated.
+
+57
+00:10:46,832 --> 00:10:56,325
+Step 4: take a. Follow the parents: a, 3, b, 1. Swap the edges. The new matching is 1 b, 3 a, 4 d, 5 e.
+
+58
+00:10:56,775 --> 00:11:01,618
+Round 2. Only 2 is unsaturated in A. So X hat is 2.
+
+59
+00:11:02,068 --> 00:11:06,335
+Step 2: from 2 we reach b and e. Both are saturated.
+
+60
+00:11:06,785 --> 00:11:15,297
+Step 5: the matching edge at b goes to 1, and the matching edge at e goes to 5. Add 1 and 5 to X hat.
+
+61
+00:11:15,747 --> 00:11:29,016
+Step 2: the neighbours of 2, 1 and 5 are only b and e. Nothing new. Stop. A minus X hat is 3 and 4. Y hat is b and e. So the cover is 3, 4, b, e.
+
+62
+00:11:29,466 --> 00:11:40,431
+On a test, write the answer with a reason. First, state the matching: 1 b, 3 a, 4 d and 5 e. Its ends are all different, so it is a matching.
+
+63
+00:11:40,881 --> 00:11:50,801
+Second, state the cover: 3, 4, b and e. Show that it is a cover. List the edges at each vertex. Together they are all 12 edges.
+
+64
+00:11:51,251 --> 00:12:05,566
+Third, the matching and the cover both have size 4. By Lemma 8.2.2, the matching is maximum and the cover is minimum. You do not need to show the steps of the algorithm, but they help the marker.
+
+65
+00:12:06,016 --> 00:12:19,883
+One more thing. The last X hat is 2, 1, 5. These three vertices have only two neighbours, b and e. So no matching can saturate all of A. The next video turns this into Hall's Theorem.
+
+66
+00:12:20,333 --> 00:12:31,639
+To recap. A matching is a set of edges with no common ends. A cover is a set of vertices that meets every edge. An augmenting path gives a larger matching.
+
+67
+00:12:32,089 --> 00:12:46,980
+A matching is never larger than a cover. If they have the same size, both are optimal. König's Theorem says that in a bipartite graph, the maximum matching and the minimum cover always have the same size.
+
+68
+00:12:47,430 --> 00:13:02,491
+The XY construction gives the proof and the algorithm. The algorithm ends with a maximum matching and a minimum cover of the same size. The next video covers Hall's Theorem, perfect matchings and edge colouring.

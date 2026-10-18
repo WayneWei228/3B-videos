@@ -1,0 +1,195 @@
+1
+00:00:00,000 --> 00:00:06,464
+This is ECE 358, video 15a. The topic is subnet design.
+
+2
+00:00:06,914 --> 00:00:26,733
+After this video, you can split a block of addresses into subnets of the correct size. You can give the network ID, the prefix and the broadcast address of each subnet. Then we solve question 47, and question 46, which was on the Fall 2024 final exam.
+
+3
+00:00:27,183 --> 00:00:48,623
+Here is the subnetting example from slide 38. A company gets the IP block 192.168.16.0/24. 32 minus 24 is 8 host bits. So the block has 2 to the power 8, which is 256 addresses.
+
+4
+00:00:49,073 --> 00:01:01,617
+The company has four departments. Each department needs its own LAN. LAN A has 120 hosts, LAN B has 50, LAN C has 12, and LAN D has 28.
+
+5
+00:01:02,067 --> 00:01:11,539
+The task is to give the network ID and the prefix of each LAN. As a network engineer, you must use the given addresses efficiently.
+
+6
+00:01:11,989 --> 00:01:39,679
+Step 1: find the size of each LAN. A subnet needs one address per host, plus the network ID, plus the broadcast address. LAN A needs 120 plus 2, which is 122 addresses. The block size must be a power of 2. The smallest power of 2 that holds 122 is 128, which is 2 to the power 7. So LAN A gets 7 host bits, and its prefix is slash 25.
+
+7
+00:01:40,129 --> 00:01:51,201
+LAN B needs 50 plus 2, which is 52. The next power of 2 is 64, which is 2 to the power 6. So LAN B gets a slash 26.
+
+8
+00:01:51,651 --> 00:02:01,486
+LAN C needs 12 plus 2, which is 14. It gets 16 addresses, which is 2 to the power 4. Its prefix is slash 28.
+
+9
+00:02:01,936 --> 00:02:12,091
+LAN D needs 28 plus 2, which is 30. It gets 32 addresses, which is 2 to the power 5. Its prefix is slash 27.
+
+10
+00:02:12,541 --> 00:02:28,263
+The rule: the need is the number of hosts plus 2. Assign the smallest power of 2 that holds the need. If the block has h host bits, the prefix is 32 minus h. The dashed part of each bar is not used.
+
+11
+00:02:28,713 --> 00:02:41,257
+Step 2: place the blocks in the address range. Start with the largest block. LAN A gets the first 128 addresses, from 0 to 127 in the last byte.
+
+12
+00:02:41,707 --> 00:02:52,331
+The next largest block is LAN B, with 64 addresses. It starts at the next free address, 128, and ends at 191.
+
+13
+00:02:52,781 --> 00:03:00,653
+Next is LAN D, with 32 addresses. It starts at 192 and ends at 223.
+
+14
+00:03:01,103 --> 00:03:08,634
+Then LAN C, with 16 addresses. It starts at 224 and ends at 239.
+
+15
+00:03:09,084 --> 00:03:22,887
+The four LANs use 240 addresses. 16 addresses, from 240 to 255, are free for later. The diagram on slide 39 shows the same split.
+
+16
+00:03:23,337 --> 00:03:33,214
+Why do we place the largest block first? Look at a bad order. LAN C takes addresses 0 to 15. Then LAN A would start at 16.
+
+17
+00:03:33,664 --> 00:03:54,869
+But 192.168.16.16/25 is not a network ID. With slash 25, the last 7 bits are host bits, and they must all be 0. 16 is 0 0 0 1 0 0 0 0. One host bit is 1.
+
+18
+00:03:55,319 --> 00:04:13,538
+So a block of 2 to the power h addresses must start at a multiple of 2 to the power h. Then all its host bits are 0 at the start. Our network IDs .0, .128, .192 and .224 all have this property.
+
+19
+00:04:13,988 --> 00:04:24,591
+When you place the largest block first, the next free address is always a multiple of the next block size. So every block is aligned, and there is no gap.
+
+20
+00:04:25,041 --> 00:04:37,371
+Step 3: complete the table on slide 39. For each LAN, the network ID is the first address of its block. The broadcast address is the last address of its block.
+
+21
+00:04:37,821 --> 00:04:56,936
+LAN A: the network ID is 192.168.16.0/25. The broadcast address is 192.168.16.127. The slide gives this row.
+
+22
+00:04:57,386 --> 00:05:15,349
+LAN B: the network ID is 192.168.16.128/26. The broadcast address is 192.168.16.191.
+
+23
+00:05:15,799 --> 00:05:34,017
+LAN C: the network ID is 192.168.16.224/28. The broadcast address is 192.168.16.239.
+
+24
+00:05:34,467 --> 00:05:52,494
+LAN D: the network ID is 192.168.16.192/27. The broadcast address is 192.168.16.223.
+
+25
+00:05:52,944 --> 00:06:10,651
+Check the design in binary. Only the last byte changes. LAN A is slash 25, so 1 bit of the last byte is in the prefix. That bit is 0. The 7 host bits go from all 0 to all 1, which is .0 to .127.
+
+26
+00:06:11,101 --> 00:06:21,319
+LAN B is slash 26. Its 2 prefix bits in the last byte are 1 0. So it covers .128 to .191.
+
+27
+00:06:21,769 --> 00:06:30,836
+LAN D is slash 27. Its prefix bits are 1 1 0. It covers .192 to .223.
+
+28
+00:06:31,286 --> 00:06:46,817
+LAN C is slash 28. Its prefix bits are 1 1 1 0. It covers .224 to .239. The free block, 1 1 1 1, covers .240 to .255.
+
+29
+00:06:47,267 --> 00:06:55,693
+No prefix is the start of another prefix. So the blocks do not overlap, and each address belongs to exactly one LAN.
+
+30
+00:06:56,143 --> 00:07:13,103
+Question 47 is the same company, with a fifth department. LAN E has 10 hosts. For each subnet, find the block size, the network ID, the prefix length, the broadcast address, and one host IP address. Pause the video and try it.
+
+31
+00:07:13,553 --> 00:07:25,372
+LANs A to D do not change. Use the same blocks as before: A at .0, B at .128, D at .192, and C at .224.
+
+32
+00:07:25,822 --> 00:07:48,457
+LAN E needs 10 plus 2, which is 12 addresses. It gets 16, so 4 host bits. The free block from .240 to .255 fits exactly. The table marks the network ID, prefix and broadcast of E with x. If you need them, they are .240/28 and .255.
+
+33
+00:07:48,907 --> 00:08:09,984
+For one host IP address, take any address between the network ID and the broadcast address. For example, the first address after each network ID: .1, .129, .225, .193 and .241. Now all 256 addresses are used.
+
+34
+00:08:10,434 --> 00:09:13,313
+Question 46 was on the Fall 2024 final exam. A router connects three subnets. All their interfaces must use the prefix 223.1.17.0/24. Subnet 1 needs at least 60 interfaces, subnet 2 at least 90, and subnet 3 at least 12. A future subnet 4 must get a maximal part of the remaining addresses. The table gives one IP address in each subnet: 223.1.17.140, 223.1.17.75, 223.1.17.197, and 223.1.17.230. Find the four network addresses, the network IDs and the broadcast addresses. Then find the largest size of a future subnet 5. Pause the video and try it.
+
+35
+00:09:13,763 --> 00:09:29,699
+Step 1: the block sizes. Subnet 1 needs 60 interfaces, plus the network ID, plus the broadcast address. That is 62. The next power of 2 is 64, so 6 host bits and a prefix of slash 26.
+
+36
+00:09:30,149 --> 00:09:39,429
+Subnet 2 needs 90 plus 2, which is 92. It gets 128 addresses: 7 host bits, slash 25.
+
+37
+00:09:39,879 --> 00:09:53,703
+Subnet 3 needs 12 plus 2, which is 14. It gets 16 addresses: 4 host bits, slash 28. The router interface is already one of the interfaces that the question counts.
+
+38
+00:09:54,153 --> 00:10:35,085
+Step 2: the given address fixes where each block is. The network ID is the given address with all host bits set to 0. Subnet 1 is slash 26 and contains .140. 140 is 1 0 0 0 1 1 0 0. Keep the first 2 bits, 1 0, and clear the other 6. The result is 128. So subnet 1 is 223.1.17.128/26, and its broadcast address is 223.1.17.191.
+
+39
+00:10:35,535 --> 00:11:01,391
+Subnet 2 is slash 25 and contains .75. 75 is 0 1 0 0 1 0 1 1. Keep the first bit, 0, and clear the rest. So subnet 2 is 223.1.17.0/25, with the broadcast address 223.1.17.127.
+
+40
+00:11:01,841 --> 00:11:33,707
+Subnet 3 is slash 28 and contains .197. 197 is 1 1 0 0 0 1 0 1. Keep the first 4 bits, 1 1 0 0, and clear the rest. That is 192. So subnet 3 is 223.1.17.192/28, with the broadcast address 223.1.17.207.
+
+41
+00:11:34,157 --> 00:11:55,235
+Now draw the range. Subnet 2 uses 0 to 127. Subnet 1 uses 128 to 191. Subnet 3 uses 192 to 207. The free addresses are 208 to 255. That is 48 addresses.
+
+42
+00:11:55,685 --> 00:12:24,122
+Step 3: subnet 4 must keep a maximal part of the 48 free addresses, from 208 to 255. 48 is not a power of 2, so one subnet cannot take all of them. The largest aligned block inside this range has 32 addresses: 224 to 255. A block of 32 must start at a multiple of 32, and 208 is not a multiple of 32.
+
+43
+00:12:24,572 --> 00:12:38,545
+The given address of subnet 4 is .230. It is inside 224 to 255. So subnet 4 is this block of 32 addresses, with 5 host bits.
+
+44
+00:12:38,995 --> 00:13:03,486
+In binary, 230 is 1 1 1 0 0 1 1 0. With slash 27, keep the first 3 bits, 1 1 1. The network ID is 223.1.17.224/27. The broadcast address is 223.1.17.255.
+
+45
+00:13:03,936 --> 00:13:27,872
+The addresses 208 to 223 are left. That is 16 addresses, and 208 is a multiple of 16. So a future subnet 5 can have at most 16 IP addresses, counting its network ID and broadcast address. It is 223.1.17.208/28.
+
+46
+00:13:28,322 --> 00:14:17,595
+Here is the full answer. The four network addresses are 223.1.17.128/26 for subnet 1, 223.1.17.0/25 for subnet 2, 223.1.17.192/28 for subnet 3, and 223.1.17.224/27 for subnet 4. Their broadcast addresses are .191, .127, .207 and .255. A future subnet 5 can have at most 16 IP addresses. In the exam, show the binary work for each given address.
+
+47
+00:14:18,045 --> 00:14:32,659
+Here is the recap. To size a subnet, add 2 to the number of hosts, for the network ID and the broadcast address. Take the smallest power of 2 that holds it. The prefix is 32 minus the host bits.
+
+48
+00:14:33,109 --> 00:14:41,343
+Place the largest block first. A block of 2 to the power h addresses starts at a multiple of 2 to the power h.
+
+49
+00:14:41,793 --> 00:15:00,140
+If an address in the subnet is given, set the host bits to 0 for the network ID, and to 1 for the broadcast address. For leftover space, take the largest aligned block. In video 15b, we see how a host gets its address with DHCP.

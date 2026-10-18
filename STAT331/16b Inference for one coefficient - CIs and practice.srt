@@ -1,0 +1,243 @@
+1
+00:00:00,000 --> 00:00:09,621
+This is STAT 331, video 16, part b. Part a showed the t result for one coefficient and the hypothesis tests.
+
+2
+00:00:10,071 --> 00:00:31,191
+In this part, you derive and use confidence intervals for beta j. You find the standard error of a linear combination of coefficients. And you solve the three practice questions of Lecture 7. We continue with the satisfaction data: n is 46, p is 3, and there are 42 degrees of freedom.
+
+3
+00:00:31,641 --> 00:00:49,241
+Now confidence intervals. We know the distribution of T exactly. So we can find any quantile. The quantile t 1 minus alpha over 2 has area 1 minus alpha over 2 to its left. So the right tail has area alpha over 2.
+
+4
+00:00:49,691 --> 00:01:01,809
+The t density is symmetric about 0. So the alpha over 2 quantile is minus t 1 minus alpha over 2. The left tail also has area alpha over 2.
+
+5
+00:01:02,259 --> 00:01:10,344
+The two tails together have area alpha. So the probability that T is between the two quantiles is 1 minus alpha.
+
+6
+00:01:10,794 --> 00:01:20,693
+Put the definition of T into the probability statement. Here t 1 minus alpha over 2 has n minus p plus 1 degrees of freedom.
+
+7
+00:01:21,143 --> 00:01:29,441
+Multiply all three parts by sigma hat root V j j. It is positive, so the inequalities do not change.
+
+8
+00:01:29,891 --> 00:01:44,718
+Multiply by minus 1. This reverses both inequalities. Then the two bounds change places. They have the same size, so the statement keeps its form, with beta j minus beta j hat in the middle.
+
+9
+00:01:45,168 --> 00:02:01,531
+Add beta j hat to all three parts. Now beta j is alone in the middle. The picture shows the interval. Its center is beta j hat. The half width is t 1 minus alpha over 2, times sigma hat root V j j.
+
+10
+00:02:01,981 --> 00:02:16,679
+The interval is random, because beta j hat and sigma hat change from sample to sample. Beta j is fixed. Before we see the data, the interval covers beta j with probability 1 minus alpha.
+
+11
+00:02:17,129 --> 00:02:28,585
+Now the 95 percent intervals. The quantile is t 0 point 9 7 5 with 42 degrees of freedom. It is 2 point 0 1 8.
+
+12
+00:02:29,035 --> 00:02:38,379
+For the intercept, the interval is 121 point 9 to 195 point 1. It does not contain 0.
+
+13
+00:02:38,829 --> 00:02:55,640
+For age, minus 1 point 1 4 2, plus or minus 2 point 0 1 8 times 0 point 2 1 5, gives minus 1 point 5 8 to minus 0 point 7 1. The whole interval is below 0.
+
+14
+00:02:56,090 --> 00:03:03,407
+For severity, the interval is minus 1 point 4 3 to 0 point 5 5. It contains 0.
+
+15
+00:03:03,857 --> 00:03:21,756
+For stress, the interval is minus 27 point 8 to 0 point 8 6. It contains 0. Compare with the tests. At the same alpha, the interval leaves out theta 0 exactly when the test rejects beta j equal to theta 0.
+
+16
+00:03:22,206 --> 00:03:44,307
+Beta hat is multivariate normal. So any linear combination a transpose beta hat is normal too. Its mean is a transpose beta. Its variance is sigma squared, a transpose, X transpose X inverse, a. The vector a gives one weight to each coefficient. Here a gives beta 2 plus beta 3.
+
+17
+00:03:44,757 --> 00:03:57,557
+Replace sigma squared with sigma hat squared. This gives the estimated variance matrix of beta hat. The diagonal has the variances. The other cells have the covariances.
+
+18
+00:03:58,007 --> 00:04:13,111
+The variance of a transpose beta hat is the sum of a i times a j times each cell. Only the cells with non-zero weights count. Here: two variances in green, and the covariance two times in orange.
+
+19
+00:04:13,561 --> 00:04:24,953
+The sum is 0 point 2 4 2 plus 50 point 4 0 5, plus 2 times minus 1 point 7 9 2. The standard error is the square root.
+
+20
+00:04:25,403 --> 00:04:36,177
+Then the tests and intervals work as before, with the same t distribution. Fitted values are also linear combinations. We use this in the next video.
+
+21
+00:04:36,627 --> 00:04:49,853
+Practice question 1 uses the satisfaction model. Part a: estimate 2 beta 3. Part b: find a standard error. Part c: interpret the estimate. Pause the video and try it.
+
+22
+00:04:50,303 --> 00:05:01,226
+Part a. Multiply the estimate by 2. 2 times minus 13 point 4 7 0 2 is minus 26 point 9 4 0 3.
+
+23
+00:05:01,676 --> 00:05:15,137
+Part b. This is a linear combination with a equal to 0, 0, 0, 2. The variance of 2 beta 3 hat is 2 squared, or 4, times the variance of beta 3 hat.
+
+24
+00:05:15,587 --> 00:05:27,299
+So the standard error is 2 times the standard error of beta 3 hat. That is 2 times 7 point 0 9 9 7, or 14 point 1 9 9 3.
+
+25
+00:05:27,749 --> 00:05:42,491
+Part c. The picture shows the mean satisfaction as a function of stress, with age and severity fixed. One more unit of stress changes the mean by beta 3. Two more units change it by 2 beta 3.
+
+26
+00:05:42,941 --> 00:05:53,245
+So: for two more units of stress, with age and severity held fixed, the estimated mean satisfaction decreases by 26 point 9 4.
+
+27
+00:05:53,695 --> 00:06:00,009
+Part d: repeat parts a to c for beta 2 plus beta 3. Pause the video and try it.
+
+28
+00:06:00,459 --> 00:06:17,547
+Part a. Add the two estimates. Minus 0 point 4 4 2 0 plus minus 13 point 4 7 0 2 is minus 13 point 9 1 2 2. The weight vector is a equal to 0, 0, 1, 1.
+
+29
+00:06:17,997 --> 00:06:25,037
+Part b. We need the estimated variance matrix of beta hat. It is sigma hat squared times V.
+
+30
+00:06:25,487 --> 00:06:39,717
+The weights select four cells: the variance of beta 2 hat, the variance of beta 3 hat, and their covariance two times. The covariance is not 0, so we cannot only add the two variances.
+
+31
+00:06:40,167 --> 00:06:57,852
+0 point 2 4 2 0 plus 50 point 4 0 5 2 plus 2 times minus 1 point 7 9 1 6 is 47 point 0 6. The square root is 6 point 8 6 0 3. This is the standard error.
+
+32
+00:06:58,302 --> 00:07:12,809
+Part c. Beta 2 plus beta 3 is the change in mean satisfaction when severity and stress both increase by one unit, with age fixed. The estimate is a decrease of 13 point 9 1.
+
+33
+00:07:13,259 --> 00:07:26,208
+Practice question 2. The sample size is 50. Three entries in the lower corner of X transpose X inverse are lost. Can we still find beta hat? Pause the video and try it.
+
+34
+00:07:26,658 --> 00:07:45,154
+Yes. X transpose X is symmetric, so its inverse is symmetric too. Each lost entry equals its mirror entry above the diagonal. So the lost entries are 0 point 2 5, 0 point 2 5, and minus 0 point 2 5.
+
+35
+00:07:45,604 --> 00:07:51,193
+Now beta hat equals X transpose X inverse, times X transpose y.
+
+36
+00:07:51,643 --> 00:08:04,657
+Row 0: 1 times 2, plus 0 point 2 5 times 1 point 2, plus 0 point 2 5 times minus 3. Beta 0 hat is 1 point 5 5.
+
+37
+00:08:05,107 --> 00:08:19,251
+Row 1: 0 point 2 5 times 2, plus 0 point 5 times 1 point 2, plus minus 0 point 2 5 times minus 3. Beta 1 hat is 1 point 8 5.
+
+38
+00:08:19,701 --> 00:08:32,821
+Row 2: 0 point 2 5 times 2, plus minus 0 point 2 5 times 1 point 2, plus 2 times minus 3. Beta 2 hat is minus 5 point 8.
+
+39
+00:08:33,271 --> 00:08:42,551
+Part b. The sum of squared residuals is 2 point 5. Find the standard error of beta 1 hat. Pause the video and try it.
+
+40
+00:08:43,001 --> 00:08:52,579
+The model has 3 coefficients, so p plus 1 is 3, and p is 2. The degrees of freedom are 50 minus 3, which is 47.
+
+41
+00:08:53,029 --> 00:08:59,835
+Sigma hat squared is 2 point 5 over 47. That is 0 point 0 5 3 2.
+
+42
+00:09:00,285 --> 00:09:08,434
+Beta 1 is the second coefficient, so we need the second diagonal entry, V 1 1. It is 0 point 5.
+
+43
+00:09:08,884 --> 00:09:18,889
+The standard error is the square root of 0 point 0 5 3 2 times 0 point 5. It is 0 point 1 6 3 1.
+
+44
+00:09:19,339 --> 00:09:34,913
+Practice question 3 has three proofs. Part a: show that the sum of y i hat times e i is 0. Pause the video and try it. The picture shows the idea. The purple plane is the set of all vectors X b.
+
+45
+00:09:35,363 --> 00:09:38,819
+The data vector y is usually not in this plane.
+
+46
+00:09:39,269 --> 00:09:43,663
+The fitted vector y hat is X beta hat. It is in the plane.
+
+47
+00:09:44,113 --> 00:09:47,783
+The residual vector e goes from y hat to y.
+
+48
+00:09:48,233 --> 00:10:01,843
+Least squares makes e perpendicular to the plane. In algebra: X transpose e equals X transpose y minus X transpose X beta hat. By the normal equations, this is 0.
+
+49
+00:10:02,293 --> 00:10:15,904
+Now y hat transpose e is X beta hat, transposed, times e. That is beta hat transpose, times X transpose e. X transpose e is 0, so the product is 0.
+
+50
+00:10:16,354 --> 00:10:30,583
+Part b: show that e transpose e equals y transpose y minus beta hat transpose X transpose X beta hat. Pause the video and try it. Start from y equals y hat plus e.
+
+51
+00:10:31,033 --> 00:10:40,783
+Multiply out y transpose y. We get y hat transpose y hat, plus 2 y hat transpose e, plus e transpose e.
+
+52
+00:10:41,233 --> 00:10:56,166
+By part a, y hat transpose e is 0. So the middle term goes away. The picture shows this as a right triangle: the squared length of y is the squared length of y hat plus the squared length of e.
+
+53
+00:10:56,616 --> 00:11:07,965
+Move the y hat term to the other side. Then write y hat as X beta hat. Its transpose is beta hat transpose X transpose. This gives the result.
+
+54
+00:11:08,415 --> 00:11:31,946
+A check with the satisfaction data: y transpose y is 187,722. y hat transpose y hat is 183,473 point 1 6. The difference is 4248 point 8 4. This is e transpose e, the same number as before.
+
+55
+00:11:32,396 --> 00:11:48,353
+Part c: show that a transpose X transpose e is 0 for any vector a. Pause the video and try it. The first column of X is the column of ones. Its product with e is the sum of the residuals. It is 0.
+
+56
+00:11:48,803 --> 00:11:53,006
+Each covariate column also has a product of 0 with e.
+
+57
+00:11:53,456 --> 00:12:00,944
+Together, these products are the vector X transpose e. It is the zero vector, by the normal equations.
+
+58
+00:12:01,394 --> 00:12:18,717
+So a transpose X transpose e is a transpose times the zero vector, which is 0. The vector a must have one entry for each column of X. Another view: X a is a vector in the column space, and e is perpendicular to all of them.
+
+59
+00:12:19,167 --> 00:12:34,740
+Summary. Beta j hat minus beta j, over sigma hat root V j j, has a t distribution with n minus p plus 1 degrees of freedom. The standard error is sigma hat times the square root of V j j.
+
+60
+00:12:35,190 --> 00:12:51,553
+To test beta j equals theta 0, calculate t obs and the two-sided p-value, and reject if it is less than alpha. The confidence interval is beta j hat plus or minus the t quantile times the standard error.
+
+61
+00:12:52,003 --> 00:13:12,141
+For a linear combination, the variance is sigma hat squared, a transpose V a. Do not forget the covariances. And X transpose e is 0, which gives the identities of practice question 3. The next video uses these tools for fitted values, the mean response, and prediction.

@@ -1,0 +1,211 @@
+1
+00:00:00,000 --> 00:00:17,856
+This is STAT 331, video 13 b. Video 13 a wrote the least squares criterion: S of beta equals y transpose y, minus 2 y transpose X beta, plus beta transpose X transpose X beta.
+
+2
+00:00:18,306 --> 00:00:32,535
+After this video, you can derive beta hat equals X transpose X inverse, X transpose y. You can show that the M L E is the same. And you can solve practice question 1 of Lecture 6.
+
+3
+00:00:32,985 --> 00:00:43,780
+Take the derivative of S of beta with respect to the vector beta, one term at a time. y transpose y has no beta. Its derivative is 0.
+
+4
+00:00:44,230 --> 00:00:58,502
+The term minus 2 y transpose X beta is a transpose beta, with a equal to minus 2 X transpose y. By the linear rule, its derivative is a, which is minus 2 X transpose y.
+
+5
+00:00:58,952 --> 00:01:14,227
+The last term is a quadratic form in beta, with the matrix X transpose X. This matrix is symmetric, because its transpose is X transpose X again. So the derivative is 2 X transpose X beta.
+
+6
+00:01:14,677 --> 00:01:18,858
+Add the three parts and set the sum equal to the zero vector.
+
+7
+00:01:19,308 --> 00:01:34,391
+Move the first term to the right side and divide by 2. X transpose X, times beta, equals X transpose y. These are the normal equations. There are p plus 1 equations, one for each coefficient.
+
+8
+00:01:34,841 --> 00:01:50,457
+Multiply both sides by the inverse of X transpose X. Beta hat equals X transpose X inverse, X transpose y. Learn this formula. It is the least squares estimate for every linear model in this course.
+
+9
+00:01:50,907 --> 00:02:07,632
+The last step needs the inverse of X transpose X. The slide adds a condition: the columns of X must be linearly independent. Here is an example of what goes wrong. Suppose X has age in years and also age in months.
+
+10
+00:02:08,082 --> 00:02:28,519
+Column 3 is 12 times column 2. Then X transpose X has no inverse. Many different beta give the same X beta, for example beta 1 equals 12 and beta 2 equals 0, or beta 1 equals 0 and beta 2 equals 1. The data cannot choose between them.
+
+11
+00:02:28,969 --> 00:02:38,249
+If no column is a linear combination of the other columns, X transpose X is invertible, and there is exactly one beta hat.
+
+12
+00:02:38,699 --> 00:02:55,147
+The normal equations have a picture. Move everything to one side. X transpose, times y minus X beta hat, is 0. y minus X beta hat is the residual vector e. So X transpose e equals 0.
+
+13
+00:02:55,597 --> 00:03:07,309
+Think of y as one vector with n entries. The vectors X beta, for all beta, form a flat space. It is the column space of X. Here it is the purple plane.
+
+14
+00:03:07,759 --> 00:03:12,922
+The fitted vector y hat equals X beta hat. It is in the column space.
+
+15
+00:03:13,372 --> 00:03:30,439
+The residual e is y minus y hat. X transpose e equals 0 says that e is perpendicular to every column of X. So y hat is the point of the column space that is closest to y. That is why it minimizes S.
+
+16
+00:03:30,889 --> 00:03:47,763
+The first column of X is all ones. So the sum of the residuals is 0. For our own data, the residuals are minus 0.2, minus 0.1, 1, minus 0.9, and 0.2. Their sum is 0.
+
+17
+00:03:48,213 --> 00:04:07,392
+There is a second way to estimate beta: maximum likelihood. Under our assumptions, y is M V N with mean X beta and variance sigma squared I. The likelihood is the M V N density, with mu equal to X beta and Sigma equal to sigma squared I.
+
+18
+00:04:07,842 --> 00:04:20,215
+We need two parts of the density. The determinant of a diagonal matrix is the product of its diagonal. So the determinant of sigma squared I is sigma squared to the power n.
+
+19
+00:04:20,665 --> 00:04:30,905
+The inverse of a diagonal matrix inverts each diagonal entry. So the inverse of sigma squared I is 1 over sigma squared, times I.
+
+20
+00:04:31,355 --> 00:04:49,873
+Take the log. The first term is minus n over 2 log 2 pi. The determinant gives minus n over 2 log sigma squared. The exponent gives minus 1 over 2 sigma squared, times y minus X beta transpose, y minus X beta.
+
+21
+00:04:50,323 --> 00:05:03,293
+Look at the log-likelihood again. The last part is S of beta, the least squares criterion, times minus 1 over 2 sigma squared. The other two terms do not contain beta.
+
+22
+00:05:03,743 --> 00:05:16,693
+So the log-likelihood is a constant minus a positive number times S of beta. The bottom curve is the log likelihood. It is the top curve S, turned upside down and moved.
+
+23
+00:05:17,143 --> 00:05:32,887
+So the beta that makes S smallest makes the log-likelihood largest, for every value of sigma squared. The M L E of beta is the least squares estimate. M L E equals O L S, when all our assumptions hold.
+
+24
+00:05:33,337 --> 00:05:42,297
+Note: the M L E needs normal errors. The least squares estimate does not. Least squares only minimizes the sum of squares.
+
+25
+00:05:42,747 --> 00:05:59,045
+Here is practice question 1 of Lecture 6. With p equals 1, show that the matrix formula gives the simple linear regression estimates. With one covariate, X has two columns: ones, and the x i. Pause the video and try it.
+
+26
+00:05:59,495 --> 00:06:16,370
+The goal is beta hat 1 equals S x y over S x x, and beta hat 0 equals y bar minus beta hat 1 x bar. The plan: compute X transpose X, invert it, and multiply by X transpose y.
+
+27
+00:06:16,820 --> 00:06:31,241
+X transpose is 2 by n, and X is n by 2. So X transpose X is 2 by 2. Entry 1 1 is row 1 of X transpose times column 1 of X: the sum of n ones, which is n.
+
+28
+00:06:31,691 --> 00:06:44,513
+Entry 1 2 is row 1 of X transpose times column 2 of X. It is the sum of 1 times x i, which is the sum of the x i. Entry 2 1 is the same sum.
+
+29
+00:06:44,963 --> 00:06:50,744
+Entry 2 2 is row 2 times column 2. It is the sum of x i squared.
+
+30
+00:06:51,194 --> 00:06:59,045
+X transpose y is 2 by 1. Its entries are the sum of the y i, and the sum of x i y i.
+
+31
+00:06:59,495 --> 00:07:05,425
+X transpose X is symmetric. This agrees with the rule from the derivative slide.
+
+32
+00:07:05,875 --> 00:07:15,027
+For a 2 by 2 matrix with entries a, b, c, d, the inverse is 1 over a d minus b c, times a new matrix.
+
+33
+00:07:15,477 --> 00:07:20,085
+In the new matrix, swap a and d, and change the sign of b and c.
+
+34
+00:07:20,535 --> 00:07:35,042
+Here a is n, b and c are the sum of x i, and d is the sum of x i squared. So a d minus b c is n times the sum of x i squared, minus the square of the sum of x i.
+
+35
+00:07:35,492 --> 00:07:49,167
+Take out n. The sum of x i squared, minus n x bar squared, is S x x. So the determinant is n times S x x. It is positive when the x i are not all equal.
+
+36
+00:07:49,617 --> 00:08:00,049
+So the inverse is 1 over n S x x, times the matrix: sum of x i squared, minus sum of x i, minus sum of x i, and n.
+
+37
+00:08:00,499 --> 00:08:14,600
+Multiply the inverse by X transpose y. Row 2 gives n times the sum of x i y i, minus the sum of x i times the sum of y i. Row 1 gives the other entry.
+
+38
+00:08:15,050 --> 00:08:30,069
+We use two identities. They come from the definitions of S x x and S x y, when you expand the squares and products. The sum of x i is n x bar, and the sum of y i is n y bar.
+
+39
+00:08:30,519 --> 00:08:44,599
+For beta hat 1, write the sums as n x bar and n y bar. The numerator is n, times the sum of x i y i minus n x bar y bar. That bracket is S x y.
+
+40
+00:08:45,049 --> 00:08:53,305
+The n cancels. So beta hat 1 equals S x y over S x x. This is the simple regression slope.
+
+41
+00:08:53,755 --> 00:09:09,072
+Row 1 gives beta hat 0. Put in the identities. The sum of x i squared is S x x plus n x bar squared. The sum of x i y i is S x y plus n x bar y bar.
+
+42
+00:09:09,522 --> 00:09:15,922
+Multiply out. The two terms n squared x bar squared y bar cancel. Take out n.
+
+43
+00:09:16,372 --> 00:09:33,012
+Divide by n S x x. Beta hat 0 equals y bar minus x bar times S x y over S x x. That is y bar minus beta hat 1 x bar. Both estimates agree with simple linear regression.
+
+44
+00:09:33,462 --> 00:09:51,339
+The picture shows the meaning. The fitted line goes through the point x bar, y bar. Go back x bar units to x equals 0. The line goes down by beta hat 1 times x bar. So the intercept is y bar minus beta hat 1 x bar.
+
+45
+00:09:51,789 --> 00:10:05,315
+Check the result with our own small data set. n is 5. The sum of x is 15. The sum of x squared is 55. The sum of y is 20, and the sum of x y is 69.
+
+46
+00:10:05,765 --> 00:10:17,925
+The determinant is 5 times 55, minus 15 squared, which is 50. x bar is 3, and S x x is 10. So n S x x is also 50.
+
+47
+00:10:18,375 --> 00:10:37,553
+Multiply. Row 1 is 55 times 20, minus 15 times 69, which is 65. Row 2 is minus 15 times 20, plus 5 times 69, which is 45. Divide by 50. Beta hat is 1.3 and 0.9.
+
+48
+00:10:38,003 --> 00:10:53,854
+The simple regression formulas give the same. S x y is 9, so beta hat 1 is 0.9. y bar is 4, so beta hat 0 is 4 minus 0.9 times 3, which is 1.3.
+
+49
+00:10:54,304 --> 00:10:59,211
+The fitted line is y hat equals 1.3 plus 0.9 x.
+
+50
+00:10:59,661 --> 00:11:14,701
+To recap. The model is y equals X beta plus epsilon. X has n rows and p plus 1 columns, with a first column of ones. Beta 0 is the mean outcome when all covariates are 0.
+
+51
+00:11:15,151 --> 00:11:23,876
+Beta j is the difference in mean outcome for a one-unit change in covariate j, holding the other covariates fixed.
+
+52
+00:11:24,326 --> 00:11:39,281
+Least squares minimizes S of beta. The derivative gives the normal equations, and beta hat equals X transpose X inverse, X transpose y. The columns of X must be linearly independent.
+
+53
+00:11:39,731 --> 00:11:55,475
+With normal errors, the M L E is the same as least squares. With one covariate, the formula gives the simple regression estimates. The next video gives the properties of beta hat, the residuals, and sigma hat squared.

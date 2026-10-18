@@ -1,0 +1,231 @@
+1
+00:00:00,000 --> 00:00:09,472
+This is ECE 358, video 6, part b. We solve the DNS exam questions. Part a teaches the concepts.
+
+2
+00:00:09,922 --> 00:00:23,746
+We solve the question bank, application layer, questions 26 to 48, and problem 4 of problem set 2. The question bank has no official answers. The answers here come from the slides.
+
+3
+00:00:24,196 --> 00:00:42,479
+Now the question bank. These are descriptive questions. The answers come from the slides. They are not official answers. Questions 26 to 28: what service does DNS give, what is the system, and why is it a hierarchy? Pause the video and try it.
+
+4
+00:00:42,929 --> 00:01:11,729
+Question 26. DNS translates a hostname into an IP address. It also gives host aliasing, mail server aliasing and load distribution. Question 27. The hardware is the many name servers: root, TLD, authoritative and local servers. The software is the distributed database of resource records, and the DNS protocol that the hosts and servers use to resolve names.
+
+5
+00:01:12,179 --> 00:01:36,776
+Question 28. A dotted name has parts. Read it from right to left. Com is the top level domain. Amazon is the organization, with its authoritative server. www is the host. Each part is one level, and each level knows only the next level. So no server keeps all names, and each organization controls its own records.
+
+6
+00:01:37,226 --> 00:01:44,714
+Questions 29 to 32 ask what each level of the hierarchy does. Pause the video and try it.
+
+7
+00:01:45,164 --> 00:02:10,295
+Question 29. ICANN manages the root domain. There are 13 logical root servers, with about 1700 instances in about 170 countries. Question 30. A root server is the contact of last resort. When it is queried, it normally replies with a referral to the right TLD server, for example the dot com server.
+
+8
+00:02:10,745 --> 00:02:30,137
+Question 31. CIRA, in Ottawa, manages dot ca. Its physical servers are in undisclosed cities around the world. A dot ca TLD server replies with a referral to the authoritative server, for example the uwaterloo.ca server.
+
+9
+00:02:30,587 --> 00:02:45,797
+Question 32. An authoritative server gives the official answer for the hosts of its organization. For a name such as www.uwaterloo.ca, it replies with the IP address.
+
+10
+00:02:46,247 --> 00:02:53,053
+Questions 33 to 35 are about the local DNS server. Pause the video and try it.
+
+11
+00:02:53,503 --> 00:03:10,591
+Question 33. The local DNS server first answers from its cache of recent name-to-address pairs. This answer can be out of date. Else, it forwards the query into the DNS hierarchy and returns the answer to the host.
+
+12
+00:03:11,041 --> 00:03:20,235
+Question 34. On Windows, open a command prompt and type ipconfig /all. Read the DNS server lines.
+
+13
+00:03:20,685 --> 00:03:33,165
+Question 35. When the laptop starts, the OS runs DHCP. The DHCP reply gives the IP addresses of the local DNS servers.
+
+14
+00:03:33,615 --> 00:03:43,557
+Question 36 asks for the main fields of a DNS message. Question 38 asks for the header length. Pause the video and try it.
+
+15
+00:03:44,007 --> 00:04:06,236
+Question 36. The header has the identification, which matches a reply to its query, and the flags: query or reply, recursion desired, recursion available, and authoritative reply. Then four counts. After the header come the questions with name and type, the answers, the authority records, and the additional information.
+
+16
+00:04:06,686 --> 00:04:18,035
+Question 38. The header has 6 fields of 2 bytes each. So the header length is 12 bytes, or 96 bits. It is the same for a query and a reply.
+
+17
+00:04:18,485 --> 00:04:25,931
+Questions 37, 39, 40 and 41 are about the query types. Pause the video and try it.
+
+18
+00:04:26,381 --> 00:04:38,946
+Question 37. The two types are recursive queries and iterative queries. Question 39. Name resolution is the translation of a name into its IP address.
+
+19
+00:04:39,396 --> 00:05:04,121
+Question 40. The syntactic difference is the RD flag in the header. A recursive query has RD equal to 1. An iterative query has RD equal to 0. The semantic difference: for a recursive query, the resolver returns the final answer. For an iterative query, the server returns a referral, or the IP address if it knows it.
+
+20
+00:05:04,571 --> 00:05:20,145
+Question 41. With a recursive query, the local server does all the work. The host sends one query and gets one final answer. This is simple for the host and fast, because the local server and its cache are close.
+
+21
+00:05:20,595 --> 00:05:24,712
+Questions 42 and 43. Pause the video and try it.
+
+22
+00:05:25,162 --> 00:05:53,663
+Question 42. Yes. Server B can decline the recursion. It sets RA to false and returns a referral. For example, A is the local server dns.uwaterloo.ca, and B is a root server. B replies with a referral to the dot edu TLD server. B does this because recursion puts the burden of resolution on B. A root server gets very many queries, so it must keep its work per query small.
+
+23
+00:05:54,113 --> 00:06:12,311
+Question 43. The additional information section carries helpful records. For an MX query, the answer gives the name of the mail server, and the additional section gives the type A record with its IP address. So the client does not need a second query.
+
+24
+00:06:12,761 --> 00:06:18,179
+Questions 44 and 45 are about the records. Pause the video and try it.
+
+25
+00:06:18,629 --> 00:06:35,184
+Question 44. Type A maps a hostname to an IP address. Type NS maps a domain to its authoritative name server. Type CNAME maps an alias to the canonical name. Type MX gives the mail server for a name.
+
+26
+00:06:35,634 --> 00:06:57,330
+Question 45. Records become stale because of caching. A server caches a record with a TTL, for example 3600 seconds. These numbers are an added example. If the host changes its IP address after 1200 seconds, the cached copy does not change.
+
+27
+00:06:57,780 --> 00:07:16,831
+So for the next 3600 minus 1200, that is 2400 seconds, the record is stale. A host that gets this record receives the old IP address and cannot reach the named host. The slides call DNS best-effort.
+
+28
+00:07:17,281 --> 00:07:30,465
+Stale records are removed by the TTL. At 3600 seconds the entry times out and the server deletes it. The next query then gets the new mapping from the hierarchy.
+
+29
+00:07:30,915 --> 00:07:56,152
+Question 46. Assume that the local DNS server is faulty. It treats a received recursive query as an iterative query. Redraw the two workflows of slides 40 and 41. Pause the video and try it. This is our own answer, not an official one. We assume that the faulty server replies with its best information: a referral to a root server.
+
+30
+00:07:56,602 --> 00:08:10,981
+First, the workflow of slide 40. Message 1. The host sends its recursive query to the local server. Message 2. The local server treats it as iterative and replies: ask a root server.
+
+31
+00:08:11,431 --> 00:08:21,649
+Message 3. The host now queries the root server itself. Message 4. The root replies with a referral to the dot edu TLD server.
+
+32
+00:08:22,099 --> 00:08:33,918
+Message 5. The host queries the TLD server. Message 6. The TLD server refers it to dns.cs.umass.edu.
+
+33
+00:08:34,368 --> 00:08:43,093
+Message 7. The host queries the authoritative server. Message 8. The authoritative server returns the IP address.
+
+34
+00:08:43,543 --> 00:08:53,101
+There are still 8 messages. But now the host, not the local server, does the iteration. And the local server caches nothing for the next query.
+
+35
+00:08:53,551 --> 00:09:00,953
+Now the workflow of slide 41, the full recursion. The faulty local server is the only change.
+
+36
+00:09:01,403 --> 00:09:11,622
+Message 1. The host sends the recursive query to the local server. Message 2. The local server replies with a referral to a root server.
+
+37
+00:09:12,072 --> 00:09:26,280
+Message 3. The host sends the recursive query to the root server. Messages 4 and 5. The root sends it on to the TLD server, and the TLD server sends it to the authoritative server.
+
+38
+00:09:26,730 --> 00:09:38,613
+Messages 6, 7 and 8. The answer comes back from the authoritative server to the TLD server, then to the root server, and the root server gives it to the host.
+
+39
+00:09:39,063 --> 00:09:48,065
+Again there are 8 messages. The root server now answers the host directly, and the local server is not used after message 2.
+
+40
+00:09:48,515 --> 00:10:09,145
+Question 47. You start a company, Arctic Climate Consulting. You want a web page at www.acc.ca and email addresses at acc.ca. List the DNS steps. Pause the video and try it. We use the method of slide 46.
+
+41
+00:10:09,595 --> 00:10:29,584
+Step a. Register the name acc.ca at a DNS registrar. Give the names and IP addresses of your authoritative servers. We assume the primary server dns1.acc.ca at 192.0.2.1.
+
+42
+00:10:30,034 --> 00:10:48,530
+The registrar inserts two records into the dot ca TLD server: an NS record, acc.ca is served by dns1.acc.ca, and an A record with the address of dns1.acc.ca.
+
+43
+00:10:48,980 --> 00:11:12,639
+Step b. Set up the authoritative server at 192.0.2.1. Add an A record for the web server, web1.acc.ca. For email, add an MX record for acc.ca with the mail server mail.acc.ca, and an A record for mail.acc.ca.
+
+44
+00:11:13,089 --> 00:11:24,075
+Now add the CNAME record: www.acc.ca is an alias, and web1.acc.ca is the canonical name.
+
+45
+00:11:24,525 --> 00:11:51,341
+Check that the CNAME record is used. A browser resolves www.acc.ca. The dot ca TLD server refers to dns1.acc.ca. dns1 returns the CNAME record and the A record of web1.acc.ca. The browser then connects to 192.0.2.10.
+
+46
+00:11:51,791 --> 00:12:05,125
+Question 48. DNS is an application-layer protocol, but it handles IP addresses, a network-layer concept. What is the main advantage? Pause the video and try it.
+
+47
+00:12:05,575 --> 00:12:19,484
+Look at where DNS runs. Only the hosts and the DNS servers at the edge run DNS. The routers in the core only forward IP datagrams. They do not know about names.
+
+48
+00:12:19,934 --> 00:12:33,011
+So the advantage is complexity at the network's edge, as slide 30 says. The core stays simple. DNS can change, grow and add new records without any change to the routers.
+
+49
+00:12:33,461 --> 00:13:01,835
+Problem set 2, problem 4. You click on a link. The IP address is not cached, so a DNS lookup is needed. n DNS servers are visited, with round trip times RTT1 to RTTn. The page is one small HTML object. RTT0 is the RTT to the Web server, and the transmission time is zero. How long until the object arrives? Pause the video and try it.
+
+50
+00:13:02,285 --> 00:13:21,549
+First, DNS. Each visit is one query and one reply, so it costs one RTT. The DNS time is RTT1 plus RTT2, up to RTTn. With the example values 10, 30 and 20 milliseconds, that is 60 milliseconds.
+
+51
+00:13:21,999 --> 00:13:42,457
+Then HTTP. Use the response time of slide 22. One RTT0 opens the TCP connection. One RTT0 carries the request and returns the object. The transmission time is zero. So the HTTP time is 2 RTT0.
+
+52
+00:13:42,907 --> 00:14:01,553
+The total is 2 RTT0 plus RTT1 plus up to RTTn. This matches the official solution. With RTT0 equal to 50 milliseconds, the example gives 60 plus 100, which is 160 milliseconds.
+
+53
+00:14:02,003 --> 00:14:10,472
+Remember: DNS comes first, because the browser needs the IP address before it can open the TCP connection.
+
+54
+00:14:10,922 --> 00:14:26,410
+Here is the recap of part b. One. For descriptive questions, answer with the terms of the slides: root, TLD, authoritative and local servers, the RD and RA flags, the record types, and the TTL.
+
+55
+00:14:26,860 --> 00:14:31,660
+Two. The DNS header is 6 fields of 2 bytes, so 12 bytes.
+
+56
+00:14:32,110 --> 00:14:38,659
+Three. To redraw a workflow, number every message, and check that each query has its reply.
+
+57
+00:14:39,109 --> 00:14:50,907
+Four. For a new domain, the registrar adds NS and A records to the TLD server, and you add A, MX and CNAME records to your authoritative server.
+
+58
+00:14:51,357 --> 00:15:05,159
+Five. With a DNS lookup, the time to get a page is the sum of the DNS RTTs plus 2 RTT0, plus the file transmission time. That is the end of video 6.

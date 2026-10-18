@@ -1,0 +1,199 @@
+1
+00:00:00,000 --> 00:00:13,099
+This is MATH 239, video 16 a. The topic is partial fractions, from Section 4.3 of the course notes. Video 16 b covers the Main Theorem.
+
+2
+00:00:13,549 --> 00:00:34,135
+After this video, you can factor a denominator into inverse roots. You can find a partial fraction expansion, and expand it with binomial series. You can find the constants in two ways. You can follow the proof of the Partial Fractions Theorem. And you can solve practice problem P4-4.
+
+3
+00:00:34,585 --> 00:00:49,967
+A rational function is a quotient of two polynomials, P of x over Q of x. In video 15, every sequence with a homogeneous linear recurrence had a rational generating series. We want the coefficients.
+
+4
+00:00:50,417 --> 00:01:03,259
+Some rational functions we can expand at once. One over one minus 2x is a geometric series. The coefficients are 1, 2, 4, 8, and so on: 2 to the n.
+
+5
+00:01:03,709 --> 00:01:16,317
+One over one minus 2x, squared, is a binomial series. The coefficient of x to the n is n plus 1, times 2 to the n: 1, 4, 12, 32, 80.
+
+6
+00:01:16,767 --> 00:01:33,322
+In general, the coefficient of x to the n in one over one minus lambda x, to the power j, is n plus j minus 1 choose j minus 1, times lambda to the n. This is the binomial series from Chapter 2.
+
+7
+00:01:33,772 --> 00:01:50,668
+So here is the plan. Write P over Q as a sum of terms C over one minus lambda x to a power. Each term has a known coefficient. Add them to get g sub n. The Partial Fractions Theorem says that this is always possible.
+
+8
+00:01:51,118 --> 00:02:12,750
+Here is Theorem 4.12. Assume the degree of P is less than the degree of Q, which is d. Assume the constant term of Q is 1. Factor Q as a product of factors one minus lambda i x, to the power d i. The lambdas are distinct and nonzero. They are the inverse roots of Q.
+
+9
+00:02:13,200 --> 00:02:29,968
+Take the example Q of x equals one plus x, squared, times one minus 2x. There are two factors. The first has lambda equal to minus 1 and multiplicity 2. The second has lambda equal to 2 and multiplicity 1.
+
+10
+00:02:30,418 --> 00:02:50,727
+Each factor gives one term for each power from 1 up to its multiplicity. One plus x squared gives A over one plus x, and B over one plus x, squared. One minus 2x gives C over one minus 2x. The theorem says that constants with this form exist, and that they are unique.
+
+11
+00:02:51,177 --> 00:02:58,879
+The number of constants is the sum of the multiplicities. Here that is 2 plus 1, which is 3, the degree of Q.
+
+12
+00:02:59,329 --> 00:03:18,081
+Step 1 is to factor Q. Our example is the denominator of Example 4.13: one minus 3 x squared minus 2 x cubed. A factor one minus lambda x is zero at x equals one over lambda. So lambda is called an inverse root of Q.
+
+13
+00:03:18,531 --> 00:03:34,936
+To find the inverse roots, substitute x equals one over t, and multiply by t cubed. The coefficients come out in reverse order: t cubed minus 3 t minus 2. Its ordinary roots are the inverse roots of Q.
+
+14
+00:03:35,386 --> 00:03:54,245
+Now find one root. At x equals minus 1, Q is 1 minus 3 plus 2, which is 0. So one plus x is a factor. Divide by it. The quotient is one minus x minus 2 x squared, which factors again as one plus x, times one minus 2x.
+
+15
+00:03:54,695 --> 00:04:10,716
+So t cubed minus 3t minus 2 equals t plus 1, squared, times t minus 2. The inverse roots are minus 1, twice, and 2. And Q of x equals one plus x, squared, times one minus 2x.
+
+16
+00:04:11,166 --> 00:04:18,057
+On an exam, test x equals 1 and x equals minus 1 first. One of them is often a root.
+
+17
+00:04:18,507 --> 00:04:43,189
+Example 4.13 uses the series from Example 4.7: G of x equals 2 plus 5x, over one minus 3 x squared minus 2 x cubed. Its coefficients are g 0 equals 2, g 1 equals 5, g 2 equals 6, and then g n equals 3 g n minus 2, plus 2 g n minus 3.
+
+18
+00:04:43,639 --> 00:04:56,119
+The degree of the numerator is 1. This is less than 3, so Theorem 4.12 applies. With the factors we found, there are constants A, B and C with this form.
+
+19
+00:04:56,569 --> 00:05:15,172
+Multiply every term by the denominator, one plus x squared times one minus 2x. In each term, part of the denominator cancels. A gets the factors one plus x and one minus 2x. B gets one minus 2x. C gets one plus x, squared.
+
+20
+00:05:15,622 --> 00:05:33,137
+So 2 plus 5x equals A times one plus x times one minus 2x, plus B times one minus 2x, plus C times one plus x squared. Both sides are polynomials. They are equal, so they are equal at every value of x.
+
+21
+00:05:33,587 --> 00:05:46,813
+Now we find the constants. Choose a value of x where one of the factors is zero. Then every term that contains this factor drops out. The red cells show the terms that become zero.
+
+22
+00:05:47,263 --> 00:06:03,071
+At x equals minus 1, one plus x is zero. The A term and the C term are zero. B times one minus 2x is 3 B. The left side is 2 minus 5, which is minus 3. So B equals minus 1.
+
+23
+00:06:03,521 --> 00:06:20,439
+At x equals one half, one minus 2x is zero. The A term and the B term are zero. C times one plus one half, squared, is nine quarters C. The left side is 2 plus five halves, which is nine halves. So C equals 2.
+
+24
+00:06:20,889 --> 00:06:37,209
+No value of x kills the A term alone. So use x equals 0. Every factor is 1 there, so A plus B plus C equals 2. Then A equals 2 minus B minus C, which is 2 plus 1 minus 2. So A equals 1.
+
+25
+00:06:37,659 --> 00:06:47,408
+The result: G of x equals one over one plus x, minus one over one plus x squared, plus two over one minus 2x.
+
+26
+00:06:47,858 --> 00:07:09,917
+There is a second way, used for the Fibonacci numbers in Example 4.4. Multiply out each product. A times one minus x minus 2 x squared. B times one minus 2x. C times one plus 2x plus x squared. Each row shows the coefficients of x to the 0, x, and x squared.
+
+27
+00:07:10,367 --> 00:07:23,572
+Two polynomials are equal when all their coefficients are equal. Each column must add up to the coefficient of 2 plus 5x. This gives three linear equations in A, B and C.
+
+28
+00:07:24,022 --> 00:07:41,003
+The solution is the same: A equals 1, B equals minus 1, C equals 2. The check is in the green box. Substitution is usually faster. Comparing coefficients always works, also when there is no convenient value of x.
+
+29
+00:07:41,453 --> 00:07:54,915
+Step 3: expand each term. One over one plus x is a geometric series in minus x. The coefficients are minus 1 to the n: 1, minus 1, 1, minus 1.
+
+30
+00:07:55,365 --> 00:08:08,250
+Minus one over one plus x, squared, is a binomial series. The coefficient is minus n plus 1, times minus 1 to the n: minus 1, 2, minus 3, 4.
+
+31
+00:08:08,700 --> 00:08:16,764
+Two over one minus 2x has coefficient 2 times 2 to the n: 2, 4, 8, 16, and so on.
+
+32
+00:08:17,214 --> 00:08:36,094
+Add the three rows column by column. The sum row is 2, 5, 6, 19, 28, 69, 122. In column 3, for example, minus 1 plus 4 plus 16 is 19. These are the values of g n from the recurrence.
+
+33
+00:08:36,544 --> 00:08:57,877
+Collect the terms. Minus 1 to the n minus n plus 1 times minus 1 to the n is n times minus 1 to the n plus 1. So g n equals 2 to the n plus 1, plus n times minus 1 to the n plus 1, for all n. Always check a formula against the first values like this.
+
+34
+00:08:58,327 --> 00:09:22,007
+Why is Theorem 4.12 true? Fix Q, of degree d. Let V Q be the set of all P over Q with degree of P less than d. Sums and complex multiples stay in V Q, so it is a vector space. The d vectors 1 over Q, x over Q, up to x to the d minus 1 over Q, span it. So its dimension is at most d.
+
+35
+00:09:22,457 --> 00:09:42,532
+Now take the set B of all terms one over one minus lambda i x, to the power j, for j from 1 to d i. There are d of them. Each one is in V Q. Multiply top and bottom by the missing factors. The numerator then has degree d minus j, which is less than d.
+
+36
+00:09:42,982 --> 00:09:47,953
+If B is linearly independent, then V Q has dimension at least d.
+
+37
+00:09:48,403 --> 00:10:04,872
+Then the dimension is exactly d, and B is a basis. So every P over Q is a combination of the vectors in B, in exactly one way. That is the statement of the theorem. It remains to show that B is linearly independent.
+
+38
+00:10:05,322 --> 00:10:17,354
+Take any combination of the vectors in B that equals zero. This is equation 4.1. The cells show its terms. Suppose that not all the constants are zero.
+
+39
+00:10:17,804 --> 00:10:32,951
+Then some factor p has a nonzero constant. Let t be the largest j with C p t not zero. So the constants with j greater than t are zero. The orange cell is the term with j equal to t.
+
+40
+00:10:33,401 --> 00:10:55,715
+Multiply equation 4.1 by one minus lambda p x, to the power t. A term with j less than t keeps a factor one minus lambda p x, to the power t minus j. The term with j equal to t becomes the constant C p t. The terms for other factors keep the full power t.
+
+41
+00:10:56,165 --> 00:11:17,093
+Now substitute x equals one over lambda p. No denominator is zero there, because the other lambdas are different from lambda p. Every term with a factor one minus lambda p x becomes zero. Only C p t is left. The sum is still zero, so C p t equals zero.
+
+42
+00:11:17,543 --> 00:11:28,509
+But we chose C p t to be nonzero. This is a contradiction. So all the constants are zero, B is linearly independent, and the proof is complete.
+
+43
+00:11:28,959 --> 00:11:47,113
+Now a practice problem from Assignment 4, problem P4-4. It has a posted answer. Pause the video and try it. A of x equals 3 minus 2x, over one minus x, squared. Find the partial fraction expansion, and a formula for a n.
+
+44
+00:11:47,563 --> 00:12:07,574
+The numerator has degree 1, which is less than 2. The denominator is already factored. One minus x has inverse root 1 with multiplicity 2. By Theorem 4.12, there are constants A and B with A over one minus x, plus B over one minus x, squared.
+
+45
+00:12:08,024 --> 00:12:24,984
+Multiply by one minus x, squared. 3 minus 2x equals A times one minus x, plus B. At x equals 1, the A term is zero, so B equals 1. At x equals 0, A plus B equals 3, so A equals 2.
+
+46
+00:12:25,434 --> 00:12:35,866
+Expand. Two over one minus x gives 2 in every position. One over one minus x, squared, gives n plus 1: 1, 2, 3, 4.
+
+47
+00:12:36,316 --> 00:12:46,023
+Add the rows: 3, 4, 5, 6. So a n equals 2 plus n plus 1, which is n plus 3. This matches the posted answer.
+
+48
+00:12:46,473 --> 00:13:01,107
+To recap. Factor the denominator into inverse roots. Test x equals 1 and minus 1 first. The Partial Fractions Theorem gives one term for each power of each factor, with unique constants.
+
+49
+00:13:01,557 --> 00:13:14,827
+Find the constants by substituting the zeros of the factors and x equals 0, or by comparing coefficients. Expand each term with the binomial series, and check the first values.
+
+50
+00:13:15,277 --> 00:13:29,293
+The proof counts dimensions. The space V Q has dimension at most d, and the d terms in B are linearly independent, so B is a basis. Video 16 b covers the Main Theorem.

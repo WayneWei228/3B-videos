@@ -1,0 +1,251 @@
+1
+00:00:00,000 --> 00:00:08,597
+This is STAT 331, video 4. The topic is least squares estimation of the simple linear regression line.
+
+2
+00:00:09,047 --> 00:00:27,202
+After this video, you can explain why we minimize the sum of squared residuals. You can derive the two least squares estimators. You can compute them by hand, interpret the slope, and solve Tutorial 1, question 1 parts a and b, and question 2 part a.
+
+3
+00:00:27,652 --> 00:00:41,796
+Here is the model from the last video. y i equals beta zero plus beta one x i plus epsilon i. The errors are independent and normal, with mean 0 and variance sigma squared.
+
+4
+00:00:42,246 --> 00:00:53,169
+These are the data of Tutorial 1. x is the number of machine hours in a month. y is the maintenance cost, in hundreds of dollars. There are 7 months.
+
+5
+00:00:53,619 --> 00:00:58,931
+We can draw many lines through these points. Line A is flat. Line B is steep.
+
+6
+00:00:59,381 --> 00:01:03,221
+Line C looks better than A and B. But looks are not a rule.
+
+7
+00:01:03,671 --> 00:01:21,569
+beta zero and beta one are fixed, unknown parameters. We need a rule that uses the data to pick one line. Two people who use the rule must get the same line. Slide 18 asks this question: how do we estimate beta zero and beta one?
+
+8
+00:01:22,019 --> 00:01:28,654
+Take one candidate line, beta zero plus beta one x. The gray line is one choice.
+
+9
+00:01:29,104 --> 00:01:46,171
+Look at one point, x i, y i. The line gives the value beta zero plus beta one x i at the same x. The vertical distance is y i minus beta zero minus beta one x i. The orange segment shows it.
+
+10
+00:01:46,621 --> 00:01:59,975
+Each point has one such distance. We use vertical distances, because the model puts the error epsilon i on y, not on x. A good line makes all these distances small together.
+
+11
+00:02:00,425 --> 00:02:10,815
+Here is the flat line at y equals 27. 27 is y bar, the mean of the costs. The labels show the seven vertical distances.
+
+12
+00:02:11,265 --> 00:02:30,230
+Add the distances. Minus 1, minus 2, minus 7, minus 9, plus 3, plus 13, plus 3. The sum is 0. Positive and negative distances cancel. This flat line clearly misses the trend, but its sum is 0. So the plain sum is a bad measure.
+
+13
+00:02:30,680 --> 00:02:48,024
+Square each distance first. Then every term is positive or zero, so nothing cancels. Large distances count more than small ones. The sum of squares is S of beta zero and beta one. Least squares picks the line with the smallest S.
+
+14
+00:02:48,474 --> 00:03:03,066
+On the left, each residual becomes a real square. Its side is the vertical distance. Its area is the squared distance. S is the total area of the squares. On the right, we plot S against the slope.
+
+15
+00:03:03,516 --> 00:03:09,788
+First, the flat line through the mean. The squares are large. S equals 322.
+
+16
+00:03:10,238 --> 00:03:18,878
+Now a slope of minus 0.2, through the same mean point. The squares shrink. S equals 161.
+
+17
+00:03:19,328 --> 00:03:26,901
+A slope of minus 0.7 is too steep. The squares grow again. S equals 213.
+
+18
+00:03:27,351 --> 00:03:40,365
+The best slope is minus 0.41. Its squares are the smallest. S equals 104.1. No other line through the mean point has a smaller total area.
+
+19
+00:03:40,815 --> 00:03:50,543
+Here is S for every slope. The curve is a parabola, so it has one lowest point. At the lowest point, the curve is flat. Its slope is zero.
+
+20
+00:03:50,993 --> 00:04:07,377
+So least squares means: choose beta zero hat and beta one hat that make S smallest. S is a smooth function of two variables. At its minimum, both partial derivatives are zero. This gives two equations in two unknowns.
+
+21
+00:04:07,827 --> 00:04:21,885
+Start with beta zero. Differentiate each squared term with the chain rule. The outer derivative is 2 times the bracket. The inner derivative of the bracket, with respect to beta zero, is minus 1.
+
+22
+00:04:22,335 --> 00:04:35,434
+Set the derivative to zero. The 2 and the minus 1 are constants, so they drop out. We put hats on the betas, because the solution is our estimate. The sum of the residuals is zero.
+
+23
+00:04:35,884 --> 00:04:46,956
+Split the sum into three parts. The sum of beta zero hat, n times, is n beta zero hat. Beta one hat is a constant, so it comes out of its sum.
+
+24
+00:04:47,406 --> 00:05:00,910
+Divide by n. The sum of y i over n is y bar. The sum of x i over n is x bar. So beta zero hat equals y bar minus beta one hat x bar.
+
+25
+00:05:01,360 --> 00:05:15,888
+Move the terms. y bar equals beta zero hat plus beta one hat x bar. So the fitted line always passes through the point x bar, y bar. The purple dashed lines mark the two means.
+
+26
+00:05:16,338 --> 00:05:28,583
+Every slope gives one line through this point. The first equation fixes the intercept for each slope. The second equation picks the slope. The green line is the least squares line.
+
+27
+00:05:29,033 --> 00:05:40,617
+Now beta one. The chain rule again. This time the inner derivative of the bracket, with respect to beta one, is minus x i. Set the derivative to zero.
+
+28
+00:05:41,067 --> 00:05:51,905
+Multiply out and drop the constant minus 2. The sum of x i equals n x bar. So the middle term is beta zero hat times n x bar.
+
+29
+00:05:52,355 --> 00:05:59,459
+Substitute the first result: beta zero hat equals y bar minus beta one hat x bar.
+
+30
+00:05:59,909 --> 00:06:04,581
+Multiply out the bracket, and collect the two terms with beta one hat.
+
+31
+00:06:05,031 --> 00:06:21,479
+Solve for beta one hat. The numerator is the sum of y i x i minus n y bar x bar. The denominator is the sum of x i squared minus n x bar squared. This is the result on slide 25.
+
+32
+00:06:21,929 --> 00:06:38,078
+The two equations say two things about the residuals e i of the fitted line. The sum of e i is zero. And the sum of x i times e i is zero. The bars show the seven residuals for the Tutorial 1 data.
+
+33
+00:06:38,528 --> 00:06:52,629
+The long formula is hard to remember. Slide 26 makes it short. First a fact: the deviations x i minus x bar always add to zero. The sum of x i is n x bar.
+
+34
+00:06:53,079 --> 00:07:02,125
+So any constant times the deviations also adds to zero. In particular, y bar times the sum of the deviations is zero.
+
+35
+00:07:02,575 --> 00:07:18,553
+Write the numerator as the sum of y i times x i minus x bar. Subtract y bar times the same deviations, which adds zero. The denominator works the same way, with x bar in place of y bar.
+
+36
+00:07:19,003 --> 00:07:36,603
+The results are S x y over S x x for the slope, and y bar minus beta one hat x bar for the intercept. Learn these two lines. S x x, S x y and S y y are sums of products of deviations from the means.
+
+37
+00:07:37,053 --> 00:07:50,301
+Check with the Tutorial 1 data. The long form gives minus 531 over 1294. The short form gives the same fraction, as the next slides show.
+
+38
+00:07:50,751 --> 00:08:02,229
+Now a tutorial question. Pause the video and try it. Here are the data again: seven months of machine hours and maintenance cost. Find the least squares estimates.
+
+39
+00:08:02,679 --> 00:08:15,457
+Step 1: the means. The x values add to 707, so x bar is 101. The y values add to 189, so y bar is 27.
+
+40
+00:08:15,907 --> 00:08:33,294
+Step 2: the deviations from the means. For example, 110 minus 101 is plus 9, and 26 minus 27 is minus 1. Each deviation column adds to zero. This is a good check of your arithmetic.
+
+41
+00:08:33,744 --> 00:08:41,573
+Step 3: square the x deviations. The sum is S x x, which equals 1294.
+
+42
+00:08:42,023 --> 00:08:51,154
+Step 4: multiply the two deviations in each row. The sum is S x y, which equals minus 531.
+
+43
+00:08:51,604 --> 00:09:17,545
+Step 5: beta one hat is S x y over S x x. Minus 531 over 1294 is minus 0.4104. Then beta zero hat is y bar minus beta one hat x bar. 27 plus 0.4104 times 101 is 68.45.
+
+44
+00:09:17,995 --> 00:09:24,267
+Here is the meaning of S x y. Draw the mean lines. They cross at x bar, y bar.
+
+45
+00:09:24,717 --> 00:09:42,232
+Each product of deviations is the signed area of a rectangle. One corner is the mean point. The other corner is the data point. For x equals 88, the area is minus 13 times plus 13, which is minus 169.
+
+46
+00:09:42,682 --> 00:09:55,503
+Points to the upper left or lower right give negative areas. They are red. Points to the upper right or lower left give positive areas. They are blue. Here most of the area is red.
+
+47
+00:09:55,953 --> 00:10:13,105
+S x y is the total signed area: minus 531. S x x is a sum of squares, so it is always positive. So beta one hat has the same sign as S x y. More hours go with a lower cost in these data.
+
+48
+00:10:13,555 --> 00:10:27,443
+Here is the fitted line. y hat equals 68.45 minus 0.4104 x. Part b asks for an interpretation of the slope. Pause the video and try it.
+
+49
+00:10:27,893 --> 00:10:45,877
+From lecture 2, slide 16: beta one is the change in the mean of y when x increases by one unit. The purple triangle shows 10 extra hours. The fitted mean cost drops by 4.10, which is 10 times 0.41.
+
+50
+00:10:46,327 --> 00:10:59,063
+So the answer: for each additional machine hour per month, the estimated mean monthly maintenance cost decreases by 0.41 hundred dollars. That is 41 dollars.
+
+51
+00:10:59,513 --> 00:11:11,311
+A full answer has four parts. One unit increase in x. The estimated mean of y, not y itself. The units. And the direction: increase or decrease.
+
+52
+00:11:11,761 --> 00:11:27,206
+The lecture uses the Gladstone data from 1905. There are 236 people. x is head size in cubic centimeters. y is brain weight in grams. The points show a clear increasing trend.
+
+53
+00:11:27,656 --> 00:11:45,491
+The same formulas give beta zero hat equals 335.4323 and beta one hat equals 0.2608. The slide gets these numbers from the computer. The line passes through the mean point, in purple.
+
+54
+00:11:45,941 --> 00:12:05,546
+Interpretation: for each extra cubic centimeter of head size, the estimated mean brain weight is 0.26 grams higher. The intercept is the mean brain weight at head size 0. No person has a head size near 0, so the intercept has no practical meaning here.
+
+55
+00:12:05,996 --> 00:12:22,743
+Another tutorial question. Pause the video and try it. The question gives the computer output for 100 aircraft. The output lists the means, S x x, S x y, and the estimates. Verify the estimates with our formulas.
+
+56
+00:12:23,193 --> 00:12:38,937
+The slope: S x y over S x x. 4,686,071 divided by 731,093 is 6.410. This matches the output.
+
+57
+00:12:39,387 --> 00:12:53,680
+The intercept: y bar minus beta one hat x bar. 1822 minus 6.410 times 148.8 is 868.2.
+
+58
+00:12:54,130 --> 00:13:18,087
+The output says 868.487. The small difference comes from rounding. The output shows x bar as 148.8. With x bar equal to 148.76, which rounds to 148.8, the formula gives 868.49. So the estimates agree.
+
+59
+00:13:18,537 --> 00:13:27,156
+Slide 26 ends with a question. Why do we minimize the squares, and not another function, such as the absolute distances?
+
+60
+00:13:27,606 --> 00:13:48,939
+The answer uses the model. Each y i is normal, with mean beta zero plus beta one x i, and variance sigma squared. The orange curves show this normal density at three values of x. In the next video, maximum likelihood with this model gives the same estimates as least squares.
+
+61
+00:13:49,389 --> 00:13:59,011
+To recap. A residual is the vertical distance from a point to a line. Least squares picks the line with the smallest sum of squared residuals.
+
+62
+00:13:59,461 --> 00:14:15,077
+Setting the two partial derivatives to zero gives beta zero hat equals y bar minus beta one hat x bar, and beta one hat equals S x y over S x x. The line passes through the mean point.
+
+63
+00:14:15,527 --> 00:14:37,479
+By hand: compute the means, the deviations, S x x and S x y, then the slope and the intercept. Interpret the slope as the change in the estimated mean of y for one more unit of x. The next video covers maximum likelihood, fitted values, residuals, and the estimate of sigma squared.

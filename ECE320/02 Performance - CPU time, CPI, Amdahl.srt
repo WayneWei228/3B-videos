@@ -1,0 +1,331 @@
+1
+00:00:00,000 --> 00:00:05,227
+This is ECE 320, video 2. The topic is performance.
+
+2
+00:00:05,677 --> 00:00:26,754
+After this video, you can solve four types of problems. You can calculate the CPI from an instruction mix. You can calculate and compare execution times. You can use Amdahl's law to calculate speedup. And you can work backwards in Amdahl's law. Every past midterm starts with a question of this type.
+
+3
+00:00:27,204 --> 00:00:37,124
+There are two measures of performance. The first is latency. Latency is the time to finish one fixed task. For latency, smaller is better.
+
+4
+00:00:37,574 --> 00:00:45,510
+The second is throughput. Throughput is the number of tasks that finish in a fixed time. For throughput, larger is better.
+
+5
+00:00:45,960 --> 00:00:53,043
+Most questions in this course use latency. That is, the execution time of one program, in seconds.
+
+6
+00:00:53,493 --> 00:01:16,106
+The CPU performance equation gives the execution time of a program. Time equals instructions per program, times cycles per instruction, times seconds per cycle. The picture shows a small program of 5 instructions. Each blue box is one instruction. The dashed lines split an instruction into its clock cycles.
+
+7
+00:01:16,556 --> 00:01:32,449
+The first term is the instruction count, I C. It is the dynamic count. That is the number of instructions that actually execute, with each loop pass counted again. Here it is 5. The program, the compiler and the ISA set it.
+
+8
+00:01:32,899 --> 00:01:49,539
+The second term is CPI, the average number of cycles per instruction. Here 8 cycles for 5 instructions gives a CPI of 1.6. Its inverse is I P C. The compiler and the micro-architecture set it.
+
+9
+00:01:49,989 --> 00:02:08,293
+The third term is the clock cycle time, the length of one cycle. It is one divided by the clock frequency. So this program takes 5 times 1.6 times t clock, which is 8 cycle times. The micro-architecture and the physical layout set it.
+
+10
+00:02:08,743 --> 00:02:21,991
+To get a short execution time, you must make all three terms small. In practice, a change that makes one term smaller often makes another term larger. So always use the full equation.
+
+11
+00:02:22,441 --> 00:02:36,244
+Different instructions take different numbers of cycles. So the CPI of a program is a weighted average. Multiply the fraction of each instruction type by its CPI, and add the results.
+
+12
+00:02:36,694 --> 00:02:52,950
+Here is the example from slide 4. Program A has equal numbers of integer, floating point, and memory instructions. Integer instructions take 1 cycle, memory instructions take 2, and floating point instructions take 3.
+
+13
+00:02:53,400 --> 00:03:11,427
+Each type is one third of the instructions. So the CPI is one third times 1, plus one third times 2, plus one third times 3. That is 6 divided by 3, which is 2. The bar shows each term. The slow type adds the most cycles.
+
+14
+00:03:11,877 --> 00:03:16,997
+Remember that the fractions are fractions of instructions, not fractions of time.
+
+15
+00:03:17,447 --> 00:03:46,332
+Here is the worked example from slide 6. The table gives the instruction mix. Option A makes branches cost 1 cycle. Option B adds a cache, so loads cost 3 cycles. Which option is better? First, find the base CPI. Point 5 times 1, plus point 2 times 5, plus point 1 times 1, plus point 2 times 2. The base CPI is 2. The bar shows the cycles that each type adds. Loads add the most.
+
+16
+00:03:46,782 --> 00:03:54,227
+For option A, change only the branch row. The branch cost becomes 1. The CPI becomes 1.8.
+
+17
+00:03:54,677 --> 00:04:02,379
+For option B, change only the load row. The load cost becomes 3. The CPI becomes 1.6.
+
+18
+00:04:02,829 --> 00:04:14,050
+Option B gives the lower CPI. The instruction count and the clock do not change. So the lower CPI gives the shorter time, and option B is better.
+
+19
+00:04:14,500 --> 00:04:30,287
+The reason: each load saves 2 cycles, but each branch saves only 1 cycle. Both types are 20 percent of the instructions. Method for this question type: change one row, recalculate the weighted sum, and compare.
+
+20
+00:04:30,737 --> 00:04:53,905
+Many people think that a higher clock frequency means a faster processor. Slide 8 shows why this is wrong. Processor A has a CPI of 2 and a 5 gigahertz clock. Processor B has a CPI of 1 and a 3 gigahertz clock. Both use the same ISA and compiler, so the instruction count is the same.
+
+21
+00:04:54,355 --> 00:05:06,131
+Because the instruction count is the same, compare the time per instruction. That is the CPI times the cycle time, or the CPI divided by the frequency.
+
+22
+00:05:06,581 --> 00:05:25,887
+For A, 2 divided by 5 gigahertz is point 4 nanoseconds. For B, 1 divided by 3 gigahertz is point 3 3 3 nanoseconds. The picture draws one instruction to scale. A has two short cycles. B has one longer cycle, but the total is shorter.
+
+23
+00:05:26,337 --> 00:05:35,703
+B takes less time per instruction. So B is faster, by point 4 divided by point 3 3 3, which is 1.2 times.
+
+24
+00:05:36,153 --> 00:05:42,147
+Rule: do not compare clock frequency alone. Compare the product of all three terms.
+
+25
+00:05:42,597 --> 00:06:04,187
+Now a practice question from assignment 1, question 4 b. Machine A has a 20 nanosecond cycle and a CPI of 1.5. Machine B has a 15 nanosecond cycle and a CPI of 1.0. Which machine is faster, and by how much? Pause the video and try it first.
+
+26
+00:06:04,637 --> 00:06:12,445
+Both machines run the same program on the same ISA. So the instruction count is the same, and it cancels.
+
+27
+00:06:12,895 --> 00:06:19,679
+Machine A takes I C times 1.5 times 20. That is 30 I C nanoseconds.
+
+28
+00:06:20,129 --> 00:06:27,169
+Machine B takes I C times 1.0 times 15. That is 15 I C nanoseconds.
+
+29
+00:06:27,619 --> 00:06:34,168
+The ratio is 30 divided by 15, which is 2. So machine B is 2 times faster.
+
+30
+00:06:34,618 --> 00:06:43,194
+Remember the meaning of times faster. X is n times faster than Y when the time of Y divided by the time of X is n.
+
+31
+00:06:43,644 --> 00:07:04,295
+This practice question is from assignment 1, question 3. Here the instruction count changes too. CPU A uses a separate compare instruction before each branch. CPU B does the compare inside the branch. CPU A has a faster clock. Which CPU is faster? Pause and try it.
+
+32
+00:07:04,745 --> 00:07:22,985
+Use the instruction count of A as the base. For A, compares are point 2 with 1 cycle, branches are point 2 with 2 cycles, and others are point 6 with 1 cycle. The sum is 1.2. So the time of A is 1.2 times I C A times t A.
+
+33
+00:07:23,435 --> 00:07:44,149
+CPU B has no compare instructions. So it runs only point 8 of the instructions of A. Keep the counts per I C A: branches point 2 times 2, plus others point 6 times 1. The sum is 1.0. So the time of B is 1.0 times I C A times t B.
+
+34
+00:07:44,599 --> 00:07:57,314
+In part a, the clock cycle of B is 1.25 times longer. So the time of B is 1.25. This is more than 1.2, so CPU A is faster.
+
+35
+00:07:57,764 --> 00:08:10,223
+In part b, the clock cycle of B is 1.1 times longer. So the time of B is 1.1. This is less than 1.2, so CPU B is faster.
+
+36
+00:08:10,673 --> 00:08:23,046
+The common mistake is to rescale the mix of B to 25 and 75 percent, and then forget that B runs fewer instructions. Always write every count against the same base.
+
+37
+00:08:23,496 --> 00:08:32,349
+Slides 15 to 17 say which mean to use. Use the arithmetic mean for values in units of time, such as latency.
+
+38
+00:08:32,799 --> 00:08:39,605
+Use the harmonic mean for rates, such as throughput. A rate is inversely proportional to time.
+
+39
+00:08:40,055 --> 00:08:44,876
+Use the geometric mean for ratios with no unit, such as speedup.
+
+40
+00:08:45,326 --> 00:09:10,883
+Here is why the harmonic mean is correct for rates. These numbers are an example, not from the slides. Do one task at 2 tasks per second, and one at 6 tasks per second. The total time is one half plus one sixth, which is two thirds of a second, for 2 tasks. The real rate is 3 tasks per second. The harmonic mean gives 3. The arithmetic mean gives 4, which is wrong.
+
+41
+00:09:11,333 --> 00:09:20,272
+Speedup is the old time divided by the new time. It is a ratio. So for an average speedup, use the geometric mean.
+
+42
+00:09:20,722 --> 00:09:38,471
+Amdahl's law answers this question: if I make one part of a program faster, how much faster is the whole program? Draw the old execution time as a bar. A fraction f of the time can use the faster mode. The rest, 1 minus f, cannot.
+
+43
+00:09:38,921 --> 00:09:48,991
+Make the f part s times faster. Its time becomes f divided by s. The other part does not change. In this drawing, s is 4.
+
+44
+00:09:49,441 --> 00:09:54,753
+So the new time is the old time times 1 minus f, plus f over s.
+
+45
+00:09:55,203 --> 00:10:10,307
+Speedup is the old time divided by the new time. So the speedup is 1 divided by 1 minus f, plus f over s. This is Amdahl's law. You must know it, and you must be able to draw this bar to rebuild it.
+
+46
+00:10:10,757 --> 00:10:19,311
+Be careful. f is a fraction of the original execution time, before the change. It is not a fraction of instructions.
+
+47
+00:10:19,761 --> 00:10:30,321
+Slide 19 gives four cases. With f equal to 95 percent and s equal to 1.1, the speedup is 1.094.
+
+48
+00:10:30,771 --> 00:10:37,875
+With f equal to 5 percent and s equal to 10, the speedup is only 1.047.
+
+49
+00:10:38,325 --> 00:10:49,419
+Even if s is infinite, with f equal to 5 percent, the speedup is only 1.052. That is 1 divided by point 9 5.
+
+50
+00:10:49,869 --> 00:10:58,637
+With f equal to 95 percent and s infinite, the speedup is 20. That is 1 divided by point 0 5.
+
+51
+00:10:59,087 --> 00:11:20,804
+So the speedup can never be more than 1 divided by 1 minus f. For example, if you remove half of the time completely, the speedup is only 2. The plot shows this. Each curve rises with s, but it never passes its dashed limit. For f equal to point 5, the limit is 2. For point 9 5, it is 20.
+
+52
+00:11:21,254 --> 00:11:34,054
+The take away from the slides. Make the common case fast. The part that you do not improve sets the limit. Build a balanced system, and design for average performance, not peak performance.
+
+53
+00:11:34,504 --> 00:11:49,181
+Now a real midterm question. Fall 2019, question 1 part A, 4 marks. Fifty percent of a program is accelerated by a factor of 4. What is the speedup? Pause and try it.
+
+54
+00:11:49,631 --> 00:11:52,383
+f is point 5, and s is 4.
+
+55
+00:11:52,833 --> 00:12:01,217
+The speedup is 1 divided by point 5 plus point 5 over 4. That is 1 divided by point 6 2 5.
+
+56
+00:12:01,667 --> 00:12:03,609
+The speedup is 1.6.
+
+57
+00:12:04,059 --> 00:12:09,499
+Part C of the same question asks: why do micro-architects use Amdahl's law?
+
+58
+00:12:09,949 --> 00:12:27,058
+A good answer: Amdahl's law shows the total gain of a change before you build it. The gain is limited by the fraction of time that the faster mode is used. So architects improve the common case first, and do not spend effort on rare cases.
+
+59
+00:12:27,508 --> 00:12:53,236
+This midterm question adds a slowdown. It is from the Fall 2022 paper, question 1. In part A, multiplications take 40 percent of the original time, and they become 5 times faster. In part B, the same change makes data cache accesses 3 times slower. Cache accesses take 30 percent of the original time. Pause and try both parts.
+
+60
+00:12:53,686 --> 00:13:04,523
+Part A is basic Amdahl. 1 divided by point 6 plus point 4 over 5. That is 1 divided by point 6 8, which is 1.47.
+
+61
+00:13:04,973 --> 00:13:23,149
+For part B, use the general form. The new time, as a fraction of the old time, is the unchanged part plus each changed part divided by its speedup. A slowdown of 3 is a speedup of one third. So that part takes 3 times its old time.
+
+62
+00:13:23,599 --> 00:13:36,037
+Draw the bars. The other work is point 3 and does not change. Multiplication goes from point 4 to point 0 8. Cache accesses go from point 3 to point 9.
+
+63
+00:13:36,487 --> 00:13:54,727
+The new time is point 3 plus point 0 8 plus point 9, which is 1.28. The speedup is 1 divided by 1.28, which is point 7 8. This is less than 1. So the program is slower, and the optimization is not useful.
+
+64
+00:13:55,177 --> 00:14:12,969
+Assignment 1, question 1 uses Amdahl's law two times. Application A uses 80 percent of the time, and application B uses 20 percent. 40 percent of A and 99 percent of B can be made 2 times faster. Pause and try it.
+
+65
+00:14:13,419 --> 00:14:21,483
+Part a. First, find the speedup of A alone. f is point 4 and s is 2. The speedup of A is 1.25.
+
+66
+00:14:21,933 --> 00:14:40,685
+Then use this result as s for the system. For the system, f is point 8 and s is 1.25. The system speedup is 1.19. The bars show it. Inside app A, only the blue part becomes 2 times shorter. App B does not change.
+
+67
+00:14:41,135 --> 00:14:58,137
+Part b. The speedup of B alone is 1 divided by point 0 1 plus point 9 9 over 2, which is 1.98. For the system, f is point 2 and s is 1.98. The system speedup is only 1.11.
+
+68
+00:14:58,587 --> 00:15:11,707
+Part c. B is almost fully optimized, but optimizing A gives the larger gain. The reason is that A has the larger fraction of time. Choose the change with the largest f.
+
+69
+00:15:12,157 --> 00:15:18,088
+The method: find the speedup of the inner part first. Then use it as s at the outer level.
+
+70
+00:15:18,538 --> 00:15:35,285
+Assignment 1, question 2 is a trap. The enhanced mode is 10 times faster. It is used 50 percent of the time, but this percentage is of the new execution time, not the old one. Find f, and find the speedup. Pause and try it.
+
+71
+00:15:35,735 --> 00:15:44,929
+Use a simple unit. Let the new time be 1. Half of it, point 5, is in enhanced mode. The other point 5 is not enhanced.
+
+72
+00:15:45,379 --> 00:15:57,625
+Now undo the speedup. Before the change, the enhanced part took point 5 times 10, which is 5. The other part stays point 5. So the old time is 5.5.
+
+73
+00:15:58,075 --> 00:16:09,083
+f is the fraction of the old time that was converted. That is 5 divided by 5.5, which is 10 over 11, or 90.9 percent.
+
+74
+00:16:09,533 --> 00:16:25,469
+The speedup is the old time divided by the new time. That is 5.5 divided by 1, which is 5.5. Amdahl's law with f equal to 10 over 11 and s equal to 10 gives the same result.
+
+75
+00:16:25,919 --> 00:16:37,332
+Rule: when the percentage is given on the new time, set the new time to 1. Multiply the fast part by s to get the old time. Then use the definitions.
+
+76
+00:16:37,782 --> 00:16:46,870
+Here is the recap. One. Execution time is I C times CPI times the cycle time. Compare all three terms.
+
+77
+00:16:47,320 --> 00:16:55,875
+Two. The CPI is a weighted average over instruction types. To test a change, change one row and recalculate.
+
+78
+00:16:56,325 --> 00:17:02,085
+Three. If the instruction count also changes, write every count against one base.
+
+79
+00:17:02,535 --> 00:17:07,868
+Four. n times faster means the slow time divided by the fast time is n.
+
+80
+00:17:08,318 --> 00:17:21,630
+Five. Amdahl's law. Speedup is 1 divided by 1 minus f, plus f over s. f is a fraction of the original time. The limit is 1 divided by 1 minus f.
+
+81
+00:17:22,080 --> 00:17:29,995
+Six. With several parts or a slowdown, add the unchanged part and each changed part divided by its speedup.
+
+82
+00:17:30,445 --> 00:17:36,589
+Seven. If the percentage is given on the new time, set the new time to 1 and work backwards.
+
+83
+00:17:37,039 --> 00:17:47,172
+Eight. Use the arithmetic mean for times, the harmonic mean for rates, and the geometric mean for ratios. That is the end of video 2.

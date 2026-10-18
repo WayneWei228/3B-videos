@@ -1,0 +1,327 @@
+1
+00:00:00,000 --> 00:00:12,971
+This is ECE 358, video 5 a. The topic is the application layer and HTTP connections. It covers chapter 2, slides 1 to 23.
+
+2
+00:00:13,421 --> 00:00:40,706
+After this video, you can explain the two application architectures, processes, sockets and port numbers. You can name the transport needs of an application. You can draw non-persistent and persistent HTTP on a time diagram. And you can explain why one object takes 2 RTT plus the file transmission time. You can also answer question bank questions 1 to 20 of the application layer.
+
+3
+00:00:41,156 --> 00:00:53,999
+A network application is a set of programs that run on different end systems. The programs communicate over the network. For example, browser software talks to web server software.
+
+4
+00:00:54,449 --> 00:01:11,174
+The routers in the network core do not run normal user applications. They use only the network, link and physical layers. So an app developer writes software only for the end systems. This allows fast development and spread of new apps.
+
+5
+00:01:11,624 --> 00:01:23,485
+The bits go down the stack of the sender, through the routers, and up the stack of the receiver. But at the application layer, the message goes from one end system to the other end system.
+
+6
+00:01:23,935 --> 00:01:39,594
+Some apps face the user, such as the Web and e-mail. Others do not, such as DNS and DHCP. BGP and RIP also run as applications, on routers, to create and update routing tables.
+
+7
+00:01:40,044 --> 00:01:56,556
+There are two architectures for an application. The first is client-server. The server is an always-on host. It is ready to accept service requests. It has a permanent IP address. Servers are often in data centers, for scaling.
+
+8
+00:01:57,006 --> 00:02:11,406
+Clients contact the server and communicate with it. A blue arrow is a request, and a green arrow is the response. Clients can be intermittently connected, and they can have dynamic IP addresses.
+
+9
+00:02:11,856 --> 00:02:17,872
+Clients do not communicate directly with each other. All communication goes through the server.
+
+10
+00:02:18,322 --> 00:02:26,941
+Examples of client-server protocols are HTTP, IMAP for mail access, and FTP for file transfer.
+
+11
+00:02:27,391 --> 00:02:41,940
+The second architecture is peer-to-peer, or P2P. There is no always-on server. Arbitrary end systems communicate directly. Peers request service from other peers, and provide service in return.
+
+12
+00:02:42,390 --> 00:02:58,369
+Here is the example from slide 7. N peers want a file F. Each peer downloads only a fraction, F over N, from the source. With 4 peers and a 100 megabyte file, each peer gets 25 megabytes.
+
+13
+00:02:58,819 --> 00:03:09,955
+Then the peers exchange their parts. Each peer gets the other 3 parts, 75 megabytes, from the other peers. Now every peer has a full copy of F.
+
+14
+00:03:10,405 --> 00:03:30,159
+This is self scalability. Each new peer brings new demand, but also new service capacity. The cost: peers are intermittently connected and can change IP addresses, so management is complex. Examples are BitTorrent for file sharing, and the RIP protocol on routers.
+
+15
+00:03:30,609 --> 00:03:53,927
+What communicates is not a host, but a process. A process is a program that runs in a host. It is one execution instance of a program. Two processes in the same host use inter-process communication, or IPC. The operating system defines it. Examples are files, pipes, message queues, shared memory and semaphores.
+
+16
+00:03:54,377 --> 00:03:59,795
+Processes in different hosts communicate by exchanging messages over the network.
+
+17
+00:04:00,245 --> 00:04:15,264
+The process that initiates the communication is the client process. The process that waits to be contacted is the server process. P2P apps have both kinds, and some P2P processes act as both.
+
+18
+00:04:15,714 --> 00:04:26,509
+A process sends and receives messages through its socket. Here are two hosts with their layer stacks. A process runs at the application layer of each host.
+
+19
+00:04:26,959 --> 00:04:39,439
+The socket is the door between the application process and the transport layer. The app developer controls everything above the socket. The operating system controls everything below it.
+
+20
+00:04:39,889 --> 00:04:54,097
+The sending process writes its message out of the door. It relies on the transport infrastructure to deliver the message to the socket of the receiving process. So two sockets are involved, one on each side.
+
+21
+00:04:54,547 --> 00:05:17,437
+Slide 9 also lists the socket system calls. Socket creates a socket and returns a socket descriptor. The server calls bind to assign an address, I P plus port. Listen makes the socket passive. Accept accepts a connection from a client, which calls connect. Then send and receive move the data, and close closes the socket.
+
+22
+00:05:17,887 --> 00:05:35,658
+To receive messages, a process must have a global identifier. The host has a unique 32-bit IP address. For example, 129 dot 97 dot 56 dot 100. That is 4 numbers of 8 bits each.
+
+23
+00:05:36,108 --> 00:05:44,108
+Is the IP address of the host enough to identify the process? No. Many processes can run on the same host.
+
+24
+00:05:44,558 --> 00:05:59,833
+So each process also has a port number. The port number is an operating system concept. Well-known port numbers are reserved. An HTTP server uses port 80. A mail server uses port 25.
+
+25
+00:06:00,283 --> 00:06:22,939
+The tuple, IP address and port number, uniquely identifies a process on a host. To send an HTTP message to the web server of w w w dot e c e dot u waterloo dot c a, use IP address 129 dot 97 dot 56 dot 100, and port 80.
+
+26
+00:06:23,389 --> 00:06:32,029
+An application-layer protocol defines four things. First, the types of messages, for example request and response.
+
+27
+00:06:32,479 --> 00:06:43,871
+Second, the message syntax. That is, the fields in the message and how they are separated. This is the first line of an HTTP request, with its fields.
+
+28
+00:06:44,321 --> 00:06:53,067
+Third, the message semantics. That is, the meaning of the information in each field. Here, the method, the object, and the version.
+
+29
+00:06:53,517 --> 00:06:59,811
+Fourth, the rules for when and how processes send messages and respond to messages.
+
+30
+00:07:00,261 --> 00:07:17,327
+Open protocols are defined in R F Cs. Everyone has access to them, so different products can interoperate. Examples are HTTP and SMTP. Proprietary protocols, such as Skype and Zoom, are not open.
+
+31
+00:07:17,777 --> 00:07:39,772
+An application chooses a transport service by its needs. The first need is data integrity. Bits can arrive with an error, be lost, arrive out of order, or arrive twice. File transfer and web transactions need 100 percent reliable transfer, with none of these. Audio can tolerate some loss.
+
+32
+00:07:40,222 --> 00:07:49,822
+The second need is throughput. Multimedia apps need at least a minimum throughput to be effective. Elastic apps use whatever throughput they get.
+
+33
+00:07:50,272 --> 00:07:57,227
+The third need is timing. Internet telephony and interactive games need a low delay to be effective.
+
+34
+00:07:57,677 --> 00:08:11,927
+The fourth need is security, for example encryption and data integrity. Question bank question 14 asks for three needs without security. So the answer is data integrity, throughput and timing.
+
+35
+00:08:12,377 --> 00:08:26,543
+Now the question bank, application layer, questions 1 to 7. These are descriptive questions. The question bank has no published answers, so these answers come from the slides. Pause the video and try them.
+
+36
+00:08:26,993 --> 00:08:47,622
+Question 1 asks for five standard protocols. HTTP moves web objects. SMTP moves e-mail. DNS translates a name to an IP address. DHCP gives a host its IP address. FTP transfers files. The strip above shows more.
+
+37
+00:08:48,072 --> 00:09:02,515
+Question 2 asks for seven user-facing apps. Use the list of slide 4: the Web, e-mail, text messaging, social networking, streaming video, multi-user games, video conferencing and others.
+
+38
+00:09:02,965 --> 00:09:21,247
+Questions 3 to 5. The two architectures are client-server and peer-to-peer. A server is always on, has a permanent IP address, and waits to be contacted. A client initiates contact, can have a dynamic address, and does not talk to other clients.
+
+39
+00:09:21,697 --> 00:09:36,716
+Questions 6 and 7. P2P has no always-on server. Peers talk directly, request and provide service, and give self scalability. Management is complex. Examples are BitTorrent and RIP.
+
+40
+00:09:37,166 --> 00:09:40,963
+Questions 8 to 14. Pause the video and try them.
+
+41
+00:09:41,413 --> 00:09:55,643
+Questions 8 and 9. In the same host, processes use IPC: files, pipes, message queues, shared memory and semaphores. In different hosts, the basic mechanism is to exchange messages.
+
+42
+00:09:56,093 --> 00:10:08,679
+Question 10. A socket is the door between the process and the transport layer. The sender writes its message into the socket. Transport delivers it to the socket of the receiving process.
+
+43
+00:10:09,129 --> 00:10:27,817
+Questions 11 to 13. The identifier of a process is the pair: IP address and port number. The port number is an operating system number for a process on the host. Examples: HTTP server, port 80. Mail server, port 25.
+
+44
+00:10:28,267 --> 00:10:33,558
+Question 14. The three needs are data integrity, throughput and timing.
+
+45
+00:10:34,008 --> 00:10:44,525
+Now the Web. A web page consists of objects. The page has a base HTML file. The base file includes references to other objects.
+
+46
+00:10:44,975 --> 00:10:59,653
+An object can be an HTML file, a JPEG image, a Java applet, an audio file, and so on. Each object can be on a different web server. For example, an ad can come from another server.
+
+47
+00:11:00,103 --> 00:11:10,812
+Each object has a URL, a uniform resource locator. The URL has two parts: the host name, and the path name of the object on that host.
+
+48
+00:11:11,262 --> 00:11:29,310
+HTTP is the application-layer protocol of the Web. It uses the client-server model. The client is a browser. It requests, receives, and displays web objects. The server is a web server. It sends objects in response to requests.
+
+49
+00:11:29,760 --> 00:11:50,581
+HTTP uses TCP for reliability. First, the client creates a socket and opens a TCP connection to the server, port 80. The server accepts it. Second, browser and server exchange HTTP messages. Third, the TCP connection is closed.
+
+50
+00:11:51,031 --> 00:11:57,623
+HTTP is stateless. The server keeps no information about past client requests.
+
+51
+00:11:58,073 --> 00:12:10,489
+Why? Protocols that keep state are complex. They must keep the past history. And if the server or the client crashes, their views of the state can be different, and must be reconciled.
+
+52
+00:12:10,939 --> 00:12:28,817
+There are two types of HTTP connections. Non-persistent HTTP sends at most one object over a TCP connection. Persistent HTTP sends many objects over a single TCP connection between the client and that server.
+
+53
+00:12:29,267 --> 00:12:48,381
+Slide 18 has an example. The client needs 4 objects from the same server. With non-persistent HTTP, the client opens a TCP connection, with 3 messages. It downloads the first object. Then it closes the connection, with 2 messages.
+
+54
+00:12:48,831 --> 00:12:56,490
+It must do this again for the second, the third and the fourth object. So multiple objects need multiple connections.
+
+55
+00:12:56,940 --> 00:13:05,367
+With persistent HTTP, the client opens one connection, downloads all four objects, and then closes it.
+
+56
+00:13:05,817 --> 00:13:14,798
+Count the control messages. Non-persistent: 4 connections times 5 messages, which is 20. Persistent: only 5.
+
+57
+00:13:15,248 --> 00:13:31,333
+What does it mean to open a TCP connection? TCP in the client and TCP in the server exchange control information by message passing. After this exchange, they are ready for reliable data transfer.
+
+58
+00:13:31,783 --> 00:13:46,717
+Then data flows in both directions. At the end, the connection is closed. The details of TCP set up come in chapter 3. For HTTP, you need only the time cost, which the next slides show.
+
+59
+00:13:47,167 --> 00:14:12,297
+Here is the non-persistent example of slides 20 and 21. The user enters a URL. The base file contains text and references to 10 JPEG images. In step 1 a, the client initiates a TCP connection to the server at port 80. In step 1 b, the server waits at port 80, accepts the connection, and notifies the client.
+
+60
+00:14:12,747 --> 00:14:24,246
+In step 2, the client sends an HTTP request message into the socket. It says that the client wants the object some department slash home dot index.
+
+61
+00:14:24,696 --> 00:14:33,784
+In step 3, the server receives the request. It forms a response message that contains the object, and sends it into its socket.
+
+62
+00:14:34,234 --> 00:14:38,053
+In step 4, the server closes the TCP connection.
+
+63
+00:14:38,503 --> 00:14:49,553
+In step 5, the client receives the response with the HTML file and displays it. It parses the file and finds 10 referenced JPEG objects.
+
+64
+00:14:50,003 --> 00:14:59,134
+In step 6, steps 1 to 5 repeat for each of the 10 JPEG objects. So this page needs 11 TCP connections.
+
+65
+00:14:59,584 --> 00:15:11,701
+How long does one object take? First, a definition. The RTT, the round trip time, is the time for a small packet to travel from the client to the server and back.
+
+66
+00:15:12,151 --> 00:15:24,909
+Response time is the time from when the client initiates the TCP connection until it has completely received the object. The first RTT opens the TCP connection.
+
+67
+00:15:25,359 --> 00:15:33,999
+The second RTT is for the HTTP request, and for the first few bytes of the HTTP response to return.
+
+68
+00:15:34,449 --> 00:15:48,614
+Then the server must transmit the whole file. The file transmission time, F T T, is the file size divided by the transmission rate. The last bit arrives one F T T after the first bit.
+
+69
+00:15:49,064 --> 00:16:11,443
+So the non-persistent response time per object is 2 RTT plus the file transmission time. For example, these are our own numbers: with an RTT of 40 milliseconds and a 1 megabit file at 100 megabits per second, the F T T is 10 milliseconds, and the response time is 90 milliseconds.
+
+70
+00:16:11,893 --> 00:16:39,818
+Non-persistent HTTP has issues. It needs 2 RTTs per object, and the OS has overhead for each TCP connection. The bar shows a base file and 3 referenced objects. Each object needs an open RTT, a request RTT, and its file time. The total is 8 RTT plus 4 F T T. To save time, browsers often open parallel connections.
+
+71
+00:16:40,268 --> 00:17:00,961
+With persistent HTTP, the server leaves the connection open after it sends a response. Later messages use the open connection. If the client sends one request at a time, each referenced object needs only one RTT. The total is 5 RTT plus 4 F T T.
+
+72
+00:17:01,411 --> 00:17:20,803
+Better, the client sends a request as soon as it finds a referenced object. Then one RTT is enough for all the referenced objects. The total is 3 RTT plus 4 F T T. In this drawing the time drops from 10 to 5, so the response time is cut in half.
+
+73
+00:17:21,253 --> 00:17:26,053
+Question bank questions 15 to 20. Pause the video and try them.
+
+74
+00:17:26,503 --> 00:17:40,647
+Question 15. The elements of a web page are objects. There is a base HTML file and referenced objects, such as images, applets and audio files. Each object has a URL.
+
+75
+00:17:41,097 --> 00:17:55,220
+Questions 16 to 18. The web client requests, receives and displays objects. The web server accepts connections and sends objects in response to requests. Both use HTTP.
+
+76
+00:17:55,670 --> 00:18:10,411
+Question 19. The client opens a TCP connection to port 80 of the server. The server accepts it. Then HTTP messages flow over the connection, and at the end the connection is closed.
+
+77
+00:18:10,861 --> 00:18:32,429
+Question 20. Non-persistent HTTP sends at most one object per connection. It costs 2 RTTs per object and OS overhead for each connection. Persistent HTTP keeps the connection open for many objects, with as little as one RTT for all referenced objects.
+
+78
+00:18:32,879 --> 00:18:42,117
+Here is the recap. One. There are two architectures: client-server, with an always-on server, and P2P, with self scalability.
+
+79
+00:18:42,567 --> 00:18:50,823
+Two. A process is identified by its IP address and port number. It sends and receives messages through its socket.
+
+80
+00:18:51,273 --> 00:18:56,563
+Three. Applications need data integrity, throughput, timing, and security.
+
+81
+00:18:57,013 --> 00:19:09,451
+Four. HTTP is a client-server protocol over TCP, port 80. It is stateless. Non-persistent HTTP sends at most one object per connection.
+
+82
+00:19:09,901 --> 00:19:31,597
+Five. One object takes 2 RTT plus the file transmission time. Persistent HTTP needs as little as one RTT for all referenced objects. Video 5 b solves the response time questions and reads the HTTP messages. That is the end of video 5 a.

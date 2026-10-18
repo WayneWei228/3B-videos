@@ -1,0 +1,319 @@
+1
+00:00:00,000 --> 00:00:13,888
+This is MATH 239, video 23 a. The topics are a test for bipartite graphs, and breadth-first search. We follow the graph theory notes, sections 5.3 and 5.4.
+
+2
+00:00:14,338 --> 00:00:35,330
+After this video, you can prove that a graph is bipartite if and only if it has no odd cycle. You can grow a spanning tree and store it as a predecessor function. You can run breadth-first search with a queue. You can prove its main property. And you can solve the problems of problem sets 5.3 and 5.4.
+
+3
+00:00:35,780 --> 00:00:53,145
+Recall: a graph is bipartite if its vertices split into two sets A and B, and every edge joins A to B. To show that a graph is bipartite, give the bipartition. Anyone can check each edge. On the left, a 6-cycle with sides A and B.
+
+4
+00:00:53,595 --> 00:01:09,041
+Now the opposite question. How do you convince someone that a graph has no bipartition? Checking every partition is not practical. A graph with p vertices has 2 to the p minus 1 partitions with a fixed vertex in A.
+
+5
+00:01:09,491 --> 00:01:23,400
+Here is the idea of the notes. A subgraph of a bipartite graph is bipartite: use the same sides. So if we find a subgraph that is clearly not bipartite, the whole graph is not bipartite.
+
+6
+00:01:23,850 --> 00:01:48,490
+Lemma 5.3.1: an odd cycle is not bipartite. An odd cycle is a cycle with an odd number of vertices. The notes name the vertices minus k up to k. Each i is adjacent to i plus 1, and k is adjacent to minus k. That is 2 k plus 1 vertices. The picture shows k equals 3, a 7-cycle.
+
+7
+00:01:48,940 --> 00:01:56,129
+Suppose the cycle has a bipartition A, B. Without loss of generality, vertex 0 is in A.
+
+8
+00:01:56,579 --> 00:02:01,187
+The neighbours of 0 are 1 and minus 1. So both are in B.
+
+9
+00:02:01,637 --> 00:02:10,619
+The next neighbours are 2 and minus 2. They must be in A. Step by step, j and minus j are always on the same side.
+
+10
+00:02:11,069 --> 00:02:28,285
+So k and minus k are on the same side. Here 3 and minus 3 are both in B. But k and minus k are adjacent. An edge inside one side is not allowed. This is a contradiction, so the odd cycle is not bipartite.
+
+11
+00:02:28,735 --> 00:02:41,513
+Theorem 5.3.2. A graph is bipartite if and only if it has no odd cycles. So an odd cycle is the only thing that can stop a graph from being bipartite.
+
+12
+00:02:41,963 --> 00:02:52,481
+One direction is the lemma. A subgraph of a bipartite graph is bipartite. An odd cycle is not. So a bipartite graph has no odd cycle.
+
+13
+00:02:52,931 --> 00:03:00,611
+For the other direction, we prove the contrapositive. If G is not bipartite, then G has an odd cycle.
+
+14
+00:03:01,061 --> 00:03:19,365
+First, find a component that is not bipartite. If every component had a bipartition, we could join them into a bipartition of G. So some component H is not bipartite. H is connected, so by Theorem 5.2.1 it has a spanning tree T.
+
+15
+00:03:19,815 --> 00:03:25,020
+Here is an example of such a component H, with seven vertices a to g.
+
+16
+00:03:25,470 --> 00:03:33,342
+Take a spanning tree T of H. The tree edges are blue. The two gray edges, a e and c g, are not in T.
+
+17
+00:03:33,792 --> 00:03:51,584
+A tree is bipartite. The notes leave this as an exercise in problem set 5.1. So T has a bipartition. Here A is blue and B is orange: a, c, e, f in A, and b, d, g in B. Each tree edge joins A to B.
+
+18
+00:03:52,034 --> 00:04:09,847
+H is not bipartite, so this split fails for H. Some edge u v of H has both ends on one side. Swap A and B if needed, so both ends are in A. Here it is the edge a e. Note that c g is fine: c is in A and g is in B.
+
+19
+00:04:10,297 --> 00:04:28,367
+T is connected, so it has a path P from u to v, with vertices x 0 up to x n. Along P the sides alternate: A, B, A, B. x n is v, which is in A, so n is even. Here P is a, b, c, d, e, with 4 edges.
+
+20
+00:04:28,817 --> 00:04:42,833
+Now add the edge u v to the path. This closes a cycle with n plus 1 edges, which is odd. Here a b c d e a is a 5-cycle. So G has an odd cycle, and the proof is complete.
+
+21
+00:04:43,283 --> 00:05:07,176
+An exercise from the notes. Pause the video and try it. Fix a vertex r of a tree T. For each vertex v, d of v is the length of the path from v to r. Prove two things. Part a: the ends of an edge have different values of d. Part b: each vertex x other than r has exactly one neighbour y with a smaller d.
+
+22
+00:05:07,626 --> 00:05:22,047
+The tool is Lemma 5.1.3. In a tree, there is exactly one path between two vertices. Let P u be the path from u to r. The orange path is P x for one vertex x.
+
+23
+00:05:22,497 --> 00:05:40,545
+Part a. Take an edge u v. Case one: v is on P u. The part of P u from u to v is a u, v path. The only u, v path is the edge u v. So P u starts u, v, and then goes to r. So d of u equals d of v plus 1.
+
+24
+00:05:40,995 --> 00:05:58,873
+Case two: v is not on P u. Then v followed by P u is a path from v to r. By uniqueness it is P v. So d of v equals d of u plus 1. In both cases d of u and d of v differ, in fact by exactly 1.
+
+25
+00:05:59,323 --> 00:06:23,109
+Part b. Let y be a neighbour of x. By part a, d of y is smaller only in case one: P x starts x, y. So y must be the second vertex of P x. Since x is not r, P x has a second vertex. So exactly one such y exists. The numbers in the picture show this: each vertex has one neighbour one level up.
+
+26
+00:06:23,559 --> 00:06:47,431
+Section 5.4 finds a spanning tree with an algorithm. First, how do we write down the answer? A list of edges is hard to check. The notes use a function. Fix a root r of the tree. For each other vertex x, p r of x is the neighbour of x on the unique path from x to r. The arrow on each edge points from the child to its parent.
+
+27
+00:06:47,881 --> 00:06:59,935
+Here is the table of the predecessor function for this tree. p r of r is the empty set. From the table, you can draw the tree again, and from the tree you can write the table.
+
+28
+00:07:00,385 --> 00:07:14,891
+The level of a vertex v is the number k with p r applied k times to v equal to r. The root is at level 0. Here u and y are at level 1. v, w and x are at level 2.
+
+29
+00:07:15,341 --> 00:07:25,901
+To get the path from a vertex to the root, follow the arrows. From x: x, then u, then r. A spanning tree with these arrows is called a search tree.
+
+30
+00:07:26,351 --> 00:07:45,999
+Algorithm 5.4.1 grows a tree. Start with one vertex, the root. Here the root is a, in gold. Then repeat one step: find an edge from a vertex in the tree D to a vertex not in D. Add the new vertex and the edge. Its parent is the old vertex.
+
+31
+00:07:46,449 --> 00:07:56,540
+The candidate edges form the cut induced by the vertex set of D. They are orange and dashed. The algorithm adds b, with parent a.
+
+32
+00:07:56,990 --> 00:08:02,622
+The cut changes. The algorithm adds c. Here c joins through the edge a c.
+
+33
+00:08:03,072 --> 00:08:08,277
+Now it adds d, with parent c. D has four vertices and three edges.
+
+34
+00:08:08,727 --> 00:08:25,943
+No edge leaves the set a, b, c, d. The cut is empty, so the algorithm stops. D does not contain e and f. An empty cut of a nonempty proper subset means that G is not connected. This is Theorem 4.8.5.
+
+35
+00:08:26,393 --> 00:08:37,785
+The claim in the notes says the algorithm gives the right answer. If D has all the vertices at the end, D is a spanning tree. If not, G is not connected.
+
+36
+00:08:38,235 --> 00:08:52,166
+The proof is by induction on the number of iterations. After k iterations, D is a tree with k plus 1 vertices and k edges. At the start, D is one vertex, which is a tree.
+
+37
+00:08:52,616 --> 00:09:19,453
+Inductive step. The algorithm adds a new vertex v and an edge u v, with u in D. The new graph E has k plus 2 vertices and k plus 1 edges. Every vertex of D has a path to u, and the edge gives a path from u to v. So E is connected, by Theorem 4.8.2. A connected graph with one edge fewer than vertices is a tree, by Corollary 5.2.2.
+
+38
+00:09:19,903 --> 00:09:36,970
+At the end, if D has all p vertices, it is a spanning tree. If it has fewer, no edge leaves D. So the cut of V of D is empty, and G is not connected. By Theorem 5.2.1, G then has no spanning tree.
+
+39
+00:09:37,420 --> 00:09:52,055
+In Algorithm 5.4.1 we can skip some vertices. A tree vertex is exhausted if it has no neighbour outside the tree. An exhausted vertex stays exhausted, because the tree only grows.
+
+40
+00:09:52,505 --> 00:10:08,099
+Breadth-first search, or B F S, is Algorithm 5.4.1 with one rule. The new edge must come from the active vertex. The active vertex is the unexhausted vertex that joined the tree earliest.
+
+41
+00:10:08,549 --> 00:10:27,792
+A queue gives this rule. A queue is a first in, first out list. A new tree vertex goes to the end. At each stage, look at the head. If it is exhausted, remove it. If not, it is the active vertex. A breadth-first search tree is any spanning tree that B F S makes.
+
+42
+00:10:28,242 --> 00:10:42,919
+Here is the example of the notes, the graph G of Figure 5.4. The root is vertex 9, in gold. The queue holds only 9. The notes choose the order of new neighbours freely; we use their order.
+
+43
+00:10:43,369 --> 00:10:53,588
+9 is active. It adds its neighbours 3, 8 and 10 to the tree, all with parent 9. They join the end of the queue: 9, 3, 8, 10.
+
+44
+00:10:54,038 --> 00:11:06,923
+Now 9 has no neighbour outside the tree. It is exhausted, so it leaves the queue. The head is 3, which is active. 3 adds 4 and 2. The queue is 3, 8, 10, 4, 2.
+
+45
+00:11:07,373 --> 00:11:17,101
+3 is exhausted and leaves. 8 is active. It adds 7, 5 and 6. The queue is 8, 10, 4, 2, 7, 5, 6.
+
+46
+00:11:17,551 --> 00:11:27,898
+8 is exhausted. So are 10 and 4, so all three leave. 2 is active and adds vertex 1. The queue is 2, 7, 5, 6, 1.
+
+47
+00:11:28,348 --> 00:11:41,745
+Every vertex is now in the tree. All vertices in the queue are exhausted, so we stop. The vertices joined in the order 9, 3, 8, 10, 4, 2, 7, 5, 6, 1.
+
+48
+00:11:42,195 --> 00:11:50,494
+The notes redraw G by levels. The root 9 is at the top. Each tree edge has an arrow from the child to the parent.
+
+49
+00:11:50,944 --> 00:12:00,544
+The edges of G that are not in the tree are non-tree edges. They are dashed and purple: 3 10, 4 8, 5 6, and 1 7.
+
+50
+00:12:00,994 --> 00:12:09,399
+Each row is one level, from level 0 to level 3. In each row, the vertices are in the order they joined the tree.
+
+51
+00:12:09,849 --> 00:12:18,511
+Check the count. G has 13 edges. The tree has 10 vertices, so 9 edges. That leaves 4 non-tree edges.
+
+52
+00:12:18,961 --> 00:12:33,147
+Lemma 5.4.3 says: the vertices enter a breadth-first search tree in non-decreasing order of level. In the example, the first four vertices have levels 0, 1, 1, 1.
+
+53
+00:12:33,597 --> 00:12:36,435
+The next five vertices all have level 2.
+
+54
+00:12:36,885 --> 00:12:41,258
+The last vertex has level 3. So the levels never go down.
+
+55
+00:12:41,708 --> 00:13:02,273
+The proof is by induction on the number of vertices in the tree. The root comes first, with level 0. Now assume the result for the first m vertices. Let v be the next vertex. Its parent u is the active vertex. Let x be any other non-root vertex in the tree, with parent y.
+
+56
+00:13:02,723 --> 00:13:17,358
+y is the active vertex u, or y was active before u. In the second case, y joined the tree before u. In both cases, the induction hypothesis gives level of y at most level of u.
+
+57
+00:13:17,808 --> 00:13:31,205
+So the level of v, which is level of u plus 1, is at least level of y plus 1, which is the level of x. So v has a level at least as large as every vertex already in the tree.
+
+58
+00:13:31,655 --> 00:13:48,658
+Theorem 5.4.4 is the primary property of breadth-first search. Each non-tree edge joins vertices that are at most one level apart. A tree edge always joins a parent and a child, which are exactly one level apart.
+
+59
+00:13:49,108 --> 00:13:55,551
+Take an edge u v, and say u joined the tree before v. Then u is active before v.
+
+60
+00:13:56,001 --> 00:14:18,017
+Case 1: v is already in the tree when u becomes active. Then u v is a non-tree edge. Let w be the parent of v. w added v before u was active, so w joined before u. By the lemma, level of w is at most level of u. So level of v is at most level of u plus 1.
+
+61
+00:14:18,467 --> 00:14:32,824
+Also v joined after u, so by the lemma level of v is at least level of u. So level of v is level of u, or level of u plus 1. The figure shows the two possible positions of v.
+
+62
+00:14:33,274 --> 00:14:53,775
+Case 2: v is not in the tree when u becomes active. u stays active until it is exhausted, so u adds v. Then p r of v is u, and u v is a tree edge. Check the example: 3 10 and 5 6 join equal levels. 4 8 and 1 7 join levels one apart.
+
+63
+00:14:54,225 --> 00:15:07,516
+An exercise from the notes. Pause the video and try it. Find a breadth-first search tree of this graph with root 1. When a vertex adds new neighbours, take them in increasing order of label.
+
+64
+00:15:07,966 --> 00:15:18,483
+1 is active. Its neighbours 2, 13 and 14 are new, so they join in that order, with parent 1. The queue is 1, 2, 13, 14.
+
+65
+00:15:18,933 --> 00:15:27,381
+1 is exhausted. 2 is active. Its new neighbours are 4, 5 and 6. Note that 14 is already in the tree.
+
+66
+00:15:27,831 --> 00:15:40,162
+2 is exhausted. 13 is active. It adds 10, 11 and 12. Then 14 is at the head, but 14 has no new neighbour, so it is exhausted and leaves.
+
+67
+00:15:40,612 --> 00:15:48,441
+4 is active. Its only new neighbour is 3. After 4, vertex 5 is at the head, but it is exhausted.
+
+68
+00:15:48,891 --> 00:15:51,131
+6 is active and adds 7.
+
+69
+00:15:51,581 --> 00:15:56,381
+10 is active and adds 9. Then 11 and 12 are exhausted.
+
+70
+00:15:56,831 --> 00:16:04,426
+3 is active and adds 8. Now all 14 vertices are in the tree, and the rest of the queue empties.
+
+71
+00:16:04,876 --> 00:16:22,689
+Here is the answer as a tree by levels, and as the predecessor function. Vertex 1 is at level 0. 2, 13 and 14 are at level 1. Six vertices are at level 2. 3, 7 and 9 are at level 3. 8 is at level 4.
+
+72
+00:16:23,139 --> 00:16:42,638
+Check the answer. 14 vertices give 13 tree edges. The graph has 29 edges, so 16 are non-tree edges. The levels in the join order never decrease. And each non-tree edge joins levels at most one apart, as Theorem 5.4.4 says.
+
+73
+00:16:43,088 --> 00:16:53,669
+One more exercise. Pause the video and try it. The blue arrows form a search tree with root d. Explain why it is not a breadth-first search tree.
+
+74
+00:16:54,119 --> 00:17:02,823
+First find the levels. d is at level 0. a and h are at level 1. e is the child of h, so e is at level 2.
+
+75
+00:17:03,273 --> 00:17:26,313
+But d and e are adjacent, and d e is not a tree edge. It joins level 0 to level 2. By the primary property, a breadth-first search tree has no such edge. In fact, B F S starts with d active, so d adds e at level 1. Other edges also fail, for example a b joins levels 1 and 4.
+
+76
+00:17:26,763 --> 00:17:37,345
+Another exercise. Pause the video and try it. For which graphs is there a root such that every other vertex is at level 1 in the breadth-first search tree?
+
+77
+00:17:37,795 --> 00:18:01,432
+The root is active first, and it adds all its neighbours at level 1. Any other vertex joins later, with a parent at level 1 or more, so its level is at least 2. So every vertex is at level 1 exactly when the root is adjacent to every other vertex. The answer: the graphs with a vertex adjacent to all other vertices, as in the picture.
+
+78
+00:18:01,882 --> 00:18:17,306
+To recap. An odd cycle is not bipartite. And a graph is bipartite if and only if it has no odd cycle. The proof takes a spanning tree, an edge inside one side, and the even tree path between its ends.
+
+79
+00:18:17,756 --> 00:18:31,836
+A search tree is stored as a predecessor function. Algorithm 5.4.1 grows a spanning tree one edge at a time. If it stops early, the cut is empty and the graph is not connected.
+
+80
+00:18:32,286 --> 00:18:52,915
+Breadth-first search always extends the tree from the head of the queue. The vertices join in non-decreasing order of level, and every non-tree edge joins levels at most one apart. The next video uses this to test for odd cycles, to find shortest paths, and then covers minimum spanning trees.

@@ -1,0 +1,275 @@
+1
+00:00:00,000 --> 00:00:10,667
+This is STAT 331, video 2 b. It covers Lecture 1, slides 26 to 28: the chi-square, t, and F distributions.
+
+2
+00:00:11,117 --> 00:00:27,735
+After this video, you can build chi-square, t, and F variables from standard normals. You can give their moments, and say when a moment does not exist. You can evaluate each density from its formula. And you can name a distribution from its form.
+
+3
+00:00:28,185 --> 00:00:44,975
+Next, the chi-square distribution. Slide 26 builds it from standard normals. Take three independent standard normal variables. One draw gives the values 0 point 8, minus 1 point 3, and 0 point 5.
+
+4
+00:00:45,425 --> 00:00:57,478
+Square each value. The squares are 0 point 6 4, 1 point 6 9, and 0 point 2 5. The orange, purple and teal squares show them as areas.
+
+5
+00:00:57,928 --> 00:01:09,597
+Add the squares. X equals 2 point 5 8. Each new draw gives a new X. The distribution of X is the chi-square distribution with 3 degrees of freedom.
+
+6
+00:01:10,047 --> 00:01:15,530
+A square is never negative. So a chi-square variable is always 0 or more.
+
+7
+00:01:15,980 --> 00:01:30,615
+In general: when Z 1 to Z n are I I D standard normal, the sum of their squares is chi-square with n degrees of freedom. The degrees of freedom nu is the number of squared standard normals in the sum.
+
+8
+00:01:31,065 --> 00:01:52,761
+The chi-square density is 1 over 2 to the power nu over 2, times gamma of nu over 2, times x to the power nu over 2 minus 1, times e to the power minus x over 2. It is 0 for x below 0. The blue curve has nu equals 2. It starts at 0 point 5 and falls.
+
+9
+00:01:53,211 --> 00:01:59,760
+With nu equals 3, the curve starts at 0, rises, and then falls. It is skewed to the right.
+
+10
+00:02:00,210 --> 00:02:04,711
+With nu equals 5, the curve moves further right and becomes wider.
+
+11
+00:02:05,161 --> 00:02:12,564
+The moments. The expected value is nu. The purple dots mark x equals 2, 3, and 5 on the curves.
+
+12
+00:02:13,014 --> 00:02:20,523
+The variance is 2 nu. So a larger nu gives a wider curve. The variance is always two times the mean.
+
+13
+00:02:20,973 --> 00:02:34,477
+Why is the mean of a chi-square with n degrees of freedom equal to n? Start with the variance formula of slide 13: the variance of Z is E of Z squared, minus E of Z, squared.
+
+14
+00:02:34,927 --> 00:02:45,018
+For a standard normal, the variance is 1 and the mean is 0. So 1 equals E of Z squared minus 0. So E of Z squared is 1.
+
+15
+00:02:45,468 --> 00:02:54,791
+Now take the mean of X. By linearity, the mean of a sum is the sum of the means. Each term is E of Z i squared, which is 1.
+
+16
+00:02:55,241 --> 00:02:58,142
+So the mean is n times 1, which is n.
+
+17
+00:02:58,592 --> 00:03:13,056
+This part is optional, not on the slides. E of Z to the power 4 is 3. So the variance of Z squared is 3 minus 1, which is 2. The terms are independent, so the variances add: 2 n.
+
+18
+00:03:13,506 --> 00:03:20,589
+An example with the density formula. Calculate f of 2 for a chi-square with 2 degrees of freedom.
+
+19
+00:03:21,039 --> 00:03:32,559
+Put nu equals 2 and x equals 2 into the formula. 2 to the power 1 is 2. Gamma of 1. Then 2 to the power 0, and e to the power minus 1.
+
+20
+00:03:33,009 --> 00:03:48,433
+Gamma of 1 is 1, and 2 to the power 0 is 1. So f of 2 is e to the power minus 1, over 2. That is 0 point 3 6 7 8 8 over 2, which is 0 point 1 8 3 9.
+
+21
+00:03:48,883 --> 00:04:09,213
+To use the formula, you need some values of the gamma function. Gamma of 1 is 1. Gamma of alpha plus 1 is alpha times gamma of alpha. Gamma of one half is the square root of pi. So gamma of three halves is one half of the square root of pi, which is 0 point 8 8 6 2.
+
+22
+00:04:09,663 --> 00:04:24,255
+Example 2. Z 1, Z 2 and Z 3 are I I D standard normal. X is the sum of their squares. Find the distribution of X, its moments, and f of 1. Pause the video and try it.
+
+23
+00:04:24,705 --> 00:04:37,335
+X is a sum of three I I D squared standard normals. So X is chi-square with 3 degrees of freedom. Its mean is 3. Its variance is 2 times 3, which is 6.
+
+24
+00:04:37,785 --> 00:04:48,003
+For f of 1, put nu equals 3 and x equals 1. 1 to any power is 1. Gamma of three halves is the square root of pi over 2.
+
+25
+00:04:48,453 --> 00:05:08,784
+2 to the power three halves, divided by 2, is the square root of 2. So f of 1 is e to the power minus one half, over the square root of 2 pi. That is 0 point 6 0 6 5 3 over 2 point 5 0 6 6, which is 0 point 2 4 2 0.
+
+26
+00:05:09,234 --> 00:05:18,194
+Next, the t distribution. Slide 27 builds it from two parts. The numerator is a standard normal variable Z.
+
+27
+00:05:18,644 --> 00:05:31,231
+The denominator starts with a chi-square variable X with nu degrees of freedom. Divide X by its degrees of freedom, and take the square root. Z and X must be independent.
+
+28
+00:05:31,681 --> 00:05:43,883
+Divide Z by the square root of X over nu. The result has a t distribution with nu degrees of freedom. Nu is the degrees of freedom of the chi-square in the denominator.
+
+29
+00:05:44,333 --> 00:05:57,731
+From the chi-square moments, X over nu has mean 1 and variance 2 over nu. For a large nu, the denominator is close to 1. So t with a large nu is close to the standard normal.
+
+30
+00:05:58,181 --> 00:06:02,277
+Compare the shapes. The black dashed curve is the standard normal.
+
+31
+00:06:02,727 --> 00:06:09,681
+The orange curve is t with 1 degree of freedom. Its center is lower, and its tails are much thicker.
+
+32
+00:06:10,131 --> 00:06:18,921
+The blue curve is t with 5 degrees of freedom. It is between the two. As nu increases, t comes near the standard normal.
+
+33
+00:06:19,371 --> 00:06:36,160
+Zoom into the right tail, from 2 point 5 to 5. The t curves are above the normal curve there. A thicker tail means that extreme values are more likely. The denominator is random, and a small denominator gives a large ratio.
+
+34
+00:06:36,610 --> 00:06:45,847
+The t density is symmetric about 0: f of y equals f of minus y, because y appears only as y squared.
+
+35
+00:06:46,297 --> 00:07:01,679
+The moments of the t distribution. The mean is 0 when nu is larger than 1, by symmetry. When nu equals 1, the mean does not exist. The slide writes N A, not available: the tails are too thick for the integral.
+
+36
+00:07:02,129 --> 00:07:13,158
+The variance is nu over nu minus 2, when nu is larger than 2. When nu is 1 or 2, the variance is infinite. The red region marks these cases.
+
+37
+00:07:13,608 --> 00:07:25,597
+For nu larger than 2, nu over nu minus 2 is larger than 1. The blue dots show it. They fall toward 1, the variance of the standard normal, as nu increases.
+
+38
+00:07:26,047 --> 00:07:48,703
+An example. Z is standard normal, X is chi-square with 5 degrees of freedom, and they are independent. Then Z over the square root of X over 5 is t with 5 degrees of freedom. The mean is 0. The variance is 5 over 3, which is 1 point 6 6 6 7. For nu equals 3, the variance is 3.
+
+39
+00:07:49,153 --> 00:08:03,148
+The t density is gamma of nu plus 1 over 2, over the square root of pi nu times gamma of nu over 2, times 1 plus y squared over nu, to the power minus nu plus 1 over 2.
+
+40
+00:08:03,598 --> 00:08:16,825
+The slide has a misprint. It prints nu over 2 in the denominator, without the gamma function. The total area is 1 only with gamma of nu over 2. Use the formula on this screen.
+
+41
+00:08:17,275 --> 00:08:26,683
+An example: f of 0 for nu equals 3. Gamma of 4 over 2 is gamma of 2. The bracket is 1, so its power is 1.
+
+42
+00:08:27,133 --> 00:08:40,893
+Gamma of 2 is 1, and gamma of three halves is the square root of pi over 2. So f of 0 is 2 over the square root of 3, times pi. That is 0 point 3 6 7 6.
+
+43
+00:08:41,343 --> 00:08:50,580
+Compare with the standard normal peak, 0 point 3 9 8 9. The t peak is lower, because more area is in the tails.
+
+44
+00:08:51,030 --> 00:08:58,497
+This slide is optional. It is not on the Lecture 1 slides. It shows why the tails matter in Lecture 3.
+
+45
+00:08:58,947 --> 00:09:09,805
+For the standard normal, 2 point 5 percent of the area is above 1 point 9 6, and 2 point 5 percent is below minus 1 point 9 6.
+
+46
+00:09:10,255 --> 00:09:20,943
+For t with 8 degrees of freedom, the same tail areas start at 2 point 3 0 6. The tails are thicker, so the cut-off point is further out.
+
+47
+00:09:21,393 --> 00:09:42,705
+If you use 1 point 9 6 with t 8, the two tails hold 8 point 6 percent, not 5 percent. So always use the t quantile with the correct degrees of freedom. The notation t 0 point 9 7 5 comma 8 is the point with probability 0 point 9 7 5 below it.
+
+48
+00:09:43,155 --> 00:09:53,929
+The last distribution is F. Slide 28 builds it from two independent chi-square variables. Divide each one by its own degrees of freedom.
+
+49
+00:09:54,379 --> 00:10:08,565
+The ratio W is the first scaled chi-square over the second scaled chi-square. It has an F distribution with nu 1 and nu 2 degrees of freedom. The numerator degrees of freedom always come first.
+
+50
+00:10:09,015 --> 00:10:12,450
+The blue curve is F with 2 and 2 degrees of freedom.
+
+51
+00:10:12,900 --> 00:10:18,297
+The green curve is F with 5 and 10 degrees of freedom. It has a peak near 1.
+
+52
+00:10:18,747 --> 00:10:28,561
+A ratio of two non-negative variables is never negative. So F takes only positive values. The slide gives no moments for F.
+
+53
+00:10:29,011 --> 00:10:41,363
+The F density has three parts: a ratio of gamma functions, then a bracket, then the square root of the bracket. Calculate f of 1 for F with 2 and 2 degrees of freedom.
+
+54
+00:10:41,813 --> 00:10:57,194
+Put nu 1 equals 2, nu 2 equals 2, and w equals 1. The gamma part is gamma of 2 over gamma of 1 squared. In the bracket: 2 squared times 2 squared, times 1 over 4 to the power 4.
+
+55
+00:10:57,644 --> 00:11:08,119
+The gamma part is 1. The bracket is 16 over 256. Its square root is 4 over 16, which is 0 point 2 5.
+
+56
+00:11:08,569 --> 00:11:18,979
+This part is optional, not on the slides. Take a t variable Y and square it. Y squared is Z squared over 1, divided by X over nu.
+
+57
+00:11:19,429 --> 00:11:30,459
+Z squared is chi-square with 1 degree of freedom. So Y squared is F with 1 and nu degrees of freedom. The square of a t variable is an F variable.
+
+58
+00:11:30,909 --> 00:11:44,690
+A practice question. Z 1 to Z 4 are I I D standard normal. Name the distribution of three expressions, and give the mean and variance for parts a and b. Pause the video and try it.
+
+59
+00:11:45,140 --> 00:12:00,436
+Part a. Z 2 squared plus Z 3 squared plus Z 4 squared is a sum of three I I D squared standard normals. So it is chi-square with 3 degrees of freedom. The mean is 3, and the variance is 6.
+
+60
+00:12:00,886 --> 00:12:23,713
+Part b. The numerator Z 1 is standard normal. The denominator is the square root of a chi-square 3 over 3. Z 1 is independent of Z 2 to Z 4. So this is t with 3 degrees of freedom. The mean is 0, because 3 is larger than 1. The variance is 3 over 3 minus 2, which is 3.
+
+61
+00:12:24,163 --> 00:12:40,717
+Part c. Z 1 squared is chi-square with 1 degree of freedom, divided by 1. The denominator is chi-square 3 over 3. They are independent. So this is F with 1 and 3 degrees of freedom. The numerator comes first.
+
+62
+00:12:41,167 --> 00:12:52,474
+The last practice question. Y has a t distribution with 1 degree of freedom. Calculate f of 0, and give the mean of Y. Pause the video and try it.
+
+63
+00:12:52,924 --> 00:13:09,692
+Put nu equals 1 and y equals 0 into the t density. Gamma of 1 over 2 plus 1 over 2 is gamma of 1. The denominator is the square root of pi, times gamma of one half, which is also the square root of pi.
+
+64
+00:13:10,142 --> 00:13:19,571
+Gamma of 1 is 1. So f of 0 is 1 over pi, which is 0 point 3 1 8 3. It is lower than the normal peak.
+
+65
+00:13:20,021 --> 00:13:30,752
+The mean exists only when nu is larger than 1. Here nu equals 1. So the mean of Y is not available. The tails are too thick for the mean to exist.
+
+66
+00:13:31,202 --> 00:13:42,167
+To recap. All three distributions come from standard normals. Remember the rule from video 2 a: a linear combination of independent normals is normal.
+
+67
+00:13:42,617 --> 00:13:51,791
+Chi-square is a sum of squared standard normals. Its mean is nu, its variance is 2 nu, and it takes only positive values.
+
+68
+00:13:52,241 --> 00:14:08,518
+A standard normal over the square root of an independent chi-square over its degrees of freedom is t. It is symmetric with thick tails. Its mean is 0 for nu above 1. Its variance is nu over nu minus 2 for nu above 2.
+
+69
+00:14:08,968 --> 00:14:17,949
+A ratio of two independent scaled chi-squares is F. The next video starts the simple linear regression model in detail.

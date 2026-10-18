@@ -1,0 +1,431 @@
+1
+00:00:00,000 --> 00:00:12,629
+This is ECE 358, video 7. The topic is the transport layer, multiplexing, and UDP. It covers Chapter 3, slides 1 to 24.
+
+2
+00:00:13,079 --> 00:00:33,005
+After this video, you can explain the services of the transport layer. You can find the socket that receives a segment, for UDP and for TCP. You can explain UDP, its header, and its checksum. And you can answer questions 1 to 18 of the transport section of the question bank.
+
+3
+00:00:33,455 --> 00:00:44,036
+Start with the problem. The network layer, IP, delivers a datagram to a host. But many processes run on that host. The data is for one of them.
+
+4
+00:00:44,486 --> 00:00:52,891
+Here is the real path. Data goes down the stack of host A, across the links and the router, and up the stack of host B.
+
+5
+00:00:53,341 --> 00:01:11,816
+The transport layer hides this path. It gives logical communication between processes on different hosts. The slides call this inter-process communication, or IPC. The processes can be client and server processes, or peer-to-peer processes.
+
+6
+00:01:12,266 --> 00:01:19,669
+The router has only the network, link and physical layers. So only the end systems run the transport layer.
+
+7
+00:01:20,119 --> 00:01:26,988
+What does the transport layer do with the data? At the sender, it is passed an application-layer message.
+
+8
+00:01:27,438 --> 00:01:37,123
+It sets the values of the header fields. Then it creates a segment. A segment is the transport header, T h, plus the application message.
+
+9
+00:01:37,573 --> 00:01:41,029
+It passes the segment to IP, the network layer.
+
+10
+00:01:41,479 --> 00:01:47,815
+At the receiver, the transport layer receives the segment from IP. It checks the header values.
+
+11
+00:01:48,265 --> 00:02:02,623
+It extracts the application-layer message. Then it demultiplexes the message up to the correct process, through its socket. A large message can be cut into many segments. The receiver puts them together again.
+
+12
+00:02:03,073 --> 00:02:17,942
+The slides list four services of the transport layer. The first is multiplexing and demultiplexing. On a host, many applications send data at the same time. Their streams must share one network layer.
+
+13
+00:02:18,392 --> 00:02:32,984
+The second is reliable data transfer. Between a client and a server, the data must arrive with no bit error, no out-of-order delivery, no loss, and no duplicate. Remember the letters B, O, L, D.
+
+14
+00:02:33,434 --> 00:02:50,373
+The third is flow control. A fast server must not overwhelm a slow client. The client tells the server if it is willing to receive data now. It decides from its free buffer space. So flow control is performed by the receiving process.
+
+15
+00:02:50,823 --> 00:03:08,401
+The fourth is congestion control. Routers have finite buffers. If apps send too fast, the buffers fill, and the routers drop packets. The network is congested. TCP has congestion control. It is performed by the sender of the data stream.
+
+16
+00:03:08,851 --> 00:03:27,838
+The Internet gives applications two transport protocols. The first is TCP, the Transmission Control Protocol. TCP exchanges control information before the data. For example, a request and an ack. So TCP is connection-oriented.
+
+17
+00:03:28,288 --> 00:03:40,085
+The second is UDP, the User Datagram Protocol. UDP sends the data at once, with no control messages first. So UDP is connectionless.
+
+18
+00:03:40,535 --> 00:03:54,253
+TCP gives connection setup, reliable in-order delivery, flow control, and congestion control. UDP gives none of these. It is a no-frills extension of best-effort IP.
+
+19
+00:03:54,703 --> 00:04:06,948
+Two services are not available from either protocol: delay guarantees and bandwidth guarantees. Both protocols run over best-effort IP, so neither can promise them.
+
+20
+00:04:07,398 --> 00:04:24,721
+Look at one host with three client processes, App 1, App 2 and App 3. Each process has a socket. A socket is the interface between layer 5 and layer 4. The yellow boxes on the L5, L4 line are the sockets.
+
+21
+00:04:25,171 --> 00:04:41,043
+The three apps send data at the same time. So there are three data streams at the L5, L4 interface. The transport layer combines them into one data stream at the L4, L3 interface. This is multiplexing.
+
+22
+00:04:41,493 --> 00:04:45,631
+Now data arrives. One stream comes up from the network layer.
+
+23
+00:04:46,081 --> 00:05:01,591
+The transport layer splits it into three streams, one for each socket. This is demultiplexing. In general, for N pairs of client and server processes, there are N sockets for the clients and N sockets for the servers.
+
+24
+00:05:02,041 --> 00:05:10,873
+Here is slide 13. A server host runs two processes, P1 and P2. Two clients run P3 and P4.
+
+25
+00:05:11,323 --> 00:05:17,744
+P3 talks to P1. Its segments go down, across the network, and up into the server.
+
+26
+00:05:18,194 --> 00:05:40,082
+P4 talks to P2. Below the transport layer of the server, both conversations are one stream. At the sender, multiplexing takes data from many sockets and adds a transport header to each segment. At the receiver, demultiplexing uses the header information to deliver each segment to the correct socket.
+
+27
+00:05:40,532 --> 00:05:51,156
+How does a host know the correct socket? Start with the IP datagram. Each datagram has a source IP address and a destination IP address.
+
+28
+00:05:51,606 --> 00:06:03,766
+Each datagram carries one transport-layer segment. Each segment has a source port number and a destination port number. Then come the other header fields and the application data.
+
+29
+00:06:04,216 --> 00:06:10,787
+The host uses the IP addresses and the port numbers to direct the segment to the correct socket.
+
+30
+00:06:11,237 --> 00:06:30,970
+Port numbers are 16-bit numbers. So there are 2 to the power 16, which is 65536 ports, from 0 to 65535. There are two kinds. Reserved ports are a few thousand at the lower end. Free ports are the rest.
+
+31
+00:06:31,420 --> 00:06:59,815
+Standard server apps use well-known reserved ports. For TCP: 80 for HTTP, 179 for BGP, and 20 and 21 for FTP. The slide lists 520 for RIP and 25 for SMTP under UDP. SMTP normally uses TCP. For your own app, use a free port. In Python, bind a socket with port 0, and the OS assigns a free port.
+
+32
+00:07:00,265 --> 00:07:10,633
+Now UDP demultiplexing. When a process creates a socket, the socket gets a host-local port number. The OS assigns a free port.
+
+33
+00:07:11,083 --> 00:07:28,000
+When the process sends a message into the UDP socket, it must give two values. The destination IP address, which it gets from a DNS server. And the destination port number. For well-known client-server apps, this number is known.
+
+34
+00:07:28,450 --> 00:07:38,967
+When the receiving host gets a UDP segment, it checks the destination port number in the segment. Then it directs the segment to the socket with that port number.
+
+35
+00:07:39,417 --> 00:07:49,465
+Segments with the same destination port number go to the same socket. This is true for different source IP addresses and different source port numbers.
+
+36
+00:07:49,915 --> 00:08:08,774
+Here is the example of slide 16. The server socket uses UDP port 6428. One client socket uses port 9157. The other client socket uses port 5775.
+
+37
+00:08:09,224 --> 00:08:23,987
+P3 sends a request to the server. The source port is 9157, the port of the sending socket. The destination port is 6428, the port of the server socket.
+
+38
+00:08:24,437 --> 00:08:35,999
+The server replies. It swaps the two ports. The source port is 6428, and the destination port is 9157.
+
+39
+00:08:36,449 --> 00:08:50,999
+Pause the video and fill in the two question marks of the slide. P4 sends a request. The source port is 5775, and the destination port is 6428.
+
+40
+00:08:51,449 --> 00:09:00,963
+The reply to P4 has source port 6428 and destination port 5775.
+
+41
+00:09:01,413 --> 00:09:11,227
+Both requests carry destination port 6428. So the server host delivers both of them to the same socket, P1.
+
+42
+00:09:11,677 --> 00:09:37,341
+TCP is different. A TCP socket is identified by a 4-tuple: source IP address, source port number, destination IP address, and destination port number. The 4-tuple is also called the TCP connection ID. Here, server B uses port 80. It has three sockets, P4, P5 and P6. Host A and host C are clients.
+
+43
+00:09:37,791 --> 00:09:51,807
+Process P1 on host A sends a segment from A, port 9157, to B, port 80. The server uses all four values. The segment goes to socket P4.
+
+44
+00:09:52,257 --> 00:10:03,137
+P2 on host C sends from C, port 5775, to B, port 80. That 4-tuple belongs to socket P6.
+
+45
+00:10:03,587 --> 00:10:20,760
+P3 on host C sends from C, port 9157. Host A also used port 9157. But the source IP address is different. So the segment goes to a third socket, P5.
+
+46
+00:10:21,210 --> 00:10:37,189
+All three segments go to IP address B, port 80. They reach three different sockets. Each socket is associated with a different connecting client. UDP would look only at port 80 and use one socket for all three.
+
+47
+00:10:37,639 --> 00:10:51,377
+Here is the summary. Demultiplexing uses header field values. The datagram header has the source and the destination IP addresses. The segment header has the source and the destination ports.
+
+48
+00:10:51,827 --> 00:10:59,166
+UDP demultiplexes with the destination port number only. Many sources can share one socket.
+
+49
+00:10:59,616 --> 00:11:15,488
+TCP demultiplexes with the 4-tuple: both IP addresses and both port numbers. So each connection has its own socket. Multiplexing and demultiplexing also happen at the other layers, with different parameters.
+
+50
+00:11:15,938 --> 00:11:35,778
+Now UDP itself. UDP is a no-frills, bare-bones protocol. Data from the app layer goes to the network layer with a UDP header. Data from the network layer goes to the app, without the header. There is no handshaking. The sender sends S1 at once, and it arrives.
+
+51
+00:11:36,228 --> 00:11:44,356
+UDP gives best-effort service. A segment can be lost. Here S2 is lost. UDP never resends it.
+
+52
+00:11:44,806 --> 00:11:52,763
+Each segment is handled independently. Here S3 takes a longer time than S4. So S4 arrives first.
+
+53
+00:11:53,213 --> 00:12:06,909
+The app receives S1, S4, S3. A UDP segment has no sequence number. So the receiver cannot find the gap or restore the order. The slides call this send and hope for the best.
+
+54
+00:12:07,359 --> 00:12:21,802
+Why use UDP? Look at a short request and reply. If the protocol sets up a connection first, the control messages add one round-trip time. The reply comes after 2 RTTs.
+
+55
+00:12:22,252 --> 00:12:30,785
+With UDP, there is no connection establishment. The reply comes after 1 RTT. This is the first reason.
+
+56
+00:12:31,235 --> 00:12:40,899
+Second, UDP is simple. There is no connection state at the sender or the receiver. Third, the header is small. It is only 8 bytes.
+
+57
+00:12:41,349 --> 00:12:50,459
+Fourth, there is no congestion control. UDP can send as fast as the app wants. So it can function in the face of congestion.
+
+58
+00:12:50,909 --> 00:12:57,714
+Who uses UDP? Streaming multimedia apps. They are loss tolerant, and they are rate sensitive.
+
+59
+00:12:58,164 --> 00:13:07,273
+DNS uses UDP. SNMP, the Simple Network Management Protocol, also uses UDP.
+
+60
+00:13:07,723 --> 00:13:28,075
+HTTP 3 uses QUIC, the Quick UDP Internet Connection protocol. QUIC is TCP functions, plus transport layer security, plus multiplexing, redesigned over UDP. With HTTP 3 there is no head-of-line blocking, as with TCP.
+
+61
+00:13:28,525 --> 00:13:42,925
+So, if an app needs reliable transfer over UDP, it adds the reliability at the application layer. It also adds congestion control at the application layer. HTTP 3 does this.
+
+62
+00:13:43,375 --> 00:14:01,551
+Here is the UDP segment format. Each row is 32 bits. The first row has the source port number and the destination port number, 16 bits each. They name the sending and the receiving socket. Under the header is the application data, the payload.
+
+63
+00:14:02,001 --> 00:14:19,836
+The second row has the length. Length is the number of bytes in the whole UDP segment, including the header. The header is 2 rows of 32 bits, which is 8 bytes. For example, 120 bytes of data give a length of 128.
+
+64
+00:14:20,286 --> 00:14:26,857
+The last field is the checksum. It is used for error detection. That is, to find flipped bits.
+
+65
+00:14:27,307 --> 00:14:41,621
+This slide is optional. It is not on the slides. It shows how the checksum finds flipped bits. The sender treats the segment as 16-bit words. Here are three words. Add the first two. There is no carry.
+
+66
+00:14:42,071 --> 00:14:46,146
+Add the third word. Now there is a carry out of bit 15.
+
+67
+00:14:46,596 --> 00:14:51,588
+In this sum, the carry goes back into bit 0. This is called wraparound.
+
+68
+00:14:52,038 --> 00:14:57,627
+Then invert every bit. The result is the checksum. The sender puts it in the header.
+
+69
+00:14:58,077 --> 00:15:03,731
+The receiver adds all the words and the checksum. With no error, the sum is all ones.
+
+70
+00:15:04,181 --> 00:15:11,135
+If one bit flips, the sum has a zero bit. The receiver detects the error and discards the segment.
+
+71
+00:15:11,585 --> 00:15:17,473
+Now the question bank. Here are questions 1, 2 and 4. Pause the video and try them.
+
+72
+00:15:17,923 --> 00:15:29,806
+Question 1. The main function is inter-process communication between two computers. That is, logical communication between application processes on different hosts.
+
+73
+00:15:30,256 --> 00:15:35,184
+Question 2. The two main protocols are TCP and UDP.
+
+74
+00:15:35,634 --> 00:15:42,951
+Question 4. Delay and bandwidth are not guaranteed. Both protocols run over best-effort IP.
+
+75
+00:15:43,401 --> 00:15:50,249
+Question 3 asks for a table that compares TCP and UDP. Pause the video and try it.
+
+76
+00:15:50,699 --> 00:16:01,899
+TCP is connection-oriented. UDP is connectionless. TCP gives reliable data transfer and in-order delivery. UDP does not.
+
+77
+00:16:02,349 --> 00:16:16,664
+TCP has flow control and congestion control. UDP has neither. The slides say UDP can blast away. TCP keeps connection state at both ends. UDP keeps none.
+
+78
+00:16:17,114 --> 00:16:29,359
+TCP uses sequence numbers. A UDP segment has none. The UDP header is only 8 bytes. Neither protocol gives a delay or a bandwidth guarantee.
+
+79
+00:16:29,809 --> 00:16:33,415
+Questions 5 and 6. Pause the video and try them.
+
+80
+00:16:33,865 --> 00:16:50,505
+Question 5. Multiplexing combines the N app data streams at the L5, L4 interface into one network-layer stream at the L4, L3 interface. Demultiplexing splits that one stream back into N app streams.
+
+81
+00:16:50,955 --> 00:16:58,741
+For N client-server pairs, there are N client sockets and N server sockets. With 3 pairs, that is 6 sockets.
+
+82
+00:16:59,191 --> 00:17:13,101
+Question 6. A socket is the L5, L4 interface on a host. A process sends and receives data through its socket. The transport layer finds the socket from the port numbers in the segment.
+
+83
+00:17:13,551 --> 00:17:17,753
+Questions 7, 8 and 9. Pause the video and try them.
+
+84
+00:17:18,203 --> 00:17:33,094
+Question 7. A UDP socket is identified by its destination port number, the host-local port. The IP address brings the datagram to the host. Then the host checks only the destination port.
+
+85
+00:17:33,544 --> 00:17:45,107
+Question 8. A TCP socket is identified by the 4-tuple: source IP address, source port, destination IP address, and destination port.
+
+86
+00:17:45,557 --> 00:18:08,789
+Question 9. UDP uses only the destination port, so many clients share one socket. TCP uses the 4-tuple, so each connecting client has its own socket. In the example of slide 18, A port 9157 and C port 9157 reach different sockets.
+
+87
+00:18:09,239 --> 00:18:13,889
+Questions 10, 11 and 14. Pause the video and try them.
+
+88
+00:18:14,339 --> 00:18:33,817
+The positive aspects of UDP. There is no connection establishment, so no RTT delay. It is simple, with no connection state. The header is only 8 bytes. There is no congestion control, so it sends as fast as the app wants. And the checksum detects flipped bits.
+
+89
+00:18:34,267 --> 00:18:49,136
+The negative aspects. UDP is best effort. Segments may be lost, and UDP never resends them. Segments may arrive out of order, and there are no sequence numbers to fix this. There is no flow control.
+
+90
+00:18:49,586 --> 00:19:06,055
+Question 14. Some apps need speed and a steady rate more than reliability. Streaming is loss tolerant and rate sensitive. If an app needs reliability, it adds it at the application layer, as HTTP 3 does.
+
+91
+00:19:06,505 --> 00:19:12,500
+Questions 12 and 13 ask the same about TCP. Pause the video and try them.
+
+92
+00:19:12,950 --> 00:19:25,985
+The positive aspects. TCP gives reliable, in-order delivery. It has flow control, which protects the receive buffer. It has congestion control, which protects the router buffers.
+
+93
+00:19:26,435 --> 00:19:34,733
+The negative aspects. Connection setup adds RTT delay before the data. Both ends must keep connection state.
+
+94
+00:19:35,183 --> 00:19:45,423
+Also, congestion control can lower the sending rate. And there is head-of-line blocking. Here segment 2 is lost. Segments 3 and 4 arrive.
+
+95
+00:19:45,873 --> 00:19:56,583
+But TCP gives the data to the app in order only. So 3 and 4 wait until 2 is resent. HTTP 3 over QUIC avoids this.
+
+96
+00:19:57,033 --> 00:20:01,022
+Questions 15 and 16. Pause the video and try them.
+
+97
+00:20:01,472 --> 00:20:17,280
+Protocols that use UDP: DNS, SNMP, and HTTP 3 through QUIC. The slides also list RIP, on port 520. Streaming multimedia apps use UDP too.
+
+98
+00:20:17,730 --> 00:20:39,149
+Protocols that use TCP: HTTP on port 80, FTP on ports 20 and 21, and BGP on port 179. The slide lists SMTP under UDP. SMTP normally uses TCP, so do not use it as a UDP example.
+
+99
+00:20:39,599 --> 00:20:54,340
+Questions 17 and 18. Pause the video and try them. For question 17, draw the header from the earlier slide. Source port, destination port, length, and checksum, 16 bits each, then the data.
+
+100
+00:20:54,790 --> 00:21:10,513
+Question 18. The length field has 16 bits. Its largest value is 2 to the power 16, minus 1. That is 65535 bytes. The length counts the whole segment, header included.
+
+101
+00:21:10,963 --> 00:21:37,373
+Subtract the 8-byte header. The maximum data is 65535 minus 8, which is 65527 bytes. This is the answer from the UDP header alone. Optional, and not on the slides: an IP version 4 datagram also has a header of at least 20 bytes, so the real limit is 65507 bytes.
+
+102
+00:21:37,823 --> 00:21:46,741
+Here is the recap. One. The transport layer gives logical communication between processes. Only the end systems run it.
+
+103
+00:21:47,191 --> 00:21:58,199
+Two. Its services are multiplexing and demultiplexing, reliable data transfer, flow control by the receiver, and congestion control by the sender.
+
+104
+00:21:58,649 --> 00:22:08,953
+Three. TCP is connection-oriented and reliable. UDP is connectionless and best effort. Neither guarantees delay or bandwidth.
+
+105
+00:22:09,403 --> 00:22:17,168
+Four. Port numbers have 16 bits. Know the well-known ports. Port 0 asks the OS for a free port.
+
+106
+00:22:17,618 --> 00:22:25,021
+Five. UDP demultiplexes by the destination port only. TCP uses the 4-tuple.
+
+107
+00:22:25,471 --> 00:22:32,041
+Six. UDP has no setup, no state, an 8-byte header, and no congestion control.
+
+108
+00:22:32,491 --> 00:22:51,606
+Seven. The UDP header has source port, destination port, length, and checksum. The maximum data is 65527 bytes. The next video starts reliable data transfer: stop-and-wait and Go-Back-N. That is the end of video 7.

@@ -1,0 +1,223 @@
+1
+00:00:00,000 --> 00:00:10,005
+This is STAT 331, video 14 a. The topic is the properties of the least squares estimator in multiple linear regression.
+
+2
+00:00:10,455 --> 00:00:27,778
+After this video, you can derive the mean and the variance of beta hat. You can explain why beta hat is multivariate normal. You can write the fitted values and the residuals with the hat matrix. And you can solve practice question 2 of lecture 6.
+
+3
+00:00:28,228 --> 00:00:52,719
+Recall the model in matrix form. y equals X beta plus epsilon. The error vector is multivariate normal, with mean zero and variance sigma squared times the identity. So y is multivariate normal with mean X beta. The least squares estimate is beta hat equals X transpose X inverse, times X transpose, times y.
+
+4
+00:00:53,169 --> 00:01:08,806
+Look at the shapes. X transpose X inverse and X transpose are made only from the covariates. They contain no random part. Their product is one fixed matrix. Call it A. A has p plus 1 rows and n columns.
+
+5
+00:01:09,256 --> 00:01:19,581
+So beta hat equals A times y. Each entry of beta hat is a weighted sum of the responses. Beta hat is a linear function of y.
+
+6
+00:01:20,031 --> 00:01:35,541
+This is the key to every result in this video. For a constant matrix A, the expectation of A y is A times the expectation of y. The variance of A y is A, times the variance of y, times A transpose.
+
+7
+00:01:35,991 --> 00:01:47,319
+First, the mean of beta hat. Start from the formula. The expectation of beta hat is the expectation of X transpose X inverse, X transpose, y.
+
+8
+00:01:47,769 --> 00:01:52,953
+The matrix in front of y is constant. So it moves out of the expectation.
+
+9
+00:01:53,403 --> 00:01:57,093
+The model says that the expectation of y is X beta.
+
+10
+00:01:57,543 --> 00:02:05,693
+Now group X transpose and X. We get X transpose X inverse, times X transpose X, times beta.
+
+11
+00:02:06,143 --> 00:02:16,959
+A matrix times its inverse is the identity. So the expectation of beta hat equals beta. Beta hat is an unbiased estimator of beta.
+
+12
+00:02:17,409 --> 00:02:35,094
+The picture shows what this means. We use the design matrix of Tutorial 2, question 3, with two coefficients. We set the true beta to 3 and 7, and sigma to 1.2. We simulate one data set. It gives one beta hat. That is one point.
+
+13
+00:02:35,544 --> 00:02:43,437
+Now we repeat this for 400 data sets. Each data set gives a different beta hat. The points make a cloud.
+
+14
+00:02:43,887 --> 00:02:52,655
+The centre of the cloud is the true beta, 3 and 7. This is the meaning of: the expectation of beta hat equals beta.
+
+15
+00:02:53,105 --> 00:02:57,393
+Next, the variance of beta hat. Again start from the formula.
+
+16
+00:02:57,843 --> 00:03:04,179
+Use the rule for the variance of A y. A goes on the left, and A transpose goes on the right.
+
+17
+00:03:04,629 --> 00:03:20,949
+The transpose of a product is the product of the transposes, in the opposite order. So the transpose of X transpose is X. X transpose X is symmetric, so its inverse is also symmetric. Its transpose is itself.
+
+18
+00:03:21,399 --> 00:03:29,463
+The errors are independent with variance sigma squared. So the variance of y is sigma squared times the identity.
+
+19
+00:03:29,913 --> 00:03:36,676
+Sigma squared is a number. It moves to the front. The identity matrix does not change anything.
+
+20
+00:03:37,126 --> 00:03:50,267
+X transpose X inverse times X transpose X is the identity. What is left is sigma squared times X transpose X inverse. This is the variance matrix of beta hat.
+
+21
+00:03:50,717 --> 00:04:06,525
+In the picture, the green ellipse shows the shape of sigma squared X transpose X inverse. Here the off-diagonal entry is negative. So the cloud tilts down: a large beta 1 hat comes with a small beta 2 hat.
+
+22
+00:04:06,975 --> 00:04:28,565
+We know the mean and the variance of beta hat. Now the distribution. The response y is multivariate normal. Beta hat is a constant matrix times y. The linearity property of Lecture 5 says: a constant matrix times an M V N vector, plus a constant, is again M V N.
+
+23
+00:04:29,015 --> 00:04:36,695
+So beta hat is multivariate normal, with mean beta and variance sigma squared X transpose X inverse.
+
+24
+00:04:37,145 --> 00:05:03,513
+The second property of the multivariate normal is about marginals. Each single entry of an M V N vector is normal. So beta j hat is normal, with mean beta j and variance sigma squared times V j j. V is X transpose X inverse. V j j is its diagonal entry in the row of beta j. The orange curves show these two normal distributions.
+
+25
+00:05:03,963 --> 00:05:21,605
+For the design of Tutorial 2 question 3, V is one eighth of the matrix 3, minus 1, minus 1, 3. So the variance of beta 1 hat is three eighths of sigma squared. With sigma equal to 1.2, that is 0.54.
+
+26
+00:05:22,055 --> 00:05:27,218
+The fitted values are the vector y hat. It equals X times beta hat.
+
+27
+00:05:27,668 --> 00:05:29,780
+Put in the formula for beta hat.
+
+28
+00:05:30,230 --> 00:05:42,070
+Now regroup the brackets. The matrix X, X transpose X inverse, X transpose, multiplies y. Call this matrix H. So y hat equals H y.
+
+29
+00:05:42,520 --> 00:05:52,611
+H is the hat matrix. It is n by n. It depends only on the covariates. It turns y into y hat. It puts the hat on y.
+
+30
+00:05:53,061 --> 00:06:13,477
+Here is the geometry. The grey plane is the column space of X: all vectors X times some coefficient vector. y hat is X times beta hat, so it is in this plane. Least squares picks the point of the plane nearest to y. So H moves y to the nearest point of the column space.
+
+31
+00:06:13,927 --> 00:06:17,511
+The residual vector e is y minus y hat.
+
+32
+00:06:17,961 --> 00:06:21,779
+y hat is X beta hat, and it is also H y.
+
+33
+00:06:22,229 --> 00:06:32,171
+Factor out y. The residual vector is I minus H, times y. So both y hat and e are constant matrices times y.
+
+34
+00:06:32,621 --> 00:06:37,634
+The slide notes that X transpose e is the zero vector. Here is why.
+
+35
+00:06:38,084 --> 00:06:40,345
+Write e as y minus H y.
+
+36
+00:06:40,795 --> 00:06:43,953
+Multiply out, and put in the formula for H.
+
+37
+00:06:44,403 --> 00:06:55,795
+X transpose X times its inverse is the identity. So the second term is X transpose y. The two terms cancel. X transpose e equals zero.
+
+38
+00:06:56,245 --> 00:07:11,327
+In the picture, the orange vector e goes from y hat up to y. X transpose e equals zero means: e times each column of X is zero. So e is perpendicular to every column, and to the whole plane.
+
+39
+00:07:11,777 --> 00:07:23,745
+The first column of X is a column of ones. One row of X transpose e is the sum of the residuals. So the residuals sum to zero when the model has an intercept.
+
+40
+00:07:24,195 --> 00:07:42,819
+Check this with numbers. This is a small data set of our own, with 5 observations and 2 covariates. X transpose X is diagonal, with entries 5, 10 and 4. Least squares gives beta hat equal to 7, 2.3 and 0.75.
+
+41
+00:07:43,269 --> 00:08:03,856
+The residual e i is y i minus the fitted value. For observation 1, the fitted value is 7 minus 4.6 plus 0.75, which is 3.15. So e 1 is minus 0.15. The orange bars show all five residuals.
+
+42
+00:08:04,306 --> 00:08:08,487
+Column 1 is all ones. The sum of the residuals is zero.
+
+43
+00:08:08,937 --> 00:08:15,785
+Column 2 is x 1. Multiply each x i 1 by e i and add. The sum is zero.
+
+44
+00:08:16,235 --> 00:08:25,899
+Column 3 is x 2. Again the sum of the products is zero. So X transpose e is the zero vector, as the derivation says.
+
+45
+00:08:26,349 --> 00:08:42,093
+Now a practice question from lecture 6. With one covariate, find the covariance between beta 0 hat and beta 1 hat. Use the variance matrix sigma squared X transpose X inverse. Pause the video and try it.
+
+46
+00:08:42,543 --> 00:08:59,866
+With one covariate, X has two columns: a column of ones, and the column of x values. Each entry of X transpose X is one column times another column. So the entries are n, the sum of x i, and the sum of x i squared.
+
+47
+00:09:00,316 --> 00:09:21,372
+The determinant is n times the sum of x i squared, minus the square of the sum of x i. The sum of x i is n x bar. So this equals n times the sum of x i squared minus n x bar squared. That bracket is S x x. The determinant is n S x x.
+
+48
+00:09:21,822 --> 00:09:32,979
+For a 2 by 2 matrix, the inverse is one over the determinant, times the matrix with the diagonal entries swapped and the off-diagonal entries negated.
+
+49
+00:09:33,429 --> 00:09:52,843
+The covariance is sigma squared times the off-diagonal entry of the inverse. That is minus sigma squared times the sum of x i, over n S x x. The sum of x i is n x bar. So the covariance is minus sigma squared x bar over S x x.
+
+50
+00:09:53,293 --> 00:10:15,693
+Check the diagonal entries too. The variance of beta 1 hat is sigma squared over S x x. The variance of beta 0 hat is sigma squared, times 1 over n plus x bar squared over S x x. These are the results of simple linear regression. So the matrix formula agrees with Lecture 3.
+
+51
+00:10:16,143 --> 00:10:25,593
+The picture shows why the sign is negative. Every fitted line goes through the point x bar, y bar. Here x bar is positive.
+
+52
+00:10:26,043 --> 00:10:39,121
+A steeper line through this point crosses the y axis lower. So a large slope estimate comes with a small intercept estimate. The covariance is negative when x bar is positive.
+
+53
+00:10:39,571 --> 00:10:59,496
+When x bar is zero, the lines turn about the y axis. The intercept does not change, and the covariance is zero. For the brain data, x bar is about 3638. The correlation of the two estimates is about minus 0.995.
+
+54
+00:10:59,946 --> 00:11:17,354
+To recap. Beta hat is a constant matrix times y. So its mean is beta, its variance is sigma squared X transpose X inverse, and it is multivariate normal. Each beta j hat is normal with variance sigma squared V j j.
+
+55
+00:11:17,804 --> 00:11:25,868
+The fitted values are H y, and the residuals are I minus H, times y. X transpose e is zero.
+
+56
+00:11:26,318 --> 00:11:41,998
+With one covariate, the covariance of the two estimates is minus sigma squared x bar over S x x. Video 14 b estimates sigma squared, and finds the joint distribution of beta hat and the residuals.

@@ -1,0 +1,263 @@
+1
+00:00:00,000 --> 00:00:13,269
+This is MATH 239, video 26 a. The topic is matchings, covers and König's Theorem. It is chapter 8 of the graph theory notes, from page 185.
+
+2
+00:00:13,719 --> 00:00:28,205
+After this video, you can use matchings and augmenting paths. You can prove that a matching is never larger than a cover. You can state König's Theorem. And you can build the sets X and Y that we use in its proof.
+
+3
+00:00:28,655 --> 00:00:35,439
+Here is the graph of Figure 8.1 of the notes. It has 9 vertices and 15 edges.
+
+4
+00:00:35,889 --> 00:00:46,555
+A matching is a set M of edges, such that no two edges of M have a common end. The thick blue edges a h, b g and c e form a matching.
+
+5
+00:00:47,005 --> 00:00:56,840
+Add the edge h g to this set. Now h is an end of two edges of the set, a h and h g. So the new set is not a matching.
+
+6
+00:00:57,290 --> 00:01:09,215
+Another way to say the same condition: take the spanning subgraph with edge set M. In it, every vertex has degree 0 or 1. The labels show these degrees.
+
+7
+00:01:09,665 --> 00:01:19,521
+M saturates a vertex v if v is an end of an edge of M. This matching saturates a, h, b, g, c and e. They are blue.
+
+8
+00:01:19,971 --> 00:01:24,515
+The vertices d, i and f are not saturated. They are orange.
+
+9
+00:01:24,965 --> 00:01:37,680
+Every graph has a matching. For example, the empty set is a matching. The question is how to find a largest matching. We call it a maximum matching. Our matching M has size 3.
+
+10
+00:01:38,130 --> 00:01:47,389
+It is not maximum. Here is a matching of size 4: i a, h b, g f and c e. Now only d is not saturated.
+
+11
+00:01:47,839 --> 00:02:04,671
+A perfect matching saturates every vertex. So it has size p over 2, where p is the number of vertices. Here p is 9, an odd number. So this graph has no perfect matching. A brute force check gives maximum size 4.
+
+12
+00:02:05,121 --> 00:02:22,699
+Here is a problem from the notes. We have six workers, a to f, and six jobs, g to l. Each worker can do some of the jobs. Each worker gets at most one job, and each job gets at most one worker. We want to assign as many jobs as possible.
+
+13
+00:02:23,149 --> 00:02:39,171
+Make a bipartite graph. Put the workers in A and the jobs in B. Join worker u to job v if u can do v. Job g goes with c and e. Job h with a and c. Job i with a, b, c, d and f.
+
+14
+00:02:39,621 --> 00:02:45,551
+Then jobs j, k and l. The graph has 16 edges. This is Figure 8.2.
+
+15
+00:02:46,001 --> 00:03:00,636
+An assignment is a set of edges. Each worker has at most one assigned edge, and each job has at most one. So an assignment is a matching. Here: a does h, c does i, e does k and f does l.
+
+16
+00:03:01,086 --> 00:03:13,417
+So the job assignment problem is the maximum matching problem for a bipartite graph. The converse is also true: any bipartite graph gives a job assignment problem.
+
+17
+00:03:13,867 --> 00:03:34,645
+Here is a practice question from Problem Set 8.2 of the notes. A domino covers two adjacent squares of a chessboard. Make a graph with one vertex for each square, and an edge for each pair of adjacent squares. Then a covering by dominoes is a perfect matching. Pause the video and try it.
+
+18
+00:03:35,095 --> 00:03:45,826
+Question 5: cover all 64 squares with 32 dominoes. Put four horizontal dominoes in each row. That is 32 dominoes.
+
+19
+00:03:46,276 --> 00:03:56,004
+Question 6: remove two opposite corners. Both corners have the same colour. So 30 dark squares and 32 light squares remain.
+
+20
+00:03:56,454 --> 00:04:14,737
+Adjacent squares have different colours, so each domino covers one dark and one light square. 31 dominoes would need 31 dark squares. There are only 30. So no covering exists. A python check of the maximum matching gives 30, not 31.
+
+21
+00:04:15,187 --> 00:04:26,237
+Fix a matching M. A path is an alternating path for M if its edges are alternately in M and not in M. The first edge can be of either kind.
+
+22
+00:04:26,687 --> 00:04:35,626
+Example 1 from the notes: the path a h b g. The edge a h is in M. h b is not. b g is in M.
+
+23
+00:04:36,076 --> 00:04:42,604
+Example 2: i a h g b. The edges go: not in M, in M, not in M, in M.
+
+24
+00:04:43,054 --> 00:04:49,369
+Example 3: i a h b g f. It has five edges: out, in, out, in, out.
+
+25
+00:04:49,819 --> 00:04:59,077
+An augmenting path for M is an alternating path that joins two distinct vertices, where neither end is saturated by M.
+
+26
+00:04:59,527 --> 00:05:06,311
+Example 3 is augmenting. Its ends are i and f, and M saturates neither of them.
+
+27
+00:05:06,761 --> 00:05:21,417
+An end that is not saturated has no edge of M. So the first and the last edge are not in M. Thus an augmenting path has odd length. Here, 3 edges are out of M and 2 edges are in M.
+
+28
+00:05:21,867 --> 00:05:29,206
+Lemma 8.1.1 says: if M has an augmenting path, then M is not a maximum matching.
+
+29
+00:05:29,656 --> 00:05:38,403
+Here is the proof. Let P be an augmenting path, v 0, v 1, up to v n. The top row shows example 3.
+
+30
+00:05:38,853 --> 00:05:56,730
+Edge i of the path joins v i and v i plus 1. It is in M when i is odd, and not in M when i is even. The path starts and ends with an edge not in M, so n is odd. So the path has one more edge out of M than in M.
+
+31
+00:05:57,180 --> 00:06:15,676
+Now swap. Remove from M the edges of P that are in M, and add the other edges of P. Inside the path, the new edges have no common ends. The two ends of P had no edge of M before. So the result M prime is a matching, with one more edge.
+
+32
+00:06:16,126 --> 00:06:26,302
+On Figure 8.1, the swap gives the matching i a, h b, g f, c e. This is the matching of size 4 that we saw before.
+
+33
+00:06:26,752 --> 00:06:34,304
+A cover of a graph G is a set C of vertices, such that every edge of G has at least one end in C.
+
+34
+00:06:34,754 --> 00:06:44,525
+The notes use the cover a, h, g, c, e of Figure 8.1. Add a and h first. The green edges now have an end in C.
+
+35
+00:06:44,975 --> 00:06:48,132
+Add g. Four more edges become green.
+
+36
+00:06:48,582 --> 00:06:54,235
+Add c and e. Now all 15 edges are green. So this set is a cover.
+
+37
+00:06:54,685 --> 00:07:12,093
+Large covers are easy to find. The set of all vertices is a cover. If G is bipartite with bipartition A, B, then every edge has one end in A. So A is a cover, and B is a cover. The hard question is a minimum cover.
+
+38
+00:07:12,543 --> 00:07:30,165
+Now we compare matchings and covers. Lemma 8.2.1: if M is a matching of G and C is a cover of G, then the size of M is at most the size of C. The figure shows the matching of size 4 and the cover of size 5.
+
+39
+00:07:30,615 --> 00:07:40,513
+The proof. Take an edge u v of M. C is a cover, so u or v is in C. The orange dot marks one such end for each edge.
+
+40
+00:07:40,963 --> 00:07:49,390
+Two different edges of M have no common end, because M is a matching. So the marked vertices of C are all different.
+
+41
+00:07:49,840 --> 00:08:00,379
+So C contains at least as many vertices as M has edges. Thus the size of M is at most the size of C. Here, 4 is at most 5.
+
+42
+00:08:00,829 --> 00:08:15,719
+Sometimes a cover proves that a matching is maximum. Lemma 8.2.2: if M is a matching, C is a cover, and they have the same size, then M is a maximum matching and C is a minimum cover.
+
+43
+00:08:16,169 --> 00:08:30,143
+Proof. Let M prime be any matching. By Lemma 8.2.1, the size of M prime is at most the size of C, which equals the size of M. So no matching is larger than M.
+
+44
+00:08:30,593 --> 00:08:42,966
+Now let C prime be any cover. By Lemma 8.2.1, its size is at least the size of M, which equals the size of C. So no cover is smaller than C.
+
+45
+00:08:43,416 --> 00:09:00,888
+Here is the job graph with the matching of Figure 8.4. It has 5 edges. The green set a, c, e, i, l is a cover with 5 vertices. So by Lemma 8.2.2, this matching is maximum, and this cover is minimum.
+
+46
+00:09:01,338 --> 00:09:16,058
+Look at the sizes that matchings can have in the job graph. Blue dots: there are matchings of size 0 up to 5. By Lemma 8.2.1, every matching size is at most every cover size.
+
+47
+00:09:16,508 --> 00:09:22,119
+Green dots: the covers have sizes from 5 up to 12, the number of vertices.
+
+48
+00:09:22,569 --> 00:09:38,163
+The largest blue size and the smallest green size meet at 5. König's Theorem says this always happens in a bipartite graph. In a bipartite graph, the maximum size of a matching is the minimum size of a cover.
+
+49
+00:09:38,613 --> 00:09:43,371
+We will prove it soon. First, we see that it needs the word bipartite.
+
+50
+00:09:43,821 --> 00:10:03,703
+Take the complete graph K 5. A matching has at most 2 edges, because 5 is odd. A minimum cover has 4 vertices. So there is a gap between 2 and 4. In general, K p has minimum cover p minus 1 and maximum matching p over 2, rounded down.
+
+51
+00:10:04,153 --> 00:10:17,316
+Here is why a cover needs p minus 1 vertices. If a set misses two vertices u and v, then the edge u v has no end in the set. So a cover misses at most one vertex.
+
+52
+00:10:17,766 --> 00:10:42,641
+Now the tool for the proof: the X Y construction. Let A, B be a bipartition of G, and M a matching. X 0 is the set of vertices of A that M does not saturate. Z is the set of vertices joined to X 0 by an alternating path. For v in Z, P of v is such a path. Then X is A intersect Z, and Y is B intersect Z.
+
+53
+00:10:43,091 --> 00:10:51,731
+Take the job graph with the matching of Figure 8.2. M does not saturate b and d. So X 0 is b, d.
+
+54
+00:10:52,181 --> 00:11:01,418
+A path from X 0 starts with an edge not in M, because b and d have no matching edge. From b and d we reach i and l.
+
+55
+00:11:01,868 --> 00:11:07,308
+The next edge must be in M. The matching edges at i and l go to c and f.
+
+56
+00:11:07,758 --> 00:11:14,585
+Next, an edge not in M. From c we reach g, h, j and k. From f, we reach nothing new.
+
+57
+00:11:15,035 --> 00:11:19,984
+Next, an edge in M. From h we reach a, and from k we reach e.
+
+58
+00:11:20,434 --> 00:11:27,559
+No new vertex is reachable. So X is all of A, and Y is all of B. This agrees with the notes.
+
+59
+00:11:28,009 --> 00:11:37,268
+Here is the same graph with the matching of Figure 8.4. It has five edges: a h, b i, c j, e k and f l.
+
+60
+00:11:37,718 --> 00:11:41,878
+Only d in A is not saturated. So X 0 is d.
+
+61
+00:11:42,328 --> 00:11:45,400
+From d, edges not in M reach i and l.
+
+62
+00:11:45,850 --> 00:11:55,045
+The matching edges at i and l go to b and f. The neighbours of b and f are only i and l, and we have them. So we stop.
+
+63
+00:11:55,495 --> 00:11:58,567
+So X is d, b, f, and Y is i, l.
+
+64
+00:11:59,017 --> 00:12:10,323
+To recap. A matching is a set of edges with no common ends. A cover is a set of vertices that meets every edge. An augmenting path gives a larger matching.
+
+65
+00:12:10,773 --> 00:12:25,024
+A matching is never larger than a cover. If they have the same size, both are optimal. König's Theorem says that in a bipartite graph, the maximum matching and the minimum cover have the same size.
+
+66
+00:12:25,474 --> 00:12:36,162
+We built the sets X and Y with alternating paths from X 0. Part 2 uses them to prove König's Theorem, and turns them into an algorithm.

@@ -1,0 +1,495 @@
+1
+00:00:00,000 --> 00:00:06,784
+This is ECE 320, video 4. The topic is functions and the stack in RISC-V.
+
+2
+00:00:07,234 --> 00:00:25,410
+After this video, you can trace a call and a return, with the P C and R A. You can save and restore registers on the stack, and you know which side must save each register. And you can solve assignment 2, question 1 parts d and e, and question 2.
+
+3
+00:00:25,860 --> 00:00:39,727
+One function can be called from many places. The caller and the function use the same 32 registers. So both sides follow fixed rules. Slide 18 lists the six steps of a function call.
+
+4
+00:00:40,177 --> 00:00:47,046
+Step 1. The caller puts the parameters where the function can access them: in the argument registers.
+
+5
+00:00:47,496 --> 00:00:51,080
+Step 2. The caller transfers control to the function.
+
+6
+00:00:51,530 --> 00:00:58,847
+Step 3. The function acquires the local storage that it needs. Step 4. It performs its task.
+
+7
+00:00:59,297 --> 00:01:07,127
+Step 5. The function puts the result where the caller can get it. It also restores the registers that it used.
+
+8
+00:01:07,577 --> 00:01:15,555
+Step 6. The function returns control to the point of origin. It must return to the place that called it this time.
+
+9
+00:01:16,005 --> 00:01:23,067
+Steps 3 and 5 are a pair. Step 3 saves old register values. Step 5 puts them back.
+
+10
+00:01:23,517 --> 00:01:39,239
+Slide 17 lists the 32 registers. The hardware knows only the numbers x0 to x31. In assembly, you can also use the symbolic names. Each name tells the job of the register in a call.
+
+11
+00:01:39,689 --> 00:01:47,881
+a0 to a7 are x10 to x17, the eight argument registers. The caller puts the parameters here.
+
+12
+00:01:48,331 --> 00:01:54,966
+a0 and a1 also hold the return values. The function puts its result in a0.
+
+13
+00:01:55,416 --> 00:02:02,371
+R A is x1, the return address register. It holds the address where the function must return.
+
+14
+00:02:02,821 --> 00:02:06,490
+Why registers? Registers are faster than memory.
+
+15
+00:02:06,940 --> 00:02:21,724
+Slide 20 shows the code in memory. Every instruction is 4 bytes, so the addresses go up by 4. The caller wants sum of a and b. At 1000, move copies a, from s0, into a0.
+
+16
+00:02:22,174 --> 00:02:30,899
+At 1004, the second move copies b into a1. That is step 1: the parameters are in the argument registers.
+
+17
+00:02:31,349 --> 00:02:42,848
+At 1008, add immediate puts 1016 into R A. 1016 is the address after the jump. It is the place to return to.
+
+18
+00:02:43,298 --> 00:02:49,826
+At 1012, the jump goes to sum. The P C becomes 2000. That is step 2.
+
+19
+00:02:50,276 --> 00:02:58,212
+At 2000, sum adds a0 and a1. The result goes into a0, the return value register.
+
+20
+00:02:58,662 --> 00:03:07,259
+At 2004, jump register sets the P C to the value in R A. So the P C becomes 1016.
+
+21
+00:03:07,709 --> 00:03:14,387
+The caller continues at 1016, after the call. It finds the result in a0.
+
+22
+00:03:14,837 --> 00:03:27,637
+Slide 22 asks: why does sum end with jump register, and not with a plain jump? Look at two places that call sum. The second call site is an example at 3008.
+
+23
+00:03:28,087 --> 00:03:43,788
+Assume sum ends with jump to 1016. The return to call site 1 is correct. But call site 2 also returns to 1016. That is wrong. A plain jump always goes to one fixed place.
+
+24
+00:03:44,238 --> 00:03:58,531
+Now sum ends with jump register R A. Each caller puts its own return address in R A: 1016 or 3016. So each call returns to its own next instruction.
+
+25
+00:03:58,981 --> 00:04:06,043
+Slide 24. Before, the call needed two instructions: add immediate to set R A, then a jump.
+
+26
+00:04:06,493 --> 00:04:21,597
+RISC-V has one instruction that does both: jump and link, J A L. Jump and link sum is at 1008. The next instruction is now at 1012, so R A becomes 1012.
+
+27
+00:04:22,047 --> 00:04:34,633
+Jump and link saves P C plus 4 in R A. That is the address of the next instruction, 1012. Then it sets the P C to the address of sum, 2000.
+
+28
+00:04:35,083 --> 00:04:42,358
+Why? Function calls are very common. So make the common case fast. It also makes the program smaller.
+
+29
+00:04:42,808 --> 00:04:51,000
+Slide 25 is the summary. Call a function with jump and link and its label. Return with jump register R A.
+
+30
+00:04:51,450 --> 00:04:59,941
+Slide 26 is the next example. The function Leaf computes g plus h, minus i plus j, and returns it.
+
+31
+00:05:00,391 --> 00:05:06,151
+The parameters g, h, i and j are in a0, a1, a2 and a3.
+
+32
+00:05:06,601 --> 00:05:11,891
+f is in s0. Leaf also needs one temporary register, s1.
+
+33
+00:05:12,341 --> 00:05:29,472
+Here is the problem. The caller may keep its own values in s0 and s1, for example 70 and 80. Leaf writes s0 and s1. So it must save the old values first, and restore them before it returns. Where can it save them?
+
+34
+00:05:29,922 --> 00:05:48,823
+The ideal place is a stack: a last in, first out queue. Push places data on it. Pop removes data. The stack is in memory. S P, the stack pointer, x2, points to it. The stack grows down, from high to low addresses. Here S P is 6000, an example.
+
+35
+00:05:49,273 --> 00:05:58,767
+Push, part 1. Add immediate S P, S P, minus 4. S P moves down by one word, to 5996.
+
+36
+00:05:59,217 --> 00:06:11,078
+Push, part 2. Store word s0 at offset 0 from S P. The old s0, 70, is now in memory at 5996.
+
+37
+00:06:11,528 --> 00:06:15,859
+Now the code can use s0. Here s0 becomes 11.
+
+38
+00:06:16,309 --> 00:06:24,799
+Pop, part 1. Load word s0 from offset 0 from S P. s0 gets its old value, 70, back.
+
+39
+00:06:25,249 --> 00:06:34,593
+Pop, part 2. Add 4 to S P. S P is 6000 again. The old value stays in memory, but that space is free now.
+
+40
+00:06:35,043 --> 00:06:51,555
+Here is the code for Leaf from slide 28. On the right are the stack and four registers, with example values. g, h, i and j are 5, 6, 1 and 2. The caller keeps 70 in s0 and 80 in s1.
+
+41
+00:06:52,005 --> 00:07:01,413
+First, make room for 2 items. Add minus 8 to S P. S P goes from 6000 to 5992.
+
+42
+00:07:01,863 --> 00:07:10,077
+Store word s1 at offset 4. The old s1, 80, is now at 5996.
+
+43
+00:07:10,527 --> 00:07:19,124
+Store word s0 at offset 0. The old s0, 70, is now at 5992.
+
+44
+00:07:19,574 --> 00:07:27,105
+Now the work. s0 gets g plus h, which is 11. s1 gets i plus j, which is 3.
+
+45
+00:07:27,555 --> 00:07:34,893
+Subtract s1 from s0, and put the result in a0. a0 is 8, the return value.
+
+46
+00:07:35,343 --> 00:07:45,391
+Restore the registers. Load s0 from offset 0, and s1 from offset 4. s0 is 70 and s1 is 80 again.
+
+47
+00:07:45,841 --> 00:07:51,644
+Add 8 to S P. This deletes the 2 items. S P is 6000 again.
+
+48
+00:07:52,094 --> 00:08:04,617
+Jump register R A goes back to the caller. S P, s0 and s1 have the same values as before the call. Only a0 changed: it holds the result, 8.
+
+49
+00:08:05,067 --> 00:08:12,747
+Slide 29 shows the stack in three pictures. Before the call, S P points to the last word of the caller.
+
+50
+00:08:13,197 --> 00:08:21,325
+During the call, S P is 8 bytes lower. The saved s1 and s0 are between the old and the new S P.
+
+51
+00:08:21,775 --> 00:08:33,060
+After the call, S P is back at its old value. The saved values are still in memory, but the space is free. A function must leave S P as it found it.
+
+52
+00:08:33,510 --> 00:08:49,809
+What if a function calls a function? Slide 31 uses sumSquare. It returns mult of x and x, plus y. This first version saves nothing. x is in a0 and y is in a1. The addresses are examples.
+
+53
+00:08:50,259 --> 00:08:56,595
+The caller calls sumSquare with jump and link at 1000. R A becomes 1004.
+
+54
+00:08:57,045 --> 00:09:09,951
+sumSquare copies x into a1, so a1 no longer holds y. Then it calls mult at 2004. R A becomes 2008. The value 1004 is lost.
+
+55
+00:09:10,401 --> 00:09:17,185
+mult computes x times x in a0, and returns to 2008. This return is correct.
+
+56
+00:09:17,635 --> 00:09:32,675
+sumSquare adds a1, but a1 holds x, not y. Then jump register R A goes to 2008 again, not to 1004. A call inside a function clobbers R A and the argument registers.
+
+57
+00:09:33,125 --> 00:09:40,400
+The fix: before the call to mult, save the return address and y on the stack. Restore them after the call.
+
+58
+00:09:40,850 --> 00:09:49,746
+Loads and stores to save registers are expensive. So the RISC-V calling convention divides the registers into two groups.
+
+59
+00:09:50,196 --> 00:10:05,961
+Group 1 is preserved across a call: S P, g p, t p, and the saved registers s0 to s11. The caller can rely on these values. So if the callee uses one, the callee must save it and restore it.
+
+60
+00:10:06,411 --> 00:10:20,406
+Group 2 is not preserved: the argument registers a0 to a7, R A, and the temporary registers t0 to t6. If the caller needs one after the call, the caller must save it.
+
+61
+00:10:20,856 --> 00:10:28,941
+The Saver column on slide 17 says the same thing. Callee for the green registers. Caller for the orange ones.
+
+62
+00:10:29,391 --> 00:10:42,085
+So the choice of registers matters. If Leaf uses t0 and t1 instead of s0 and s1, it saves nothing. It needs 4 instructions, not 10, and no stack.
+
+63
+00:10:42,535 --> 00:10:56,145
+The stack also holds local variables that do not fit in registers. Slide 34 shows all the parts that a call can put on the stack. Before the call, S P points to the caller's data.
+
+64
+00:10:56,595 --> 00:11:01,929
+First, the saved return address. A function that calls another function needs it.
+
+65
+00:11:02,379 --> 00:11:07,861
+Then the saved argument registers, if the function needs their values after a call.
+
+66
+00:11:08,311 --> 00:11:14,519
+Then the saved s registers that the function uses. Last, the local variables, if any.
+
+67
+00:11:14,969 --> 00:11:27,449
+During the call, S P points to the bottom of this area. After the call, S P has its old value again. This part of the stack is the procedure frame, or activation record.
+
+68
+00:11:27,899 --> 00:11:43,857
+Slides 35 and 36 compile sumSquare with the stack. The example values are x equal to 3 in a0, and y equal to 4 in a1. The caller called from 1000, so R A is 1004.
+
+69
+00:11:44,307 --> 00:11:50,557
+Push. Add minus 8 to S P. S P goes to 5992.
+
+70
+00:11:51,007 --> 00:11:56,255
+Store R A at offset 4. The return address 1004 is safe.
+
+71
+00:11:56,705 --> 00:12:09,676
+Store a1, which is y, at offset 0. sumSquare needs y after the call, and a1 is not preserved. x is not saved, because the code does not need x after the call.
+
+72
+00:12:10,126 --> 00:12:16,355
+Move x into a1. Now a0 and a1 both hold x, the parameters for mult.
+
+73
+00:12:16,805 --> 00:12:26,981
+Jump and link mult at 2016. R A becomes 2020. mult returns 9 in a0. It may also change a1.
+
+74
+00:12:27,431 --> 00:12:32,701
+Restore y. Load word a1 from offset 0. a1 is 4 again.
+
+75
+00:12:33,151 --> 00:12:38,335
+Add a0 and a1. a0 is 9 plus 4, which is 13.
+
+76
+00:12:38,785 --> 00:12:43,542
+Load word R A from offset 4. R A is 1004 again.
+
+77
+00:12:43,992 --> 00:12:54,360
+Pop. Add 8 to S P, so S P is 6000 again. Jump register R A returns to 1004, with 13 in a0.
+
+78
+00:12:54,810 --> 00:13:03,258
+Now assignment 2, question 1 d. Compile compare and sub. Use the calling convention. Pause the video and try it.
+
+79
+00:13:03,708 --> 00:13:16,359
+First, find the calls. compare calls sub, so its jump and link changes R A. So compare must save R A on the stack. sub calls nothing. It is a leaf, and it needs no stack.
+
+80
+00:13:16,809 --> 00:13:27,817
+The solution passes a in a1 and b in a2. The result goes in a0. The label is s u b t, because sub is the name of an instruction.
+
+81
+00:13:28,267 --> 00:13:39,509
+Here is the solution code, with example values a equal to 5 and b equal to 3. compare is called from 1000, so R A is 1004.
+
+82
+00:13:39,959 --> 00:13:47,191
+compare makes room for one word, and stores R A there. S P is 5996.
+
+83
+00:13:47,641 --> 00:13:56,495
+Jump and link subt at 2008. R A becomes 2012. Without the save, 1004 would now be lost.
+
+84
+00:13:56,945 --> 00:14:05,265
+subt computes a1 minus a2. a0 is 5 minus 3, which is 2. It returns to 2012.
+
+85
+00:14:05,715 --> 00:14:10,131
+compare sets t1 to 1. This is the value for the if part.
+
+86
+00:14:10,581 --> 00:14:19,562
+a0 is 2, which is not less than zero. So the branch goes to exit, and skips the instruction that sets t1 to 0.
+
+87
+00:14:20,012 --> 00:14:23,212
+At exit, a0 gets t1, which is 1.
+
+88
+00:14:23,662 --> 00:14:33,390
+Load R A back, add 4 to S P, and jump register R A. compare returns to 1004 with a0 equal to 1.
+
+89
+00:14:33,840 --> 00:14:47,664
+Why are no other registers saved? compare does not use a1 or a2 after the call. If a is less than b, the branch is not taken, t1 becomes 0, and compare returns 0.
+
+90
+00:14:48,114 --> 00:14:55,133
+Assignment 2, question 1 e. Compile the recursive function fact. Pause the video and try it.
+
+91
+00:14:55,583 --> 00:15:10,260
+Plan. fact calls itself, so it must save R A. fact also needs n after the call, to compute n times fact of n minus 1. n is in a1, which is not preserved. So fact must save n too.
+
+92
+00:15:10,710 --> 00:15:26,283
+Here is the chain of calls for fact of 3. Each call passes n minus 1. fact of 0 returns 1. Then each call multiplies: 1 times 1 is 1, 2 times 1 is 2, and 3 times 2 is 6.
+
+93
+00:15:26,733 --> 00:15:36,355
+Here is the solution code. The trace is fact of 3, called from 1000. So n is 3 in a1, and R A is 1004.
+
+94
+00:15:36,805 --> 00:15:51,141
+n is not less than 1, so go to recurse. Push a frame of 2 words: R A, 1004, and n, 3. Then a1 becomes 2, and jump and link calls fact. R A becomes 2036.
+
+95
+00:15:51,591 --> 00:15:59,249
+fact of 2 does the same. It pushes 2036 and 2. a1 becomes 1, and it calls fact again.
+
+96
+00:15:59,699 --> 00:16:10,686
+fact of 1 pushes 2036 and 1, and calls fact with 0. Now there are three frames, and S P is 5976.
+
+97
+00:16:11,136 --> 00:16:20,608
+In fact of 0, n is less than 1. a0 becomes 1, and it returns to 2036. This call pushes no frame.
+
+98
+00:16:21,058 --> 00:16:31,362
+Back in fact of 1. Load n, which is 1, into t0, and load R A. Pop the frame. a0 becomes 1 times 1, which is 1.
+
+99
+00:16:31,812 --> 00:16:39,321
+Back in fact of 2. t0 is 2. a0 becomes 1 times 2, which is 2. Pop and return.
+
+100
+00:16:39,771 --> 00:16:56,241
+Back in fact of 3. t0 is 3, and R A is 1004 again. a0 becomes 2 times 3, which is 6. S P is 6000 again. Each call had its own frame. Multiply is from the reference card.
+
+101
+00:16:56,691 --> 00:17:13,288
+Assignment 2, question 2. Holmes removes addressing modes, one at a time. In part a, loads and stores cannot use a register plus an offset. Rewrite load word x1, 16 of x2. Pause the video and try it.
+
+102
+00:17:13,738 --> 00:17:26,197
+This question has three addressing modes. Displacement: a register plus a constant. Register-indirect: the value in a register. Absolute: a constant in the instruction.
+
+103
+00:17:26,647 --> 00:17:39,297
+The solution does the add in a separate add immediate. x3 gets x2 plus 16. Then load word x1 with offset 0 from x3. That is register-indirect.
+
+104
+00:17:39,747 --> 00:17:44,569
+The cost is one more instruction, and one temporary register, x3.
+
+105
+00:17:45,019 --> 00:18:02,597
+Part b. Now loads and stores have only absolute addressing. The address is a 20-bit constant in the instruction. Translate load word x1, 16 of x2. Hint: change the bits of an instruction. Pause the video and try it.
+
+106
+00:18:03,047 --> 00:18:15,485
+The problem: x2 plus 16 is known only when the program runs. But an absolute load holds a constant. So the program must build the load instruction while it runs.
+
+107
+00:18:15,935 --> 00:18:25,428
+The data region has a template instruction, load word x1, 0. The first load copies this word into x3, as data.
+
+108
+00:18:25,878 --> 00:18:35,222
+Add immediate x3, x3, 16. The immediate field is in the low bits of the word. So this adds 16 to the immediate.
+
+109
+00:18:35,672 --> 00:18:49,432
+Add x3, x3, x2. Now the immediate field is x2 plus 16. With the example x2 equal to hex 1 0 0 0, it is hex 1 0 1 0.
+
+110
+00:18:49,882 --> 00:18:58,437
+Store word x3 at the label underscore l w. This overwrites the no operation instruction with the new load.
+
+111
+00:18:58,887 --> 00:19:09,063
+The P C then reaches underscore l w and runs the new load. This works while x2 plus 16 fits in the 20 immediate bits.
+
+112
+00:19:09,513 --> 00:19:24,553
+Part c. Now jumps take a 20-bit absolute address, and jump register is not allowed. multiply gets its return address in x31. Rewrite it without jump register. Pause the video and try it.
+
+113
+00:19:25,003 --> 00:19:31,168
+Use the same method as part b. Build a jump to the return address while the program runs.
+
+114
+00:19:31,618 --> 00:19:38,573
+The data region has a template, jump to 0. Load word x6 copies this word into x6.
+
+115
+00:19:39,023 --> 00:19:53,892
+Add x31 to x6. The immediate field now holds the return address. With the example x31 equal to hex 1 0 0 4, the word is jump to hex 1 0 0 4.
+
+116
+00:19:54,342 --> 00:20:01,809
+Store word x6 at the label return. The no operation instruction there becomes the jump to the caller.
+
+117
+00:20:02,259 --> 00:20:08,147
+The rest of the code does not change. It sets result and i to 0, and runs the loop.
+
+118
+00:20:08,597 --> 00:20:14,143
+When the loop ends, the P C reaches return. The new jump goes back to the caller.
+
+119
+00:20:14,593 --> 00:20:25,004
+Here is the recap. One. Parameters go in a0 to a7. Results come back in a0 and a1. The return address is in R A.
+
+120
+00:20:25,454 --> 00:20:32,793
+Two. Jump and link puts P C plus 4 in R A, and jumps. Jump register R A jumps back.
+
+121
+00:20:33,243 --> 00:20:41,819
+Three. The stack grows down. To push n words, subtract 4 n from S P, then store. To pop, load, then add 4 n.
+
+122
+00:20:42,269 --> 00:20:53,618
+Four. The callee must restore S P and the s registers. The caller must save R A, the a registers and the t registers, if it needs them after a call.
+
+123
+00:20:54,068 --> 00:20:59,636
+Five. A leaf function that uses only t and a registers needs no stack.
+
+124
+00:21:00,086 --> 00:21:10,070
+Six. Without an addressing mode, use an extra instruction, or build the instruction word while the program runs. That is the end of video 4.

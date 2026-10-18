@@ -1,0 +1,215 @@
+1
+00:00:00,000 --> 00:00:10,667
+This is ECE 358, video 14a. The topic is IPv4 addressing, part 1: addresses, subnets and masks.
+
+2
+00:00:11,117 --> 00:00:31,319
+After this video, you can convert an IP address between dotted-decimal and binary. You can find the subnets of a network. You can read a prefix and write its network mask. And you can explain the network ID and the broadcast address. Video 14b computes them and solves the question bank.
+
+3
+00:00:31,769 --> 00:00:43,801
+This network has one router in the middle and seven hosts. Each label is an IPv4 address. An IPv4 address is a 32-bit identifier.
+
+4
+00:00:44,251 --> 00:00:58,374
+An IP address does not identify a device. It identifies an interface. An interface is the connection between a host or a router and a physical link. The orange dots are the interfaces.
+
+5
+00:00:58,824 --> 00:01:18,344
+A router usually has many interfaces. This router has three interfaces, so it has three IP addresses: 223.1.1.4, 223.1.2.9 and 223.1.3.27.
+
+6
+00:01:18,794 --> 00:01:32,554
+A host usually has one or two interfaces. For example, a laptop can have a wired Ethernet interface and a wireless interface. Then it has two IP addresses, one for each interface.
+
+7
+00:01:33,004 --> 00:01:44,801
+Inside the network, an IPv4 address is a string of 32 bits. Here is the address 223.1.1.1 in binary.
+
+8
+00:01:45,251 --> 00:01:59,950
+To write it for people, split the 32 bits into 4 groups of 8 bits. Each group is one byte. Write each byte as a decimal number, and put a dot between the numbers. This is dotted-decimal notation.
+
+9
+00:02:00,400 --> 00:02:15,440
+To convert one byte, give each bit a weight. From left to right, the weights are 128, 64, 32, 16, 8, 4, 2 and 1. Here is the first byte, 1 1 0 1 1 1 1 1.
+
+10
+00:02:15,890 --> 00:02:37,479
+Add the weights of the 1 bits. 128 plus 64 plus 16 plus 8 plus 4 plus 2 plus 1 is 223. The other three bytes are 0 0 0 0 0 0 0 1. Each one is 1. So the address is 223.1.1.1.
+
+11
+00:02:37,929 --> 00:02:52,308
+The smallest byte is all zeros, which is 0. The largest byte is all ones, which is 255. So each number in a dotted-decimal address is between 0 and 255.
+
+12
+00:02:52,758 --> 00:03:03,809
+You must also convert in the other direction, from decimal to binary. Take the number 140. Go through the weights from 128 down to 1.
+
+13
+00:03:04,259 --> 00:03:13,688
+128 fits into 140. So the first bit is 1. 140 minus 128 leaves 12.
+
+14
+00:03:14,138 --> 00:03:21,967
+64, 32 and 16 do not fit into 12. So the next three bits are 0. 12 is still left.
+
+15
+00:03:22,417 --> 00:03:30,247
+8 fits into 12. Write 1, and 4 is left. Then 4 fits into 4. Write 1, and 0 is left.
+
+16
+00:03:30,697 --> 00:03:35,049
+Nothing is left. So the last two bits, for 2 and 1, are 0.
+
+17
+00:03:35,499 --> 00:03:45,120
+The result is 1 0 0 0 1 1 0 0. Check it: 128 plus 8 plus 4 is 140.
+
+18
+00:03:45,570 --> 00:03:56,429
+What is a subnet? A subnet is a set of interfaces that can physically reach each other without passing through a router. A subnet is a set of IP addresses.
+
+19
+00:03:56,879 --> 00:04:07,097
+This network has three subnets. In each shaded area, the interfaces are on the same link. A packet between two of them does not go through the router.
+
+20
+00:04:07,547 --> 00:04:22,481
+An IP address has a structure. The interfaces in the same subnet have the same high-order bits. This is the subnet part. In the left subnet, all four addresses start with 223.1.1.
+
+21
+00:04:22,931 --> 00:04:29,672
+The remaining low-order bits are the host part. The host part is different for each interface in the subnet.
+
+22
+00:04:30,122 --> 00:04:37,205
+The slides give a recipe to find the subnets. First, detach each interface from its host or router.
+
+23
+00:04:37,655 --> 00:04:43,756
+Here the router is removed from its three links. The red circles show the detached interfaces.
+
+24
+00:04:44,206 --> 00:05:07,139
+Each isolated island of the network is one subnet. Here there are three islands, so there are three subnets: 223.1.1.0/24, 223.1.2.0/24 and 223.1.3.0/24.
+
+25
+00:05:07,589 --> 00:05:18,768
+The slash 24 is the subnet mask. It says that the higher-order 24 bits are the subnet part of the address. The lower-order 8 bits are the host part.
+
+26
+00:05:19,218 --> 00:05:31,762
+8 host bits give 2 to the power 8, which is 256 IP addresses in each subnet. On the slide, this number prints as 2 8. It means 2 to the power 8.
+
+27
+00:05:32,212 --> 00:05:43,775
+Here is a larger network from slide 32. It has three routers. Each router has three interfaces. Find the subnets, and give their slash 24 addresses.
+
+28
+00:05:44,225 --> 00:06:03,873
+Use the recipe. Detach every interface. Three islands have hosts on them. They are the subnets 223.1.1/24, 223.1.2/24 and 223.1.3/24.
+
+29
+00:06:04,323 --> 00:06:26,381
+But there are more islands. Each link between two routers is also isolated. So each link is a subnet with two interfaces. They are 223.1.9/24, 223.1.7/24 and 223.1.8/24.
+
+30
+00:06:26,831 --> 00:06:37,434
+So this network has six subnets. A common mistake is to count only the three subnets with hosts. The slide says that these addresses are only an example.
+
+31
+00:06:37,884 --> 00:06:53,863
+Before 1993, the Internet used classful addressing. The prefix length was fixed by the first bits of the address. A class A address begins with 0. Its prefix is 8 bits, and 24 bits are for hosts.
+
+32
+00:06:54,313 --> 00:06:59,475
+A class B address begins with 1 0. Its prefix is 16 bits.
+
+33
+00:06:59,925 --> 00:07:17,845
+A class C address begins with 1 1 0. Its prefix is 24 bits, and 8 bits are for hosts. From the leading bits, you can find the range of the first byte. For example, class C starts at 192 and ends at 223.
+
+34
+00:07:18,295 --> 00:07:27,682
+Class D begins with 1 1 1 0. Class E begins with 1 1 1 1. The slide prints one extra 1 for class E.
+
+35
+00:07:28,132 --> 00:07:54,073
+The drawback is that the sizes are fixed. There is a fixed number of networks, and each network has a fixed number of addresses. A class C network has 256 addresses. The next size, class B, has 65,536. An organization with 2000 hosts gets a class B, and about 63,500 addresses are not used.
+
+36
+00:07:54,523 --> 00:08:12,721
+Since 1993, the Internet uses CIDR, classless interdomain routing. It is pronounced cider. With CIDR, the subnet part of an address can have any length. Here is the address 200.23.16.0 in binary.
+
+37
+00:08:13,171 --> 00:08:27,208
+In this example, the subnet part is 23 bits long. The subnet part is also called the network prefix. The number of bits in the prefix is the prefix length. The remaining 9 bits are the host part.
+
+38
+00:08:27,658 --> 00:08:42,869
+We write the address and the prefix length together: 200.23.16.0/23. The general format is a dot b dot c dot d, slash x. Here x is 23.
+
+39
+00:08:43,319 --> 00:09:03,393
+The 9 host bits give 2 to the power 9, which is 512 addresses. They go from 200.23.16.0 to 200.23.17.255. With CIDR, a network can get a block of the size it needs.
+
+40
+00:09:03,843 --> 00:09:18,115
+For discussion, we write a subnet with its prefix length, for example 129.97.0.0/16. Routers use a different notation: the network mask.
+
+41
+00:09:18,565 --> 00:09:37,787
+A network mask is the prefix length written in IP address style. For a prefix length of 16, the first 16 bits are 1 and the other 16 bits are 0. In dotted decimal, this is 255.255.0.0.
+
+42
+00:09:38,237 --> 00:09:52,146
+So a router stores the destination network as 129.97.0.0, with the mask 255.255.0.0.
+
+43
+00:09:52,596 --> 00:10:21,183
+The slide asks: is 255.255.64.0 a valid mask? 64 is 0 1 0 0 0 0 0 0. The third byte starts with a 0, and a 1 comes after it. A mask must be one block of 1s, then one block of 0s. So 255.255.64.0 is not a valid mask.
+
+44
+00:10:21,633 --> 00:10:42,219
+Because a mask is a block of 1s followed by 0s, each byte of a mask can have only nine values. With 0 ones the byte is 0. With 1 one it is 128. With 2 ones it is 192. With 3 it is 224. With 4 it is 240.
+
+45
+00:10:42,669 --> 00:10:57,560
+With 5 ones it is 248. With 6 it is 252. With 7 it is 254. With 8 ones it is 255. Any other value in a mask is not valid.
+
+46
+00:10:58,010 --> 00:11:13,818
+To write the mask for a prefix length, fill bytes of 8 ones first. For slash 20, 20 is 8 plus 8 plus 4. So the mask is 255.255.240.0.
+
+47
+00:11:14,268 --> 00:11:27,281
+Each subnet has an ID, the network ID. It has the form of an IP address together with a mask. This subnet is 10.2.5.16/28.
+
+48
+00:11:27,731 --> 00:11:41,897
+Network IDs appear in routing tables. Normally, the addresses of individual hosts do not. For subnets that connect directly to a router, the system administrator configures them by hand.
+
+49
+00:11:42,347 --> 00:11:53,803
+Each network also has a broadcast address. If you send an IP packet with the broadcast address as its destination, the packet goes to all the nodes on the network.
+
+50
+00:11:54,253 --> 00:12:05,325
+Two protocols that use IP broadcast are DHCP, which we see in the next video, and ARP. ARP finds the MAC address for an IP address.
+
+51
+00:12:05,775 --> 00:12:17,529
+Here is the recap. An IPv4 address has 32 bits. It identifies an interface, not a device. We write it as four bytes in dotted decimal.
+
+52
+00:12:17,979 --> 00:12:30,609
+A subnet is a set of interfaces that reach each other without a router. To find subnets, detach the interfaces. Each island is a subnet. Links between routers are subnets too.
+
+53
+00:12:31,059 --> 00:12:39,400
+With CIDR, the prefix length x can be any value. The address has x prefix bits and 32 minus x host bits.
+
+54
+00:12:39,850 --> 00:12:56,981
+The mask has x ones, then zeros. Each byte of a valid mask is one of nine values. In video 14b, we compute network IDs and broadcast addresses, and we solve questions 29 to 45 of the question bank.

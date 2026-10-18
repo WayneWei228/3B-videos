@@ -1,0 +1,307 @@
+1
+00:00:00,000 --> 00:00:06,720
+This is ECE 358, video 19. The topic is distance-vector routing.
+
+2
+00:00:07,170 --> 00:00:35,330
+After this video, you can use the Bellman-Ford equation to compute a distance vector. You can run the iterations of the slide example. You can explain what happens when a link cost changes. And you can explain count to infinity and its fixes. Slide 94 says that the lecture can skip distance vector. Check on Learn whether it is on your exam. The question bank has no distance vector question, so this video solves the slide examples.
+
+3
+00:00:35,780 --> 00:00:49,796
+Distance-vector routing, also called the Routing Information Protocol, or RIP, uses the Bellman-Ford equation. D x of y is the cost of the least-cost path from node x to node y.
+
+4
+00:00:50,246 --> 00:00:57,713
+x has neighbors v 1 to v k. c x v is the direct cost of the link from x to the neighbor v.
+
+5
+00:00:58,163 --> 00:01:05,672
+D v of y is the estimated least cost from the neighbor v to y. Each neighbor has its own estimate.
+
+6
+00:01:06,122 --> 00:01:21,909
+Any path from x to y must leave x through one of its neighbors. So D x of y is the minimum, over all neighbors v, of c x v plus D v of y. The neighbor that gives the minimum is the next hop on the path.
+
+7
+00:01:22,359 --> 00:01:42,433
+Slide 96 gives an example. u has three neighbors: v, x and w. They know their costs to z. D v of z is 5, D x of z is 3, and D w of z is 3. First, the term through v: c u v plus D v of z, which is 2 plus 5, or 7.
+
+8
+00:01:42,883 --> 00:01:48,281
+Through x: c u x plus D x of z, which is 1 plus 3, or 4.
+
+9
+00:01:48,731 --> 00:01:55,024
+Through w: c u w plus D w of z, which is 5 plus 3, or 8.
+
+10
+00:01:55,474 --> 00:02:12,946
+The minimum of 7, 4 and 8 is 4. So D u of z is 4. The node that gives the minimum is x. So x is the next hop on the least-cost path from u to z. u does not need the full map. It needs only the vectors of its neighbors.
+
+11
+00:02:13,396 --> 00:02:23,487
+Slide 97 gives the key idea. Each node keeps a distance vector. It is the list of its estimated costs to every node in the network.
+
+12
+00:02:23,937 --> 00:02:29,035
+From time to time, each node sends its own distance vector to its neighbors.
+
+13
+00:02:29,485 --> 00:02:39,619
+When node x receives a new distance vector from a neighbor, x updates its own vector. It uses the Bellman-Ford equation for each destination y.
+
+14
+00:02:40,069 --> 00:02:49,413
+Under minor, natural conditions, the estimates converge to the actual least costs. No node ever needs the full map of the network.
+
+15
+00:02:49,863 --> 00:03:06,076
+Slide 98 shows what each node does. It waits. It acts when a local link cost changes, or when a neighbor sends a new distance vector. So the algorithm is iterative and asynchronous. Nodes do not run in lock step.
+
+16
+00:03:06,526 --> 00:03:14,419
+The node then recomputes its estimates with the Bellman-Ford equation. It uses the latest vectors from its neighbors.
+
+17
+00:03:14,869 --> 00:03:28,416
+If its vector changed for any destination, the node notifies its neighbors. Then it waits again. So the algorithm is distributed. A node sends messages only when its vector changes.
+
+18
+00:03:28,866 --> 00:03:37,463
+If no node receives a notification, no node takes action. So the algorithm stops by itself. It is self-stopping.
+
+19
+00:03:37,913 --> 00:03:51,417
+Now the example of slides 99 to 111. Nine nodes, a to i, form a grid. At time t equals 0, each node knows only the costs to its direct neighbors.
+
+20
+00:03:51,867 --> 00:04:00,955
+Look at node a. D a of a is 0. Its neighbors are b with cost 8, and d with cost 1. All other entries are infinity.
+
+21
+00:04:01,405 --> 00:04:09,384
+The example has two asymmetries. The link from a to b costs 8, not 1. And there is no link between c and f.
+
+22
+00:04:09,834 --> 00:04:16,234
+Then, all nodes send their distance vectors to their neighbors. The purple links carry these messages.
+
+23
+00:04:16,684 --> 00:04:25,473
+Slides 100 to 105 show one iteration. First, all nodes receive the distance vectors of their neighbors.
+
+24
+00:04:25,923 --> 00:04:31,897
+Second, all nodes compute their new local distance vector with the Bellman-Ford equation.
+
+25
+00:04:32,347 --> 00:04:48,411
+Third, all nodes send their new vectors to their neighbors. Then the next iteration starts. The slides draw the iterations in lock step. At time t, each node uses the vectors that its neighbors had at time t minus 1.
+
+26
+00:04:48,861 --> 00:05:14,290
+Now the computation inside the nodes. At t equals 1, node b receives the vectors of a, c and e from t equals 0. The table has one column for each neighbor. First, destination a, the example on slide 108. Through a: 8 plus 0 is 8. Through c: 1 plus infinity. Through e: 1 plus infinity. The minimum is 8, through a.
+
+27
+00:05:14,740 --> 00:05:29,716
+b to b is 0. b to c is 1, through c. Now destination d. Through a: 8 plus 1 is 9. Through e: 1 plus 1 is 2. So D b of d becomes 2, through e. b learned a new path.
+
+28
+00:05:30,166 --> 00:05:39,211
+In the same way, b finds f and h at cost 2, both through e. e is 1 hop from b, and f and h are neighbors of e.
+
+29
+00:05:39,661 --> 00:05:48,685
+g and i stay at infinity. No neighbor of b had a finite cost to them at t equals 0. They need more iterations.
+
+30
+00:05:49,135 --> 00:06:02,533
+At t equals 1, node c receives one vector, from b. c has no link to f. So each entry is c c b, which is 1, plus D b of y. For a: 1 plus 8 is 9.
+
+31
+00:06:02,983 --> 00:06:14,588
+For b: 1 plus 0 is 1. For d: 1 plus infinity is infinity, because b did not know d at t equals 0. For e: 1 plus 1 is 2.
+
+32
+00:06:15,038 --> 00:06:19,774
+All other entries are 1 plus infinity, so they stay at infinity.
+
+33
+00:06:20,224 --> 00:06:35,861
+One error on slide 110: the box labelled D V in c swaps the values for d and e. The computed lines on the same slide are right. D c of d is infinity, and D c of e is 2.
+
+34
+00:06:36,311 --> 00:06:49,922
+Slide 111 asks a question. At t equals 1, node e receives the vectors of b, d, f and h. What is the new distance vector of e? Pause the video and try it.
+
+35
+00:06:50,372 --> 00:07:01,209
+Destination a. Through b: 1 plus 8 is 9. Through d: 1 plus 1 is 2. Through f and h: infinity. So D e of a is 2, through d.
+
+36
+00:07:01,659 --> 00:07:16,699
+Destination c: 1 plus 1 is 2, through b. Destination g: 2, through d or h. Destination i: 2, through f or h. When two neighbors give the same minimum, either one can be the next hop.
+
+37
+00:07:17,149 --> 00:07:32,957
+The answer: D e of a is 2, b is 1, c is 2, d is 1, e is 0, f is 1, g is 2, h is 1, and i is 2. e is in the center, so after one iteration it already knows a finite cost to every node.
+
+38
+00:07:33,407 --> 00:07:43,135
+Practice. Find the new distance vector of node a at t equals 1. a receives the vectors of b and d. Pause the video and try it.
+
+39
+00:07:43,585 --> 00:07:54,679
+Through b, a learns c at 8 plus 1, which is 9. Through d, a learns e and g at 1 plus 1, which is 2. f, h and i stay at infinity.
+
+40
+00:07:55,129 --> 00:08:03,577
+D a of b stays at 8. d did not know b at t equals 0, so the cheaper path through d is not found yet.
+
+41
+00:08:04,027 --> 00:08:17,040
+The slides stop after t equals 2 and say: and so on. Here are the next iterations for node a, computed with the same rule. At t equals 0, a knows only b and d.
+
+42
+00:08:17,490 --> 00:08:21,949
+At t equals 1, a learns c at 9, and e and g at 2.
+
+43
+00:08:22,399 --> 00:08:36,052
+At t equals 2, D a of b drops from 8 to 3. The new path is a, d, e, b. The expensive direct link is no longer used. a also learns f and h at cost 3.
+
+44
+00:08:36,502 --> 00:08:51,755
+At t equals 3, D a of c drops from 9 to 4, and a learns i at 4. Now a knows every node. At t equals 4, no vector changes. So no node sends a message, and the algorithm stops.
+
+45
+00:08:52,205 --> 00:08:59,309
+These values are computed with the lock-step model that the slides use. They are the true least costs of the graph.
+
+46
+00:08:59,759 --> 00:09:08,079
+Slide 112 shows how information spreads. At t equals 0, the state of c is known only at c.
+
+47
+00:09:08,529 --> 00:09:15,036
+At t equals 1, it has reached b. It can change distance vectors up to 1 hop away.
+
+48
+00:09:15,486 --> 00:09:21,033
+At t equals 2, it can also change the vectors at a and e, 2 hops away.
+
+49
+00:09:21,483 --> 00:09:32,640
+At t equals 3, it reaches d, f and h. f is close to c, but there is no link c f. So the information goes around through b and e.
+
+50
+00:09:33,090 --> 00:09:46,381
+At t equals 4, it reaches g and i. Information moves one hop per iteration. The slide writes c, f, h for t equals 3. c is the source, so the slide means d.
+
+51
+00:09:46,831 --> 00:10:04,772
+Now link cost changes, slide 113. Three nodes: x, y and z. Before the change, the link x y costs 4. So D y of x is 4, direct. D z of x is 5, through y, because 1 plus 4 is less than 50.
+
+52
+00:10:05,222 --> 00:10:18,897
+At time t 0, the cost of link x y drops from 4 to 1. y detects the change. y recalculates its vector: D y of x becomes 1. y informs its neighbors.
+
+53
+00:10:19,347 --> 00:10:31,187
+At t 1, z receives the update from y. z computes 1 plus 1, which is 2. So D z of x becomes 2. z sends its new vector to its neighbors.
+
+54
+00:10:31,637 --> 00:10:43,349
+At t 2, y receives the vector of z. 1 plus 2 is 3, which is not less than 1. y's least costs do not change. So y does not send a message.
+
+55
+00:10:43,799 --> 00:10:51,095
+The good news spreads in two messages, and the algorithm stops. The slide says: good news travels fast.
+
+56
+00:10:51,545 --> 00:11:05,561
+Slide 114 shows the opposite case. The cost of link x y rises from 4 to 60. Before the change, D y of x is 4, and D z of x is 5 through y.
+
+57
+00:11:06,011 --> 00:11:24,059
+y sees that its direct link to x now costs 60. But z has said that it has a path to x at cost 5. So y computes 1 plus 5, which is 6, through z. y does not know that z's path goes through y itself. y notifies z.
+
+58
+00:11:24,509 --> 00:11:34,514
+z learns that the path to x through y now costs 6. So z computes 1 plus 6, which is 7, through y. z notifies y.
+
+59
+00:11:34,964 --> 00:11:48,639
+y computes 8 through z. z computes 9 through y. Each exchange adds only 2. During this time, packets for x go back and forth between y and z. This is a routing loop.
+
+60
+00:11:49,089 --> 00:12:04,321
+The values climb until z's estimate through y is no longer cheaper than its direct link of 50. Then z picks the direct link, cost 50. Finally y computes 1 plus 50, which is 51, through z.
+
+61
+00:12:04,771 --> 00:12:14,755
+Counted one update at a time, as on the slide, this takes 47 updates. This problem is called count to infinity. Bad news travels slow.
+
+62
+00:12:15,205 --> 00:12:30,117
+Slide 115 shows the same problem with three nodes in a line: X, A and B. Each link costs 1. Before the failure, A reaches X directly with cost 1. B reaches X through A with cost 2.
+
+63
+00:12:30,567 --> 00:12:35,409
+Now the link from X to A fails. A sets its cost to X to infinity.
+
+64
+00:12:35,859 --> 00:12:47,187
+But B has said that it reaches X at cost 2. A does not know that B's path goes through A. So A computes 1 plus 2, which is 3, and routes to X through B.
+
+65
+00:12:47,637 --> 00:12:59,989
+B receives the update from A. B's next hop to X is A, so B must use A's new cost. 1 plus 3 is 4. Then A computes 5, B computes 6, and so on.
+
+66
+00:13:00,439 --> 00:13:10,530
+The costs grow until they reach the value that means infinity. Only then do both nodes know that X is not reachable. This is count to infinity.
+
+67
+00:13:10,980 --> 00:13:25,572
+Slide 116 gives two fixes. The first is split horizon. B learned its path to X from A. So B does not tell A about this path. A never hears the old cost 2, so it does not pick B.
+
+68
+00:13:26,022 --> 00:13:43,067
+The second is poisoned reverse. If a node routes to X through a neighbor, it tells that neighbor that its own cost to X is infinity. Here B routes through A, so B tells A: X at infinity. So A does not try to route to X back through B.
+
+69
+00:13:43,517 --> 00:13:51,368
+With either fix, A keeps infinity and tells B. B then sets infinity too. The two-node loop does not form.
+
+70
+00:13:51,818 --> 00:14:18,101
+Apply poisoned reverse to the network of slide 114. z routes to x through y, so z tells y that its cost to x is infinity. When the link becomes 60, y picks the direct link, 60. z then computes the minimum of 50 and 61, which is 50, direct. y then computes 1 plus 50, which is 51, through z. Three updates instead of 47.
+
+71
+00:14:18,551 --> 00:14:27,511
+Unfortunately, these fixes do not solve the loop problem in general. Loops of three or four nodes can still count to infinity.
+
+72
+00:14:27,961 --> 00:14:52,302
+Here is the method for a distance vector question. List the neighbors of x and their link costs. Use the neighbors' vectors from the previous time. For each destination, write one term per neighbor: the link cost plus the neighbor's estimate. Take the minimum, and record the neighbor that gives it as the next hop. D x of x is 0, and infinity plus anything is infinity.
+
+73
+00:14:52,752 --> 00:15:15,856
+Common errors: using a node that is not a neighbor. In the example, c has no link to f. Using the new values from the same time step. Keeping the old estimate in the minimum: the Bellman-Ford equation uses only the neighbors' terms. When a link cost rises, the old estimate is wrong, as slide 114 shows.
+
+74
+00:15:16,306 --> 00:15:23,453
+To check your answer, the converged vector must equal the least costs from Dijkstra's algorithm on the same graph.
+
+75
+00:15:23,903 --> 00:15:40,116
+Here is the recap. The Bellman-Ford equation gives D x of y as the minimum over the neighbors of the link cost plus the neighbor's estimate. The neighbor that gives the minimum is the next hop. Each node knows only the vectors of its neighbors.
+
+76
+00:15:40,566 --> 00:15:43,425
+Information moves one hop per iteration.
+
+77
+00:15:43,875 --> 00:16:04,376
+When a cost drops, the news spreads fast. When a cost rises, the estimates can count to infinity and form routing loops. Split horizon and poisoned reverse fix loops of two nodes, but not all loops. The next video covers hierarchical routing, OSPF areas and BGP.
