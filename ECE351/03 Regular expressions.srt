@@ -1,0 +1,419 @@
+1
+00:00:00,000 --> 00:00:06,080
+This video is about regular expressions. A lexer uses them to describe its tokens.
+
+2
+00:00:06,530 --> 00:00:19,266
+We learn the operators, the letters and the precedence. Then we write regexes for tokens. At the end we solve the two exercises from the slides and three past midterm questions.
+
+3
+00:00:19,716 --> 00:00:29,103
+A lexer reads bytes and cuts them into tokens. Here, the input is cut into a keyword, an identifier, a relation and an integer.
+
+4
+00:00:29,553 --> 00:00:38,001
+Each token class is a set of strings. The keyword set has a few members. The identifier set and the integer set have many.
+
+5
+00:00:38,451 --> 00:00:46,877
+The identifier set and the integer set are infinite. We cannot list their members. We need a finite description that is exact.
+
+6
+00:00:47,327 --> 00:00:59,743
+A regular expression is that description. It is easy to write. And it is simple enough that a recognizer can be generated from it. The recognizer answers yes or no for each string.
+
+7
+00:01:00,193 --> 00:01:11,649
+There are many formalisms for tokens. Regular languages are the most popular. The theory is simple, they are easy to understand, and the implementations are efficient.
+
+8
+00:01:12,099 --> 00:01:27,075
+A regular expression is built over an alphabet. Three operations join small regexes into bigger ones. The first is concatenation: A, then B. The regex a b matches only the string a b.
+
+9
+00:01:27,525 --> 00:01:33,968
+The second is alternation: A or B. The regex a or b matches a, and it matches b.
+
+10
+00:01:34,418 --> 00:01:43,997
+The third is repetition, also called the star: zero or more copies of A. a star matches the empty string, a, a a, and so on.
+
+11
+00:01:44,447 --> 00:01:55,305
+The course notes say that regular expressions describe exactly what a finite automaton can compute. Lectures 4 and 5 show how to build that automaton.
+
+12
+00:01:55,755 --> 00:02:10,731
+Slide 26 gives the syntax of a regex as a grammar. The simplest regex is one letter. It matches exactly that letter. Parentheses group a regex, so an operator can apply to all of it.
+
+13
+00:02:11,181 --> 00:02:23,320
+Three operators come after a regex. Question mark means zero or one. Plus means one or more. Star means zero or more. Plus and star give infinite sets.
+
+14
+00:02:23,770 --> 00:02:29,381
+Two regexes side by side mean sequence. A bar between them means choice.
+
+15
+00:02:29,831 --> 00:02:38,641
+Precedence: question mark, plus and star bind tightest. Then sequence. Then the bar. Use parentheses when you are not sure.
+
+16
+00:02:39,091 --> 00:02:50,654
+Slide 27 defines a letter. A plain character is an exact match. The letter a matches only the character a. Each letter matches exactly one character.
+
+17
+00:02:51,104 --> 00:02:57,099
+A dot matches any character. It matches all five input characters here, the space too.
+
+18
+00:02:57,549 --> 00:03:03,693
+Square brackets list a group. Bracket a b c matches a, b or c, and nothing else.
+
+19
+00:03:04,143 --> 00:03:12,121
+A caret after the bracket inverts the group. It matches any character that is not in the group: d, 7 and the space.
+
+20
+00:03:12,571 --> 00:03:23,793
+A dash inside the brackets gives a range. Bracket zero dash nine is any digit. Bracket capital A to Z, small a to z, is any of 52 letters.
+
+21
+00:03:24,243 --> 00:03:30,600
+Precedence tells you which operator applies to which part. Take the regex a b star or c.
+
+22
+00:03:31,050 --> 00:03:36,170
+Star binds tightest. So the star applies only to b, not to a b.
+
+23
+00:03:36,620 --> 00:03:40,076
+Next comes sequence. a is followed by b star.
+
+24
+00:03:40,526 --> 00:03:48,889
+The bar binds weakest. So the whole regex is a choice: a b star, or c. The tree shows the same structure.
+
+25
+00:03:49,339 --> 00:03:54,907
+So the regex matches a, a b, a b b, and c. It does not match a c.
+
+26
+00:03:55,357 --> 00:04:04,743
+Parentheses change the tree. a, then b star or c, matches a c, but not c alone. If you are not sure, write the parentheses.
+
+27
+00:04:05,193 --> 00:04:20,980
+Slide 28 is an exercise. It gives the sets of strings. You write a regex for each set. The first row is done: a b c matches only the string a b c. It is a sequence of three one-letter regexes.
+
+28
+00:04:21,430 --> 00:04:23,073
+Pause the video and try it.
+
+29
+00:04:23,523 --> 00:04:33,293
+The set a b, a b c. The c is optional. So write a b, then c question mark. The parentheses show what the question mark applies to.
+
+30
+00:04:33,743 --> 00:04:38,863
+The set a b c, a c. Now b is optional: a, b question mark, c.
+
+31
+00:04:39,313 --> 00:04:48,273
+The set a, a b, a b b, and so on. This is a, then b star. Star means zero or more b. The set is infinite.
+
+32
+00:04:48,723 --> 00:04:50,430
+Now the next three sets.
+
+33
+00:04:50,880 --> 00:05:01,056
+The empty string, a b, a b a b, and so on. The star must apply to a b, so put a b in parentheses: open, a b, close, star.
+
+34
+00:05:01,506 --> 00:05:13,602
+The set a b, a b b, a b b b. At least one b. This is a b plus. Plus means one or more. It is the same as a b b star: unroll one copy, then star.
+
+35
+00:05:14,052 --> 00:05:21,113
+The set if, else, while. Use choice: if, or else, or while. One regex covers all the keywords.
+
+36
+00:05:21,563 --> 00:05:25,595
+A common mistake. a star does not mean a, then anything.
+
+37
+00:05:26,045 --> 00:05:34,472
+Match the input a b c against a star. The a matches. Then b is not a, so a star cannot continue. No match.
+
+38
+00:05:34,922 --> 00:05:42,751
+To say a, then any number of any symbols, write a dot star. The dot matches b, and the dot matches c. Match.
+
+39
+00:05:43,201 --> 00:05:51,777
+So a star matches only strings of a: the empty string, a, a a a. a dot star matches every string that starts with a.
+
+40
+00:05:52,227 --> 00:06:00,313
+Plus is not a new power. A plus is A followed by A star. So a b plus is the same set as a b b star.
+
+41
+00:06:00,763 --> 00:06:06,821
+Question mark is a choice with the empty string. A question mark is A or epsilon.
+
+42
+00:06:07,271 --> 00:06:18,322
+A bracket group is a choice of single letters. Bracket a b c is a or b or c. A range is a long choice: zero or one or up to nine.
+
+43
+00:06:18,772 --> 00:06:29,247
+The dot is a choice of every character. All these extras reduce to the three base operations. They add no power. They only make the regex shorter.
+
+44
+00:06:29,697 --> 00:06:40,961
+Slide 30 gives regexes for numbers. A single digit is bracket zero to nine. A non-digit uses the caret: any one character that is not a digit.
+
+45
+00:06:41,411 --> 00:06:54,872
+A natural number is one or more digits: bracket zero to nine, plus. The empty string is not a number. An integer adds an optional minus sign in front. A plus sign is not allowed.
+
+46
+00:06:55,322 --> 00:07:07,418
+A decimal is a natural number, then an optional part: a point and one or more digits. So 3 point 14 matches. 3 point alone, and point 5, do not match.
+
+47
+00:07:07,868 --> 00:07:16,615
+The point is written with a backslash. Without the backslash, the dot matches any character. Then 3 x 14 would be a decimal.
+
+48
+00:07:17,065 --> 00:07:27,326
+Slide 30 also gives a phone number: a digit from 1 to 9, two digits, a dash, and four digits. The first digit cannot be zero.
+
+49
+00:07:27,776 --> 00:07:40,448
+The second form is shorter. Backslash d means a digit. Brace 2 means exactly two copies. These are extras of the Java regex library. They are short forms too.
+
+50
+00:07:40,898 --> 00:07:56,706
+The slide says the spaces are optional. But in Java, backslash b is a word boundary. It does not match any character. Our check shows that the regex rejects 5 5 5, space, dash, space, 1 2 3 4.
+
+51
+00:07:57,156 --> 00:08:03,641
+To allow an optional space, write a space followed by a question mark. Then both forms match.
+
+52
+00:08:04,091 --> 00:08:15,569
+The course notes use grep as an example. Grep looks like a search program. It is a compiler: its source program is a regex, and it builds a finite state machine.
+
+53
+00:08:16,019 --> 00:08:25,299
+But grep returns the matching lines, not the machine. So it is more like an interpreter: it evaluates the regex on a given text.
+
+54
+00:08:25,749 --> 00:08:39,615
+Most accurate: grep is a just in time compiler. It builds the machine, runs it on the text, returns the matches, and then discards the machine. Lectures 4 and 5 show how to build this machine.
+
+55
+00:08:40,065 --> 00:08:49,089
+Java has a regex library, java dot util dot regex. It extends the letters with extras, like backslash d.
+
+56
+00:08:49,539 --> 00:09:02,446
+The API has two steps. Step 1: Pattern dot compile turns the regex text into a recognizer. A recognizer is a program that scans input and checks it for the pattern.
+
+57
+00:09:02,896 --> 00:09:13,925
+Step 2: a Matcher applies the pattern to a string. matches asks if the whole string matches. a star b matches a a a a a b, so the result is true.
+
+58
+00:09:14,375 --> 00:09:19,901
+Here is the code from slide 32. Compile once, then match many strings.
+
+59
+00:09:20,351 --> 00:09:28,884
+Slide 32 has a warning. Here is the phone regex as it appears in Java source code. It has 8 backslashes.
+
+60
+00:09:29,334 --> 00:09:38,934
+Java reads the string literal first. Two backslashes in the source become one backslash in the string. So the string has 4 backslashes.
+
+61
+00:09:39,384 --> 00:09:51,459
+Only then does the regex library read the string. It sees backslash d and backslash b. Regexes are easy to write and hard to debug. Print the string you compile.
+
+62
+00:09:51,909 --> 00:10:10,511
+Slide 33 has an exercise. There are three tokens: I D, num, and W S. Give a regex that recognizes an input that is a sequence of these tokens, in any order. Here W S is a token, because we recognize the whole input.
+
+63
+00:10:10,961 --> 00:10:12,604
+Pause the video and try it.
+
+64
+00:10:13,054 --> 00:10:23,209
+Work bottom up: first one regex per token. num is one or more digits: bracket zero to nine, plus. The empty string is not a num.
+
+65
+00:10:23,659 --> 00:10:29,973
+W S is one white space character: space, tab, newline or carriage return.
+
+66
+00:10:30,423 --> 00:10:39,469
+I D starts with a letter. Then any number of letters or digits follow. So 9 lives is not an I D: it starts with a digit.
+
+67
+00:10:39,919 --> 00:10:51,396
+The whole input is a sequence of tokens. Each token is an I D, a num, or a W S. So write the choice of the three, in parentheses, then repeat it.
+
+68
+00:10:51,846 --> 00:11:00,571
+Plus or star? Star accepts the empty input. The slide solution uses plus, so the input has at least one token.
+
+69
+00:11:01,021 --> 00:11:18,131
+Test it. x 1, space, 4 2, tab, y matches: the cut is shown below. 9 lives matches too: num 9, then I D lives. x dash 1 does not match, because the dash is in no token. The empty input does not match.
+
+70
+00:11:18,581 --> 00:11:25,813
+We can plug in all the definitions and get one regex. This is the solution on slide 36.
+
+71
+00:11:26,263 --> 00:11:33,729
+Slide 37 changes the problem. Now I D and num tokens must be separated by white space.
+
+72
+00:11:34,179 --> 00:11:35,822
+Pause the video and try it.
+
+73
+00:11:36,272 --> 00:11:49,392
+The shape is: one item, then zero or more times, a W S followed by an item. An item is an I D or a num. Add an optional W S at the start and at the end.
+
+74
+00:11:49,842 --> 00:12:04,477
+Here is the input space, x 1, space, 4 2, space, y, space. The first item is x 1. Then two times a W S and an item. The spaces at the ends are the optional W S.
+
+75
+00:12:04,927 --> 00:12:13,567
+This is the solution on slide 39. The slide says the regex with all definitions plugged in is too long to write.
+
+76
+00:12:14,017 --> 00:12:28,353
+Test it. With and without the spaces at the ends, the input matches. x 1, space, 4 2 y does not match. 4 2 y is a num followed by an I D, with no W S between them.
+
+77
+00:12:28,803 --> 00:12:38,680
+Two spaces in a row do not match. W S is one character, and the regex allows exactly one W S between two items.
+
+78
+00:12:39,130 --> 00:12:43,610
+The empty input does not match. There must be at least one item.
+
+79
+00:12:44,060 --> 00:12:54,791
+Our note: to allow more than one white space character, use W S plus between items and W S star at the ends. Then two spaces match.
+
+80
+00:12:55,241 --> 00:13:11,603
+Now a past midterm question. A real constant has a decimal point, or E notation, or both. The tilde means unary minus. It can come before the number or on the exponent. There is no unary plus. Write a regex.
+
+81
+00:13:12,053 --> 00:13:13,696
+Pause the video and try it.
+
+82
+00:13:14,146 --> 00:13:30,167
+Cut the examples into parts. An optional sign: tilde, question mark. An integer part with at least one digit. A fraction: a point, then zero or more digits. An exponent: E, an optional tilde, and one or more digits.
+
+83
+00:13:30,617 --> 00:13:38,596
+0 point 0 1 has no exponent. 35 point has a point and no digits after it. That is allowed.
+
+84
+00:13:39,046 --> 00:13:43,995
+Here is the posted solution. First the optional sign and the integer part.
+
+85
+00:13:44,445 --> 00:13:56,029
+Then a choice. Either a point, with an optional exponent. Or an exponent alone. Two optional parts would be wrong: they would accept 35, which has no point and no E.
+
+86
+00:13:56,479 --> 00:13:58,805
+Test it. All five examples match.
+
+87
+00:13:59,255 --> 00:14:14,380
+These do not match: 35, point 5, 1 point 2 E, plus 1 point 0, and 1 E 2 point 5. Our python check compares the regex with the rules of the question on all short strings.
+
+88
+00:14:14,830 --> 00:14:26,862
+The next past midterm question describes an assignment statement. It has an optional label, an identifier, an equal sign, an arithmetic expression, and a semicolon.
+
+89
+00:14:27,312 --> 00:14:28,955
+Pause the video and try it.
+
+90
+00:14:29,405 --> 00:14:41,693
+Cut an example into its parts: the label loop colon, the identifier x 1, the equal sign, the expression, and the semicolon. The operators are inside the expression.
+
+91
+00:14:42,143 --> 00:14:53,364
+The posted solution names two letters: L for a letter and D for a digit. A label is L L star colon. It is optional, so write a choice with epsilon.
+
+92
+00:14:53,814 --> 00:15:04,246
+An identifier is L, then L or D, star. An expression is an identifier, then zero or more times an operator and an identifier.
+
+93
+00:15:04,696 --> 00:15:14,019
+Put the parts in order: label or epsilon, identifier, equal sign, expression, semicolon. This is the posted solution.
+
+94
+00:15:14,469 --> 00:15:19,930
+Test it with L as a small letter and D as a digit. These three statements match.
+
+95
+00:15:20,380 --> 00:15:39,879
+These do not match: an empty expression, an identifier that starts with a digit, a label with a digit, and an expression that ends with an operator. The pattern, an item, then separator and item, star, describes a list with separators. Exercise 2 used the same pattern.
+
+96
+00:15:40,329 --> 00:15:49,801
+The last question. Write a regex for floating point numbers. The examples have an optional sign, and digits can be missing before the point.
+
+97
+00:15:50,251 --> 00:15:51,893
+Pause the video and try it.
+
+98
+00:15:52,343 --> 00:16:07,127
+The posted solution is: an optional minus or plus, digits star, an optional point, digits star. All nine examples match. The solution also says: do not require the backslash before the point.
+
+99
+00:16:07,577 --> 00:16:15,748
+But every part is optional. So the empty string, a point alone, and a plus alone also match. These are not numbers.
+
+100
+00:16:16,198 --> 00:16:33,457
+Our solution: an optional sign, then a choice. Either one or more digits. Or digits star, a point, and one or more digits. All examples match, and the four bad strings do not. We checked it against Python's float on all short strings.
+
+101
+00:16:33,907 --> 00:16:43,016
+To summarize. A token is a set of strings. A regex describes that set exactly, and a recognizer is generated from it.
+
+102
+00:16:43,466 --> 00:16:52,725
+There are three base operations: sequence, choice and star. Question mark, plus, brackets, ranges and the dot are short forms.
+
+103
+00:16:53,175 --> 00:17:00,791
+Star, plus and question mark bind tightest, then sequence, then choice. a star is not a dot star.
+
+104
+00:17:01,241 --> 00:17:09,518
+Write one regex per token, then combine them. A list with separators is an item, then separator and item, star.
+
+105
+00:17:09,968 --> 00:17:20,379
+Test every regex with strings that must match and strings that must not. Videos 8 to 11 turn a regex into a machine that runs fast.

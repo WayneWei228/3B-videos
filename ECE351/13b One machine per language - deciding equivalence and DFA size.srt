@@ -1,0 +1,323 @@
+1
+00:00:00,000 --> 00:00:06,976
+This is part 2 of one machine per language. We decide if two regexes describe the same language.
+
+2
+00:00:07,426 --> 00:00:18,349
+Then we ask how big a D F A can get, and which step of the pipeline is expensive. We solve the exercise from the slides: a b a star, and a b star a.
+
+3
+00:00:18,799 --> 00:00:22,468
+Part 1 ended with one fact. Take two regexes.
+
+4
+00:00:22,918 --> 00:00:31,814
+If they describe the same language, then their minimal D F As are the same machine. Only the names of the states can be different.
+
+5
+00:00:32,264 --> 00:00:37,939
+So we can compare languages by comparing machines. That is the idea of this video.
+
+6
+00:00:38,389 --> 00:00:44,490
+The slides name three notions of sameness. Equals: the two objects are the same text.
+
+7
+00:00:44,940 --> 00:00:49,953
+Isomorphic: the two machines are the same after a renaming of the states.
+
+8
+00:00:50,403 --> 00:00:56,526
+Equivalent: the two accept the same strings. This is the one that we want for regexes.
+
+9
+00:00:56,976 --> 00:01:13,488
+For boolean expressions, deciding equivalence is c o N P complete. No fast general method is known. For automata it is different. Minimization turns equivalent into isomorphic, and isomorphism is easy to check.
+
+10
+00:01:13,938 --> 00:01:23,282
+The minimal D F A is a canonical form: one standard form for each language. A canonical form makes an expensive question cheap.
+
+11
+00:01:23,732 --> 00:01:35,700
+Here is the procedure from the slides. Step 1. Build an N F A for the first regex with the templates. Then a D F A with the subset construction. Then minimize it.
+
+12
+00:01:36,150 --> 00:01:38,433
+Do the same for the second regex.
+
+13
+00:01:38,883 --> 00:01:48,739
+Step 2. Walk both minimal machines from their start states in lockstep. Lockstep means that both walks read the same letter at the same time.
+
+14
+00:01:49,189 --> 00:02:00,837
+If the two machines have the same shape, the languages are the same. If the walk finds a mismatch, the letters on the way give a string that is in one language and not in the other.
+
+15
+00:02:01,287 --> 00:02:08,348
+Here is the lockstep walk, step by step. First, pair the two start states, and put the pair on a list.
+
+16
+00:02:08,798 --> 00:02:15,241
+Take a pair from the list. If exactly one of its two states accepts, stop. That is a mismatch.
+
+17
+00:02:15,691 --> 00:02:29,344
+For each letter, follow the arrow in both machines. The two targets form a new pair. If a state already has a different partner, stop. That is also a mismatch, because the renaming must be one to one.
+
+18
+00:02:29,794 --> 00:02:38,839
+Add each new pair to the list, and repeat. When the list is empty, the two machines have the same shape. So the languages are the same.
+
+19
+00:02:39,289 --> 00:02:51,001
+At a mismatch, write down the letters from the start to the mismatch. That string is in exactly one of the two languages. Each pair is examined once, so the walk is fast.
+
+20
+00:02:51,451 --> 00:03:03,633
+First a small example of our own. Is a or a b star the same language as the regex a? On the left is the minimal D F A for a or a b star from part 1.
+
+21
+00:03:04,083 --> 00:03:24,051
+On the right is the D F A for a. The constant template gives one N F A arrow, from 1 to 2 on a. The subset construction gives A, which is the set 1, B, which is the set 2, and the error state X. Moore's algorithm splits all three states, so this D F A is already minimal.
+
+22
+00:03:24,501 --> 00:03:26,954
+Now walk the two machines in lockstep.
+
+23
+00:03:27,404 --> 00:03:32,716
+Pair the start states: A with A. Neither accepts, so there is no mismatch yet.
+
+24
+00:03:33,166 --> 00:03:43,897
+Follow both letters. On a, the left goes to B C and the right goes to B. New pair. On b, the left goes to D and the right goes to X. New pair.
+
+25
+00:03:44,347 --> 00:03:53,200
+Take the pair B C and B. Both accept. On a, both go to the error states, D and X. That pair is already on the list.
+
+26
+00:03:53,650 --> 00:04:03,869
+On b, the left loops to B C, and the right goes to X. But B C already has the partner B. Now it would also need X. That is a mismatch.
+
+27
+00:04:04,319 --> 00:04:15,241
+The letters from the start are a, then b. The string a b is in a or a b star, but it is not in the regex a. So the two regexes are different.
+
+28
+00:04:15,691 --> 00:04:24,779
+Now the exercise from the slides. Are a b a star, and a b star a, the same language? Or is there a string that separates them?
+
+29
+00:04:25,229 --> 00:04:26,872
+Pause the video and try it.
+
+30
+00:04:27,322 --> 00:04:36,133
+The slides say that staring at the two regexes is not a proof. Minimizing both is a proof. So we run the full procedure.
+
+31
+00:04:36,583 --> 00:04:54,993
+Step 1 for a b a star. The templates give eight N F A states. The atoms are 1 to 2 on a, 3 to 4 on b, and 5 to 6 on a. The repetition template for b a star adds states 7 and 8. State 1 is the start, and state 8 accepts.
+
+32
+00:04:55,443 --> 00:05:09,609
+Now the subset construction. The start state A is the epsilon closure of 1. State 1 has no epsilon edge, so A is just the set 1. On b, A goes to the empty set, the error state X.
+
+33
+00:05:10,059 --> 00:05:22,859
+A on a. 1 goes to 2. Close: 2 reaches 7, and 7 reaches 3 and 8. B is 2, 3, 7, 8. It contains 8, so B accepts. B on a goes to X.
+
+34
+00:05:23,309 --> 00:05:30,583
+B on b. 3 goes to 4. Close: 4 reaches 5. C is 4, 5. C on b goes to X.
+
+35
+00:05:31,033 --> 00:05:45,263
+C on a. 5 goes to 6. Close: 6 reaches 8 and 3. D is 3, 6, 8, and it accepts. D on a goes to X. D on b: 3 goes to 4, and the closure is C again.
+
+36
+00:05:45,713 --> 00:05:53,521
+X goes to X on both letters. No new sets appear. The D F A has five states, and B and D accept.
+
+37
+00:05:53,971 --> 00:06:11,272
+Now b star a. The atoms are again 1 to 2 on a, 3 to 4 on b, and 5 to 6 on a. The repetition template for a b star adds 7 and 8. Then 8 joins the last a. State 7 is the start, and state 6 accepts.
+
+38
+00:06:11,722 --> 00:06:26,975
+The start state is the epsilon closure of 7. 7 reaches 1 and 8, and 8 reaches 5. So A is 1, 5, 7, 8. It has no 6, so it does not accept. On b, nothing moves, so A goes to X.
+
+39
+00:06:27,425 --> 00:06:39,329
+A on a. 1 goes to 2, and 5 goes to 6. Close: 2 reaches 3. B is 2, 3, 6. It contains 6, so B accepts. B on a goes to X.
+
+40
+00:06:39,779 --> 00:06:53,518
+B on b. 3 goes to 4. Close: 4 reaches 1 and 8, and 8 reaches 5. C is 1, 4, 5, 8. C on a gives 2 and 6 again, so B. C on b goes to X.
+
+41
+00:06:53,968 --> 00:07:04,485
+X loops on both letters. This D F A has four states, and only B accepts. The two D F As have different sizes. That alone proves nothing.
+
+42
+00:07:04,935 --> 00:07:14,386
+Step 1 ends with minimization. Here are the two D F As. Moore's algorithm starts with two blocks: accepting and not accepting.
+
+43
+00:07:14,836 --> 00:07:26,121
+For a b a star, round 0 is B, D against A, C, X. Look at the targets. A and C go on a to an accepting block, and X does not. So X splits off.
+
+44
+00:07:26,571 --> 00:07:37,686
+Round 1 gives three blocks: B D, A C, and X. Now A and C agree on both letters, and B and D agree on both letters. No split. Three states.
+
+45
+00:07:38,136 --> 00:07:48,077
+For b star a, round 0 is B against A, C, X. Again A and C go on a to the accepting block, and X does not. X splits off.
+
+46
+00:07:48,527 --> 00:07:53,754
+Round 1 gives B, A C, and X. No more splits. Again three states.
+
+47
+00:07:54,204 --> 00:08:05,447
+Both minimal machines have three states. The start block goes on a to the accepting block, which goes on b back to the start block. Every other arrow goes to X.
+
+48
+00:08:05,897 --> 00:08:09,459
+Step 2. Walk the two minimal machines in lockstep.
+
+49
+00:08:09,909 --> 00:08:18,336
+Pair the start states, A C and A C. Neither accepts. On a, they go to B D and B. On b, both go to X.
+
+50
+00:08:18,786 --> 00:08:27,938
+Take B D and B. Both accept. On a, both go to X. On b, both go back to A C, and that pair is already on the list.
+
+51
+00:08:28,388 --> 00:08:33,593
+Take X and X. Neither accepts, and both loop. The list is empty.
+
+52
+00:08:34,043 --> 00:08:52,561
+No pair has one accepting and one rejecting state, and no state has two partners. The renaming is A C to A C, B D to B, and X to X. So a b a star and a b star a are the same language. A python check of all strings up to length 10 agrees.
+
+53
+00:08:53,011 --> 00:08:59,901
+Now the cost. The slides ask: an N F A has 5 states. How many states can the D F A have?
+
+54
+00:09:00,351 --> 00:09:01,994
+Pause the video and try it.
+
+55
+00:09:02,444 --> 00:09:21,559
+Each D F A state is a set of N F A states. Each of the 5 N F A states is in the set or out of it. That is 2 times 2 times 2 times 2 times 2. So there are 2 to the 5, which is 32 subsets. The count includes the empty set, the error state.
+
+56
+00:09:22,009 --> 00:09:32,675
+So the D F A has at most 32 states, one per subset. In general, an N F A with n states gives at most 2 to the n D F A states.
+
+57
+00:09:33,125 --> 00:09:49,488
+The slides add that some languages really need all of them. In our examples, the construction reaches far fewer. a or a b star used 4 of 1024 subsets, and a b a star used 5 of 256.
+
+58
+00:09:49,938 --> 00:09:58,791
+Where does the cost sit in our pipeline? Regex to N F A is linear. Each operator adds one template, and there is nothing to search.
+
+59
+00:09:59,241 --> 00:10:07,049
+N F A to D F A is exponential in the worst case: up to 2 to the n states. This is the expensive step.
+
+60
+00:10:07,499 --> 00:10:17,078
+D F A to minimal D F A is bounded by what the previous step produced. Minimization only merges states, so it only shrinks.
+
+61
+00:10:17,528 --> 00:10:29,624
+So the blow up is in the middle step. The minimal D F A is the least memory that the language can be recognized with. If it is big, that is the fault of the language, not of the method.
+
+62
+00:10:30,074 --> 00:10:47,909
+This example is optional. It is not on the slides. The language is a or b star, a, then a or b three times. That is the regex of questions pre 4.3.2. A string is in the language when its fourth letter from the end is a.
+
+63
+00:10:48,359 --> 00:11:01,991
+This N F A has only 5 states. State 0 loops on every letter, and on an a it can also guess that this a is the fourth letter from the end. Then it reads exactly three more letters.
+
+64
+00:11:02,441 --> 00:11:16,393
+The subset construction reaches 16 sets. Each set says which of the last four letters were a. So each D F A state is the window of the last four letters. The 8 windows that start with a accept.
+
+65
+00:11:16,843 --> 00:11:24,885
+Example. After a b a b, the machine is in the window a b a b. It accepts, because the oldest letter is a.
+
+66
+00:11:25,335 --> 00:11:34,722
+Read one more b. The window shifts: the oldest letter drops out, and b enters at the end. Now it is b b a b, which rejects.
+
+67
+00:11:35,172 --> 00:11:50,937
+Why can no D F A for this language have fewer than 16 states? Use the argument from part 1: find a suffix that tells two windows apart. Take a b a b and a b b b. They differ at position 2 from the end.
+
+68
+00:11:51,387 --> 00:11:53,905
+Add a suffix of two letters, b b.
+
+69
+00:11:54,355 --> 00:12:04,936
+Now the letter that differed is the fourth from the end. The first string ends in a b b b and accepts. The second ends in b b b b and rejects.
+
+70
+00:12:05,386 --> 00:12:28,127
+This works for any two windows. If they differ at position i from the end, a suffix of 4 minus i letters moves that letter to position 4. So all 16 states are needed. Moore's algorithm, run in python, also keeps all 16. The N F A has 5 states, and the bound is 32. This language needs 16.
+
+71
+00:12:28,577 --> 00:12:37,836
+On the midterm, given a regular expression, you must produce three machines by hand. First, the N F A, from the four templates.
+
+72
+00:12:38,286 --> 00:12:41,699
+Second, the D F A, by the subset construction.
+
+73
+00:12:42,149 --> 00:12:45,883
+Third, the minimal D F A, with Moore's algorithm.
+
+74
+00:12:46,333 --> 00:12:53,117
+You can always check your work. Check 1: is it a D F A? Every state needs one arrow per letter.
+
+75
+00:12:53,567 --> 00:13:06,089
+Check 2: take a string that should be accepted. Is it accepted by the machine and by the regex? Also try a string that should be rejected. Nobody has to tell you whether you are right.
+
+76
+00:13:06,539 --> 00:13:18,955
+For practice, the slides point to the course notes: the example regex to N F A to D F A to minimized D F A, and another example. Video 14 works through them.
+
+77
+00:13:19,405 --> 00:13:31,373
+To summarize. Two regexes have the same language exactly when their minimal D F As are the same up to renaming. Minimization turns equivalent into isomorphic.
+
+78
+00:13:31,823 --> 00:13:42,106
+To compare two regexes, build the N F A, the D F A and the minimal D F A for each. Then walk the two minimal machines in lockstep.
+
+79
+00:13:42,556 --> 00:13:54,417
+A mismatch gives a separating string. For a or a b star against a, it was a b. No mismatch means the same language, as for a b a star and a b star a.
+
+80
+00:13:54,867 --> 00:14:02,142
+An N F A with n states gives at most 2 to the n D F A states. For 5 states, that is 32.
+
+81
+00:14:02,592 --> 00:14:13,515
+Regex to N F A is linear. N F A to D F A can be exponential. Minimization only shrinks. Next video: full pipeline worked examples.

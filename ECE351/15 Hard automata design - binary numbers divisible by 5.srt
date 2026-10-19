@@ -1,0 +1,243 @@
+1
+00:00:00,000 --> 00:00:09,173
+This video solves the hardest automata design question in the question bank. Accept the binary numbers that are divisible by 5.
+
+2
+00:00:09,623 --> 00:00:21,015
+We find what the machine must remember, build the D F A, test it, and minimize it. Then we look at the regular expression, and we check the posted answers in python.
+
+3
+00:00:21,465 --> 00:00:36,143
+Here is the question. The input is a binary integer. The most significant bit is on the left. Leading zeros are allowed, so 0 0 1 0 is 2. Accept the numbers that are divisible by 5.
+
+4
+00:00:36,593 --> 00:00:48,305
+Some examples. 1 0 1 is 5. 1 0 1 0 is 10. 1 1 1 1 is 15. 0 is 0. All four are divisible by 5.
+
+5
+00:00:48,755 --> 00:00:59,869
+1 0 is 2. 1 1 1 is 7. 0 0 1 0 is 2. 1 1 0 0 is 12. None of these is divisible by 5.
+
+6
+00:01:00,319 --> 00:01:11,605
+The posted solution says the question is too hard as a regex. It should ask for a D F A. So we build the D F A first. That is the method to remember.
+
+7
+00:01:12,055 --> 00:01:19,628
+A D F A reads the bits from left to right. So first ask: what happens to the value when one more bit arrives?
+
+8
+00:01:20,078 --> 00:01:22,062
+Read 1. The value is 1.
+
+9
+00:01:22,512 --> 00:01:31,899
+Read 1. The old bits move one place to the left, so the old value doubles. Then add the new bit. 2 times 1, plus 1, is 3.
+
+10
+00:01:32,349 --> 00:01:35,890
+Read 0. 2 times 3, plus 0, is 6.
+
+11
+00:01:36,340 --> 00:01:45,044
+Read 1. 2 times 6, plus 1, is 13. So the rule is: new value equals 2 times old value, plus the bit.
+
+12
+00:01:45,494 --> 00:01:52,811
+But the value grows without limit. A D F A has a finite number of states, so it cannot store the value.
+
+13
+00:01:53,261 --> 00:02:02,435
+We do not need the value. We only need to know if it is divisible by 5. Here are the values for the input 1 1 0 1.
+
+14
+00:02:02,885 --> 00:02:08,922
+Below each value, write its remainder when you divide by 5. 1, 3, 1, 3.
+
+15
+00:02:09,372 --> 00:02:15,729
+Now read one more 1. The new value is 2 times 13, plus 1, which is 27.
+
+16
+00:02:16,179 --> 00:02:32,222
+Can we get the new remainder without 13? Take the old remainder, 3. 2 times 3, plus 1, is 7. And 7 mod 5 is 2. 27 mod 5 is also 2. The remainder alone gives the next remainder.
+
+17
+00:02:32,672 --> 00:02:44,981
+This is true for every value. Doubling and adding a bit only adds multiples of 5 to the part that we drop. A python check confirmed it for all values up to 2000.
+
+18
+00:02:45,431 --> 00:03:03,351
+So the states are the five remainders: 0, 1, 2, 3 and 4. Before any bit is read, the value is 0, so the start state is 0. A number is divisible by 5 when its remainder is 0, so state 0 is the only accepting state.
+
+19
+00:03:03,801 --> 00:03:17,988
+Now fill the table with the rule. On a 0, the next state is 2 s mod 5. On a 1, it is 2 s plus 1, mod 5. From state 0: on 0 we go to 0, and on 1 we go to 1.
+
+20
+00:03:18,438 --> 00:03:24,433
+From state 1: 2 times 1 is 2. On 0 we go to 2. On 1 we go to 3.
+
+21
+00:03:24,883 --> 00:03:33,309
+From state 2: 2 times 2 is 4. On 0 we go to 4. On 1 we get 5, and 5 mod 5 is 0.
+
+22
+00:03:33,759 --> 00:03:41,909
+From state 3: 2 times 3 is 6. On 0, 6 mod 5 is 1. On 1, 7 mod 5 is 2.
+
+23
+00:03:42,359 --> 00:03:53,388
+From state 4: 2 times 4 is 8. On 0, 8 mod 5 is 3. On 1, 9 mod 5 is 4. Every state now has one arrow per bit.
+
+24
+00:03:53,838 --> 00:04:02,606
+Now draw the D F A from the table. State 0 is the start, and it accepts. On 0 it loops. On 1 it goes to 1.
+
+25
+00:04:03,056 --> 00:04:06,555
+From 1: 0 goes to 2, and 1 goes to 3.
+
+26
+00:04:07,005 --> 00:04:10,973
+From 2: 0 goes to 4, and 1 goes back to 0.
+
+27
+00:04:11,423 --> 00:04:14,900
+From 3: 0 goes to 1, and 1 goes to 2.
+
+28
+00:04:15,350 --> 00:04:28,982
+From 4: 0 goes to 3, and 1 loops on 4. The machine is total. Every state has a 0 arrow and a 1 arrow. No error state is needed, because every bit string is a number.
+
+29
+00:04:29,432 --> 00:04:36,813
+The posted solution draws the same machine. It uses solid lines for 1 and dotted lines for 0.
+
+30
+00:04:37,263 --> 00:04:43,151
+Run the machine. After each prefix, the state is the value of that prefix mod 5.
+
+31
+00:04:43,601 --> 00:04:56,700
+Input 1 0 1 0, which is 10. The state goes 0, 1, 2, 0, 0. The prefixes are 1, 2, 5 and 10. Their remainders are 1, 2, 0, 0.
+
+32
+00:04:57,150 --> 00:05:02,249
+The run ends in state 0, so accept. 10 is divisible by 5.
+
+33
+00:05:02,699 --> 00:05:07,669
+Input 1 1 1, which is 7. The state goes 0, 1, 3, 2.
+
+34
+00:05:08,119 --> 00:05:12,429
+It ends in state 2, and 7 mod 5 is 2. Reject.
+
+35
+00:05:12,879 --> 00:05:24,783
+Input 0 0 1 0, with leading zeros. State 0 loops on 0, so leading zeros change nothing. Then 1 goes to 1, and 0 goes to 2.
+
+36
+00:05:25,233 --> 00:05:28,582
+It ends in 2. The value is 2, so reject.
+
+37
+00:05:29,032 --> 00:05:38,867
+Check the machine. Each box shows a number, its binary form, and the state where the run ends. 0 to 4 end in states 0 to 4.
+
+38
+00:05:39,317 --> 00:05:45,994
+5 to 9 end in states 0 to 4 again. The state is always the number mod 5.
+
+39
+00:05:46,444 --> 00:05:50,476
+10 and 15 end in state 0, so they are accepted.
+
+40
+00:05:50,926 --> 00:05:56,899
+The multiples of 5 are green. Every other number ends in a state that is not 0.
+
+41
+00:05:57,349 --> 00:06:19,963
+A python check ran the D F A on every bit string up to length 14, about 32 thousand strings. It agrees with the rule: the value mod 5 is 0. Note: the empty string also ends in 0, as value 0. The question says nothing about it. To reject it, add a new start state that is not accepting.
+
+42
+00:06:20,413 --> 00:06:35,410
+Is five states the smallest? Run the minimization. The machine is total, so there is no error state. Begin with two bubbles: state 0 accepts, and 1, 2, 3, 4 do not. Write the target bubble for each bit.
+
+43
+00:06:35,860 --> 00:06:43,540
+Round 1. On 1, state 2 goes to the accepting bubble. 1, 3 and 4 do not. So 2 splits off.
+
+44
+00:06:43,990 --> 00:06:50,006
+Round 2. Write the rows again with three bubbles: 0, then 1 3 4, then 2.
+
+45
+00:06:50,456 --> 00:07:05,176
+Now 1, 3 and 4 all differ. On 0, state 1 goes to bubble 2. On 1, state 3 goes to bubble 2. State 4 stays in bubble 1 3 4 on both bits. So the bubble splits into three.
+
+46
+00:07:05,626 --> 00:07:20,687
+Every state is now alone, so the machine is minimal. For example, the string 0 1 separates 1 and 3. From 1 it reaches remainder 0, and accepts. From 3 it reaches remainder 3, and rejects.
+
+47
+00:07:21,137 --> 00:07:32,743
+The technique works for any divisor n. Use n states, one per remainder. Start and accept in 0. On bit b, go from s to 2 s plus b, mod n.
+
+48
+00:07:33,193 --> 00:07:39,209
+For n equals 3, you get three states. A python check confirms it up to length 12.
+
+49
+00:07:39,659 --> 00:07:45,461
+For n equals 4, the remainder machine has four states. But here minimization helps.
+
+50
+00:07:45,911 --> 00:08:10,125
+States 1 and 3 have equal rows: on 0 both go to 2, and on 1 both go to 3. Neither accepts. So they merge. The minimal machine has three states. It accepts the strings that end in 0 0, plus the strings 0 and the empty string. So the remainder machine is always correct, but it is not always minimal. For 5, it is minimal.
+
+51
+00:08:10,575 --> 00:08:36,559
+Now the regex. This part is optional: converting a D F A into a regex is not on the slides. The posted solution gives a short regex. Our python check shows that it is not correct. It rejects 1 1 0 0 1, which is 25. The posted long derivation also has errors. For example, one of its parts is 1 (1 0) star, which matches the string 1.
+
+52
+00:08:37,009 --> 00:08:54,971
+Here is a regex that passes the check on every string up to length 16. Read it as paths that start and end in state 0. The outer star repeats such paths. A path is a 0 loop, or the long part that starts with 1, from 0 to 1.
+
+53
+00:08:55,421 --> 00:08:59,069
+1 0 star loops from 1 to 3 and back to 1.
+
+54
+00:08:59,519 --> 00:09:02,399
+0, or 1 1, goes from 1 to 2.
+
+55
+00:09:02,849 --> 00:09:19,169
+In the middle, two kinds of loops return to 2. 0, 1 star, 0, 1 goes 2, 4, then loops on 4, then 3, then 2. The second kind goes 2, 4, 3, then 1, loops between 1 and 3, and returns to 2.
+
+56
+00:09:19,619 --> 00:09:27,086
+The last 1 goes from 2 back to 0. On an exam, give the D F A first. It is short and easy to check.
+
+57
+00:09:27,536 --> 00:09:32,763
+To summarize. When a bit b arrives, the value v becomes 2 v plus b.
+
+58
+00:09:33,213 --> 00:09:39,015
+Only the remainder mod 5 matters, and the remainder alone gives the next remainder.
+
+59
+00:09:39,465 --> 00:09:51,476
+So use five states, one per remainder. Start and accept in 0. On bit b, go from s to 2 s plus b, mod 5. Leading zeros loop on state 0.
+
+60
+00:09:51,926 --> 00:09:57,558
+Test the machine with numbers, and minimize it. For 5, all five states are needed.
+
+61
+00:09:58,008 --> 00:10:06,179
+On an exam, build the D F A first. The posted short regex fails our check, for example on 25.

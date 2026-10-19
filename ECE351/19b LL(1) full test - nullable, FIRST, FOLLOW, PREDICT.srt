@@ -1,0 +1,435 @@
+1
+00:00:00,000 --> 00:00:11,947
+The simple tests can show that a grammar is not L L one. This video gives the full test. It proves that a grammar is L L one, or shows exactly where it fails.
+
+2
+00:00:12,397 --> 00:00:26,349
+We compute four things: which nonterminals are nullable, the first sets, the follow sets, and the predict sets. We do it for the F grammar from the notes. Then we solve three exercises from the notes.
+
+3
+00:00:26,799 --> 00:00:35,225
+Take FactorTail from the B N F grammar of the last video. It goes to dot Factor FactorTail, or to epsilon.
+
+4
+00:00:35,675 --> 00:00:48,859
+The first production starts with a dot. So a dot predicts it. But which tokens predict the epsilon production? Nothing in the production itself tells us. It depends on what can come after FactorTail.
+
+5
+00:00:49,309 --> 00:01:00,552
+The predict set of a production is the set of lookahead tokens that choose it. If the predict sets of each nonterminal's productions are disjoint, the grammar is L L one.
+
+6
+00:01:01,002 --> 00:01:09,471
+The method is the same as in your other engineering courses. Build a system of equations, then solve it. First, nullable.
+
+7
+00:01:09,921 --> 00:01:17,089
+The first sets need nullable. The follow sets need nullable and first. And the predict sets need all three.
+
+8
+00:01:17,539 --> 00:01:31,619
+The difference: here the variables are sets, and the operation is union. We solve by iteration. Start with empty sets, apply all equations, and repeat until nothing changes. That is a fixed point.
+
+9
+00:01:32,069 --> 00:01:38,192
+Here again is the F grammar in B N F, from the last video. 17 productions.
+
+10
+00:01:38,642 --> 00:01:51,186
+The nonterminals start with a capital letter. The terminals are the arrow, semicolon, plus, dot, not, the parentheses, 0, 1, i d, and the end marker, dollar dollar.
+
+11
+00:01:51,636 --> 00:02:05,503
+Nullable means the nonterminal can derive epsilon. The notes write eps of A. There are three cases. First: if the nonterminal derives epsilon directly, it is nullable. eps is 1.
+
+12
+00:02:05,953 --> 00:02:12,353
+Second: a production that contains a terminal cannot derive epsilon. Its value is 0.
+
+13
+00:02:12,803 --> 00:02:17,987
+Third: otherwise, write a sum of products. One product for each alternative.
+
+14
+00:02:18,437 --> 00:02:31,023
+The product multiplies eps of each nonterminal in that production. So the product is 1 only if every nonterminal in it is nullable. The sum is 1 if any alternative is nullable.
+
+15
+00:02:31,473 --> 00:02:35,783
+Now fill the table for the F grammar. One row per nonterminal.
+
+16
+00:02:36,233 --> 00:02:47,113
+Three nonterminals derive epsilon directly: FList, TermTail and FactorTail. They are nullable. These are the three new nonterminals from the stars.
+
+17
+00:02:47,563 --> 00:02:58,165
+Program contains dollar dollar, and Formula contains the arrow and the semicolon. Constant and Var derive only terminals. All four are 0.
+
+18
+00:02:58,615 --> 00:03:08,173
+Factor has four alternatives: 0, plus 0, plus eps of Var, plus eps of Constant. Both are 0, so Factor is 0.
+
+19
+00:03:08,623 --> 00:03:22,916
+Term is eps of Factor times eps of FactorTail. Factor is 0, so Term is 0. Expr is the same, with Term. Our fixed point routine in python gives the same three nullable nonterminals.
+
+20
+00:03:23,366 --> 00:03:29,382
+The first set of a string of symbols is the set of tokens that can start a string derived from it.
+
+21
+00:03:29,832 --> 00:03:36,659
+To compute it, read the right side from left to right. Take Program, which goes to FList dollar dollar.
+
+22
+00:03:37,109 --> 00:03:42,293
+Add the first set of the first symbol. first of FList is the set i d.
+
+23
+00:03:42,743 --> 00:03:57,484
+If that symbol is nullable, it can vanish. So also look at the next symbol. FList is nullable. The next symbol is dollar dollar, a terminal. Add it and stop. So first of Program is i d and dollar dollar.
+
+24
+00:03:57,934 --> 00:04:07,299
+Some books put epsilon in the first sets. The notes follow Scott. They keep the first sets for tokens only, and use eps for nullability.
+
+25
+00:04:07,749 --> 00:04:11,909
+Fill the first table. Start with the rows that need no other set.
+
+26
+00:04:12,359 --> 00:04:22,813
+Var gives i d. Constant gives 0 and 1. TermTail starts with plus, and FactorTail with a dot. Their epsilon productions add nothing here.
+
+27
+00:04:23,263 --> 00:04:34,377
+Factor has four alternatives. Not, open parenthesis, first of Var, and first of Constant. That gives not, open parenthesis, 0, 1 and i d.
+
+28
+00:04:34,827 --> 00:04:41,910
+Term starts with Factor, which is not nullable. So first of Term is first of Factor. The same for Expr.
+
+29
+00:04:42,360 --> 00:04:49,912
+Formula starts with Var, so its first set is i d. FList starts with Formula, so also i d.
+
+30
+00:04:50,362 --> 00:04:59,685
+Program is first of FList, plus dollar dollar, because FList is nullable. All ten values match the notes and our python routine.
+
+31
+00:05:00,135 --> 00:05:07,708
+The follow set of A is the set of tokens that can come right after A, in some string derived from the start symbol.
+
+32
+00:05:08,158 --> 00:05:17,630
+To build the equation, look at every production where A appears on the right side. Pattern one: something beta comes after A. Add first of beta.
+
+33
+00:05:18,080 --> 00:05:26,891
+Pattern two: A is at the end of the right side of D. Then whatever follows D can follow A. Add follow of D, if D is not A.
+
+34
+00:05:27,341 --> 00:05:34,786
+Pattern three: beta comes after A, but beta is nullable. Beta can vanish, so again add follow of D.
+
+35
+00:05:35,236 --> 00:05:46,415
+Union all the results. The notes follow the convention that follow of the start symbol is the empty set. The grammar writes the end marker, dollar dollar, itself.
+
+36
+00:05:46,865 --> 00:05:58,150
+Program is the start symbol, so its follow set is empty. Now FList. It appears only in Program goes to FList dollar dollar. So dollar dollar follows it.
+
+37
+00:05:58,600 --> 00:06:14,749
+Formula appears in FList goes to Formula FList. After it comes FList. Add first of FList, which is i d. FList is nullable, so also add follow of FList. The result is i d and dollar dollar.
+
+38
+00:06:15,199 --> 00:06:26,591
+Expr appears twice. In Formula, a semicolon follows it. In Factor goes to open parenthesis Expr close parenthesis, a close parenthesis follows it.
+
+39
+00:06:27,041 --> 00:06:36,471
+TermTail is at the end of Expr goes to Term TermTail. So follow of TermTail is follow of Expr: close parenthesis and semicolon.
+
+40
+00:06:36,921 --> 00:06:44,537
+TermTail also appears at the end of its own production. That is pattern two with D equal to A, so we skip it.
+
+41
+00:06:44,987 --> 00:06:57,488
+Term is followed by TermTail. Add first of TermTail, the plus. TermTail is nullable, so add follow of Expr too. That gives plus, close parenthesis and semicolon.
+
+42
+00:06:57,938 --> 00:07:03,655
+FactorTail is at the end of Term goes to Factor FactorTail. So it gets follow of Term.
+
+43
+00:07:04,105 --> 00:07:15,988
+Factor is followed by FactorTail. Add the dot. FactorTail is nullable, so add follow of Term. The result is dot, plus, close parenthesis and semicolon.
+
+44
+00:07:16,438 --> 00:07:22,902
+Constant is at the end of Factor goes to Constant. So follow of Constant is follow of Factor.
+
+45
+00:07:23,352 --> 00:07:36,173
+Var appears in two right sides. In Formula, the arrow follows it. In Factor goes to Var, it gets follow of Factor. All ten follow sets match the notes and our python routine.
+
+46
+00:07:36,623 --> 00:07:47,567
+Now the predict set of a production A goes to beta. It is first of beta. If beta is nullable, add follow of A too. Here beta is the whole right side.
+
+47
+00:07:48,017 --> 00:07:55,441
+Back to FactorTail. For dot Factor FactorTail, beta starts with a dot. The predict set is just the dot.
+
+48
+00:07:55,891 --> 00:08:08,798
+For FactorTail goes to epsilon, first of epsilon is empty, and epsilon is nullable. So the predict set is follow of FactorTail: plus, close parenthesis and semicolon.
+
+49
+00:08:09,248 --> 00:08:16,181
+The two sets are disjoint. So one token of lookahead always chooses the right FactorTail production.
+
+50
+00:08:16,631 --> 00:08:27,362
+Now every production. Program, Formula, Expr and Term each have only one production, so they cannot conflict. Their predict sets come from first sets.
+
+51
+00:08:27,812 --> 00:08:39,609
+FList has two productions. Formula FList is predicted by i d. The epsilon production is predicted by follow of FList, dollar dollar. Disjoint.
+
+52
+00:08:40,059 --> 00:08:44,795
+TermTail: plus, against close parenthesis and semicolon. Disjoint.
+
+53
+00:08:45,245 --> 00:08:50,621
+FactorTail: dot, against plus, close parenthesis and semicolon. Disjoint.
+
+54
+00:08:51,071 --> 00:08:54,314
+The rest of the productions. Var has one production.
+
+55
+00:08:54,764 --> 00:09:03,468
+Factor has four. They are predicted by not, open parenthesis, i d, and 0 or 1. No token appears twice.
+
+56
+00:09:03,918 --> 00:09:06,883
+Constant: 0 against 1. Disjoint.
+
+57
+00:09:07,333 --> 00:09:20,709
+For every nonterminal, the predict sets of its productions are disjoint. So the F grammar is L L one. All 17 predict sets match the notes, and our python check finds no overlap.
+
+58
+00:09:21,159 --> 00:09:31,890
+Here is the parser at work on the input i d, arrow, 0, semicolon, dollar dollar. Each row shows the next token and the production it predicts.
+
+59
+00:09:32,340 --> 00:09:34,644
+Start: Program has one production.
+
+60
+00:09:35,094 --> 00:09:40,043
+Lookahead i d is in predict of FList goes to Formula FList.
+
+61
+00:09:40,493 --> 00:09:42,627
+Formula has one production.
+
+62
+00:09:43,077 --> 00:09:47,535
+Var goes to i d. The parser then reads i d and the arrow.
+
+63
+00:09:47,985 --> 00:09:51,057
+Lookahead 0. Expr has one production.
+
+64
+00:09:51,507 --> 00:09:53,278
+Term has one production.
+
+65
+00:09:53,728 --> 00:09:57,056
+0 is in predict of Factor goes to Constant.
+
+66
+00:09:57,506 --> 00:10:00,151
+And in predict of Constant goes to 0.
+
+67
+00:10:00,601 --> 00:10:07,300
+Lookahead semicolon. It is in the follow set of FactorTail, so FactorTail takes epsilon.
+
+68
+00:10:07,750 --> 00:10:15,835
+Semicolon is also in the follow set of TermTail. TermTail takes epsilon. The parser reads the semicolon.
+
+69
+00:10:16,285 --> 00:10:27,379
+Lookahead dollar dollar is in predict of FList goes to epsilon. The parser reads dollar dollar and accepts. Every choice came from one token of lookahead.
+
+70
+00:10:27,829 --> 00:10:32,842
+The epsilon choices, in purple, are the ones that needed the follow sets.
+
+71
+00:10:33,292 --> 00:10:45,388
+Now an exercise from the notes. S is the start symbol. a, b, c, d, f and g are terminals. Compute the first and follow sets of each nonterminal.
+
+72
+00:10:45,838 --> 00:10:47,481
+Pause the video and try it.
+
+73
+00:10:47,931 --> 00:10:58,704
+First, nullable. S contains dollar dollar, so 0. X and Y derive epsilon directly, so 1. Z derives only terminals, so 0.
+
+74
+00:10:59,154 --> 00:11:04,338
+Now first. Y starts with c or d. Z starts with f or g.
+
+75
+00:11:04,788 --> 00:11:09,844
+X starts with a, or with Z. So first of X is a, f and g.
+
+76
+00:11:10,294 --> 00:11:24,801
+S goes to X Y Z dollar dollar. X is nullable, so add first of Y. Y is nullable too, so add first of Z. Z is not nullable, so stop. first of S is a, c, d, f and g.
+
+77
+00:11:25,251 --> 00:11:28,941
+S is the start symbol. Its follow set is empty.
+
+78
+00:11:29,391 --> 00:11:47,866
+X appears in two places. In S, Y Z dollar dollar follows it. Y is nullable, so that gives first of Y and first of Z. In Y goes to d X Y, Y follows it, and Y is nullable, so add follow of Y. The result is c, d, f and g.
+
+79
+00:11:48,316 --> 00:12:00,519
+Y in S is followed by Z, which is not nullable. So follow of Y is f and g. The Y at the end of d X Y gives follow of Y itself, which we skip.
+
+80
+00:12:00,969 --> 00:12:13,406
+Z is followed by dollar dollar in S, and by b in X goes to Z b. So follow of Z is b and dollar dollar. All values match the notes and our python routine.
+
+81
+00:12:13,856 --> 00:12:29,941
+One more check that the question did not ask for. X goes to Z b is predicted by f and g. X goes to epsilon is predicted by follow of X, which also has f and g. So this grammar is not L L one.
+
+82
+00:12:30,391 --> 00:12:41,975
+The last full exercise. Is this grammar L L one? Prove it with the four kinds of sets. Give the equations and the solutions. The grammar is in E B N F.
+
+83
+00:12:42,425 --> 00:12:44,068
+Pause the video and try it.
+
+84
+00:12:44,518 --> 00:12:56,123
+First convert to B N F. The bar in S gives two productions. The notes call the start symbol G: G goes to A B dollar dollar, or to C x dollar dollar.
+
+85
+00:12:56,573 --> 00:13:02,653
+The star in A becomes recursion with epsilon: A goes to y A, or to epsilon.
+
+86
+00:13:03,103 --> 00:13:08,735
+B goes to C q. C goes to p C, or to epsilon. Seven productions.
+
+87
+00:13:09,185 --> 00:13:18,017
+eps: G contains dollar dollar, so 0. A and C derive epsilon directly, so 1. B contains q, so 0.
+
+88
+00:13:18,467 --> 00:13:21,326
+first of A is y. first of C is p.
+
+89
+00:13:21,776 --> 00:13:27,557
+B goes to C q. C is nullable, so add q. first of B is p and q.
+
+90
+00:13:28,007 --> 00:13:43,367
+G has two productions. A B dollar dollar gives first of A, then first of B, because A is nullable. C x dollar dollar gives first of C and x. Together: p, q, x and y. All values match the notes.
+
+91
+00:13:43,817 --> 00:14:01,673
+follow. A is followed by B, which is not nullable, so follow of A is first of B: p and q. B is followed by dollar dollar. C is followed by x in G, and by q in B. C at the end of p C gives follow of C itself, which we skip.
+
+92
+00:14:02,123 --> 00:14:10,529
+Predict for A. y A is predicted by y. A goes to epsilon is predicted by follow of A, p and q. Disjoint.
+
+93
+00:14:10,979 --> 00:14:19,427
+B has one production. C: p C is predicted by p, and epsilon by follow of C, q and x. Disjoint.
+
+94
+00:14:19,877 --> 00:14:34,405
+G: A B dollar dollar is predicted by p, q and y. C x dollar dollar is predicted by p and x. Both contain p. The sets are not disjoint, so the grammar is not L L one.
+
+95
+00:14:34,855 --> 00:14:44,732
+Here is why, in two inputs. The input p q needs G goes to A B dollar dollar. A is empty, and B is C q, with C going to p.
+
+96
+00:14:45,182 --> 00:14:50,558
+The input p x needs G goes to C x dollar dollar, with C going to p.
+
+97
+00:14:51,008 --> 00:15:06,453
+Both inputs start with p. The parser must look ahead two tokens, to the q or the x, to choose the G production. So the answer is no, as the notes say. A python check gives the same single overlap, on p.
+
+98
+00:15:06,903 --> 00:15:20,450
+One more grammar from the notes, Exercise 4.11.7. It has normal arithmetic precedence and right associativity. The notes say it is also L L one. Check it.
+
+99
+00:15:20,900 --> 00:15:36,217
+P has two productions. Plus E is predicted by plus. P goes to epsilon is predicted by follow of P. P is at the end of E goes to F P, so that is follow of E, which is dollar dollar. Disjoint.
+
+100
+00:15:36,667 --> 00:16:01,542
+Q: times F is predicted by the times sign. Q goes to epsilon is predicted by follow of Q, which is follow of F. F is followed by P, which is nullable, so follow of F is first of P, plus follow of E. That is plus and dollar dollar. The notes write first of P union follow of P. It gives the same set, because follow of P equals follow of E.
+
+101
+00:16:01,992 --> 00:16:13,576
+Both pairs are disjoint, so the grammar is L L one. Our python check also confirms that it accepts the same strings as the ambiguous grammar, up to 8 tokens.
+
+102
+00:16:14,026 --> 00:16:22,709
+A short answer question from questions pre, and also in the notes. What kind of machine recognizes an L L one language? 
+
+103
+00:16:23,159 --> 00:16:24,801
+Pause the video and try it.
+
+104
+00:16:25,251 --> 00:16:43,321
+The answer is a pushdown automaton. Here is Figure 4.2 from the notes. It says it is a deterministic one, and that it runs in linear time. A context free grammar in general needs a nondeterministic one, and order n cubed time.
+
+105
+00:16:43,771 --> 00:16:51,152
+To summarize. A grammar is L L one when the predict sets of each nonterminal's productions are disjoint.
+
+106
+00:16:51,602 --> 00:17:00,690
+Nullable: 1 if the nonterminal derives epsilon directly, 0 if the production has a terminal, otherwise a sum of products.
+
+107
+00:17:01,140 --> 00:17:06,900
+First: read the right side from the left, and go past a symbol only if it is nullable.
+
+108
+00:17:07,350 --> 00:17:16,246
+Follow: add first of what comes after A. Add follow of D when A is at the end, or when the rest is nullable, and D is not A.
+
+109
+00:17:16,696 --> 00:17:28,429
+Predict: first of the right side, plus follow of A if the right side is nullable. Solve the equations by iteration until nothing changes. Then compare the predict sets.

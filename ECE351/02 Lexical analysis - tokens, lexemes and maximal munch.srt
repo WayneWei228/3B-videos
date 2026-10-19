@@ -1,0 +1,343 @@
+1
+00:00:00,000 --> 00:00:04,949
+This video is about lexical analysis, the first phase of a compiler.
+
+2
+00:00:05,399 --> 00:00:19,821
+You learn what tokens and lexemes are, how to tokenize a program by hand, and the maximal munch rule. Then we look at real languages where lexing is hard: FORTRAN, PL/I and C plus plus.
+
+3
+00:00:20,271 --> 00:00:26,479
+Here is the compiler pipeline from video 1. Five phases, and the data between them.
+
+4
+00:00:26,929 --> 00:00:31,451
+This video is about phase 1, the lexical analyzer, or lexer.
+
+5
+00:00:31,901 --> 00:00:38,621
+The lexer reads the input program and writes a stream of tokens. The parser then reads the tokens.
+
+6
+00:00:39,071 --> 00:00:50,229
+What does a lexer do? Here is a small program. You see four lines with indentation: if i equals equals j, z equals 0, else z equals 1.
+
+7
+00:00:50,679 --> 00:01:01,857
+But the lexer does not see lines. The input is one string of characters. Backslash t is a tab. Backslash n is a newline. These are shown in orange.
+
+8
+00:01:02,307 --> 00:01:09,817
+The goal is to partition this string into substrings. Each substring is a lexeme, and its class is a token.
+
+9
+00:01:10,267 --> 00:01:15,856
+The lines and the indentation exist only as tab and newline bytes in the string.
+
+10
+00:01:16,306 --> 00:01:30,514
+A program is a sequence of bytes in a file. Some bytes have no glyph: tab, newline and carriage return. So we write them with an escape sequence. Here is the first line of the example in its written form.
+
+11
+00:01:30,964 --> 00:01:41,993
+Count the characters on the page: 15. The slide says 16 characters. Our count of the written form gives 15. The byte count is the number that matters.
+
+12
+00:01:42,443 --> 00:01:49,483
+In the file, the same line is 13 bytes. The first byte is a tab. The last byte is a newline.
+
+13
+00:01:49,933 --> 00:02:06,659
+An escape sequence is two characters on the page, but one byte in the file. Printed as blank space, a tab is ambiguous: is it one tab or four spaces? Windows ends each line with backslash r backslash n, which is two bytes.
+
+14
+00:02:07,109 --> 00:02:22,085
+Now tokenize the input by hand, as on the slide. Read the input one byte at a time. Write each lexeme, and next to it, its token: whitespace, keyword, identifier, integer, relation or punctuation.
+
+15
+00:02:22,535 --> 00:02:24,177
+Pause the video and try it.
+
+16
+00:02:24,627 --> 00:02:32,969
+Here are the first 15 bytes, with their positions. Read from left to right, and take the longest lexeme that is a token.
+
+17
+00:02:33,419 --> 00:02:41,952
+Byte 0 is a tab. The next byte, i, is not white space. So the lexeme is one tab, and its token is whitespace.
+
+18
+00:02:42,402 --> 00:02:53,581
+Next, i. It could be an identifier, but it can still grow. i f is also a token. The next byte is a space, so the lexeme stops. i f is a keyword.
+
+19
+00:02:54,031 --> 00:03:03,204
+A space: whitespace. An open parenthesis: punctuation. Then i, an identifier. It cannot grow, because a space follows.
+
+20
+00:03:03,654 --> 00:03:17,627
+A space. Then equals. One equals sign is a token, but it can grow: equals equals is a relation. The next byte is a space. So the lexeme is equals equals, and the token is relation.
+
+21
+00:03:18,077 --> 00:03:22,003
+A space, the identifier j, and the close parenthesis.
+
+22
+00:03:22,453 --> 00:03:32,906
+Last, the newline and the two tabs. All three are white space, so they make one lexeme: whitespace. These are the 11 rows of the slide answer.
+
+23
+00:03:33,356 --> 00:03:36,257
+Here is the whole input: 36 bytes.
+
+24
+00:03:36,707 --> 00:03:48,057
+Continue the same way to the end. The bars show the lexemes, coloured by token. There are 26 lexemes: 11 are whitespace, and 15 are other tokens.
+
+25
+00:03:48,507 --> 00:03:58,384
+The lexer usually drops the whitespace. So the parser gets 15 tokens: if, open parenthesis, i, equals equals, j, and so on.
+
+26
+00:03:58,834 --> 00:04:06,322
+Each token carries its lexeme. For example, keyword with lexeme if, and identifier with lexeme i.
+
+27
+00:04:06,772 --> 00:04:15,305
+What is a token? A token is a syntactic category. In English, the categories are noun, verb, adjective, and so on.
+
+28
+00:04:15,755 --> 00:04:22,731
+In a programming language, the categories are identifier, integer, keyword, whitespace, and so on.
+
+29
+00:04:23,181 --> 00:04:31,267
+So a token is a category, and a lexeme is one string in that category. i is a lexeme. Identifier is its token.
+
+30
+00:04:31,717 --> 00:04:42,533
+Each token is a set of strings. Identifier: strings of letters or digits that start with a letter. Keyword: else, or if, or begin, and so on.
+
+31
+00:04:42,983 --> 00:04:59,004
+Integer: a non-empty string of digits. Whitespace: a non-empty sequence of blanks, newlines and tabs. Relation: equals equals, less than, less than or equal. And each punctuation mark is a token of its own.
+
+32
+00:04:59,454 --> 00:05:14,515
+There is a problem. The string if is in two sets. It is a keyword, and it also matches the identifier rule. The slide answer makes if a keyword. So a keyword wins over an identifier. The same is true for else.
+
+33
+00:05:14,965 --> 00:05:21,344
+A quick check. For each string, which token set contains it? Try them before the answers appear.
+
+34
+00:05:21,794 --> 00:05:33,314
+z 1 starts with a letter, so it is an identifier. 0 0 7 is a non-empty string of digits: an integer. A newline and a tab are white space.
+
+35
+00:05:33,764 --> 00:05:50,788
+Less than or equal is a relation. But 1 z is in no set. It starts with a digit, so it is not an identifier, and it has a letter, so it is not an integer. A lexer cuts it into two lexemes: the integer 1, then the identifier z.
+
+36
+00:05:51,238 --> 00:06:10,246
+What are tokens for? They classify substrings of the program by their role. The output of the lexer is a stream of tokens, and that stream is the input of the parser. The parser relies on the token distinctions. For example, it treats an identifier differently from a keyword.
+
+37
+00:06:10,696 --> 00:06:36,381
+To design a lexer, step 1: define a finite set of tokens. The tokens describe all items of interest. The choice depends on the language and on the design of the parser. For our example: integer, keyword, relation, identifier, whitespace, and four single tokens. Here open parenthesis, close parenthesis, equals and semicolon are tokens, not characters.
+
+38
+00:06:36,831 --> 00:06:45,962
+Step 2: describe which strings belong to each token. The exact way to do this is a regular expression. That is the next video.
+
+39
+00:06:46,412 --> 00:06:50,039
+How is a lexer implemented? It must do two things.
+
+40
+00:06:50,489 --> 00:06:59,321
+First, recognize the substrings that correspond to tokens. For example, it recognizes that i f is in the keyword set.
+
+41
+00:06:59,771 --> 00:07:12,165
+Second, return the token and its value, the lexeme. The lexeme is the substring that was tokenized. For example, keyword with lexeme if, and identifier with lexeme i.
+
+42
+00:07:12,615 --> 00:07:21,554
+The lexer usually discards uninteresting tokens, which do not contribute to parsing. Examples are white space and comments.
+
+43
+00:07:22,004 --> 00:07:30,665
+Is lexing as easy as it sounds? Not quite. Look at some history. In FORTRAN, the rule is: whitespace is insignificant.
+
+44
+00:07:31,115 --> 00:07:40,203
+So V A R 1 is the same as V A, three spaces, R 1. The lexer removes the blanks, and both give one identifier.
+
+45
+00:07:40,653 --> 00:07:53,133
+This means a blank cannot end a token. The slides call it a terrible design. The rule came from punch cards: the operators who typed the cards were not accurate with spaces.
+
+46
+00:07:53,583 --> 00:08:09,199
+This example is optional. It is not on the slides, but it shows why the FORTRAN rule is a problem. Take the line D O 5 I equals 1 comma 25. With the blanks removed, the lexer sees these characters.
+
+47
+00:08:09,649 --> 00:08:17,969
+Now take D O 5 I equals 1 point 25. Only one character is different: a point instead of a comma.
+
+48
+00:08:18,419 --> 00:08:29,427
+The first line is a loop: the keyword D O, the label 5, and the variable I. The second line is an assignment to one variable called D O 5 I.
+
+49
+00:08:29,877 --> 00:08:38,325
+The first six characters are the same. To decide if D O is a keyword, the lexer must look ahead to the comma or the point.
+
+50
+00:08:38,775 --> 00:08:55,607
+The slides make two points. First, the lexer reads left to right and recognizes one token at a time. Second, lookahead may be needed to decide where one token ends and the next token begins. Even our simple example has this issue.
+
+51
+00:08:56,057 --> 00:09:01,753
+Start at i. i is an identifier. But it may be the start of if, so keep going.
+
+52
+00:09:02,203 --> 00:09:06,299
+i f is a keyword, and a longer token may still follow.
+
+53
+00:09:06,749 --> 00:09:13,555
+The next character is a space. i f space is not a token. So stop, and emit the keyword if.
+
+54
+00:09:14,005 --> 00:09:21,685
+Later, the lexer reaches an equals sign. One equals is a token, but it may be the start of equals equals.
+
+55
+00:09:22,135 --> 00:09:24,609
+Equals equals is a relation.
+
+56
+00:09:25,059 --> 00:09:30,499
+Equals equals space is not a token. So emit the relation equals equals.
+
+57
+00:09:30,949 --> 00:09:42,192
+This is the rule of maximal munch, or longest match. Keep extending the current token while it can still grow. Emit it when the next character cannot extend it.
+
+58
+00:09:42,642 --> 00:09:54,994
+Now an exercise. Tokenize i f 1 less than or equal 2 0 semicolon. Use maximal munch and the tokens of the slides. Give each lexeme and its token.
+
+59
+00:09:55,444 --> 00:09:57,087
+Pause the video and try it.
+
+60
+00:09:57,537 --> 00:10:01,590
+Start at byte 0. Grow the lexeme while it is still a token.
+
+61
+00:10:02,040 --> 00:10:11,597
+i is an identifier. i f is a keyword. i f 1 is an identifier, because it is letters and digits that start with a letter.
+
+62
+00:10:12,047 --> 00:10:17,978
+i f 1 less than is not a token. So emit i f 1 as one identifier.
+
+63
+00:10:18,428 --> 00:10:28,348
+Next, less than is a relation, and less than or equal is also a relation. Less than or equal 2 is not a token. Emit the relation.
+
+64
+00:10:28,798 --> 00:10:36,905
+Next, 2, then 2 0: an integer. 2 0 semicolon is not a token. Emit the integer 2 0.
+
+65
+00:10:37,355 --> 00:10:52,480
+Last, the semicolon is punctuation. So there are four tokens. A common error is to take the keyword if and then the integer 1. Maximal munch takes the longest match, so i f 1 is one identifier.
+
+66
+00:10:52,930 --> 00:11:07,287
+In PL/I, keywords are not reserved. You may use a keyword as a variable name. Here is a legal statement: IF ELSE THEN THEN equals ELSE semicolon, ELSE ELSE equals THEN. Which words are keywords?
+
+67
+00:11:07,737 --> 00:11:09,977
+Pause the video and find the keywords.
+
+68
+00:11:10,427 --> 00:11:23,078
+The statement has the form: IF condition THEN statement ELSE statement. So the first IF is a keyword. The next word, ELSE, is the condition: a variable. Then THEN is a keyword.
+
+69
+00:11:23,528 --> 00:11:28,456
+THEN equals ELSE is an assignment. Here THEN and ELSE are both variables.
+
+70
+00:11:28,906 --> 00:11:44,330
+After the semicolon, ELSE is a keyword. Then ELSE equals THEN is another assignment of two variables. So only 3 of the 8 words are keywords. The same word has different tokens, and only the context decides.
+
+71
+00:11:44,780 --> 00:11:53,527
+Another PL/I problem is the declaration: DECLARE, open parenthesis, ARG 1 to ARG N, close parenthesis.
+
+72
+00:11:53,977 --> 00:12:01,251
+The lexer cannot tell whether DECLARE is a keyword or an array reference until after the close parenthesis.
+
+73
+00:12:01,701 --> 00:12:13,285
+If it is a declaration, DECLARE is a keyword. If it is an array reference, DECLARE is an identifier. N can be any number, so the lexer needs arbitrary lookahead.
+
+74
+00:12:13,735 --> 00:12:26,194
+The problems continue today, in C plus plus. A template uses angle brackets: Foo of Bar. And greater than greater than is the right shift operator: 8 shifted right by 1.
+
+75
+00:12:26,644 --> 00:12:38,121
+Now nest two templates: Foo of Bar of Bazz, with two closing brackets. Maximal munch takes the longest match. So the lexer makes one token, the shift operator.
+
+76
+00:12:38,571 --> 00:12:46,230
+But the parser needs two closing brackets, one for each template. This is a conflict between the lexer and the grammar.
+
+77
+00:12:46,680 --> 00:13:03,469
+Before C plus plus 11, the workaround was an extra space between the two brackets. The space stops the munch, so the lexer makes two tokens. We checked this: without the space, the old standard gives an error. With the space, the code compiles.
+
+78
+00:13:03,919 --> 00:13:10,341
+C plus plus 11 fixed the language, not the lexer. The lexer still makes one shift token.
+
+79
+00:13:10,791 --> 00:13:21,671
+The parser splits the shift token into two closing brackets when it is inside template arguments. The first closes Bar of Bazz. The second closes Foo.
+
+80
+00:13:22,121 --> 00:13:39,507
+What if you want a real shift inside a template argument? Use parentheses. Value of, open parenthesis, 8 shift 1, close parenthesis. 8 shifted right by 1 is 4, so this is Value of 4. We compiled and ran this to check it.
+
+81
+00:13:39,957 --> 00:13:51,328
+The rule is in the C plus plus 11 standard, section 14.2. Inside template arguments, the first non-nested shift token splits into two.
+
+82
+00:13:51,778 --> 00:13:58,498
+To summarize. The input of the lexer is a string of bytes. A tab and a newline are one byte each.
+
+83
+00:13:58,948 --> 00:14:07,396
+The goal of lexical analysis is to partition the input string into lexemes, and to identify the token of each lexeme.
+
+84
+00:14:07,846 --> 00:14:16,465
+A token is a set of strings. A keyword wins over an identifier. The lexer usually discards white space and comments.
+
+85
+00:14:16,915 --> 00:14:26,259
+The lexer scans left to right, one token at a time. With maximal munch, it takes the longest match, so lookahead is sometimes needed.
+
+86
+00:14:26,709 --> 00:14:41,727
+Real languages make this hard: blanks in FORTRAN, keywords and DECLARE in PL/I, and the shift token in C plus plus. Next video: regular expressions, the exact way to describe each token.

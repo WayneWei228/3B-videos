@@ -1,0 +1,251 @@
+1
+00:00:00,000 --> 00:00:09,216
+This video is about aliasing and mutation. Aliasing means two names for one object. Mutation means a change to an object.
+
+2
+00:00:09,666 --> 00:00:21,549
+We use the object diagrams from the last video. We solve two past exam questions on lists: one mutable, one immutable. At the end we see the keyword final.
+
+3
+00:00:21,999 --> 00:00:35,076
+The course notes define aliasing: multiple variables all refer to the same object. In Superman's story, at line 35, Clark Kent and Superman both point to Person 3.
+
+4
+00:00:35,526 --> 00:00:47,963
+The notes say that three names, Kal El, Clark Kent and Superman, refer to Person 3. Be exact about time. Kal El and Clark Kent were aliases after line 28.
+
+5
+00:00:48,413 --> 00:01:02,408
+Line 31 set Kal El to null. So at line 35 the aliases are Clark Kent and Superman. Aliasing can make fiction more colourful, but it makes programs harder to read and understand.
+
+6
+00:01:02,858 --> 00:01:18,623
+The notes make the point with Dostoevsky's novel, The Brothers Karamazov. Each brother has many names. Line 5 makes Brother 1. Lines 6 to 9 copy the arrow of Dmitri four times. Five names, one object.
+
+7
+00:01:19,073 --> 00:01:26,604
+Lines 11 to 14 do the same for the second brother. Ivan and three more names point to Brother 2.
+
+8
+00:01:27,054 --> 00:01:35,737
+Lines 16 to 23 give the third brother eight names. This time each line copies the previous name, not Alexei.
+
+9
+00:01:36,187 --> 00:02:00,379
+Look at line 18: Alyoshka equals Alyosha. The right side follows Alyosha's arrow to Brother 3. So Alyoshka points to Brother 3, not to the slot Alyosha. A chain of copies still ends at one object. Three new statements, three objects, seventeen names. This is the object diagram at P C 24 in the notes.
+
+10
+00:02:00,829 --> 00:02:17,511
+The Brothers Karamazov was made to have many aliases. The next story, Where The Wild Things Are, is a more realistic program. Aliasing comes from procedure calls, and sometimes we add an alias to make the program easier to understand.
+
+11
+00:02:17,961 --> 00:02:26,772
+Two aliases are added to aid understanding. Line 5: Max In Wolf Suit is Max. Line 19: King is p.
+
+12
+00:02:27,222 --> 00:02:36,673
+Line 12: the parameter p. A procedure parameter is an alias that you cannot avoid. Every call copies an arrow into p.
+
+13
+00:02:37,123 --> 00:02:48,728
+And two lines mutate a field: line 13 sets p dot isLonely to true, and line 10 sets Max dot isLonely to false. Who is p? Let us run it.
+
+14
+00:02:49,178 --> 00:02:59,802
+Lines 3 to 5. Mother is Person 1, and Max is Person 2. Both start with isLonely false. Max In Wolf Suit copies Max's arrow.
+
+15
+00:03:00,252 --> 00:03:10,535
+Line 8 calls sail Away with Max In Wolf Suit. The new frame has slots p, King and wildthings. p gets the same arrow, to Person 2.
+
+16
+00:03:10,985 --> 00:03:21,203
+Line 13: p dot isLonely equals true. Follow p to Person 2. So this line changes Max's object, although it never says Max.
+
+17
+00:03:21,653 --> 00:03:31,787
+Lines 14 and 15 make an array and three Wild Things. The slot wildthings points to the array, and the array points to the three objects.
+
+18
+00:03:32,237 --> 00:03:44,631
+Line 18: Person 2 can stare without blinking, so line 19 runs. King equals p. Now Max, Max In Wolf Suit, p and King are four names for Person 2.
+
+19
+00:03:45,081 --> 00:03:54,489
+King dot isLonely is true, so the program reaches line 32. This is the object diagram at P C 32 in the notes.
+
+20
+00:03:54,939 --> 00:04:04,134
+Mutation means a change to an object. Line 13 mutates p dot isLonely. Line 10 mutates Max dot isLonely.
+
+21
+00:04:04,584 --> 00:04:12,285
+The reader of the story knows that both lines change the same object, Person 2. p and Max are aliases.
+
+22
+00:04:12,735 --> 00:04:25,386
+This is hard for the compiler to know. It must do an inter procedural pointer analysis. That is our object diagram, but built for every program point and every possible input.
+
+23
+00:04:25,836 --> 00:04:34,689
+It is even harder for a programmer in a large program that is not a famous story. Be careful about mutation and aliasing.
+
+24
+00:04:35,139 --> 00:04:52,953
+Now a past exam question, from the slides and questions pre 2.1.1. The program uses a linked list from the J D K, the Java Development Kit. The J D K lists are mutable. What does line 10 print? Commit to one answer.
+
+25
+00:04:53,403 --> 00:04:55,045
+Pause the video and try it.
+
+26
+00:04:55,495 --> 00:05:00,914
+Run it by hand. Line 6: new makes Linked List 1, and list points to it.
+
+27
+00:05:01,364 --> 00:05:08,809
+Line 7: alias equals list. No new, so no new bubble. alias points to the same Linked List 1.
+
+28
+00:05:09,259 --> 00:05:24,321
+Line 8: list dot add hello. The add method mutates Linked List 1. It makes a node inside the list, and the node refers to the string hello. The new for the node is inside the library code of add.
+
+29
+00:05:24,771 --> 00:05:33,219
+Line 9: alias dot add world. alias leads to the same object, so the same list gets a second node, with world.
+
+30
+00:05:33,669 --> 00:05:44,314
+Line 10 prints the list: hello, world. The answer is c. Lines 8 and 9 both mutate one object, because list and alias are aliases.
+
+31
+00:05:44,764 --> 00:05:52,188
+Mutable means can be changed. Immutable means cannot be changed. The J D K lists are mutable.
+
+32
+00:05:52,638 --> 00:06:01,470
+Parboiled is the parser generator that the labs use later. It comes with a class called Immutable List. Start with an empty one.
+
+33
+00:06:01,920 --> 00:06:12,587
+To add an item, you call append. Append does not change the list. It makes a new list with the old contents and the new item. The old list stays empty.
+
+34
+00:06:13,037 --> 00:06:32,749
+Why would compiler engineers want this? Procedure calls make aliases that you cannot avoid, and a compiler has many calls. Immutable data makes the code easier to reason about, gives fewer bugs, and makes debugging easier. The trade off is that adding an item feels different.
+
+35
+00:06:33,199 --> 00:06:50,351
+The second exam question, from the slides and questions pre 2.1.2. The same program shape, but with Parboiled's Immutable List and append. What does line 9 print? And what does line 12 print? Each has the same four options.
+
+36
+00:06:50,801 --> 00:06:52,443
+Pause the video and try it.
+
+37
+00:06:52,893 --> 00:07:02,749
+Lines 5 and 6. Immutable List dot of makes an empty list, Immutable List 1. list points to it, and alias copies the arrow.
+
+38
+00:07:03,199 --> 00:07:18,218
+Line 7: list dot append hello. Append makes a new list, Immutable List 2, with hello. But the program does not assign the result. No slot points to Immutable List 2. List 1 does not change.
+
+39
+00:07:18,668 --> 00:07:25,004
+Line 8 does the same with alias. It makes Immutable List 3 with world, and throws it away.
+
+40
+00:07:25,454 --> 00:07:35,587
+Line 9 prints list. list still points to Immutable List 1, which is empty. The output is the empty list. The answer for line 9 is a.
+
+41
+00:07:36,037 --> 00:07:52,400
+Line 10: list equals list dot append hello. Append makes Immutable List 4 with hello. It refers to the same String 1. This time we assign the result: erase the old arrow of list and draw it to Immutable List 4.
+
+42
+00:07:52,850 --> 00:08:12,306
+Line 11: alias equals alias dot append world. Resolve alias first. It still points to Immutable List 1, the empty list. So append makes Immutable List 5 with only world. alias now points to it. list and alias are no longer aliases.
+
+43
+00:08:12,756 --> 00:08:28,052
+Line 12 prints list: hello. The answer for line 12 is b, not hello world. Each name got its own new list. Nothing was shared, so nothing was mutated behind our back. We checked both outputs in Java.
+
+44
+00:08:28,502 --> 00:08:34,966
+The notes also show the right way. Line 5: list points to the empty Immutable List 1.
+
+45
+00:08:35,416 --> 00:08:43,459
+Line 6: list equals list dot append hello. The new Immutable List 2 holds hello, and list moves to it.
+
+46
+00:08:43,909 --> 00:08:52,762
+Line 7: append world to Immutable List 2. The new Immutable List 3 holds hello and world, and list moves to it.
+
+47
+00:08:53,212 --> 00:09:02,727
+Line 8 prints hello, world. With an immutable list, always assign the result of append. The old lists stay unchanged in the heap.
+
+48
+00:09:03,177 --> 00:09:19,198
+Last topic: the keyword final. In Java, final prevents re-assignment. When you write final, the compiler must prove that the variable is assigned exactly once on every program path. A parameter can also be final.
+
+49
+00:09:19,648 --> 00:09:26,923
+msg is declared final on line 7, without a value. If args is empty, line 8 assigns it.
+
+50
+00:09:27,373 --> 00:09:29,549
+Otherwise, line 9 assigns it.
+
+51
+00:09:29,999 --> 00:09:51,801
+Both paths meet at line 10, and on each path msg was assigned exactly once. So javac accepts it. The field f of class C is final too: the compiler proves that every constructor assigns it exactly once. After the midterm, we learn how a compiler makes this proof, with dataflow analysis.
+
+52
+00:09:52,251 --> 00:10:12,049
+Here is the object diagram at P C 11, with no command line arguments. s points to the string known. msg points to no args. c points to C 1, and its field f points to the same string. The notes also draw the literal some args. No arrow points to it.
+
+53
+00:10:12,499 --> 00:10:21,245
+Line 11 prints c dot f: no args. Every slot here was set in exactly one place, and never changed after.
+
+54
+00:10:21,695 --> 00:10:37,226
+Now a wrong use, from the notes. Line 3 sets the final s, and line 4 tries to assign s again. javac refuses: cannot assign a value to final variable s. A final slot keeps its first arrow.
+
+55
+00:10:37,676 --> 00:10:48,407
+Compare the two ideas. final is about a slot: its arrow is set once and never moves. Immutable is about an object: its contents never change.
+
+56
+00:10:48,857 --> 00:11:03,043
+So final alone does not stop mutation. Our example: a final list variable, and then list dot add hello. It compiles, and it prints hello. The arrow did not move, but the object changed.
+
+57
+00:11:03,493 --> 00:11:16,443
+The notes combine the two. With an immutable data structure and final, a value is set in exactly one place and does not change after that. This makes the program easier to reason about.
+
+58
+00:11:16,893 --> 00:11:26,215
+One more note from the course notes: Java final is similar to, but not exactly the same as, the C and C plus plus keyword const.
+
+59
+00:11:26,665 --> 00:11:35,007
+To summarize. Aliasing means several names point to one object. A copy follows the arrow, and never points to a slot.
+
+60
+00:11:35,457 --> 00:11:43,435
+Procedure parameters are aliases that you cannot avoid. In the Wild Things story, p and Max are one object.
+
+61
+00:11:43,885 --> 00:11:51,800
+A mutation through one alias is seen through all of them. That is why the linked list program prints hello, world.
+
+62
+00:11:52,250 --> 00:12:01,530
+An immutable append makes a new list. Assign the result, or it is lost. The Parboiled program prints the empty list, then hello.
+
+63
+00:12:01,980 --> 00:12:15,185
+final means assigned exactly once on every path, and the compiler proves it. It fixes the slot, not the object. Practice these diagrams. Object diagrams are midterm material.

@@ -1,0 +1,387 @@
+1
+00:00:00,000 --> 00:00:07,083
+This video shows how to make a D F A as small as possible. The method is called D F A minimization.
+
+2
+00:00:07,533 --> 00:00:23,618
+First we find out when two states are the same. Then we learn the algorithm: merge everything, then split when forced. We run it on a or a b star and on f optional g star. At the end we solve two past midterm questions.
+
+3
+00:00:24,068 --> 00:00:35,737
+A lexer is compiled from regular expressions in three steps. Regex to N F A, with the templates. Then N F A to D F A, with the subset construction.
+
+4
+00:00:36,187 --> 00:00:42,182
+The subset construction gives a correct D F A. But it often has more states than it needs.
+
+5
+00:00:42,632 --> 00:00:49,565
+Step 3 is minimization. It gives a D F A for the same language, with the smallest number of states.
+
+6
+00:00:50,015 --> 00:01:00,170
+Here is the D F A for a or a b star, from the last video. It has four states. B and C accept. D is the empty set, the error state.
+
+7
+00:01:00,620 --> 00:01:05,761
+Two of these four states could be one state. Which two? And how can you show it?
+
+8
+00:01:06,211 --> 00:01:19,971
+The answer is B and C. Both accept. On a, both go to D. On b, both go to C. So nothing that happens after B or C can tell them apart. We now make this idea exact.
+
+9
+00:01:20,421 --> 00:01:39,088
+When are two states the same? Not when they look alike. Two states p and q are equivalent if nothing that happens after them can tell them apart. Formally: for every string w, the run from p on w accepts exactly when the run from q on w accepts.
+
+10
+00:01:39,538 --> 00:01:46,727
+So p and q accept the same set of suffixes. For every w, the two runs give the same answer.
+
+11
+00:01:47,177 --> 00:01:55,881
+A string w that accepts from one state and not from the other is a witness. A witness shows that the two states must stay apart.
+
+12
+00:01:56,331 --> 00:02:13,249
+Equivalence is an equivalence relation. It is also a congruence. If p is equivalent to q, then for every letter x, delta of p and x is equivalent to delta of q and x. This is why the merged machine is well defined.
+
+13
+00:02:13,699 --> 00:02:29,955
+An exercise from the slides. Here is a D F A with four states, p, q, r and s. Only r accepts. Is p equivalent to q? Is p equivalent to s? For each pair, give a witness, or explain why there is none.
+
+14
+00:02:30,405 --> 00:02:32,047
+Pause the video and try it.
+
+15
+00:02:32,497 --> 00:02:37,596
+First, p and q. We look for a string that accepts from one and not from the other.
+
+16
+00:02:38,046 --> 00:02:47,689
+Try the empty string first. With no input, p stays in p and q stays in q. Neither accepts. So epsilon is no witness.
+
+17
+00:02:48,139 --> 00:02:55,584
+Now try b. From p, b loops back to p, which rejects. From q, b goes to r, which accepts.
+
+18
+00:02:56,034 --> 00:03:02,733
+One run accepts and the other rejects. So b is a witness, and p is not equivalent to q.
+
+19
+00:03:03,183 --> 00:03:09,583
+Now p and s. Here we cannot try every string. We must argue that no witness exists.
+
+20
+00:03:10,033 --> 00:03:18,758
+On b, p stays in p, and s stays in s. Neither accepts. So any run of b's gives the same answer from both.
+
+21
+00:03:19,208 --> 00:03:29,000
+On a, both p and s go to q. From that point, the two runs are in the same state. So they are the same run, and they give the same answer.
+
+22
+00:03:29,450 --> 00:03:37,045
+So no witness exists, and p is equivalent to s. Both accept exactly the strings that end in a b.
+
+23
+00:03:37,495 --> 00:03:44,727
+We cannot find equivalent states by trying all strings. There are too many. So we work the other way round.
+
+24
+00:03:45,177 --> 00:04:01,198
+Step 1. Assume that all states are equivalent until they are proved different. Two states are already different if one accepts and the other does not. The empty string is the witness. So start with two blocks: r, and p, q, s.
+
+25
+00:04:01,648 --> 00:04:17,093
+Step 2. Split when a letter forces it. On b, q goes to r, but p and s stay in the other block. If a letter takes two states of a block into different blocks, some suffix separates them. So the block must come apart.
+
+26
+00:04:17,543 --> 00:04:26,695
+Step 3. Stop when no letter forces a split. What is left is equivalence. Here, p and s stay together, as we found before.
+
+27
+00:04:27,145 --> 00:04:43,316
+Here is the same method in the form you run with a pen. Step 1. Draw one bubble for all accepting states, and one for all the rest. If there is an error state, it gets its own bubble. Here: the bubble r, and the bubble p q s.
+
+28
+00:04:43,766 --> 00:05:02,411
+Step 2. Draw the transitions between bubbles, one per state and letter. The result is usually not a legal D F A. Here the bubble p q s has two arrows labelled b: one back to itself, and one to r. That is an ambiguous transition. It is orange.
+
+29
+00:05:02,861 --> 00:05:19,032
+Step 3. Pick an ambiguous transition and fix it. Split its source bubble into the states that go one way and the states that go the other way. On b, q goes to r, but p and s stay. So the bubble splits into p s, and q.
+
+30
+00:05:19,482 --> 00:05:34,586
+Step 4. Repeat until no ambiguity is left. Now every bubble has one arrow per letter. It is a D F A again, and it is the smallest one. When you do it by hand, you may choose which ambiguity to fix first.
+
+31
+00:05:35,036 --> 00:05:51,527
+Here is the same algorithm as pseudo code. It is Moore's algorithm, from 1956. The machine M must be total and trim. Start with two blocks: the accepting states F, and the rest. Drop a block if it is empty.
+
+32
+00:05:51,977 --> 00:06:07,401
+Then repeat. For each block, look at each state q. For each letter x, write down the block that delta of q and x is in. This list is the signature of q. Split the block into groups of states with the same signature.
+
+33
+00:06:07,851 --> 00:06:18,389
+In the picture, q 1 and q 2 are in the same block. But x takes them into two different blocks. So they split. Stop when a round makes no split.
+
+34
+00:06:18,839 --> 00:06:35,309
+Each block becomes one state. The start state is the block of q 0. The arrow from a block on x goes to the block of delta of q and x. The accepting states are the blocks inside F. There are at most as many rounds as states.
+
+35
+00:06:35,759 --> 00:06:39,876
+Moore's algorithm needs two conditions on the input machine.
+
+36
+00:06:40,326 --> 00:06:59,931
+First, the machine must be total. Every state has an arrow on every letter. The error state must be explicit: a rejecting sink, drawn like any other state. Without the sink, goes nowhere on f and loops on f look the same to the algorithm. We see this counterexample soon.
+
+37
+00:07:00,381 --> 00:07:12,413
+Second, the machine must be trim. Every state is reachable from the start. No string can tell unreachable states apart, so they merge into any block, and they corrupt the answer.
+
+38
+00:07:12,863 --> 00:07:21,930
+The subset construction gives you both conditions for free. The empty set is the sink. And every set it builds was reached from the start.
+
+39
+00:07:22,380 --> 00:07:30,636
+Now minimize our D F A for a or a b star. It is total, because D is the explicit error state. And it is trim.
+
+40
+00:07:31,086 --> 00:07:40,537
+Round 0. The accepting states are B and C. The non accepting states are A and D. So we have two bubbles, A D and B C.
+
+41
+00:07:40,987 --> 00:07:53,723
+Draw the arrows. On a, A goes to B, in the bubble B C. But D goes to D, in the bubble A D. So the bubble A D has two arrows labelled a. That is an ambiguous transition.
+
+42
+00:07:54,173 --> 00:08:04,839
+On b, A and D both go to D, so that arrow is fine. B C on a goes to A D, and on b it stays in B C. These are not ambiguous.
+
+43
+00:08:05,289 --> 00:08:12,265
+Round 1 in table form. For each state, write the target of each letter, and the block of that target.
+
+44
+00:08:12,715 --> 00:08:23,041
+A on a goes to B, in the accepting block B C. A on b goes to D, in A D. D on a goes to D, in A D. D on b also goes to D.
+
+45
+00:08:23,491 --> 00:08:36,120
+A and D disagree on a. A goes to an accepting block, D goes to a non accepting block. The witness is the string a. So the split is forced: A D becomes A, and D.
+
+46
+00:08:36,570 --> 00:08:49,434
+B on a goes to D, and C on a goes to D. B on b goes to C, and C on b goes to C. Both letters take B and C into the same blocks. So B and C stay together.
+
+47
+00:08:49,884 --> 00:08:55,260
+Round 2. Compute the signatures again, with the new blocks A, D, and B C.
+
+48
+00:08:55,710 --> 00:09:06,377
+B and C both go to D on a, and into B C on b. A and D are alone in their blocks. Nothing forces a split. So the algorithm stops.
+
+49
+00:09:06,827 --> 00:09:19,179
+Each block becomes one state. The start state is A. A on a goes to B C, and A on b goes to D. B C loops on b, and goes to D on a. D loops on a and b.
+
+50
+00:09:19,629 --> 00:09:36,205
+We have two states and a sink. The state B C accepts a b star. That is what a or a b star was all along. A python check ran the old D F A, the new one and the regex on every string up to length 8. They agree.
+
+51
+00:09:36,655 --> 00:09:53,849
+Now the counterexample from the course notes. The regex is f optional, g star: zero or one f, then any number of g's. The subset construction gives this D F A, if we leave out the error state. A, B and C all accept.
+
+52
+00:09:54,299 --> 00:10:04,603
+Merge the accepting states. All three states accept, so all three go in one block. The result is one state, with a loop on f and a loop on g.
+
+53
+00:10:05,053 --> 00:10:17,427
+This machine accepts f f g f. But f optional g star does not match f f g f. The result is wrong. It accepts any number of f's and g's in any order.
+
+54
+00:10:17,877 --> 00:10:29,269
+What went wrong? B and C have no arrow on f. Without the sink, goes nowhere on f and loops on f look the same to the algorithm. And they are not the same.
+
+55
+00:10:29,719 --> 00:10:38,167
+Fix it: add the explicit error state X before you minimize. X is a rejecting state, and every letter keeps you in X.
+
+56
+00:10:38,617 --> 00:10:51,971
+What happens to the D F A if it gets an f in state B? It rejects. We model this with an arrow from B to X on f. C on f also goes to X. Now the machine is total.
+
+57
+00:10:52,421 --> 00:11:01,467
+This is the same rule as before. The subset construction gives the empty set as this sink. Keep it until minimization is done.
+
+58
+00:11:01,917 --> 00:11:07,890
+Round 0: the accepting block A B C, and the block X. Now write the signatures.
+
+59
+00:11:08,340 --> 00:11:20,308
+A goes to B on f, inside A B C. But B and C go to X on f. The block is forced apart into A, and B C. On g, all three stay in A B C.
+
+60
+00:11:20,758 --> 00:11:26,561
+Round 1 makes no more splits. The result has three states: A, B C, and X.
+
+61
+00:11:27,011 --> 00:11:40,536
+At the end, you can drop the explicit error state X again. The minimal machine is A and B C. A python check confirms that it matches f optional g star on every string up to length 8.
+
+62
+00:11:40,986 --> 00:11:57,178
+Now the example from course notes section 3.6. The regex is d star, then dot d or d dot, then d star. Here d is a digit. This is the D F A that the subset construction gives. It has seven states.
+
+63
+00:11:57,628 --> 00:12:05,159
+D, E, F and G accept, because they contain N F A state 14. A, B and C do not accept.
+
+64
+00:12:05,609 --> 00:12:18,857
+Many arrows are missing. C, D, E, F and G have no arrow on the dot. Each missing arrow goes to the error state. In the by hand method, the error state gets its own bubble, X.
+
+65
+00:12:19,307 --> 00:12:29,675
+Run the by hand method. Draw three bubbles: A B C for the non accepting states, D E F G for the accepting states, and X for the error state.
+
+66
+00:12:30,125 --> 00:12:46,210
+The bubble A B C is ambiguous on d. A goes to B and B goes to B, inside A B C. But C goes to E, in D E F G. It is also ambiguous on the dot. We choose to fix d first, as the notes do.
+
+67
+00:12:46,660 --> 00:13:00,271
+Split A B C into A B, and C. A and B can stay together on d, because both go to B. Now A B is ambiguous on the dot. A goes to C, but B goes to D, an accepting state.
+
+68
+00:13:00,721 --> 00:13:20,390
+Split A B into A and B. No ambiguity is left. The minimal D F A has A, B, C, and D E F G, plus the error state X. Seven states became four, the same as notes figure 3.8 c. Moore's rounds give the same blocks. Python checked this.
+
+69
+00:13:20,840 --> 00:13:36,413
+Now a past midterm question. Minimize the number of states in this D F A, and draw the result. All six states are final states. The question also mentions dotted epsilon edges, but this machine has none.
+
+70
+00:13:36,863 --> 00:13:38,506
+Pause the video and try it.
+
+71
+00:13:38,956 --> 00:13:57,772
+First check the input. All states are final. If we start Moore's algorithm now, there is only one block, and nothing can split it. The result would be one state with loops on a and b. That machine accepts b b. The given D F A rejects b b. So that answer is wrong.
+
+72
+00:13:58,222 --> 00:14:14,286
+The machine is not total. State 2 has no arrow on b, and state 4 has no arrow on a. So add an explicit error state E. 2 on b goes to E, 4 on a goes to E, and E loops on a and b. E is not final.
+
+73
+00:14:14,736 --> 00:14:19,664
+Now round 0 has two blocks: the final states 1 to 6, and E.
+
+74
+00:14:20,114 --> 00:14:29,245
+Round 1. For each state, find the block of each target. States 1, 3, 5 and 6 go into the final block on a and on b.
+
+75
+00:14:29,695 --> 00:14:37,161
+State 2 on a goes to 3, a final state. But 2 on b goes to E. So 2 has a different signature.
+
+76
+00:14:37,611 --> 00:14:43,009
+State 4 on a goes to E, and on b it goes to 5. That is a third signature.
+
+77
+00:14:43,459 --> 00:14:51,651
+E goes to E on both letters. So the new blocks are 1, 3, 5, 6, then 2 alone, then 4 alone, then E.
+
+78
+00:14:52,101 --> 00:15:02,447
+Round 2, with the blocks from round 1. State 1 on a goes to 4, and on b goes to 2. State 3 does the same: a to 4, b to 2.
+
+79
+00:15:02,897 --> 00:15:14,247
+States 5 and 6 go to 6 on both letters, which stays in the big block. So 1 and 3 differ from 5 and 6. The block splits into 1, 3 and 5, 6.
+
+80
+00:15:14,697 --> 00:15:18,473
+The other blocks have one state each, so they cannot split.
+
+81
+00:15:18,923 --> 00:15:30,144
+Round 3. 1 and 3 still agree: a to the block 4, b to the block 2. 5 and 6 still agree. Nothing splits. The algorithm stops with five blocks.
+
+82
+00:15:30,594 --> 00:15:49,175
+Each block is one state. X is 1, 3, the start. Y is 4. Z is 2. W is 5, 6. And E is the error state. X on a goes to Y, and on b to Z. Z on a goes back to X. Y on b goes to W, and W loops on a and b.
+
+83
+00:15:49,625 --> 00:16:04,239
+The posted solution draws the same four states X, Y, Z and W, without the error state. You can drop the explicit error state at the end. The slides keep it, so every state has one arrow per letter.
+
+84
+00:16:04,689 --> 00:16:16,913
+Six states became four, plus the error state. A python check ran the given D F A, our result and the posted solution on every string up to length 10. They agree.
+
+85
+00:16:17,363 --> 00:16:36,179
+One more past midterm question. Minimize the D F A for U or F or T, star. We built this D F A in the last video. It has four states. Every state accepts, and every state has an arrow on every letter. So it is total, and no error state is needed.
+
+86
+00:16:36,629 --> 00:16:38,271
+Pause the video and try it.
+
+87
+00:16:38,721 --> 00:16:50,967
+Round 0. All four states are accepting, so they form one block. The other block is empty, so we drop it. Every letter takes every state into this block. Nothing can split it.
+
+88
+00:16:51,417 --> 00:17:00,953
+So the minimal D F A has one state, A B C D. It accepts, and it loops on U, F and T. This matches the posted solution.
+
+89
+00:17:01,403 --> 00:17:17,403
+There are other minimization algorithms. Huffman in 1954 and Moore in 1956 used partition refinement. That is what we did. The naive way costs order n squared times the alphabet size.
+
+90
+00:17:17,853 --> 00:17:32,295
+Hopcroft, in 1971, uses the same refinement. But he always splits with the smaller half of a block. That costs order n log n times the alphabet size. Production tools use it.
+
+91
+00:17:32,745 --> 00:17:52,927
+Brzozowski, in 1963: reverse the machine, determinize it, reverse it again, and determinize it again. The result is minimal. It uses two subset constructions and no partition. In the worst case it is exponential. Janusz Brzozowski worked here at Waterloo.
+
+92
+00:17:53,377 --> 00:18:05,409
+Table filling marks the pairs of states that a suffix separates, one length at a time. The pairs that stay unmarked are equivalent. It is the same algorithm, transposed.
+
+93
+00:18:05,859 --> 00:18:14,541
+To summarize. Two states are equivalent if no string accepts from one and rejects from the other. A string that does is a witness.
+
+94
+00:18:14,991 --> 00:18:19,877
+Moore's algorithm starts with two blocks: the accepting states and the rest.
+
+95
+00:18:20,327 --> 00:18:29,351
+Split a block when a letter takes its states into different blocks. By hand, this is an ambiguous transition. Stop when nothing splits.
+
+96
+00:18:29,801 --> 00:18:40,147
+The input must be total and trim. Keep the explicit error state until the end. Without it, the f optional g star example gives a wrong answer.
+
+97
+00:18:40,597 --> 00:18:54,144
+Each block is one state of the minimal D F A. Check the result with test strings. Next video: why the minimal D F A is unique, and how to decide if two regexes are equivalent.

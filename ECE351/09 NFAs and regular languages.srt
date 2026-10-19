@@ -1,0 +1,351 @@
+1
+00:00:00,000 --> 00:00:05,461
+This video introduces nondeterministic finite automata, or N F As.
+
+2
+00:00:05,911 --> 00:00:22,103
+We define how an N F A accepts a string, using runs. Then we define the language of a regex and of an automaton, and regular languages. At the end we solve the questions-pre section on flavours of nondeterminism.
+
+3
+00:00:22,553 --> 00:00:28,399
+In the last video, a D F A had exactly one arrow for each state and each letter.
+
+4
+00:00:28,849 --> 00:00:34,118
+So the next state is a function of the state and the letter. We call that function delta.
+
+5
+00:00:34,568 --> 00:00:42,632
+An N F A drops this rule. From one state, one letter may lead to several states. Here, a leads to two states.
+
+6
+00:00:43,082 --> 00:00:55,839
+The machine may also move on no letter at all. That is an epsilon edge. And a letter may have no arrow. To show the change, the slides write a capital Delta, not a small delta.
+
+7
+00:00:56,289 --> 00:01:03,927
+Here is the N F A from the slides. Start state q0. Accepting state q2, with the double border.
+
+8
+00:01:04,377 --> 00:01:12,633
+From q0, the letter a has two arrows. One goes to q3. One goes to q1. The machine has a choice.
+
+9
+00:01:13,083 --> 00:01:21,787
+Which arrow does it take? On the slides, you are the oracle. You know the whole input and the machine. You tell it which way to go.
+
+10
+00:01:22,237 --> 00:01:32,263
+Does it accept a? Read a, and go to q1 or to q3. The input ends there. Neither state accepts. So no choice helps. It rejects a.
+
+11
+00:01:32,713 --> 00:01:41,225
+Does it accept a a? Choose q1 on the first a. Then the second a goes to q2, which accepts. So it accepts a a.
+
+12
+00:01:41,675 --> 00:01:55,371
+The rule is this. The N F A accepts w if some choice of moves accepts it. The choice is not random, and it is not probabilistic. If an oracle could guide it to accept, it accepts.
+
+13
+00:01:55,821 --> 00:02:01,560
+There is a second way to say the same thing. Try one way. Take the first a to q3.
+
+14
+00:02:02,010 --> 00:02:06,319
+The second a has no arrow out of q3. This is a dead end.
+
+15
+00:02:06,769 --> 00:02:11,783
+On a dead end, backtrack. Go back to the last choice, and try a different arrow.
+
+16
+00:02:12,233 --> 00:02:21,555
+Now take the first a to q1. The second a goes to q2. The input ends in an accepting state. So the machine accepts a a.
+
+17
+00:02:22,005 --> 00:02:33,184
+Both views give the same answer. The language of this machine is the set with one string, a a. Nobody has to build the oracle. Next week we compile it away.
+
+18
+00:02:33,634 --> 00:02:43,362
+N F As allow two conveniences. The first is the epsilon transition. Here are two small machines. Each accepts the string a.
+
+19
+00:02:43,812 --> 00:02:51,663
+An epsilon transition moves from one state to another without reading a letter. Epsilon is the empty string.
+
+20
+00:02:52,113 --> 00:03:03,889
+Epsilon edges are the glue. They say: when this machine is done, start that one. We join the two machines with one epsilon edge. We do not have to merge any states.
+
+21
+00:03:04,339 --> 00:03:16,520
+The result reads a, moves for free from q1 to q2, then reads a. It accepts a a. Next video, the four templates use this glue for every regex construct.
+
+22
+00:03:16,970 --> 00:03:28,874
+The second convenience is missing transitions. A D F A table is complete: every state, every letter. Here is a D F A for the string a a, with the alphabet just a.
+
+23
+00:03:29,324 --> 00:03:40,012
+After a a, one more a must still go somewhere. So the D F A needs an error state, X, with a self loop. Every longer string ends in X and is rejected.
+
+24
+00:03:40,462 --> 00:03:54,073
+In an N F A drawing, we omit those arrows. A missing arrow means reject from here. The two machines accept the same strings. A python check compared them on all strings up to length 8.
+
+25
+00:03:54,523 --> 00:04:06,320
+N F As are convenient to draw and to build. They are harder to execute. That is fine. The N F A is the intermediate language of our compiler, not the target.
+
+26
+00:04:06,770 --> 00:04:21,917
+Formally, an N F A has the same tuple as a D F A. Only the function delta is replaced by a relation, capital Delta. Capital Delta is a subset of Q, times sigma plus epsilon, times Q.
+
+27
+00:04:22,367 --> 00:04:34,420
+So capital Delta is a set of triples. A triple q, x, q prime means an arrow from q to q prime with label x. The label is a letter or epsilon.
+
+28
+00:04:34,870 --> 00:04:40,395
+Write capital Delta for this machine. The first arrow: q0, a, q1.
+
+29
+00:04:40,845 --> 00:04:43,853
+The second arrow: q0, a, q3.
+
+30
+00:04:44,303 --> 00:04:51,066
+The third arrow: q1, a, q2. That is all the arrows. Capital Delta has three triples.
+
+31
+00:04:51,516 --> 00:04:55,079
+Now count the triples that leave each state on the letter a.
+
+32
+00:04:55,529 --> 00:05:00,947
+From q0 on a, two triples leave. That is the choice we saw before.
+
+33
+00:05:01,397 --> 00:05:10,400
+From q1 on a, one triple leaves. From q2 and q3 on a, none leave. A missing arrow is just a missing triple.
+
+34
+00:05:10,850 --> 00:05:24,013
+A D F A is the special case of an N F A. It has exactly one triple for each state and letter, and none on epsilon. Then capital Delta is the graph of the function small delta.
+
+35
+00:05:24,463 --> 00:05:33,999
+To make the oracle precise, the slides define a run. A run of M on w is a path from the initial state that spells w.
+
+36
+00:05:34,449 --> 00:05:50,854
+A run has three conditions. It starts at the initial state. Every step is an arrow in capital Delta, with a letter or epsilon. And the labels, written in order, spell the input. Epsilon is the empty string, so it vanishes.
+
+37
+00:05:51,304 --> 00:05:55,101
+Find a run of this machine on a a. Start at q0.
+
+38
+00:05:55,551 --> 00:05:59,690
+Read the first a. Take the arrow from q0 to q1.
+
+39
+00:06:00,140 --> 00:06:05,089
+Now take the epsilon edge from q1 to q2. It reads no letter.
+
+40
+00:06:05,539 --> 00:06:19,897
+Read the second a, from q2 to q3. The labels are a, epsilon, a. That spells a a. The run has three steps for two letters. So m, the number of steps, can be greater than the length of w.
+
+41
+00:06:20,347 --> 00:06:27,429
+A run is accepting if it ends in an accepting state. That is, the last state r m is in F.
+
+42
+00:06:27,879 --> 00:06:34,023
+M accepts w if some run on w is accepting. One accepting run is enough.
+
+43
+00:06:34,473 --> 00:06:41,343
+M rejects w if no run is accepting. This includes the case where there is no run at all.
+
+44
+00:06:41,793 --> 00:06:49,857
+The language of M is the set of all strings w over sigma for which some run of M on w is accepting.
+
+45
+00:06:50,307 --> 00:06:56,707
+Now list the runs of the slide machine on a, a a, and a a a. Pause the video and try it.
+
+46
+00:06:57,157 --> 00:07:06,522
+On a, there are two runs. q0 to q1, and q0 to q3. Neither ends in F. So the machine rejects a.
+
+47
+00:07:06,972 --> 00:07:11,964
+A run must spell the whole input. A run that stops early does not count.
+
+48
+00:07:12,414 --> 00:07:25,278
+On a a, there is one run: q0, q1, q2. It ends in F, so the machine accepts a a. The path through q3 is stuck after one a. It is not a run on a a.
+
+49
+00:07:25,728 --> 00:07:33,536
+On a a a, there is no run at all. After q2, no arrow reads the third a. So the machine rejects a a a.
+
+50
+00:07:33,986 --> 00:07:48,343
+A D F A has exactly one run on every string, the one delta star computes. So for a D F A, some run means the run. The definition agrees with the D F A language from the last video.
+
+51
+00:07:48,793 --> 00:07:55,599
+Recall that a language over an alphabet sigma is a set of strings. It is a subset of sigma star.
+
+52
+00:07:56,049 --> 00:08:09,979
+The language of a regular expression r is the set of strings that match r. Matching means the whole string, not just a substring. For r equal to a b star, a, a b and a b b match.
+
+53
+00:08:10,429 --> 00:08:29,032
+The language of an automaton A is the set of strings that A accepts. A must consume the whole input and end in an accepting state. For an N F A, along some run. The string a b a b contains a b, but the whole string does not match. Both say no.
+
+54
+00:08:29,482 --> 00:08:46,741
+L of r equals L of A means they describe exactly the same strings. For every w, w matches r if and only if A accepts w. A python check compared this machine and this regex on all strings up to length 8.
+
+55
+00:08:47,191 --> 00:08:59,244
+Now the main definition. A language L is regular if some D F A accepts it. In program terms, you can write its recognizer with finite memory, loops and ifs.
+
+56
+00:08:59,694 --> 00:09:04,217
+Two theorems connect regexes and automata through their languages.
+
+57
+00:09:04,667 --> 00:09:18,853
+Theorem 1. For every regular expression r, there is a D F A A with the same language. We establish this by compiling a regex into a D F A. That compiler is the rest of this unit.
+
+58
+00:09:19,303 --> 00:09:29,671
+Theorem 2 goes the other way. For every finite automaton, there is a regex with the same language. The course does not establish this direction.
+
+59
+00:09:30,121 --> 00:09:36,116
+Together, the two theorems say that regexes describe exactly the regular languages.
+
+60
+00:09:36,566 --> 00:09:47,126
+Does the choice give an N F A more power than a D F A? The course notes answer this. A finite state machine has no storage beyond its current state.
+
+61
+00:09:47,576 --> 00:09:59,693
+More powerful machines add storage. A pushdown automaton adds a stack. A linear bounded automaton adds a finite tape. A Turing machine adds an infinite tape.
+
+62
+00:10:00,143 --> 00:10:16,058
+For finite automata, nondeterminism adds nothing. D F As and N F As are equivalent in power and speed. Both run in linear time. But an N F A might have exponentially fewer states than a D F A.
+
+63
+00:10:16,508 --> 00:10:30,759
+For pushdown automata, nondeterminism does add power. For Turing machines, it adds speed but not power. This course compiles every N F A into a D F A, so the oracle is never built.
+
+64
+00:10:31,209 --> 00:10:40,659
+Not every language is regular. The first example is a to the n, b to the n. That is n copies of a, then n copies of b.
+
+65
+00:10:41,109 --> 00:10:48,555
+a a b b is in the language, with n equal to 2. The empty string is in it too, with n equal to 0.
+
+66
+00:10:49,005 --> 00:10:57,005
+a a b is not in the language, because the counts are unequal. a b a b is not in it, because the order is wrong.
+
+67
+00:10:57,455 --> 00:11:14,905
+To check these strings, a machine must remember how many a's it read. That count has no bound. Checking it needs more memory than a D F A has. So this language is not regular. A formal proof uses the pumping lemma. The slides only point to it.
+
+68
+00:11:15,355 --> 00:11:26,235
+The second example is addition in unary. 1 to the n means n copies of 1. Plus and equals are literal symbols. Zero is an empty block.
+
+69
+00:11:26,685 --> 00:11:34,301
+1 1 plus 1 1 1 equals 1 1 1 1 1 is in the language. It says 2 plus 3 equals 5.
+
+70
+00:11:34,751 --> 00:11:42,218
+1 1 plus 1 1 1 equals 1 1 1 1 is not in the language, because 2 plus 3 is not 4.
+
+71
+00:11:42,668 --> 00:11:51,457
+The machine must remember n plus m until it reads the last block. That count has no bound. So neither language is regular.
+
+72
+00:11:51,907 --> 00:12:11,193
+Now the questions-pre section on flavours of nondeterminism. The N F A starts at state 1 and accepts at state 3. It gets stuck at state 2. The input is the string x. Which state does it go to? Answer for angelic, demonic, and arbitrary nondeterminism.
+
+73
+00:12:11,643 --> 00:12:13,285
+Pause the video and try it.
+
+74
+00:12:13,735 --> 00:12:22,887
+On x, there are two runs. One ends in state 2. One ends in state 3. The flavour says which choice the machine makes.
+
+75
+00:12:23,337 --> 00:12:30,441
+Angelic nondeterminism picks the choice that leads to acceptance. The posted answer is state 3.
+
+76
+00:12:30,891 --> 00:12:38,955
+Demonic nondeterminism picks the choice that leads to rejection. The posted answer is state 2, where it is stuck.
+
+77
+00:12:39,405 --> 00:12:47,192
+Arbitrary nondeterminism picks any choice. You cannot know which. The posted answer is either 2 or 3.
+
+78
+00:12:47,642 --> 00:13:00,101
+Our acceptance rule, some run is accepting, is the angelic flavour. The oracle always guides the machine to accept, when that is possible. So this N F A accepts x.
+
+79
+00:13:00,551 --> 00:13:11,025
+The last question in this section. Can a regular expression for recognizing H T M L be written? Why or why not? Pause the video and try it.
+
+80
+00:13:11,475 --> 00:13:19,966
+Here is the example fragment from the question. Each open tag has a matching close tag, and tags nest inside each other.
+
+81
+00:13:20,416 --> 00:13:29,675
+The depth goes up at each open tag and down at each close tag. To check the close tags, a recognizer must remember this depth.
+
+82
+00:13:30,125 --> 00:13:38,765
+Tags can nest to any depth. Open tags must match close tags. That is the same problem as a to the n, b to the n.
+
+83
+00:13:39,215 --> 00:13:48,303
+So the answer is no. H T M L is not a regular language, because it has nested tags. A regex cannot recognize it.
+
+84
+00:13:48,753 --> 00:14:02,001
+To summarize. An N F A replaces the function delta with a relation, capital Delta, a set of triples. A letter may lead to several states, or none, and a move may read epsilon.
+
+85
+00:14:02,451 --> 00:14:11,347
+A run is a path from the start state whose labels spell the input. Epsilon vanishes, so a run can have more steps than letters.
+
+86
+00:14:11,797 --> 00:14:21,375
+M accepts w if some run ends in an accepting state. No run at all means reject. This is angelic nondeterminism.
+
+87
+00:14:21,825 --> 00:14:30,636
+The language of a regex or an automaton contains whole strings only. A language is regular if some D F A accepts it.
+
+88
+00:14:31,086 --> 00:14:44,889
+a to the n, b to the n, unary addition, and H T M L need unbounded counts, so they are not regular. Next video: compile a regex into an N F A with four templates.

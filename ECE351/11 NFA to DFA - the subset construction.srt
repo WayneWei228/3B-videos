@@ -1,0 +1,371 @@
+1
+00:00:00,000 --> 00:00:07,339
+This video shows how to convert an N F A into a D F A. The method is the subset construction.
+
+2
+00:00:07,789 --> 00:00:21,549
+We first find the idea: simulate the N F A and keep a set of states. Then we run the construction by hand on the machine for a or a b star. At the end we solve two past midterm questions.
+
+3
+00:00:21,999 --> 00:00:33,007
+A lexer is compiled from regular expressions in three steps. Regex to N F A. N F A to D F A. D F A to minimal D F A.
+
+4
+00:00:33,457 --> 00:00:42,097
+Step 1 used four templates, one per regex construct. The N F A is easy to build, but it is not easy to run.
+
+5
+00:00:42,547 --> 00:00:50,355
+This video is step 2. It converts the machine that is easy to specify into a machine that is easy to execute.
+
+6
+00:00:50,805 --> 00:00:56,714
+Step 3, minimization, makes the D F A as small as possible. That is the next video.
+
+7
+00:00:57,164 --> 00:01:06,508
+This is the N F A for a or a b star, from the last lecture. Ten states. State 9 is the start state. State 10 accepts.
+
+8
+00:01:06,958 --> 00:01:11,523
+States 1 to 6 are the three atom machines: a, a, and b.
+
+9
+00:01:11,973 --> 00:01:16,112
+States 7 and 8 come from the repetition template for b star.
+
+10
+00:01:16,562 --> 00:01:20,295
+States 9 and 10 come from the alternation template.
+
+11
+00:01:20,745 --> 00:01:29,769
+The machine is correct by construction. But from state 9 there are two epsilon edges. Nothing tells a program which one to take.
+
+12
+00:01:30,219 --> 00:01:35,595
+Does nondeterminism give finite automata extra power? The answer is no.
+
+13
+00:01:36,045 --> 00:01:43,427
+Note: for pushdown automata, nondeterminism does give extra power. Finite automata are different.
+
+14
+00:01:43,877 --> 00:01:54,095
+We know the answer because we can translate every N F A into a D F A. This translation is not syntax directed. It is a bit more difficult.
+
+15
+00:01:54,545 --> 00:02:09,244
+The D F A accepts the same language as the N F A. Whatever an N F A can do, a D F A can also do. Translation is the usual way to show that one formalism is no more powerful than another.
+
+16
+00:02:09,694 --> 00:02:16,755
+First, how do we run a D F A? Here is a D F A for the same language. We build it later in this video.
+
+17
+00:02:17,205 --> 00:02:27,552
+The program needs one variable, state. For each input letter, it looks up the next state in the table delta. At the end, it checks if the state is accepting.
+
+18
+00:02:28,002 --> 00:02:31,351
+Run the input a b b. The state starts at A.
+
+19
+00:02:31,801 --> 00:02:34,233
+Read a. The table sends A to B.
+
+20
+00:02:34,683 --> 00:02:37,393
+Read b. The table sends B to C.
+
+21
+00:02:37,843 --> 00:02:51,219
+Read the last b. C goes to C. The input is finished, and C is accepting, so the answer is yes. One variable and one lookup per letter. That is why a D F A is our target language.
+
+22
+00:02:51,669 --> 00:03:02,421
+Now the exercise from the slides. You get the N F A and the string a b b. Write a program that answers yes or no. What does the program keep in memory?
+
+23
+00:03:02,871 --> 00:03:09,143
+The N F A can be in several states at once. So the program keeps all the states it can be in.
+
+24
+00:03:09,593 --> 00:03:20,174
+At the start, the machine is in state 9. It can also jump for free along epsilon edges, to 1 and to 3. So the set is 1, 3, 9.
+
+25
+00:03:20,624 --> 00:03:32,037
+Read a. State 1 goes to 2, and state 3 goes to 4. Then follow the epsilon edges: 2 reaches 10, and 4 reaches 7, 5, 8 and 10.
+
+26
+00:03:32,487 --> 00:03:47,826
+Read b. Only state 5 has a b edge, to 6. From 6, the epsilon edges reach 5, 8 and 10. Two different paths that reach the same state are the same situation. So we keep a set, not a list.
+
+27
+00:03:48,276 --> 00:03:59,497
+Read the last b. Again only 5 moves, to 6, and the set is 5, 6, 8, 10. A set of ten states fits in ten bits, so the memory is bounded.
+
+28
+00:03:59,947 --> 00:04:06,283
+The input is finished. The set contains state 10, which is accepting. So the answer is yes.
+
+29
+00:04:06,733 --> 00:04:11,939
+This is the whole construction. A set of N F A states is a D F A state.
+
+30
+00:04:12,389 --> 00:04:17,253
+The simulator you just wrote computes the next set while it reads the input.
+
+31
+00:04:17,703 --> 00:04:30,801
+The subset construction computes the same sets in advance, and writes them down as the D F A table. The simulator is the D F A. We only write its table before the input arrives.
+
+32
+00:04:31,251 --> 00:04:49,534
+Here are the rules. NFA states are numbers. D F A states are sets of numbers, and we name them with letters. Step 1. The start state A is the N F A start state, plus every state it reaches by epsilon edges. We write this as epsilon star.
+
+33
+00:04:49,984 --> 00:05:04,789
+Step 2. Take a state you built and a letter x. From its N F A states, take every x edge. Then close the result under epsilon edges. We write this as x epsilon star. That set is where x takes you.
+
+34
+00:05:05,239 --> 00:05:13,879
+Step 3. Repeat until no new sets appear. A D F A state is accepting if it contains an accepting N F A state.
+
+35
+00:05:14,329 --> 00:05:20,367
+The empty set is a state like any other. It is the error state. Every letter keeps you in it.
+
+36
+00:05:20,817 --> 00:05:34,171
+Be careful with the order. It is x epsilon star, not epsilon star x. An epsilon edge does not mean skip an input letter. It means the machine may jump for free, and then read.
+
+37
+00:05:34,621 --> 00:05:42,920
+Take the set B, which we build soon, and the letter b. First take the b edges. Only state 5 has one, to state 6.
+
+38
+00:05:43,370 --> 00:05:51,882
+Then close under epsilon edges. From 6 we reach 5, 8 and 10. The answer is C: 5, 6, 8, 10.
+
+39
+00:05:52,332 --> 00:06:17,100
+A common error is to keep the old states, or to close them again. That gives a set with 2, 4 and 7. But those states have no b edge, so after a b the machine cannot be there. A state you land in adds its epsilon closure. A state you were already in had its closure when you arrived. The slides say this is the step where most hand constructions go wrong.
+
+40
+00:06:17,550 --> 00:06:23,630
+Now convert the a or a b star machine. What is the start state A of the D F A?
+
+41
+00:06:24,080 --> 00:06:26,917
+Begin with the N F A start state, 9.
+
+42
+00:06:27,367 --> 00:06:35,538
+From 9, the epsilon edges reach 1 and 3. Neither 1 nor 3 has an epsilon edge, so the closure stops.
+
+43
+00:06:35,988 --> 00:06:51,583
+So A is the set 1, 3, 9. It does not contain 10, so A does not accept. We write it as the first row of the table. The order in which you explore is your choice. It changes only the state names, not the machine.
+
+44
+00:06:52,033 --> 00:06:55,233
+Take A, the set 1, 3, 9, and the letter a.
+
+45
+00:06:55,683 --> 00:07:04,813
+State 1 has an a edge to 2. State 3 has an a edge to 4. State 9 has no a edge. So the targets are 2 and 4.
+
+46
+00:07:05,263 --> 00:07:16,378
+Now close under epsilon edges. 2 reaches 10. 4 reaches 7, then 5 and 8, then 10. The set is 2, 4, 5, 7, 8, 10.
+
+47
+00:07:16,828 --> 00:07:23,228
+This is a new set. Call it B. It contains 10, so B accepts. Write: A on a goes to B.
+
+48
+00:07:23,678 --> 00:07:31,806
+Now A on b. None of 1, 3, 9 has a b edge. The result is the empty set. Call it D, the error state.
+
+49
+00:07:32,256 --> 00:07:36,139
+Next, B: the set 2, 4, 5, 7, 8, 10.
+
+50
+00:07:36,589 --> 00:07:41,325
+B on a. None of these states has an a edge. B on a goes to D.
+
+51
+00:07:41,775 --> 00:07:45,785
+B on b. Only state 5 has a b edge, to 6.
+
+52
+00:07:46,235 --> 00:07:55,942
+Close: from 6 we reach 5, 8 and 10. The set 5, 6, 8, 10 is new. Call it C. It contains 10, so C accepts.
+
+53
+00:07:56,392 --> 00:08:07,187
+C on a: no a edges, so D. C on b: again only 5 to 6, and the closure is the same set. So C on b goes to C, a self loop.
+
+54
+00:08:07,637 --> 00:08:16,938
+Last, D, the empty set. It has no edges at all. Every letter keeps D in D. No new sets appear, so the construction stops.
+
+55
+00:08:17,388 --> 00:08:23,319
+Now draw the D F A from the table. The start state is A, the set 1, 3, 9.
+
+56
+00:08:23,769 --> 00:08:28,633
+A on a goes to B, which accepts. A on b goes to D, the empty set.
+
+57
+00:08:29,083 --> 00:08:36,059
+B on b goes to C, which accepts. C on b stays in C. B on a and C on a go to D.
+
+58
+00:08:36,509 --> 00:08:45,938
+D loops to itself on a and b. Every state has exactly one arrow per letter. Ten N F A states gave four D F A states.
+
+59
+00:08:46,388 --> 00:08:50,804
+Do two quick checks before you trust a construction that you did by hand.
+
+60
+00:08:51,254 --> 00:09:02,155
+Check 1. Is it a D F A at all? Every state must have an arrow on every letter. A missing arrow means you missed a step. It does not mean the machine rejects.
+
+61
+00:09:02,605 --> 00:09:07,299
+Check 2. Test it. Pick an accepting state, and a string that reaches it.
+
+62
+00:09:07,749 --> 00:09:19,759
+Take a b b. The D F A goes A, B, C, C, and C accepts. The N F A also accepts a b b, as we saw. And the regex a b star matches it.
+
+63
+00:09:20,209 --> 00:09:29,660
+Now a rejected string, b a. The D F A goes A, D, D, and D does not accept. The regex does not match b a either.
+
+64
+00:09:30,110 --> 00:09:40,990
+This is testing. The regex is the specification. The D F A is the implementation. Pick inputs that cover different paths, run both, and compare.
+
+65
+00:09:41,440 --> 00:09:56,501
+Now a past midterm question. Convert this N F A into a D F A, and show the final states. State 1 is the start. State 8 is the final state. The dashed purple edges are epsilon edges.
+
+66
+00:09:56,951 --> 00:09:58,594
+Pause the video and try it.
+
+67
+00:09:59,044 --> 00:10:13,615
+Start state. From 1, the epsilon edges reach 2 and 5. From 2, an epsilon edge reaches 3. So the start state X is 1, 2, 3, 5. It does not contain 8, so it is not final.
+
+68
+00:10:14,065 --> 00:10:28,955
+X on a. State 2 goes to 3, and state 5 goes to 6. Close: 6 reaches 8 by an epsilon edge. The set 3, 6, 8 is new. Call it Y. It contains 8, so Y is final.
+
+69
+00:10:29,405 --> 00:10:41,992
+X on b. State 3 has two b edges, to 2 and to 4. Close: 2 reaches 3, and 4 reaches 5. The set 2, 3, 4, 5 is new. Call it Z.
+
+70
+00:10:42,442 --> 00:11:00,127
+Y on b. The b edges are 3 to 2, 3 to 4, 6 to 7, and 8 to 5. Close: 2 reaches 3, and 4 reaches 5. The set 2, 3, 4, 5, 7 is new. Call it W. It has no 8, so W is not final.
+
+71
+00:11:00,577 --> 00:11:08,065
+Y on a. None of 3, 6, 8 has an a edge. So Y on a goes to the empty set, the error state.
+
+72
+00:11:08,515 --> 00:11:24,579
+Z, the set 2, 3, 4, 5. On a: 2 to 3 and 5 to 6, then 6 reaches 8. That is 3, 6, 8, which is Y. On b: 3 to 2 and 4, then the closure is 2, 3, 4, 5. That is Z again.
+
+73
+00:11:25,029 --> 00:11:35,397
+W on a: 2 to 3, 5 to 6, and 7 to 8. The set is 3, 6, 8, so Y. W on b: only 3 moves, so Z.
+
+74
+00:11:35,847 --> 00:11:45,021
+The empty set goes to itself on both letters. No new sets appear. The D F A has X, Y, Z, W, and the error state.
+
+75
+00:11:45,471 --> 00:11:50,249
+Here is the D F A. X is the start. The arrows match the table.
+
+76
+00:11:50,699 --> 00:11:56,097
+Y is the only final state, because only Y contains N F A state 8.
+
+77
+00:11:56,547 --> 00:12:10,435
+The posted solution does not draw the empty set. The slides ask for a complete D F A, so we draw it. A checker in python ran both machines on every string up to length 9. They agree.
+
+78
+00:12:10,885 --> 00:12:26,543
+One more past midterm question. The regex is U or F or T, star. Here is the N F A from the posted solution. The two long dashed edges are epsilon edges: 8 back to 1, and 1 forward to 8.
+
+79
+00:12:26,993 --> 00:12:28,636
+Pause the video and try it.
+
+80
+00:12:29,086 --> 00:12:39,817
+Start state A. From 1, the epsilon edges reach 2, 3, 4 and 8. So A is 1, 2, 3, 4, 8. It contains 8, so A accepts.
+
+81
+00:12:40,267 --> 00:12:53,045
+A on U. Only 2 has a U edge, to 5. Close: 5 reaches 8, and 8 reaches 1, and 1 reaches 2, 3, 4. So B is 1, 2, 3, 4, 5, 8.
+
+82
+00:12:53,495 --> 00:12:59,149
+On F, the same thing happens through 6. C is 1, 2, 3, 4, 6, 8.
+
+83
+00:12:59,599 --> 00:13:14,639
+On T, through 7. D is 1, 2, 3, 4, 7, 8. Every set contains 8, so all four states accept. From every state, U goes to B, F goes to C, and T goes to D. No new sets appear.
+
+84
+00:13:15,089 --> 00:13:21,766
+Here is the D F A. Four states, every state accepting, and one arrow per letter from each state.
+
+85
+00:13:22,216 --> 00:13:34,525
+The language is every string over U, F and T. So the four states cannot be told apart. Minimization merges them into one state, A B C D. That is the next video.
+
+86
+00:13:34,975 --> 00:13:43,615
+Each D F A state is a subset of the N F A states. So the number of D F A states is at most the number of subsets.
+
+87
+00:13:44,065 --> 00:14:00,663
+An N F A with n states has 2 to the n subsets. For 10 states, that is 1024. The course notes say that in the worst case the D F A is exponentially larger than the N F A. This rarely happens in practice.
+
+88
+00:14:01,113 --> 00:14:09,731
+In our example, only 4 of the 1024 subsets are reachable. The construction builds only reachable sets.
+
+89
+00:14:10,181 --> 00:14:17,307
+To summarize. An N F A can be in a set of states, and a set of N F A states is a D F A state.
+
+90
+00:14:17,757 --> 00:14:22,386
+The start state is the epsilon closure of the N F A start state.
+
+91
+00:14:22,836 --> 00:14:31,689
+For each state and letter x, take the x edges, then close under epsilon. x epsilon star, not epsilon star x.
+
+92
+00:14:32,139 --> 00:14:39,329
+A D F A state accepts if it contains an accepting N F A state. The empty set is the error state.
+
+93
+00:14:39,779 --> 00:14:51,768
+Check your work. Every state needs one arrow per letter, and test strings must agree with the N F A and the regex. Next video: make the D F A as small as possible.
