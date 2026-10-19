@@ -15,9 +15,9 @@ Narrated teaching videos for University of Waterloo 3B courses. Each video has E
 
 | Folder | Course | Videos |
 |---|---|---|
-| [`ECE320/`](ECE320/) | ECE 320 Computer Architecture | 17 |
+| [`ECE320/`](ECE320/) | ECE 320 Computer Architecture | 18 |
 | [`ECE351/`](ECE351/) | ECE 351 Compilers | 22 |
-| [`ECE358/`](ECE358/) | ECE 358 Computer Networks | 36 |
+| [`ECE358/`](ECE358/) | ECE 358 Computer Networks | 38 |
 | [`MATH239/`](MATH239/) | MATH 239 Introduction to Combinatorics | 40 |
 | [`STAT331/`](STAT331/) | STAT 331 Applied Linear Models | 26 |
 

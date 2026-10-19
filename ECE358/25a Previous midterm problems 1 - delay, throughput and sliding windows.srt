@@ -1,0 +1,247 @@
+1
+00:00:00,000 --> 00:00:11,349
+This is ECE 358, video 25 a. We solve the first half of the new handout: Selected Problems from Previous Midterm Exams.
+
+2
+00:00:11,799 --> 00:00:34,199
+We solve question 1, message segmentation. Then question 4, a file over four store-and-forward links. Then question 3, a sliding window on one link and stop-and-wait on the next. The handout gives official answers, and all our answers match them. Video 25 b solves questions 2, 5 and 6.
+
+3
+00:00:34,649 --> 00:00:54,127
+Question 1 is about message segmentation. A source sends a message to a destination through two packet switches. So the path has 3 links. Each link is 2 megabits per second. We ignore propagation, queueing and processing delays. Only the transmission delay is left.
+
+4
+00:00:54,577 --> 00:01:03,238
+In part a, the source sends the message of 8 megabits as one unit. Find the time to the first switch, and the total time.
+
+5
+00:01:03,688 --> 00:01:18,451
+In parts b and c, the source cuts the message into 800 packets of 10,000 bits. Find the times for the first two packets, and the total time. Then compare with part a. Pause the video and try it.
+
+6
+00:01:18,901 --> 00:01:38,805
+Part a. The source pushes all 8 megabits onto link 1. The transmission delay is L over R. 8 times 10 to the power 6 bits, divided by 2 times 10 to the power 6 bits per second, is 4 seconds. So switch 1 has the whole message at 4 seconds.
+
+7
+00:01:39,255 --> 00:01:49,132
+Switch 1 uses store-and-forward. It must receive the whole message before it sends it on. So it sends on link 2 from 4 to 8 seconds.
+
+8
+00:01:49,582 --> 00:01:57,582
+Switch 2 does the same. It sends on link 3 from 8 to 12 seconds. At any time, only one link is busy.
+
+9
+00:01:58,032 --> 00:02:10,661
+So the destination has the message after 3 times 4 seconds, which is 12 seconds. This matches the official answer: 4 seconds to the first switch, and 12 seconds in total.
+
+10
+00:02:11,111 --> 00:02:27,879
+Part b. One packet has 10,000 bits. Its transmission delay on one link is 10 to the power 4, divided by 2 times 10 to the power 6. That is 5 milliseconds. So switch 1 has packet 1 at 5 milliseconds.
+
+11
+00:02:28,329 --> 00:02:39,060
+From 5 to 10 milliseconds, two links are busy at the same time. Switch 1 sends packet 1 on link 2. The source sends packet 2 on link 1.
+
+12
+00:02:39,510 --> 00:02:50,625
+So switch 1 has all of packet 2 at 2 times 5, which is 10 milliseconds. This matches the official answer: 5 milliseconds and 10 milliseconds.
+
+13
+00:02:51,075 --> 00:03:00,611
+Part c. Packet 1 crosses 3 links, with 5 milliseconds on each link. So the destination has packet 1 at 15 milliseconds.
+
+14
+00:03:01,061 --> 00:03:15,823
+The links work in parallel. Each link sends one packet every 5 milliseconds. So after packet 1, one more packet arrives every 5 milliseconds: at 20, 25 and 30 milliseconds, and so on.
+
+15
+00:03:16,273 --> 00:03:33,212
+Packet 800 arrives 799 packet times after packet 1. 15 plus 799 times 5 is 4010 milliseconds. That is 4.01 seconds. This matches the official answer.
+
+16
+00:03:33,662 --> 00:03:54,953
+Video 3 gives a general rule for store-and-forward. The time is the number of links, plus the number of packets, minus 1, times one packet time. 3 plus 800 minus 1 is 802. 802 times 5 milliseconds is 4010 milliseconds. The result is the same.
+
+17
+00:03:55,403 --> 00:04:06,197
+Here is the busy time of each link, to scale. In part a, the links work one after the other. Each link is busy for 4 seconds. The total is 12 seconds.
+
+18
+00:04:06,647 --> 00:04:18,957
+In part c, all three links are busy at almost the same time. Each link starts only 5 milliseconds after the link before it. The total is 4.01 seconds.
+
+19
+00:04:19,407 --> 00:04:35,193
+4.01 divided by 12 is about 0.33. So segmentation needs only about one third of the time. This is the official comment: the delay is significantly less, almost one third.
+
+20
+00:04:35,643 --> 00:04:51,366
+Question 4. The network has four packet switches, S1 to S4, and six hosts. Every link is 1 megabit per second. The switches use store-and-forward. We ignore processing, propagation and queueing delays.
+
+21
+00:04:51,816 --> 00:05:00,371
+Host A sends a file of 1 megabyte to host F. The packets are 1 kilobyte each. Packet 1 starts at time 0.
+
+22
+00:05:00,821 --> 00:05:12,810
+First, find the path. A goes to S1, then to S2, then to S4, then to F. That is 4 links, all with the same rate. Pause the video and try parts a to d.
+
+23
+00:05:13,260 --> 00:05:30,988
+Part a. One packet is 1 kilobyte. The official solution uses 1 kilobyte equal to 1000 bytes. That is 8000 bits. The transmission delay on one link is 8000 divided by 10 to the power 6. That is 8 milliseconds.
+
+24
+00:05:31,438 --> 00:05:40,121
+Each switch stores the whole packet, and then sends it on the next link. So the packet needs 8 milliseconds on each of the 4 links.
+
+25
+00:05:40,571 --> 00:05:48,656
+So host F has packet 1 at 4 times 8, which is 32 milliseconds. This matches the official answer.
+
+26
+00:05:49,106 --> 00:06:04,274
+Part b. The number of packets is 1 megabyte divided by 1 kilobyte. 10 to the power 6, divided by 10 to the power 3, is 1000 packets. Packet 1 arrives at 32 milliseconds.
+
+27
+00:06:04,724 --> 00:06:14,943
+The 4 links work in parallel. So after packet 1, one packet arrives every 8 milliseconds: at 40 and 48 milliseconds, and so on.
+
+28
+00:06:15,393 --> 00:06:30,369
+Packet 1000 arrives 999 packet times after packet 1. 32 plus 999 times 8 is 8024 milliseconds. This matches the official answer.
+
+29
+00:06:30,819 --> 00:06:46,051
+Part c. The average throughput is the file size divided by the total time. The file is 10 to the power 6 bytes. The time is 8024 milliseconds, which is 8.024 seconds.
+
+30
+00:06:46,501 --> 00:07:00,773
+10 to the power 6 divided by 8.024 is about 124,630 bytes per second. That is 124.63 kilobytes per second.
+
+31
+00:07:01,223 --> 00:07:10,673
+Multiply by 8 to get bits. The result is about 997 kilobits per second. This matches the official answer.
+
+32
+00:07:11,123 --> 00:07:28,126
+This is a little less than the link rate of 1 megabit per second. F receives bits at 1 megabit per second for 8000 milliseconds. But in the first 24 milliseconds, no bits arrive at F. Packet 1 is still on the first three links.
+
+33
+00:07:28,576 --> 00:07:41,845
+Part d uses the bottleneck link. The bottleneck is the link with the smallest rate on the path. Here all 4 links have the same rate, 1 megabit per second. So any of them is the bottleneck.
+
+34
+00:07:42,295 --> 00:07:56,439
+The estimate: the whole file must cross the bottleneck at 1 megabit per second. That is 1000 packets times 8 milliseconds, which is 8000 milliseconds. This matches the official answer.
+
+35
+00:07:56,889 --> 00:08:14,511
+Compare with the exact time of part b, 8024 milliseconds. The difference is 24 milliseconds. That is 3 times 8 milliseconds: the time that packet 1 needs on the other 3 links. For a large file, this difference is small.
+
+36
+00:08:14,961 --> 00:08:32,177
+Question 3. Node A sends frames to node C through node B. Link A B is 200 kilometers long and runs at 1 megabit per second. Link B C is 100 kilometers long. Its rate, R B C, is the unknown.
+
+37
+00:08:32,627 --> 00:08:58,547
+The propagation speed is 10 to the power 8 meters per second on both lines. Data frames are 1000 bits. ACKs have negligible length, and there are no errors. Frames arrive at B over link A B, and they leave over link B C. The buffers of B do not flood if frames leave at least as fast as they arrive. So the throughput of B C must be at least the throughput of A B.
+
+38
+00:08:58,997 --> 00:09:14,762
+Link A B uses a sliding window: 2 in part a, and 10 in part b. Link B C uses stop-and-wait. Video 9 solves a similar problem, problem 3 of problem set 3. Pause the video and try it.
+
+39
+00:09:15,212 --> 00:09:35,457
+Part a, link A B first. The propagation delay is 200 kilometers divided by 10 to the power 8 meters per second. That is 2 milliseconds. The transmission delay of one frame is 1000 bits divided by 10 to the power 6 bits per second. That is 1 millisecond.
+
+40
+00:09:35,907 --> 00:09:55,918
+B sends the ACK of frame 1 when the last bit arrives, at 3 milliseconds. The ACK has negligible length, so it arrives at A at 5 milliseconds. So one cycle, T A B, is d trans plus 2 d prop, which is 5 milliseconds. This is RTT plus L over R.
+
+41
+00:09:56,368 --> 00:10:09,061
+The window is 2. So A sends frame 2 right after frame 1. Then the window is full, and A must wait for ACK 1. A is busy for 2 milliseconds and idle for 3 milliseconds.
+
+42
+00:10:09,511 --> 00:10:26,002
+ACK 1 arrives at 5 milliseconds, and A sends frame 3. The pattern repeats. So the utilization is the minimum of W times d trans over T A B, and 1. 2 times 1, divided by 5, is 0.4.
+
+43
+00:10:26,452 --> 00:10:44,457
+The throughput is the utilization times the link rate. 0.4 times 1 megabit per second is 400 kilobits per second. With 1000 bits per frame, that is 400 frames per second into B. This matches the official solution.
+
+44
+00:10:44,907 --> 00:11:00,438
+Now link B C. The propagation delay is 100 kilometers divided by 10 to the power 8. That is 1 millisecond. The transmission delay is 1000 bits divided by the unknown rate R B C.
+
+45
+00:11:00,888 --> 00:11:12,920
+With stop-and-wait, B sends one frame and then waits for its ACK. The cycle, T B C, is d trans plus 2 d prop. That is d trans plus 2 milliseconds.
+
+46
+00:11:13,370 --> 00:11:24,015
+Only then does B send the next frame. So link B C carries one frame per cycle. Its throughput is 1 over T B C, in frames per second.
+
+47
+00:11:24,465 --> 00:11:33,703
+The green curve shows the throughput of B C against its rate. A faster link makes the transmission delay smaller, so the throughput grows.
+
+48
+00:11:34,153 --> 00:11:48,126
+But the 2 milliseconds of propagation in each cycle stay. So even with an infinite rate, B C carries at most 1 over 0.002, which is 500 frames per second.
+
+49
+00:11:48,576 --> 00:12:10,016
+In part a, 400 frames per second arrive at B. B is not flooded if 1 over d trans plus 0.002 is at least 400. So d trans must be at most 1 over 400, minus 0.002. That is 0.0005 seconds.
+
+50
+00:12:10,466 --> 00:12:28,258
+1000 bits over R B C must be at most 0.0005 seconds. So R B C must be at least 2 times 10 to the power 6 bits per second, which is 2 megabits per second. This matches the official answer.
+
+51
+00:12:28,708 --> 00:12:44,047
+Part b. Link A B now has a window of 10. The delays are the same: 1 millisecond of transmission, and a cycle of 5 milliseconds. In one cycle, A can send only 5 frames, but the window allows 10.
+
+52
+00:12:44,497 --> 00:13:02,075
+ACK 1 arrives at 5 milliseconds, just when frame 5 ends. So A sends frame 6 at once. A is never idle. The ideal window size for full utilization is T A B over d trans, which is 5. 10 is larger than 5.
+
+53
+00:13:02,525 --> 00:13:14,323
+So the utilization is the minimum of 10 over 5, and 1. That is 1. The throughput is 1 megabit per second, or 1000 frames per second into B.
+
+54
+00:13:14,773 --> 00:13:24,309
+Link B C still uses stop-and-wait. Its throughput is 1 over d trans plus 0.002, as in part a.
+
+55
+00:13:24,759 --> 00:13:38,284
+The largest value comes when the link is very fast, so d trans is close to 0. Then the throughput is 1 over 0.002, which is 500 frames per second.
+
+56
+00:13:38,734 --> 00:13:44,963
+But 1000 frames per second arrive at B. 500 is less than 1000.
+
+57
+00:13:45,413 --> 00:13:59,152
+So no rate of B C is enough. The buffers of B flood for every value of R B C. The cause is the propagation delay of B C, not its rate. This matches the official answer.
+
+58
+00:13:59,602 --> 00:14:10,866
+Here is the recap. One. With store-and-forward, a node sends a packet only after it has all of it. One message over n links takes n times L over R.
+
+59
+00:14:11,316 --> 00:14:18,911
+Two. k packets over n links take n plus k minus 1 packet times, because the links work in parallel.
+
+60
+00:14:19,361 --> 00:14:30,582
+Three. The average throughput is the file size divided by the total time. The bottleneck estimate is the file size divided by the smallest rate on the path.
+
+61
+00:14:31,032 --> 00:14:45,005
+Four. A sliding window has a utilization of W times d trans over d trans plus 2 d prop, at most 1. Stop-and-wait sends one frame per d trans plus 2 d prop.
+
+62
+00:14:45,455 --> 00:14:58,853
+Five. A node is not flooded if its output throughput is at least its input throughput. That is the end of video 25 a. Video 25 b solves questions 2, 5 and 6.
