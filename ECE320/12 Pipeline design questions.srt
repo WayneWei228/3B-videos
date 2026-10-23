@@ -55,357 +55,357 @@ The question asks for all the necessary changes. Pause the video and try it.
 Start with one row per instruction. W mul reads rs1 and rs2 in D, from the register file. In X, a multiplier makes the 64-bit product. We assume that it takes one X cycle. The X M and M W registers get 32 more bits. In W, W mul writes HI and LO.
 
 15
-00:02:26,951 --> 00:02:43,633
+00:02:26,951 --> 00:02:43,655
 Move from HI and move from LO read HI or LO in D. A new mux selects the value. The ALU passes the value to the output. In W, the instruction writes rd, as any ALU instruction does.
 
 16
-00:02:44,083 --> 00:02:50,825
+00:02:44,105 --> 00:02:50,846
 So treat HI and LO like the register file. Read them in D, and write them in W.
 
 17
-00:02:51,275 --> 00:03:10,859
+00:02:51,296 --> 00:03:10,880
 Why write them in W, and not at the end of X? An older instruction can still raise an exception in M. Then the handler would see a result of a younger instruction. That state is not precise. W comes after M, the commit point. So a write in W keeps the state precise.
 
 18
-00:03:11,309 --> 00:03:21,314
+00:03:11,330 --> 00:03:21,335
 Here is the class pipeline with forwarding, in gray. The green and blue lines are the MX and WX paths into the ALU input A.
 
 19
-00:03:21,764 --> 00:03:25,988
+00:03:21,785 --> 00:03:26,009
 Change one. Add the two new registers, HI and LO, in D.
 
 20
-00:03:26,438 --> 00:03:42,651
+00:03:26,459 --> 00:03:42,673
 Change two. Add a mux in D, before the D X register. We call its select signal H L Sel. It picks rs1, HI or LO for the ALU input A. Move from HI and move from LO use this path.
 
 21
-00:03:43,101 --> 00:03:55,581
+00:03:43,123 --> 00:03:55,603
 Change three. Extend the ALU with a multiplier. Its result has 64 bits. So the X M and M W registers each get 32 more bits, in orange.
 
 22
-00:03:56,031 --> 00:04:09,173
-Change four. In W, the lower half goes to LO, and the upper half goes to HI. A new write enable, H L W En, controls this write. It is 1 only for W mul.
+00:03:56,053 --> 00:04:15,850
+Change four. In W, the 64-bit value of the M W register splits. Bits 31 to 0 go to LO, and bits 63 to 32 go to HI. A new write enable, H L W En, controls this write. It is 1 only for W mul.
 
 23
-00:04:09,623 --> 00:04:19,863
+00:04:16,300 --> 00:04:26,540
 Change five. The forwarding mux of input A must give the right half. Move from LO takes the lower half. Move from HI takes the upper half.
 
 24
-00:04:20,313 --> 00:04:38,787
-Now the decoder. W mul sets H L Sel to rs1, so the ALU gets the normal operands. A L U Sel selects multiply. H L W En is 1. Reg W En is 0, because W mul writes no x register.
+00:04:26,990 --> 00:04:48,707
+Now the decoder. W mul sets H L Sel to rs1, so the ALU input A gets the rs1 value. A L U Sel selects multiply. H L W En is 1, so W writes HI and LO. Reg W En is 0, because W mul writes no x register.
 
 25
-00:04:39,237 --> 00:04:51,589
+00:04:49,157 --> 00:05:01,509
 Move from HI sets H L Sel to HI. The ALU passes input A to its output. Reg W En is 1, and W B Sel selects the ALU.
 
 26
-00:04:52,039 --> 00:04:56,349
+00:05:01,959 --> 00:05:06,269
 Move from LO is the same, but H L Sel selects LO.
 
 27
-00:04:56,799 --> 00:05:12,841
+00:05:06,719 --> 00:05:22,761
 All other instructions set H L Sel to rs1 and H L W En to 0. Their other signals do not change. The names H L Sel and H L W En are our names. The question gives no names.
 
 28
-00:05:13,291 --> 00:05:23,958
-Next, the hazards. Only W mul writes HI and LO. So the forwarding unit compares opcodes. It does not need to compare register numbers.
+00:05:23,211 --> 00:05:39,254
+Next, the hazards. Only W mul writes HI and LO, in W. Move from HI and move from LO read them in D. So the forwarding unit compares opcodes. It does not need to compare register numbers.
 
 29
-00:05:24,408 --> 00:05:37,037
-Case one, MX. The instruction in X is a move from HI or move from LO. The instruction in M is a W mul. Then mux A selects the X M register.
+00:05:39,704 --> 00:05:51,587
+Case one, MX. In this short run, move from HI, number 2, is in X in cycle 4. W mul is in M. So mux A selects the X M register.
 
 30
-00:05:37,487 --> 00:05:55,727
-Case two, WX. The instruction in X reads HI or LO, and the instruction in W is a W mul. The instruction in M is not a W mul, because the most recent value wins. Then mux A selects the M W register.
+00:05:52,037 --> 00:06:10,042
+Case two, WX. Here, move from LO, number 3, is in X in cycle 5, and W mul is in W. The instruction in M is not a W mul, because the most recent value wins. So mux A selects the M W register.
 
 31
-00:05:56,177 --> 00:06:11,772
-Case three. The instruction in D reads HI or LO, and W mul is in W. There is no forwarding into D, so D reads the old value. The instruction stalls one cycle. This is the W D case.
+00:06:10,492 --> 00:06:27,047
+Case three. Here, move from HI, number 4, is in D in cycle 5, and W mul is in W. There is no forwarding into D, so D reads the old value. Number 4 stalls one cycle. This is the W D case.
 
 32
-00:06:12,222 --> 00:06:25,043
+00:06:27,497 --> 00:06:40,318
 The x registers need no change. W mul reads rs1 and rs2, and the move instructions write rd. The class forwarding and stall logic handles these.
 
 33
-00:06:25,493 --> 00:06:33,045
+00:06:40,768 --> 00:06:48,341
 Part B asks you to run this sequence on the new pipeline. Use arrows for forwarding. Pause the video and try it.
 
 34
-00:06:33,495 --> 00:06:41,602
+00:06:48,791 --> 00:06:56,898
 Number 1, W mul, multiplies in X, in cycle 3. The product exists at the end of cycle 3.
 
 35
-00:06:42,052 --> 00:06:49,860
+00:06:57,348 --> 00:07:05,156
 Number 2, move from LO, is in X in cycle 4. W mul is in M. So LO goes by MX.
 
 36
-00:06:50,310 --> 00:06:59,206
+00:07:05,606 --> 00:07:14,502
 Number 3, move from HI, is in X in cycle 5. W mul is in W. So HI goes by WX.
 
 37
-00:06:59,656 --> 00:07:12,285
+00:07:14,952 --> 00:07:27,581
 Number 4, move from LO, is in D in cycle 5. W mul writes LO in the same cycle. D reads the old LO, so D repeats. Number 5 repeats F.
 
 38
-00:07:12,735 --> 00:07:25,109
+00:07:28,031 --> 00:07:40,405
 In cycle 6, number 4 reads the new LO. In cycle 7, the store reads x 6 in D. Number 2 wrote x 6 in cycle 6, so the register file has it.
 
 39
-00:07:25,559 --> 00:07:31,340
+00:07:40,855 --> 00:07:46,636
 The sequence takes 10 cycles. There is one stall cycle in D, and one in F.
 
 40
-00:07:31,790 --> 00:07:44,825
-Here are the two tables. Number 1 forwards LO to number 2, from M to X, in cycle 4. Number 1 forwards HI to number 3, from W to X, in cycle 5.
+00:07:47,086 --> 00:08:02,339
+Here are the two tables. Number 1 forwards LO to number 2, from M to X, in cycle 4. Number 1 forwards HI to number 3, from W to X, in cycle 5. Green rings mark both cells.
 
 41
-00:07:45,275 --> 00:07:56,048
+00:08:02,789 --> 00:08:13,563
 Stall table. Number 4 stalls in D in cycle 5. W mul writes LO in W in the same cycle, and D reads the old LO.
 
 42
-00:07:56,498 --> 00:08:10,514
+00:08:14,013 --> 00:08:28,029
 Number 5 stalls in F in cycle 5, because number 4 holds D. This answer follows the model design of Part A. With a slower multiplier, the cycles change, so state your assumption.
 
 43
-00:08:10,964 --> 00:08:26,985
+00:08:28,479 --> 00:08:44,500
 Part C. Homer removes the branch compare unit from X. The ALU compares instead, and a new adder computes the target. Here is the X stage of the class pipeline. The ALU computes the target, PC plus immediate.
 
 44
-00:08:27,435 --> 00:08:43,393
+00:08:44,950 --> 00:09:00,907
 Look at the inputs of the branch compare unit. They come from the D X register, before the forwarding muxes. So the compare unit gets no forwarded values. The branch must read its operands in D, after the producer's W.
 
 45
-00:08:43,843 --> 00:09:00,291
+00:09:01,357 --> 00:09:17,827
 In Homer's design, the ALU compares the two operands. It gives B R equal and B R less than. Its inputs come after the forwarding muxes. So the branch gets its operands by MX or WX, with no new paths.
 
 46
-00:09:00,741 --> 00:09:09,551
+00:09:18,277 --> 00:09:27,087
 The ALU is now busy with the compare. So a new adder computes the target, PC plus immediate, in X at the same time.
 
 47
-00:09:10,001 --> 00:09:16,913
+00:09:27,537 --> 00:09:34,449
 The branch still resolves in X. Pause the video and try it: how many stall cycles does Homer save?
 
 48
-00:09:17,363 --> 00:09:33,150
+00:09:34,899 --> 00:09:50,686
 Here is a branch right after its producer, in the class pipeline. B E Q reads x 1 in D. add writes x 1 in W in cycle 5. So B E Q stalls 3 cycles and reads x 1 in cycle 6.
 
 49
-00:09:33,600 --> 00:09:46,080
+00:09:51,136 --> 00:10:03,616
 In Homer's design, B E Q is in X in cycle 4, and add is in M. So x 1 goes by MX. There is no stall. The run goes from 11 to 8 cycles.
 
 50
-00:09:46,530 --> 00:10:01,229
+00:10:04,066 --> 00:10:18,765
 With a load as the producer, the class pipeline also stalls 3 cycles. Homer's design stalls one cycle, the load-use case, and then uses WX. The run goes from 11 to 9 cycles.
 
 51
-00:10:01,679 --> 00:10:17,572
-The answer for Part C: Homer removes the stalls of a branch that uses a recent result. The penalty of a wrong guess does not change. The branch still resolves in X, so a taken branch still flushes 2 instructions.
+00:10:19,215 --> 00:10:39,247
+Here is a taken branch in Homer's design. It resolves in X, in cycle 4. The two younger instructions are flushed, so they show dashes. The answer for Part C: Homer removes the stalls of a branch that uses a recent result. The penalty of a wrong guess stays 2 cycles.
 
 52
-00:10:18,022 --> 00:10:37,777
+00:10:39,697 --> 00:10:59,451
 Now question 4 of the fall 2022 paper. It uses the class pipeline with forwarding. There is no forwarding into D, and no forwarding into the branch compare unit. A C L S D pattern is a sequence of consecutive loads that write the same destination register.
 
 53
-00:10:38,227 --> 00:10:48,616
+00:10:59,901 --> 00:11:10,291
 In program P, numbers 1 and 2 both load into x 1. This is a write after write pair. Nobody reads the x 1 value of number 1.
 
 54
-00:10:49,066 --> 00:10:55,317
+00:11:10,741 --> 00:11:16,991
 Number 4 reads x 1. Its producer is number 2, the latest writer of x 1.
 
 55
-00:10:55,767 --> 00:11:02,039
+00:11:17,441 --> 00:11:23,713
 Part A asks you to execute program P and explain every stall. Pause the video and try it.
 
 56
-00:11:02,489 --> 00:11:09,486
+00:11:24,163 --> 00:11:31,161
 The four instructions enter one per cycle. Number 1 computes its address in X, in cycle 3.
 
 57
-00:11:09,936 --> 00:11:22,373
+00:11:31,611 --> 00:11:44,048
 Number 1 reads D mem in M, in cycle 4. Its value exists at the end of cycle 4. Number 3 reads x 3, and no instruction before it writes x 3.
 
 58
-00:11:22,823 --> 00:11:33,682
+00:11:44,498 --> 00:11:55,357
 Number 4 is in X in cycle 6. Number 2, the latest writer of x 1, is in W. So x 1 goes by WX. There is no stall.
 
 59
-00:11:34,132 --> 00:11:43,049
+00:11:55,807 --> 00:12:04,724
 Program P takes 8 cycles with no stalls. So the stall explanation is: there are none. The work of number 1 is wasted.
 
 60
-00:11:43,499 --> 00:11:59,819
+00:12:05,174 --> 00:12:21,494
 Part B adds a cache in M. The data memory is a 2-way set associative cache with 16 sets and 16 byte blocks. It uses L R U replacement. A larger age means that the block was used less recently.
 
 61
-00:12:00,269 --> 00:12:11,384
+00:12:21,944 --> 00:12:33,059
 M stalls on a miss. A hit takes 1 cycle. A miss with a vacant way takes 2 cycles. A miss in a full set evicts a block and takes 4 cycles.
 
 62
-00:12:11,834 --> 00:12:22,735
+00:12:33,509 --> 00:12:44,410
 Here is the cache at the start, with the first four sets. Set 1 is marked. x 4 holds hex 410, and x 5 holds hex 610.
 
 63
-00:12:23,185 --> 00:12:33,105
+00:12:44,860 --> 00:12:54,780
 Part B asks for the pipeline diagram, the final registers and cache, and the M latency of numbers 1 and 2. Pause the video and try it.
 
 64
-00:12:33,555 --> 00:12:44,435
+00:12:55,230 --> 00:13:06,110
 First, split each address. A 16 byte block needs 4 offset bits. 16 sets need 4 index bits. The tag is the other 24 bits.
 
 65
-00:12:44,885 --> 00:12:55,445
+00:13:06,560 --> 00:13:17,120
 Number 1 loads from hex 410. The offset is 0. The index bits are 0 0 0 1, so set 1. The tag is hex 4.
 
 66
-00:12:55,895 --> 00:13:02,103
+00:13:17,570 --> 00:13:23,778
 Number 2 loads from hex 610. This is also set 1, with tag hex 6.
 
 67
-00:13:02,553 --> 00:13:14,777
-So both loads use set 1. At the start, set 1 holds tag hex 6 in way 0, and tag hex 8 in way 1. The block of number 2 is already in the cache.
+00:13:24,228 --> 00:13:37,583
+So both loads use set 1. Here is set 1 of the given cache. It holds tag hex 6 in way 0, and tag hex 8 in way 1. The block of number 2 is already in the cache.
 
 68
-00:13:15,227 --> 00:13:24,422
+00:13:38,033 --> 00:13:47,227
 Now run the two loads through set 1. At the start, way 0 has age 1, so way 0 is the least recently used block.
 
 69
-00:13:24,872 --> 00:13:39,187
+00:13:47,677 --> 00:14:01,992
 Number 1 looks for tag hex 4. No way matches, so it is a miss. The set is full. L R U picks way 0, the larger age. Tag hex 6 is evicted. The latency is 4 cycles.
 
 70
-00:13:39,637 --> 00:13:54,463
+00:14:02,442 --> 00:14:17,269
 Then the ages change. The slide rule: the used block gets age 0. A block with a lower age than its old age gets plus 1. So way 0 gets age 0, and way 1 gets age 1.
 
 71
-00:13:54,913 --> 00:14:08,268
+00:14:17,719 --> 00:14:31,073
 Number 2 looks for tag hex 6. Number 1 just evicted it, so this is a miss too. Way 1 now has the larger age. Tag hex 8 is evicted. The latency is again 4 cycles.
 
 72
-00:14:08,718 --> 00:14:14,969
+00:14:31,523 --> 00:14:37,774
 This is the important point. The dead load, number 1, evicted the block that number 2 needs.
 
 73
-00:14:15,419 --> 00:14:24,677
-Number 1 misses in M. It stays in M for 4 cycles, cycles 4 to 7. M is busy, so number 2 waits in X.
+00:14:38,224 --> 00:14:48,741
+Number 1 misses in a full set, so M takes 4 cycles. It stays in M for cycles 4 to 7. M is busy, so number 2 waits in X.
 
 74
-00:14:25,127 --> 00:14:36,221
+00:14:49,191 --> 00:15:00,285
 Every younger instruction holds its stage. Number 3 repeats D, and number 4 repeats F. As usual, every repeat except the last gets a star.
 
 75
-00:14:36,671 --> 00:14:47,359
-Number 1 writes x 1 in W, in cycle 8. Number 2 enters M in cycle 8 and misses too. It stays in M for cycles 8 to 11.
+00:15:00,735 --> 00:15:12,831
+Number 1 writes x 1 in W, in cycle 8. Number 2 enters M in cycle 8. It also misses in a full set. It stays in M for cycles 8 to 11.
 
 76
-00:14:47,809 --> 00:14:59,265
+00:15:13,281 --> 00:15:24,737
 Number 2 writes x 1 in W in cycle 12. Number 4 is in X in cycle 12. So x 1 goes by WX, with no extra stall.
 
 77
-00:14:59,715 --> 00:15:10,509
+00:15:25,187 --> 00:15:35,981
 Program P now takes 14 cycles, 6 more than in Part A. The latency in M is 4 cycles for number 1, and 4 cycles for number 2.
 
 78
-00:15:10,959 --> 00:15:26,362
+00:15:36,431 --> 00:15:51,834
 Here are the final registers. x 1 holds the word from address hex 610, the value of number 2. x 3 is hex 2 F 1. x 6 is that word plus 1. The other registers do not change.
 
 79
-00:15:26,812 --> 00:15:37,393
+00:15:52,284 --> 00:16:02,865
 Here is the final cache. Only set 1 changes. Way 0 holds tag hex 4 with age 1. Way 1 holds tag hex 6 with age 0.
 
 80
-00:15:37,843 --> 00:15:49,833
+00:16:03,315 --> 00:16:15,305
 The latencies. Number 1 takes 4 cycles in M: a miss in a full set. Number 2 also takes 4 cycles. It misses, because number 1 evicted its block.
 
 81
-00:15:50,283 --> 00:15:59,861
+00:16:15,755 --> 00:16:25,333
 The exam gives no memory values. So write x 1 as the memory word at hex 610, and x 6 as that word plus 1.
 
 82
-00:16:00,311 --> 00:16:13,005
-Part C asks for the side effects. Side effect one: number 1 uses M for a value that nobody reads. Its miss adds 3 stall cycles. This degrades performance.
+00:16:25,783 --> 00:16:41,719
+Part C asks for the side effects. Side effect one: number 1 uses M for a value that nobody reads. Its miss takes 4 cycles, 3 more than a hit. So it adds 3 stall cycles. This degrades performance.
 
 83
-00:16:13,455 --> 00:16:26,916
+00:16:42,169 --> 00:16:55,631
 Side effect two: number 1 changes the cache. Here, it evicts the block that number 2 needs. So number 2 misses too, and adds 3 more stall cycles. This also degrades performance.
 
 84
-00:16:27,366 --> 00:16:37,137
+00:16:56,081 --> 00:17:05,851
 Side effect three: in another program, the block of number 1 can be useful. A later load to that block then hits. This benefits performance.
 
 85
-00:16:37,587 --> 00:16:45,032
-If number 1 does not access the cache, number 2 hits. Program P then takes 8 cycles, not 14.
+00:17:06,301 --> 00:17:16,115
+If number 1 does not access the cache, number 2 hits. Program P then takes 8 cycles, not 8 plus 3 plus 3, which is 14.
 
 86
-00:16:45,482 --> 00:17:02,869
+00:17:16,565 --> 00:17:33,951
 Part D asks for a change to the control. Look at cycle 3. Number 2 is in D, in the F D register. Number 1 is in X, in the D X register. The class pipeline already has a kill or no op mux before D X, for stalls.
 
 87
-00:17:03,319 --> 00:17:15,841
+00:17:34,401 --> 00:17:46,924
 Add a new check to the hazard unit. The instruction in X is a load. The instruction in D is a load. They have the same rd. And the load in D does not read that rd.
 
 88
-00:17:16,291 --> 00:17:27,257
+00:17:47,374 --> 00:17:58,339
 If all are true, the hazard unit sets a kill signal. A new mux before the X M register selects a no op. A no op is an instruction that does nothing.
 
 89
-00:17:27,707 --> 00:17:39,013
+00:17:58,789 --> 00:18:10,096
 In cycle 4, M holds the no op. It does not access the cache, and it writes no register in W. So number 1 shows dashes in M and W.
 
 90
-00:17:39,463 --> 00:17:50,258
+00:18:10,546 --> 00:18:21,341
 Do not kill number 1 if number 2 reads rd. For example, load word x 1, 0 of x 1 needs the x 1 value of number 1.
 
 91
-00:17:50,708 --> 00:18:00,265
+00:18:21,791 --> 00:18:31,348
 One more caution. If number 1 had a bad address, it would raise an exception. The kill removes that exception. Mention this in the exam.
 
 92
-00:18:00,715 --> 00:18:10,145
+00:18:31,798 --> 00:18:41,227
 Here is program P with the kill. In cycle 3, the hazard unit sees two loads to x 1. It kills number 1, which is in X.
 
 93
-00:18:10,595 --> 00:18:15,587
+00:18:41,677 --> 00:18:46,669
 Number 1 shows dashes in M and W. It does not access the cache.
 
 94
-00:18:16,037 --> 00:18:25,189
-Number 2 accesses the cache in cycle 5. Block hex 6 is still in way 0, so this is a hit. M takes 1 cycle.
+00:18:47,119 --> 00:19:01,199
+Number 2 accesses set 1 in cycle 5. Its tag, hex 6, is still in way 0, so this is a hit. M takes 1 cycle. Way 0 gets age 0, and way 1 gets age 1.
 
 95
-00:18:25,639 --> 00:18:31,655
+00:19:01,649 --> 00:19:07,665
 Number 4 gets x 1 from number 2 by WX in cycle 6, as in Part A.
 
 96
-00:18:32,105 --> 00:18:44,222
+00:19:08,115 --> 00:19:20,233
 Program P takes 8 cycles, 6 fewer than with the dead load. The registers end with the same values. So yes, the pipeline can improve the C L S D pattern.
 
 97
-00:18:44,672 --> 00:18:55,019
+00:19:20,683 --> 00:19:31,029
 Here is the recap. One. Answer a design question with a list: new state, paths and muxes, control signals, hazards, precise state, and a run.
 
 98
-00:18:55,469 --> 00:19:07,501
+00:19:31,479 --> 00:19:43,511
 Two. HI and LO are read in D and written in W. Add a mux in D and a multiplier in X. Widen X M and M W by 32 bits.
 
 99
-00:19:07,951 --> 00:19:21,497
+00:19:43,961 --> 00:19:57,508
 Three. A read of HI or LO uses MX, WX, or a one-cycle W D stall. The check compares opcodes, because only W mul writes HI and LO.
 
 100
-00:19:21,947 --> 00:19:30,843
+00:19:57,958 --> 00:20:06,854
 Four. With the compare in the ALU, a branch gets forwarded values. Three stalls become zero, or one after a load.
 
 101
-00:19:31,293 --> 00:19:37,288
+00:20:07,304 --> 00:20:13,299
 Five. The wrong-guess penalty stays 2 cycles, because the branch still resolves in X.
 
 102
-00:19:37,738 --> 00:19:47,125
+00:20:13,749 --> 00:20:23,135
 Six. In the C L S D pattern, the dead load misses and evicts the block of the next load. Program P takes 14 cycles.
 
 103
-00:19:47,575 --> 00:19:57,729
+00:20:23,585 --> 00:20:33,740
 Seven. The fix: detect two loads to the same rd in D and X, and turn the older load into a no op. That is the end of video 12.
