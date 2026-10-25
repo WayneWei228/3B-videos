@@ -1,0 +1,291 @@
+1
+00:00:00,000 --> 00:00:14,211
+This is MATH 239, video 7a. The topic is formal power series: their algebra, inverses, and composition. We use the supplemental notes on formal power series, pages 1 to 4.
+
+2
+00:00:14,661 --> 00:00:44,735
+After this video, you can read a series as a list of coefficients. You can add and multiply series. You can solve the equation A of x times B of x equals C of x, one coefficient at a time. You can decide if an inverse exists, and compute it. You can decide if a composition of two series is a formal power series. And you can prove the fact of assignment problem A2-1. Video 7b covers tutorial and midterm problems, square roots, and Taylor series.
+
+3
+00:00:45,185 --> 00:01:09,789
+A generating series lists counts. The coefficient of x to the n counts the objects of weight n. We never put a number in place of x. We only add series, multiply series, and read coefficients. A formal power series is a sequence a sub 0, a sub 1, a sub 2, and so on, written with powers of x. The power x to the n only marks the position of a sub n.
+
+4
+00:01:10,239 --> 00:01:25,750
+The geometric series, 1 plus x plus x squared and so on, is the sequence 1, 1, 1, and so on. In calculus, x equal to 2 gives a sum with no value. As a formal power series, there is no problem. It is only a list of numbers.
+
+5
+00:01:26,200 --> 00:01:37,625
+A polynomial is also a formal power series. 1 plus 2 x plus x squared is the sequence 1, 2, 1, then zeros. Its coefficients are 0 after some position.
+
+6
+00:01:38,075 --> 00:01:50,474
+The coefficients can be any complex numbers. When we solve equations with series, fractions and negative numbers appear. This row is a series whose square is 1 plus x. We meet it in video 7b.
+
+7
+00:01:50,924 --> 00:02:02,209
+Two formal power series are equal if and only if all their coefficients are equal. So one equation between two series is a list of equations between numbers, one for each power of x.
+
+8
+00:02:02,659 --> 00:02:18,952
+For example, expand 1 plus x times 1 minus x as you expand polynomials. You get 1, plus 0 x, minus x squared. Compare it with 1 minus x squared, column by column. Every column agrees, so the two series are equal.
+
+9
+00:02:19,402 --> 00:02:30,640
+The notation, the coefficient of x to the k in A of x, means the number a sub k. It is one number, not a series. Here the coefficient of x squared is minus 1.
+
+10
+00:02:31,090 --> 00:02:45,997
+The constant term has a second name: A of 0. A of 0 is the coefficient of x to the 0, which is a sub 0. It is a name for the constant term. It does not mean that we put 0 into a function. The theorems in this video use this name.
+
+11
+00:02:46,447 --> 00:02:59,279
+The sum adds the coefficients in each column. Here A of x is the geometric series and B of x is 1 minus x. The sum is 2, then 0, then 1, 1, 1, and so on.
+
+12
+00:02:59,729 --> 00:03:20,116
+The product multiplies every term of A by every term of B, as for polynomials. The grid shows all the products. Row i is the term a sub i x to the i. Column j is the term b sub j x to the j. The cell i, j holds a sub i b sub j, and it belongs to x to the i plus j.
+
+13
+00:03:20,566 --> 00:03:34,127
+To find the coefficient of x cubed, collect the cells with i plus j equal to 3. They lie on one purple diagonal: a 0 b 3, a 1 b 2, a 2 b 1, and a 3 b 0.
+
+14
+00:03:34,577 --> 00:03:55,474
+In general, the coefficient of x to the k in A times B is the sum over i from 0 to k of a sub i times b sub k minus i. This is the product formula. It has exactly k plus 1 terms, so each coefficient is a finite number. The product of two formal power series is always a formal power series.
+
+15
+00:03:55,924 --> 00:04:04,562
+Here is an example. Find the square of the geometric series. Every coefficient of both factors is 1, so every cell of the grid is 1.
+
+16
+00:04:05,012 --> 00:04:13,882
+The coefficient of x cubed is the sum on the diagonal i plus j equal to 3. It has four cells, each equal to 1. So the coefficient is 4.
+
+17
+00:04:14,332 --> 00:04:26,128
+In general, the diagonal for x to the k has k plus 1 cells. So the coefficient of x to the k is k plus 1. The square is 1 plus 2 x plus 3 x squared, and so on.
+
+18
+00:04:26,578 --> 00:04:50,309
+Now we solve an equation. Example 2.1 asks for a series B of x with 1 minus 2 x, times B of x, equal to 1 plus x. Pause the video and try it. Write B of x with unknown coefficients b sub 0, b sub 1, and so on. Write the right side as 1 plus x plus 0 x squared, and so on.
+
+19
+00:04:50,759 --> 00:05:05,797
+Expand the left side with the product formula. The known factor has only two nonzero coefficients: 1 and minus 2. So the coefficient of x to the k is b sub k minus 2 b sub k minus 1.
+
+20
+00:05:06,247 --> 00:05:18,739
+Now compare the columns. For k equal to 0, b sub 0 equals 1. For k equal to 1, b sub 1 minus 2 b sub 0 equals 1, so b sub 1 equals 3.
+
+21
+00:05:19,189 --> 00:05:32,517
+For k at least 2, the right side is 0. So b sub k equals 2 times b sub k minus 1. This gives 6, 12, 24, 48, and so on.
+
+22
+00:05:32,967 --> 00:05:51,354
+So B of x equals 1 plus 3 x plus 6 x squared, and so on. The coefficient of x to the k is 3 times 2 to the k minus 1. Each equation forced exactly one value. So we found a solution, and we also proved that it is the only solution.
+
+23
+00:05:51,804 --> 00:05:59,436
+Example 2.2 changes the known factor to x minus 2 x squared. Pause the video and try to solve it with the same method.
+
+24
+00:05:59,886 --> 00:06:12,425
+The known factor has constant term 0. By the product formula with k equal to 0, the constant term of the product is 0 times b sub 0. That is 0, for every choice of b sub 0.
+
+25
+00:06:12,875 --> 00:06:26,714
+But the constant term of 1 plus x is 1. Zero is not equal to 1. So no series B of x solves the equation. The notes say: a zero constant term in the known factor is the only problem that can occur.
+
+26
+00:06:27,164 --> 00:06:46,158
+Theorem 2.1 states the general result. Let A of x and C of x be formal power series. If A of 0 is not 0, then exactly one series B of x satisfies A of x times B of x equals C of x. The notes say that the method of Example 2.1 proves it. Here is that proof.
+
+27
+00:06:46,608 --> 00:06:57,940
+By the definition of equality and the product formula, the equation means: for every k, the sum over i from 0 to k of a sub i b sub k minus i equals c sub k.
+
+28
+00:06:58,390 --> 00:07:19,845
+Take the term with i equal to 0 out of the sum. It is a sub 0 times b sub k. Since a sub 0 is not 0, we can divide by it. So b sub k equals c sub k minus the rest of the sum, all over a sub 0. For k equal to 0 the rest is empty, so b sub 0 equals c sub 0 over a sub 0.
+
+29
+00:07:20,295 --> 00:07:35,527
+The rest of the sum uses only b sub 0 up to b sub k minus 1. For example, b sub 3 uses b sub 2 with a sub 1, b sub 1 with a sub 2, and b sub 0 with a sub 3. Here we need a sub 0 not equal to 0, to divide.
+
+30
+00:07:35,977 --> 00:07:46,472
+So by induction on k, each b sub k has exactly one value. These values satisfy every equation. So the series B of x exists, and it is unique.
+
+31
+00:07:46,922 --> 00:08:00,297
+In calculus you saw the formula: 1 over 1 minus x equals 1 plus x plus x squared, and so on. For formal power series, the left side has no meaning yet. We only have a sum and a product. There is no division.
+
+32
+00:08:00,747 --> 00:08:19,266
+So the notes define an inverse. The inverse of A of x is a series B of x with A of x times B of x equal to 1. Here 1 is the series 1 plus 0 x plus 0 x squared, and so on. We write B of x as 1 over A of x, or A of x to the minus 1.
+
+33
+00:08:19,716 --> 00:08:31,233
+Check the geometric series G of x. 1 minus x, times G of x, is G of x minus x times G of x. Multiplication by x moves every coefficient one place to the right.
+
+34
+00:08:31,683 --> 00:08:48,494
+Subtract. The constant term is 1. Every other column is 1 minus 1, which is 0. So the product is 1. The geometric series is the inverse of 1 minus x, and the formula from calculus is now a true statement about formal power series.
+
+35
+00:08:48,944 --> 00:09:01,715
+Theorem 3.1 says which series have an inverse. The inverse of A of x exists if and only if A of 0 is not 0. And if it exists, it is unique. The proof has two cases.
+
+36
+00:09:02,165 --> 00:09:19,426
+Case 1: A of 0 is not 0. Use Theorem 2.1 with C of x equal to 1. It gives exactly one series B of x with A of x times B of x equal to 1. So the inverse exists and it is unique. Its constant term is 1 over a sub 0.
+
+37
+00:09:19,876 --> 00:09:35,015
+Case 2: A of 0 is 0. Then for every series B of x, the constant term of the product is 0 times b sub 0, which is 0. But the constant term of 1 is 1. So no B of x works, and A of x has no inverse.
+
+38
+00:09:35,465 --> 00:09:47,865
+Because the inverse is unique, the notation 1 over A of x names exactly one series. So if two methods both give an inverse, they give the same coefficients. We use this later in this video.
+
+39
+00:09:48,315 --> 00:10:04,336
+Now compute an inverse. Find the first coefficients of 1 over 1 minus x plus 2 x squared. Pause the video and try it. The constant term is 1, so the inverse exists. The grid shows the products of the terms of A of x with the unknown b sub j.
+
+40
+00:10:04,786 --> 00:10:14,468
+The right side is 1. So the diagonal for x to the 0 must add to 1. It has one cell, b sub 0. So b sub 0 equals 1.
+
+41
+00:10:14,918 --> 00:10:22,209
+The diagonal for x to the 1 must add to 0. It is b sub 1 minus b sub 0. So b sub 1 equals 1.
+
+42
+00:10:22,659 --> 00:10:34,733
+The diagonal for x squared is b sub 2 minus b sub 1 plus 2 b sub 0. It must be 0. So b sub 2 equals 1 minus 2, which is minus 1.
+
+43
+00:10:35,183 --> 00:10:45,864
+The diagonal for x cubed is b sub 3 minus b sub 2 plus 2 b sub 1, plus 0. So b sub 3 equals minus 1 minus 2, which is minus 3.
+
+44
+00:10:46,314 --> 00:11:03,856
+So the inverse is 1 plus x minus x squared minus 3 x cubed, and so on. The general rule: b sub n equals minus the sum of a sub i b sub n minus i for i from 1 to n, divided by a sub 0. Later in this video we get the same numbers in a second way.
+
+45
+00:11:04,306 --> 00:11:11,597
+Here is practice problem P2-1 from Assignment 2. Which of these four series has an inverse? Pause the video and try it.
+
+46
+00:11:12,047 --> 00:11:37,217
+By Theorem 3.1, look only at the constant term. A of x has constant term 0: no inverse. B of x has constant term 1: the inverse exists. C of x has constant term 3 to the 0, which is 1: the inverse exists. D of x is C of x minus 1, so its constant term is 0: no inverse. These are the posted answers.
+
+47
+00:11:37,667 --> 00:11:51,254
+We can also find the inverses. The inverse of 1 plus x is 1 minus x plus x squared minus x cubed, and so on. Multiply back to check: each column cancels except the constant term.
+
+48
+00:11:51,704 --> 00:12:10,698
+The inverse of C of x is the polynomial 1 minus 3 x squared. Check: for m at least 1, the coefficient of x to the 2 m in the product is 3 to the m minus 3 times 3 to the m minus 1, which is 0. The odd columns are 0 in both factors.
+
+49
+00:12:11,148 --> 00:12:32,882
+The composition A of B of x replaces each x in A of x with the series B of x. So A of B of x is a sub 0, plus a sub 1 times B of x, plus a sub 2 times B of x squared, and so on. This is an infinite sum of series. It is a formal power series only if each coefficient is a finite number.
+
+50
+00:12:33,332 --> 00:12:51,165
+Here is an example from the notes. Take A of x as the geometric series, and B of x as 1 plus x. Then A of B of x is 1, plus 1 plus x, plus 1 plus x squared, and so on. The table shows the powers of 1 plus x.
+
+51
+00:12:51,615 --> 00:13:06,475
+Look at the constant terms. Every power of 1 plus x has constant term 1. So the constant term of the composition is 1 plus 1 plus 1, and so on, with no end. This is not a number. So this composition is not a formal power series.
+
+52
+00:13:06,925 --> 00:13:15,981
+The cause is the constant term of B of x. It is 1, not 0. The next theorem shows that a zero constant term fixes the problem.
+
+53
+00:13:16,431 --> 00:13:32,499
+Theorem 3.2. Let A of x and B of x be formal power series. If B of 0 is 0, then A of B of x is a well defined formal power series. The table shows the powers of B of x equal to x plus x squared.
+
+54
+00:13:32,949 --> 00:13:49,946
+Here is the proof. B of 0 is 0, so every term of B of x contains x. So B of x equals x times C of x, for a formal power series C of x. For x plus x squared, C of x is 1 plus x.
+
+55
+00:13:50,396 --> 00:14:03,720
+Put this into the definition. The term a sub k B of x to the k becomes a sub k, x to the k, C of x to the k. So the k-th power starts at x to the k or later. The green staircase marks these zeros.
+
+56
+00:14:04,170 --> 00:14:19,634
+Now take the coefficient of x to the n. Every term with k greater than n starts after x to the n, so it adds 0. Only the terms with k from 0 to n are left. In the table, column x cubed uses only rows 0 to 3.
+
+57
+00:14:20,084 --> 00:14:32,574
+So each coefficient is a finite sum of numbers, and A of B of x is a formal power series. The first line of the proof in the notes has a misprint: a sub 2 B of x should be a sub 1 B of x.
+
+58
+00:14:33,024 --> 00:14:51,368
+Here is an example. A of x is the geometric series, and B of x is x plus x squared. Find the first coefficients of A of B of x. Pause the video and try it. B of 0 is 0, so the composition is well defined. All a sub k are 1, so we add the rows of the table.
+
+59
+00:14:51,818 --> 00:15:04,020
+For x cubed, add column 3. Rows 0 and 1 give 0. Row 2, x plus x squared, squared, gives 2. Row 3 gives 1. So the coefficient is 3.
+
+60
+00:15:04,470 --> 00:15:15,941
+Do the same for every column. The column sums are 1, 1, 2, 3, 5, 8. So A of B of x is 1 plus x plus 2 x squared plus 3 x cubed, and so on.
+
+61
+00:15:16,391 --> 00:15:25,493
+The method: for the coefficient of x to the n, keep the rows k up to n. Multiply the entry in column n by a sub k, and add.
+
+62
+00:15:25,943 --> 00:15:35,696
+The notes give a second way to find an inverse. Write 1 minus x plus 2 x squared as 1 minus the series x minus 2 x squared.
+
+63
+00:15:36,146 --> 00:15:52,585
+Then 1 over it is the geometric series with x replaced by x minus 2 x squared. This is a composition with B of x equal to x minus 2 x squared. B of 0 is 0, so by Theorem 3.2 it is well defined. The table shows the powers of B of x up to x cubed.
+
+64
+00:15:53,035 --> 00:16:03,113
+Add the columns. The constant term is 1. The coefficient of x is 1. For x squared, minus 2 plus 1 is minus 1. For x cubed, minus 4 plus 1 is minus 3.
+
+65
+00:16:03,563 --> 00:16:12,104
+These are the same coefficients as before, when we used Theorem 2.1. They must agree, because the inverse is unique, by Theorem 3.1.
+
+66
+00:16:12,554 --> 00:16:25,604
+Assignment problem A2-1. Prove: if A of x times B of x is the zero series, then A of x is 0 or B of x is 0. Pause the video and try it.
+
+67
+00:16:26,054 --> 00:16:46,162
+Use a proof by contradiction. Suppose both series are nonzero. Let i be the smallest index with a sub i not 0, and let j be the smallest index with b sub j not 0. In the grid, i is 2 and j is 1. All the cells in the rows above i, and in the columns left of j, are 0.
+
+68
+00:16:46,612 --> 00:16:58,361
+Look at the coefficient of x to the i plus j. By the product formula, it is the sum on the purple diagonal: a sub k times b sub i plus j minus k, for k from 0 to i plus j.
+
+69
+00:16:58,811 --> 00:17:19,384
+For k less than i, a sub k is 0. For k greater than i, the index i plus j minus k is less than j, so that b is 0. Only the cell with k equal to i is left. So the coefficient is a sub i times b sub j. Both factors are not 0, so the product is not 0.
+
+70
+00:17:19,834 --> 00:17:36,367
+This contradicts the fact that A of x times B of x is 0. So A of x is 0, or B of x is 0. In words: the lowest terms of two nonzero series multiply to the lowest term of the product. Video 7b uses this fact for square roots.
+
+71
+00:17:36,817 --> 00:17:49,495
+To recap. A formal power series is a list of coefficients. Two series are equal when every coefficient is equal. The coefficient of x to the k gives one entry, and A of 0 is the constant term.
+
+72
+00:17:49,945 --> 00:18:03,486
+The product formula adds the cells on one diagonal of the product grid. With it, Theorem 2.1 solves A of x times B of x equals C of x, one column at a time, when A of 0 is not 0.
+
+73
+00:18:03,936 --> 00:18:32,944
+Theorem 3.1: an inverse exists if and only if the constant term is not 0, and it is unique. Theorem 3.2: a composition A of B of x is a formal power series when B of 0 is 0. The geometric series then gives inverses. And by A2-1, a product of two nonzero series is not zero. Video 7b solves tutorial and midterm problems, and covers square roots and Taylor series.

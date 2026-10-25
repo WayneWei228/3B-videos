@@ -1,0 +1,331 @@
+1
+00:00:00,000 --> 00:00:09,474
+This is MATH 239, video 1. The topic is the basic counting rules: AND and OR, lists, permutations, and subsets.
+
+2
+00:00:09,924 --> 00:00:29,754
+After this video, you can turn AND into multiplication and OR into addition. You can count lists, subsets, partial lists, and subsets of a given size. You can prove the Pascal identity by counting. And you can solve practice problems P1-1, P1-2, and P1-7 parts a and b.
+
+3
+00:00:30,204 --> 00:00:40,745
+We count objects that we build by a sequence of choices. Example 1.1 of the notes: on a table there are 7 apples, 8 oranges, and 5 bananas.
+
+4
+00:00:41,195 --> 00:00:51,273
+Choose an apple and a banana. Take the first apple, A 1. It goes with each of the 5 bananas. That gives 5 pairs. The orange row shows them.
+
+5
+00:00:51,723 --> 00:00:59,757
+Each of the 7 apples gives its own row of 5 pairs. The pairs fill a grid with 7 rows and 5 columns.
+
+6
+00:01:00,207 --> 00:01:05,269
+So there are 7 times 5 choices, which is 35. The word AND tells us to multiply.
+
+7
+00:01:05,719 --> 00:01:10,502
+Now choose an apple or an orange. There are 7 apples and 8 oranges.
+
+8
+00:01:10,952 --> 00:01:17,669
+Put all the possible choices in one row. The 7 apples come first, and then the 8 oranges.
+
+9
+00:01:18,119 --> 00:01:28,568
+So there are 7 plus 8 choices, which is 15. The word OR tells us to add. This works because no fruit is both an apple and an orange.
+
+10
+00:01:29,018 --> 00:01:39,978
+Next: choose an apple, and either an orange or a banana. For each apple, the second fruit is one of 8 oranges or 5 bananas. So each row of the grid has 13 cells.
+
+11
+00:01:40,428 --> 00:01:47,022
+There are 7 rows of 13 cells. 7 times 8 plus 5 is 7 times 13, which is 91.
+
+12
+00:01:47,472 --> 00:02:01,033
+Now a different sentence: choose either an apple and an orange, or a banana. The first option is a pair. It gives a grid of 7 rows and 8 columns. The second option is one banana.
+
+13
+00:02:01,483 --> 00:02:06,406
+So we add: 7 times 8 is 56, plus 5 is 61.
+
+14
+00:02:06,856 --> 00:02:16,735
+The same three numbers give 91 or 61. The difference is where the brackets go. So read the description carefully, and find how AND and OR combine.
+
+15
+00:02:17,185 --> 00:02:32,835
+In the language of sets, AND is the Cartesian product. A cross B is the set of all ordered pairs a, b, with a in A and b in B. Its size is the size of A times the size of B. The grid of the apples and bananas was a Cartesian product.
+
+16
+00:02:33,285 --> 00:02:52,093
+OR is the union. A union B has the elements that are in A or in B. The intersection has the elements that are in both. Here is an added example. A is the even numbers up to 10. B is the multiples of 3 up to 10.
+
+17
+00:02:52,543 --> 00:03:02,342
+A has 5 elements and B has 3. But 5 plus 3 is 8, and that is too many. The number 6 is in both sets, so 5 plus 3 counts it twice.
+
+18
+00:03:02,792 --> 00:03:21,461
+Subtract the elements of the intersection one time. The size of A union B is 5 plus 3 minus 1, which is 7. In general, the size of the union is the size of A plus the size of B minus the size of the intersection. This is the first case of inclusion and exclusion, the topic of video 5.
+
+19
+00:03:21,911 --> 00:03:35,239
+If A and B have no common element, we call the union a disjoint union. Then the size of the union is the sum of the sizes. So before you turn OR into addition, check that the two sets of choices are disjoint.
+
+20
+00:03:35,689 --> 00:03:45,581
+A list of a set S contains each element of S exactly once, in some order. The notes list the set with the four elements 1, a, X, and g.
+
+21
+00:03:46,031 --> 00:03:55,737
+Start with the lists that begin with 1. After the 1, we need a list of the other three elements: a, X, and g. There are 6 such lists.
+
+22
+00:03:56,187 --> 00:04:06,589
+Each column of the table has one first entry. In each column, all the lists of the three other elements follow. So we choose the first entry v, and then a list of S without v.
+
+23
+00:04:07,039 --> 00:04:25,058
+Let p n be the number of lists of an n element set. There are n choices for the first entry, AND p of n minus 1 lists of the rest. So p n equals n times p of n minus 1. Here, p 4 equals 4 times 6, which is 24. Each list is made exactly one time.
+
+24
+00:04:25,508 --> 00:04:32,427
+Here is the same idea as a choice tree, for the set 1, 2, 3. The first entry has 3 choices.
+
+25
+00:04:32,877 --> 00:04:37,661
+For each first entry, the second entry has 2 choices: the two elements that are left.
+
+26
+00:04:38,111 --> 00:04:47,817
+Then 1 choice remains for the last entry. Each path from the top to the bottom gives one list. There are 3 times 2 times 1, which is 6 lists.
+
+27
+00:04:48,267 --> 00:05:14,227
+Theorem 1.2: for n at least 1, an n element set has n times n minus 1, and so on down to 1, lists. This product is n factorial, written n with an exclamation mark. A permutation is a list of the set 1 to n. So there are n factorial permutations of size n. The proof is by induction on n, with p n equals n times p of n minus 1.
+
+28
+00:05:14,677 --> 00:05:28,330
+Zero factorial is the number of lists of the empty set. We want p 1 equals 1 times p 0 to be true. Since p 1 equals 1, p 0 must be 1. So zero factorial equals 1.
+
+29
+00:05:28,780 --> 00:05:37,557
+Take the permutation 3 1 4 2. Position 1 has the entry 3. Position 2 has the entry 1, and so on.
+
+30
+00:05:38,007 --> 00:05:48,828
+We can read a permutation as a function sigma from the set 1 to n to itself. Sigma of i is the entry in position i. So 1 goes to 3, and 2 goes to 1.
+
+31
+00:05:49,278 --> 00:06:01,665
+Then 3 goes to 4, and 4 goes to 2. Each number on the right gets exactly one arrow, because a list contains each element exactly once. Video 3 uses this idea for bijections.
+
+32
+00:06:02,115 --> 00:06:19,948
+A subset of S contains some of the elements of S, perhaps none or all. Each element is in it at most once, and the order does not matter. To choose a subset A, decide for each element: is it in A, or not in A? For the element a, that is 2 choices.
+
+33
+00:06:20,398 --> 00:06:24,670
+AND for the element b, there are again 2 choices: in or out.
+
+34
+00:06:25,120 --> 00:06:36,266
+AND 2 choices for c. Each path through the tree gives one subset. There are 2 times 2 times 2, which is 8 subsets. The last one, with no elements, is the empty set.
+
+35
+00:06:36,716 --> 00:06:47,165
+Theorem 1.3: for n at least 0, an n element set has 2 to the n subsets. There are 2 choices for each of the n elements, and AND means multiply.
+
+36
+00:06:47,615 --> 00:07:03,590
+A partial list of S is a list of a subset of S. The entries are different, and the order matters. The notes count the partial lists x y z of length 3 of the set a to f. The first entry x has 6 choices. Here we choose c.
+
+37
+00:07:04,040 --> 00:07:12,578
+The second entry y must be different from x. So y has 5 choices. The c is crossed out. Here we choose a.
+
+38
+00:07:13,028 --> 00:07:21,898
+The third entry z must be different from x and y. So z has 4 choices. Here we choose f, and the partial list is c a f.
+
+39
+00:07:22,348 --> 00:07:27,689
+There are 6 times 5 times 4, which is 120 partial lists of length 3.
+
+40
+00:07:28,139 --> 00:07:51,545
+Theorem 1.4: for an n element set, the number of partial lists of length k is n times n minus 1, and so on, down to n minus k plus 1. There are k factors. If k is larger than n, one factor is 0, and there are no such partial lists. If k is at most n, the product equals n factorial over n minus k factorial.
+
+41
+00:07:51,995 --> 00:08:15,075
+Now count the subsets with exactly k elements. Let n choose k be the number of k element subsets of an n element set. Start with an example: n equals 4 and k equals 3. Here are all the partial lists of length 3 of the set a, b, c, d. By Theorem 1.4 there are 4 times 3 times 2, which is 24.
+
+42
+00:08:15,525 --> 00:08:21,098
+Group the partial lists by their set of entries. Each purple group is one 3 element subset.
+
+43
+00:08:21,548 --> 00:08:29,019
+Each group contains all the lists of its subset. A 3 element set has 3 factorial lists, which is 6.
+
+44
+00:08:29,469 --> 00:08:39,593
+So a partial list is a choice of a 3 element subset, AND a list of that subset. That gives 4 choose 3 times 6 equals 24. So 4 choose 3 equals 4.
+
+45
+00:08:40,043 --> 00:09:01,637
+The same argument works for all n and k. Choose a k element subset, AND a list of it. Each partial list of length k is made exactly once. So n choose k times k factorial equals n factorial over n minus k factorial. Divide by k factorial. This is Theorem 1.5. We read n choose k as a binomial coefficient.
+
+46
+00:09:02,087 --> 00:09:17,505
+Section 1.1.3 gives a strategy. Do not start with algebra. First ask what each number counts. Example 1.6 is the identity: the sum of n choose k, for k from 0 to n, equals 2 to the n.
+
+47
+00:09:17,955 --> 00:09:24,411
+Take n equals 3. Here are the 8 subsets of the set 1, 2, 3. 2 to the 3 counts them.
+
+48
+00:09:24,861 --> 00:09:33,220
+Sort the subsets by their size k. There is one subset of size 0, three of size 1, three of size 2, and one of size 3.
+
+49
+00:09:33,670 --> 00:09:41,286
+The column for size k has n choose k subsets. So 1 plus 3 plus 3 plus 1 equals 8, which is 2 to the 3.
+
+50
+00:09:41,736 --> 00:09:53,392
+In general, each subset has exactly one size k. So the subsets of all sizes form a disjoint union. OR means add, and the identity follows. There is nothing more to prove.
+
+51
+00:09:53,842 --> 00:10:14,415
+Example 1.7 is the identity: n choose k equals n minus 1 choose k minus 1, plus n minus 1 choose k. Here m choose j is 0 if j is negative or larger than m. The left side counts the k element subsets of 1 to n. The two terms on the right count subsets of 1 to n minus 1.
+
+52
+00:10:14,865 --> 00:10:21,506
+Take n equals 5 and k equals 2. Here are the 10 subsets of size 2 of the set 1 to 5.
+
+53
+00:10:21,956 --> 00:10:30,826
+Split them into two groups. The orange group contains 5. The blue group does not contain 5. The two groups are disjoint.
+
+54
+00:10:31,276 --> 00:10:39,496
+Remove the 5 from each orange subset. What is left is a 1 element subset of 1 to 4. Each one comes from exactly one orange subset.
+
+55
+00:10:39,946 --> 00:10:53,088
+So the orange group has 4 choose 1 subsets, which is 4. The blue subsets are exactly the 2 element subsets of 1 to 4. There are 4 choose 2 of them, which is 6. And 10 equals 4 plus 6.
+
+56
+00:10:53,538 --> 00:11:17,966
+Here is the proof for all n and k. Let A be a k element subset of 1 to n. If n is in A, then A without n is a k minus 1 element subset of 1 to n minus 1. If n is not in A, then A is a k element subset of 1 to n minus 1. Exactly one case is true. OR means add, so the identity is true.
+
+57
+00:11:18,416 --> 00:11:30,444
+The Pascal identity is a fast way to compute binomial coefficients. Put n choose k in row n and position k. The first and last entries of each row are n choose 0 and n choose n. Both equal 1.
+
+58
+00:11:30,894 --> 00:11:39,764
+Each other entry is the sum of the two entries above it. For example, 5 choose 2 is 4 choose 1 plus 4 choose 2. That is 4 plus 6, which is 10.
+
+59
+00:11:40,214 --> 00:11:51,034
+Continue row by row. The notes show the table up to row 8. Row 8 is 1, 8, 28, 56, 70, 56, 28, 8, 1.
+
+60
+00:11:51,484 --> 00:12:05,881
+Each row reads the same from both ends. The formula of Theorem 1.5 shows why: n choose k equals n choose n minus k. For example, 8 choose 2 and 8 choose 6 both equal 28.
+
+61
+00:12:06,331 --> 00:12:23,175
+Now the practice problems of Assignment 1. Pause the video and try it. Let S be the set 1 to 100. Part a: how many subsets of S do not contain 37? Part b: how many contain 13 and 42, but not 37?
+
+62
+00:12:23,625 --> 00:12:35,142
+Part a. For each element, we decide in or out. For 37 the decision is fixed: out. That is 1 choice. Each of the other 99 elements has 2 choices.
+
+63
+00:12:35,592 --> 00:12:52,915
+So there are 2 to the 99 such subsets. A full answer says why. A subset of S without 37 is the same as a subset of S without the element 37. That set has 99 elements. By Theorem 1.3, there are 2 to the 99 subsets.
+
+64
+00:12:53,365 --> 00:13:03,442
+Part b. Now 13 and 42 must be in, and 37 must be out. These three elements have 1 choice each. The other 97 elements are free.
+
+65
+00:13:03,892 --> 00:13:21,493
+So there are 2 to the 97 subsets. Each such subset is 13 and 42 together with a subset T of the other 97 elements. Each T gives one subset, and each subset gives one T. By Theorem 1.3, the answer is 2 to the 97.
+
+66
+00:13:21,943 --> 00:13:31,324
+Practice problem P1-2. Pause the video and try it. A poker hand is 5 cards from a deck of 52 different cards. How many hands are there?
+
+67
+00:13:31,774 --> 00:13:36,557
+Here is the deck as a grid. There are 4 suits and 13 ranks, so 52 cards.
+
+68
+00:13:37,007 --> 00:13:47,177
+One hand is shown in orange. The order of the cards in a hand does not matter. A card cannot be in a hand twice. So a hand is a 5 element subset of the deck.
+
+69
+00:13:47,627 --> 00:14:00,073
+By Theorem 1.5, the number of hands is 52 choose 5. That is 52 factorial over 5 factorial times 47 factorial, which equals 2,598,960.
+
+70
+00:14:00,523 --> 00:14:28,759
+Here is a check. If the order did matter, a hand would be a partial list of length 5. By Theorem 1.4 there are 52 times 51 times 50 times 49 times 48 of them. That is 311,875,200. Each hand gives 5 factorial, which is 120, ordered lists. And 120 times 2,598,960 is that same number.
+
+71
+00:14:29,209 --> 00:14:44,982
+Practice problem P1-7. Pause the video and try it. A is the set a, b, c. B is the set 1 to 5. Part a: how many functions from A to B are there? A function gives each element of A exactly one value in B.
+
+72
+00:14:45,432 --> 00:14:53,094
+Choose the value of a. There are 5 choices. The dashed lines show them. Here we choose 2.
+
+73
+00:14:53,544 --> 00:15:00,464
+Choose the value of b. Again there are 5 choices, because two elements may have the same value. Here we choose 5.
+
+74
+00:15:00,914 --> 00:15:10,876
+Choose the value of c: 5 choices. Here we choose 2 again. So f of a is 2, f of b is 5, and f of c is 2.
+
+75
+00:15:11,326 --> 00:15:21,635
+A function is a choice for a, AND a choice for b, AND a choice for c. So there are 5 times 5 times 5, which is 5 to the 3, or 125 functions.
+
+76
+00:15:22,085 --> 00:15:35,042
+Part b: how many injective functions from A to B are there? Pause the video and try it. A function is injective if different elements of A have different values. Video 3 gives the full definition.
+
+77
+00:15:35,492 --> 00:15:38,836
+The value of a has 5 choices. Here we choose 2.
+
+78
+00:15:39,286 --> 00:15:45,416
+The value of b must be different from 2. So b has 4 choices. Here we choose 5.
+
+79
+00:15:45,866 --> 00:15:56,592
+The value of c must be different from 2 and 5. So c has 3 choices. Here we choose 1. In total there are 5 times 4 times 3, which is 60 injective functions.
+
+80
+00:15:57,042 --> 00:16:15,432
+Another view: the values f of a, f of b, f of c are three different elements of B, in order. That is a partial list of length 3 of B. So Theorem 1.4 gives 5 times 4 times 3 directly. Part c, about surjective functions, is in video 5.
+
+81
+00:16:15,882 --> 00:16:27,121
+To recap. A list of an n element set: the order matters and there are no repeats. There are n factorial lists. A subset: no order and no repeats. There are 2 to the n subsets.
+
+82
+00:16:27,571 --> 00:16:42,942
+A partial list of length k: n factorial over n minus k factorial. A k element subset: n choose k. A function from A to B allows repeated values. There are the size of B to the power of the size of A functions.
+
+83
+00:16:43,392 --> 00:16:57,882
+AND means multiply, and OR means add, but only for a disjoint union. To prove an identity, think of what each number counts. The next video counts multisets, where repeats are allowed but the order does not matter.

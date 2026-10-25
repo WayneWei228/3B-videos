@@ -1,0 +1,235 @@
+1
+00:00:00,000 --> 00:00:05,805
+This is MATH 239, video 2. The topic is multisets and multiplicity vectors.
+
+2
+00:00:06,255 --> 00:00:24,552
+After this video, you can write a multiset as a multiplicity vector. You can prove Theorem 1.9, which counts multisets. You can tell lists, subsets, and multisets apart. And you can solve tutorial 1, questions 1 and 3 part a, and practice problem P1-3.
+
+3
+00:00:25,002 --> 00:00:39,956
+Section 1.1.4 starts with a bag of marbles. The marbles have three colours: red, green, and blue. There are very many marbles of each colour. Marbles of the same colour look the same. Take out a handful of 11 marbles.
+
+4
+00:00:40,406 --> 00:00:45,189
+The order in which the marbles come out does not matter. So sort them by colour.
+
+5
+00:00:45,639 --> 00:00:58,503
+The outcome is the number of each colour. Here there are 4 red, 5 green, and 2 blue marbles. So the outcome is the triple 4, 5, 2. The three numbers add to 11. How many outcomes are possible?
+
+6
+00:00:58,953 --> 00:01:14,789
+Before we count, compare the kinds of choices. Choose 2 things from the set 1, 2, 3. If the order matters and repeats are allowed, we get all the ordered pairs i, j. There are 3 times 3, which is 9.
+
+7
+00:01:15,239 --> 00:01:22,759
+If the order matters but repeats are not allowed, remove the diagonal pairs in red. This leaves the 6 partial lists of length 2.
+
+8
+00:01:23,209 --> 00:01:35,191
+If the order does not matter, then 1, 2 is the same choice as 2, 1. Keep only the pairs with i less than j. Without repeats, these are the 3 subsets of size 2.
+
+9
+00:01:35,641 --> 00:01:49,294
+The fourth kind: the order does not matter, but repeats are allowed. Keep the pairs with i less than or equal to j. There are 6. These are the multisets of size 2. The marbles are this fourth kind.
+
+10
+00:01:49,744 --> 00:02:02,654
+Definition 1.8. Let n be at least 0 and t at least 1. A multiset of size n with elements of t types is a sequence of nonnegative integers m 1 to m t, whose sum is n.
+
+11
+00:02:03,104 --> 00:02:10,721
+Here is the handful again. Put the marbles of each type in a column. Type 1 is red, type 2 is green, and type 3 is blue.
+
+12
+00:02:11,171 --> 00:02:32,626
+m i is the number of elements of type i. So the multiset R R R R, G G G G G, B B is the sequence 4, 5, 2. Tutorial 1 calls this sequence the multiplicity vector. The definition uses only the numbers. This is correct, because elements of the same type are all the same.
+
+13
+00:02:33,076 --> 00:02:42,258
+Start with small cases. Take size n equals 2 and t equals 3 types. List the vectors with sum 2. There are 6 of them.
+
+14
+00:02:42,708 --> 00:02:56,129
+Do the same for other small n and t. The table shows the number of multisets of size n with t types. With 1 type there is only one multiset. With 2 types, m 1 can be 0 to n, so there are n plus 1.
+
+15
+00:02:56,579 --> 00:02:59,319
+Each column contains numbers from Pascal's triangle.
+
+16
+00:02:59,769 --> 00:03:13,005
+In the column for t equals 3, the numbers are 1, 3, 6, 10, 15, 21. These are n plus 2 choose 2. Theorem 1.9 says the general pattern.
+
+17
+00:03:13,455 --> 00:03:33,563
+Theorem 1.9: the number of multisets of size n with t types is n plus t minus 1 choose t minus 1. The proof starts with the question: what does this number count? By Theorem 1.5, it counts the subsets of size t minus 1 of a set with n plus t minus 1 elements.
+
+18
+00:03:34,013 --> 00:03:43,301
+So write a row of n plus t minus 1 circles. The notes use n equals 11 and t equals 3. That gives 13 circles.
+
+19
+00:03:43,751 --> 00:03:51,182
+Choose t minus 1 of the positions, here 2, and cross them out. The notes cross out positions 5 and 11.
+
+20
+00:03:51,632 --> 00:04:05,192
+The crosses cut the other 11 circles into t segments. Let m i be the length of segment i. Here the lengths are 4, 5, and 2. Their sum is 11, so this is a multiset of size 11 with 3 types.
+
+21
+00:04:05,642 --> 00:04:17,809
+The proof also goes in the other direction. Start with a multiset m 1 to m t. Write m 1 circles, then a cross, then m 2 circles, then a cross, and so on. End with m t circles.
+
+22
+00:04:18,259 --> 00:04:30,334
+Take the multiset 3, 0, 8. Write 3 circles, a cross, 0 circles, a cross, and 8 circles. That is 13 positions with 2 crosses.
+
+23
+00:04:30,784 --> 00:04:41,140
+The crosses are at positions 4 and 5. They are next to each other, so segment 2 is empty, and m 2 is 0. A segment can be empty. So a type can have zero elements.
+
+24
+00:04:41,590 --> 00:04:49,067
+Here are both directions together, for the small case n equals 2 and t equals 3. On the left are the 6 multisets.
+
+25
+00:04:49,517 --> 00:04:58,897
+Each multiset gives a row of 4 symbols, with 2 circles and 2 crosses. Each row gives back its multiset. The arrows go both ways.
+
+26
+00:04:59,347 --> 00:05:06,639
+Each row is fixed by the positions of its 2 crosses. These positions are a 2 element subset of the set 1 to 4.
+
+27
+00:05:07,089 --> 00:05:20,742
+Each multiset matches exactly one subset, and each subset matches exactly one multiset. This is a one to one correspondence. So the numbers are equal: 6 multisets, and 4 choose 2 equals 6 subsets.
+
+28
+00:05:21,192 --> 00:05:31,409
+In general, a multiset of size n with t types matches a row of n circles and t minus 1 crosses. The row has n plus t minus 1 positions.
+
+29
+00:05:31,859 --> 00:05:53,082
+The row is fixed by the positions of the crosses. These form a subset of size t minus 1 of the set 1 to n plus t minus 1. The two constructions undo each other, so this is a one to one correspondence. By Theorem 1.5, there are n plus t minus 1 choose t minus 1 multisets. This proves Theorem 1.9.
+
+30
+00:05:53,532 --> 00:06:01,473
+Now answer the marble question. n equals 11 and t equals 3. So there are 13 choose 2 outcomes, which is 78.
+
+31
+00:06:01,923 --> 00:06:14,926
+We can also choose the positions of the n circles. That gives n plus t minus 1 choose n. It is the same number, by the symmetry of Pascal's triangle. Tutorials often call this method stars and bars.
+
+32
+00:06:15,376 --> 00:06:29,772
+Now tutorial 1, question 1. Pause the video and try it. A is the set 1, 2, 3, 4. List all the 2 element subsets, and all the 2 element multisets with elements from A. Check that the numbers are correct.
+
+33
+00:06:30,222 --> 00:06:41,414
+Write each choice as a pair i, j with i less than j. These are the 6 subsets of size 2, in green. Theorem 1.5 gives 4 choose 2, which is 6.
+
+34
+00:06:41,864 --> 00:06:52,964
+A multiset can repeat an element. So add the pairs with i equal to j: 1 1, 2 2, 3 3, and 4 4. They are purple. Now there are 10.
+
+35
+00:06:53,414 --> 00:07:02,609
+Check with Theorem 1.9. The size is n equals 2. There are t equals 4 types. So the number is 5 choose 3, which is 10. The list is complete.
+
+36
+00:07:03,059 --> 00:07:16,433
+Part b. Pause the video and try it. Write each subset and each multiset as its multiplicity vector m 1, m 2, m 3, m 4. Here m i is the number of copies of i. What properties do the entries have?
+
+37
+00:07:16,883 --> 00:07:27,007
+The subset 1, 2 has one copy of 1 and one copy of 2. So its vector is 1, 1, 0, 0. The green column shows all 6 subsets.
+
+38
+00:07:27,457 --> 00:07:38,046
+The multisets are on the right. The multiset 1, 1 has two copies of 1, so its vector is 2, 0, 0, 0. The purple rows have a repeated element.
+
+39
+00:07:38,496 --> 00:07:50,570
+The properties: each entry is a nonnegative integer, and the entries add up to k, here 2. For a set, each element occurs at most once. So each entry of a set is 0 or 1.
+
+40
+00:07:51,020 --> 00:08:03,320
+Tutorial 1, question 3 part a. Pause the video and try it. A k element multiset is chosen from the set 1 to n plus 1. Explain why the number of such multisets is n plus k choose k.
+
+41
+00:08:03,770 --> 00:08:11,665
+Be careful with the letters. Here the size is k, and the number of types is n plus 1. So we need k circles and n crosses.
+
+42
+00:08:12,115 --> 00:08:26,604
+An example: n equals 3, so there are 4 types, and k equals 4. The multiset 2, 1, 0, 1 is the row with 2 circles, a cross, 1 circle, a cross, a cross, and 1 circle. That is 7 positions.
+
+43
+00:08:27,054 --> 00:08:44,609
+A row has n plus k positions. It is fixed by the positions of the k circles. So there are n plus k choose k multisets. This also equals n plus k choose n, the positions of the crosses. Theorem 1.9 gives the same result with n plus 1 types.
+
+44
+00:08:45,059 --> 00:08:56,715
+Practice problem P1-3. Pause the video and try it. Let t be at least 2 and n at least 1. How many multisets of size n with t types have m 1 equal to 1?
+
+45
+00:08:57,165 --> 00:09:07,939
+Start with an example: n equals 4 and t equals 3. The first entry is fixed at 1. The other two entries add to 3. There are 4 such multisets.
+
+46
+00:09:08,389 --> 00:09:22,600
+Delete the first entry. What is left, m 2 to m t, is a multiset of size n minus 1, with t minus 1 types. To go back, put the 1 in front again. So this is a one to one correspondence.
+
+47
+00:09:23,050 --> 00:09:33,220
+Now apply Theorem 1.9 with size n minus 1 and t minus 1 types. The number is n plus t minus 3 choose t minus 2. This is the posted answer.
+
+48
+00:09:33,670 --> 00:09:40,543
+Check with the example: n equals 4 and t equals 3 give 4 choose 1, which is 4. This matches the list.
+
+49
+00:09:40,993 --> 00:09:51,256
+Here is an added example of the same type. Pause the video and try it. How many outcomes of the 11 marbles have at least one marble of each colour?
+
+50
+00:09:51,706 --> 00:10:05,220
+Put one marble of each colour aside first. That uses 3 marbles. Let m i prime be m i minus 1. Each m i prime is at least 0, and their sum is 11 minus 3, which is 8.
+
+51
+00:10:05,670 --> 00:10:16,909
+So the outcomes match the multisets of size 8 with 3 types. Adding the 3 marbles back undoes the change. By Theorem 1.9, the number is 10 choose 2, which is 45.
+
+52
+00:10:17,359 --> 00:10:35,517
+One more added example. Pause the video and try it. How many outcomes have at most 2 red marbles? Split by the value of m 1. Case 1: m 1 equals 0. Then m 2 and m 3 add to 11. By Theorem 1.9 with 2 types, there are 12 choose 1, which is 12.
+
+53
+00:10:35,967 --> 00:10:41,540
+Case 2: m 1 equals 1. Then m 2 and m 3 add to 10. There are 11.
+
+54
+00:10:41,990 --> 00:10:53,925
+Case 3: m 1 equals 2. There are 10. The three cases are disjoint, so OR means add. The answer is 12 plus 11 plus 10, which is 33.
+
+55
+00:10:54,375 --> 00:11:10,118
+Here is a summary. To choose k things from n types, ask two questions. Does the order matter? Can an element repeat? Without repeats: partial lists have n factorial over n minus k factorial. Subsets of size k have n choose k.
+
+56
+00:11:10,568 --> 00:11:28,494
+With repeats: if the order matters, there are n choices k times, which is n to the k. If the order does not matter, we have a multiset. There are n plus k minus 1 choose k. Be careful: in this table n is the number of types, but Theorem 1.9 uses t for the number of types.
+
+57
+00:11:28,944 --> 00:11:42,179
+To recap. A multiset of size n with t types is a vector of nonnegative integers m 1 to m t with sum n. Theorem 1.9 says there are n plus t minus 1 choose t minus 1 of them.
+
+58
+00:11:42,629 --> 00:11:53,542
+The proof writes n circles and t minus 1 crosses in a row. The crosses form a subset of the positions. Two crosses next to each other mean an empty type.
+
+59
+00:11:53,992 --> 00:12:10,804
+For a condition, fix an entry, as in P1-3. Or put aside the elements of a lower bound. Or split into disjoint cases and add. The next video makes the idea of a one to one correspondence exact, with bijections and bijective proofs.
