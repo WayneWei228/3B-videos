@@ -1,0 +1,283 @@
+1
+00:00:00,000 --> 00:00:05,341
+MATH 239, video 25 b. Colouring and dual planar maps.
+
+2
+00:00:05,791 --> 00:00:21,580
+This video covers sections 7.7 and 7.8 of the Graph Theory notes. We define colourings, and prove that every planar graph is 6-colourable and 5-colourable. Then we build the dual of a planar embedding, and solve problems from Problem Sets 7.6 and 7.8.
+
+3
+00:00:22,030 --> 00:00:42,327
+Definition 7.7.1. A k-colouring of a graph G is a function from the vertex set to a set of k colours. Adjacent vertices must always get different colours. A graph with a k-colouring is called k-colourable. We write the colours as numbers. The example is a wheel: a 5-cycle and a centre vertex.
+
+4
+00:00:42,777 --> 00:00:51,368
+Colour the 5-cycle in order. Use 1, then 2, then 1, then 2. Each new vertex differs from the one before.
+
+5
+00:00:51,818 --> 00:00:58,599
+The fifth vertex is next to a vertex with colour 1 and a vertex with colour 2. So it needs a new colour, 3.
+
+6
+00:00:59,049 --> 00:01:06,107
+The centre is adjacent to all five cycle vertices. They use colours 1, 2 and 3. So the centre needs colour 4.
+
+7
+00:01:06,557 --> 00:01:22,115
+So this wheel is 4-colourable. It is not 3-colourable. An odd cycle cannot be coloured with 2 colours, so the cycle uses 3 colours. The centre is adjacent to all of them, so it needs a fourth. We also checked this by a computer search.
+
+8
+00:01:22,565 --> 00:01:29,066
+Theorem 7.7.2. A graph is 2-colourable if and only if it is bipartite.
+
+9
+00:01:29,516 --> 00:01:42,427
+Suppose the graph has a bipartition A, B. Give every vertex in A colour 1, and every vertex in B colour 2. Each edge joins A to B, so its ends have different colours. The cube on the left is an example.
+
+10
+00:01:42,877 --> 00:01:59,146
+Conversely, suppose the graph has a 2-colouring. Let A be the vertices of colour 1, and B the vertices of colour 2. Each edge joins two different colours, so it joins A to B. So A, B is a bipartition.
+
+11
+00:01:59,596 --> 00:02:21,766
+A graph is bipartite exactly when it has no odd cycle. So the 2-colourable graphs are the graphs with no odd cycle. On the right, the 5-cycle fails: the colours alternate 1, 2, 1, 2, 1, and the red edge joins two vertices of colour 1. The notes add that 3-colourable graphs have no known simple description.
+
+12
+00:02:22,216 --> 00:02:28,904
+Theorem 7.7.3. K n is n-colourable, and it is not k-colourable for any k less than n.
+
+13
+00:02:29,354 --> 00:02:40,267
+Every graph on n vertices is n-colourable. Give each vertex a different colour. Then no two vertices have the same colour. The left picture shows K 4 with 4 colours.
+
+14
+00:02:40,717 --> 00:02:57,203
+Now use fewer than n colours. There are more vertices than colours, so two vertices get the same colour. In K n, every two vertices are adjacent. So two adjacent vertices have the same colour, as on the red edge. So K n has no k-colouring for k less than n.
+
+15
+00:02:57,653 --> 00:03:17,530
+Theorem 7.7.4. Every planar graph is 6-colourable. The proof is by induction on p, the number of vertices. A graph with one vertex is 6-colourable. Assume that every planar graph with at most k vertices is 6-colourable. Let G be a planar graph with k plus 1 vertices.
+
+16
+00:03:17,980 --> 00:03:33,212
+By Corollary 7.5.5, G has a vertex v of degree at most 5. Remove v and its edges. The result G prime has k vertices. A subgraph of a planar graph is planar, so G prime is planar.
+
+17
+00:03:33,662 --> 00:03:44,714
+By the induction hypothesis, G prime has a 6-colouring. v has at most 5 neighbours, so they use at most 5 colours. In the worst case they use colours 1 to 5.
+
+18
+00:03:45,164 --> 00:03:56,124
+So at least one of the 6 colours is not used by a neighbour of v. Give v that colour. Here v gets colour 6. Now G has a 6-colouring, and the induction is complete.
+
+19
+00:03:56,574 --> 00:04:13,850
+The Five-Colour Theorem uses a new operation, edge contraction. Definition 7.7.5. Let e be the edge x y. The graph G slash e has the vertices of G, without x and y, plus one new vertex z.
+
+20
+00:04:14,300 --> 00:04:29,857
+Every edge that does not touch x or y stays. A vertex u is joined to z when u was adjacent to x, or to y, or to both. We let the edge e shrink to length 0, so x and y become one vertex.
+
+21
+00:04:30,307 --> 00:04:36,994
+Figure 7.16 contracts the edge e from 1 to 3. The new vertex is called 13.
+
+22
+00:04:37,444 --> 00:04:57,738
+G has 5 vertices and 6 edges. G slash e has 4 vertices and 4 edges. The edge e is gone. Vertex 2 was adjacent to both 1 and 3, so its two edges become one edge, in purple. In general, G slash e has p minus 1 vertices and at most q minus 1 edges.
+
+23
+00:04:58,188 --> 00:05:07,430
+Remark: if G is planar, then G slash e is planar. In a planar drawing, shrink e to a point. The other edges do not cross.
+
+24
+00:05:07,880 --> 00:05:18,839
+Figure 7.17 shows K 3 3 drawn with one crossing. The two middle vertices are joined by the edge e. Blue and orange are the two classes.
+
+25
+00:05:19,289 --> 00:05:42,788
+Contract e. The middle vertices become one vertex, joined to all four corners. The result has 5 vertices and 8 edges, and the drawing has no crossing. So K 3 3 slash e is planar, but K 3 3 is not. The converse of the remark is false. We can use the remark in one direction: if a contraction of G is not planar, then G is not planar.
+
+26
+00:05:43,238 --> 00:06:03,373
+Theorem 7.7.6, the Five-Colour Theorem. Every planar graph is 5-colourable. The proof is again by induction on p. A graph with one vertex is 5-colourable. Assume every planar graph with at most k vertices is 5-colourable. Let G be a planar graph with k plus 1 vertices.
+
+27
+00:06:03,823 --> 00:06:16,176
+Case 1: G has a vertex v of degree 4 or less. Remove v, and 5-colour the rest by the hypothesis. The neighbours of v use at most 4 colours. Give v the fifth colour.
+
+28
+00:06:16,626 --> 00:06:37,478
+Case 2: G has no vertex of degree 4 or less. By Corollary 7.5.5, G has a vertex v of degree exactly 5. Now the 5 neighbours can use all 5 colours, as in the picture. Then no colour is left for v. We need a new idea: contraction.
+
+29
+00:06:37,928 --> 00:06:55,761
+Here is the new idea. Look at the 5 neighbours of v. If every two of them were adjacent, then v and its neighbours would form K 5. But G is planar, so it has no K 5 subgraph. So two neighbours, call them a and b, are not adjacent. The red dashed line marks the missing edge.
+
+30
+00:06:56,211 --> 00:07:02,898
+Contract the edge from a to v. Then contract the edge from b to v. Call the new vertex v again.
+
+31
+00:07:03,348 --> 00:07:20,624
+The result K is planar, by the remark on contraction. K has k minus 1 vertices, so by the induction hypothesis, K has a 5-colouring. Say v gets colour 1 in K. The other neighbours of v are adjacent to v in K, so they get colours other than 1.
+
+32
+00:07:21,074 --> 00:07:41,507
+Now colour G. Every vertex other than a, b and v keeps its colour from K. Give a and b colour 1, the colour of v in K. This is a proper colouring. a and b are not adjacent. Every other neighbour of a or b was adjacent to v in K, so it does not have colour 1.
+
+33
+00:07:41,957 --> 00:07:56,911
+Now a and b have the same colour. So the 5 neighbours of v use at most 4 colours. In the example they use 1, 2 and 3. Give v a colour that is not used, here 4. So G is 5-colourable, and the induction is complete.
+
+34
+00:07:57,361 --> 00:08:14,822
+Theorem 7.7.7, the Four Colour Theorem. Every planar graph is 4-colourable. The known proofs use induction with many hundreds of cases, and a computer checks the cases. We use the result, but we do not prove it.
+
+35
+00:08:15,272 --> 00:08:24,607
+By Theorem 7.7.3, K 5 is not 4-colourable. So by the Four Colour Theorem, K 5 is not planar. This deduction is correct.
+
+36
+00:08:25,057 --> 00:08:37,735
+But the converse of the theorem is false. A 4-colourable graph need not be planar. K 3 3 is bipartite, so it is 2-colourable, and so 4-colourable. But K 3 3 is not planar.
+
+37
+00:08:38,185 --> 00:08:48,820
+Section 7.8, dual planar maps. Let G be a connected planar embedding. The dual G star is a planar embedding with one vertex for each face of G.
+
+38
+00:08:49,270 --> 00:09:01,344
+Put one vertex inside each face. Here G is K 4. It has three inner faces, f 1, f 2 and f 3, and the outer face, f 4. The purple dots are the vertices of the dual.
+
+39
+00:09:01,794 --> 00:09:22,228
+Each edge of G has a face on each side. For each edge of G, draw one dual edge between these two faces. The dual edge crosses the edge of G. For example, the edge A D separates f 1 and f 2. The three dashed curves to f 4 cross the three outer edges.
+
+40
+00:09:22,678 --> 00:09:39,628
+Count the edges at a dual vertex. A face of degree k in G becomes a vertex of degree k in G star. Here each face is a triangle, so each dual vertex has degree 3. Also, the faces of G star correspond to the vertices of G.
+
+41
+00:09:40,078 --> 00:09:50,666
+So the degree sum theorem for G star is the face degree theorem for G, and the other way. The dual of the dual is G again. Here the dual of K 4 is again K 4.
+
+42
+00:09:51,116 --> 00:10:11,782
+A second example shows two complications. This embedding has three faces. f 1 is the triangle a b c. f 2 is the triangle a c d. The outer face f 3 has the boundary walk a, b, c, e, c, d, a. Its degree is 6, because the walk uses the edge c e twice.
+
+43
+00:10:12,232 --> 00:10:30,483
+Build the dual. f 1 and f 3 share two edges, a b and b c. So the dual has two edges between f 1 and f 3, in orange. This is a multiple edge. In the same way, f 2 and f 3 share c d and d a, in teal.
+
+44
+00:10:30,933 --> 00:10:40,825
+The edge c e is a bridge. Both of its sides are in the face f 3. So its dual edge joins f 3 to itself. This is a loop, in red.
+
+45
+00:10:41,275 --> 00:10:53,953
+So the dual can be a multigraph, not a graph. The degrees still match: f 1 has degree 3, f 2 has degree 3, and f 3 has degree 6. A loop adds 2 to the degree.
+
+46
+00:10:54,403 --> 00:11:06,059
+Our colourings colour vertices. The usual form of the Four Colour Theorem colours the countries of a map. Two countries with a common border get different colours. In a planar embedding, the countries are the faces.
+
+47
+00:11:06,509 --> 00:11:16,060
+Two faces share an edge exactly when their dual vertices are adjacent. So a colouring of the faces of G is the same as a colouring of the vertices of G star.
+
+48
+00:11:16,510 --> 00:11:25,473
+In K 4, every two faces share an edge, so the four faces need four colours. The dual is K 4, which also needs four colours.
+
+49
+00:11:25,923 --> 00:11:31,774
+So, apart from loops and multiple edges, the two forms of the Four Colour Theorem are equivalent, by duality.
+
+50
+00:11:32,224 --> 00:11:46,249
+Problem 3 of Problem Set 7.8. G is a connected planar embedding, and its dual is isomorphic to G. Prove that q equals 2 p minus 2, and give an example with six vertices. Pause the video and try it.
+
+51
+00:11:46,699 --> 00:12:02,071
+The dual has one vertex for each face of G. The dual is isomorphic to G, so it has p vertices. So G has p faces. By Euler's Formula, p minus q plus p equals 2. So q equals 2 p minus 2.
+
+52
+00:12:02,521 --> 00:12:24,301
+For six vertices, use the wheel: a 5-cycle and a centre. It has 10 edges, and 2 times 6 minus 2 is 10. Its faces are 5 triangles and the outer face of degree 5. The outer face is adjacent to all 5 triangles, and the triangles form a cycle. So the dual is again a wheel with 6 vertices. We checked this with a program.
+
+53
+00:12:24,751 --> 00:12:37,894
+Problem 1 of Problem Set 7.8. Part a: a planar graph without a triangle has a vertex of degree 3 or less. Part b: without the Four Colour Theorem, prove that such a graph is 4-colourable. Pause the video and try it.
+
+54
+00:12:38,344 --> 00:13:03,514
+Part a. If p is at most 3, every degree is at most 2. Let p be at least 3. If G has a cycle, each face boundary contains a cycle, and a cycle has length at least 4. So each face has degree at least 4. As in Theorem 7.5.6, q is at most 2 p minus 4. A forest also satisfies this bound.
+
+55
+00:13:03,964 --> 00:13:18,268
+The average degree is 2 q over p. This is at most 4 minus 8 over p, which is less than 4. So some vertex has degree at most 3. The cube shows that 3 is possible: it has no triangle, and every degree is 3.
+
+56
+00:13:18,718 --> 00:13:35,390
+Part b. Use induction on p, as in the 6-colour proof. Remove a vertex v of degree at most 3. The rest is planar and has no triangle, so by the hypothesis it is 4-colourable. The neighbours of v use at most 3 colours, so v gets the fourth.
+
+57
+00:13:35,840 --> 00:13:51,072
+Problem 2 uses the same method. With girth at least 6, the girth bound gives q at most 3 halves of p minus 2. The average degree is less than 3, so some vertex has degree at most 2. Then induction gives a 3-colouring.
+
+58
+00:13:51,522 --> 00:14:02,528
+Problem 6 of Problem Set 7.8. Show that a planar graph with p greater than 2 vertices and 2 p minus 3 edges is not 2-colourable. Pause the video and try it.
+
+59
+00:14:02,978 --> 00:14:17,932
+Suppose the graph is 2-colourable. By Theorem 7.7.2, it is bipartite. It is also planar, and p is at least 3. So by Theorem 7.5.6, q is at most 2 p minus 4.
+
+60
+00:14:18,382 --> 00:14:33,800
+But q is 2 p minus 3, which is greater than 2 p minus 4. This is a contradiction. So the graph is not 2-colourable. The example is K 4 minus an edge. It has 4 vertices and 5 edges, and the red triangle is an odd cycle.
+
+61
+00:14:34,250 --> 00:14:44,792
+Problem 7 of Problem Set 7.8. Show that a graph with 2 m vertices and m squared plus 1 edges is not 2-colourable. Pause the video and try it.
+
+62
+00:14:45,242 --> 00:15:03,489
+Suppose it is 2-colourable. Then it has a bipartition A, B. Let A have a vertices, so B has 2 m minus a vertices. Every edge joins A to B, so there are at most a times 2 m minus a edges. The bars show this number for m equal to 3.
+
+63
+00:15:03,939 --> 00:15:19,264
+m squared minus a times 2 m minus a equals a minus m, squared. A square is at least 0. So the number of edges is at most m squared. The largest bar is 9, at a equal to 3.
+
+64
+00:15:19,714 --> 00:15:32,578
+But the graph has m squared plus 1 edges, more than m squared. The red line at 10 is above every bar. This is a contradiction, so the graph is not 2-colourable. This problem does not need planarity.
+
+65
+00:15:33,028 --> 00:15:43,477
+Problem 8 of Problem Set 7.8. Show that K 5 comes from the Petersen graph by contracting five edges. Then deduce that the Petersen graph is not planar. Pause the video and try it.
+
+66
+00:15:43,927 --> 00:15:50,940
+Contract the five spokes, in orange. Each spoke joins outer vertex i to inner vertex i plus 5.
+
+67
+00:15:51,390 --> 00:16:09,408
+After the contractions there are 5 vertices. The outer 5-cycle gives the edges from each vertex to the next one. The inner edges join i plus 5 to i plus 7, so they give the edges from each vertex to the one two steps on, in blue. That is all 10 pairs, so the result is K 5.
+
+68
+00:16:09,858 --> 00:16:26,112
+Now suppose the Petersen graph is planar. By the remark after Definition 7.7.5, each contraction keeps the graph planar. So K 5 would be planar. But K 5 is not planar. So the Petersen graph is not planar.
+
+69
+00:16:26,562 --> 00:16:44,021
+To recap. A k-colouring gives adjacent vertices different colours. A graph is 2-colourable exactly when it is bipartite, and K n needs n colours. Every planar graph is 6-colourable: remove a vertex of degree at most 5, colour the rest, and put it back.
+
+70
+00:16:44,471 --> 00:17:01,848
+Contraction makes one vertex from the two ends of an edge. It keeps a planar graph planar. In the Five-Colour Theorem, contract two edges at a vertex of degree 5, so two neighbours share a colour. The Four Colour Theorem says every planar graph is 4-colourable, but the converse is false.
+
+71
+00:17:02,298 --> 00:17:18,162
+The dual has a vertex for each face and an edge across each edge. A face of degree k becomes a vertex of degree k, and a bridge becomes a loop. Colouring faces of G is colouring vertices of G star. The next video starts Chapter 8, matchings.
