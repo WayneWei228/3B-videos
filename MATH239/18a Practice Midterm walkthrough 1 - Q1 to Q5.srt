@@ -251,83 +251,83 @@ The weight of a part is its value. So the generating series of P has a 1 at x to
 Group the terms in pairs. Each pair is x squared plus x cubed, times a power of x to the 5.
 
 64
-00:13:33,929 --> 00:13:52,169
+00:13:33,929 --> 00:13:52,211
 So phi of P is x squared plus x cubed, times 1 plus x to the 5 plus x to the 10, and so on. By the geometric series, phi of P equals x squared plus x cubed, over 1 minus x to the 5. This has no infinite sum.
 
 65
-00:13:52,619 --> 00:14:06,187
+00:13:52,661 --> 00:14:06,229
 A composition with k parts, all in P, is a k-tuple of elements of P. So the compositions with k parts form the set P to the k, the Cartesian product of k copies of P.
 
 66
-00:14:06,637 --> 00:14:18,925
+00:14:06,679 --> 00:14:18,967
 The weight of a composition is the sum of its parts. This is the n of the question. By the Product Lemma, the generating series of P to the k is phi of P, to the power k.
 
 67
-00:14:19,375 --> 00:14:38,489
+00:14:19,417 --> 00:14:38,532
 The number of parts must be 1, 6, 11, and so on. That is, k equals 5 j plus 1 for some j at least 0. So the set S is the union of the sets P to the 5 j plus 1. They are disjoint, because their elements have different numbers of parts.
 
 68
-00:14:38,939 --> 00:14:47,259
+00:14:38,982 --> 00:14:47,302
 By the Sum Lemma, in its infinite form, phi of S is the sum over j of phi of P to the 5 j plus 1.
 
 69
-00:14:47,709 --> 00:15:01,299
+00:14:47,752 --> 00:15:01,341
 Phi of P has constant term 0. So we can use the geometric series with phi of P to the 5 in place of x. The result is phi of P, over 1 minus phi of P to the 5.
 
 70
-00:15:01,749 --> 00:15:17,983
+00:15:01,791 --> 00:15:18,026
 Put the two parts together. The number of compositions is the coefficient of x to the n in phi of P over 1 minus phi of P to the 5. Here phi of P is x squared plus x cubed, over 1 minus x to the 5.
 
 71
-00:15:18,433 --> 00:15:31,639
+00:15:18,476 --> 00:15:31,681
 You can also clear the inner fractions. Multiply the top and the bottom by 1 minus x to the 5, to the power 5. The result is the second form. The question does not ask for it.
 
 72
-00:15:32,089 --> 00:15:41,646
+00:15:32,131 --> 00:15:41,689
 Check small n. A computer expands the series. The coefficients are 1 at x squared, x cubed, x to the 7 and x to the 8.
 
 73
-00:15:42,096 --> 00:15:56,112
+00:15:42,139 --> 00:15:56,133
 At n equal to 12 the coefficient is 2: the composition 12, and six 2s. At n equal to 13 it is 7: the composition 13, and the 6 orders of five 2s and one 3.
 
 74
-00:15:56,562 --> 00:16:09,490
+00:15:56,583 --> 00:16:09,511
 At n equal to 10 the coefficient is 0. Five 2s have the wrong number of parts. A brute-force count of all compositions up to n equal to 20 gives the same numbers.
 
 75
-00:16:09,940 --> 00:16:16,831
+00:16:09,961 --> 00:16:16,852
 Here is the written solution. Define P and its weight, and find phi of P with the geometric series.
 
 76
-00:16:17,281 --> 00:16:29,014
+00:16:17,302 --> 00:16:29,035
 Define the set S of compositions as a union, and give its weight function: the sum of the parts. Say that the answer is the coefficient of x to the n in phi of S.
 
 77
-00:16:29,464 --> 00:16:36,035
+00:16:29,485 --> 00:16:36,056
 Name the Product Lemma for P to the k. Say why the sets are disjoint, then name the Sum Lemma.
 
 78
-00:16:36,485 --> 00:16:43,823
+00:16:36,506 --> 00:16:43,845
 Last, use the geometric series. Say that phi of P has constant term 0. Then write the answer.
 
 79
-00:16:44,273 --> 00:16:59,548
+00:16:44,295 --> 00:16:59,569
 Problem 4 is worth 5 marks. S sub n is the set of non-empty subsets of 1 to n. There are two weights. w of X is the smallest element of X. v of X is the largest element of X.
 
 80
-00:16:59,998 --> 00:17:10,793
+00:17:00,019 --> 00:17:10,814
 Part a asks for the generating series of S sub 3. S sub 3 has 7 subsets. Here they are, one in each row. Pause the video and try it.
 
 81
-00:17:11,243 --> 00:17:23,125
+00:17:11,264 --> 00:17:23,147
 Write the smallest element of each set. Four subsets contain 1, so they have weight 1. Two subsets, 2 and 2 3, have weight 2. One subset, 3, has weight 3.
 
 82
-00:17:23,575 --> 00:17:30,679
+00:17:23,597 --> 00:17:30,701
 So phi of S sub 3, with respect to w, is 4x plus 2x squared plus x cubed.
 
 83
-00:17:31,129 --> 00:17:47,065
+00:17:31,151 --> 00:17:47,065
 Now the largest element. Only the subset 1 has weight 1. 2 and 1 2 have weight 2. Four subsets contain 3, so they have weight 3. With respect to v, the series is x plus 2x squared plus 4x cubed.
 
 84
