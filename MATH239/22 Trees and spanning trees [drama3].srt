@@ -1,0 +1,283 @@
+1
+00:00:00,000 --> 00:00:05,991
+This is MATH 239, video 22. The topic is trees and spanning trees.
+
+2
+00:00:06,441 --> 00:00:19,769
+After this video, you can use the basic facts about trees. You can count the leaves of a tree from its other degrees. You can prove which degree sequences belong to trees. And you can find spanning trees, and exchange edges in them.
+
+3
+00:00:20,219 --> 00:00:26,628
+A tree is a connected graph with no cycles. Here is a typical tree, like Figure 5.1 of the notes.
+
+4
+00:00:27,078 --> 00:00:31,861
+This graph is connected, but it has a cycle, in red. So it is not a tree.
+
+5
+00:00:32,311 --> 00:00:41,460
+If we do not ask for connectedness, we get a forest. A forest is a graph with no cycles. This forest has three pieces.
+
+6
+00:00:41,910 --> 00:00:51,430
+Each component of a forest is connected, and it has no cycles. So each component of a forest is a tree. A tree is a forest with one component.
+
+7
+00:00:51,880 --> 00:00:59,357
+Lemma 5.1.3 says: in a tree, each two vertices u and v are joined by exactly one path.
+
+8
+00:00:59,807 --> 00:01:08,677
+There is at least one path, because a tree is connected. For example, d and j are joined by the path d, a, r, c, h, j.
+
+9
+00:01:09,127 --> 00:01:22,409
+There is at most one path. By Corollary 4.10.4, two different paths between the same vertices give a cycle. A tree has no cycles. So the path is unique.
+
+10
+00:01:22,859 --> 00:01:27,131
+Lemma 5.1.4 says: every edge of a tree is a bridge.
+
+11
+00:01:27,581 --> 00:01:40,259
+A tree has no cycles, so an edge of a tree is in no cycle. By Theorem 4.10.3, it is a bridge. Here, deleting the edge r c splits the tree into two parts.
+
+12
+00:01:40,709 --> 00:01:55,477
+Theorem 5.1.5 says: every tree has one edge fewer than it has vertices. The proof is by strong induction on q, the number of edges. If q is 0, the tree is one vertex with no edges, and the result holds.
+
+13
+00:01:55,927 --> 00:02:08,884
+Now let T be a tree with q edges, q at least 1. Assume the result for all trees with fewer edges. Take any edge e. By Lemma 5.1.4, e is a bridge.
+
+14
+00:02:09,334 --> 00:02:26,006
+By Lemma 4.10.2, T minus e has exactly two components, T 1 and T 2. Each one is connected. Each one has no cycles, because a cycle in T minus e is a cycle in T. So both are trees, and both have fewer than q edges.
+
+15
+00:02:26,456 --> 00:02:42,245
+By the induction hypothesis, each T i has one edge fewer than vertices. The edges of T are the edges of T 1, the edges of T 2, and e. Add them up. The total is the number of vertices of T, minus 1.
+
+16
+00:02:42,695 --> 00:02:57,928
+In the example, T 1 has 7 vertices and 6 edges, and T 2 has 4 vertices and 3 edges. 6 plus 3 plus 1 is 10, and T has 11 vertices. Python checked the theorem on all labelled trees with up to 8 vertices.
+
+17
+00:02:58,378 --> 00:03:08,687
+Corollary 5.1.6 says: a forest with k components has k edges fewer than it has vertices. Here is a forest with 3 components.
+
+18
+00:03:09,137 --> 00:03:25,345
+Each component T i is a tree. So it has the number of its vertices, minus 1, edges. Add the k equations. The total is the number of vertices of G, minus k. Here, 4 plus 3 plus 2 edges equals 12 minus 3.
+
+19
+00:03:25,795 --> 00:03:42,792
+Problem 6 of problem set 5.1 asks: how many components does a forest with p vertices and q edges have? Solve q equals p minus k for k. The forest has p minus q components. Python checked this on all graphs with up to 6 vertices.
+
+20
+00:03:43,242 --> 00:03:52,948
+A leaf of a tree is a vertex of degree 1. Theorem 5.1.8 says: a tree with at least two vertices has at least two leaves.
+
+21
+00:03:53,398 --> 00:04:05,595
+Let P be a longest path in the tree, with ends u and v. The tree has an edge, and an edge is a path of length 1. So P has length at least 1, and u is not equal to v.
+
+22
+00:04:06,045 --> 00:04:23,739
+One neighbour of v is on P: the vertex just before v, here x 3. Suppose v has degree more than 1. Then v has another neighbour w. If w is on P, then the edge v w and the part of P from w to v form a cycle. A tree has no cycles.
+
+23
+00:04:24,189 --> 00:04:32,362
+If w is not on P, then P followed by the edge v w is a longer path. This is not possible, because P is a longest path.
+
+24
+00:04:32,812 --> 00:04:45,954
+Both cases are impossible. So v has degree 1. In the same way, u has degree 1. So the tree has at least two leaves. The proof also works with a path that cannot be extended, which is easier to find than a longest path.
+
+25
+00:04:46,404 --> 00:05:05,863
+Here is a second proof. It gives more information. Let n r be the number of vertices of degree r, and let p be the number of vertices, at least 2. By Theorem 4.3.1 and Theorem 5.1.5, the sum of the degrees is two times p minus 1, that is 2 p minus 2.
+
+26
+00:05:06,313 --> 00:05:24,331
+Subtract 2 from each degree. We subtract 2 p in total, so the sum of degree minus 2 is minus 2. In the figure, each vertex shows its degree minus 2. The leaves give minus 1. Three vertices give plus 1. The sum is minus 2.
+
+27
+00:05:24,781 --> 00:05:40,153
+A tree with at least two vertices is connected, so no vertex has degree 0. Vertices of degree 2 give 0. So minus 2 equals minus n 1, plus the sum over r at least 3 of r minus 2, times n r.
+
+28
+00:05:40,603 --> 00:05:58,111
+Solve for n 1. The number of leaves is 2 plus the sum over r at least 3, of r minus 2 times n r. Each term of the sum is at least 0. So n 1 is at least 2. Here, n 1 is 2 plus 3, which is 5.
+
+29
+00:05:58,561 --> 00:06:12,400
+If the tree has a vertex of degree r, with r at least 3, then n 1 is at least 2 plus r minus 2. So the tree has at least r leaves. Python checked the formula on all labelled trees with up to 8 vertices.
+
+30
+00:06:12,850 --> 00:06:28,454
+Here is a problem from the notes. Pause the video and try it. A tree has 3 vertices of degree 4 and 2 vertices of degree 5. What is the smallest possible number of vertices of degree 1? Prove the bound, and give a tree that reaches it.
+
+31
+00:06:28,904 --> 00:06:52,170
+Use the leaf formula. The 3 vertices of degree 4 give 3 times 2. The 2 vertices of degree 5 give 2 times 3. So n 1 is at least 2 plus 6 plus 6, which is 14. Other vertices of degree 3 or more only add more terms, and vertices of degree 2 add 0. So every such tree has at least 14 leaves.
+
+32
+00:06:52,620 --> 00:07:13,890
+Now give a tree with exactly 14 leaves. Put the five vertices on a path, with degrees 5, 4, 4, 4, 5. Then add leaves until each vertex has its degree. The ends need 4 leaves each, the middle vertices need 2 each. That is 14 leaves. So the answer is 14. Python checked that this graph is a tree with these degrees.
+
+33
+00:07:14,340 --> 00:07:27,714
+Pause the video and try it. Find the smallest number of vertices in a tree with two vertices of degree 3, one vertex of degree 4, and two vertices of degree 6. Prove the bound, and give an example.
+
+34
+00:07:28,164 --> 00:07:42,932
+By the leaf formula, n 1 is at least 2, plus 2 times 1, plus 1 times 2, plus 2 times 4. That is 14. The tree also has the 5 given vertices. So it has at least 19 vertices.
+
+35
+00:07:43,382 --> 00:08:06,695
+Put the 5 vertices on a path with degrees 6, 3, 4, 3, 6, and add leaves. The ends need 5 leaves each, the vertices of degree 3 need 1 each, and the vertex of degree 4 needs 2. That is 14 leaves and 19 vertices. The degree sum is 36, which is 2 times 19 minus 2. So r equals 19.
+
+36
+00:08:07,145 --> 00:08:20,427
+Pause the video and try it. A cubic tree is a tree whose vertices all have degree 3 or 1. Prove that a cubic tree with exactly k leaves has 2 times k minus 1 vertices.
+
+37
+00:08:20,877 --> 00:08:32,882
+In the leaf formula, only r equal to 3 appears, with r minus 2 equal to 1. So k, the number of leaves, equals 2 plus n 3. So n 3 is k minus 2.
+
+38
+00:08:33,332 --> 00:08:46,607
+The vertices are the leaves and the vertices of degree 3. So p equals k plus k minus 2, which is 2 times k minus 1. Here k is 5, and the tree has 8 vertices.
+
+39
+00:08:47,057 --> 00:09:16,175
+Pause the video and try it. Let p be at least 2. Prove that positive integers d 1 to d p are the degrees of a tree on p vertices if and only if their sum is 2 p minus 2. The forward direction follows from Theorem 4.3.1 and Theorem 5.1.5. For the converse, use induction on p. If p is 2, the sequence is 1, 1, and one edge is a tree.
+
+40
+00:09:16,625 --> 00:09:39,892
+Let p be at least 3. The sum 2 p minus 2 is less than 2 p, so not all d i are at least 2: some d i is 1. The sum is more than p, so not all are 1: some d j is at least 2. Here, the sequence is 3, 1, 1, 2, 1 on a, b, c, d, e. Take i equal to b and j equal to a.
+
+41
+00:09:40,342 --> 00:10:02,168
+Delete d i, and lower d j by 1. We get p minus 1 positive integers with sum 2 p minus 4, that is 2 times p minus 1, minus 2. By induction, there is a tree T prime with these degrees. Here, we repeat: delete c, and lower a again.
+
+42
+00:10:02,618 --> 00:10:10,560
+Then delete a, and lower d. Now d and e both have degree 1. This is the base case: the edge d e.
+
+43
+00:10:11,010 --> 00:10:31,304
+Build back. Add a as a leaf at d, then c and b as leaves at a. A new leaf adds no cycle, and the graph stays connected. So each step gives a tree, and the degrees are 3, 1, 1, 2, 1. Python checked the result for all p up to 7.
+
+44
+00:10:31,754 --> 00:10:45,268
+Pause the video and try it. Problem 1 asks for one tree from each isomorphism class of trees with six or fewer vertices, and for a bipartition of each. Problem 2 asks for a proof that every tree is bipartite.
+
+45
+00:10:45,718 --> 00:10:56,213
+With 1, 2 or 3 vertices there is only one tree: a vertex, an edge, and a path. With 4 vertices there are two: the path and the star.
+
+46
+00:10:56,663 --> 00:11:06,973
+With 5 vertices there are 3 trees, and with 6 vertices there are 6 trees. That is 14 trees in all. Python checked these counts by brute force over all labelled trees.
+
+47
+00:11:07,423 --> 00:11:20,333
+For a bipartition, start at a centre vertex. Colour each vertex by the parity of its distance to the centre. Each edge joins two vertices whose distances differ by 1, so its ends have different colours.
+
+48
+00:11:20,783 --> 00:11:41,263
+Problem 2, by induction on the number of vertices. A tree with one vertex is bipartite. A larger tree has a leaf v, by Theorem 5.1.8. T minus v is a tree, so it has a bipartition. Put v on the other side from its only neighbour. This gives a bipartition of T.
+
+49
+00:11:41,713 --> 00:11:54,206
+A spanning subgraph of G contains all the vertices of G. A spanning tree of G is a spanning subgraph that is a tree. This is the graph of Figure 5.2, with 10 vertices and 17 edges.
+
+50
+00:11:54,656 --> 00:12:05,940
+The heavy blue edges form a spanning tree. They reach all 10 vertices, they are connected, and they form no cycle. By Theorem 5.1.5, they are 9 edges.
+
+51
+00:12:06,390 --> 00:12:16,561
+Spanning trees are important because they have the fewest edges of all connected spanning subgraphs. Any connected spanning subgraph contains a spanning tree, as the next theorem shows.
+
+52
+00:12:17,011 --> 00:12:37,816
+Theorem 5.2.1 says: G is connected if and only if G has a spanning tree. First, suppose G has a spanning tree T. By Lemma 5.1.3, T has a path between each two vertices. These paths are also in G, and T has all the vertices of G. So G is connected.
+
+53
+00:12:38,266 --> 00:12:56,285
+Now suppose G is connected. If G has no cycles, then G is its own spanning tree. If G has a cycle, delete one edge of that cycle. By Theorem 4.10.3, this edge is not a bridge. So the graph stays connected. Here we delete three edges that are on cycles.
+
+54
+00:12:56,735 --> 00:13:02,168
+Repeat. Each deleted edge is on a cycle of the current graph. Three more edges go.
+
+55
+00:13:02,618 --> 00:13:07,634
+Two more edges go. In total, we deleted 8 edges, and 9 edges remain.
+
+56
+00:13:08,084 --> 00:13:20,111
+Now no cycle is left. The result is connected, it contains all the vertices, and it has no cycles. So it is a spanning tree. To prove that a graph is connected, it is enough to give a spanning tree.
+
+57
+00:13:20,561 --> 00:13:31,939
+Corollary 5.2.2 says: if G is connected, with p vertices and p minus 1 edges, then G is a tree. Here p is 6 and there are 5 edges.
+
+58
+00:13:32,389 --> 00:13:49,618
+By Theorem 5.2.1, G has a spanning tree T. T has p vertices, so by Theorem 5.1.5 it has p minus 1 edges. But G has only p minus 1 edges. So T uses every edge of G, and G equals T. So G is a tree.
+
+59
+00:13:50,068 --> 00:13:59,728
+This gives a quick test. To show that a graph is a tree, show that it is connected and that it has one edge fewer than it has vertices. We do not have to check for cycles.
+
+60
+00:14:00,178 --> 00:14:21,215
+There are two ways to get a new spanning tree by exchanging two edges. Theorem 5.2.3 says: let T be a spanning tree of G, and let e be an edge not in T. Then T plus e contains exactly one cycle C. If e prime is any edge on C, then T plus e minus e prime is also a spanning tree.
+
+61
+00:14:21,665 --> 00:14:28,845
+Add the edge e from 2 to 3. T has no cycles, so every cycle of T plus e must use e.
+
+62
+00:14:29,295 --> 00:14:42,066
+Such a cycle is e together with a path from 2 to 3 in T. By Lemma 5.1.3, this path is unique. So there is exactly one cycle: 2, 8, 9, 4, 6, 3, and back to 2.
+
+63
+00:14:42,516 --> 00:15:03,554
+Remove any edge of the cycle, for example 9 4. It is on a cycle, so by Theorem 4.10.3 it is not a bridge, and the graph stays connected. It has p minus 1 edges, so by Corollary 5.2.2 it is a tree. Python checked this new spanning tree.
+
+64
+00:15:04,004 --> 00:15:18,818
+Theorem 5.2.4 is the second exchange. Let T be a spanning tree, and let e be an edge of T. Then T minus e has two components. If e prime is in the cut induced by one of them, then T minus e plus e prime is a spanning tree.
+
+65
+00:15:19,268 --> 00:15:34,242
+Remove the edge 8 9. By Lemma 4.10.2, T minus e has two components: C 1, in blue, is 1, 2, 7, 8, 10. C 2, in purple, is 3, 4, 5, 6, 9.
+
+66
+00:15:34,692 --> 00:15:44,398
+The cut induced by C 1 in G has the edges with one end in each part: 1 5, 2 5, 2 3, 8 9 and 10 9.
+
+67
+00:15:44,848 --> 00:15:51,999
+Choose e prime as 10 9, with u equal to 10 in C 1 and v equal to 9 in C 2.
+
+68
+00:15:52,449 --> 00:16:18,038
+Fix x in C 1. Each y in C 1 is joined to x inside C 1. For y in C 2, go from x to u in C 1, then take e prime, then go from v to y in C 2. By Theorem 4.8.2, the graph is connected. It has p minus 1 edges, so it is a tree. Python checked that every edge of this cut gives a spanning tree.
+
+69
+00:16:18,488 --> 00:16:31,249
+To recap. A tree is a connected graph with no cycles, and a forest is a graph with no cycles. In a tree, each two vertices are joined by exactly one path, every edge is a bridge, and there is one edge fewer than vertices.
+
+70
+00:16:31,699 --> 00:16:50,414
+A forest with k components has k edges fewer than vertices. A tree with at least two vertices has at least two leaves, and the leaf formula gives their number from the other degrees. Positive integers are the degrees of a tree exactly when their sum is 2 p minus 2. Every tree is bipartite.
+
+71
+00:16:50,864 --> 00:17:11,484
+A graph is connected if and only if it has a spanning tree. A connected graph with p minus 1 edges is a tree. We can exchange edges of a spanning tree in two ways: add an edge and remove an edge of its cycle, or remove an edge and add an edge of the cut. The next video uses spanning trees to test for bipartite graphs.
