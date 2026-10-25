@@ -1,0 +1,355 @@
+1
+00:00:00,000 --> 00:00:07,178
+MATH 239, video 25 a. Nonplanar graphs and Kuratowski's Theorem.
+
+2
+00:00:07,628 --> 00:00:24,299
+This video covers sections 7.5 and 7.6 of the Graph Theory notes. We prove that K 5 and K 3 3 are not planar. We use counting bounds from Euler's Formula. Then we learn Kuratowski's Theorem, and use it to prove that a graph is not planar.
+
+3
+00:00:24,749 --> 00:00:38,914
+Here is K 5, the complete graph on 5 vertices. Every drawing we try has crossings. The red circles mark them. But many failed drawings do not prove anything. Maybe a better drawing exists.
+
+4
+00:00:39,364 --> 00:00:49,534
+To prove that a graph is planar, we show one planar embedding. The 3-cube on the right is planar. It has 6 faces. f 6 is the outer face.
+
+5
+00:00:49,984 --> 00:01:11,161
+To prove that a graph is not planar, we use counting. We have two tools from sections 7.1 and 7.2. Euler's Formula: for a connected planar embedding, p minus q plus s equals 2. Here s is the number of faces. And Theorem 7.1.2: the face degrees add to 2 q.
+
+6
+00:01:11,611 --> 00:01:23,128
+Check with the cube. 8 minus 12 plus 6 equals 2. Each of the 6 faces has degree 4, and 6 times 4 is 24, which is 2 times 12.
+
+7
+00:01:23,578 --> 00:01:46,705
+We need one technical result first. Lemma 7.5.1. If G contains a cycle, then in a planar embedding of G, the boundary of each face contains a cycle. In the example, the shaded face f is inside the square. The edge c e sticks into it. Since G has a cycle, the embedding has at least two faces. So f is next to another face. Here it is g, the outer face.
+
+8
+00:01:47,155 --> 00:02:02,757
+Pick an edge e 1 that is on the boundary of both f and g. Here e 1 is the edge a b. One side of e 1 faces f, and the other side faces g. So the boundary walk of f uses e 1 exactly once.
+
+9
+00:02:03,207 --> 00:02:21,736
+Here is the boundary walk of f. Start at a, cross e 1 to b, then go to c, out to e and back to c, then d, and back to a. Remove the first step. The rest is a walk from b to a that does not use e 1. The blue arrows show it.
+
+10
+00:02:22,186 --> 00:02:42,341
+So the ends of e 1 are still joined when we delete e 1. Thus e 1 is not a bridge. By Theorem 4.10.3, an edge that is not a bridge is in a cycle. All edges here are in the boundary of f, so this boundary contains a cycle. In the figure, it is the green square.
+
+11
+00:02:42,791 --> 00:03:05,872
+Lemma 7.5.2. Take a planar embedding with p vertices and q edges. Suppose each face has degree at least d star. Then d star minus 2, times q, is at most d star times p minus 2. First, take G connected. Call the faces f 1 to f s. The example is K 4, with 4 faces of degree 3.
+
+12
+00:03:06,322 --> 00:03:23,644
+Each edge has two sides. The purple dots show them. Each side is counted once in a face boundary. So, by Theorem 7.1.2, the face degrees add to 2 q. Each face degree is at least d star. So 2 q is at least d star times s.
+
+13
+00:03:24,094 --> 00:03:28,738
+Euler's Formula gives the number of faces: s equals q plus 2 minus p.
+
+14
+00:03:29,188 --> 00:03:37,176
+Substitute. 2 q is at least d star times q plus 2 minus p. Multiply out the bracket.
+
+15
+00:03:37,626 --> 00:03:46,449
+Move d star q to the left side, and the rest to the right side. Then d star minus 2, times q, is at most d star times p minus 2.
+
+16
+00:03:46,899 --> 00:04:00,460
+Check with K 4. d star is 3, p is 4, and q is 6. The left side is 6. The right side is 3 times 2, which is 6. Equality holds, because every face has degree exactly 3.
+
+17
+00:04:00,910 --> 00:04:07,644
+Now suppose G is not connected. Then one face can touch two or more components. Here the outer face touches the triangle and the square.
+
+18
+00:04:08,094 --> 00:04:19,843
+Pick two components that touch the same face. Pick a vertex of each on that face. Join them with a new edge, drawn inside the face. The drawing stays planar, and the number of components goes down by 1.
+
+19
+00:04:20,293 --> 00:04:31,206
+Repeat until the graph is connected. Call it G prime. A face degree does not go down in this process. So every face of G prime still has degree at least d star.
+
+20
+00:04:31,656 --> 00:04:40,015
+The connected case holds for G prime. G prime has the same p, and more edges than G. So the inequality also holds for G.
+
+21
+00:04:40,465 --> 00:05:01,967
+Theorem 7.5.3. A planar graph with p at least 3 vertices and q edges has q at most 3 p minus 6. A graph on p vertices can have up to p times p minus 1 over 2 edges. That is quadratic in p. But for a planar graph, the bound is linear in p.
+
+22
+00:05:02,417 --> 00:05:21,919
+Proof. Case one: G has no cycle. Then G is a forest. By Corollary 5.1.6, q is at most p minus 1. And p minus 1 is at most 3 p minus 6 when p is at least 3. The tree on the left has 4 edges, and the bound is 9.
+
+23
+00:05:22,369 --> 00:05:45,171
+Case two: G has a cycle. Fix a planar embedding. By Lemma 7.5.1, each face boundary contains a cycle. In a graph, a cycle has length at least 3. So each face has degree at least 3. Use Lemma 7.5.2 with d star equal to 3. Then q is at most 3 times p minus 2, which is 3 p minus 6.
+
+24
+00:05:45,621 --> 00:05:53,794
+The bound is sharp. The octahedron has 6 vertices and 12 edges. Every face is a triangle, and 12 equals 3 times 6 minus 6.
+
+25
+00:05:54,244 --> 00:06:06,766
+The proof needs a graph, with no loops and no multiple edges. Figure 7.10 has only 2 vertices, but it can have as many edges as we like. A face between two parallel edges has degree 2.
+
+26
+00:06:07,216 --> 00:06:28,439
+Corollary 7.5.4. K 5 is not planar. K 5 has 5 vertices. Every pair of vertices is an edge, so q is 5 choose 2, which is 10. Vertex 1 has 4 edges, shown in orange. 5 vertices times 4, over 2, also gives 10.
+
+27
+00:06:28,889 --> 00:06:34,880
+The bound of Theorem 7.5.3 is 3 p minus 6, which is 15 minus 6, which is 9.
+
+28
+00:06:35,330 --> 00:06:44,246
+But q is 10, and 10 is greater than 9. So K 5 breaks the inequality. A planar graph cannot break it. So K 5 is not planar.
+
+29
+00:06:44,696 --> 00:06:51,569
+This is the method of the section. Every planar graph satisfies the bound. So a graph that breaks the bound is not planar.
+
+30
+00:06:52,019 --> 00:07:01,632
+Figure 7.11. Take K 5 and add one new vertex, joined to one old vertex. Now p is 6 and q is 11.
+
+31
+00:07:02,082 --> 00:07:08,259
+The bound 3 p minus 6 is 12. 11 is at most 12, so the bound holds.
+
+32
+00:07:08,709 --> 00:07:21,015
+But the graph contains K 5 as a subgraph. A drawing of the big graph without crossings gives a drawing of K 5 without crossings. That is impossible. So this graph is not planar.
+
+33
+00:07:21,465 --> 00:07:29,685
+So the bound is only a necessary condition. If a graph breaks it, the graph is not planar. If a graph satisfies it, we learn nothing.
+
+34
+00:07:30,135 --> 00:07:41,606
+Corollary 7.5.5. A planar graph has a vertex of degree at most 5. If p is at most 2, each vertex has degree at most 1, so the result is true.
+
+35
+00:07:42,056 --> 00:07:57,799
+If p is at least 3, then q is at most 3 p minus 6. The degrees add to 2 q, so the average degree is 2 q over p. This is at most 6 p minus 12, over p. That is 6 minus 12 over p, which is less than 6.
+
+36
+00:07:58,249 --> 00:08:04,843
+The smallest degree is at most the average. So some vertex has degree less than 6, which means at most 5.
+
+37
+00:08:05,293 --> 00:08:17,089
+The number 5 cannot be made smaller. The icosahedron is planar, and every vertex has degree 5. It has 12 vertices and 30 edges, and 30 equals 3 times 12 minus 6.
+
+38
+00:08:17,539 --> 00:08:28,406
+A problem from Problem Set 7.6. G is planar, and every vertex has degree at least 5. Prove that G has at least 12 vertices. Pause the video and try it.
+
+39
+00:08:28,856 --> 00:08:39,073
+A vertex of degree 5 has 5 neighbours. So p is at least 6. In particular, p is at least 3, so we can use Theorem 7.5.3.
+
+40
+00:08:39,523 --> 00:08:49,735
+By Theorem 4.3.1, the degrees add to 2 q. Each degree is at least 5. So 2 q is at least 5 p, and q is at least 5 p over 2.
+
+41
+00:08:50,185 --> 00:08:54,597
+By Theorem 7.5.3, q is at most 3 p minus 6.
+
+42
+00:08:55,047 --> 00:09:07,075
+Combine the two bounds. 5 p over 2 is at most 3 p minus 6. Multiply by 2: 5 p is at most 6 p minus 12. So p is at least 12.
+
+43
+00:09:07,525 --> 00:09:15,141
+The icosahedron shows that 12 is possible. It is planar, it has 12 vertices, and every vertex has degree 5.
+
+44
+00:09:15,591 --> 00:09:25,901
+Now K 3 3. It has two classes of 3 vertices, A and B. Each vertex of A is joined to each vertex of B. So p is 6 and q is 9.
+
+45
+00:09:26,351 --> 00:09:39,772
+Try to draw it. The 6 vertices lie on a 6-cycle: a 1, b 1, a 2, b 2, a 3, b 3. Three edges remain. Each joins two opposite vertices of the hexagon.
+
+46
+00:09:40,222 --> 00:09:42,730
+Draw a 1 b 2 inside the hexagon.
+
+47
+00:09:43,180 --> 00:09:45,595
+Draw a 2 b 3 around the outside.
+
+48
+00:09:46,045 --> 00:09:55,611
+Now a 3 b 1 must cross the inside edge or the outside edge. After a few attempts, we believe that K 3 3 is not planar. But this is not a proof.
+
+49
+00:09:56,061 --> 00:10:11,201
+Theorem 7.5.3 does not help. q is 9, and 3 p minus 6 is 12. Corollary 7.5.5 does not help either, since every degree is 3. We need a stronger bound.
+
+50
+00:10:11,651 --> 00:10:36,110
+Theorem 7.5.6. A bipartite planar graph with p at least 3 vertices has q at most 2 p minus 4. The proof repeats the proof of Theorem 7.5.3. Case one: no cycle. Then G is a forest, and q is at most p minus 1. This is at most 2 p minus 4 when p is at least 3.
+
+51
+00:10:36,560 --> 00:10:43,248
+Case two: G has a cycle. By Lemma 7.5.1, each face boundary contains a cycle.
+
+52
+00:10:43,698 --> 00:10:59,441
+Here is the extra fact. A bipartite graph has no odd cycles, so it has no triangle. Each edge joins A to B, so a cycle goes back and forth. The green cycle has length 4. So each face has degree at least 4.
+
+53
+00:10:59,891 --> 00:11:10,665
+Use Lemma 7.5.2 with d star equal to 4. q is at most 4 times p minus 2, over 2. That is 2 p minus 4.
+
+54
+00:11:11,115 --> 00:11:26,301
+Lemma 7.5.7. K 3 3 is not planar. K 3 3 is bipartite, with 6 vertices. Each of the 3 vertices in A has 3 edges, shown for a 1 in orange. So q is 3 times 3, which is 9.
+
+55
+00:11:26,751 --> 00:11:31,763
+The bipartite bound is 2 p minus 4, which is 12 minus 4, which is 8.
+
+56
+00:11:32,213 --> 00:11:41,919
+q is 9, and 9 is greater than 8. So K 3 3 breaks the bound of Theorem 7.5.6. Thus K 3 3 is not planar.
+
+57
+00:11:42,369 --> 00:12:04,892
+A problem from Problem Set 7.6. G is connected and planar, with girth k. The girth is the length of a shortest cycle. Show that q is at most k times p minus 2, over k minus 2. Pause the video and try it. The blue line is k equal to 3. It is the bound 3 p minus 6. K 5 lies above it.
+
+58
+00:12:05,342 --> 00:12:23,454
+Each face boundary contains a cycle, and each cycle has length at least k. So each face has degree at least k. Lemma 7.5.2 with d star equal to k gives the bound. With k equal to 4 we get 2 p minus 4, the teal line. K 3 3 lies above it.
+
+59
+00:12:23,904 --> 00:12:36,396
+For equality, look at the proof. 2 q equals the sum of the face degrees, and this sum is at least k s. Equality needs each face degree to be exactly k. The purple line is k equal to 5.
+
+60
+00:12:36,846 --> 00:12:51,939
+Use the line of the graph's girth. A point above it is not planar. The Petersen graph has girth 5 and lies above the purple line. The 4-cube has girth 4 and lies above the teal line. The 3-cube lies on the teal line, and it is planar.
+
+61
+00:12:52,389 --> 00:13:01,723
+Problem 3 of Problem Set 7.6. Prove that the Petersen graph is not planar, without Kuratowski's Theorem. Pause the video and try it.
+
+62
+00:13:02,173 --> 00:13:16,570
+The Petersen graph has 10 vertices and 15 edges. Its girth is 5. The orange 5-cycle is a shortest cycle. There is no cycle of length 3 or 4. We checked this with a program, and you can check it by hand from the drawing.
+
+63
+00:13:17,020 --> 00:13:28,444
+Suppose it is planar. It is connected. By the girth bound with k equal to 5, q is at most 5 times 8, over 3. That is 40 over 3, about 13.3.
+
+64
+00:13:28,894 --> 00:13:44,962
+But q is 15, which is more than 13.3. This is a contradiction. So the Petersen graph is not planar. The bound 3 p minus 6 is 24, so it does not help here. The girth gives the stronger bound.
+
+65
+00:13:45,412 --> 00:13:59,298
+Problem 5 of Problem Set 7.6. Prove that the n-cube is not planar when n is at least 4. Pause the video and try it. The figure shows the 3-cube. The vertices are the binary strings of length 3.
+
+66
+00:13:59,748 --> 00:14:19,856
+Two strings are adjacent when they differ in one bit. So an edge joins a string with an even number of 1s to a string with an odd number of 1s. Blue and orange are the two classes, so the n-cube is bipartite. It has 2 to the n vertices. Each vertex has degree n, so q is n times 2 to the n minus 1.
+
+67
+00:14:20,306 --> 00:14:36,375
+Let n be at least 4. Then q is at least 4 times 2 to the n minus 1, which is 2 to the n plus 1. This is more than 2 to the n plus 1 minus 4, which is 2 p minus 4. The table shows n equal to 4 and 5.
+
+68
+00:14:36,825 --> 00:14:52,382
+So the n-cube breaks the bound of Theorem 7.5.6, and it is not planar for n at least 4. For n equal to 3, q is 12 and 2 p minus 4 is 12. The bound holds with equality, and the 3-cube is planar.
+
+69
+00:14:52,832 --> 00:15:14,380
+Counting does not always work. Section 7.6 gives another method. First, a definition. An edge subdivision of a graph H replaces each edge by a path of length 1 or more. A path of length m adds m minus 1 new vertices. If m is 1, the edge does not change. Here H is K 4.
+
+70
+00:15:14,830 --> 00:15:26,904
+Here is an edge subdivision G of H. The edge A D became a path with one new vertex, x. The edge B C became a path with two new vertices, y and z. The other edges did not change.
+
+71
+00:15:27,354 --> 00:15:41,472
+Subdivision does not change planarity. In a drawing, a new vertex sits on the old edge. So if H is planar, every subdivision of H is planar. If H is not planar, no subdivision of H is planar.
+
+72
+00:15:41,922 --> 00:15:46,798
+Also, if a graph has a subgraph that is not planar, then the graph is not planar.
+
+73
+00:15:47,248 --> 00:16:02,202
+Kuratowski's Theorem, Theorem 7.6.1. A graph is not planar if and only if it has a subgraph that is an edge subdivision of K 5 or of K 3 3. On the right, the orange vertices are new vertices on subdivided edges.
+
+74
+00:16:02,652 --> 00:16:11,290
+One direction is easy. A subdivision of K 5 or K 3 3 is not planar, by the last slide. So a graph that contains one is not planar.
+
+75
+00:16:11,740 --> 00:16:18,613
+The other direction is hard. Every nonplanar graph contains such a subgraph. The notes omit this proof.
+
+76
+00:16:19,063 --> 00:16:40,611
+Here is a consequence. Start with a nonplanar graph. Delete a vertex or an edge, but only if the graph stays nonplanar. Repeat until you must stop. The final graph is an edge subdivision of K 5 or K 3 3. In a solution, the subgraph is a certificate. Anyone can check it.
+
+77
+00:16:41,061 --> 00:16:58,151
+Example from Figure 7.12. The graph M 5 has 10 vertices and 15 edges. Its girth is 4, and it is bipartite. 15 is at most 24, and 15 is at most 16. So no counting bound proves that M 5 is not planar.
+
+78
+00:16:58,601 --> 00:17:12,347
+Use Kuratowski's Theorem. A good strategy: first find a long cycle. M 5 has a cycle through all 10 vertices: 1, 2, 3, 4, 5, 10, 9, 8, 7, 6, and back to 1. It is orange.
+
+79
+00:17:12,797 --> 00:17:25,336
+Then find edges across the cycle. We use 1 10, 5 6 and 3 8, in purple. We do not need the edges 2 7 and 4 9. These 13 edges form the subgraph G.
+
+80
+00:17:25,786 --> 00:17:31,730
+Draw G with the 10-cycle as a circle, like the notes do. The three chords cross the circle.
+
+81
+00:17:32,180 --> 00:17:44,394
+In G, the gray vertices 2, 4, 7 and 9 have degree 2. Each one sits in the middle of a path. For example, the path 1, 2, 3 is a subdivided edge from 1 to 3.
+
+82
+00:17:44,844 --> 00:18:04,906
+Replace each of these paths by one edge. The result H is K 3 3. The blue class is 1, 5 and 8. The orange class is 3, 6 and 10. So G is an edge subdivision of K 3 3, and G is a subgraph of M 5. By Kuratowski's Theorem, M 5 is not planar.
+
+83
+00:18:05,356 --> 00:18:19,706
+Problem 4 a of Problem Set 7.6. Prove again that the Petersen graph is not planar, now with Kuratowski's Theorem. Find a subgraph that is an edge subdivision of K 3 3. Pause the video and try it.
+
+84
+00:18:20,156 --> 00:18:30,651
+Delete vertex 0 and its three edges. The neighbours of 0 were 1, 4 and 5. Each one now has degree 2. So they can be the middle vertices of subdivided edges.
+
+85
+00:18:31,101 --> 00:18:55,575
+The other six vertices have degree 3. Put 2, 8 and 9 in one class, in blue. Put 3, 6 and 7 in the other class, in orange. Each blue vertex must reach each orange vertex by a path. Six pairs are edges. The other three pairs use a degree 2 vertex: 2, 1, 6. Then 8, 5, 7. Then 9, 4, 3.
+
+86
+00:18:56,025 --> 00:19:12,233
+On the right, the nine paths form K 3 3. The white circles are the subdivision vertices 1, 5 and 4. So the Petersen graph minus a vertex is an edge subdivision of K 3 3. By Kuratowski's Theorem, the Petersen graph is not planar.
+
+87
+00:19:12,683 --> 00:19:28,751
+To recap. Lemma 7.5.2 combines the face degree sum with Euler's Formula. It gives q at most 3 p minus 6 for a planar graph, 2 p minus 4 for a bipartite planar graph, and the girth bound in general.
+
+88
+00:19:29,201 --> 00:19:45,223
+A graph that breaks a bound is not planar. That proves it for K 5, K 3 3, the Petersen graph and the n-cube for n at least 4. A graph that satisfies the bounds can still be nonplanar. And every planar graph has a vertex of degree at most 5.
+
+89
+00:19:45,673 --> 00:20:02,484
+Kuratowski's Theorem: a graph is not planar exactly when it contains an edge subdivision of K 5 or K 3 3. To find one, look for a long cycle and paths across it. Video 25 b covers colouring and dual planar maps.

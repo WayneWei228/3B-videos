@@ -1,0 +1,287 @@
+1
+00:00:00,000 --> 00:00:10,955
+This is MATH 239, video 24 b. We use Euler's formula to solve the problems of Problem Set 7.3, and then we find all the Platonic solids.
+
+2
+00:00:11,405 --> 00:00:27,148
+After this video, you can combine Euler's formula with the Handshaking and Faceshaking Lemmas. You can show a graph is planar by drawing it. You can count the regions of a polygon cut by its diagonals. And you can prove that there are exactly five Platonic graphs.
+
+3
+00:00:27,598 --> 00:00:38,160
+We have three counting tools. Here is the cube. First, each vertex has degree 3. The Handshaking Lemma: the vertex degrees add to 2 q.
+
+4
+00:00:38,610 --> 00:00:46,459
+Second, each face has degree 4, also the outer face. The Faceshaking Lemma: the face degrees add to 2 q.
+
+5
+00:00:46,909 --> 00:01:03,395
+Third, Euler's formula: p minus q plus s equals 2. We write s for the number of faces, as the notes do. For the cube: 8 times 3 is 24, 6 times 4 is 24, and 8 minus 12 plus 6 is 2.
+
+6
+00:01:03,845 --> 00:01:15,733
+Most problems in this chapter use a lower bound on the degrees. The two lemmas turn the bounds into inequalities between p, q and s. Then Euler's formula gives a contradiction, or a formula.
+
+7
+00:01:16,183 --> 00:01:27,097
+Here is problem 1 of Problem Set 7.3. Prove that every planar embedding has a vertex of degree at most 3, or a face of degree 3. Pause the video and try it.
+
+8
+00:01:27,547 --> 00:01:39,760
+Suppose the claim is false. Then every vertex has degree at least 4. By the Handshaking Lemma, 2 q is the sum of the vertex degrees, so 2 q is at least 4 p. So p is at most q over 2.
+
+9
+00:01:40,210 --> 00:01:54,885
+Also, no face has degree 3. A face cannot have degree 1 or 2 here, so every face has degree at least 4. By the Faceshaking Lemma, 2 q is at least 4 s. So s is at most q over 2.
+
+10
+00:01:55,335 --> 00:02:10,688
+Add the two bounds. p minus q plus s is at most q over 2, minus q, plus q over 2, which is 0. But Euler's formula says p minus q plus s equals 2. This is a contradiction. So the claim is true.
+
+11
+00:02:11,138 --> 00:02:30,318
+One remark. We used Euler's formula, so we assume that G is connected. The notes state Euler's formula only for connected graphs. A face of degree 1 or 2 is not possible here: it needs a loop or two parallel edges, or a graph with a single edge, and that graph has vertices of degree 1.
+
+12
+00:02:30,768 --> 00:02:41,310
+Problem 2 asks: prove that each graph of Figure 7.6 is planar, by drawing a planar embedding. Here is graph b, as the notes draw it. Pause the video and try it.
+
+13
+00:02:41,760 --> 00:02:52,764
+This drawing has many crossings, marked in red. But crossings in one drawing do not show that a graph is nonplanar. To prove planarity, we must show one drawing with no crossings.
+
+14
+00:02:53,214 --> 00:03:10,675
+Here is one. Start from the cycle f, e, h, c, g, b on the outside. b has only two neighbours, f and g. Put a, d and i inside, on the right of the edge f c. Every edge now meets other edges only at their ends.
+
+15
+00:03:11,125 --> 00:03:30,068
+Check the drawing with the counting tools. It has 9 vertices, 16 edges, and 9 faces: six of degree 3, two of degree 4, and the outer face of degree 6. The degrees add to 32, which is 2 times 16. And 9 minus 16 plus 9 is 2. So the drawing is consistent.
+
+16
+00:03:30,518 --> 00:03:38,134
+Now graph a of Figure 7.6. It has 9 vertices and 21 edges. Pause the video and try it.
+
+17
+00:03:38,584 --> 00:03:42,810
+The drawing in the notes has crossings, marked in red. We need a new drawing.
+
+18
+00:03:43,260 --> 00:03:52,966
+Here is a planar embedding. The outer face is the triangle a, f, b. Every other vertex is inside it. Every face of this drawing is a triangle.
+
+19
+00:03:53,416 --> 00:04:13,292
+Check: there are 14 faces, each of degree 3. 14 times 3 is 42, which is 2 times 21. And 9 minus 21 plus 14 is 2. A graph where every face is a triangle has the most edges that a planar graph on p vertices can have. The next video uses this idea to prove that some graphs are not planar.
+
+20
+00:04:13,742 --> 00:04:34,269
+Problem 3. Draw a convex n-gon and all its diagonals. No three diagonals meet at the same inside point. f n is the number of regions inside the polygon. The notes give f 3 equals 1, f 4 equals 4, and f 5 equals 11. Pause the video and try it.
+
+21
+00:04:34,719 --> 00:04:44,053
+The hint: any 4 corners of the polygon give exactly one pair of crossing diagonals. These are the two diagonals of the quadrilateral on those 4 corners.
+
+22
+00:04:44,503 --> 00:04:57,274
+The plan: put a vertex at each corner and at each crossing point. Then the drawing is a planar embedding. We count its vertices and edges, and Euler's formula gives the number of faces.
+
+23
+00:04:57,724 --> 00:05:05,340
+Here is the hexagon of Figure 7.7, with all its diagonals. Each corner is a vertex. There are n corners.
+
+24
+00:05:05,790 --> 00:05:20,744
+Each crossing point of two diagonals is a vertex too, in orange. Each set of 4 corners gives exactly one crossing point. Different sets give different points, because no 3 diagonals meet at one point. So there are n choose 4 crossing points.
+
+25
+00:05:21,194 --> 00:05:24,166
+So p equals n plus n choose 4.
+
+26
+00:05:24,616 --> 00:05:31,629
+For the hexagon: 6 corners, and 6 choose 4 is 15 crossing points. That is 21 vertices.
+
+27
+00:05:32,079 --> 00:05:46,145
+Now the edges. Use the Handshaking Lemma. A corner has an edge to each other corner: two sides of the polygon and n minus 3 diagonals. The first edge piece of each one starts at the corner. So a corner has degree n minus 1.
+
+28
+00:05:46,595 --> 00:05:54,258
+A crossing point lies on exactly two diagonals. Each diagonal continues on both sides of it. So a crossing point has degree 4.
+
+29
+00:05:54,708 --> 00:06:00,420
+The Handshaking Lemma gives 2 q equals n times n minus 1, plus 4 times n choose 4.
+
+30
+00:06:00,870 --> 00:06:09,368
+Divide by 2. n times n minus 1 over 2 is n choose 2. So q equals n choose 2 plus 2 times n choose 4.
+
+31
+00:06:09,818 --> 00:06:14,184
+For the hexagon: 15 plus 30 is 45 edges.
+
+32
+00:06:14,634 --> 00:06:28,891
+The drawing is connected, so Euler's formula gives s equals 2 minus p plus q faces. One face is the outside of the polygon. So f n equals s minus 1, which is q minus p plus 1.
+
+33
+00:06:29,341 --> 00:06:37,561
+Substitute p and q. n choose 2, plus 2 times n choose 4, minus n, minus n choose 4, plus 1.
+
+34
+00:06:38,011 --> 00:06:43,491
+So f n equals n choose 4, plus n choose 2, minus n, plus 1.
+
+35
+00:06:43,941 --> 00:07:08,414
+Check the small cases. n equals 3 gives 0 plus 3 minus 3 plus 1, which is 1. n equals 4 gives 1 plus 6 minus 4 plus 1, which is 4. n equals 5 gives 11. These match the notes. For the hexagon, 15 plus 15 minus 6 plus 1 is 25. The picture shows the 25 regions. We also counted them by computer for n up to 9.
+
+36
+00:07:08,864 --> 00:07:20,614
+Figure 7.8 shows two solids, the tetrahedron and the cube. They have a lot of symmetry. All faces have the same degree, and all vertices have the same degree. Such solids are the Platonic solids.
+
+37
+00:07:21,064 --> 00:07:31,884
+The notes define a graph to be platonic if it has a planar embedding in which every vertex has the same degree d, at least 3, and every face has the same degree d star, at least 3.
+
+38
+00:07:32,334 --> 00:07:41,390
+Each Platonic solid gives a platonic graph: its corners and edges, drawn on a sphere and then projected onto the plane, as in video 24 a.
+
+39
+00:07:41,840 --> 00:07:52,428
+Theorem 7.4.1: there are exactly five platonic graphs. From this, there are just five Platonic solids. We now follow the proof in the notes.
+
+40
+00:07:52,878 --> 00:08:05,092
+Here are the five platonic graphs of Figure 7.9. The tetrahedron is K 4. Each vertex has degree 3, and each face is a triangle. So d equals 3 and d star equals 3.
+
+41
+00:08:05,542 --> 00:08:13,251
+The octahedron: each vertex has degree 4, and each face is a triangle. 6 vertices, 12 edges, 8 faces.
+
+42
+00:08:13,701 --> 00:08:20,574
+The cube: degree 3, and each face is a four-cycle. 8 vertices, 12 edges, 6 faces.
+
+43
+00:08:21,024 --> 00:08:29,430
+The icosahedron: each vertex has degree 5, and each face is a triangle. 12 vertices, 30 edges, 20 faces.
+
+44
+00:08:29,880 --> 00:08:39,911
+The dodecahedron: degree 3, and each face is a five-cycle. 20 vertices, 30 edges, 12 faces. In each drawing, the outer face has the same degree as the other faces.
+
+45
+00:08:40,361 --> 00:09:18,116
+Lemma 7.4.2. Take a planar embedding where every vertex has degree d and every face has degree d star, both at least 3. We use Euler's formula, so we take the embedding to be connected. Euler gives p minus q plus s equals 2. Handshaking gives 2 q equals d p, so p equals 2 q over d. Faceshaking gives 2 q equals d star s, so s equals 2 q over d star. Substitute and divide by q. Then 2 over d plus 2 over d star equals 1 plus 2 over q. The right side is larger than 1.
+
+46
+00:09:18,566 --> 00:09:36,028
+Now the cases. The grid shows 2 over d plus 2 over d star. Green means larger than 1. If d is 3, then d star must be at most 5. For d star 6 or more, the sum is at most two thirds plus one third, which is 1. Not larger than 1.
+
+47
+00:09:36,478 --> 00:09:45,487
+If d is 4, then d star must be 3. For d star 4 or more, the sum is at most one half plus one half, which is 1.
+
+48
+00:09:45,937 --> 00:09:57,501
+If d is 5, then d star must be 3. For d star 4 or more, the sum is at most two fifths plus one half, which is 18 over 20. That is less than 1.
+
+49
+00:09:57,951 --> 00:10:05,567
+If d is 6 or more, the sum is at most one third plus two thirds, which is 1. So no d of 6 or more works.
+
+50
+00:10:06,017 --> 00:10:15,862
+Only five pairs are left: 3 3, 3 4, 3 5, 4 3 and 5 3. These are the green cells.
+
+51
+00:10:16,312 --> 00:10:41,204
+Lemma 7.4.3 solves for the numbers. Start from 2 equals q times, 2 over d, minus 1, plus 2 over d star. Multiply by d times d star and solve for q. q equals 2 d d star, over 2 d plus 2 d star minus d d star. Then p equals 2 q over d, and s equals 2 q over d star.
+
+52
+00:10:41,654 --> 00:10:55,029
+Case d equals 3, d star equals 3. q equals 18 over 6 plus 6 minus 9, which is 6. p equals 12 over 3, which is 4. s equals 4.
+
+53
+00:10:55,479 --> 00:11:06,654
+Case 3 and 4. q equals 24 over 6 plus 8 minus 12, which is 12. p equals 8 and s equals 6.
+
+54
+00:11:07,104 --> 00:11:12,909
+Case 4 and 3: q equals 12, p equals 6, s equals 8. This is the octahedron.
+
+55
+00:11:13,359 --> 00:11:20,511
+Case 3 and 5: q equals 30, p equals 20, s equals 12. This is the dodecahedron.
+
+56
+00:11:20,961 --> 00:11:32,757
+Case 5 and 3: q equals 30, p equals 12, s equals 20. This is the icosahedron. Each row passes Euler's formula, for example 12 minus 30 plus 20 is 2.
+
+57
+00:11:33,207 --> 00:11:47,974
+To finish Theorem 7.4.1, the notes show that each pair gives exactly one embedding. Case 1: d equals 3 and d star equals 3. Lemma 7.4.3 gives 4 vertices and 6 edges.
+
+58
+00:11:48,424 --> 00:11:54,508
+4 vertices have only 4 choose 2, which is 6, pairs. So all 6 pairs are edges.
+
+59
+00:11:54,958 --> 00:12:01,088
+So the graph is K 4, the only graph with 4 vertices and 6 edges. This is the tetrahedron.
+
+60
+00:12:01,538 --> 00:12:27,263
+Case 2: d equals 3 and d star equals 4. Lemma 7.4.3 gives 12 edges, 8 vertices and 6 faces. Each face has degree 4. No vertex can repeat in a walk of length 4 here, so each face boundary is a 4-cycle. Let C be the boundary of one face, with vertices v 1, v 2, v 3, v 4.
+
+61
+00:12:27,713 --> 00:12:46,103
+Suppose v 1 is adjacent to v 3. Then v 2, v 3, v 1, v 2 is part of some boundary walk. That face would be a triangle, not a 4-cycle. So v 1 is not adjacent to v 3. In the same way, v 2 is not adjacent to v 4.
+
+62
+00:12:46,553 --> 00:12:57,885
+Each vertex has degree 3. v 1 has two neighbours on C, so it has exactly one neighbour outside C. Call it u 1. In the same way we get u 2, u 3 and u 4.
+
+63
+00:12:58,335 --> 00:13:20,487
+u 1, v 1, v 2, u 2 is part of the boundary walk of the face on the other side of the edge v 1 v 2. That face is a 4-cycle, so u 1 is not u 2, and u 1 u 2 is an edge. In the same way, u 2 u 3, u 3 u 4 and u 4 u 1 are edges.
+
+64
+00:13:20,937 --> 00:13:34,311
+Could u 1 equal u 3? Then u 4 is on only two faces, but a vertex of degree 3 is on 3 faces. So u 1 is not u 3. By symmetry, u 2 is not u 4.
+
+65
+00:13:34,761 --> 00:13:47,207
+So we have 8 different vertices and 12 edges: the inner 4-cycle, the outer 4-cycle, and 4 spokes. This is the 3-cube. So the pair 3 4 gives only the cube.
+
+66
+00:13:47,657 --> 00:14:05,165
+The notes leave the last three cases as exercises, in Problem Set 7.4. Problem 1: every vertex of degree 4 and every face of degree 3. Lemma 7.4.3 gives 6 vertices, 12 edges and 8 faces. The answer is the octahedron.
+
+67
+00:14:05,615 --> 00:14:14,392
+Problem 2: vertex degree 3 and face degree 5. 20 vertices, 30 edges and 12 faces. This is the dodecahedron.
+
+68
+00:14:14,842 --> 00:14:24,269
+Problem 3: vertex degree 5 and face degree 3. 12 vertices, 30 edges and 20 faces. This is the icosahedron.
+
+69
+00:14:24,719 --> 00:14:35,447
+Each problem asks you to show that the embedding is unique. Use the method of Case 2: start from one face, and use the degrees to force each new vertex and edge. These are good practice.
+
+70
+00:14:35,897 --> 00:14:48,941
+To recap. Three tools: the vertex degrees add to 2 q, the face degrees add to 2 q, and p minus q plus s equals 2. Lower bounds on the degrees, together with Euler, give a contradiction, as in problem 1.
+
+71
+00:14:49,391 --> 00:15:04,206
+To show that a graph is planar, draw a planar embedding, and check it with the counts. A convex n-gon with all its diagonals has n choose 4, plus n choose 2, minus n, plus 1 regions.
+
+72
+00:15:04,656 --> 00:15:22,071
+For platonic graphs, 2 over d plus 2 over d star equals 1 plus 2 over q, which is more than 1. This leaves only five pairs, and each pair gives one graph. The next video uses Euler's formula to prove that K 5 and K 3 3 are not planar.
