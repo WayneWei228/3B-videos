@@ -219,137 +219,137 @@ An edge k colouring of a graph G gives each edge one of k colours, so that two e
 Look at the edges of one colour. At each vertex there is at most one of them. So they form a matching.
 
 56
-00:11:31,971 --> 00:11:34,190
+00:11:31,971 --> 00:11:34,147
 The same is true for the second colour.
 
 57
-00:11:34,640 --> 00:11:36,261
+00:11:34,597 --> 00:11:36,219
 And for the third colour.
 
 58
-00:11:36,711 --> 00:11:48,082
+00:11:36,669 --> 00:11:48,039
 So an edge k colouring is the same as a split of the edges of G into k matchings. The notes draw the colours with line styles; here we use real colours.
 
 59
-00:11:48,532 --> 00:12:00,799
+00:11:48,489 --> 00:12:00,756
 First, a lower bound on the number of colours. At a vertex v, the deg v edges all need different colours. So k must be at least delta, the maximum degree of G.
 
 60
-00:12:01,249 --> 00:12:14,859
+00:12:01,206 --> 00:12:14,817
 This lower bound is not always enough. The triangle K 3 has maximum degree 2. But any two of its edges share an end, so it needs 3 colours. This is Problem Set 8.8 number 1.
 
 61
-00:12:15,309 --> 00:12:27,896
+00:12:15,267 --> 00:12:27,853
 For bipartite graphs, delta colours are always enough. This is Theorem 8.7.1: a bipartite graph with maximum degree delta has an edge delta colouring.
 
 62
-00:12:28,346 --> 00:12:46,799
+00:12:28,303 --> 00:12:46,757
 The proof uses Lemma 8.7.2: a bipartite graph with at least one edge has a matching that saturates every vertex of maximum degree. In a regular graph, every vertex has maximum degree. So this lemma includes Theorem 8.6.2.
 
 63
-00:12:47,249 --> 00:13:15,772
+00:12:47,207 --> 00:13:15,729
 Here is the proof of Lemma 8.7.2. Let K be the set of vertices of maximum degree. Among all maximum matchings, choose M so that it leaves as few vertices of K unsaturated as possible. Suppose some vertex of K is not saturated. By swapping the names A and B, we can say it is in A. Do the X Y construction, but let X 0 be only the unsaturated vertices of A intersect K.
 
 64
-00:13:16,222 --> 00:13:44,062
+00:13:16,179 --> 00:13:44,019
 Claim: every vertex w of X has degree delta. Suppose w has smaller degree. P of w has even length. Swap its edges. The size of the matching stays the same, so it is still maximum. The start of the path is now saturated, and it is in K. Only w becomes unsaturated, and w is not in K. So fewer vertices of K are unsaturated. That contradicts the choice of M.
 
 65
-00:13:44,512 --> 00:13:56,053
+00:13:44,469 --> 00:13:56,011
 M is a maximum matching, so there is no augmenting path. So every vertex u of Y is saturated, and by the construction its matching edge goes to X.
 
 66
-00:13:56,503 --> 00:14:08,386
+00:13:56,461 --> 00:14:08,343
 Each vertex of Y has a matching edge to its own vertex of X. X also contains at least one unsaturated vertex. So X has more vertices than Y.
 
 67
-00:14:08,836 --> 00:14:17,199
+00:14:08,793 --> 00:14:17,156
 As in Lemma 8.3.2, there is no edge from X to B minus Y. So all neighbours of X are in Y.
 
 68
-00:14:17,649 --> 00:14:37,489
+00:14:17,606 --> 00:14:37,446
 Now count. Delta times Y is less than delta times X. Every vertex of X has degree delta, so delta times X is the degree sum over X. All these edges end in Y, so this is at most the degree sum over Y. And each degree in Y is at most delta.
 
 69
-00:14:37,939 --> 00:14:46,579
+00:14:37,896 --> 00:14:46,536
 So delta times Y is less than delta times Y. This is a contradiction. So M saturates every vertex of K.
 
 70
-00:14:47,029 --> 00:15:07,253
+00:14:46,986 --> 00:15:07,210
 Now the proof of Theorem 8.7.1, by induction on delta. If delta is 0, there are no edges, and 0 colours are enough. Now let delta be m, at least 1, and assume the result for smaller delta. In the example, m is 3. The red vertices have degree 3.
 
 71
-00:15:07,703 --> 00:15:18,049
+00:15:07,660 --> 00:15:18,007
 By Lemma 8.7.2, some matching M saturates every vertex of degree m. Give its edges a new colour, blue, and delete them.
 
 72
-00:15:18,499 --> 00:15:38,275
+00:15:18,457 --> 00:15:38,233
 Every vertex of degree m lost one edge. So the rest of the graph, H, has maximum degree m minus 1. By the induction hypothesis, H has an edge colouring with m minus 1 colours. With blue, G has m colours. The red vertices now have degree 2.
 
 73
-00:15:38,725 --> 00:15:46,000
+00:15:38,683 --> 00:15:45,957
 Apply the lemma again. This matching saturates the vertices of degree 2. Colour it orange and delete it.
 
 74
-00:15:46,450 --> 00:15:51,869
+00:15:46,407 --> 00:15:51,826
 Now every vertex has degree at most 1. The red vertices have degree 1.
 
 75
-00:15:52,319 --> 00:16:00,361
+00:15:52,276 --> 00:16:00,319
 The rest is a matching. Colour it purple. Three matchings give an edge 3 colouring. The proof is also an algorithm.
 
 76
-00:16:00,811 --> 00:16:20,673
+00:16:00,769 --> 00:16:20,630
 Section 8.8 applies this to timetables. Here is a small example. Instructors P, Q and R teach courses C 1, C 2 and C 3. Each class is one edge, from its instructor to its course. P teaches two sections of C 1, so there are two edges.
 
 77
-00:16:21,123 --> 00:16:42,093
+00:16:21,080 --> 00:16:42,051
 In one time slot, an instructor teaches at most one class, and two sections of one course do not run together. So the classes in one slot form a matching. Slots are colours. By Theorem 8.7.1, the fewest slots is delta. Course C 1 has 4 sections, so delta is 4.
 
 78
-00:16:42,543 --> 00:16:52,869
+00:16:42,501 --> 00:16:52,826
 Here is an edge 4 colouring, found by search. Each colour is one slot. Three slots are impossible, because C 1 needs 4 different slots.
 
 79
-00:16:53,319 --> 00:17:14,801
+00:16:53,276 --> 00:17:14,759
 Now add a room limit: at most m classes in one slot. With q classes, we need at least q over m slots. Theorem 8.8.1 says: if G has an edge k colouring, and q is at most k times m, then G has an edge k colouring that uses each colour at most m times.
 
 80
-00:17:15,251 --> 00:17:37,225
+00:17:15,209 --> 00:17:37,182
 Proof. Suppose a colour, red, is used at least m plus 1 times. If every other colour is used at least m times, then q is at least m plus 1 plus m times k minus 1, which is more than k times m. That is false. So some colour, blue, is used at most m minus 1 times.
 
 81
-00:17:37,675 --> 00:18:00,288
+00:17:37,632 --> 00:18:00,245
 Take only the red and blue edges. Each vertex has at most one red and one blue edge. So each component is a path or a cycle with alternating colours, and a cycle has equal numbers. Red has more edges than blue, so some component is a path with more red edges. It is an augmenting path for the blue matching.
 
 82
-00:18:00,738 --> 00:18:17,762
+00:18:00,695 --> 00:18:17,719
 Swap the colours on this path. Red loses one edge. Blue gains one, so it is used at most m times. Repeat until every colour is used at most m times. In the example, red goes from 4 to 3 and blue from 2 to 3.
 
 83
-00:18:18,212 --> 00:18:37,540
+00:18:18,169 --> 00:18:37,497
 Theorems 8.7.1 and 8.8.1 together give Corollary 8.8.2. A bipartite graph has an edge k colouring that uses each colour at most m times if and only if delta is at most k and q is at most k times m.
 
 84
-00:18:37,990 --> 00:18:43,067
+00:18:37,947 --> 00:18:43,003
 So the fewest slots is the larger of delta and q over m, rounded up.
 
 85
-00:18:43,517 --> 00:18:51,752
+00:18:43,453 --> 00:18:51,709
 In our timetable, q is 9 and delta is 4. With 3 rooms, q over m is 3. So 4 slots are enough.
 
 86
-00:18:52,202 --> 00:19:09,802
+00:18:52,159 --> 00:19:09,759
 With 2 rooms, 9 over 2 rounded up is 5. So we need 5 slots. Here is a schedule with 5 slots and at most 2 classes in each. A search confirms that 4 slots with 2 rooms is impossible: 4 times 2 is only 8.
 
 87
-00:19:10,252 --> 00:19:26,188
+00:19:10,209 --> 00:19:26,145
 To recap. Hall's Theorem: a matching saturates A if and only if every subset D of A has at least D neighbours. We proved it from König's Theorem. For sets, it says when a system of distinct representatives exists.
 
 88
-00:19:26,638 --> 00:19:35,406
+00:19:26,595 --> 00:19:35,363
 A perfect matching needs equal sides and Hall's condition. Every k regular bipartite graph has a perfect matching.
 
 89
-00:19:35,856 --> 00:19:55,909
+00:19:35,813 --> 00:19:55,867
 An edge colouring is a split into matchings. A bipartite graph needs only delta colours: peel off one matching for each colour. For a timetable with at most m classes per slot, the fewest slots is the larger of delta and q over m, rounded up. This completes chapter 8.
