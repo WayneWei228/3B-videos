@@ -1,0 +1,355 @@
+1
+00:00:00,000 --> 00:00:09,288
+This is MATH 239, video 17 b. The topic is quadratic recurrences and the Catalan numbers, section 4.4 of the course notes.
+
+2
+00:00:09,738 --> 00:00:26,967
+After this video, you can solve a quadratic equation for a generating series and choose the correct sign. You can use the general binomial series. You can prove Proposition 4.22, count well-formed parenthesizations, and solve Exercise 4.12 and a practice question.
+
+3
+00:00:27,417 --> 00:00:42,598
+In video 15 we saw: g satisfies a homogeneous linear recurrence exactly when G of x is P over Q. We can write this as Q of x times G of x, minus P of x, equals 0. This is a linear equation for G of x.
+
+4
+00:00:43,048 --> 00:00:57,630
+Definition 4.19. g satisfies a quadratic recurrence if G of x solves a quadratic equation. A of x times G of x squared, plus B of x times G of x, plus C of x, equals 0. Here A, B and C are power series.
+
+5
+00:00:58,080 --> 00:01:11,130
+Why is this a recurrence? G of x squared has products of coefficients. The grid shows g i times g j. The cell in row i and column j belongs to x to the i plus j.
+
+6
+00:01:11,580 --> 00:01:24,304
+The coefficient of x cubed in G squared is the sum on the purple diagonal, where i plus j equals 3. So the coefficient of x to the n in the equation gives g sub n from sums of products of earlier terms.
+
+7
+00:01:24,754 --> 00:01:34,553
+Solve the quadratic equation with the Quadratic Formula. G plus or minus equals minus B, plus or minus the square root of B squared minus 4 A C, all over 2 A.
+
+8
+00:01:35,003 --> 00:01:41,644
+We need the square root of a power series. The general binomial series gives it. The next slides show this series.
+
+9
+00:01:42,094 --> 00:01:55,376
+The formula gives two solutions. A generating series of combinatorial objects has only nonnegative coefficients and nonnegative exponents. The notes say: in general, only one of the two solutions is correct.
+
+10
+00:01:55,826 --> 00:02:03,860
+So we keep the solution with these properties. The notes say that CO 330 gives the full justification of this algebra with power series.
+
+11
+00:02:04,310 --> 00:02:23,675
+Definition 4.20. For any complex number alpha and any natural number k, alpha choose k is 1 over k factorial, times alpha, times alpha minus 1, and so on, down to alpha minus k plus 1. For k equal to 0, the product is empty, so alpha choose 0 is 1.
+
+12
+00:02:24,125 --> 00:02:33,134
+Take alpha equal to one half. For k equal to 1, there is one factor, one half. Divide by 1 factorial. The result is one half.
+
+13
+00:02:33,584 --> 00:02:42,408
+For k equal to 2, the factors are one half and minus one half. The product is minus one quarter. Divide by 2. The result is minus one eighth.
+
+14
+00:02:42,858 --> 00:02:52,242
+For k equal to 3, add the factor minus three halves. The product is three eighths. Divide by 6. The result is one sixteenth.
+
+15
+00:02:52,692 --> 00:03:10,478
+For k equal to 4, add minus five halves. Divide by 24. The result is minus 5 over 128. There are k factors, so alpha choose k is a polynomial in alpha of degree k. For a natural number alpha it is the usual binomial coefficient.
+
+16
+00:03:10,928 --> 00:03:30,154
+Theorem 4.21, the Binomial Series. For any complex number alpha, 1 plus x to the alpha equals the sum over k of alpha choose k, x to the k. The notes give a sketch of the proof with Taylor's Theorem. Start with the function 1 plus x to the alpha.
+
+17
+00:03:30,604 --> 00:03:35,581
+Take the derivative. It is alpha times 1 plus x to the alpha minus 1.
+
+18
+00:03:36,031 --> 00:03:48,848
+Each derivative brings down the exponent as a new factor. The k th derivative is alpha, times alpha minus 1, and so on, times alpha minus k plus 1, times 1 plus x to the alpha minus k.
+
+19
+00:03:49,298 --> 00:04:03,462
+Put x equal to 0, so 1 plus x to any power is 1. Divide by k factorial. The Taylor coefficient is alpha choose k. The function is analytic for x of absolute value less than 1, so this Taylor series is correct.
+
+20
+00:04:03,912 --> 00:04:18,170
+Use the theorem with alpha equal to one half. The coefficients are the numbers from the last slide. Check the result: square the series. The grid has the products of the coefficients. The diagonal for x to the 0 has one cell, 1.
+
+21
+00:04:18,620 --> 00:04:24,285
+The diagonal for x to the 1 has two cells, one half and one half. The sum is 1.
+
+22
+00:04:24,735 --> 00:04:31,283
+The diagonal for x squared gives minus one eighth, plus one quarter, minus one eighth. The sum is 0.
+
+23
+00:04:31,733 --> 00:04:34,891
+The diagonal for x cubed also sums to 0.
+
+24
+00:04:35,341 --> 00:04:42,121
+The diagonal for x to the 4 also sums to 0. So the square is 1 plus x, as it must be.
+
+25
+00:04:42,571 --> 00:04:55,760
+Proposition 4.22 gives the series of the square root of 1 minus 4 x. The proof starts with Theorem 4.21. Put alpha equal to one half, and put minus 4 x in place of x.
+
+26
+00:04:56,210 --> 00:05:00,390
+The first row is one half choose k, for k from 0 to 5.
+
+27
+00:05:00,840 --> 00:05:02,883
+The second row is minus 4 to the k.
+
+28
+00:05:03,333 --> 00:05:18,287
+Multiply the columns. The coefficients are 1, minus 2, minus 2, minus 4, minus 10, minus 28. For k equal to 0 the coefficient is 1. The next slide shows the general formula for k at least 1.
+
+29
+00:05:18,737 --> 00:05:31,925
+For k at least 1, write out one half choose k. There are k factors: one half, minus one half, minus three halves, and so on. The picture shows k equal to 4.
+
+30
+00:05:32,375 --> 00:05:42,871
+The k minus 1 factors after the first are negative. Together with minus 1 to the k, one minus sign is left. So the result is negative, and every factor becomes positive.
+
+31
+00:05:43,321 --> 00:06:02,036
+Each of the k factors has a 2 in the denominator. 4 to the k over 2 to the k is 2 to the k. Write one 2 out as 2 to the k minus 1 times 2, and use the 2 for the factor one half. The numerators are 1, 1, 3, 5, up to 2 k minus 3.
+
+32
+00:06:02,486 --> 00:06:16,758
+Now multiply and divide by the even numbers 2, 4, up to 2 k minus 2. The odd numbers times the even numbers give 2 k minus 2 factorial. For k equal to 4, 1, 3, 5 times 2, 4, 6 is 6 factorial.
+
+33
+00:06:17,208 --> 00:06:42,100
+Each even number is 2 times a number from 1 to k minus 1. So the product of the even numbers is 2 to the k minus 1, times k minus 1 factorial. Also k factorial is k times k minus 1 factorial. The result is minus 2 over k, times 2 k minus 2 choose k minus 1. For k equal to 4, this is minus 2 over 4 times 20, which is minus 10.
+
+34
+00:06:42,550 --> 00:06:57,921
+The notes ask a question: where did we use the fact that k is at least 1? For k equal to 0, the coefficient is 1. The formula 2 over k, times 2 k minus 2 choose k minus 1, has no meaning at k equal to 0.
+
+35
+00:06:58,371 --> 00:07:15,554
+The calculation takes out the first factor, one half, and keeps one minus sign. For k equal to 0 there are no factors. The last lines also use k minus 1 factorial and divide by k. So the formula covers only k at least 1, and the proposition writes the term 1 separately.
+
+36
+00:07:16,004 --> 00:07:24,735
+The Catalan numbers are C n equals 1 over n plus 1, times 2 n choose n. The table shows C 0 to C 10, as in the notes.
+
+37
+00:07:25,185 --> 00:07:32,383
+For example, C 3 is one quarter of 6 choose 3. 6 choose 3 is 20, so C 3 is 5.
+
+38
+00:07:32,833 --> 00:07:41,238
+C 4 is one fifth of 8 choose 4. That is 70 over 5, which is 14. The next example counts objects with these numbers.
+
+39
+00:07:41,688 --> 00:08:02,122
+Example 4.23. A well-formed parenthesization, or W F P, is a sequence of n opening and n closing parentheses that match together by the usual rules. Its size is the number of opening parentheses. Here are the five W F Ps of size 3. The arcs join the matching pairs.
+
+40
+00:08:02,572 --> 00:08:07,262
+Each closing parenthesis matches the nearest opening one to its left that has no match yet.
+
+41
+00:08:07,712 --> 00:08:21,529
+Here are the fourteen W F Ps of size 4, as in the notes. The counts 5 and 14 are Catalan numbers. Let w sub n be the number of W F Ps of size n. The goal is to find w sub n for every n.
+
+42
+00:08:21,979 --> 00:08:25,741
+How do we test that a sequence matches? Here is a well-formed example.
+
+43
+00:08:26,191 --> 00:08:36,501
+Read from left to right. Count plus 1 for each opening parenthesis and minus 1 for each closing one. Call the count the depth. Here it never goes below 0, and it ends at 0.
+
+44
+00:08:36,951 --> 00:08:46,842
+In the second sequence, the third symbol makes the depth minus 1. This closing parenthesis has no partner. So the sequence is not well-formed.
+
+45
+00:08:47,292 --> 00:08:52,819
+Take any W F P gamma that is not empty. Here gamma has size 5.
+
+46
+00:08:53,269 --> 00:08:56,891
+It begins with an opening parenthesis. It is orange.
+
+47
+00:08:57,341 --> 00:09:03,425
+Exactly one closing parenthesis matches it. It is at the first place where the depth returns to 0.
+
+48
+00:09:03,875 --> 00:09:29,740
+So gamma is an opening parenthesis, then alpha, then the matching closing parenthesis, then beta. Alpha and beta are W F Ps themselves, and either one can be empty. Here alpha has size 2 and beta has size 2. The size of gamma is 1 plus the size of alpha plus the size of beta: 5 equals 1 plus 2 plus 2.
+
+49
+00:09:30,190 --> 00:09:45,329
+Look at the five W F Ps of size 3, split as open, alpha, close, beta. Alpha is blue and beta is purple. When alpha has size 0, beta has size 2. There are 1 times 2 such W F Ps.
+
+50
+00:09:45,779 --> 00:09:49,680
+When alpha has size 1, beta has size 1. There is 1 times 1.
+
+51
+00:09:50,130 --> 00:09:54,774
+When alpha has size 2, beta is empty. There are 2 times 1.
+
+52
+00:09:55,224 --> 00:10:09,435
+The converse also holds: for any W F Ps alpha and beta, open, alpha, close, beta is a W F P. So the split is a bijection. The count is 2 plus 1 plus 2, which is 5.
+
+53
+00:10:09,885 --> 00:10:20,081
+The notes write 0 for an opening parenthesis and 1 for a closing one. Then a W F P is a binary string. Let script W be the set of these strings.
+
+54
+00:10:20,531 --> 00:10:33,859
+The decomposition gives the recursive expression: script W equals epsilon, or 0, W, 1, W. The last two slides show that the split of each string is unique. So the recursive expression is unambiguous.
+
+55
+00:10:34,309 --> 00:10:45,501
+Let W of x be the generating series of W F Ps with respect to size. Split the sum. The empty string has size 0. It gives x to the 0, which is 1.
+
+56
+00:10:45,951 --> 00:10:58,536
+Every other gamma is open, alpha, close, beta, for exactly one pair alpha, beta. Its size is 1 plus the size of alpha plus the size of beta. So the sum runs over all pairs.
+
+57
+00:10:58,986 --> 00:11:12,454
+The double sum is x times the sum over alpha, times the sum over beta. Each of these sums is W of x. So W of x equals 1 plus x times W of x squared. This is a quadratic equation.
+
+58
+00:11:12,904 --> 00:11:18,049
+Take the coefficient of x to the n on both sides, for n at least 1. The 1 gives nothing.
+
+59
+00:11:18,499 --> 00:11:34,056
+x times W squared moves the coefficients one place. So w sub n is the sum over i from 0 to n minus 1 of w i times w n minus 1 minus i. This is the quadratic recurrence. w 0 is 1.
+
+60
+00:11:34,506 --> 00:11:47,184
+The grid shows the products w i times w j. For w 4, add the diagonal where i plus j equals 3: 5 plus 2 plus 2 plus 5. So w 4 is 14.
+
+61
+00:11:47,634 --> 00:11:57,480
+In the same way, w 1 is 1, w 2 is 2, and w 3 is 5. Each term of the sum counts the W F Ps whose alpha has size i.
+
+62
+00:11:57,930 --> 00:12:21,568
+Write the equation as x W squared minus W plus 1 equals 0. Here A is x, B is minus 1, and C is 1. The Quadratic Formula gives two solutions: 1 plus or minus the square root of 1 minus 4 x, over 2 x. The top row is the series of the square root, from Proposition 4.22.
+
+63
+00:12:22,018 --> 00:12:33,674
+With the plus sign, the numerator starts with 2. Division by 2 x gives 1 over x, a negative exponent. The other coefficients are negative. This cannot count objects. Reject it.
+
+64
+00:12:34,124 --> 00:12:51,539
+With the minus sign, the constant terms cancel. The numerator is 0, 2, 2, 4, 10, 28. Division by 2 x moves every coefficient one place to the left and halves it. The result is 1, 1, 2, 5, 14. These are the counts of W F Ps.
+
+65
+00:12:51,989 --> 00:13:07,918
+Now the exact formula. By Proposition 4.22, 1 minus the square root of 1 minus 4 x is 2 times the sum over k at least 1 of 1 over k, times 2 k minus 2 choose k minus 1, x to the k.
+
+66
+00:13:08,368 --> 00:13:13,105
+Divide by 2 x. The 2 cancels, and every power of x drops by 1.
+
+67
+00:13:13,555 --> 00:13:28,601
+Put n equal to k minus 1. Then k is n plus 1, and 2 k minus 2 is 2 n. So w sub n is 1 over n plus 1, times 2 n choose n. The number of W F Ps of size n is the n th Catalan number.
+
+68
+00:13:29,051 --> 00:13:33,695
+The generating series W of x has a square root. It is not a rational function.
+
+69
+00:13:34,145 --> 00:13:48,217
+Theorem 3.13 says that an unambiguous regular expression gives a rational generating series. The notes conclude that the set of W F Ps is not a rational language. Regular expressions cannot describe it, but the recursive expression can.
+
+70
+00:13:48,667 --> 00:13:59,394
+Exercise 4.12 part a. Pause the video and try it. Show that 1 over the square root of 1 minus 4 x is the sum of 2 k choose k, x to the k.
+
+71
+00:13:59,844 --> 00:14:16,098
+Use Theorem 4.21 with alpha equal to minus one half, and minus 4 x in place of x. The coefficient of x to the k is minus one half choose k, times minus 4 to the k. The rows show both numbers for k from 0 to 4.
+
+72
+00:14:16,548 --> 00:14:30,202
+Write out the k factors. Each factor is negative, so the k minus signs cancel the minus 1 to the k. 4 to the k over 2 to the k is 2 to the k. The numerators are the odd numbers 1, 3, up to 2 k minus 1.
+
+73
+00:14:30,652 --> 00:14:39,876
+2 to the k times k factorial is the product of the even numbers 2, 4, up to 2 k. Multiply the top and the bottom by k factorial.
+
+74
+00:14:40,326 --> 00:14:58,623
+The odd numbers times the even numbers give 2 k factorial. So the coefficient is 2 k factorial over k factorial squared, which is 2 k choose k. The last row gives 1, 2, 6, 20, 70. For k equal to 0, both sides are 1.
+
+75
+00:14:59,073 --> 00:15:09,615
+Part b. Pause the video and try it. Show that the sum over j of 2 j choose j, times 2 n minus 2 j choose n minus j, equals 4 to the n.
+
+76
+00:15:10,065 --> 00:15:19,724
+Square the series from part a. The square of 1 over the square root of 1 minus 4 x is 1 over 1 minus 4 x. Its coefficients are 4 to the n.
+
+77
+00:15:20,174 --> 00:15:33,920
+By the product formula, the coefficient of x to the n in the square is the sum over j of 2 j choose j, times 2 n minus 2 j choose n minus j. The grid shows the products. The purple diagonal is n equal to 3.
+
+78
+00:15:34,370 --> 00:15:46,073
+Two equal series have equal coefficients. So the sum equals 4 to the n. For n equal to 3: 20 plus 12 plus 12 plus 20 is 64, which is 4 cubed.
+
+79
+00:15:46,523 --> 00:15:53,489
+Part c asks for a combinatorial proof. The notes give no answer, and this video does not cover it.
+
+80
+00:15:53,939 --> 00:16:07,111
+A practice question. Pause the video and try it. A power series H of x satisfies H equals 1 plus x H plus x squared H squared. Part a: find a recurrence and the first terms.
+
+81
+00:16:07,561 --> 00:16:23,629
+Take the coefficient of x to the n. The 1 gives h 0 equals 1. x H gives h n minus 1. x squared H squared gives the sum over i of h i times h n minus 2 minus i. The sum is empty for n equal to 1.
+
+82
+00:16:24,079 --> 00:16:33,228
+For example, h 4 is h 3 plus the diagonal where i plus j equals 2. That is 4 plus 2 plus 1 plus 2, which is 9.
+
+83
+00:16:33,678 --> 00:16:39,501
+So the first terms are 1, 1, 2, 4, 9, 21, 51.
+
+84
+00:16:39,951 --> 00:17:03,728
+Part b. Move all terms to one side. x squared H squared, plus x minus 1 times H, plus 1, equals 0. So A is x squared, B is x minus 1, and C is 1. B squared minus 4 A C is 1 minus 2 x minus 3 x squared. The row shows its square root, from the binomial series.
+
+85
+00:17:04,178 --> 00:17:14,302
+The Quadratic Formula gives two solutions. With the plus sign, the numerator starts with 2. Division by 2 x squared gives a term x to the minus 2. Reject it.
+
+86
+00:17:14,752 --> 00:17:33,700
+So H is 1 minus x minus the square root, over 2 x squared. Check: for n at least 0, h sub n is minus one half times the coefficient of x to the n plus 2 in the square root. This gives 1, 1, 2, 4, 9, the same values as part a.
+
+87
+00:17:34,150 --> 00:17:45,342
+To recap. A quadratic recurrence means a quadratic equation for the generating series. Solve it with the Quadratic Formula, and keep the solution with nonnegative exponents and coefficients.
+
+88
+00:17:45,792 --> 00:18:00,234
+The general binomial coefficient and Theorem 4.21 give the square roots. Proposition 4.22 gives the series of the square root of 1 minus 4 x, and Exercise 4.12 gives the series of 1 over it.
+
+89
+00:18:00,684 --> 00:18:14,988
+Well-formed parenthesizations split as open, alpha, close, beta. This gives W equals 1 plus x W squared, and the number of size n is the Catalan number C n. Video 18 is the practice midterm walkthrough.
