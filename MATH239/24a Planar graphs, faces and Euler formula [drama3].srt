@@ -1,0 +1,291 @@
+1
+00:00:00,000 --> 00:00:11,099
+This is MATH 239, video 24 a. The topic is planar graphs: faces, the Faceshaking Lemma, and Euler's formula. This is chapter 7 of the graph theory notes.
+
+2
+00:00:11,549 --> 00:00:25,435
+After this video, you can say what a planar graph is. You can find the faces of a drawing and their degrees. You can use the Faceshaking Lemma. You can prove Euler's formula and use it. And you can explain stereographic projection.
+
+3
+00:00:25,885 --> 00:00:38,377
+A graph is an abstract object: a set of vertices and a set of edges. We can draw the same graph in many ways. Here is K 4, the complete graph on four vertices, drawn as a square with both diagonals.
+
+4
+00:00:38,827 --> 00:00:44,075
+In this drawing, the edges a c and b d cross at a point that is not a vertex.
+
+5
+00:00:44,525 --> 00:00:54,788
+Draw the same graph again. Move vertex d into the triangle a b c. Now no two edges cross. The graph did not change. Only the drawing changed.
+
+6
+00:00:55,238 --> 00:01:14,557
+Definition 7.1.1. A graph is planar if it has a drawing in the plane in which edges meet only at their ends, and no two vertices are at the same point. The drawing itself is a planar embedding, or a planar map. So K 4 is planar. One bad drawing does not make a graph nonplanar.
+
+7
+00:01:15,007 --> 00:01:25,270
+The 3-cube has the 8 binary strings of length 3 as vertices. Two strings are adjacent when they differ in exactly one bit. It has 12 edges.
+
+8
+00:01:25,720 --> 00:01:34,711
+The usual picture draws a front square and a back square. In this drawing, two pairs of edges cross. The red circles mark the crossings.
+
+9
+00:01:35,161 --> 00:01:47,932
+Figure 7.1 draws the back square inside the front square. Check the 12 edges: each vertex of the inner square joins the corner next to it. No edges cross. So the 3-cube is planar.
+
+10
+00:01:48,382 --> 00:01:54,791
+A graph is planar if and only if each of its components is planar. So we usually study connected graphs.
+
+11
+00:01:55,241 --> 00:02:06,711
+Here is Figure 7.2 from the notes. It has 12 vertices and 14 edges. The edges of a planar embedding cut the plane into connected regions. These regions are the faces.
+
+12
+00:02:07,161 --> 00:02:13,291
+Face f 1 is the region inside the four-cycle on the left. The short edge d e sticks into it.
+
+13
+00:02:13,741 --> 00:02:17,410
+Face f 2 is the inside of the triangle d f g.
+
+14
+00:02:17,860 --> 00:02:21,064
+Face f 3 is the inside of the five-cycle on the right.
+
+15
+00:02:21,514 --> 00:02:28,620
+Face f 4 is everything outside. It is the outer face, and it is unbounded. So this embedding has 4 faces.
+
+16
+00:02:29,070 --> 00:02:35,060
+The boundary of a face is the subgraph of the vertices and edges on the face. Look at face f 1.
+
+17
+00:02:35,510 --> 00:02:46,610
+Move around the whole perimeter of the face, and keep the face on one side. Start at a. Go to b, then c, then d. The orange arrows run on the inside of the face.
+
+18
+00:02:47,060 --> 00:02:54,583
+From d, the walk goes along the edge d e to the end vertex e. It cannot go further, so it turns around.
+
+19
+00:02:55,033 --> 00:03:12,680
+It comes back from e to d, and then goes from d to a. The walk is closed: it ends where it started. This closed walk is the boundary walk of f 1. The degree of a face is the number of edges in its boundary walk. Here there are 6, so the degree of f 1 is 6.
+
+20
+00:03:13,130 --> 00:03:27,981
+The edge d e is a bridge. Both of its sides touch the same face. So it is in the walk twice, once for each side, and it adds 2 to the degree. The walk can start at any vertex and go in either direction.
+
+21
+00:03:28,431 --> 00:03:34,794
+Face f 2 is the inside of a triangle. Its boundary walk has 3 edges, so its degree is 3.
+
+22
+00:03:35,244 --> 00:03:39,191
+Face f 3 is the inside of a five-cycle. Its degree is 5.
+
+23
+00:03:39,641 --> 00:04:03,093
+Now the outer face f 4. Its walk goes around the outside of everything. It uses the 4 edges of the left cycle, the 3 edges of the triangle, the bridge f h twice, and the 5 edges of the right cycle. 4 plus 3 plus 2 plus 5 is 14. So the degree of f 4 is 14. The notes give the same four degrees: 6, 3, 5 and 14.
+
+24
+00:04:03,543 --> 00:04:15,060
+Here is the rule. A bridge touches only one face, and that walk uses it twice. An edge on a cycle touches exactly two faces, and each of the two walks uses it once.
+
+25
+00:04:15,510 --> 00:04:25,681
+Look at an edge on a cycle, in orange. The cycle separates the inside from the outside. So the two sides of the edge are on two different faces, f and g.
+
+26
+00:04:26,131 --> 00:04:34,954
+Now a tree with 6 vertices and 5 edges. A tree has no cycles, so nothing separates the plane. There is only one face.
+
+27
+00:04:35,404 --> 00:04:52,401
+Walk around the tree. Every edge is a bridge, so the walk uses every edge twice, once on each side. The 10 numbered arrows show this. So a planar embedding of a tree has one face, of degree 2 times the number of edges. That is 2 times the number of vertices, minus 2.
+
+28
+00:04:52,851 --> 00:04:58,470
+Add up the face degrees of Figure 7.2. Face f 1 gives 6.
+
+29
+00:04:58,920 --> 00:05:01,010
+Face f 2 gives 3.
+
+30
+00:05:01,460 --> 00:05:03,132
+Face f 3 gives 5.
+
+31
+00:05:03,582 --> 00:05:05,440
+Face f 4 gives 14.
+
+32
+00:05:05,890 --> 00:05:19,543
+The total is 28. The graph has 14 edges, and 28 is 2 times 14. This is Theorem 7.1.2. For a planar embedding of a connected graph, the sum of the face degrees is 2 times the number of edges.
+
+33
+00:05:19,993 --> 00:05:32,578
+The proof: each edge has two sides. A cycle edge puts one side in each of two faces. A bridge puts both sides in one face. Either way, the sum counts each edge exactly twice.
+
+34
+00:05:33,028 --> 00:05:52,394
+Compare the Handshaking Lemma: the vertex degrees also add to 2 times the number of edges. So the notes call this the Faceshaking Lemma. Corollary 7.1.3: the average degree of a face is 2 times the number of edges, divided by the number of faces. Here, 28 over 4 is 7.
+
+35
+00:05:52,844 --> 00:06:01,574
+Figure 7.3 is a planar embedding of a graph with 3 components: a five-cycle, two triangles that share an edge, and a single edge.
+
+36
+00:06:02,024 --> 00:06:12,102
+Face f, in orange, is inside the five-cycle and outside the other two components. Its boundary is in three pieces, so there is no single closed walk around it.
+
+37
+00:06:12,552 --> 00:06:21,236
+For such a face, the degree is the sum of the lengths of the boundary walks around each component. Inside the five-cycle, the walk has length 5.
+
+38
+00:06:21,686 --> 00:06:27,445
+Around the outside of the two triangles, the walk has length 4. The shared edge is not on face f.
+
+39
+00:06:27,895 --> 00:06:32,028
+Around the single edge, the walk has length 2: one time on each side.
+
+40
+00:06:32,478 --> 00:06:53,794
+So the degree of f is 5 plus 4 plus 2, which is 11. Each edge is still counted twice in total. Check: the outer face has degree 5, face f has 11, and the two triangles have 3 each. The sum is 22, and the graph has 11 edges. So Theorem 7.1.2 holds for disconnected graphs too.
+
+41
+00:06:54,244 --> 00:07:08,357
+Here is the main result of this video, Euler's formula. Let G be a connected graph with p vertices and q edges. If G has a planar embedding with f faces, then p minus q plus f equals 2.
+
+42
+00:07:08,807 --> 00:07:17,584
+Check Figure 7.2. It has 12 vertices, 14 edges and 4 faces. 12 minus 14 plus 4 is 2.
+
+43
+00:07:18,034 --> 00:07:28,251
+Check the 3-cube. It has 8 vertices and 12 edges. Its embedding has 6 faces, each of degree 4. 8 minus 12 plus 6 is 2.
+
+44
+00:07:28,701 --> 00:07:37,896
+A connected planar graph can have very different embeddings. But f equals 2 minus p plus q in each of them. So all of its planar embeddings have the same number of faces.
+
+45
+00:07:38,346 --> 00:07:44,615
+Now the proof from the notes. Fix the number of vertices p. We use induction on the number of edges q.
+
+46
+00:07:45,065 --> 00:07:55,654
+G is connected, so it has a spanning tree. A spanning tree has p minus 1 edges. So q is at least p minus 1. The smallest case is q equals p minus 1.
+
+47
+00:07:56,104 --> 00:08:09,804
+Base case: q equals p minus 1. Then G is a tree. A tree has no cycles, so any planar embedding of it has exactly one face. p minus, p minus 1, plus 1 equals 2. The formula holds.
+
+48
+00:08:10,254 --> 00:08:16,523
+This uses a fact from chapter 5: a connected graph with p vertices and p minus 1 edges is a tree.
+
+49
+00:08:16,973 --> 00:08:39,403
+Inductive step. Let q be larger than p minus 1. Assume Euler's formula holds for every connected graph on p vertices with fewer than q edges. G has more edges than a tree, so G is not a tree. So G has a cycle, and an edge e on that cycle is not a bridge. On the left, e is orange. The faces on its two sides are different.
+
+50
+00:08:39,853 --> 00:08:56,293
+Delete e. G minus e is still connected, because e is not a bridge. It has p vertices and q minus 1 edges. Its embedding is the old drawing without e. Say it has f 1 faces. On the right, the two faces became one purple face.
+
+51
+00:08:56,743 --> 00:09:06,495
+By the induction hypothesis, p minus, q minus 1, plus f 1 equals 2. So f 1 equals q plus 1 minus p.
+
+52
+00:09:06,945 --> 00:09:18,184
+Now put e back into the drawing. It cuts one face into two faces. So the embedding of G has one more face: f equals f 1 plus 1, which is q plus 2 minus p.
+
+53
+00:09:18,634 --> 00:09:25,553
+Then p minus q plus f equals p minus q plus q plus 2 minus p, which is 2. This completes the induction.
+
+54
+00:09:26,003 --> 00:09:40,400
+Run the proof on a small example. This graph has 6 vertices and 8 edges. Its embedding has 4 faces: three bounded faces and the outer face. 6 minus 8 plus 4 is 2. The orange edge is on a cycle.
+
+55
+00:09:40,850 --> 00:09:49,348
+Delete the orange edge. Two faces merge into one. Now there are 7 edges and 3 faces. 6 minus 7 plus 3 is still 2.
+
+56
+00:09:49,798 --> 00:09:56,904
+Delete the next orange edge. Again two faces merge. 6 edges and 2 faces. The value is still 2.
+
+57
+00:09:57,354 --> 00:10:17,312
+Delete one more edge. Now there are 5 edges, and the graph is a spanning tree. It has one face. 6 minus 5 plus 1 is 2. Each step removes one edge and one face together. So p minus q plus f does not change. The proof reads this film backwards, from the tree up to G.
+
+58
+00:10:17,762 --> 00:10:31,741
+The outer face is the only unbounded face. To make all faces equal, the notes draw graphs on a sphere. Theorem 7.3.1: a graph is planar if and only if it can be drawn on the surface of a sphere.
+
+59
+00:10:32,191 --> 00:10:47,750
+This is a cut through the middle of the sphere. The sphere touches the plane at point A. B is the point opposite A. A point x of the plane maps to the point x prime, where the line from x to B meets the sphere. This map is stereographic projection.
+
+60
+00:10:48,200 --> 00:10:52,008
+A point y on the other side maps to y prime, on the other half of the sphere.
+
+61
+00:10:52,458 --> 00:11:05,833
+A point z far away maps to z prime, close to B. So a planar embedding maps to a drawing on the sphere with no crossings. All faces are bounded, and B is inside the face that was the outer face.
+
+62
+00:11:06,283 --> 00:11:22,258
+It also works backwards. Pick any face f of a drawing on the sphere. Turn the sphere so that B is inside f, and project back to the plane. Then f is the outer face. The notes count this as the same embedding: same faces, same boundaries, same face degrees.
+
+63
+00:11:22,708 --> 00:11:29,984
+Here is K 4 again. The blue face, a b d, is bounded. The outer face is a b c.
+
+64
+00:11:30,434 --> 00:11:41,162
+Use the sphere: turn it so that B is inside face a b d, and project back. We get this drawing. Now a b d is the outer face, and the face a b c is bounded.
+
+65
+00:11:41,612 --> 00:11:57,402
+Both drawings have the same four faces: a b c, a b d, a c d and b c d. Each has degree 3. The same edges bound the same faces. So the notes treat the two drawings as the same embedding.
+
+66
+00:11:57,852 --> 00:12:06,118
+Figure 7.5 shows one graph with 6 vertices and 8 edges. On the left, vertex 6 is inside the cycle 1, 2, 3, 4.
+
+67
+00:12:06,568 --> 00:12:16,227
+The face degrees are 3 for the top triangle, 3 for the triangle 4, 3, 6, and 5 for the face between them. The outer face also has degree 5.
+
+68
+00:12:16,677 --> 00:12:20,486
+On the right, vertex 6 is outside the cycle. The edges are the same.
+
+69
+00:12:20,936 --> 00:12:27,328
+Now the face degrees are 3, 3, 4 and 6. The outer face has degree 6.
+
+70
+00:12:27,778 --> 00:12:45,890
+The two lists of face degrees are different, so no turning of the sphere makes one drawing into the other. But both have 4 faces, as Euler's formula says: 6 minus 8 plus 4 is 2. And in both, the face degrees add to 16, which is 2 times 8, as the Faceshaking Lemma says.
+
+71
+00:12:46,340 --> 00:12:58,916
+To recap. A graph is planar if it has a drawing without crossings. Such a drawing is a planar embedding. It cuts the plane into faces, and exactly one face is unbounded: the outer face.
+
+72
+00:12:59,366 --> 00:13:09,676
+The degree of a face is the length of its boundary walk. A bridge counts twice on its one face. The Faceshaking Lemma says that the face degrees add to 2 times the number of edges.
+
+73
+00:13:10,126 --> 00:13:28,377
+Euler's formula: for a connected planar embedding, p minus q plus f equals 2. We proved it by induction on the number of edges, by deleting an edge that is not a bridge. With stereographic projection, any face can be the outer face. The next video uses these tools on problems and on the Platonic solids.
