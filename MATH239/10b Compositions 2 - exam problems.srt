@@ -159,45 +159,45 @@ To compare a n with b n plus 2, multiply A by x squared. This moves its coeffici
 Prove it with algebra. x squared A minus B has the numerator x squared minus x to the 5, minus 1, plus x. This factors as x squared minus 1, times the denominator. So the difference is x squared minus 1. It has no terms of degree 3 or more. So a k minus 2 equals b k for k at least 3. That is, a n equals b n plus 2 for n at least 1.
 
 41
-00:09:42,992 --> 00:10:02,704
+00:09:42,992 --> 00:10:02,725
 Practice midterm, question 3. Pause the video and try it. Step 1: the allowed parts are the numbers congruent to 2 or 3 mod 5: 2, 3, 7, 8, 12, 13, and so on. Their series is x squared plus x cubed, over 1 minus x to the 5.
 
 42
-00:10:03,154 --> 00:10:08,082
+00:10:03,175 --> 00:10:08,103
 Step 2: the allowed lengths are 1, 6, 11, and so on. They are purple.
 
 43
-00:10:08,532 --> 00:10:32,404
+00:10:08,553 --> 00:10:32,425
 So the set is the disjoint union over j of P to the 5 j plus 1. Name the weight: the size. By the Sum and Product Lemmas, the series is the sum of phi of P to the 5 j plus 1. This is phi of P over 1 minus phi of P to the 5. Phi of P has no constant term, so the geometric series is valid.
 
 44
-00:10:32,854 --> 00:10:52,886
+00:10:32,875 --> 00:10:52,907
 The green row shows the coefficients. For n up to 11, only one part fits, so the count is 1 when n is 2, 3, 7 or 8 mod 5. From n equal to 12, six parts fit too. A brute force count agrees with every coefficient up to n equal to 25.
 
 45
-00:10:53,336 --> 00:11:08,120
+00:10:53,357 --> 00:11:08,141
 The question forbids an infinite sum. So write the answer as one fraction: multiply top and bottom by 1 minus x to the 5, to the 5. The answer is the coefficient of x to the n in this fraction.
 
 46
-00:11:08,570 --> 00:11:14,970
+00:11:08,591 --> 00:11:14,991
 Recap. Any length: the set is P star, and the series is 1 over 1 minus phi of P.
 
 47
-00:11:15,420 --> 00:11:20,583
+00:11:15,441 --> 00:11:20,604
 Exactly k parts: P to the k, and the series is phi of P to the k.
 
 48
-00:11:21,033 --> 00:11:32,681
+00:11:21,054 --> 00:11:32,702
 Length congruent to r mod m: the union of P to the m j plus r. The series is phi of P to the r, over 1 minus phi of P to the m.
 
 49
-00:11:33,131 --> 00:11:44,331
+00:11:33,152 --> 00:11:44,352
 At least k parts: cut after part k. The set is P to the k times P star, and the series is phi of P to the k over 1 minus phi of P.
 
 50
-00:11:44,781 --> 00:11:50,199
+00:11:44,802 --> 00:11:50,221
 Parts whose type alternates: group them in pairs, and add an optional last part.
 
 51
-00:11:50,649 --> 00:11:58,287
+00:11:50,671 --> 00:11:58,308
 In every answer, define the set and the weight, name each lemma, and check a small n by listing the compositions.
