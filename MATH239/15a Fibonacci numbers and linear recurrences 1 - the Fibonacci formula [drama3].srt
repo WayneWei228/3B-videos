@@ -1,0 +1,215 @@
+1
+00:00:00,000 --> 00:00:12,492
+This is MATH 239, video 15a. The topic is Fibonacci numbers and homogeneous linear recurrence relations. This is Chapter 4 of the course notes, pages 93 to 98.
+
+2
+00:00:12,942 --> 00:00:28,175
+After this video, you can find the generating series of a sequence from its recurrence. You can find inverse roots. You can get a formula for the Fibonacci numbers with partial fractions and the geometric series. And you can explain where the numerator of the generating series comes from.
+
+3
+00:00:28,625 --> 00:00:42,882
+In Chapters 2 and 3 we counted sets with generating series. The Sum, Product and String Lemmas gave a formula for the series. Very often the formula is a quotient of two polynomials, for example one over one minus x minus x squared.
+
+4
+00:00:43,332 --> 00:00:51,087
+But the numbers we want are the coefficients g sub n. Chapter 4 gives methods to get the coefficients from the formula.
+
+5
+00:00:51,537 --> 00:01:02,033
+There are two tools. A recurrence relation computes the numbers one by one. Partial fractions give an explicit formula. We start with the Fibonacci numbers, and then we do the general theory.
+
+6
+00:01:02,483 --> 00:01:18,690
+Example 4.1 defines the Fibonacci numbers. f sub 0 is 1, and f sub 1 is 1. These two values are the orange cells. For n at least 2, f sub n equals f sub n minus 1 plus f sub n minus 2.
+
+7
+00:01:19,140 --> 00:01:25,409
+So each new number is the sum of the two numbers before it. f sub 2 is 1 plus 1, which is 2.
+
+8
+00:01:25,859 --> 00:01:38,630
+We can continue as long as we want. For example, f sub 7 is 13 plus 8, which is 21. The row shows the values up to f sub 14, which is 610.
+
+9
+00:01:39,080 --> 00:01:47,558
+To get f sub 100 this way, we need all the numbers before it. We want a formula for f sub n as a function of n. This section finds one.
+
+10
+00:01:48,008 --> 00:02:05,608
+Here is one reason to care. In Example 2.18, F is the set of compositions with every part equal to 1 or 2. The generating series for one part is x plus x squared. By the String Lemma, the generating series of F is one over one minus x minus x squared.
+
+11
+00:02:06,058 --> 00:02:20,455
+The figure shows all compositions of 4 with parts 1 or 2. There are 5 of them, and f sub 4 is 5. In fact the number of compositions of n in F is f sub n. So a formula for f sub n also counts these compositions.
+
+12
+00:02:20,905 --> 00:02:42,081
+The figure also shows why the recurrence holds. Group the compositions by the first part. If the first part is 1, the rest is a composition of 3. There are f sub 3 of these. If the first part is 2, the rest is a composition of 2. There are f sub 2 of these. So f sub 4 equals f sub 3 plus f sub 2.
+
+13
+00:02:42,531 --> 00:03:00,225
+Now we find the generating series F of x directly from the recurrence. This is Example 4.2. Split off the first two terms, f sub 0 and f sub 1, which are both 1. For n at least 2, replace f sub n by f sub n minus 1 plus f sub n minus 2.
+
+14
+00:03:00,675 --> 00:03:02,440
+Split the sum into two sums.
+
+15
+00:03:02,890 --> 00:03:26,992
+Re-index each sum. In the first sum put i equal to n minus 1, and take out one factor of x. In the second sum put j equal to n minus 2, and take out x squared. The orange cell shows f sub 1 times x squared: it is a term of x times F of x. The purple boxes show that the two sums are the terms of x F and x squared F, from x squared on.
+
+16
+00:03:27,442 --> 00:03:43,696
+The first sum is F of x minus f sub 0, because it starts at i equals 1. The second sum is all of F of x. With f sub 0 equal to 1, the terms x and minus x cancel. So F equals 1 plus x F plus x squared F.
+
+17
+00:03:44,146 --> 00:04:01,886
+Move the terms with F to the left side, and factor. F times one minus x minus x squared equals 1. The constant term of one minus x minus x squared is 1, so it has an inverse. So F of x is one over one minus x minus x squared, the same series as for the compositions.
+
+18
+00:04:02,336 --> 00:04:08,930
+Here is the same calculation as coefficient rows. The first row is F of x. Cell n holds f sub n.
+
+19
+00:04:09,380 --> 00:04:15,092
+x times F of x has the same numbers, moved one place to the right. Its constant term is 0.
+
+20
+00:04:15,542 --> 00:04:19,397
+x squared times F of x moves the numbers two places to the right.
+
+21
+00:04:19,847 --> 00:04:36,380
+Subtract the second and third rows from the first. In column n, for n at least 2, we get f sub n minus f sub n minus 1 minus f sub n minus 2. That is zero by the recurrence. The constant term is f sub 0, which is 1.
+
+22
+00:04:36,830 --> 00:04:46,846
+Column 1 gives f sub 1 minus f sub 0, which is also zero. So the product is exactly 1. The recurrence gives the denominator. The initial conditions give the numerator.
+
+23
+00:04:47,296 --> 00:04:59,138
+The key to the formula is the denominator, one minus x minus x squared. We want to factor it as one minus alpha x, times one minus beta x, for some complex numbers alpha and beta.
+
+24
+00:04:59,588 --> 00:05:22,018
+Be careful with the quadratic formula here. Substitute x equals one over t, and multiply both sides by t squared. The left side becomes t squared minus t minus 1. Each factor one minus alpha over t, times t, becomes t minus alpha. This new polynomial is the auxiliary polynomial.
+
+25
+00:05:22,468 --> 00:05:40,255
+So alpha and beta are the ordinary roots of t squared minus t minus 1. The quadratic formula gives one plus root 5 over 2, about 1.618, and one minus root 5 over 2, about minus 0.618. The left plot shows them.
+
+26
+00:05:40,705 --> 00:05:55,519
+The right plot shows the denominator itself. Its roots are one over alpha and one over beta. That is why alpha and beta are called the inverse roots. Tip: the auxiliary polynomial has the coefficients of the denominator in reverse order.
+
+27
+00:05:55,969 --> 00:06:11,851
+The next step uses the Partial Fractions Theorem, Theorem 4.12. The next video states it and proves it. Here it says: there are numbers A and B such that our series equals A over one minus alpha x, plus B over one minus beta x.
+
+28
+00:06:12,301 --> 00:06:26,510
+To find A and B, multiply both sides by the denominator. The left side becomes 1. Collect like powers of x on the right side. The constant term is A plus B. The coefficient of x is minus A beta minus B alpha.
+
+29
+00:06:26,960 --> 00:06:34,994
+Two polynomials are equal when their coefficients are equal. So A plus B equals 1, and A beta plus B alpha equals 0.
+
+30
+00:06:35,444 --> 00:06:45,661
+Solve by elimination. Multiply the first equation by alpha. Subtract the second equation. The B terms cancel. A times alpha minus beta equals alpha.
+
+31
+00:06:46,111 --> 00:07:01,343
+So A is alpha over alpha minus beta. alpha minus beta is root 5, so A is 5 plus root 5, over 10. In the same way, B is minus beta over alpha minus beta, which is 5 minus root 5, over 10.
+
+32
+00:07:01,793 --> 00:07:10,570
+Now expand each fraction with the geometric series. A over one minus alpha x is the sum of A alpha to the n, x to the n.
+
+33
+00:07:11,020 --> 00:07:22,491
+The first row shows these coefficients as decimals: 0.724, 1.171, 1.894, and so on. They grow by a factor of alpha each time.
+
+34
+00:07:22,941 --> 00:07:29,721
+The second row is B beta to the n. beta is negative, so the signs alternate. The numbers get small.
+
+35
+00:07:30,171 --> 00:07:46,054
+Add the two rows. We get 1, 1, 2, 3, 5, 8: the Fibonacci numbers. So for all n, f sub n equals A alpha to the n plus B beta to the n. With the values of A, alpha, B and beta, this is the formula in the green box.
+
+36
+00:07:46,504 --> 00:07:53,655
+The formula looks strange, because it has root 5 in it, and every Fibonacci number is an integer. The irrational parts cancel.
+
+37
+00:07:54,105 --> 00:08:10,638
+The bars show the second term, B beta to the n. The absolute value of beta is about 0.618, which is less than 1. So this term is always between minus one half and one half, and it goes to zero. So f sub n is the integer closest to the first term.
+
+38
+00:08:11,088 --> 00:08:18,983
+For example, A alpha to the 5 is about 8.025. The closest integer is 8, and f sub 5 is 8.
+
+39
+00:08:19,433 --> 00:08:40,331
+Now the general theory. Definition 4.6. A sequence g satisfies a homogeneous linear recurrence relation if g sub n plus a 1 g sub n minus 1, plus and so on up to a d g sub n minus d, equals zero for all n at least N. The numbers a 1 to a d are constants. N is at least d.
+
+40
+00:08:40,781 --> 00:08:49,279
+Move the other terms to the right side. Then g sub n is a fixed combination of the d terms before it. The purple window shows this for d equals 2.
+
+41
+00:08:49,729 --> 00:08:59,807
+The values g sub 0 to g sub N minus 1 are the initial conditions. They are the orange cells. From them, the relation gives every later term, by induction on n.
+
+42
+00:09:00,257 --> 00:09:16,696
+The relation is linear, because the left side is a linear combination of terms of the sequence. It is homogeneous, because the right side is zero. If the right side is a nonzero function p of n, the relation is inhomogeneous. Video 17 covers that case.
+
+43
+00:09:17,146 --> 00:09:32,472
+The Fibonacci numbers are an example. f sub n minus f sub n minus 1 minus f sub n minus 2 equals zero, for n at least 2. So d is 2, both a 1 and a 2 are minus 1, and N is 2.
+
+44
+00:09:32,922 --> 00:09:52,148
+Here is another example, Example 4.7. Pause the video and try it. g sub 0 is 2, g sub 1 is 5, g sub 2 is 6. For n at least 3, g sub n minus 3 g sub n minus 2 minus 2 g sub n minus 3 equals zero. Find the generating series G of x.
+
+45
+00:09:52,598 --> 00:10:03,186
+The general method: multiply the recurrence by x to the n, and sum over all n where it holds. Here that is n at least 3. Then split the left side into three sums.
+
+46
+00:10:03,636 --> 00:10:24,163
+Write each sum with G of x. The first sum is G minus its first three terms. In the second sum put j equals n minus 2, and take out x squared. It starts at j equals 1. In the third sum put k equals n minus 3, and take out x cubed. It starts at k equals 0.
+
+47
+00:10:24,613 --> 00:10:31,625
+Insert the initial conditions. The second sum is G minus g sub 0, which is G minus 2.
+
+48
+00:10:32,075 --> 00:10:49,536
+Multiply out. The 6 x squared and the plus 6 x squared cancel. Move the constants to the right side. We get G times one minus 3 x squared minus 2 x cubed, equals 2 plus 5 x. So G is 2 plus 5 x, over one minus 3 x squared minus 2 x cubed.
+
+49
+00:10:49,986 --> 00:11:07,216
+Look at the answer again. The denominator, one minus 3 x squared minus 2 x cubed, has the same coefficients as the recurrence: 1 for g sub n, minus 3 for g sub n minus 2, minus 2 for g sub n minus 3. The first row is G of x.
+
+50
+00:11:07,666 --> 00:11:15,607
+Multiply G by minus 3 x squared, and by minus 2 x cubed. These rows move two and three places to the right.
+
+51
+00:11:16,057 --> 00:11:36,072
+Add the three rows. From column 3 on, each column is g sub n minus 3 g sub n minus 2 minus 2 g sub n minus 3. That is zero by the recurrence. Only 2 and 5 remain. That is the numerator, 2 plus 5 x.
+
+52
+00:11:36,522 --> 00:11:54,448
+Use the convention that g sub n is zero for negative n. Then the numerator coefficients are the left side of the recurrence for small n. For n equals 0 we get 2. For n equals 1 we get 5. For n equals 2 we get 6 minus 3 times 2, which is 0. That is why the numerator has no x squared term.
+
+53
+00:11:54,898 --> 00:12:15,527
+To recap. The Fibonacci numbers have the generating series one over one minus x minus x squared. Inverse roots, partial fractions and the geometric series give f sub n as A alpha to the n plus B beta to the n. To find inverse roots, substitute x equals one over t: they are the roots of the auxiliary polynomial.
+
+54
+00:12:15,977 --> 00:12:36,178
+To get the generating series from a recurrence, multiply by x to the n, sum, and write each sum with G of x. The denominator has the coefficients of the recurrence. The numerator is the left side of the recurrence at small n. Video 15b proves that this always works, with Theorem 4.8, and solves practice midterm question 10.
