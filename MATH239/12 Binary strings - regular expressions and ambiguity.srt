@@ -319,81 +319,81 @@ Practice problem P4-1, part a. Is 00 or 010, star, ambiguous? If it is not, find
 Read the string from the left. Each piece starts with 0. Look at the second bit. If it is 0, the piece is 00. If it is 1, the piece is 010. So each piece is forced.
 
 81
-00:15:31,765 --> 00:15:44,117
-For example, 0100000010 decodes as 010, 00, 00, 010, and in no other way.
+00:15:31,765 --> 00:15:45,675
+For example, 0 1 0 0 0 0 0 0 1 0 decodes as 0 1 0, then 0 0, then 0 0, then 0 1 0, and in no other way.
 
 82
-00:15:44,567 --> 00:16:04,727
+00:15:46,125 --> 00:16:06,285
 So the expression is unambiguous. The two pieces lead to x squared and x cubed. By Theorem 3.13, the series is one over one minus x squared minus x cubed. The coefficients 1, 0, 1, 1, 1, 2, 2, 3 match a direct count of the strings.
 
 83
-00:16:05,177 --> 00:16:10,105
+00:16:06,735 --> 00:16:11,663
 Part b: 0 or 00, star. Pause the video and try it.
 
 84
-00:16:10,555 --> 00:16:17,553
+00:16:12,113 --> 00:16:19,110
 The string 00 is produced as 0 then 0, and also as the single piece 00.
 
 85
-00:16:18,003 --> 00:16:22,568
+00:16:19,560 --> 00:16:24,125
 So the expression is ambiguous. This one string is the full proof.
 
 86
-00:16:23,018 --> 00:16:36,991
+00:16:24,575 --> 00:16:38,549
 Part c: 00 or 01 or 10 or 11, star. Pause the video and try it. Every piece has length 2, so the cuts must be after every second bit. Each string is produced once.
 
 87
-00:16:37,441 --> 00:16:51,863
+00:16:38,999 --> 00:16:53,420
 So it is unambiguous. There are four pieces, each with series x squared. The series is one over one minus 4 x squared. There are 4 to the k strings of length 2k, and none of odd length.
 
 88
-00:16:52,313 --> 00:17:01,401
+00:16:53,870 --> 00:17:02,958
 Practice Midterm question 6, part a. Is this expression ambiguous or unambiguous? Prove it. Pause the video and try it.
 
 89
-00:17:01,851 --> 00:17:18,341
+00:17:03,408 --> 00:17:19,899
 Look for a short string that two factors can both make. The middle star can make 111: one piece, with zero copies of 11 and zero copies of 0000. Then the last factor gives epsilon.
 
 90
-00:17:18,791 --> 00:17:35,559
+00:17:20,349 --> 00:17:37,117
 But the last factor can also make 111. 111 star is 11 followed by 1 star, so it gives 11, 111, 1111, and so on. Then the middle star uses zero pieces.
 
 91
-00:17:36,009 --> 00:17:47,231
+00:17:37,567 --> 00:17:48,788
 So 111 has two productions. The expression is ambiguous. Write the answer like this: name the string, and write both productions factor by factor.
 
 92
-00:17:47,681 --> 00:17:56,150
+00:17:49,238 --> 00:17:57,707
 Part b. We are told the expression is unambiguous. Find the generating series by length. Pause the video and try it.
 
 93
-00:17:56,600 --> 00:18:06,221
+00:17:58,157 --> 00:18:07,779
 Translate from the bottom up. 011 then 111 star leads to x cubed times one over one minus x cubed.
 
 94
-00:18:06,671 --> 00:18:21,327
+00:18:08,229 --> 00:18:22,885
 000 then 0 star leads to x cubed over one minus x. 1 then 1 star leads to x over one minus x. Their product is x to the 4 over the square of one minus x.
 
 95
-00:18:21,777 --> 00:18:25,383
+00:18:23,335 --> 00:18:26,940
 The or adds the two parts. Call the sum P of x.
 
 96
-00:18:25,833 --> 00:18:36,499
+00:18:27,390 --> 00:18:38,057
 The star leads to one over one minus P of x. The last factor, epsilon or 0 or 00, leads to one plus x plus x squared.
 
 97
-00:18:36,949 --> 00:19:04,128
+00:18:38,507 --> 00:19:05,685
 Multiply. The answer is a fraction. The top is one plus x plus x squared. The bottom is one, minus x cubed over one minus x cubed, minus x to the 4 over the square of one minus x. By Theorem 3.13 this is the generating series. A direct count of the strings gives 1, 1, 1, 1, 2, 4, 8, 13, and the series has the same coefficients.
 
 98
-00:19:04,578 --> 00:19:20,941
+00:19:06,135 --> 00:19:22,498
 To recap. A regular expression is built from epsilon, 0 and 1 with or, concatenation and star. It produces a rational language. The concatenation product loses the cut point, so it is not the Cartesian product.
 
 99
-00:19:21,391 --> 00:19:38,927
+00:19:22,948 --> 00:19:40,484
 An expression is unambiguous if it produces every string exactly once. Lemma 3.9 checks this one operation at a time. To prove ambiguity, give one string with two productions. To prove unambiguity, show that each piece is forced.
 
 100
-00:19:39,377 --> 00:19:59,025
+00:19:40,934 --> 00:20:00,582
 Translate with: epsilon to 1, each bit to x, or to plus, concatenation to times, and star to one over one minus R of x. For an unambiguous expression, this gives the generating series by length. The next video covers block and prefix decompositions.
