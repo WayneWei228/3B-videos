@@ -211,253 +211,325 @@ In cycle 5, the add is in W, so x1 is in M slash W. The store is in M and needs 
 So the store reads its data at the start of M. The address register, x5, needs no forward.
 
 54
-00:09:31,616 --> 00:09:45,657
-A store uses two registers in different ways. Here, the store word stores the loaded x3 as data. The store needs it at the start of M, and the load has it at the end of M. So WM forwards it, with no stall.
+00:09:31,616 --> 00:09:47,591
+To understand stores, look at what a store does with its two registers. Store word x 3, 0 of x 4, writes x 3 into memory at address x 4 plus 0. The register rs1, here x 4, gives the address.
 
 55
-00:09:46,107 --> 00:10:00,414
-Now the store uses x3 as its address. The address goes into the ALU in X. But the load's value exists only at the end of M. So the store stalls one cycle, and then gets x3 by WX.
+00:09:48,041 --> 00:09:58,583
+The address goes into the ALU in X, so the store needs rs1 at the start of X. The ALU input has a mux, so it can take x 4 by MX or by WX.
 
 56
-00:10:00,864 --> 00:10:22,453
-A third case. The store data comes from an add two instructions ahead. Without stalls, the store reaches M in cycle 6, one cycle after the add's W in cycle 5. So WM is too late. No MX or WX path goes to the store data. So the store reads x1 in D in cycle 6, after the add's W: 2 stalls.
+00:09:59,033 --> 00:10:18,883
+The register rs2, here x 3, is the store data. It goes into the data input of the memory in M. So the store needs rs2 later, at the start of M. In X, rs2 passes from D slash X to X slash M with no mux. Its only forwarding path is WM.
 
 57
-00:10:22,903 --> 00:10:34,841
-This is the course rule from slides 38 and 39: store data uses only WM. Fall 2019 question 2 part B asks you to add a path that removes these stalls.
+00:10:19,333 --> 00:10:26,717
+Now the producer side. An ALU instruction has its result at the end of X. A load has its value only at the end of M.
 
 58
-00:10:35,291 --> 00:10:44,954
-Slide 39 adds forwarding control logic that sets the muxes. Input 0 is the ALU result in X slash M. Input 1 is the value in M slash W.
+00:10:27,167 --> 00:10:38,080
+So a forward works only if two things are true in the cycle of the need. The value is in a pipeline register. And a path goes from that register to the input that needs it. Now three cases.
 
 59
-00:10:45,404 --> 00:11:11,991
-Here is the logic for mux A. If rs1 in D slash X equals rd in X slash M, select input 0, the MX path. If rs1 equals rd in M slash W, select input 1, the WX path. In the example of slide 40, the subtract in X has rs1 x1. The add in X slash M has rd x1. They match, so ASel is 0.
+00:10:38,530 --> 00:10:53,716
+Case 1. The load writes x 3, and the store writes x 3 into memory. So x 3 is the store data. In cycle 3, the store is in D and reads the old x 3. That is not a problem, because the store does not use x 3 before M.
 
 60
-00:11:12,441 --> 00:11:19,647
-Each mux has its own logic. The mux of the second ALU input compares rs2 in the same way.
+00:10:54,166 --> 00:11:08,470
+In cycle 4, the load is in M. It reads the memory, so x 3 is ready at the end of cycle 4. The green ring marks this. The store is in X and computes its address from x 4. It does not need x 3 yet.
 
 61
-00:11:20,097 --> 00:11:42,787
-A check question. The add and the add immediate both write x1, and the subtract reads x1. In cycle 5, X slash M holds the add immediate, and M slash W holds the add. Both rd fields match rs1. Pick X slash M. The add immediate is younger, so it is the most recent writer.
+00:11:08,920 --> 00:11:26,753
+In cycle 5, the load is in W, so x 3 is in M slash W. The store is in M and needs x 3 now, as the orange ring shows. The WM path sends x 3 from M slash W to the data input. Ready in cycle 4, needed in cycle 5. So there is no stall.
 
 62
-00:11:43,237 --> 00:11:50,907
-One more case. Here the consumer is three instructions after the load. The load writes x1 in W, in cycle 5.
+00:11:27,203 --> 00:11:39,974
+Case 2. Now the store uses x 3 as its address. Without a stall, the store would be in X in cycle 4. The address goes into the ALU, so it needs x 3 at the start of cycle 4.
 
 63
-00:11:51,357 --> 00:12:03,230
-The subtract is in D in the same cycle 5. D sees only values written in earlier cycles, and there is no forwarding into D. So the subtract reads the old x1.
+00:11:40,424 --> 00:11:50,176
+But in cycle 4, the load is in M. The value x 3 is ready only at the end of cycle 4. The need comes before the value exists. No forwarding path can fix that.
 
 64
-00:12:03,680 --> 00:12:14,317
-So the subtract repeats D once: a D star in cycle 5. In cycle 6, it reads the new x1. The lab note on slide 60 calls this the WD hazard.
+00:11:50,626 --> 00:11:56,245
+So the store stalls for one cycle. In cycle 3, it repeats D. This is a D star.
 
 65
-00:12:14,767 --> 00:12:25,059
-Fall 2019 question 2 states this rule: no forwarding into the decode stage. Some old quizzes assume otherwise, so state your assumption in the exam.
+00:11:56,695 --> 00:12:11,881
+In cycle 5, the load is in W, so x 3 is in M slash W. The store is in X, and the ALU mux takes x 3 by WX. One stall. This is the load-use case, which comes later in this video.
 
 66
-00:12:25,509 --> 00:12:39,473
-This table collects the rules, by the distance d from the producer to the consumer. For an ALU result used by the ALU: at distance 1, MX. At 2, WX. At 3, the WD case: one stall.
+00:12:12,331 --> 00:12:26,727
+Case 3. The add writes x 1, and the store word two instructions later stores x 1. So x 1 is store data. On the left is the diagram without stalls. Look for a cycle where a path can bring x 1 to the store.
 
 67
-00:12:39,923 --> 00:12:53,828
-For a load result used by the ALU: at distance 1, one stall, then WX. This is the load-use case. At 2, WX. At 3, the WD stall.
+00:12:27,177 --> 00:12:38,277
+Cycle 4. The store is in D, and the add is in M, so x 1 is in X slash M. But no path goes into D. The store reads the old x 1 from the register file.
 
 68
-00:12:54,278 --> 00:13:05,663
-For store data: at distance 1, WM. At 2, two stalls, because store data has only WM. At 3, the WD stall.
+00:12:38,727 --> 00:12:52,148
+Cycle 5. The store is in X, and the add is in W, so x 1 is in M slash W. The WX path goes only to the ALU inputs. The store data passes X with no mux. So WX cannot help.
 
 69
-00:13:06,113 --> 00:13:19,041
-To read a diagram, find the cycle where the consumer needs the value: its X, or its M for store data. Look at the producer in that column. M means MX. W means WX or WM.
+00:12:52,598 --> 00:13:06,762
+Cycle 6. The store is in M, where WM could help. But WM takes the value from M slash W, and the add has left the pipeline. x 1 is now only in the register file. So WM is too late.
 
 70
-00:13:19,491 --> 00:13:31,162
-Now practice the exam format with the sequence of slide 24. Full forwarding, no forwarding into D. Draw the diagram, and fill both tables. Pause the video and try it.
+00:13:07,212 --> 00:13:25,695
+So no path reaches the store data. The store must read x 1 from the register file in D, in a cycle after the add writes it in cycle 5. That is D in cycle 6, after two D stars. The value was ready early, at the end of cycle 3, but no path could deliver it.
 
 71
-00:13:31,612 --> 00:13:42,141
-Cycle 4. The load word is in X and needs x3 for its address. The add is in M. So x3 goes by MX.
+00:13:26,145 --> 00:13:38,730
+Here are the three cases together. Case 1: the loaded value is store data. It is ready at the end of M in cycle 4 and needed at the start of M in cycle 5. WM forwards it. No stall.
 
 72
-00:13:42,591 --> 00:13:55,323
-Cycle 5. The add immediate is in X, and the add is in W: WX. The store word is in D in the add's W cycle. That is the WD case, so the store repeats D.
+00:13:39,180 --> 00:13:52,369
+Case 2: the loaded value is the address. It is needed at the start of X in cycle 4, the same cycle it becomes ready at the end. Too late, so one stall, then WX.
 
 73
-00:13:55,773 --> 00:14:02,244
-The store reads x3 in D in cycle 6, from the register file. The program ends in cycle 9.
+00:13:52,819 --> 00:14:04,197
+Case 3: store data from two instructions ahead. It is ready early, but no path reaches the store data. So the store reads it in D after the producer writes it. Two stalls.
 
 74
-00:14:02,694 --> 00:14:13,349
-The forwarding table has one row per forward. Row 1: source 1, destination 2, x3, from M to X, in cycle 4.
+00:14:04,647 --> 00:14:17,975
+This is the course rule from slides 38 and 39. Store data uses only WM, because rs2 passes X with no mux. If WM is too late, the store reads the value in D, after the producer writes it.
 
 75
-00:14:13,799 --> 00:14:20,342
-Row 2: source 1, destination 3, x3, from W to X, in cycle 5.
+00:14:18,425 --> 00:14:34,447
+Fall 2019 question 2 part B asks you to add a forwarding path that removes these stalls. A WX path into the store data does it: in case 3, the store gets x 1 in cycle 5 with no stall. Video 10 solves this question.
 
 76
-00:14:20,792 --> 00:14:27,835
-The stall table has one row: instruction 4 stalls in D in cycle 5. The reason is the WD case.
+00:14:34,897 --> 00:14:44,559
+Slide 39 adds forwarding control logic that sets the muxes. Input 0 is the ALU result in X slash M. Input 1 is the value in M slash W.
 
 77
-00:14:28,285 --> 00:14:39,289
-One more practice: a load, a store of the loaded value, an add, and a subtract. Use the same rules. Pause the video and try it.
+00:14:45,009 --> 00:15:11,597
+Here is the logic for mux A. If rs1 in D slash X equals rd in X slash M, select input 0, the MX path. If rs1 equals rd in M slash W, select input 1, the WX path. In the example of slide 40, the subtract in X has rs1 x1. The add in X slash M has rd x1. They match, so ASel is 0.
 
 78
-00:14:39,739 --> 00:14:56,329
-Cycle 5. The load is in W. The store is in M and needs x5 as store data: WM. The add is in X: WX. The subtract is in D in the load's W cycle, so it stalls: the WD case.
+00:15:12,047 --> 00:15:19,253
+Each mux has its own logic. The mux of the second ALU input compares rs2 in the same way.
 
 79
-00:14:56,779 --> 00:15:06,096
-The subtract also needs x6 from the add. Without the stall, that is MX. But in cycle 7, the add is in W. So x6 goes by WX.
+00:15:19,703 --> 00:15:42,393
+A check question. The add and the add immediate both write x1, and the subtract reads x1. In cycle 5, X slash M holds the add immediate, and M slash W holds the add. Both rd fields match rs1. Pick X slash M. The add immediate is younger, so it is the most recent writer.
 
 80
-00:15:06,546 --> 00:15:08,654
-The program ends in cycle 9.
+00:15:42,843 --> 00:15:50,513
+One more case. Here the consumer is three instructions after the load. The load writes x1 in W, in cycle 5.
 
 81
-00:15:09,104 --> 00:15:16,407
-The forwarding table has three rows. Row 1: x5 goes from the load to the store by WM, in cycle 5.
+00:15:50,963 --> 00:16:02,835
+The subtract is in D in the same cycle 5. D sees only values written in earlier cycles, and there is no forwarding into D. So the subtract reads the old x1.
 
 82
-00:15:16,857 --> 00:15:22,647
-Row 2: x5 also goes from the load to the add by WX, in cycle 5.
+00:16:03,285 --> 00:16:13,922
+So the subtract repeats D once: a D star in cycle 5. In cycle 6, it reads the new x1. The lab note on slide 60 calls this the WD hazard.
 
 83
-00:15:23,097 --> 00:15:28,534
-Row 3: x6 goes from the add to the subtract by WX, in cycle 7.
+00:16:14,372 --> 00:16:24,665
+Fall 2019 question 2 states this rule: no forwarding into the decode stage. Some old quizzes assume otherwise, so state your assumption in the exam.
 
 84
-00:15:28,984 --> 00:15:40,122
-The stall table has one row: instruction 4 stalls in D in cycle 5, the WD case. Lesson: a stall can change the forwarding path. Draw the stalls first.
+00:16:25,115 --> 00:16:39,079
+This table collects the rules, by the distance d from the producer to the consumer. For an ALU result used by the ALU: at distance 1, MX. At 2, WX. At 3, the WD case: one stall.
 
 85
-00:15:40,572 --> 00:15:54,947
-Some data hazards remain. Slide 43 shows a load followed by a dependent add. The load has its value at the end of M, in cycle 4. The add needs it at the start of X, also in cycle 4. That is too late.
+00:16:39,529 --> 00:16:53,434
+For a load result used by the ALU: at distance 1, one stall, then WX. This is the load-use case. At 2, WX. At 3, the WD stall.
 
 86
-00:15:55,397 --> 00:16:04,672
-So the hardware detects this load-use case and injects one stall. In cycle 3, the add repeats D, and the subtract repeats F.
+00:16:53,884 --> 00:17:05,269
+For store data: at distance 1, WM. At 2, two stalls, because store data has only WM. At 3, the WD stall.
 
 87
-00:16:05,122 --> 00:16:10,552
-In cycle 4, the add is in D again. A bubble, which does nothing, goes into X.
+00:17:05,719 --> 00:17:18,647
+To read a diagram, find the cycle where the consumer needs the value: its X, or its M for store data. Look at the producer in that column. M means MX. W means WX or WM.
 
 88
-00:16:11,002 --> 00:16:17,426
-In cycle 5, the load is in W and the add is in X. Now WX forwards the loaded value.
+00:17:19,097 --> 00:17:30,768
+Now practice the exam format with the sequence of slide 24. Full forwarding, no forwarding into D. Draw the diagram, and fill both tables. Pause the video and try it.
 
 89
-00:16:17,876 --> 00:16:24,516
-Slide 47 shows the result. The load-use case costs one stall cycle, then a WX forward.
+00:17:31,218 --> 00:17:41,747
+Cycle 4. The load word is in X and needs x3 for its address. The add is in M. So x3 goes by MX.
 
 90
-00:16:24,966 --> 00:16:37,806
-Now the stall hardware, with the load-use example of slide 47. In cycle 3, the load is in X. The add is in D and needs x3, the load's result. The subtract is in F.
+00:17:42,197 --> 00:17:54,929
+Cycle 5. The add immediate is in X, and the add is in W: WX. The store word is in D in the add's W cycle. That is the WD case, so the store repeats D.
 
 91
-00:16:38,256 --> 00:16:45,629
-At the end of cycle 3, the hardware writes a nop into D slash X. So in cycle 4, a bubble goes into X.
+00:17:55,379 --> 00:18:01,850
+The store reads x3 in D in cycle 6, from the register file. The program ends in cycle 9.
 
 92
-00:16:46,079 --> 00:16:58,418
-It also disables the write enables of F slash D and the PC. So F slash D keeps the add, and the PC keeps the subtract. In cycle 5, the add gets x3 by WX.
+00:18:02,300 --> 00:18:12,955
+The forwarding table has one row per forward. Row 1: source 1, destination 2, x3, from M to X, in cycle 4.
 
 93
-00:16:58,868 --> 00:17:28,124
-Slide 49 gives the stall condition. The instruction in D slash X is a load, and its rd equals rs1 of the instruction in F slash D. Or its rd equals rs2, and that instruction is not a store. A store does not stall for rs2: WM forwards store data in time. Here, in cycle 3, D slash X holds the load, with rd x3. The add has rs2 x3, and it is not a store. So Stall is 1.
+00:18:13,405 --> 00:18:19,948
+Row 2: source 1, destination 3, x3, from W to X, in cycle 5.
 
 94
-00:17:28,574 --> 00:17:39,484
-Slide 52 calculates the cost of load-use stalls. 20 percent of the instructions are loads. Half of the loads are followed by a dependent instruction. No branch is taken. Pause the video and try it.
+00:18:20,398 --> 00:18:27,441
+The stall table has one row: instruction 4 stalls in D in cycle 5. The reason is the WD case.
 
 95
-00:17:39,934 --> 00:17:46,317
-Look at 10 instructions. Two are loads. One of them is followed by a dependent instruction. That costs one bubble.
+00:18:27,891 --> 00:18:38,895
+One more practice: a load, a store of the loaded value, an add, and a subtract. Use the same rules. Pause the video and try it.
 
 96
-00:17:46,767 --> 00:17:51,187
-So 10 instructions take 11 cycles. The CPI is 1.1.
+00:18:39,345 --> 00:18:55,935
+Cycle 5. The load is in W. The store is in M and needs x5 as store data: WM. The add is in X: WX. The subtract is in D in the load's W cycle, so it stalls: the WD case.
 
 97
-00:17:51,637 --> 00:18:12,404
-With the formula: the CPI is 1, plus 1 stall cycle times 20 percent loads times 50 percent dependent. The 1 stall cycle is the bubble. 20 percent is 2 loads of 10. 50 percent is 1 of the 2 loads. That is 1 plus point 1, or 1.1.
+00:18:56,385 --> 00:19:05,702
+The subtract also needs x6 from the add. Without the stall, that is MX. But in cycle 7, the add is in W. So x6 goes by WX.
 
 98
-00:18:12,854 --> 00:18:22,780
-Slide 53 adds a 4-cycle multiply. Its stages P0 to P3 take the place of X and M. A state machine controls the pipeline.
+00:19:06,152 --> 00:19:08,259
+The program ends in cycle 9.
 
 99
-00:18:23,230 --> 00:18:36,039
-The add immediate needs x4 from the multiply. The product exists at the end of P3, in cycle 6. So the add immediate waits three cycles in D. In cycle 7, WX forwards x4.
+00:19:08,709 --> 00:19:16,012
+The forwarding table has three rows. Row 1: x5 goes from the load to the store by WM, in cycle 5.
 
 100
-00:18:36,489 --> 00:18:44,563
-The multiplier is often pipelined. Its registers and ALUs are replicated, so a new multiply can start in consecutive cycles.
+00:19:16,462 --> 00:19:22,253
+Row 2: x5 also goes from the load to the add by WX, in cycle 5.
 
 101
-00:18:45,013 --> 00:18:55,561
-Slide 55 shows what can go wrong. The add immediate and the add do not depend on the multiply. But the add reaches W in cycle 7, together with the multiply.
+00:19:22,703 --> 00:19:28,139
+Row 3: x6 goes from the add to the subtract by WX, in cycle 7.
 
 102
-00:18:56,011 --> 00:19:04,891
-Both write the register file in cycle 7: a structural hazard on the single write port. Also, younger instructions finish before the older multiply.
+00:19:28,589 --> 00:19:39,728
+The stall table has one row: instruction 4 stalls in D in cycle 5, the WD case. Lesson: a stall can change the forwarding path. Draw the stalls first.
 
 103
-00:19:05,341 --> 00:19:16,493
-Slides 56 and 57 show a worse case. The multiply and the add immediate both write x4. The add immediate reaches W in cycle 6, before the older multiply in cycle 7.
+00:19:40,178 --> 00:19:54,553
+Some data hazards remain. Slide 43 shows a load followed by a dependent add. The load has its value at the end of M, in cycle 4. The add needs it at the start of X, also in cycle 4. That is too late.
 
 104
-00:19:16,943 --> 00:19:27,482
-So the writes to x4 are in the wrong order: a WAW hazard. The add should get x4 from the add immediate, but it gets the product. Deeper pipelines make this common.
+00:19:55,003 --> 00:20:04,278
+So the hardware detects this load-use case and injects one stall. In cycle 3, the add repeats D, and the subtract repeats F.
 
 105
-00:19:27,932 --> 00:19:34,885
-Slide 58 shows the corrected diagram. Its stall logic prevents mis-ordered writes to the same register.
+00:20:04,728 --> 00:20:10,158
+In cycle 4, the add is in D again. A bubble, which does nothing, goes into X.
 
 106
-00:19:35,335 --> 00:19:46,132
-The add immediate now waits two cycles in D. So its W is in cycle 8, after the multiply's W in cycle 7. The writes to x4 are in program order.
+00:20:10,608 --> 00:20:17,031
+In cycle 5, the load is in W and the add is in X. Now WX forwards the loaded value.
 
 107
-00:19:46,582 --> 00:19:55,754
-Now look at the add. It is in D in the W cycle of the add immediate. This is the WD case, so the add repeats D and reads x4 in cycle 9.
+00:20:17,481 --> 00:20:24,121
+Slide 47 shows the result. The load-use case costs one stall cycle, then a WX forward.
 
 108
-00:19:56,204 --> 00:20:08,304
-Slide 60 is a note for the lab. Add bypass paths to the branch compare unit. When several paths are enabled, pick the correct one. Consider the WD structural hazard. The lab work itself is yours.
+00:20:24,571 --> 00:20:37,412
+Now the stall hardware, with the load-use example of slide 47. In cycle 3, the load is in X. The add is in D and needs x3, the load's result. The subtract is in F.
 
 109
-00:20:08,754 --> 00:20:22,271
-Here is the recap. One. For a pair a b, with a older: RAW means b reads what a wrote. WAR means b writes what a reads. WAW means both write.
+00:20:37,862 --> 00:20:45,235
+At the end of cycle 3, the hardware writes a nop into D slash X. So in cycle 4, a bubble goes into X.
 
 110
-00:20:22,721 --> 00:20:27,870
-Two. A structural hazard means that two instructions need one resource in one cycle.
+00:20:45,685 --> 00:20:58,024
+It also disables the write enables of F slash D and the PC. So F slash D keeps the add, and the PC keeps the subtract. In cycle 5, the add gets x3 by WX.
 
 111
-00:20:28,320 --> 00:20:34,828
-Three. An ALU value exists at the end of X. A load value exists at the end of M.
+00:20:58,474 --> 00:21:27,730
+Slide 49 gives the stall condition. The instruction in D slash X is a load, and its rd equals rs1 of the instruction in F slash D. Or its rd equals rs2, and that instruction is not a store. A store does not stall for rs2: WM forwards store data in time. Here, in cycle 3, D slash X holds the load, with rd x3. The add has rs2 x3, and it is not a store. So Stall is 1.
 
 112
-00:20:35,278 --> 00:20:40,896
-Four. MX and WX feed the ALU. WM feeds only store data.
+00:21:28,180 --> 00:21:39,090
+Slide 52 calculates the cost of load-use stalls. 20 percent of the instructions are loads. Half of the loads are followed by a dependent instruction. No branch is taken. Pause the video and try it.
 
 113
-00:20:41,346 --> 00:20:47,530
-Five. There is no forwarding into D. A consumer in D in its producer's W cycle repeats D.
+00:21:39,540 --> 00:21:45,923
+Look at 10 instructions. Two are loads. One of them is followed by a dependent instruction. That costs one bubble.
 
 114
-00:20:47,980 --> 00:20:58,084
-Six. A load-use costs one stall, then WX. The CPI is 1 plus the stall cycles times their fractions.
+00:21:46,373 --> 00:21:50,793
+So 10 instructions take 11 cycles. The CPI is 1.1.
 
 115
-00:20:58,534 --> 00:21:04,424
-Seven. Store data from two instructions ahead costs two stalls. Draw the stalls first.
+00:21:51,243 --> 00:22:12,010
+With the formula: the CPI is 1, plus 1 stall cycle times 20 percent loads times 50 percent dependent. The 1 stall cycle is the bubble. 20 percent is 2 loads of 10. 50 percent is 1 of the 2 loads. That is 1 plus point 1, or 1.1.
 
 116
-00:21:04,874 --> 00:21:11,761
+00:22:12,460 --> 00:22:22,386
+Slide 53 adds a 4-cycle multiply. Its stages P0 to P3 take the place of X and M. A state machine controls the pipeline.
+
+117
+00:22:22,836 --> 00:22:35,645
+The add immediate needs x4 from the multiply. The product exists at the end of P3, in cycle 6. So the add immediate waits three cycles in D. In cycle 7, WX forwards x4.
+
+118
+00:22:36,095 --> 00:22:44,169
+The multiplier is often pipelined. Its registers and ALUs are replicated, so a new multiply can start in consecutive cycles.
+
+119
+00:22:44,619 --> 00:22:55,167
+Slide 55 shows what can go wrong. The add immediate and the add do not depend on the multiply. But the add reaches W in cycle 7, together with the multiply.
+
+120
+00:22:55,617 --> 00:23:04,497
+Both write the register file in cycle 7: a structural hazard on the single write port. Also, younger instructions finish before the older multiply.
+
+121
+00:23:04,947 --> 00:23:16,099
+Slides 56 and 57 show a worse case. The multiply and the add immediate both write x4. The add immediate reaches W in cycle 6, before the older multiply in cycle 7.
+
+122
+00:23:16,549 --> 00:23:27,088
+So the writes to x4 are in the wrong order: a WAW hazard. The add should get x4 from the add immediate, but it gets the product. Deeper pipelines make this common.
+
+123
+00:23:27,538 --> 00:23:34,491
+Slide 58 shows the corrected diagram. Its stall logic prevents mis-ordered writes to the same register.
+
+124
+00:23:34,941 --> 00:23:45,737
+The add immediate now waits two cycles in D. So its W is in cycle 8, after the multiply's W in cycle 7. The writes to x4 are in program order.
+
+125
+00:23:46,187 --> 00:23:55,360
+Now look at the add. It is in D in the W cycle of the add immediate. This is the WD case, so the add repeats D and reads x4 in cycle 9.
+
+126
+00:23:55,810 --> 00:24:07,910
+Slide 60 is a note for the lab. Add bypass paths to the branch compare unit. When several paths are enabled, pick the correct one. Consider the WD structural hazard. The lab work itself is yours.
+
+127
+00:24:08,360 --> 00:24:21,877
+Here is the recap. One. For a pair a b, with a older: RAW means b reads what a wrote. WAR means b writes what a reads. WAW means both write.
+
+128
+00:24:22,327 --> 00:24:27,475
+Two. A structural hazard means that two instructions need one resource in one cycle.
+
+129
+00:24:27,925 --> 00:24:34,434
+Three. An ALU value exists at the end of X. A load value exists at the end of M.
+
+130
+00:24:34,884 --> 00:24:40,502
+Four. MX and WX feed the ALU. WM feeds only store data.
+
+131
+00:24:40,952 --> 00:24:47,136
+Five. There is no forwarding into D. A consumer in D in its producer's W cycle repeats D.
+
+132
+00:24:47,586 --> 00:24:57,690
+Six. A load-use costs one stall, then WX. The CPI is 1 plus the stall cycles times their fractions.
+
+133
+00:24:58,140 --> 00:25:04,030
+Seven. Store data from two instructions ahead costs two stalls. Draw the stalls first.
+
+134
+00:25:04,480 --> 00:25:11,367
 Eight. With multi-cycle units, stall so that register writes stay in order. That is the end of video 9.
