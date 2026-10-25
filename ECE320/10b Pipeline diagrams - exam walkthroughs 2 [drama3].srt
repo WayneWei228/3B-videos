@@ -1,0 +1,227 @@
+1
+00:00:00,000 --> 00:00:05,851
+This is ECE 320, video 10 b. We continue the pipeline diagram questions from past exams.
+
+2
+00:00:06,301 --> 00:00:23,531
+After this video, you can find a forwarding optimization and its logic, as in fall 2019, question 2 part B. You can fill a diagram when the branch compare unit gets no forwarding. That is the fall 2022 paper, question 3. And you can check your cycle count.
+
+3
+00:00:23,981 --> 00:00:40,327
+Here is the table from video 10 a. It gives the path or the number of stalls for each distance between the producer and the consumer. Look at the third row: store data. Two instructions later, it costs 2 stalls, because store data has no WX path.
+
+4
+00:00:40,777 --> 00:00:51,830
+And the rule behind the table: a path needs both stages in the same cycle. If there is no path, the consumer stalls in D. After any stall, compare the real cycles again.
+
+5
+00:00:52,280 --> 00:01:06,537
+Part B of the same question asks for an optimization of the forwarding hardware. Forwarding into D is not allowed. Here is the Part A answer from video 10 a. Pause the video and look for the stalls that a new path could remove.
+
+6
+00:01:06,987 --> 00:01:15,478
+Number 6 store word stalls 2 cycles in D, in cycles 9 and 10. Its store data x6 comes from add number 4.
+
+7
+00:01:15,928 --> 00:01:32,630
+In cycle 10, add number 4 is in W. So the new x6 is in the M W register. Number 6 could be in X in that cycle. The base address can already take WX. Only a path into the store-data input is missing. That is the optimization.
+
+8
+00:01:33,080 --> 00:01:43,598
+This is a sketch of the class pipeline, as on slide 39. Look at the store data, rs2 X. It goes from the D X register straight to the X M register.
+
+9
+00:01:44,048 --> 00:01:53,847
+Now the forwarding paths. MX and WX go into the two muxes in front of the ALU. WM goes into a mux at the data input of the data memory.
+
+10
+00:01:54,297 --> 00:02:10,297
+Look at the red line. The store data passes no forwarding mux in X. In cycle 10, number 6 is in D, and number 4 add has the new x6 in M W. No path can bring it to the store data of number 6 in X.
+
+11
+00:02:10,747 --> 00:02:30,484
+The optimization: add a mux on the store-data line in X, before the X M register. Its new input comes from the WX path, the value in the M W register. So the new x6 replaces the old x6 from rs2 X.
+
+12
+00:02:30,934 --> 00:02:37,297
+The forwarding control logic drives the select input of the new mux. The next slide shows the logic.
+
+13
+00:02:37,747 --> 00:03:04,121
+The logic compares register numbers in the pipeline registers, like the existing forwarding logic. Three conditions: the instruction in X is a store. Its rs2 equals the destination register of the instruction in M W. And that register is not x0. In our case, number 6 is a store, its rs2 is x6, and number 4 in M W writes x6. All three are true.
+
+14
+00:03:04,571 --> 00:03:15,020
+When all three are true, the select is 1, and the mux passes the M W value, the new x6, to rs2 M. Otherwise it passes rs2 X, as before.
+
+15
+00:03:15,470 --> 00:03:28,334
+This has the same form as the logic on slide 39. There, if rs1 in D X equals rd in X M, the A mux selects the MX input. If it equals rd in M W, it selects the WX input.
+
+16
+00:03:28,784 --> 00:03:37,373
+So the answer for Part B: add a WX path into the store-data input, with this select logic. This is a model answer, not an official one.
+
+17
+00:03:37,823 --> 00:03:43,674
+Here is the run with the new path. In cycle 9, number 6 is in D, and nothing stops it now.
+
+18
+00:03:44,124 --> 00:03:58,428
+In cycle 10, add number 4 is in W. Its x6 goes to two places. WM gives the store data of number 5. The new WX gives x6 to number 6, for its base and its store data.
+
+19
+00:03:58,878 --> 00:04:20,379
+The run now ends in cycle 21, 2 cycles earlier. Three stalls are left. Number 3 and number 14 have load-use stalls. No path can help them, because a load value exists only at the end of M. Number 4 has the W D case. Only forwarding into D could remove it, and the question excludes that.
+
+20
+00:04:20,829 --> 00:04:40,526
+The next question is from the fall 2022 paper, question 3, for 16 marks. The file name is f 2020 midterm. There is forwarding, but none into D. The branch resolves in X, the guess is not taken, and the branch in instruction 4 is taken. A flushed stage gets a dash.
+
+21
+00:04:40,976 --> 00:04:50,032
+One rule is new. There is no forwarding into the branch compare unit. So the branch must read both operands in D, after the W of each producer.
+
+22
+00:04:50,482 --> 00:05:09,244
+The paper writes L W x5, x4 of x1. That is not valid RISC-V. Read it as an offset of 4. If you read it as x4 plus x1, the timing does not change. Write your assumption in the exam. Pause the video and try the question.
+
+23
+00:05:09,694 --> 00:05:22,186
+Step 1: the producers. Number 1 load word writes x4. Number 2 store word uses x4 as store data. Number 3 add reads x4 two times.
+
+24
+00:05:22,636 --> 00:05:33,178
+Number 4 B E Q compares x4 and x1. x4 comes from the load number 1, and x1 comes from add number 3. The branch is taken.
+
+25
+00:05:33,628 --> 00:05:53,551
+So number 5 and number 6 are on the wrong path. They are flushed, and they are not producers. So number 7 gets x1 from add number 3. Then number 7 load word writes x5, and number 8, number 9 and number 10 read x5. Number 8 uses x5 as base and as data.
+
+26
+00:05:54,001 --> 00:06:05,100
+Now the diagram. In cycles 1 to 4, the load, the store and the add enter the pipeline. Number 4 B E Q is fetched in cycle 4.
+
+27
+00:06:05,550 --> 00:06:30,442
+In cycle 5, the load is in W. Number 2 is in M, and it needs x4 as store data. So x4 goes by WM. There is no load-use stall here, because store data is needed only in M. Number 3 is in X, and it needs x4. So x4 goes by WX. One W feeds two forwards. Number 4 B E Q is in D, and it waits. The next step shows why.
+
+28
+00:06:30,892 --> 00:06:52,161
+Number 4 B E Q is in D from cycle 5. It gets no forwarded values. It must read x4 and x1 in D after their W. x4 is written in cycle 5. x1 is written by add number 3 in cycle 7. So B E Q repeats D in cycles 5, 6 and 7. Number 5 repeats F in the same cycles.
+
+29
+00:06:52,611 --> 00:07:01,481
+In cycle 8, B E Q reads both registers from the register file. Number 5 does its last F, and goes to D in cycle 9.
+
+30
+00:07:01,931 --> 00:07:15,492
+In cycle 9, B E Q is in X. It resolves: taken. The pipeline guessed not taken. So number 5, now in D, and number 6, now in F, are on the wrong path.
+
+31
+00:07:15,942 --> 00:07:24,231
+In cycle 10, number 5 and number 6 are flushed. They get dashes. T1, instruction 7, is fetched in cycle 10.
+
+32
+00:07:24,681 --> 00:07:40,239
+Number 7 needs x1. Number 6 also writes x1, but number 6 is flushed. So the producer is add number 3. It wrote x1 in cycle 7. Number 7 reads x1 in D in cycle 11. No stall.
+
+33
+00:07:40,689 --> 00:07:59,218
+Number 8 store word uses x5 as base and as data. The producer is the load number 7. In cycle 12, number 8 is in D. Its X would be cycle 13, while the load is in M. The base is needed in X. That is load-use, so number 8 stalls.
+
+34
+00:07:59,668 --> 00:08:14,483
+In cycle 13, number 8 tries again. Its X would be cycle 14, while the load is in W. The base could take WX. But the store data has no WX path in the class datapath. So number 8 stalls again.
+
+35
+00:08:14,933 --> 00:08:31,372
+In cycle 14, the load writes x5 in W. Number 8 is in D in the same cycle, so it reads the old x5. This is the W D case, and D repeats once more. Number 9 waits in F in cycles 12, 13 and 14.
+
+36
+00:08:31,822 --> 00:08:45,383
+In cycle 15, number 8 reads x5 from the register file. So number 8 has 3 stall cycles. Each has a different reason: load-use, no WX path for store data, and the W D case.
+
+37
+00:08:45,833 --> 00:08:55,724
+Number 9 store word needs x5 as store data. The load wrote x5 in cycle 14. Number 9 reads it in D in cycle 16. No stall.
+
+38
+00:08:56,174 --> 00:09:09,038
+Number 10 reads x5 from the register file. Number 11 and number 12 only write x5. The writes stay in program order, so these write after write pairs are safe. The run ends in cycle 22.
+
+39
+00:09:09,488 --> 00:09:22,027
+Now the two tables. There are only two forwards, both in cycle 5, both from the load number 1. x4 goes from W to M into number 2, and from W to X into number 3.
+
+40
+00:09:22,477 --> 00:09:38,081
+The stall table. Number 4 stalls in D in cycles 5, 6 and 7, because the compare unit gets no forwarding. Number 5 stalls in F in the same cycles. Number 5 is flushed later, but its F stars are real stalls. Write them in the table.
+
+41
+00:09:38,531 --> 00:09:53,902
+Number 8 stalls in D in cycles 12, 13 and 14. Write the reasons: load-use for the base, no WX path for the store data, and the W D case. Number 9 stalls in F in the same cycles.
+
+42
+00:09:54,352 --> 00:10:01,969
+One more check, because it shows the rules well. On the left is our answer, with the class datapath. Number 8 stalls 3 cycles.
+
+43
+00:10:02,419 --> 00:10:16,397
+On the right, we add the WX path into store data from fall 2019 part B. Now number 8 stalls only 1 cycle, for load-use. In cycle 14 it gets x5 by WX, for the base and the data.
+
+44
+00:10:16,847 --> 00:10:36,027
+But now number 9 moves one cycle earlier. Its D is in cycle 14, the cycle of the load's W. That is the W D case, so number 9 stalls once. The run takes 21 cycles. This is not the exam answer. It is a check that you apply every rule again after a change.
+
+45
+00:10:36,477 --> 00:10:58,396
+Here is a check for your cycle count. It is not on the slides. The first instruction needs 5 cycles. Each next instruction finishes one cycle later. Each D star delays all later instructions by one cycle. Each taken branch adds 2 cycles. Assignment 3 part a: 4, plus 6 instructions, plus 12 stalls, is 22.
+
+46
+00:10:58,846 --> 00:11:03,397
+Part b: 4 plus 6 plus 1 stall is 11.
+
+47
+00:11:03,847 --> 00:11:16,014
+Fall 2019 Part A: 12 instructions finish, because 2 are flushed. 4 plus 12 plus 5 stall cycles plus 2 for the taken branch is 23.
+
+48
+00:11:16,464 --> 00:11:21,756
+Fall 2019 Part B: only 3 stall cycles are left, so 21.
+
+49
+00:11:22,206 --> 00:11:34,466
+Fall 2022: 10 instructions finish. 4 plus 10 plus 6 stalls plus 2 is 22. Do not count the F stars. They do not add time, because they happen at the same time as the D stars.
+
+50
+00:11:34,916 --> 00:11:39,798
+If your diagram and this count disagree, look for a missing stall or a missing flush.
+
+51
+00:11:40,248 --> 00:11:51,254
+Here is the recap of video 10 b. One. For an optimization question, find a stall whose value already sits in a pipeline register, and add the missing path.
+
+52
+00:11:51,704 --> 00:12:01,456
+Two. In fall 2019 part B, the missing path is WX into the store-data input. The run goes from 23 to 21 cycles.
+
+53
+00:12:01,906 --> 00:12:12,707
+Three. Its logic: the instruction in X is a store, and its rs2 equals rd in M W. Also, rd is not x0. Then select the M W value.
+
+54
+00:12:13,157 --> 00:12:21,003
+Four. With no forwarding into the branch compare unit, the branch reads its operands in D. That D comes after the W of every producer.
+
+55
+00:12:21,453 --> 00:12:27,583
+Five. A store whose base and data come from the load right before it stalls 3 cycles in the class datapath.
+
+56
+00:12:28,033 --> 00:12:33,997
+Six. Flushed rows are never producers, but their F stars still go in the stall table.
+
+57
+00:12:34,447 --> 00:12:45,175
+Seven. Check your count: 4, plus the finished instructions, plus the D stars, plus 2 per taken branch. That is the end of video 10.

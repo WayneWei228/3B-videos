@@ -1,0 +1,391 @@
+1
+00:00:00,000 --> 00:00:08,916
+This is ECE 320, video 14 a. The topic is caches, part 1: how a cache is organized, and how it finds data.
+
+2
+00:00:09,366 --> 00:00:26,596
+After this video, you can split an address into tag, index and offset bits. You can look up an address in a direct-mapped cache and find if it hits or misses. You can calculate the tag overhead and the average access time. And you can do a cache paper simulation. Every past midterm has a cache question of this type.
+
+3
+00:00:27,046 --> 00:00:40,868
+A program wants a memory that is fast, big and cheap. One memory component cannot be all three. So the computer uses a hierarchy of memory components. The CPU is at the top. M 1 to M 4 are below it.
+
+4
+00:00:41,318 --> 00:00:47,449
+The upper components are fast, small and expensive. The lower components are slow, big and cheap.
+
+5
+00:00:47,899 --> 00:00:52,264
+Buses connect the components. The buses also have latency and bandwidth limits.
+
+6
+00:00:52,714 --> 00:01:03,906
+The most frequently accessed data is kept in M 1. The next most frequently accessed data is in M 2, and so on. The hardware moves data up and down the hierarchy automatically.
+
+7
+00:01:04,356 --> 00:01:09,882
+The goal is to optimize the average access time. This number is the performance metric for the whole video.
+
+8
+00:01:10,332 --> 00:01:16,927
+Here is a real hierarchy. Level 0 is the registers, inside the processor. The compiler manages them.
+
+9
+00:01:17,377 --> 00:01:27,733
+Level 1 is the primary caches. They are split: an instruction cache, I cache, and a data cache, D cache. Each one is typically 8 to 64 kilobytes.
+
+10
+00:01:28,183 --> 00:01:40,861
+Level 2 is the second-level cache, L 2. It is made of SRAM, the same circuit type as the CPU. It is typically 512 kilobytes to 16 megabytes. The hardware manages all cache levels.
+
+11
+00:01:41,311 --> 00:01:52,085
+Level 3 is main memory. It is made of DRAM, dynamic RAM. A desktop or laptop has typically 4 to 8 gigabytes. Servers can have hundreds of gigabytes.
+
+12
+00:01:52,535 --> 00:02:00,662
+Level 4 is the disk, for swap space and files. The operating system, that is software, manages main memory and disk.
+
+13
+00:02:01,112 --> 00:02:11,143
+Why does a small fast memory help? Because programs have locality. Here is a small loop as an example. It is not from the slides. It adds the elements of array A.
+
+14
+00:02:11,593 --> 00:02:28,776
+Each dot is one access. Every loop pass fetches the same 4 instructions again. This is temporal locality: recently used instructions and data are likely to be used again soon. The hierarchy is reactive: it moves a block up when it is accessed.
+
+15
+00:02:29,226 --> 00:02:41,950
+The data accesses go to A of 0, then A of 1, then A of 2. Each access is next to the one before. This is spatial locality: data near recently used data is likely to be used soon.
+
+16
+00:02:42,400 --> 00:02:53,314
+So the hierarchy can be proactive. It moves the neighbours up too, before they are used. A cache does this with blocks: one block holds several neighbouring bytes, and they move up together.
+
+17
+00:02:53,764 --> 00:03:08,578
+The cache levels are I cache, D cache and L 2. A cache is managed by hardware. The hardware gets missing data automatically, and the program does not see it. Today caches are usually on the chip. Main memory is off-chip DRAM.
+
+18
+00:03:09,028 --> 00:03:24,632
+This video and the next one study the cache organization: the A B Cs. A is associativity, B is blocks, and C is conflicts. Video 15 adds the miss classification and the high-performance techniques.
+
+19
+00:03:25,082 --> 00:03:28,704
+Main memory, virtual memory and disks come in later lectures.
+
+20
+00:03:29,154 --> 00:03:37,699
+A cache is built from a memory array. This SRAM array has 1024 entries, and each entry is 256 bits wide.
+
+21
+00:03:38,149 --> 00:03:51,663
+An address of n bits selects one entry. The decoder changes the 10-bit address into 1024 signals. Exactly one of them is on. Here the address is 3, so wordline 3 turns on.
+
+22
+00:03:52,113 --> 00:04:02,283
+The bits of entry 3 travel out on the bitlines. The width of an entry is the width of the data that is accessed: here 256 bits, which is 32 bytes.
+
+23
+00:04:02,733 --> 00:04:10,024
+So the number of entries is 2 to the n, where n is the number of address bits. 2 to the 10 is 1024.
+
+24
+00:04:10,474 --> 00:04:26,775
+A basic cache is an array of block frames. The example on slide 8 is a 32 kilobyte cache. It has 1024 frames, and each frame holds one 32-byte block. The address has 32 bits. Which bits find the frame?
+
+25
+00:04:27,225 --> 00:04:37,999
+A block has 32 bytes. 32 is 2 to the 5. So the 5 lowest address bits, bits 4 to 0, find the byte inside the block. These are the offset bits.
+
+26
+00:04:38,449 --> 00:04:52,520
+There are 1024 frames. 1024 is 2 to the 10. So the next 10 bits, bits 14 to 5, find the frame. These are the index bits. The decoder uses them to select one frame.
+
+27
+00:04:52,970 --> 00:05:03,048
+An example. Address hex 8 0 4 4 has index 2 and offset 4. So the cache reads frame 2, and the offset picks byte 4 of the block.
+
+28
+00:05:03,498 --> 00:05:12,971
+Nothing forces the index to be these bits. But the middle bits work best: neighbouring blocks then go to neighbouring frames. A cache line is the same thing as a cache block.
+
+29
+00:05:13,421 --> 00:05:31,115
+The index selects a frame. But many addresses have the same index bits. Memory has 2 to the 32 bytes, so 2 to the 27 blocks, and the cache has only 1024 frames. So 2 to the 17 different blocks share each frame. Which one is there now?
+
+30
+00:05:31,565 --> 00:05:54,692
+To answer this, each frame gets a tag and a valid bit. The tag stores the upper address bits of the block that is in the frame. The tag is the rest of the address: bits 31 to 15, so 17 bits. The valid bit says that the frame holds a real block. Here, frame 2 holds the block from hex 8 0 4 0 to 8 0 5 F. Its tag is 1.
+
+31
+00:05:55,142 --> 00:06:04,477
+The lookup algorithm. First, read the frame that the index bits select. For address hex 8 0 4 4, the index is 2.
+
+32
+00:06:04,927 --> 00:06:16,119
+Then compare the frame's tag with the tag bits of the address. If the tag matches and the valid bit is set, it is a hit, and the data is good. Here both tags are 1, so it is a hit.
+
+33
+00:06:16,569 --> 00:06:29,572
+Now address hex 1 0 0 4 4. Its index is also 2, but its tag is 2. The stored tag is 1. The tags do not match, so it is a miss. The data is not good.
+
+34
+00:06:30,022 --> 00:06:37,960
+The cache does not need to compare the index bits. Every block in frame 2 has index 2, so the index bits are always equal.
+
+35
+00:06:38,410 --> 00:06:50,252
+A 32 kilobyte cache holds 32 kilobytes of data. This number is called the capacity. Each frame also stores a valid bit and a tag. The tag storage is overhead.
+
+36
+00:06:50,702 --> 00:07:11,182
+Calculate the tag overhead of the 32 kilobyte cache with 1024 frames of 32 bytes and 32-bit addresses. 32-byte frames give a 5-bit offset. 1024 frames give a 10-bit index. So the tag is 32 minus 5 minus 10, which is 17 bits.
+
+37
+00:07:11,632 --> 00:07:25,843
+Each frame needs 17 tag bits plus 1 valid bit, so 18 bits. Times 1024 frames, that is 18 kilobits. Divide by 8: 2304 bytes, which is 2.25 kilobytes.
+
+38
+00:07:26,293 --> 00:07:36,834
+The overhead is 2.25 kilobytes divided by 32 kilobytes. That is 7 percent. The slide rounds the numbers and writes about 6 percent. The method is the same.
+
+39
+00:07:37,284 --> 00:07:43,089
+Remember: the capacity counts only the data. The tags and valid bits are extra storage.
+
+40
+00:07:43,539 --> 00:07:51,852
+What happens when the data is not in the cache? How does it get in there? A cache controller handles the miss. The controller is a finite state machine.
+
+41
+00:07:52,302 --> 00:07:55,692
+Step 1. The controller remembers the miss address.
+
+42
+00:07:56,142 --> 00:07:59,486
+Step 2. It accesses the next level of memory for the data.
+
+43
+00:07:59,936 --> 00:08:04,394
+Step 3. It waits for the response from the next level. The access waits too.
+
+44
+00:08:04,844 --> 00:08:20,494
+Step 4. When the response arrives, the controller fills the cache. It writes the data and the tag into the proper frame. A replacement policy chooses the frame. This choice exists when a block can go into more than one frame. That comes with associativity, in the next video.
+
+45
+00:08:20,944 --> 00:08:45,790
+Here are the words for cache performance. An access is a read or a write to the cache. A hit means the data is in the cache. A miss means it is not, so the cache must get it from another component. A fill places the data into the cache. The miss rate is the number of misses divided by the number of accesses. t hit is the time to read or write data in the cache. t miss is the time to put the data into the cache.
+
+46
+00:08:46,240 --> 00:08:53,856
+The performance metric is the average access time. t average equals t hit, plus the miss rate times t miss.
+
+47
+00:08:54,306 --> 00:09:06,241
+An example, with numbers that are not from the slides. t hit is 1 cycle, the miss rate is 10 percent, and t miss is 20 cycles. Every access pays t hit.
+
+48
+00:09:06,691 --> 00:09:22,156
+Only the misses also pay t miss. On average, that adds point 1 times 20, which is 2 cycles. So t average is 3 cycles. To make t average small, make t hit small, the miss rate small, or t miss small.
+
+49
+00:09:22,606 --> 00:09:35,655
+Now a paper simulation, the main exam skill. To keep the diagrams small, slide 14 uses 4-bit addresses. So the lower-level memory has only 16 bytes. The cache has 8 bytes, with 2-byte blocks.
+
+50
+00:09:36,105 --> 00:09:44,929
+First, find the number of frames. Capacity divided by block size: 8 divided by 2 is 4 frames.
+
+51
+00:09:45,379 --> 00:09:53,274
+Then split the address. The offset is the least significant bits: log 2 of the block size. Log 2 of 2 is 1 bit.
+
+52
+00:09:53,724 --> 00:10:00,272
+The index is the next bits: log 2 of the number of frames. Log 2 of 4 is 2 bits.
+
+53
+00:10:00,722 --> 00:10:04,855
+The tag is the rest: 4 minus 1 minus 2, which is 1 bit.
+
+54
+00:10:05,305 --> 00:10:26,296
+Each colour is one frame. Memory has 8 blocks but the cache has 4 frames. So two blocks share each frame, one with tag 0 and one with tag 1. In the tables, 0 0 0 0 bar 0 0 0 1 means the block with the bytes at addresses 0 and 1. The data values do not matter.
+
+55
+00:10:26,746 --> 00:10:42,210
+Pause the video and try the simulation first. At the start, the cache holds addresses 0 0 0 0 to 0 1 1 1. All four blocks have tag 0. The access sequence is in the Address column of the table.
+
+56
+00:10:42,660 --> 00:10:58,712
+Access 1 1 0 0. The tag is 1, the index is 1 0, the offset is 0. Frame 1 0 holds tag 0. The tags differ, so it is a miss. The block 1 1 0 0 bar 1 1 0 1 is filled into frame 1 0.
+
+57
+00:10:59,162 --> 00:11:10,168
+Access 1 1 1 0. Tag 1, index 1 1. Frame 1 1 holds tag 0. Miss. Fill block 1 1 1 0 bar 1 1 1 1.
+
+58
+00:11:10,618 --> 00:11:21,021
+Access 1 0 0 0. Tag 1, index 0 0. Frame 0 0 holds tag 0. Miss. Fill block 1 0 0 0 bar 1 0 0 1.
+
+59
+00:11:21,471 --> 00:11:29,784
+Access 0 0 1 1. Tag 0, index 0 1. Frame 0 1 holds tag 0, and it is valid. Hit.
+
+60
+00:11:30,234 --> 00:11:36,410
+Access 1 0 0 0 again. Frame 0 0 now holds tag 1. Hit.
+
+61
+00:11:36,860 --> 00:11:47,959
+Access 0 0 0 0. Tag 0, index 0 0. Frame 0 0 holds tag 1. Miss. The block 0 0 0 0 replaces block 1 0 0 0.
+
+62
+00:11:48,409 --> 00:11:56,676
+Access 1 0 0 0. Frame 0 0 holds tag 0 again. Miss. The block 1 0 0 0 comes back.
+
+63
+00:11:57,126 --> 00:12:14,819
+The result: 2 hits in 7 accesses. The last row shows the cache after the last fill. Addresses 1 0 0 0 and 0 0 0 0 have the same index. In a direct-mapped cache they must use the same frame, so they keep kicking each other out.
+
+64
+00:12:15,269 --> 00:12:21,399
+The simplest way to reduce the miss rate is a larger capacity. The miss rate then goes down monotonically.
+
+65
+00:12:21,849 --> 00:12:27,515
+But a larger cache is slower. So t hit goes up. Both terms are in the average access time.
+
+66
+00:12:27,965 --> 00:12:39,430
+So the designer usually keeps a given capacity. Then the designer changes the organization to change the miss rate: the block size and the associativity. Blocks are also called lines, or cache lines.
+
+67
+00:12:39,880 --> 00:13:03,077
+The first way to change the organization is the block size, also called line size. Start with the original 32 kilobyte cache: 1024 frames of 256 bits. The offset is log 2 of 256 divided by 8, which is 5. The index is log 2 of 1024, which is 10.
+
+68
+00:13:03,527 --> 00:13:22,753
+Now double the block size to 64 bytes, with the same capacity. The cache has 512 frames of 512 bits. The offset is log 2 of 512 divided by 8, which is 6. The index is log 2 of 512, which is 9.
+
+69
+00:13:23,203 --> 00:13:29,287
+So one index bit becomes an offset bit. The tag stays the same, 17 bits.
+
+70
+00:13:29,737 --> 00:13:34,752
+Larger blocks exploit spatial locality. One miss brings in more neighbouring bytes.
+
+71
+00:13:35,202 --> 00:13:49,552
+Block size also changes the tag overhead. The first cache has 1024 frames of 32 bytes. Each frame stores 17 tag bits and 1 valid bit. That is 18 kilobits, or 2.25 kilobytes.
+
+72
+00:13:50,002 --> 00:14:02,913
+The second cache has 512 frames of 64 bytes. The tag is still 17 bits. But there are only 512 frames. So the tag storage is 9 kilobits, or 1.125 kilobytes.
+
+73
+00:14:03,363 --> 00:14:13,058
+Divide by 32 kilobytes. The overhead goes from 7 percent to 3.5 percent. The slide rounds these to about 6 and about 3 percent.
+
+74
+00:14:13,508 --> 00:14:18,941
+The rule: larger blocks give fewer frames, so fewer tags, so less overhead.
+
+75
+00:14:19,391 --> 00:14:35,599
+Slide 19 repeats the simulation with 4-byte blocks. The capacity is still 8 bytes, so there are 2 frames. The offset is 2 bits, the index is 1 bit, and the tag is 1 bit. The start state and the accesses are the same. Pause the video and try it.
+
+76
+00:14:36,049 --> 00:14:48,309
+Access 1 1 0 0. Tag 1, index 1. Frame 1 holds tag 0. Miss. Fill the whole block, 1 1 0 0 to 1 1 1 1, into frame 1.
+
+77
+00:14:48,759 --> 00:14:58,929
+Access 1 1 1 0. Tag 1, index 1. Hit! The miss on 1 1 0 0 already brought in 1 1 1 0. This is spatial prefetching.
+
+78
+00:14:59,379 --> 00:15:11,593
+Access 1 0 0 0. Tag 1, index 0. Frame 0 holds tag 0. Miss. The block 1 0 0 0 to 1 0 1 1 replaces block 0 0 0 0 to 0 0 1 1.
+
+79
+00:15:12,043 --> 00:15:32,092
+Access 0 0 1 1. Tag 0, index 0. Frame 0 holds tag 1. Miss. The box under the cache shows that with 2-byte blocks this was a hit. Now 0 0 1 1 is in the same block as 0 0 0 0, which conflicts with 1 0 0 0.
+
+80
+00:15:32,542 --> 00:15:35,375
+Access 1 0 0 0. Miss again.
+
+81
+00:15:35,825 --> 00:15:38,890
+Access 0 0 0 0. Miss.
+
+82
+00:15:39,340 --> 00:15:41,987
+Access 1 0 0 0. Miss.
+
+83
+00:15:42,437 --> 00:15:45,502
+Access 0 0 0 0. Miss.
+
+84
+00:15:45,952 --> 00:16:08,707
+The result: 1 hit in 8 accesses. Plus: spatial prefetching, so the miss on 1 1 0 0 brought in 1 1 1 0. Minus: more conflicts. The miss on 1 0 0 0 kicked out 0 0 1 1. With 2-byte blocks, 0 0 1 1 was a hit, and there were 2 hits in 7 accesses.
+
+85
+00:16:09,157 --> 00:16:17,006
+Larger blocks take longer to read, transfer and fill. So does a larger block increase t miss? It does, but there is a fix.
+
+86
+00:16:17,456 --> 00:16:32,270
+For an isolated miss, t miss is not affected. The cache uses critical word first. It fetches the requested word first, here word 5. The pipeline restarts immediately. The remaining words are transferred and filled in the background.
+
+87
+00:16:32,720 --> 00:16:37,826
+A cluster of misses does suffer. The transfer of the second miss must wait for the first one.
+
+88
+00:16:38,276 --> 00:16:46,217
+The reads, transfers and fills of two misses cannot happen at the same time. So the latencies pile up. This is a bandwidth problem.
+
+89
+00:16:46,667 --> 00:16:58,695
+Look again at addresses 0 0 0 0 and 1 0 0 0. With 2-byte blocks, both have index 0 0. With 4-byte blocks, both have index 0.
+
+90
+00:16:59,145 --> 00:17:06,529
+They have the same index but a different tag. So they need the same frame, and they conflict. This happens for any block size.
+
+91
+00:17:06,979 --> 00:17:18,403
+Can a pair like this stay in the cache at the same time? Yes, but we must reorganize the cache. The fix is set-associativity. It is the topic of the next video, 14 b.
+
+92
+00:17:18,853 --> 00:17:27,259
+Here is the recap. One. The hierarchy puts fast, small memories on top. It works because of temporal and spatial locality.
+
+93
+00:17:27,709 --> 00:17:40,805
+Two. The number of frames is the capacity divided by the block size. The offset is log 2 of the block size. The index is log 2 of the number of frames. The tag is the rest of the address.
+
+94
+00:17:41,255 --> 00:17:49,753
+Three. In a lookup, the index selects the frame. It is a hit if the tag matches and the valid bit is set.
+
+95
+00:17:50,203 --> 00:17:55,497
+Four. The tag overhead is the tag plus valid bits, times the number of frames.
+
+96
+00:17:55,947 --> 00:18:03,656
+Five. On a miss, the controller remembers the address, asks the next level, waits, and then fills the data and the tag.
+
+97
+00:18:04,106 --> 00:18:09,122
+Six. The average access time is t hit plus the miss rate times t miss.
+
+98
+00:18:09,572 --> 00:18:26,197
+Seven. Larger blocks give spatial prefetching and less tag overhead, but more conflicts. Two blocks with the same index and a different tag conflict. Video 14 b fixes this with set-associativity. That is the end of video 14 a.
