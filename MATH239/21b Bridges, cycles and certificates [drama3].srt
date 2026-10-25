@@ -1,0 +1,211 @@
+1
+00:00:00,000 --> 00:00:07,570
+This is MATH 239, video 21 b. The topic is bridges, their relation to cycles, and certificates.
+
+2
+00:00:08,020 --> 00:00:20,048
+After this video, you can find the bridges of a graph. You can prove the lemma, the theorem and the corollary about bridges. You can solve the problems of problem set 4.10 that use them, and you can give certificates.
+
+3
+00:00:20,498 --> 00:00:29,461
+For an edge e of G, G minus e is the graph with the same vertices and all the edges except e. We delete the edge, but we keep its ends.
+
+4
+00:00:29,911 --> 00:00:38,177
+Delete the edge e from 4 to 6. Now no path joins the left part to the right part. G minus e has two components.
+
+5
+00:00:38,627 --> 00:00:45,639
+Delete the edge f from 3 to 4 instead. The graph stays connected: we can still go from 3 to 4 through 5.
+
+6
+00:00:46,089 --> 00:01:00,253
+An edge e is a bridge if G minus e has more components than G. So e is a bridge, and f is not. If G is connected, a bridge is an edge whose deletion makes G not connected. Some texts call a bridge a cut edge.
+
+7
+00:01:00,703 --> 00:01:19,744
+Lemma 4.10.2. Let e, from x to y, be a bridge of a connected graph G. Then G minus e has exactly two components, and x and y are in different components. For the proof, let V x be the set of vertices in the component of x in G minus e. Here x is 4, y is 6, and V x is blue.
+
+8
+00:01:20,194 --> 00:01:34,079
+Take any vertex z that is not in V x. G is connected, so there is a path from x to z in G. But there is no such path in G minus e. So every path from x to z in G uses the edge e.
+
+9
+00:01:34,529 --> 00:01:48,833
+A path visits x only once, at its start. The edge e has x as an end. So e is the first edge of the path: x, then e, then y, and then on to z. Here the path is x, y, 7, z.
+
+10
+00:01:49,283 --> 00:02:00,707
+Now drop the first edge. The rest, from y to z, is a path that does not use e. So it is a path in G minus e, and z is in the component of y.
+
+11
+00:02:01,157 --> 00:02:13,557
+So every vertex is in the component of x or in the component of y. G minus e has at least two components, because e is a bridge. So it has exactly two, and x and y are in different ones.
+
+12
+00:02:14,007 --> 00:02:21,182
+Theorem 4.10.3 says: an edge e is a bridge if and only if it is not in any cycle of G.
+
+13
+00:02:21,632 --> 00:02:33,614
+First, suppose that the edge e, from x to y, is in a cycle. Here e is the edge from 3 to 4, on the cycle 3, 4, 5. Delete e. The rest of the cycle is still there.
+
+14
+00:02:34,064 --> 00:02:52,826
+The rest of the cycle is a path from x to y in G minus e. Here it is 3, 5, 4. So x and y are in the same component of G minus e. By Lemma 4.10.2, the ends of a bridge are in different components. So e is not a bridge.
+
+15
+00:02:53,276 --> 00:03:12,687
+Now the converse. Suppose e, from u to v, is not a bridge. Here e is the edge from 6 to 8. Then u and v are in the same component of G minus e. If not, putting e back would join two components, and e would be a bridge. So there is a path P from u to v in G minus e.
+
+16
+00:03:13,137 --> 00:03:25,583
+The path P, here 6, 7, 8, together with the edge e is a cycle. It contains e. This proves the theorem. Python checked the theorem and the lemma on all graphs with up to 5 vertices.
+
+17
+00:03:26,033 --> 00:03:46,328
+Corollary 4.10.4 says: if there are two distinct paths from u to v, then G contains a cycle. Let P 1 be x 0 to x n, and let P 2 be y 0 to y m. Both start at u and end at v. Here they share the first edge, from u to x 1.
+
+18
+00:03:46,778 --> 00:04:07,908
+Let i be the first index where the next vertices differ: x i plus 1 is not y i plus 1. Here i is 1. Let e be the edge from x i to x i plus 1. It is in P 1. It is not in P 2, because P 2 passes x i only once, and its edges there go to y i minus 1 and y i plus 1.
+
+19
+00:04:08,358 --> 00:04:23,915
+Now walk from x i back along P 1 to u. Then go along P 2 to v. Then go back along P 1 to x i plus 1. This walk joins x i to x i plus 1, and it does not use e.
+
+20
+00:04:24,365 --> 00:04:37,461
+So x i and x i plus 1 are in the same component of G minus e. By Lemma 4.10.2, e is not a bridge. By Theorem 4.10.3, e is in a cycle. So G has a cycle.
+
+21
+00:04:37,911 --> 00:04:48,453
+We often use the contrapositive. If G has no cycles, then each two vertices are joined by at most one path. This is the key fact for trees, in the next video.
+
+22
+00:04:48,903 --> 00:04:55,574
+Here is an example. Pause the video and try it. Find all the bridges of this graph, and justify the answer.
+
+23
+00:04:56,024 --> 00:05:09,120
+Use Theorem 4.10.3. The edges of the triangle 1, 2, 3 are in a cycle. The edges of the square 4, 5, 6, 7 are in a cycle. So none of these 7 edges is a bridge. The cycle is the certificate.
+
+24
+00:05:09,570 --> 00:05:27,542
+The other edges are 3 4, 6 8, 8 9 and 8 10. None of them is in a cycle. For example, a cycle through 8 9 would have to leave 9 by a second edge, but 9 has degree 1. So these 4 edges are bridges.
+
+25
+00:05:27,992 --> 00:05:44,107
+To certify a bridge, give a cut in G minus e. For the edge 3 4, the set 1, 2, 3 has an empty cut in G minus 3 4. So G minus 3 4 is not connected, and 3 4 is a bridge. Python checked the four bridges.
+
+26
+00:05:44,557 --> 00:05:55,424
+A problem from the notes. Pause the video and try it. Prove that a 4-regular graph has no bridge. 4-regular means that every vertex has degree 4.
+
+27
+00:05:55,874 --> 00:06:11,942
+Suppose that the edge e, from x to y, is a bridge. We apply Lemma 4.10.2 to the component of G that contains e. Then x and y are in different components of G minus e. Let H be the component that contains x.
+
+28
+00:06:12,392 --> 00:06:26,092
+Look at the degrees in H. The vertex x lost the edge e, so it has degree 3. Each other vertex of H keeps all its 4 edges. Its neighbours are joined to it, so they are in H too.
+
+29
+00:06:26,542 --> 00:06:50,551
+So the sum of the degrees in H is 4 times the number of vertices minus 1, plus 3. This number is odd. But by Theorem 4.3.1, the sum of the degrees is two times the number of edges of H, which is even. This is a contradiction. So a 4-regular graph has no bridge. Python checked all 4-regular graphs with 5, 6 and 7 vertices.
+
+30
+00:06:51,001 --> 00:07:06,280
+Another problem. Pause the video and try it. In G, exactly two vertices u and v have odd degree. Prove that G contains a path from u to v. In the example, u and v have degree 3, and all the other degrees are even.
+
+31
+00:07:06,730 --> 00:07:16,930
+Let H be the component of G that contains u. Each edge at a vertex of H is in H. So each vertex has the same degree in H as in G.
+
+32
+00:07:17,380 --> 00:07:31,776
+H is a graph, so by Corollary 4.3.2, H has an even number of vertices of odd degree. u is one of them, so H has another one. The only other vertex of odd degree in G is v. So v is in H.
+
+33
+00:07:32,226 --> 00:07:39,889
+H is connected, so H has a path from u to v. This path is in G. Python checked this result on all graphs with up to 6 vertices.
+
+34
+00:07:40,339 --> 00:07:51,159
+Another problem. Pause the video and try it. Every vertex of a graph H with p vertices has degree at least p over 5. Prove that H has at most 4 components.
+
+35
+00:07:51,609 --> 00:08:05,402
+Take any component C, and any vertex of C. Its neighbours are joined to it by an edge, so they are in C. It has at least p over 5 neighbours. So C has at least p over 5 plus 1 vertices.
+
+36
+00:08:05,852 --> 00:08:23,035
+Suppose H has 5 or more components. Then H has at least 5 times p over 5 plus 1 vertices. That is p plus 5 vertices, which is more than p. This is a contradiction. So H has at most 4 components. Python checked this on all graphs with up to 6 vertices.
+
+37
+00:08:23,485 --> 00:08:29,522
+Pause the video and try it. Which graphs, with at least one edge, have the property that every edge is a bridge?
+
+38
+00:08:29,972 --> 00:08:48,966
+By Theorem 4.10.3, an edge is a bridge if and only if it is in no cycle. Every cycle has edges. So every edge is a bridge if and only if G has no cycles. The answer: exactly the graphs with no cycles. The next video calls them forests.
+
+39
+00:08:49,416 --> 00:09:05,391
+Here the graph has no cycles, and all 6 red edges are bridges. Now add the edge from 1 to 4. It closes the cycle 1, 2, 4. The three edges of this cycle are no longer bridges. Python checked the answer on all graphs with up to 5 vertices.
+
+40
+00:09:05,841 --> 00:09:21,863
+Pause the video and try it. A n has the binary strings of length n as vertices. Two strings are adjacent if they differ in exactly two positions. Find the number of edges, decide if A n is bipartite, and count its components. This is A 3.
+
+41
+00:09:22,313 --> 00:09:37,174
+Part a. Each string has n choose 2 neighbours, one for each pair of positions. The sum of the degrees is 2 to the n times n choose 2. Divide by 2. A n has 2 to the n minus 1, times n choose 2 edges. For n equal to 3, that is 12.
+
+42
+00:09:37,624 --> 00:10:01,819
+Part b. A 2 has only the edges 00 to 11, and 01 to 10. It is bipartite. For n at least 3, the strings 0 0 0, 1 1 0, and 1 0 1, followed by zeros, are pairwise adjacent. In a bipartition, two of the three are on the same side, but they are adjacent. So A n is not bipartite.
+
+43
+00:10:02,269 --> 00:10:26,669
+Part c. Flipping two positions does not change the parity of the number of ones. So no edge joins an even string to an odd string: the cut is empty. In each parity, flip the ones two at a time. An even string reaches all zeros. An odd string reaches 1 followed by zeros. So A n has exactly 2 components. Python checked a, b and c for n up to 7.
+
+44
+00:10:27,119 --> 00:10:41,675
+Pause the video and try it. B n has the same vertices, but two strings are adjacent if they differ in exactly two consecutive positions. Find the number of edges and the number of components. This is B 3.
+
+45
+00:10:42,125 --> 00:10:58,332
+Part a. A string of length n has n minus 1 pairs of consecutive positions. So each degree is n minus 1, and B n has n minus 1, times 2 to the n minus 1 edges. For n equal to 3, that is 8.
+
+46
+00:10:58,782 --> 00:11:26,461
+Part b. The parity of the number of ones does not change, so there are at least 2 components. To flip two far positions i and j, flip the pairs i and i plus 1, then i plus 1 and i plus 2, up to j. The middle positions flip twice, so they do not change. Here 1 0 0 1 becomes 0 0 0 0 in three steps. So B n has the same 2 components as A n. Python checked both parts for n up to 7.
+
+47
+00:11:26,911 --> 00:11:34,620
+For each new property, there are two questions. How do we certify that a graph has the property? And how do we certify that it does not have it?
+
+48
+00:11:35,070 --> 00:11:45,844
+To certify that a graph is connected, give paths, for example from one vertex to every vertex. To certify that it is not connected, give a proper nonempty set X with an empty cut.
+
+49
+00:11:46,294 --> 00:12:07,052
+To certify that e from u to v is a bridge, give a cut of G minus e with u in one part and v in the other. Here A and B certify that the edge 4 6 is a bridge. To certify that an edge is not a bridge, give a cycle that contains it, such as 3, 4, 5. For an Eulerian circuit, give the circuit, or a vertex of odd degree.
+
+50
+00:12:07,502 --> 00:12:16,419
+A certificate must be easy for the marker to check. The precise rule is: it can be checked in polynomial time. It does not need to be easy to find.
+
+51
+00:12:16,869 --> 00:12:27,179
+To recap. An edge is a bridge if deleting it increases the number of components. Deleting a bridge from x to y leaves exactly two components, with x and y in different ones.
+
+52
+00:12:27,629 --> 00:12:39,703
+An edge is a bridge if and only if it is in no cycle. Two different paths between the same vertices give a cycle. So in a graph with no cycles, each two vertices are joined by at most one path.
+
+53
+00:12:40,153 --> 00:12:52,274
+Degree sums inside one component prove many results, such as the problems on 4-regular graphs and on two odd vertices. A certificate must be easy to check. The next video is about trees.

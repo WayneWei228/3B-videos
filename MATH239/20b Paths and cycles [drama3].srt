@@ -1,0 +1,227 @@
+1
+00:00:00,000 --> 00:00:07,291
+This is MATH 239, video 20 b. The topic is paths and cycles, section 4.6 of the graph theory notes.
+
+2
+00:00:07,741 --> 00:00:19,665
+After this video, you can tell subgraphs, walks, paths and cycles apart. You can prove the two theorems of the section. You can find the girth of a graph, and decide if it has a Hamilton cycle.
+
+3
+00:00:20,115 --> 00:00:36,988
+We start with subgraphs. A subgraph of G has a vertex set U, which is a subset of the vertices of G. Its edges are some of the edges of G that have both ends in U. In blue: the vertices 1, 2, 5, 7, 8, and five edges between them.
+
+4
+00:00:37,438 --> 00:00:52,299
+A subgraph has some, or all, of the vertices of G, and some of the edges between them. An edge of the subgraph cannot use a vertex outside it. For example, the edge 7 10 is not allowed here, because 10 is not in U.
+
+5
+00:00:52,749 --> 00:01:02,221
+A subgraph that has all the vertices of G is a spanning subgraph. The green subgraph has all 10 vertices and 10 of the 17 edges. So it is spanning.
+
+6
+00:01:02,671 --> 00:01:11,309
+A subgraph H that is not equal to G is a proper subgraph. Also, a subgraph of a subgraph of G is a subgraph of G.
+
+7
+00:01:11,759 --> 00:01:27,688
+A walk is a sequence v 0, e 1, v 1, e 2, and so on, up to v n. Each edge e i joins v i minus 1 to v i. The length of the walk is n, the number of edges in it.
+
+8
+00:01:28,138 --> 00:01:36,311
+Here is a walk in the graph of Figure 4.19. It starts at 7, goes to 8, then to 2, then to 1.
+
+9
+00:01:36,761 --> 00:01:40,383
+It continues from 1 to 5, and from 5 back to 2.
+
+10
+00:01:40,833 --> 00:02:00,152
+Then it goes from 2 to 3, and ends at 4. The walk W is 7, 8, 2, 1, 5, 2, 3, 4. It has 7 edges, so its length is 7. A graph has no multiple edges, so the vertices fix the edges. We usually list only the vertices.
+
+11
+00:02:00,602 --> 00:02:08,079
+Vertex 2 appears twice in W. This is allowed. A walk can repeat vertices, and it can repeat edges.
+
+12
+00:02:08,529 --> 00:02:20,371
+A walk is closed if it ends where it starts. For example, 1, 5, 2, 1 is a closed walk of length 3. We can also reverse a walk, so we often talk about a walk between two vertices.
+
+13
+00:02:20,821 --> 00:02:31,802
+A path is a walk in which all the vertices are distinct. The blue path of Figure 4.19 is 1, 5, 6, 3, 4, 9, 8, 2. It goes from 1 to 2, and its length is 7.
+
+14
+00:02:32,252 --> 00:02:39,590
+If all vertices are distinct, then all edges are distinct too. Each edge of a walk is fixed by two consecutive vertices.
+
+15
+00:02:40,040 --> 00:02:48,306
+The walk W from the last slide is not a path, because vertex 2 appears twice. The next theorem shows how to remove such a repeat.
+
+16
+00:02:48,756 --> 00:02:56,744
+Theorem 4.6.2. If there is a walk from x to y in G, then there is a path from x to y in G.
+
+17
+00:02:57,194 --> 00:03:10,475
+Proof. The notes use a form of proof by contradiction. Among all walks from x to y, take one of minimal length. Call it v 0 to v n. Here, a walk from 7 to 4 is in orange.
+
+18
+00:03:10,925 --> 00:03:23,278
+Suppose this walk is not a path. Then some vertex repeats: v i equals v j for some i less than j. In our walk, vertex 2 appears at positions 2 and 5.
+
+19
+00:03:23,728 --> 00:03:43,837
+Cut out the closed part from v i to v j. The red dashed part, 2, 1, 5, 2, goes away. What is left, v 0 to v i, then v j plus 1 to v n, is still a walk from x to y. It is shorter. This contradicts the choice of a minimal walk.
+
+20
+00:03:44,287 --> 00:03:59,333
+So a minimal walk has no repeated vertex. It is a path. The green path 7, 8, 2, 3, 4 is the result for our example. We checked by computer that, in this graph, every shortest walk between two vertices is a path.
+
+21
+00:03:59,783 --> 00:04:16,827
+A corollary. If there is a path from x to y, and a path from y to z, then there is a path from x to z. In the figure, x is 7, y is 3 and z is 5. The blue path goes from 7 to 3. The purple path goes from 3 to 5.
+
+22
+00:04:17,277 --> 00:04:30,837
+Proof. Follow the first path, and then the second path. This gives a walk from x to z: 7, 8, 2, 3, 2, 5. It is not a path, because vertex 2 appears twice. Two paths can share vertices.
+
+23
+00:04:31,287 --> 00:04:43,733
+But by Theorem 4.6.2, the walk contains a path from x to z. Here it is 7, 8, 2, 5, in green. The next video uses this result for connected graphs.
+
+24
+00:04:44,183 --> 00:05:08,146
+A cycle is a subgraph with n distinct vertices v 0 to v n minus 1, and the n distinct edges that join them in a ring: v 0 v 1, v 1 v 2, and so on, and last v n minus 1 back to v 0. The blue cycle of Figure 4.20 has 8 vertices: 1, 5, 2, 3, 9, 10, 8, 7.
+
+25
+00:05:08,596 --> 00:05:25,344
+In a cycle, every vertex has degree exactly 2. A cycle with n edges is an n cycle, or a cycle of length n. This one is an 8 cycle. If we delete one edge of a cycle, we get a path. The notes use the word path for this subgraph too.
+
+26
+00:05:25,794 --> 00:05:29,881
+This 8 cycle does not use the vertices 4 and 6, in red.
+
+27
+00:05:30,331 --> 00:05:43,982
+A cycle of length 1 would need a loop. A cycle of length 2 would need two edges between the same two vertices. A graph has neither. So the shortest possible cycle has length 3. We call it a triangle.
+
+28
+00:05:44,432 --> 00:05:58,085
+One cycle gives many closed walks. Take an n cycle with n at least 3. We can start at any of its n vertices, and go around in either of two directions. Here is the triangle 1, 2, 5 of our graph.
+
+29
+00:05:58,535 --> 00:06:06,801
+In one direction, we get three closed walks: 1 2 5 1, 2 5 1 2, and 5 1 2 5.
+
+30
+00:06:07,251 --> 00:06:14,500
+In the other direction, we get three more: 1 5 2 1, 5 2 1 5, and 2 1 5 2.
+
+31
+00:06:14,950 --> 00:06:24,494
+So each n cycle gives 2 n closed walks of length n. For the triangle, this is 6. We checked the count 2 n by computer for n from 3 to 7.
+
+32
+00:06:24,944 --> 00:06:42,591
+Theorem 4.6.4. If every vertex of G has degree at least 2, then G contains a cycle. Proof. Take a longest path in G, and call it v 0 to v k. In our graph, a longest path uses all 10 vertices. It is in blue.
+
+33
+00:06:43,041 --> 00:06:54,558
+Look at the first vertex, v 0. Its neighbour v 1 is on the path. The degree of v 0 is at least 2. So v 0 has another neighbour x.
+
+34
+00:06:55,008 --> 00:07:13,065
+Suppose x is not on the path. Then x, v 0, v 1, up to v k is a path that is longer by one edge. This contradicts the choice of a longest path. So x is on the path: x equals v i, and i is at least 2. Here, x is vertex 5, which is v 2.
+
+35
+00:07:13,515 --> 00:07:20,388
+Then v 0, v 1, up to v i, and back to v 0, is a cycle. Here it is the triangle 1, 2, 5.
+
+36
+00:07:20,838 --> 00:07:34,630
+Vertex 1 has a third neighbour, 7, which is v 8. It gives a 9 cycle. The proof needs only one such neighbour. The idea of a longest path is a standard tool: a longest path cannot be extended.
+
+37
+00:07:35,080 --> 00:07:49,291
+Here is an exercise from the notes that extends the proof. Let G have minimum degree k, at least 2. Prove that G has a path of length at least k, and a cycle of length at least k plus 1. Pause the video and try it.
+
+38
+00:07:49,741 --> 00:08:02,791
+Step 1. Take a longest path v 0 to v l. As in the theorem, every neighbour of v 0 is on the path. Otherwise, we could make the path longer. So all neighbours of v 0 are among v 1 to v l.
+
+39
+00:08:03,241 --> 00:08:14,990
+Step 2. v 0 has at least k neighbours, and they are distinct vertices among v 1 to v l. So l is at least k. The path has length at least k. This proves part a.
+
+40
+00:08:15,440 --> 00:08:35,966
+Step 3. Let v i be the neighbour of v 0 with the largest index. The k neighbours have k different indices from 1 to l, so i is at least k. Then v 0 to v i and back to v 0 is a cycle with i plus 1 edges. That is at least k plus 1. This proves part b.
+
+41
+00:08:36,416 --> 00:08:44,961
+The girth of a graph G is the length of a shortest cycle in G. We write g of G. If G has no cycle, the girth is infinite.
+
+42
+00:08:45,411 --> 00:09:08,538
+Our graph of Figure 4.19 has the triangle 1, 2, 5, so its girth is 3. The Petersen graph has no triangle and no 4 cycle. Its girth is 5, from the green outer cycle. The 3 cube has 4 cycles, like the green square, but no triangle. It is bipartite, and a triangle is not. So its girth is 4. We checked all three values by computer.
+
+43
+00:09:08,988 --> 00:09:16,419
+To prove that the girth is g, do two things. Show a cycle of length g. Then prove that no shorter cycle exists.
+
+44
+00:09:16,869 --> 00:09:31,451
+A Hamilton cycle is a spanning cycle. It goes through every vertex of the graph exactly once. The 8 cycle of Figure 4.20 is not a Hamilton cycle, because it misses the vertices 4 and 6.
+
+45
+00:09:31,901 --> 00:09:44,300
+This graph does have a Hamilton cycle: 1, 2, 5, 6, 3, 4, 9, 8, 10, 7, and back to 1. Check that each step uses an edge, and that each vertex appears once.
+
+46
+00:09:44,750 --> 00:09:55,571
+It is easy to check if a given cycle is a Hamilton cycle. But it can be very hard to find one, or to prove that a graph has none. The next two exercises are cases where we can prove it.
+
+47
+00:09:56,021 --> 00:10:13,389
+An exercise from the notes. For n at least 2, prove that the n cube has a Hamilton cycle. Pause the video and try it. We use induction on n. For n equal to 2, the 4 strings 0 0, 0 1, 1 1, 1 0 form a 4 cycle.
+
+48
+00:10:13,839 --> 00:10:29,118
+Now suppose that w 1 to w N is a Hamilton cycle of the n cube, with N equal to 2 to the n. Put a 0 in front of each string. Consecutive strings still differ in one position. In the 3 cube, this is the blue path on the strings that start with 0.
+
+49
+00:10:29,568 --> 00:10:37,834
+Next, put a 1 in front of each string, and list them in reverse order: 1 w N down to 1 w 1. This is the purple path.
+
+50
+00:10:38,284 --> 00:10:58,486
+Join the two paths. 0 w N and 1 w N differ only in the first bit, and so do 1 w 1 and 0 w 1. These are the orange edges. The result uses all 2 to the n plus 1 strings exactly once. So it is a Hamilton cycle of the n plus 1 cube. We checked this construction by computer up to n equal to 7.
+
+51
+00:10:58,936 --> 00:11:17,234
+One more exercise. Prove that K m n has a Hamilton cycle if and only if m equals n and m is greater than 1. Pause the video and try it. Step 1. Every edge joins side A to side B. So as we go around a cycle, the vertices alternate between A and B.
+
+52
+00:11:17,684 --> 00:11:34,681
+Step 2. When the cycle closes, it has used the same number of vertices from A as from B. A Hamilton cycle uses all vertices, so m must equal n. In K 2 3, the orange 4 cycle uses two vertices of each side, and b 3 is left out.
+
+53
+00:11:35,131 --> 00:11:46,276
+Step 3. If m equals n equals 1, the graph is one edge. A cycle needs at least 3 vertices, so there is no Hamilton cycle. So m must be greater than 1.
+
+54
+00:11:46,726 --> 00:12:07,206
+Step 4. Conversely, if m equals n, at least 2, the sequence a 1, b 1, a 2, b 2, up to a n, b n, and back to a 1 is a Hamilton cycle. In K 3 3, it is the green cycle. We checked the statement by computer for m and n up to 4.
+
+55
+00:12:07,656 --> 00:12:19,266
+To recap. A subgraph uses some vertices and some edges between them. A walk can repeat vertices. A path cannot. A cycle is a closed ring of at least 3 distinct vertices.
+
+56
+00:12:19,716 --> 00:12:34,949
+Two proof ideas: a shortest walk is a path, because we can cut out any repeat. And a longest path cannot be extended, so the neighbours of its end vertex are on the path. This gives a cycle when all degrees are at least 2.
+
+57
+00:12:35,399 --> 00:12:45,337
+The girth is the length of a shortest cycle. A Hamilton cycle uses every vertex. The next video covers connectedness, Eulerian circuits and bridges.
