@@ -187,25 +187,25 @@ Part b. The parity of the number of ones does not change, so there are at least 
 For each new property, there are two questions. How do we certify that a graph has the property? And how do we certify that it does not have it?
 
 48
-00:12:47,326 --> 00:13:00,254
+00:12:47,326 --> 00:13:00,233
 To certify that a graph is connected, give paths, for example from one vertex to every vertex. To certify that it is not connected, give a proper nonempty set X with an empty cut.
 
 49
-00:13:00,704 --> 00:13:24,619
+00:13:00,683 --> 00:13:24,597
 To certify that e from u to v is a bridge, give a cut of G minus e with u in one part and v in the other. Here A and B certify that the edge 4 6 is a bridge. To certify that an edge is not a bridge, give a cycle that contains it, such as 3, 4, 5. For an Eulerian circuit, give the circuit, or a vertex of odd degree.
 
 50
-00:13:25,069 --> 00:13:35,501
+00:13:25,047 --> 00:13:35,479
 A certificate must be easy for the marker to check. The precise rule is: it can be checked in polynomial time. It does not need to be easy to find.
 
 51
-00:13:35,951 --> 00:13:48,772
+00:13:35,929 --> 00:13:48,751
 To recap. An edge is a bridge if deleting it increases the number of components. Deleting a bridge from x to y leaves exactly two components, with x and y in different ones.
 
 52
-00:13:49,222 --> 00:14:03,921
+00:13:49,201 --> 00:14:03,899
 An edge is a bridge if and only if it is in no cycle. Two different paths between the same vertices give a cycle. So in a graph with no cycles, each two vertices are joined by at most one path.
 
 53
-00:14:04,371 --> 00:14:18,408
+00:14:04,349 --> 00:14:18,387
 Degree sums inside one component prove many results, such as the problems on 4-regular graphs and on two odd vertices. A certificate must be easy to check. The next video is about trees.
