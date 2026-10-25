@@ -7,253 +7,253 @@ This is MATH 239, video 20 a. The topics are bipartite graphs, and the ways to s
 After this video, you can decide if a graph is bipartite. You can count the vertices and edges of the n cube. You can write the adjacency matrix, the incidence matrix and the adjacency list of a graph.
 
 3
-00:00:25,839 --> 00:00:42,457
+00:00:25,839 --> 00:00:42,436
 A graph is bipartite if its vertices split into two sets, A and B, so that every edge joins a vertex in A to a vertex in B. The pair A, B is a bipartition. Here is a 6 cycle with one extra edge, from 1 to 4.
 
 4
-00:00:42,907 --> 00:01:01,254
+00:00:42,886 --> 00:01:01,233
 Put the odd vertices 1, 3 and 5 in A, in blue. Put the even vertices 2, 4 and 6 in B, in purple. Check each of the 7 edges. Each one has one blue end and one purple end. The extra edge 1 4 also joins A to B.
 
 5
-00:01:01,704 --> 00:01:14,035
+00:01:01,683 --> 00:01:14,013
 Now redraw the graph with A on the left and B on the right. Every edge goes across. No edge stays inside one side. This is the typical picture of a bipartite graph.
 
 6
-00:01:14,485 --> 00:01:36,479
+00:01:14,463 --> 00:01:36,458
 In the complete bipartite graph K m n, the side A has m vertices and the side B has n vertices. Every vertex of A is adjacent to every vertex of B. Here is K 2 3. Each vertex of A has n edges, so K m n has m times n edges. K 2 3 has 6 edges.
 
 7
-00:01:36,929 --> 00:01:43,265
+00:01:36,908 --> 00:01:43,244
 Now a graph that is not bipartite: the triangle. Try to split it. Put vertex 1 in A.
 
 8
-00:01:43,715 --> 00:01:48,217
+00:01:43,694 --> 00:01:48,195
 Vertex 2 is adjacent to 1. So vertex 2 must be in B.
 
 9
-00:01:48,667 --> 00:01:58,693
+00:01:48,645 --> 00:01:58,672
 Vertex 3 is adjacent to 1, so it must be in B. Vertex 3 is also adjacent to 2, so it must be in A. This is not possible.
 
 10
-00:01:59,143 --> 00:02:13,778
+00:01:59,122 --> 00:02:13,757
 So the triangle is not bipartite. Each complete graph K n with n at least 3 contains a triangle. So it is not bipartite either. Video 23 gives a full test for bipartite graphs.
 
 11
-00:02:14,228 --> 00:02:27,263
+00:02:14,207 --> 00:02:27,241
 Here is an important family of graphs. In the n cube, the vertices are the binary strings of length n. Two strings are adjacent if and only if they differ in exactly one position.
 
 12
-00:02:27,713 --> 00:02:36,609
+00:02:27,691 --> 00:02:36,587
 For n equal to 3, there are 8 strings, from 0 0 0 to 1 1 1. We place them at the corners of a cube.
 
 13
-00:02:37,059 --> 00:02:47,512
+00:02:37,037 --> 00:02:47,491
 Join the strings that differ only in the last position, for example 0 0 0 and 0 0 1. These are the 4 horizontal edges.
 
 14
-00:02:47,962 --> 00:02:57,861
+00:02:47,941 --> 00:02:57,839
 Next, the strings that differ only in the middle position, for example 0 0 0 and 0 1 0. These are 4 more edges.
 
 15
-00:02:58,311 --> 00:03:14,993
+00:02:58,289 --> 00:03:14,972
 Last, the strings that differ only in the first position, for example 0 0 0 and 1 0 0. These are the 4 vertical edges. In total, the 3 cube has 12 edges. The picture is the cube of geometry.
 
 16
-00:03:15,443 --> 00:03:31,849
+00:03:15,422 --> 00:03:31,827
 Here is Problem 4.4.2 of the notes. Find the number of vertices and of edges of the n cube. Pause the video and try it. Step 1. There are 2 to the n binary strings of length n. So p equals 2 to the n.
 
 17
-00:03:32,299 --> 00:03:49,472
+00:03:32,277 --> 00:03:49,451
 Step 2. A string has exactly n neighbours. We get each one by changing one of the n positions. For example, 0 1 0 has the neighbours 1 1 0, 0 0 0 and 0 1 1. So the n cube is n regular.
 
 18
-00:03:49,922 --> 00:04:02,658
+00:03:49,901 --> 00:04:02,637
 Step 3. Use the Handshaking Lemma. The sum of the 2 to the n degrees is n times 2 to the n. This equals 2 q. So q equals n times 2 to the n minus 1.
 
 19
-00:04:03,108 --> 00:04:18,063
+00:04:03,087 --> 00:04:18,041
 Here are the first values. The 3 cube has 8 vertices and 12 edges, as we counted. The 4 cube has 16 vertices and 32 edges. We checked the formula by computer up to n equal to 6.
 
 20
-00:04:18,513 --> 00:04:31,249
+00:04:18,491 --> 00:04:31,227
 Problem 4.4.3. Show that the n cube is bipartite. Pause the video and try it. To prove that a graph is bipartite, we give a bipartition and check every edge.
 
 21
-00:04:31,699 --> 00:04:43,347
+00:04:31,677 --> 00:04:43,325
 Let A be the set of strings with an even number of ones. In the 3 cube, these are 0 0 0, 0 1 1, 1 0 1 and 1 1 0, in blue.
 
 22
-00:04:43,797 --> 00:04:48,085
+00:04:43,775 --> 00:04:48,063
 Let B be the set of strings with an odd number of ones, in purple.
 
 23
-00:04:48,535 --> 00:05:06,071
+00:04:48,513 --> 00:05:06,049
 Take two adjacent strings x and y. They differ in exactly one position. So the number of ones changes by exactly 1. One number is even and the other is odd. For example, 0 1 0 has one 1, and 0 1 1 has two.
 
 24
-00:05:06,521 --> 00:05:17,913
+00:05:06,499 --> 00:05:17,891
 So every edge joins a vertex of A to a vertex of B. A, B is a bipartition, and the n cube is bipartite. This argument works for every n.
 
 25
-00:05:18,363 --> 00:05:34,384
+00:05:18,341 --> 00:05:34,363
 Here is an exercise from the notes. K m n has m times n edges, as we saw. Now prove that a bipartite graph on p vertices has at most the floor of p squared over 4 edges. Pause the video and try it.
 
 26
-00:05:34,834 --> 00:05:53,586
+00:05:34,813 --> 00:05:53,565
 Step 1. Take a bipartition A, B with m vertices in A, and p minus m in B. Every edge is a pair with one end in A and one end in B. There are only m times p minus m such pairs. So q is at most m times p minus m.
 
 27
-00:05:54,036 --> 00:06:16,649
+00:05:54,015 --> 00:06:16,628
 Step 2. Complete the square. m times p minus m equals p squared over 4, minus the square of m minus p over 2. A square is never negative. So the product is at most p squared over 4. The bars show the product for p equal to 7. The largest value is 12, at m equal to 3 or 4.
 
 28
-00:06:17,099 --> 00:06:34,315
+00:06:17,078 --> 00:06:34,294
 Step 3. q is an integer, so q is at most the floor of p squared over 4. For p equal to 7, this is 12. K 3 4 reaches this bound. We checked the maximum by computer for all graphs with at most 6 vertices.
 
 29
-00:06:34,765 --> 00:06:54,307
+00:06:34,744 --> 00:06:54,285
 Another exercise. Let G be k regular and bipartite, with bipartition X, Y. Prove that X and Y have the same size if k is positive. Pause the video and try it. The figure shows the 3 cube, with X as the even strings and Y as the odd strings.
 
 30
-00:06:54,757 --> 00:07:12,079
+00:06:54,735 --> 00:07:12,058
 Step 1. Every edge has exactly one end in X. Count these ends at the vertices of X. Each vertex of X has k ends, so q equals k times the size of X. In the figure, the orange dots are the 12 ends in X.
 
 31
-00:07:12,529 --> 00:07:24,903
+00:07:12,508 --> 00:07:24,881
 Step 2. In the same way, every edge has exactly one end in Y. So q also equals k times the size of Y. The green dots are the 12 ends in Y.
 
 32
-00:07:25,353 --> 00:07:37,854
+00:07:25,331 --> 00:07:37,833
 Step 3. So k times the size of X equals k times the size of Y. We can divide by k, because k is positive. So X and Y have the same size.
 
 33
-00:07:38,304 --> 00:07:54,645
+00:07:38,283 --> 00:07:54,624
 If k is 0, the claim is false. Take one vertex in X, two vertices in Y, and no edges. The graph is 0 regular and bipartite, but the sides have different sizes. We cannot divide by k when k is 0.
 
 34
-00:07:55,095 --> 00:08:09,581
+00:07:55,074 --> 00:08:09,559
 One more exercise from the notes. In the prime graph B n, the vertices are 1 to n. Two numbers are adjacent if their sum is a prime. Prove that B n is bipartite. Pause the video and try it.
 
 35
-00:08:10,031 --> 00:08:19,204
+00:08:10,009 --> 00:08:19,183
 Step 1. Choose the bipartition: A is the odd numbers, B is the even numbers. The figure shows B 8, with its 11 edges.
 
 36
-00:08:19,654 --> 00:08:35,270
+00:08:19,633 --> 00:08:35,249
 Step 2. Take an edge u v. The two numbers are distinct, so their sum is at least 1 plus 2, which is 3. The only even prime is 2. So the prime u plus v is odd. For example, 3 plus 8 is 11.
 
 37
-00:08:35,720 --> 00:08:49,843
+00:08:35,699 --> 00:08:49,821
 Step 3. A sum of two integers is odd only if one is odd and the other is even. So every edge joins A to B, and B n is bipartite. We checked this by computer for n up to 39.
 
 38
-00:08:50,293 --> 00:09:11,562
+00:08:50,271 --> 00:09:11,541
 A drawing is not always a good way to give a graph, for example to a computer. Section 4.5 gives other ways. The first one is the adjacency matrix. Number the vertices v 1 to v p. The entry a i j is 1 if v i and v j are adjacent, and 0 otherwise.
 
 39
-00:09:12,012 --> 00:09:22,615
+00:09:11,991 --> 00:09:22,593
 Take the graph G with the vertices p, q, r, s. Row p: p is adjacent to q and r. So row p is 0, 1, 1, 0.
 
 40
-00:09:23,065 --> 00:09:34,414
+00:09:23,043 --> 00:09:34,393
 Fill the other rows in the same way. Row q is 1, 0, 1, 1. Row r is 1, 1, 0, 0. Row s is 0, 1, 0, 0.
 
 41
-00:09:34,864 --> 00:09:45,147
+00:09:34,843 --> 00:09:45,125
 Each edge gives two 1s, at i j and at j i. So the matrix is symmetric. The diagonal is all 0, because a graph has no loops.
 
 42
-00:09:45,597 --> 00:09:52,125
+00:09:45,575 --> 00:09:52,103
 The number of 1s in a row is the degree of that vertex. The row sums are 2, 3, 2 and 1.
 
 43
-00:09:52,575 --> 00:10:10,047
+00:09:52,553 --> 00:10:10,025
 The second way is the incidence matrix. We must name the edges: e 1 to e q. The entry b i j is 1 if the vertex v i is incident with the edge e j, and 0 otherwise. The matrix has p rows and q columns.
 
 44
-00:10:10,497 --> 00:10:23,531
+00:10:10,475 --> 00:10:23,510
 In G, the edges are e 1 equals p q, e 2 equals p r, e 3 equals q r, and e 4 equals q s. Here is the 4 by 4 incidence matrix.
 
 45
-00:10:23,981 --> 00:10:37,741
+00:10:23,960 --> 00:10:37,720
 Look at the column of e 1, in orange. It has a 1 in row p and in row q, the two ends of e 1. Every edge has exactly two ends. So every column has exactly two 1s.
 
 46
-00:10:38,191 --> 00:10:45,551
+00:10:38,170 --> 00:10:45,530
 A row counts the edges at one vertex. So the row sums are again the degrees: 2, 3, 2 and 1.
 
 47
-00:10:46,001 --> 00:11:03,260
+00:10:45,980 --> 00:11:03,239
 The notes multiply B by its transpose. The entry i j of B B transpose is the sum over k of b i k times b j k. A term is 1 only when the edge e k is incident with both v i and v j.
 
 48
-00:11:03,710 --> 00:11:20,393
+00:11:03,689 --> 00:11:20,371
 For i not equal to j, the sum counts the edges that join v i and v j. A graph has at most one such edge. So the entry is 1 if v i and v j are adjacent, and 0 otherwise. This is the entry of A.
 
 49
-00:11:20,843 --> 00:11:32,448
+00:11:20,821 --> 00:11:32,427
 For example, the entry p q is 1. Rows p and q of B both have a 1 in the column of e 1, the edge p q. Here is the full product for G.
 
 50
-00:11:32,898 --> 00:11:43,949
+00:11:32,877 --> 00:11:43,927
 For i equal to j, every edge at v i counts once. So the diagonal entry is the degree of v i. Vertex q has degree 3, in green.
 
 51
-00:11:44,399 --> 00:11:52,996
+00:11:44,377 --> 00:11:52,953
 So B B transpose equals A plus the diagonal matrix of the degrees. We checked this product for G by computer.
 
 52
-00:11:53,446 --> 00:12:06,715
+00:11:53,403 --> 00:12:06,673
 A third way is the adjacency list. For each vertex, we list the vertices adjacent to it. Here is the list from the notes, with 7 vertices. In a program, this is stored as a dictionary.
 
 53
-00:12:07,165 --> 00:12:27,261
+00:12:07,123 --> 00:12:27,219
 Row 3 says that vertex 3 is adjacent to 1, 2, 4, 5 and 6. These are the orange edges. Each edge appears in two rows. For example, 3 is in the row of 1, and 1 is in the row of 3. The list has 26 entries, so the graph has 13 edges.
 
 54
-00:12:27,711 --> 00:12:40,021
+00:12:27,669 --> 00:12:39,978
 The last way is an edge list: the vertex set and the list of edges. This is most useful for a sparse graph, which has few edges. The vertex names do not have to be integers.
 
 55
-00:12:40,471 --> 00:13:00,588
+00:12:40,428 --> 00:13:00,545
 This exercise appears in two problem sets of the notes. What do the entries of A squared count? Pause the video and try it. The entry i j is the sum over k of a i k times a k j. A term is 1 exactly when v k is adjacent to both v i and v j.
 
 56
-00:13:01,038 --> 00:13:14,371
+00:13:00,995 --> 00:13:14,329
 On the diagonal, i equals j. Then the sum counts the neighbours of v i. So the diagonal entry is the degree. For vertex q, the entry is 3, from the three green edges.
 
 57
-00:13:14,821 --> 00:13:35,195
+00:13:14,779 --> 00:13:35,152
 Off the diagonal, the sum counts the common neighbours of v i and v j. Each common neighbour v k gives a path v i, v k, v j of length 2. For p and s, the only common neighbour is q. So the entry is 1. The entry for q and s is 0: they have no common neighbour.
 
 58
-00:13:35,645 --> 00:13:48,167
+00:13:35,602 --> 00:13:48,125
 A last exercise on matrices. Prove that a bipartite graph has an order of its vertices so that the adjacency matrix has this block form. Pause the video and try it.
 
 59
-00:13:48,617 --> 00:14:00,009
+00:13:48,575 --> 00:13:59,967
 Take a bipartition A, B. List all the vertices of A first, then all the vertices of B. Here is the 3 cube: the even strings first, then the odd strings.
 
 60
-00:14:00,459 --> 00:14:08,139
+00:14:00,417 --> 00:14:08,097
 This is the adjacency matrix in that order. The gray blocks are the pairs inside A and the pairs inside B.
 
 61
-00:14:08,589 --> 00:14:22,179
+00:14:08,547 --> 00:14:22,136
 No edge joins two vertices of A, and no edge joins two vertices of B. So both diagonal blocks are zero. Only the block M, rows in A and columns in B, can have 1s.
 
 62
-00:14:22,629 --> 00:14:31,589
+00:14:22,586 --> 00:14:31,546
 The adjacency matrix is symmetric. So the block with rows in B and columns in A is M transpose. This proves the claim.
 
 63
-00:14:32,039 --> 00:14:52,049
+00:14:31,996 --> 00:14:52,007
 To recap. A graph is bipartite if a bipartition A, B puts every edge between the two sides. To prove it, give A and B and check every edge. K m n has m n edges, and a bipartite graph on p vertices has at most the floor of p squared over 4 edges.
 
 64
-00:14:52,499 --> 00:15:09,139
+00:14:52,457 --> 00:15:09,097
 The n cube has 2 to the n vertices, is n regular, and has n times 2 to the n minus 1 edges. It is bipartite by the parity of the number of ones. Counting edges from each side of a bipartition is a strong tool.
 
 65
-00:15:09,589 --> 00:15:23,349
+00:15:09,547 --> 00:15:23,307
 The adjacency matrix and the incidence matrix give a graph as numbers. B B transpose is A plus the degrees on the diagonal. The next video covers subgraphs, walks, paths and cycles.
