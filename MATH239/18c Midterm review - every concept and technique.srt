@@ -3,621 +3,1309 @@
 This is the midterm review for MATH 239. It covers every concept and every technique of the midterm.
 
 2
-00:00:08,386 --> 00:00:18,626
-After this video, you can pick the right tool from the words of a question. You can count, find coefficients, use the three lemmas, and handle binary strings.
+00:00:08,386 --> 00:00:12,119
+After this video, you can do the five things in this list.
 
 3
-00:00:19,076 --> 00:00:29,167
-The midterm covers chapter 1, counting. This chapter has lists, subsets, multisets, bijections and proofs that count one set in two ways.
+00:00:12,569 --> 00:00:17,775
+The midterm covers chapter 1, counting. The blue column lists its topics.
 
 4
-00:00:29,617 --> 00:00:40,454
-It covers chapter 2, generating series. This chapter has the Binomial Theorem, formal power series, weight functions, the three lemmas and compositions.
+00:00:18,225 --> 00:00:23,835
+It covers chapter 2, generating series. The green column lists its topics.
 
 5
-00:00:40,904 --> 00:00:49,672
-It covers chapter 3, binary strings. This chapter has regular expressions, ambiguity and three kinds of decomposition.
+00:00:24,285 --> 00:00:29,512
+It covers chapter 3, binary strings. The purple column lists its topics.
 
 6
-00:00:50,122 --> 00:01:01,429
-The announcement says that recurrence relations are not on the midterm. So chapter 4 is out. The Practice Midterm problem 10 is not on the real midterm.
+00:00:29,962 --> 00:00:41,269
+The announcement of October 22 says that recurrence relations are not on the midterm. So chapter 4 is out, and so is Practice Midterm problem 10.
 
 7
-00:01:01,879 --> 00:01:11,500
-The real midterm is about 50 marks. Justify every answer, and name each result that you use, for example by the Product Lemma.
+00:00:41,719 --> 00:00:46,305
+The real midterm is about 50 marks. Justify every answer.
 
 8
-00:01:11,950 --> 00:01:20,974
-Each question type has a tool. When a question says prove an identity by counting in two ways, choose a set S and count it twice.
+00:00:46,755 --> 00:00:51,278
+Name each result that you use, for example: by the Product Lemma.
 
 9
-00:01:21,424 --> 00:01:28,464
-When it says give a bijection, define the function f, show that f of a is in B, and state the inverse.
+00:00:51,728 --> 00:01:00,752
+Each question type has a tool. When a question says prove an identity by counting in two ways, choose a set S and count it twice.
 
 10
-00:01:28,914 --> 00:01:36,381
-When it asks for a coefficient, use the binomial theorem, the binomial series, a shift and the product grid.
+00:01:01,202 --> 00:01:08,242
+When it says give a bijection, define the function f, show that f of a is in B, and state the inverse.
 
 11
-00:01:36,831 --> 00:01:45,065
-When it asks for the number of objects of size n, define a set and a weight. Then use the Sum, Product and String Lemmas.
+00:01:08,692 --> 00:01:15,668
+When it asks for a coefficient, use the binomial theorem or series, a shift, and the product grid.
 
 12
-00:01:45,515 --> 00:01:53,003
-When it is about binary strings, write an unambiguous expression, and translate it into a rational function.
+00:01:16,118 --> 00:01:23,051
+When it asks for the number of objects of size n, define a set and a weight. Then use the three lemmas.
 
 13
-00:01:53,453 --> 00:02:04,568
-When it asks you to prove that two power series are equal, compare the coefficient of x to the n on both sides. The rest of the video teaches each tool in this order.
+00:01:23,501 --> 00:01:30,989
+When it is about binary strings, write an unambiguous expression, and translate it into a rational function.
 
 14
-00:02:05,018 --> 00:02:12,037
-Part 1 is counting. We review the basic rules, bijections, and proofs that count one set in two ways.
+00:01:31,439 --> 00:01:38,735
+When it asks you to prove that two power series are equal, compare the coefficient of x to the n on both sides.
 
 15
-00:02:12,487 --> 00:02:19,441
-Start with two rules. OR means one choice, from A or from B. Here A has 3 elements and B has 2.
+00:01:39,185 --> 00:01:43,409
+The rest of the video teaches each tool in this order, in three parts.
 
 16
-00:02:19,891 --> 00:02:26,121
-If A and B are disjoint, the number of choices is 3 plus 2, which is 5. OR adds.
+00:01:43,859 --> 00:01:47,742
+Part 1 is counting. It has the three topics in this list.
 
 17
-00:02:26,571 --> 00:02:35,253
-AND means one choice from A and one choice from B. Each pair is a cell of the grid, with a row from A and a column from B.
+00:01:48,192 --> 00:01:52,395
+Start with two rules. OR means one choice, from A or from B.
 
 18
-00:02:35,703 --> 00:02:40,930
-The grid has 3 rows and 2 columns, so 6 pairs. AND multiplies.
+00:01:52,845 --> 00:01:54,573
+Here A has 3 elements.
 
 19
-00:02:41,380 --> 00:02:57,316
-A partial list of length k is an ordered choice of k different elements. For S equal to 1, 2, 3, 4 and k equal to 2: 4 choices for the first element, then 3 for the second. That is 12 partial lists.
+00:01:55,023 --> 00:01:56,665
+B has 2 elements.
 
 20
-00:02:57,766 --> 00:03:08,838
-Here are the 12 partial lists in a grid. The row is the first element and the column is the second. The diagonal is gray, because an element cannot repeat.
+00:01:57,115 --> 00:02:03,366
+A and B are disjoint. So the number of choices is 3 plus 2, which is 5. OR adds.
 
 21
-00:03:09,288 --> 00:03:20,616
-A subset has no order. The lists 1 2 and 2 1 give the same subset. Cells of the same colour give the same subset, so each subset comes from 2 lists.
+00:02:03,816 --> 00:02:08,829
+AND means one choice from A and one choice from B. The result is a pair.
 
 22
-00:03:21,066 --> 00:03:38,645
-So the number of 2-element subsets is 12 over 2 factorial, which is 6. This is 4 choose 2. In general, n choose k is n factorial over k factorial times n minus k factorial. There are 2 to the n subsets in all.
+00:02:09,279 --> 00:02:15,530
+Each pair is a cell of the grid. For example, the pair b, 2 is in row b and column 2.
 
 23
-00:03:39,095 --> 00:03:52,343
-A multiset can repeat elements. We write it as a multiplicity vector: m i is the number of copies of type i. The multiset 1 1 2 3 3 has vector 2, 1, 2.
+00:02:15,980 --> 00:02:23,361
+The grid has 3 rows and 2 columns. So there are 3 times 2, which is 6, pairs. AND multiplies.
 
 24
-00:03:52,793 --> 00:04:03,246
-Draw each element as a circle. Put a bar between two types. So the vector 2, 1, 2 is two circles, a bar, one circle, a bar, two circles.
+00:02:23,811 --> 00:02:32,665
+A partial list of length k is an ordered choice of k different elements. Here S is 1, 2, 3, 4, and k is 2.
 
 25
-00:04:03,696 --> 00:04:20,421
-There are n plus t minus 1 positions, here 7. Choose the t minus 1 positions of the bars, here 2. So there are 7 choose 2, which is 21, multisets. In general, n plus t minus 1 choose t minus 1.
+00:02:33,115 --> 00:02:35,419
+The first element has 4 choices.
 
 26
-00:04:20,871 --> 00:04:35,143
-Practice problem P1-3 fixes m 1 equal to 1. Then choose the other n minus 1 elements from t minus 1 types. The answer is n plus t minus 3 choose t minus 2.
+00:02:35,869 --> 00:02:40,498
+The second element has 3 choices, because it cannot repeat the first.
 
 27
-00:04:35,593 --> 00:04:46,068
-A bijection from A to B is a function where each element of B is the image of exactly one element of A. Then A and B have the same size.
+00:02:40,948 --> 00:02:44,852
+So there are 4 times 3, which is 12, partial lists.
 
 28
-00:04:46,518 --> 00:05:02,753
-To prove that f is a bijection, give the inverse g. Then check that g undoes f, and f undoes g. This is Proposition 1.11. Here f maps each subset of 1, 2, 3 to its indicator vector.
+00:02:45,302 --> 00:02:55,905
+Here are the 12 lists in a grid. The row is the first element, and the column is the second. For example, row 2, column 3 is the list 2, 3.
 
 29
-00:05:03,203 --> 00:05:15,085
-The vector has a 1 in position i when i is in the subset. The inverse g reads the positions of the 1s. So there are as many subsets as vectors: 2 to the n.
+00:02:56,355 --> 00:03:01,325
+The cells on the diagonal are gray, because an element cannot come twice.
 
 30
-00:05:15,535 --> 00:05:28,890
-Here is the template, with the example of A1-1. Step 1: define f. If 1 is not in X, add 1. If 1 is in X, remove 1. Pause the video and try the next steps.
+00:03:01,775 --> 00:03:10,458
+A subset has no order. The lists 1, 2 and 2, 1 give the same subset. Cells of the same colour give the same subset.
 
 31
-00:05:29,340 --> 00:05:39,879
-Step 2: show that f of X is in the target set. Adding or removing 1 changes the size by one. So an even subset goes to an odd subset.
+00:03:10,908 --> 00:03:17,671
+Each subset comes from 2 lists. So the number of subsets is 12 over 2 factorial, which is 6.
 
 32
-00:05:40,329 --> 00:05:48,926
-Step 3: state the inverse. The same rule maps odd subsets back to even subsets, and doing f twice gives X again.
+00:03:18,121 --> 00:03:27,315
+6 is 4 choose 2. In general, n choose k is n factorial, over k factorial times n minus k factorial.
 
 33
-00:05:49,376 --> 00:06:02,432
-Step 4: conclude with Proposition 1.11. The two sets have the same size. Practice Midterm problem 2 uses the same four steps. Video 18a solves it.
+00:03:27,765 --> 00:03:33,099
+A list of all n elements is a permutation. There are n factorial of them.
 
 34
-00:06:02,882 --> 00:06:19,501
-A combinatorial proof counts one set S in two ways. Find S from the identity. For k times n choose k equals n times n minus 1 choose k minus 1, let S be the committees of k people with one chair.
+00:03:33,549 --> 00:03:44,173
+A partial list of length k: n factorial over n minus k factorial. Here 4 factorial over 2 factorial is 12, as in the grid.
 
 35
-00:06:19,951 --> 00:06:33,113
-Count 1: choose the committee, in n choose k ways, then the chair, in k ways. For n equal to 4 and k equal to 2, each of the 6 committees has 2 chairs. That is 12.
+00:03:44,623 --> 00:03:50,276
+All subsets of an n-element set: 2 to the n. Here 2 to the 4 is 16.
 
 36
-00:06:33,563 --> 00:06:45,574
-Count 2: choose the chair first, in n ways. Then choose the other k minus 1 members from the other n minus 1 people. Here 4 chairs times 3 is 12 again.
+00:03:50,726 --> 00:03:58,427
+A multiset can repeat elements. Here the multiset has n equal to 5 elements of t equal to 3 types.
 
 37
-00:06:46,024 --> 00:06:52,381
-Both counts give the size of S. So the two sides are equal. End the proof with this sentence.
+00:03:58,877 --> 00:04:08,904
+The multiset 1, 1, 2, 3, 3 has the multiplicity vector 2, 1, 2. The entry m i is the number of copies of type i.
 
 38
-00:06:52,831 --> 00:07:10,922
-The second technique is for a sum. Take Vandermonde: m plus n choose k equals the sum over i of m choose i times n choose k minus i. Here m is 3, n is 4 and k is 3. Count 1 is 7 choose 3, which is 35.
+00:04:09,354 --> 00:04:11,573
+Draw each element as a circle.
 
 39
-00:07:11,372 --> 00:07:25,687
-A sum tells you to split S into disjoint cases. Let i be the number of blue people. Case i equal to 0: no blue people, so all 3 are orange. 1 times 4 choose 3 is 4.
+00:04:12,023 --> 00:04:13,921
+Put a bar between two types.
 
 40
-00:07:26,137 --> 00:07:31,214
-Case i equal to 1: 3 choose 1 times 4 choose 2 is 18.
+00:04:14,371 --> 00:04:18,233
+The groups of circles give the vector: 2, then 1, then 2.
 
 41
-00:07:31,664 --> 00:07:36,741
-Case i equal to 2: 3 choose 2 times 4 choose 1 is 12.
+00:04:18,683 --> 00:04:22,565
+There are 7 positions. That is n plus t minus 1.
 
 42
-00:07:37,191 --> 00:07:41,138
-Case i equal to 3: all 3 blue people, 1 way.
+00:04:23,015 --> 00:04:27,346
+Choose 2 of the positions for the bars. 2 is t minus 1.
 
 43
-00:07:41,588 --> 00:07:55,732
-The cases are disjoint and cover S. So 4 plus 18 plus 12 plus 1 is 35. Say this in the proof. Practice Midterm problem 1 splits by the size of A intersect B.
+00:04:27,796 --> 00:04:36,351
+So there are 7 choose 2, which is 21, multisets. In general, n plus t minus 1 choose t minus 1.
 
 44
-00:07:56,182 --> 00:08:08,235
-Chapter 1 also has inclusion and exclusion. When A and B overlap, the sum counts the overlap twice. So subtract it once: 5 plus 4 minus 2 is 7.
+00:04:36,801 --> 00:04:44,651
+Practice problem P1-3 asks for the multisets of size n with t types and m 1 equal to 1.
 
 45
-00:08:08,685 --> 00:08:23,917
-Chapter 1 also has probability: count the good outcomes and divide by all outcomes. These topics are not in the assignments or the Practice Midterm. Videos 05a and 05b review them.
+00:04:45,101 --> 00:04:52,803
+Fix one element of type 1. Then choose the other n minus 1 elements from the t minus 1 other types.
 
 46
-00:08:24,367 --> 00:08:32,666
-Part 2 is generating series. We review coefficients, formal power series, weights, the three lemmas, and compositions.
+00:04:53,253 --> 00:04:57,263
+So the answer is n plus t minus 3 choose t minus 2.
 
 47
-00:08:33,116 --> 00:08:42,823
-Expand 1 plus x, three times. From each bracket take 1 or x. Each choice gives one term. With no x, there is 1 term.
+00:04:57,713 --> 00:05:08,188
+A bijection from A to B is a function where each element of B is the image of exactly one element of A. Then A and B have the same size.
 
 48
-00:08:43,273 --> 00:08:50,569
-With one x, choose which bracket gives the x: 3 choose 1 is 3. With two x, 3 choose 2 is 3.
+00:05:08,638 --> 00:05:13,587
+In Example 1.12, A is the 8 subsets of 1, 2, 3.
 
 49
-00:08:51,019 --> 00:09:05,461
-With three x, 1 term. So 1 plus x cubed is 1 plus 3x plus 3x squared plus x cubed. In general, the coefficient of x to the k in 1 plus x to the n is n choose k.
+00:05:14,037 --> 00:05:18,475
+B is the 8 vectors of length 3 with entries 0 and 1.
 
 50
-00:09:05,911 --> 00:09:26,455
-Practice problem P1-5: 1 plus 3 x cubed, to the 10. It has only powers x to the 3 k. So x to the 7 and x to the 8 have coefficient 0. For x to the 9, k is 3: 10 choose 3 times 3 cubed, which is 3240.
+00:05:18,925 --> 00:05:29,037
+f maps each subset to its indicator vector. For example, the set 1, 3 maps to 1, 0, 1: a 1 in positions 1 and 3.
 
 51
-00:09:26,905 --> 00:09:39,257
-One over 1 minus x is the geometric series 1 plus x plus x squared, and so on. One over 1 minus x, cubed, is the product of three copies.
+00:05:29,487 --> 00:05:38,809
+To prove that f is a bijection, give an inverse g. g undoes f, and f undoes g. This is Proposition 1.11.
 
 52
-00:09:39,707 --> 00:09:51,099
-To get x squared, take x to the m 1, x to the m 2 and x to the m 3, with m 1 plus m 2 plus m 3 equal to 2. There are 6 ways.
+00:05:39,259 --> 00:05:46,001
+Here g reads the positions of the 1s. So there are as many subsets as vectors: 2 to the n.
 
 53
-00:09:51,549 --> 00:10:06,483
-Each way is a multiplicity vector of size 2 with 3 types. So the count is the multiset number, 2 plus 3 minus 1 choose 3 minus 1, which is 6. This is the Binomial Series, Theorem 2.4.
+00:05:46,451 --> 00:05:53,768
+Here is the template for a bijection answer, with the example of A1-1. Pause the video and try it.
 
 54
-00:10:06,933 --> 00:10:20,842
-Replace x by c times x to the m. Then the coefficient of x to the m j is j plus t minus 1 choose t minus 1, times c to the j. All other coefficients are 0.
+00:05:54,218 --> 00:06:00,426
+Step 1: define f. If 1 is not in X, add 1. If 1 is in X, remove 1.
 
 55
-00:10:21,292 --> 00:10:39,233
-Three rules find most coefficients. Rule 1: shift. Multiplying by x to the a moves the row of coefficients a places to the right. So the coefficient of x to the n in x to the a F is the coefficient of x to the n minus a in F.
+00:06:00,876 --> 00:06:08,513
+For example, the empty set does not contain 1. So f adds 1, and f of the empty set is the set 1.
 
 56
-00:10:39,683 --> 00:10:54,211
-Rule 2: substitute. In F of 2 x cubed, only every third coefficient is not zero. The coefficient of x to the 3 j is 2 to the j times the j-th coefficient of F.
+00:06:08,963 --> 00:06:15,065
+The set 1, 2 contains 1. So f removes 1, and f of 1, 2 is the set 2.
 
 57
-00:10:54,661 --> 00:11:07,269
-Rule 3: product. The coefficient of x to the n in A times B is a sum. Each term uses one split of n into i plus j: a sub i times b sub j.
+00:06:15,515 --> 00:06:24,560
+Step 2: show that f of X is in the target set. f changes the size by one. So an even subset goes to an odd subset.
 
 58
-00:11:07,719 --> 00:11:28,093
-Pause the video and try it. First, shift. The x squared on top uses 2 of the 20, so we need the coefficient of x to the 18 in the rest. Expand both factors with the Binomial Series. The first factor has terms x to the 5 j, and the second has terms x to the i.
+00:06:25,010 --> 00:06:33,394
+Step 3: state the inverse. The same rule maps odd subsets back to even subsets, and f of f of X is X.
 
 59
-00:11:28,543 --> 00:11:43,049
-We need 5 j plus i equal to 18. For j equal to 0, i is 18. The first coefficient is 1, the second is 18 plus 1, which is 19. The product is 19.
+00:06:33,844 --> 00:06:41,417
+Step 4: conclude with Proposition 1.11. f is a bijection, so the two counts are equal.
 
 60
-00:11:43,499 --> 00:11:55,318
-For j equal to 1: 5 j is 5 and i is 13. 3 choose 2 times 2 is 6, and 13 plus 1 is 14. The product is 84.
+00:06:41,867 --> 00:06:48,097
+Practice Midterm problem 2 uses the same four steps. Video 18a solves it.
 
 61
-00:11:55,768 --> 00:12:04,195
-For j equal to 2: i is 8. 4 choose 2 times 4 is 24, times 9 is 216.
+00:06:48,547 --> 00:07:00,387
+A combinatorial proof counts one set S in two ways. Take this identity: k times n choose k equals n times n minus 1 choose k minus 1.
 
 62
-00:12:04,645 --> 00:12:20,367
-For j equal to 3: i is 3. 5 choose 2 times 8 is 80, times 4 is 320. For j equal to 4, 5 j is 20, which is more than 18. So there are no more terms.
+00:07:00,837 --> 00:07:06,149
+Let S be the committees of k people from n people, with one member as the chair.
 
 63
-00:12:20,817 --> 00:12:33,447
-The answer is the sum over j from 0 to 3, which is 639. On the exam, you can leave the answer as this finite sum, unless the question asks for the number.
+00:07:06,599 --> 00:07:09,756
+Take n equal to 4 and k equal to 2.
 
 64
-00:12:33,897 --> 00:12:56,617
-A formal power series is a sequence of coefficients a sub n, written as a sum of a sub n x to the n. Two series are equal when all their coefficients are equal. Here is the product grid of 1 over 1 minus x times itself. Row i is x to the i of the first factor, column j is x to the j of the second.
+00:07:10,206 --> 00:07:16,435
+Count 1: choose the committee first. There are n choose k ways. Here there are 6 committees.
 
 65
-00:12:57,067 --> 00:13:10,293
-Each cell gives a term of x to the i plus j. The coefficient of x to the 4 is the sum of the diagonal where i plus j is 4. There are 5 cells, so the coefficient is 5.
+00:07:16,885 --> 00:07:22,539
+Then choose the chair from the committee, in k ways. Here each committee has 2 choices.
 
 66
-00:13:10,743 --> 00:13:23,821
-In general the diagonal has n plus 1 cells. So 1 over 1 minus x, squared, is the sum of n plus 1 times x to the n. This agrees with the Binomial Series.
+00:07:22,989 --> 00:07:26,146
+So count 1 is 6 times 2, which is 12.
 
 67
-00:13:24,271 --> 00:13:38,479
-The inverse of A of x is the series B of x with A times B equal to 1. It exists if and only if the constant term of A is not 0. This is Theorem 3.1 of the F P S notes.
+00:07:26,596 --> 00:07:31,417
+Count 2: choose the chair first, from all n people. Here there are 4 ways.
 
 68
-00:13:38,929 --> 00:13:54,374
-Here is why. Solve A times B equal to 1, one coefficient at a time. At x to the 0: a 0 times b 0 is 1. So b 0 is 1 over a 0. For 1 minus x, b 0 is 1.
+00:07:31,867 --> 00:07:39,654
+Then choose the other k minus 1 members from the other n minus 1 people. Here 3 choose 1, which is 3.
 
 69
-00:13:54,824 --> 00:14:03,059
-At x to the 1: a 0 b 1 plus a 1 b 0 is 0. So b 1 equals b 0, which is 1.
+00:07:40,104 --> 00:07:43,880
+So count 2 is 4 times 3, which is 12 again.
 
 70
-00:14:03,509 --> 00:14:17,546
-Each new b n uses the ones before it, and we divide by a 0 each time. So a 0 must not be 0. Here we get 1 plus x plus x squared and so on, the geometric series.
+00:07:44,330 --> 00:07:50,687
+Both counts give the size of S. So the two sides are equal. End the proof with this sentence.
 
 71
-00:14:17,996 --> 00:14:35,489
-Practice problem P1-1 of Assignment 2: x plus x squared and the last series have constant term 0, so no inverse. 1 plus x and the sum of 3 to the n x to the 2 n have constant term 1, so they have inverses.
+00:07:51,137 --> 00:08:02,977
+The second technique is for an identity with a sum. Take Vandermonde: m plus n choose k equals the sum over i of m choose i times n choose k minus i.
 
 72
-00:14:35,939 --> 00:14:46,883
-A of B of x replaces x in A by the series B. Each power B to the k is a row. Here B is x plus x squared, and B of 0 is 0.
+00:08:03,427 --> 00:08:08,035
+Let S be the k-subsets of m blue people and n orange people.
 
 73
-00:14:47,333 --> 00:15:08,987
-Then B to the k starts at x to the k. So column x to the 3 has terms only in rows 0 to 3. Each coefficient is a finite sum, and A of B of x is a formal power series. For example, 1 over 1 minus x plus x squared is 1 plus x plus 2 x squared, and so on.
+00:08:08,485 --> 00:08:13,115
+Take m equal to 3, n equal to 4, and k equal to 3.
 
 74
-00:15:09,437 --> 00:15:27,506
-If B is 1 plus x, every power has constant term 1. The constant term of A of B is 1 plus 1 plus 1, and so on, which is not defined. So, before you put a series into the geometric series, say that its constant term is 0.
+00:08:13,565 --> 00:08:19,389
+Count 1: choose 3 people from 7. That is 7 choose 3, which is 35.
 
 75
-00:15:27,956 --> 00:15:45,001
-To prove that two series are equal, show that the coefficient of x to the n is the same on both sides. The reverse also works: an identity of series gives an identity of numbers. Take 1 plus x to the m times 1 plus x to the n.
+00:08:19,839 --> 00:08:26,772
+Count 2: a sum tells you to split S into disjoint cases. Let i be the number of blue people.
 
 76
-00:15:45,451 --> 00:16:02,966
-The left side is a product. For m equal to 3 and n equal to 4, the grid has the binomial coefficients on its edges. The diagonal i plus j equal to 3 gives 4 plus 18 plus 12 plus 1, which is 35.
+00:08:27,222 --> 00:08:34,710
+Case i equal to 0: all 3 people are orange. 3 choose 0 times 4 choose 3 is 4.
 
 77
-00:16:03,416 --> 00:16:20,845
-The right side is 1 plus x to the 7. By the Binomial Theorem its coefficient is 7 choose 3, which is 35. So we get Vandermonde again. Practice Midterm problem 8 uses the same method. Video 18b solves it.
+00:08:35,160 --> 00:08:40,237
+Case i equal to 1: 3 choose 1 times 4 choose 2 is 18.
 
 78
-00:16:21,295 --> 00:16:38,106
-A weight function w gives each element of a set S a natural number. The generating series phi of S is the sum of x to the w of sigma, one term for each element sigma. Here S is the 8 subsets of 1, 2, 3.
+00:08:40,687 --> 00:08:45,765
+Case i equal to 2: 3 choose 2 times 4 choose 1 is 12.
 
 79
-00:16:38,556 --> 00:16:50,311
-Let the weight be the size. Put each subset in the bin of its weight. The coefficient of x to the n is the number of elements in bin n. This is Proposition 2.7.
+00:08:46,215 --> 00:08:50,161
+Case i equal to 3: all 3 blue people, 1 way.
 
 80
-00:16:50,761 --> 00:17:05,694
-So phi of S is 1 plus 3 x plus 3 x squared plus x cubed, which is 1 plus x, cubed. A question that asks how many objects have size n becomes: find the coefficient of x to the n.
+00:08:50,611 --> 00:08:55,945
+So count 2 is 4 plus 18 plus 12 plus 1, which is 35.
 
 81
-00:17:06,144 --> 00:17:12,800
-The series depends on the weight. Take the same 8 subsets, and let the weight be the sum of the elements.
+00:08:56,395 --> 00:09:05,696
+Say in the proof that the cases are disjoint and cover S. Practice Midterm problem 1 splits by the size of A intersect B.
 
 82
-00:17:13,250 --> 00:17:22,487
-Now the bins change. Weight 3 has two subsets: 3, and 1 2. The other weights from 0 to 6 have one subset each.
+00:09:06,146 --> 00:09:11,117
+Chapter 1 also has inclusion and exclusion. Here A has 5 elements.
 
 83
-00:17:22,937 --> 00:17:43,140
-So phi of S is 1 plus x plus x squared plus 2 x cubed plus x to the 4 plus x to the 5 plus x to the 6. This is 1 plus x, times 1 plus x squared, times 1 plus x cubed. Each element is in or out. The next slides explain this product.
+00:09:11,567 --> 00:09:13,273
+B has 4 elements.
 
 84
-00:17:43,590 --> 00:17:55,089
-The coefficient of x to the n must be a number. So each weight can have only finitely many elements. Take all binary strings, and let v be twice the number of zeros.
+00:09:13,723 --> 00:09:16,027
+2 elements are in both A and B.
 
 85
-00:17:55,539 --> 00:18:05,885
-Weight 0 holds every string with no zeros: the empty string, 1, 1 1, 1 1 1, and so on. That bin has infinitely many strings.
+00:09:16,477 --> 00:09:24,776
+The sum 5 plus 4 counts these 2 elements twice. So subtract them once: 5 plus 4 minus 2 is 7.
 
 86
-00:18:06,335 --> 00:18:25,941
-So the coefficient of x to the 0 is not a number, and v is not a valid weight function on all strings. To answer such a question, find one weight with infinitely many elements, or show that each weight has a finite count. Practice Midterm problem 4 b is this type.
+00:09:25,226 --> 00:09:35,679
+Chapter 1 also has probability. When all outcomes have the same probability, divide the number of good outcomes by the number of all outcomes.
 
 87
-00:18:26,391 --> 00:18:36,631
-The Sum Lemma: if A and B are disjoint, the series of the union is phi of A plus phi of B. Here A and B are shown as rows of counts by weight.
+00:09:36,129 --> 00:09:45,153
+These topics are not in Assignments 1 to 3 or in the Practice Midterm. Videos 05a and 05b review them.
 
 88
-00:18:37,081 --> 00:18:49,070
-Each weight of the union has the elements of A plus the elements of B. So the rows add. The Infinite Sum Lemma does the same for infinitely many pairwise disjoint sets.
+00:09:45,603 --> 00:09:50,382
+Part 2 is generating series. It has the three topics in this list.
 
 89
-00:18:49,520 --> 00:18:59,312
-The Product Lemma: in A times B, the weight of a pair is the weight of a plus the weight of b. Each cell of the grid is x to the sum of the two weights.
+00:09:50,832 --> 00:09:56,165
+Expand 1 plus x, three times. From each bracket, take 1 or x.
 
 90
-00:18:59,762 --> 00:19:09,789
-So the grid is the product of the two series: phi of A times phi of B. In a proof, say that the sets are disjoint, and give the weight of a pair.
+00:09:56,615 --> 00:10:02,802
+With no x, there is 1 term: 1 times 1 times 1. That is 3 choose 0.
 
 91
-00:19:10,239 --> 00:19:26,943
-A star is the set of all strings of letters of A, of any length. It is the union of A to the 0, A to the 1, A to the 2, and so on. The weight of a string is the sum of the weights of its letters. Here a has weight 1 and b has weight 2.
+00:10:03,252 --> 00:10:08,116
+With one x, choose the bracket that gives the x. 3 choose 1 is 3.
 
 92
-00:19:27,393 --> 00:19:37,014
-By the Product Lemma, A to the k has series phi of A to the k. The sets A to the k are disjoint, because their strings have different lengths.
+00:10:08,566 --> 00:10:11,062
+With two x, 3 choose 2 is 3.
 
 93
-00:19:37,464 --> 00:19:44,888
-Find the strings of weight 3: a a a, a b and b a. So the coefficient of x cubed must be 3.
+00:10:11,512 --> 00:10:14,221
+With three x, 3 choose 3 is 1.
 
 94
-00:19:45,338 --> 00:20:07,930
-By the Infinite Sum Lemma and the geometric series, phi of A star is 1 over 1 minus phi of A. Here it is 1 over 1 minus x minus x squared, and its x cubed coefficient is 3. The lemma needs phi of A of 0 equal to 0. If a letter has weight 0, then a, a a, a a a all have weight 0.
+00:10:14,671 --> 00:10:20,538
+So 1 plus x, cubed, is 1 plus 3x plus 3x squared plus x cubed.
 
 95
-00:20:08,380 --> 00:20:23,740
-A finite set with a weight in steps gives a finite geometric sum. Let S be 0 to 9, with weight 3 a plus 1. The series has a 1 at x, x to the 4, up to x to the 28. That is 10 terms.
+00:10:20,988 --> 00:10:29,607
+In general, the coefficient of x to the k in 1 plus x to the n is n choose k. This is the Binomial Theorem.
 
 96
-00:20:24,190 --> 00:20:33,555
-Multiply by x cubed. Each term moves 3 places to the right, so the terms are now at x to the 4 up to x to the 31.
+00:10:30,057 --> 00:10:37,630
+Practice problem P1-5 asks for three coefficients of 1 plus 3 x cubed, to the 10.
 
 97
-00:20:34,005 --> 00:20:42,944
-Subtract. All terms from x to the 4 to x to the 28 cancel. Only x and minus x to the 31 remain.
+00:10:38,080 --> 00:10:45,504
+Each term is 10 choose k, times 3 x cubed to the k. So only the powers x to the 3 k appear.
 
 98
-00:20:43,394 --> 00:20:59,479
-So phi of S is x times 1 minus x to the 30, over 1 minus x cubed. The exponent 30 is the step 3 times the 10 terms. Count the terms with care. Practice Midterm problem 5 is this type.
+00:10:45,954 --> 00:10:53,527
+7 and 8 are not multiples of 3. So the coefficients of x to the 7 and x to the 8 are 0.
 
 99
-00:20:59,929 --> 00:21:11,577
-A composition of n is a list of positive integers, called parts, with sum n. Order matters. Draw n as a row of 5 units. There are 4 gaps between the units.
+00:10:53,977 --> 00:11:02,809
+For x to the 9, k is 3. The coefficient is 10 choose 3 times 3 cubed, which is 3240.
 
 100
-00:21:12,027 --> 00:21:18,129
-A composition with 3 parts cuts the row at 2 of the 4 gaps. Here are all 6 ways.
+00:11:03,259 --> 00:11:10,193
+One over 1 minus x is the geometric series: 1 plus x plus x squared, and so on.
 
 101
-00:21:18,579 --> 00:21:33,917
-So there are 4 choose 2, which is 6, compositions of 5 with 3 parts. In general, n minus 1 choose k minus 1. With any number of parts, each gap is cut or not, so 2 to the n minus 1.
+00:11:10,643 --> 00:11:17,085
+One over 1 minus x, cubed, is the product of three copies. Here are the three factors.
 
 102
-00:21:34,367 --> 00:21:48,959
-Every composition problem uses the same method. First, P is the set of allowed parts, with weight equal to the part. Find phi of P. The table has the common cases, from the geometric series.
+00:11:17,535 --> 00:11:27,733
+To get x squared, take one power from each factor, with exponents that add to 2. For example, x to the 0, x to the 0, and x squared.
 
 103
-00:21:49,409 --> 00:22:00,140
-With exactly k parts, the compositions are P to the k, and the weight is the sum of the parts. By the Product Lemma the series is phi of P to the k.
+00:11:28,183 --> 00:11:30,743
+There are 6 such choices of exponents.
 
 104
-00:22:00,590 --> 00:22:13,603
-With any number of parts, the compositions are P star. By the String Lemma the series is 1 over 1 minus phi of P. P has no part 0, so phi of P of 0 is 0.
+00:11:31,193 --> 00:11:38,147
+Each choice of exponents m 1, m 2, m 3 is a multiset of size 2 with 3 types.
 
 105
-00:22:14,053 --> 00:22:27,536
-When the number of parts k must be in a set K, for example even, use the Infinite Sum Lemma: the sum over k in K of phi of P to the k. Then sum it with the geometric series.
+00:11:38,597 --> 00:11:45,381
+So the count is the multiset number: 2 plus 3 minus 1 choose 3 minus 1, which is 6.
 
 106
-00:22:27,986 --> 00:22:39,762
-Here is an example. Count the compositions of n with an even number of parts, where each part is odd. For n equal to 6, there are 8 of them. Pause the video and try it.
+00:11:45,831 --> 00:11:56,135
+In general, the coefficient of x to the n is n plus t minus 1 choose t minus 1. This is the Binomial Series, Theorem 2.4.
 
 107
-00:22:40,212 --> 00:22:53,695
-Step 1: the allowed parts. P is the set of odd positive integers. Its series is x plus x cubed plus x to the 5, and so on, which is x over 1 minus x squared.
+00:11:56,585 --> 00:12:10,196
+Replace x by c x to the m. Then the coefficient of x to the m j is j plus t minus 1 choose t minus 1, times c to the j. All other coefficients are 0.
 
 108
-00:22:54,145 --> 00:23:07,627
-Step 2: the set. S is the union of P to the 2 j, for j at least 0. The weight is the sum of the parts. Say that the sets are disjoint, because they have different numbers of parts.
+00:12:10,646 --> 00:12:18,113
+Three rules find most coefficients. Here F is 1 over 1 minus x. All its coefficients are 1.
 
 109
-00:23:08,077 --> 00:23:25,080
-Step 3: the lemmas. By the Product Lemma and the Infinite Sum Lemma, phi of S is the sum of phi of P to the 2 j. Phi of P has constant term 0, so the geometric series gives 1 over 1 minus phi of P squared.
+00:12:18,563 --> 00:12:25,923
+Rule 1: shift. Multiply F by x squared. The row of coefficients moves 2 places to the right.
 
 110
-00:23:25,530 --> 00:23:37,391
-Step 4: simplify. The answer is the coefficient of x to the n in this rational function. Check: the coefficient of x to the 6 is 8, the same as the list.
+00:12:26,373 --> 00:12:34,437
+So the coefficient of x to the n in x to the a times F is the coefficient of x to the n minus a in F.
 
 111
-00:23:37,841 --> 00:23:49,596
-Subsets can also become compositions. Take n equal to 7 and the subset 2, 4, 7. Add a 0 at the start and n plus 1, which is 8, at the end.
+00:12:34,887 --> 00:12:42,439
+Rule 2: substitute. F of 2 x cubed has nonzero coefficients only at every third power.
 
 112
-00:23:50,046 --> 00:23:53,566
-Write the gaps between neighbours: 2, 2, 3 and 1.
+00:12:42,889 --> 00:12:51,230
+At x to the 3 j the coefficient is 2 to the j. For example, at x to the 9 it is 2 cubed, which is 8.
 
 113
-00:23:54,016 --> 00:24:12,021
-The gaps are a composition of n plus 1 with one more part than A has elements. This is Proposition 2.23. A rule on the subset becomes a rule on the parts. For example, no two consecutive elements means that the middle gaps are at least 2.
+00:12:51,680 --> 00:13:04,032
+In general, the coefficient of x to the n in F of c x to the m is c to the n over m, times a coefficient of F, when m divides n. Otherwise it is 0.
 
 114
-00:24:12,471 --> 00:24:22,263
-Part 3 is binary strings. We review regular expressions, ambiguity, the translation into rational functions, and the decompositions.
+00:13:04,482 --> 00:13:17,090
+Rule 3: product. The coefficient of x to the n in A times B is a sum. Each term uses one split of n into i plus j: a sub i times b sub j.
 
 115
-00:24:22,713 --> 00:24:40,313
-A regular expression builds sets of binary strings. It uses epsilon, the empty string, 0 and 1. It also uses the union R or S, the concatenation R S, and the star R star, which repeats R zero or more times.
+00:13:17,540 --> 00:13:26,905
+Here is an example of the type of Practice Midterm problem 7. Find the coefficient of x to the 20. Pause the video and try it.
 
 116
-00:24:40,763 --> 00:24:59,025
-Concatenation puts a string of A in front of a string of B. Here A is 0 1 1 and 0 1, and B is 1 0 1 and 1 1 0 1. The first two products are 0 1 1 1 0 1 and 0 1 1 1 1 0 1.
+00:13:27,355 --> 00:13:35,569
+First, shift. The x squared on top uses 2 of the 20. So we need the coefficient of x to the 18 in the rest.
 
 117
-00:24:59,475 --> 00:25:05,576
-The other two products are 0 1 1 0 1 and 0 1 1 1 0 1.
+00:13:36,019 --> 00:13:47,155
+Expand the first factor with the Binomial Series. Its terms are x to the 5 j, with coefficient j plus 2 choose 2, times 2 to the j.
 
 118
-00:25:06,026 --> 00:25:19,615
-There are 4 products, but the string 0 1 1 1 0 1 comes twice. So the set A B has only 3 strings. When one string comes from two products, the expression is ambiguous.
+00:13:47,605 --> 00:13:53,727
+Expand the second factor. Its terms are x to the i, with coefficient i plus 1.
 
 119
-00:25:20,065 --> 00:25:37,879
-An expression is unambiguous if it produces each string in at most one way. Take 0 or 0 0, star. The string 0 0 0 is 0 then 0 then 0. It is also 0 then 0 0, and 0 0 then 0.
+00:13:54,177 --> 00:14:00,876
+We need 5 j plus i equal to 18. Each bar splits 18 into these two parts.
 
 120
-00:25:38,329 --> 00:25:46,073
-So the expression is ambiguous. To prove ambiguity, give one string and two different productions. That is enough.
+00:14:01,326 --> 00:14:08,622
+For j equal to 0, i is 18. The coefficients are 1 and 19. The product is 19.
 
 121
-00:25:46,523 --> 00:26:07,877
-Now take 0 0 or 0 1 0, star. Read the string from the left. A piece that starts 0 0 must be 0 0. A piece that starts 0 1 must be 0 1 0. So the cut is forced, and the expression is unambiguous. To prove this, describe the rule that forces the cut.
+00:14:09,072 --> 00:14:20,059
+For j equal to 1, 5 j is 5, so i is 13. 3 times 2 is 6, and 13 plus 1 is 14. The product is 84.
 
 122
-00:26:08,327 --> 00:26:17,415
-Each part of an expression has a rational function. Epsilon gives 1. The bits 0 and 1 give x, because the weight is the length.
+00:14:20,509 --> 00:14:29,981
+For j equal to 2, i is 8. 6 times 4 is 24, and 8 plus 1 is 9. The product is 216.
 
 123
-00:26:17,865 --> 00:26:21,983
-A union gives a sum, and a concatenation gives a product.
+00:14:30,431 --> 00:14:39,497
+For j equal to 3, i is 3. 10 times 8 is 80, and 3 plus 1 is 4. The product is 320.
 
 124
-00:26:22,433 --> 00:26:25,547
-A star gives 1 over 1 minus the function.
+00:14:39,947 --> 00:14:46,987
+For j equal to 4, 5 j is 20. That is more than 18, so there are no more terms.
 
 125
-00:26:25,997 --> 00:26:42,445
-For 0 0 or 0 1 0, star: 0 0 gives x squared and 0 1 0 gives x cubed. The union is x squared plus x cubed. The star gives 1 over 1 minus x squared minus x cubed.
+00:14:47,437 --> 00:14:58,787
+The answer is the sum over j from 0 to 3: 19 plus 84 plus 216 plus 320, which is 639.
 
 126
-00:26:42,895 --> 00:26:59,663
-Theorem 3.13 says that this is the generating series only if the expression is unambiguous. The ambiguous 0 or 0 0, star gives 2 at x squared, but only one string, 0 0, has length 2.
+00:14:59,237 --> 00:15:05,189
+On the exam, the finite sum is a full answer, unless the question asks for the number.
 
 127
-00:27:00,113 --> 00:27:12,103
-A block is a maximal run of equal bits. The string 1 1 0 0 0 1 0 1 1 1 0 has 6 blocks. Cut the string between the blocks.
+00:15:05,639 --> 00:15:16,561
+A formal power series is a sum of a sub n times x to the n, over all n at least 0. Two series are equal when all their coefficients are equal.
 
 128
-00:27:12,553 --> 00:27:18,526
-Each block of 1s is 1 1 star, and each block of 0s is 0 0 star.
+00:15:17,011 --> 00:15:25,310
+Here is the product of 1 over 1 minus x with itself. Row i is the term x to the i of the first factor.
 
 129
-00:27:18,976 --> 00:27:35,509
-The block decomposition is 0 star, then pairs of a 1-block and a 0-block, then 1 star. The blocks alternate, so each string is cut in only one way. It gives 1 over 1 minus 2 x, the series of all strings.
+00:15:25,760 --> 00:15:29,899
+Column j is the term x to the j of the second factor.
 
 130
-00:27:35,959 --> 00:27:52,919
-To count strings with a condition on the blocks, start from the block decomposition. Then replace each block by an expression for its allowed lengths. Here, every block of 1s must have odd length. 1 1 star becomes 1 1, star, then 1.
+00:15:30,349 --> 00:15:40,269
+Each cell is a term of x to the i plus j. For example, row 1, column 2 gives x cubed, with coefficient 1 times 1.
 
 131
-00:27:53,369 --> 00:28:08,452
-Here is the string 0 1 1 1 0 0 1 cut by the new expression. The final 1 star becomes epsilon or an odd block. The cut is still the block cut, so the expression is unambiguous.
+00:15:40,719 --> 00:15:49,529
+The coefficient of x to the 4 is the sum of the cells with i plus j equal to 4. There are 5 cells, so it is 5.
 
 132
-00:28:08,902 --> 00:28:15,281
-The first terms, from a list of all strings, are 1, 2, 3, 6, 10, 19 and so on.
+00:15:49,979 --> 00:15:58,043
+In general, the coefficient of x to the n in A times B is the sum of a sub i times b sub n minus i.
 
 133
-00:28:15,731 --> 00:28:27,891
-The translation gives G of x equal to 1 plus x minus x squared, over 1 minus x minus 2 x squared plus x cubed. Its coefficients agree with the list.
+00:15:58,493 --> 00:16:11,848
+The diagonal for x to the n has n plus 1 cells. So 1 over 1 minus x, squared, is the sum of n plus 1 times x to the n. This agrees with the Binomial Series.
 
 134
-00:28:28,341 --> 00:28:40,351
-A prefix decomposition has the form A star B. The string is cut into pieces of A from the left, and B is the end. Take 0 star 1, star, then 0 star.
+00:16:12,298 --> 00:16:25,013
+The inverse of A of x is the series B of x with A times B equal to 1. By Theorem 3.1, it exists if and only if the constant term of A is not 0.
 
 135
-00:28:40,801 --> 00:28:49,207
-Cut after each 1. Each piece is some zeros and then a 1. The zeros after the last 1 are the final 0 star.
+00:16:25,463 --> 00:16:33,292
+Here is why. Take A equal to 1 minus x, and solve A times B equal to 1, one coefficient at a time.
 
 136
-00:28:49,657 --> 00:28:57,827
-Each string has only one such cut, so the expression is unambiguous. It also gives 1 over 1 minus 2 x.
+00:16:33,742 --> 00:16:41,721
+At x to the 0: a 0 times b 0 equals 1. So b 0 is 1 over a 0, which is 1.
 
 137
-00:28:58,277 --> 00:29:12,059
-A recursive decomposition defines a set in terms of itself. Take B equal to epsilon or 0 B 1. A string of B is empty, or a 0, a shorter string of B, and a 1.
+00:16:42,171 --> 00:16:50,704
+At x to the 1: a 0 b 1 plus a 1 b 0 equals 0. So b 1 equals b 0, which is 1.
 
 138
-00:29:12,509 --> 00:29:18,909
-Take 0 0 0 1 1 1. The outer 0 and 1 hold a shorter string of B.
+00:16:51,154 --> 00:16:58,706
+At x to the n: b n minus b n minus 1 equals 0. Each b n uses the one before.
 
 139
-00:29:19,359 --> 00:29:31,348
-Inside is 0 0 1 1, then 0 1, then epsilon. So 0 0 0 1 1 1 is 0, 0, 0, epsilon, 1, 1, 1.
+00:16:59,156 --> 00:17:03,721
+Each step divides by a 0. So a 0 must not be 0.
 
 140
-00:29:31,798 --> 00:29:44,385
-Translate as before: B of x equals 1 plus x squared B of x. Solve: B of x is 1 over 1 minus x squared. There is one string of each even length.
+00:17:04,171 --> 00:17:10,102
+Here the result is 1 plus x plus x squared, and so on: the geometric series.
 
 141
-00:29:44,835 --> 00:29:56,803
-The recursion must also be unambiguous. Q equal to 0 star or 1 Q or Q 1 makes 1 1 in two ways. So its equation counts too many strings.
+00:17:10,552 --> 00:17:19,320
+Practice problem P1-1 of Assignment 2. x plus x squared has constant term 0, so it has no inverse.
 
 142
-00:29:57,253 --> 00:30:11,653
-To count strings that avoid a string kappa, find how kappa overlaps itself. Take kappa equal to 0 1 1 0 1. Put copies under it, shifted to the right. Shifts 1 and 2 do not match.
+00:17:19,770 --> 00:17:23,695
+1 plus x has constant term 1, so it has an inverse.
 
 143
-00:30:12,103 --> 00:30:21,489
-Shift 3 matches: the end 0 1 of kappa equals its start 0 1. The extra part 1 0 1 goes into the set C.
+00:17:24,145 --> 00:17:30,012
+The sum of 3 to the n, x to the 2 n, has constant term 1, so it has an inverse.
 
 144
-00:30:21,939 --> 00:30:29,235
-Shift 4 does not match. So C is the set with only 1 0 1, and C of x is x cubed.
+00:17:30,462 --> 00:17:35,113
+That series minus 1 has constant term 0, so it has no inverse.
 
 145
-00:30:29,685 --> 00:30:36,917
-Theorem 3.26 gives the series of the strings that avoid kappa. Here n is the length of kappa.
+00:17:35,563 --> 00:17:42,944
+A of B of x puts the series B in place of x in A. It is the sum of a sub k times B to the k.
 
 146
-00:30:37,367 --> 00:30:55,287
-For 0 1 1 0 1, put C of x equal to x cubed and n equal to 5. A list of all strings gives the same coefficients. If kappa has no overlap, C is empty, as for 0 1 0 1 1 in Example 3.24.
+00:17:43,394 --> 00:17:48,130
+Take B equal to x plus x squared. Its constant term is 0.
 
 147
-00:30:55,737 --> 00:31:01,028
-Here is a checklist for each written answer. First, define the set and the weight.
+00:17:48,580 --> 00:17:53,401
+Each row is a power B to the k. Row k starts at x to the k.
 
 148
-00:31:01,478 --> 00:31:07,366
-Name each result you use, for example the Product Lemma or the Binomial Theorem.
+00:17:53,851 --> 00:18:02,129
+So the column of x cubed has nonzero terms in rows 0 to 3 only. Each coefficient is a finite sum.
 
 149
-00:31:07,816 --> 00:31:20,125
-Justify each condition: the sets are disjoint, the expression is unambiguous, the constant term is 0, the inverse exists. Most lost marks come from these points.
+00:18:02,579 --> 00:18:09,853
+This is Theorem 3.2: if B of 0 is 0, then A of B of x is a formal power series.
 
 150
-00:31:20,575 --> 00:31:28,469
-Give the answer as a coefficient of a finite expression, with no infinite sums, unless the question allows them.
+00:18:10,303 --> 00:18:19,498
+For example, 1 over, 1 minus, x plus x squared, is 1 plus x plus 2 x squared plus 3 x cubed, and so on.
 
 151
-00:31:28,919 --> 00:31:32,652
-Last, check small values of n by listing the objects.
+00:18:19,948 --> 00:18:25,409
+Now take B equal to 1 plus x. Every power of B has constant term 1.
 
 152
-00:31:33,102 --> 00:31:41,294
-To recap. For an identity, count one set in two ways. For a bijection, define it, check the image, and give the inverse.
+00:18:25,859 --> 00:18:32,430
+So the constant term of A of B is 1 plus 1 plus 1, and so on. It is not defined.
 
 153
-00:31:41,744 --> 00:31:55,184
-For a coefficient, shift, substitute, and use the product rule with the binomial coefficients. For power series, compare coefficients, and check the constant term for inverses and compositions.
+00:18:32,880 --> 00:18:38,875
+So, before you put a series into the geometric series, say that its constant term is 0.
 
 154
-00:31:55,634 --> 00:32:04,573
-To count objects of size n, define a set and a weight, then use the three lemmas. For compositions, find phi of P first.
+00:18:39,325 --> 00:18:54,365
+To prove that two series are equal, show that the coefficient of x to the n is the same on both sides. Take 1 plus x to the m, times 1 plus x to the n. This equals 1 plus x to the m plus n.
 
 155
-00:32:05,023 --> 00:32:13,257
-For binary strings, use a block, prefix or recursive decomposition, prove that it is unambiguous, and translate.
+00:18:54,815 --> 00:19:01,705
+Take m equal to 3 and n equal to 4. The rows hold the terms of 1 plus x, cubed.
 
 156
-00:32:13,707 --> 00:32:20,086
+00:19:02,155 --> 00:19:05,569
+The columns hold the terms of 1 plus x to the 4.
+
+157
+00:19:06,019 --> 00:19:16,749
+On the left, the coefficient of x cubed is the diagonal i plus j equal to 3: 4 plus 18 plus 12 plus 1, which is 35.
+
+158
+00:19:17,199 --> 00:19:22,362
+On the right, the Binomial Theorem gives 7 choose 3, which is 35.
+
+159
+00:19:22,812 --> 00:19:26,524
+This is true for every k. So we get Vandermonde again.
+
+160
+00:19:26,974 --> 00:19:32,926
+Practice Midterm problem 8 uses the same method. Video 18b solves it.
+
+161
+00:19:33,376 --> 00:19:41,803
+A weight function w gives each element of a set a natural number. Here S is the 8 subsets of 1, 2, 3.
+
+162
+00:19:42,253 --> 00:19:50,637
+The generating series phi of S is the sum of x to the w of sigma. It has one term for each element sigma.
+
+163
+00:19:51,087 --> 00:19:53,476
+Let the weight be the size of the subset.
+
+164
+00:19:53,926 --> 00:20:00,539
+Put each subset in the bin of its weight. For example, bin 1 holds the sets 1, 2 and 3.
+
+165
+00:20:00,989 --> 00:20:07,837
+The coefficient of x to the n is the number of elements in bin n. This is Proposition 2.7.
+
+166
+00:20:08,287 --> 00:20:20,191
+Here the bins hold 1, 3, 3 and 1 subsets. So phi of S is 1 plus 3 x plus 3 x squared plus x cubed, which is 1 plus x, cubed.
+
+167
+00:20:20,641 --> 00:20:27,212
+So a question about how many objects have size n becomes: find the coefficient of x to the n.
+
+168
+00:20:27,662 --> 00:20:31,545
+The series depends on the weight. Take the same 8 subsets.
+
+169
+00:20:31,995 --> 00:20:34,555
+Now let the weight be the sum of the elements.
+
+170
+00:20:35,005 --> 00:20:39,122
+Weight 3 has two subsets: the set 3, and the set 1, 2.
+
+171
+00:20:39,572 --> 00:20:43,284
+The other weights, from 0 to 6, have one subset each.
+
+172
+00:20:43,734 --> 00:20:52,694
+So phi of S is 1 plus x plus x squared plus 2 x cubed plus x to the 4 plus x to the 5 plus x to the 6.
+
+173
+00:20:53,144 --> 00:21:07,053
+This equals 1 plus x, times 1 plus x squared, times 1 plus x cubed. Each element i is in or out, and adds i when it is in. The Product Lemma explains this product.
+
+174
+00:21:07,503 --> 00:21:14,202
+The coefficient of x to the n must be a number. So each weight must have only finitely many elements.
+
+175
+00:21:14,652 --> 00:21:21,820
+Take all binary strings, and let v be twice the number of zeros. Each bin shows strings of one weight.
+
+176
+00:21:22,270 --> 00:21:29,737
+Weight 0 holds every string with no zeros: the empty string, 1, 1 1, 1 1 1, and so on.
+
+177
+00:21:30,187 --> 00:21:39,253
+That bin has infinitely many strings. So the coefficient of x to the 0 is not a number, and v is not a valid weight function.
+
+178
+00:21:39,703 --> 00:21:51,650
+To answer this type of question, find one weight with infinitely many elements. Or show that each weight has a finite count. Practice Midterm problem 4 b is this type.
+
+179
+00:21:52,100 --> 00:21:59,588
+The Sum Lemma is for two disjoint sets A and B. The series of A union B is phi of A plus phi of B.
+
+180
+00:22:00,038 --> 00:22:06,417
+The row phi of A counts the elements of A by weight: one of weight 0, and two of weight 1.
+
+181
+00:22:06,867 --> 00:22:11,539
+The row phi of B counts B: one of weight 1, and one of weight 2.
+
+182
+00:22:11,989 --> 00:22:17,919
+Each weight of the union has the elements of A plus the elements of B. So the rows add.
+
+183
+00:22:18,369 --> 00:22:24,023
+The Infinite Sum Lemma does the same for infinitely many pairwise disjoint sets.
+
+184
+00:22:24,473 --> 00:22:30,595
+The Product Lemma is for A times B. The weight of a pair is the weight of a plus the weight of b.
+
+185
+00:22:31,045 --> 00:22:35,760
+A has a with weight 0, and a prime and a double prime with weight 1.
+
+186
+00:22:36,210 --> 00:22:39,815
+B has b with weight 1, and b prime with weight 2.
+
+187
+00:22:40,265 --> 00:22:47,241
+Each cell is x to the sum of the two weights. For example, a prime with b prime gives x cubed.
+
+188
+00:22:47,691 --> 00:22:58,635
+The cells add up to phi of A times phi of B: 1 plus 2 x, times x plus x squared. That is x plus 3 x squared plus 2 x cubed.
+
+189
+00:22:59,085 --> 00:23:05,656
+In a proof, say that the sets are disjoint for the Sum Lemma. Give the weight of a pair for the Product Lemma.
+
+190
+00:23:06,106 --> 00:23:16,069
+A star is the set of all strings of letters of A, of any length. It is the union of A to the 0, A to the 1, A to the 2, and so on.
+
+191
+00:23:16,519 --> 00:23:23,089
+The weight of a string is the sum of the weights of its letters. Here a has weight 1, and b has weight 2.
+
+192
+00:23:23,539 --> 00:23:30,046
+A to the 0 holds only the empty string, with weight 0. A to the 1 holds a and b.
+
+193
+00:23:30,496 --> 00:23:37,856
+A to the 2 and A to the 3 hold the strings of length 2 and 3. Each chip shows a string and its weight.
+
+194
+00:23:38,306 --> 00:23:47,927
+By the Product Lemma, A to the k has series phi of A to the k. The sets A to the k are disjoint, because their strings have different lengths.
+
+195
+00:23:48,377 --> 00:23:55,503
+The strings of weight 3 are a a a, a b, and b a. So the coefficient of x cubed must be 3.
+
+196
+00:23:55,953 --> 00:24:04,977
+By the Infinite Sum Lemma and the geometric series, phi of A star is 1 over 1 minus phi of A. This is the String Lemma.
+
+197
+00:24:05,427 --> 00:24:17,032
+Here phi of A is x plus x squared. So phi of A star is 1 over 1 minus x minus x squared. Its x cubed coefficient is 3, as we found.
+
+198
+00:24:17,482 --> 00:24:30,389
+The lemma needs phi of A of 0 equal to 0. In P3-1 d, the letter a has weight 0. Then a, a a, a a a all have weight 0, so the series is not defined.
+
+199
+00:24:30,839 --> 00:24:40,055
+A finite set with weights in equal steps gives a finite geometric sum. Let S be 0 to 9, with weight 3 a plus 1.
+
+200
+00:24:40,505 --> 00:24:47,715
+The series has a 1 at x, x to the 4, and so on, up to x to the 28. That is 10 terms.
+
+201
+00:24:48,165 --> 00:24:57,915
+Multiply by x cubed. Each term moves 3 places to the right. The terms are now at x to the 4, up to x to the 31.
+
+202
+00:24:58,365 --> 00:25:05,511
+Subtract the second row from the first. The terms from x to the 4 to x to the 28 cancel.
+
+203
+00:25:05,961 --> 00:25:09,311
+Only x and minus x to the 31 remain.
+
+204
+00:25:09,761 --> 00:25:15,862
+So 1 minus x cubed, times phi of S, is x minus x to the 31.
+
+205
+00:25:16,312 --> 00:25:24,995
+Divide by 1 minus x cubed. Phi of S is x times 1 minus x to the 30, over 1 minus x cubed.
+
+206
+00:25:25,445 --> 00:25:31,119
+The exponent 30 is the step 3 times the 10 terms. Count the terms with care.
+
+207
+00:25:31,569 --> 00:25:48,188
+In general, the sum over a from 0 to m of x to the k a plus c is x to the c, times 1 minus x to the k times m plus 1, over 1 minus x to the k. Practice Midterm problem 5 is this type.
+
+208
+00:25:48,638 --> 00:25:56,723
+A composition of n is a list of positive integers, called parts, with sum n. The order of the parts matters.
+
+209
+00:25:57,173 --> 00:26:03,104
+Draw n equal to 5 as a row of 5 units. There are 4 gaps between the units.
+
+210
+00:26:03,554 --> 00:26:12,791
+A composition with 3 parts cuts the row at 2 of the 4 gaps. For example, cuts at gaps 2 and 3 give 2 plus 1 plus 2.
+
+211
+00:26:13,241 --> 00:26:16,527
+Here are all 6 ways to choose 2 of the 4 gaps.
+
+212
+00:26:16,977 --> 00:26:22,203
+So there are 4 choose 2, which is 6, compositions of 5 with 3 parts.
+
+213
+00:26:22,653 --> 00:26:32,680
+In general, a composition of n with k parts chooses k minus 1 of the n minus 1 gaps: n minus 1 choose k minus 1.
+
+214
+00:26:33,130 --> 00:26:40,170
+With any number of parts, each gap is cut or not. So there are 2 to the n minus 1 compositions.
+
+215
+00:26:40,620 --> 00:26:46,487
+The series of the compositions with k parts is x over 1 minus x, to the k.
+
+216
+00:26:46,937 --> 00:26:56,153
+Every composition problem uses the same method. First, let P be the set of allowed parts. The weight of a part is its value.
+
+217
+00:26:56,603 --> 00:27:02,341
+Find phi of P with the geometric series. The table has the common cases.
+
+218
+00:27:02,791 --> 00:27:11,005
+With exactly k parts, the compositions are P to the k. By the Product Lemma, the series is phi of P to the k.
+
+219
+00:27:11,455 --> 00:27:24,660
+With any number of parts, the compositions are P star. By the String Lemma, the series is 1 over 1 minus phi of P. P has no part 0, so phi of P of 0 is 0.
+
+220
+00:27:25,110 --> 00:27:38,913
+When the number of parts must be in a set K, for example the even numbers, use the Infinite Sum Lemma: the sum over k in K of phi of P to the k. Then sum it with the geometric series.
+
+221
+00:27:39,363 --> 00:27:48,109
+Here is an example. Count the compositions of n with an even number of parts, where each part is odd. Pause the video and try it.
+
+222
+00:27:48,559 --> 00:27:55,429
+For n equal to 6 there are 8 such compositions. Each one has 2, 4 or 6 odd parts.
+
+223
+00:27:55,879 --> 00:28:03,047
+Step 1: the allowed parts. P is the set of odd positive integers, with weight equal to the part.
+
+224
+00:28:03,497 --> 00:28:13,779
+Phi of P is x plus x cubed plus x to the 5, and so on. By the geometric series, this is x over 1 minus x squared.
+
+225
+00:28:14,229 --> 00:28:22,848
+Step 2: the set. S is the union of P to the 2 j, for j at least 0. The weight is the sum of the parts.
+
+226
+00:28:23,298 --> 00:28:29,271
+The sets P to the 2 j are disjoint, because their elements have different numbers of parts.
+
+227
+00:28:29,721 --> 00:28:39,108
+Step 3: the lemmas. By the Product Lemma and the Infinite Sum Lemma, phi of S is the sum over j of phi of P to the 2 j.
+
+228
+00:28:39,558 --> 00:28:47,771
+Phi of P has constant term 0. So the geometric series gives 1 over 1 minus phi of P squared.
+
+229
+00:28:48,221 --> 00:29:02,365
+Step 4: put in phi of P and clear the fractions. The answer is the coefficient of x to the n in 1 minus x squared, squared, over 1 minus x squared, squared, minus x squared.
+
+230
+00:29:02,815 --> 00:29:12,501
+Check: the coefficients are 1, 0, 1, 0, 3, 0, 8. The coefficient of x to the 6 is 8, the same as the list.
+
+231
+00:29:12,951 --> 00:29:19,841
+Subsets can also become compositions. Take n equal to 7 and the subset 2, 4, 7.
+
+232
+00:29:20,291 --> 00:29:24,729
+Add a 0 at the start, and n plus 1, which is 8, at the end.
+
+233
+00:29:25,179 --> 00:29:28,699
+Write the gaps between neighbours: 2, 2, 3 and 1.
+
+234
+00:29:29,149 --> 00:29:39,837
+The gaps are a composition of n plus 1, which is 8. It has one more part than A has elements, so 4 parts. This is Proposition 2.23.
+
+235
+00:29:40,287 --> 00:29:49,887
+A rule on the subset becomes a rule on the parts. For example, no two consecutive elements means that the middle gaps are at least 2.
+
+236
+00:29:50,337 --> 00:29:54,859
+Part 3 is binary strings. It has the three topics in this list.
+
+237
+00:29:55,309 --> 00:30:03,309
+A regular expression builds a set of binary strings. It uses epsilon, the empty string, and the bits 0 and 1.
+
+238
+00:30:03,759 --> 00:30:14,127
+It also uses the union R or S, the concatenation R S, and the star R star. The star repeats R zero or more times.
+
+239
+00:30:14,577 --> 00:30:25,265
+Concatenation puts a string of A in front of a string of B. Here A is 0 1 1 and 0 1. B is 1 0 1 and 1 1 0 1.
+
+240
+00:30:25,715 --> 00:30:31,369
+0 1 1, then 1 0 1, gives 0 1 1 1 0 1.
+
+241
+00:30:31,819 --> 00:30:38,005
+0 1 1, then 1 1 0 1, gives 0 1 1 1 1 0 1.
+
+242
+00:30:38,455 --> 00:30:43,298
+0 1, then 1 0 1, gives 0 1 1 0 1.
+
+243
+00:30:43,748 --> 00:30:52,431
+0 1, then 1 1 0 1, gives 0 1 1 1 0 1 again. It is the same as the first product.
+
+244
+00:30:52,881 --> 00:30:57,339
+So there are 4 products, but the set A B has only 3 strings.
+
+245
+00:30:57,789 --> 00:31:02,205
+When one string comes from two products, the expression is ambiguous.
+
+246
+00:31:02,655 --> 00:31:08,095
+An expression is unambiguous if it produces each string in at most one way.
+
+247
+00:31:08,545 --> 00:31:17,057
+Take 0 or 0 0, star, and the string 0 0 0. One production is 0, then 0, then 0.
+
+248
+00:31:17,507 --> 00:31:20,729
+Another production is 0, then 0 0.
+
+249
+00:31:21,179 --> 00:31:24,485
+A third production is 0 0, then 0.
+
+250
+00:31:24,935 --> 00:31:31,698
+So the expression is ambiguous. To prove ambiguity, give one string with two different productions.
+
+251
+00:31:32,148 --> 00:31:40,255
+Now take 0 0 or 0 1 0, star, and the string 0 0 0 1 0 0 0.
+
+252
+00:31:40,705 --> 00:31:47,147
+Read from the left. The string starts with 0 0, so the first piece must be 0 0.
+
+253
+00:31:47,597 --> 00:31:51,992
+The next piece starts with 0 1, so it must be 0 1 0.
+
+254
+00:31:52,442 --> 00:31:54,383
+The last piece is 0 0.
+
+255
+00:31:54,833 --> 00:32:02,577
+So the cut is forced, and the expression is unambiguous. To prove this, describe the rule that forces the cut.
+
+256
+00:32:03,027 --> 00:32:07,827
+Each part of an expression gives a rational function. Epsilon gives 1.
+
+257
+00:32:08,277 --> 00:32:12,117
+The bits 0 and 1 give x, because the weight is the length.
+
+258
+00:32:12,567 --> 00:32:14,317
+A union gives a sum.
+
+259
+00:32:14,767 --> 00:32:17,156
+A concatenation gives a product.
+
+260
+00:32:17,606 --> 00:32:20,721
+A star gives 1 over 1 minus the function.
+
+261
+00:32:21,171 --> 00:32:24,328
+Take 0 0 or 0 1 0, star.
+
+262
+00:32:24,778 --> 00:32:29,642
+0 0 gives x squared, and 0 1 0 gives x cubed.
+
+263
+00:32:30,092 --> 00:32:32,887
+The union gives x squared plus x cubed.
+
+264
+00:32:33,337 --> 00:32:37,710
+The star gives 1 over 1 minus x squared minus x cubed.
+
+265
+00:32:38,160 --> 00:32:45,499
+Theorem 3.13 says that this is the generating series only if the expression is unambiguous.
+
+266
+00:32:45,949 --> 00:32:59,623
+The ambiguous 0 or 0 0, star, gives 1 over 1 minus x minus x squared. Its coefficient at x squared is 2, but only one string, 0 0, has length 2.
+
+267
+00:33:00,073 --> 00:33:02,975
+A block is a maximal run of equal bits.
+
+268
+00:33:03,425 --> 00:33:11,169
+The string 1 1 0 0 0 1 0 1 1 1 0 has 6 blocks. Cut it between the blocks.
+
+269
+00:33:11,619 --> 00:33:14,883
+Each block of 1s has the form 1 1 star.
+
+270
+00:33:15,333 --> 00:33:19,173
+Each block of 0s has the form 0 0 star.
+
+271
+00:33:19,623 --> 00:33:26,791
+The block decomposition is 0 star, then pairs of a 1-block and a 0-block, then 1 star.
+
+272
+00:33:27,241 --> 00:33:35,006
+Here the first 0 star and the last 1 star are empty, because the string starts with 1 and ends with 0.
+
+273
+00:33:35,456 --> 00:33:43,627
+The blocks alternate between 1s and 0s, so each string has only one cut. The expression is unambiguous.
+
+274
+00:33:44,077 --> 00:33:49,069
+It gives 1 over 1 minus 2 x, the series of all binary strings.
+
+275
+00:33:49,519 --> 00:33:58,777
+To count strings with a condition on the blocks, start from the block decomposition. Replace each block by an expression for its allowed lengths.
+
+276
+00:33:59,227 --> 00:34:06,054
+Here every block of 1s must have odd length. So 1 1 star becomes 1 1, star, then 1.
+
+277
+00:34:06,504 --> 00:34:12,136
+The final 1 star becomes epsilon or an odd block. Here is the new expression.
+
+278
+00:34:12,586 --> 00:34:19,071
+Take the string 0 1 1 1 0 0 1. The expression cuts it into its blocks.
+
+279
+00:34:19,521 --> 00:34:23,084
+The blocks of 1s, 1 1 1 and 1, have odd length.
+
+280
+00:34:23,534 --> 00:34:27,843
+The cut is still the block cut, so the expression is unambiguous.
+
+281
+00:34:28,293 --> 00:34:35,525
+The first numbers of strings, from a list of all strings, are 1, 2, 3, 6, 10, 19, and so on.
+
+282
+00:34:35,975 --> 00:34:41,095
+Translate each part. This is the product from the notes, before you simplify.
+
+283
+00:34:41,545 --> 00:34:52,148
+It simplifies to 1 plus x minus x squared, over 1 minus x minus 2 x squared plus x cubed. Its coefficients agree with the list.
+
+284
+00:34:52,598 --> 00:35:00,747
+A prefix decomposition has the form A star B. The string is cut into pieces of A from the left. B is the end.
+
+285
+00:35:01,197 --> 00:35:08,280
+Take 0 star 1, star, then 0 star. Here A is 0 star 1, and B is 0 star.
+
+286
+00:35:08,730 --> 00:35:10,671
+Take this string of 20 bits.
+
+287
+00:35:11,121 --> 00:35:17,777
+Cut after each 1. Each piece is some zeros, then a 1. The first piece is 0 0 1.
+
+288
+00:35:18,227 --> 00:35:22,174
+The zeros after the last 1 are the final 0 star.
+
+289
+00:35:22,624 --> 00:35:27,296
+Each string has only one such cut, so the expression is unambiguous.
+
+290
+00:35:27,746 --> 00:35:30,647
+It also gives 1 over 1 minus 2 x.
+
+291
+00:35:31,097 --> 00:35:39,247
+A recursive decomposition defines a set in terms of itself. Take B equal to epsilon or 0 B 1.
+
+292
+00:35:39,697 --> 00:35:48,059
+Take 0 0 0 1 1 1. The outer 0 and 1 hold a shorter string of B: 0 0 1 1.
+
+293
+00:35:48,509 --> 00:35:53,608
+Inside 0 0 1 1, the outer 0 and 1 hold 0 1.
+
+294
+00:35:54,058 --> 00:35:58,218
+Inside 0 1, the 0 and the 1 hold epsilon.
+
+295
+00:35:58,668 --> 00:36:05,175
+So 0 0 0 1 1 1 is 0, 0, 0, epsilon, 1, 1, 1.
+
+296
+00:36:05,625 --> 00:36:11,107
+Translate as before: B of x equals 1 plus x squared times B of x.
+
+297
+00:36:11,557 --> 00:36:18,768
+Solve for B of x: it is 1 over 1 minus x squared. There is one string of each even length.
+
+298
+00:36:19,218 --> 00:36:28,093
+The recursion must also be unambiguous. P4-3 defines Q as 0 star, or 1 Q, or Q 1.
+
+299
+00:36:28,543 --> 00:36:37,801
+Q makes 1 1 in two ways: 1, then epsilon 1; or 1 epsilon, then 1. So its equation counts too many strings.
+
+300
+00:36:38,251 --> 00:36:47,553
+To count the strings that avoid a string kappa, find how kappa overlaps itself. Take kappa equal to 0 1 1 0 1.
+
+301
+00:36:48,003 --> 00:36:54,061
+Put a copy shifted 1 place to the right. Where the copies overlap, the bits do not match.
+
+302
+00:36:54,511 --> 00:36:56,517
+Shift 2 does not match either.
+
+303
+00:36:56,967 --> 00:37:03,751
+Shift 3 matches. The last two bits of kappa, 0 1, equal its first two bits, 0 1.
+
+304
+00:37:04,201 --> 00:37:10,046
+The part of the copy past the end of kappa is 1 0 1. It goes into the set C.
+
+305
+00:37:10,496 --> 00:37:12,352
+Shift 4 does not match.
+
+306
+00:37:12,802 --> 00:37:17,474
+So C holds only 1 0 1, and C of x is x cubed.
+
+307
+00:37:17,924 --> 00:37:25,156
+Theorem 3.26 gives the series of the strings that avoid kappa. Here n is the length of kappa.
+
+308
+00:37:25,606 --> 00:37:32,134
+For 0 1 1 0 1, put in C of x equal to x cubed and n equal to 5.
+
+309
+00:37:32,584 --> 00:37:40,115
+The series starts 1, 2, 4, 8, 16, 31. A list of all strings gives the same numbers.
+
+310
+00:37:40,565 --> 00:37:46,453
+When kappa has no overlap, C is empty. Example 3.24 is this case.
+
+311
+00:37:46,903 --> 00:37:52,193
+Here is a checklist for each written answer. First, define the set and the weight.
+
+312
+00:37:52,643 --> 00:37:58,851
+Name each result that you use, for example the Product Lemma or the Binomial Theorem.
+
+313
+00:37:59,301 --> 00:38:09,328
+Justify each condition: the sets are disjoint, the expression is unambiguous, the constant term is 0, the function is a bijection.
+
+314
+00:38:09,778 --> 00:38:15,367
+Give the answer as a coefficient of a finite expression, with no infinite sums.
+
+315
+00:38:15,817 --> 00:38:19,551
+Last, check small values of n by listing the objects.
+
+316
+00:38:20,001 --> 00:38:24,587
+Here are common mistakes. First: cases that overlap in a sum.
+
+317
+00:38:25,037 --> 00:38:30,968
+A series put into the geometric series before you check that its constant term is 0.
+
+318
+00:38:31,418 --> 00:38:34,938
+An ambiguous expression translated into a series.
+
+319
+00:38:35,388 --> 00:38:37,905
+The wrong number of terms in a finite sum.
+
+320
+00:38:38,355 --> 00:38:40,467
+A bijection with no inverse.
+
+321
+00:38:40,917 --> 00:38:47,616
+To recap. For an identity, count one set in two ways: change the order, or split by a parameter.
+
+322
+00:38:48,066 --> 00:38:52,162
+For a bijection, define it, check the image, and give the inverse.
+
+323
+00:38:52,612 --> 00:38:59,161
+For a coefficient, shift, substitute, and use the product rule with the binomial coefficients.
+
+324
+00:38:59,611 --> 00:39:06,011
+For power series, compare coefficients. Check the constant term for inverses and compositions.
+
+325
+00:39:06,461 --> 00:39:12,243
+To count objects of size n, define a set and a weight, then use the three lemmas.
+
+326
+00:39:12,693 --> 00:39:18,773
+For compositions, find phi of P first. Then take its powers, or use the String Lemma.
+
+327
+00:39:19,223 --> 00:39:27,671
+For binary strings, use a block, prefix or recursive decomposition. Prove that it is unambiguous, then translate.
+
+328
+00:39:28,121 --> 00:39:34,499
 Videos 18a and 18b solve the full Practice Midterm. Good luck on the midterm.
