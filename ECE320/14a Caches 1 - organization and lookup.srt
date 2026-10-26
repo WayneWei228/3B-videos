@@ -807,97 +807,97 @@ The result: 1 hit in 8 accesses. The only hit is marked in the Outcome column.
 Plus: spatial prefetching. The miss on 1 1 0 0 brought in 1 1 1 0.
 
 203
-00:25:33,695 --> 00:25:40,372
-Minus: more conflicts. The miss on 1 0 0 0 kicked out 0 0 1 1.
+00:25:33,695 --> 00:25:41,823
+Minus: more conflicts. Address 1 0 0 0 missed. That miss removed block 0 0 1 1.
 
 204
-00:25:40,822 --> 00:25:47,201
+00:25:42,273 --> 00:25:48,651
 With 2-byte blocks, 0 0 1 1 was a hit, and there were 2 hits in 7 accesses.
 
 205
-00:25:47,651 --> 00:25:55,053
+00:25:49,101 --> 00:25:56,504
 Larger blocks take longer to read, transfer and fill. So t miss can grow. The next steps show a fix.
 
 206
-00:25:55,503 --> 00:26:01,541
+00:25:56,954 --> 00:26:02,991
 Take one isolated miss. The block has 8 words, and the access needs word 5.
 
 207
-00:26:01,991 --> 00:26:08,732
+00:26:03,441 --> 00:26:10,183
 With critical word first, the cache fetches the requested word first. So word 5 arrives first.
 
 208
-00:26:09,182 --> 00:26:14,899
+00:26:10,633 --> 00:26:16,350
 The pipeline restarts at once. The other words are transferred and filled in the background.
 
 209
-00:26:15,349 --> 00:26:19,061
+00:26:16,800 --> 00:26:20,512
 So an isolated miss does not make t miss larger.
 
 210
-00:26:19,511 --> 00:26:26,061
+00:26:20,962 --> 00:26:27,511
 A cluster of misses does suffer. Take 2 misses, A and B. Miss A transfers its 8 words.
 
 211
-00:26:26,511 --> 00:26:32,313
+00:26:27,961 --> 00:26:33,764
 Miss B must wait until the transfer of miss A ends. Only then can its transfer start.
 
 212
-00:26:32,763 --> 00:26:40,166
+00:26:34,214 --> 00:26:41,617
 The reads, transfers and fills of two misses cannot happen at the same time. So the latencies pile up.
 
 213
-00:26:40,616 --> 00:26:42,515
+00:26:42,067 --> 00:26:43,965
 This is a bandwidth problem.
 
 214
-00:26:42,965 --> 00:26:52,799
+00:26:44,415 --> 00:26:54,250
 Look again at addresses 0 0 0 0 and 1 0 0 0. With 2-byte blocks, both have index 0 0.
 
 215
-00:26:53,249 --> 00:26:56,364
+00:26:54,700 --> 00:26:57,815
 With 4-byte blocks, both have index 0.
 
 216
-00:26:56,814 --> 00:26:59,459
+00:26:58,265 --> 00:27:00,910
 Their tags are different: 0 and 1.
 
 217
-00:26:59,909 --> 00:27:05,243
+00:27:01,360 --> 00:27:06,693
 Same index, different tag: the two blocks need the same frame. So they conflict.
 
 218
-00:27:05,693 --> 00:27:09,917
+00:27:07,143 --> 00:27:11,367
 This happens for any block size. A larger block does not help.
 
 219
-00:27:10,367 --> 00:27:26,708
+00:27:11,817 --> 00:27:28,159
 Addresses 0 0 0 0 and 1 0 0 0 can stay in the cache at the same time, but only if we reorganize the cache. The fix is set-associativity. It is the topic of the next video, 14 b.
 
 220
-00:27:27,158 --> 00:27:35,969
+00:27:28,609 --> 00:27:37,419
 The recap. One. The hierarchy puts fast, small memories on top. It works because of temporal and spatial locality.
 
 221
-00:27:36,419 --> 00:27:50,115
+00:27:37,869 --> 00:27:51,565
 Two. The number of frames is the capacity divided by the block size. The offset is log 2 of the block size. The index is log 2 of the number of frames. The tag is the rest of the address.
 
 222
-00:27:50,565 --> 00:27:57,626
+00:27:52,015 --> 00:27:59,077
 Three. In a lookup, the index selects the frame. It is a hit if the tag matches and the valid bit is set.
 
 223
-00:27:58,076 --> 00:28:06,460
+00:27:59,527 --> 00:28:07,911
 Four. The tag overhead is the tag plus valid bits, times the number of frames. The capacity counts only the data.
 
 224
-00:28:06,910 --> 00:28:14,761
+00:28:08,361 --> 00:28:16,211
 Five. On a miss, the controller remembers the address, asks the next level, waits, and then fills the data and the tag.
 
 225
-00:28:15,211 --> 00:28:20,352
+00:28:16,661 --> 00:28:21,803
 Six. The average access time is t hit plus the miss rate times t miss.
 
 226
-00:28:20,802 --> 00:28:38,978
+00:28:22,253 --> 00:28:40,429
 Seven. Larger blocks give spatial prefetching and less tag overhead, but more conflicts. Two blocks with the same index and a different tag conflict. Video 14 b fixes these conflicts with set-associativity. That is the end of video 14 a.
