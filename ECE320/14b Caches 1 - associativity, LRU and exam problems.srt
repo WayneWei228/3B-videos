@@ -7,429 +7,925 @@ This is ECE 320, video 14 b. It continues video 14 a with set-associativity and 
 After this video, you can find the bits for every cache organization, and simulate a set-associative cache with LRU. Then we solve assignment 5 and the cache questions of two past midterms.
 
 3
-00:00:25,348 --> 00:00:44,399
-Two blocks with the same index conflict. Set-associativity fixes this: a block can go in one of a few frames. The frames form groups called sets, and each frame in a set is a way. Here, 8 frames form 4 sets of 2 ways: a 2-way set-associative cache.
+00:00:25,348 --> 00:00:37,785
+Video 14 a used a direct-mapped cache with 8 frames. Each block can go in only one frame. So two blocks with the same index conflict: they need the same frame.
 
 4
-00:00:44,849 --> 00:00:50,673
-A cache with 1 way per set is direct-mapped. That is the cache of video 14 a.
+00:00:38,235 --> 00:00:46,641
+Set-associativity fixes the conflict. The same 8 frames form groups called sets. The 2-way cache has 4 sets.
 
 5
-00:00:51,123 --> 00:01:02,408
-More ways give fewer sets, so fewer index bits. A cache with only 1 set is fully associative: a block can go in any frame, and there are no index bits.
+00:00:47,091 --> 00:00:58,483
+Each frame in a set is a way. Each set has 2 ways, way 0 and way 1. A block can go in either way of its set. So the cache is 2-way set-associative.
 
 6
-00:01:02,858 --> 00:01:12,010
-The plus: fewer conflicts. The minus: a longer t hit, because the cache must compare more tags and select the data with a mux.
+00:00:58,933 --> 00:01:05,119
+More ways give fewer sets. A 4-way cache with the same 8 frames has only 2 sets.
 
 7
-00:01:12,460 --> 00:01:33,196
-Here is the 32 kilobyte cache with 32-byte blocks, now 2-way. It has 512 sets of 2 ways, so still 1024 frames. Way 0 holds frames 0 to 511, and way 1 holds frames 512 to 1023.
+00:01:05,569 --> 00:01:11,905
+A cache with only 1 set is fully associative. A block can go in any of the 8 frames.
 
 8
-00:01:33,646 --> 00:01:56,387
-The block has 32 bytes, so the offset is 5 bits. There are 512 sets, so the index is log 2 of 512, which is 9 bits. The tag is the rest, 18 bits. The direct-mapped cache had a 10-bit index and a 17-bit tag. So each doubling of the ways moves one bit from the index to the tag.
+00:01:12,355 --> 00:01:24,793
+The index selects the set. Count the bits of the set numbers. 8 sets need 3 index bits, 4 sets need 2, and 2 sets need 1. With 1 set, there are no index bits.
 
 9
-00:01:56,837 --> 00:02:18,789
-The lookup algorithm. The index bits select the set. Take address hex C 0 4 4. Its index bits, 13 to 5, are 0 0 0 0 0 0 0 1 0, so the index is 2. The tag bits give 3. The cache reads the tags and the data of both ways of set 2 in parallel.
+00:01:25,243 --> 00:01:27,931
+The plus of more ways: fewer conflicts.
 
 10
-00:02:19,239 --> 00:02:34,215
-Each way has its own comparator. If any way has a tag match and its valid bit set, it is a hit. Here way 1 holds tag 3, so way 1 hits, and a mux selects its data. If no way matches, it is a miss.
+00:01:28,381 --> 00:01:34,994
+The minus: a longer t hit. The cache must compare more tags, and a mux must select the data.
 
 11
-00:02:34,665 --> 00:02:54,399
-Slide 25 repeats the paper simulation with a 2-way cache: 8 bytes, 2-byte blocks. Pause and try it. There are 2 sets. The offset is 1 bit, the index is 1 bit, and the tag is 2 bits. At the start, way 0 is the least recently used way in each set.
+00:01:35,444 --> 00:01:46,729
+Now make the 32 kilobyte cache of video 14 a 2-way. The blocks are still 32 bytes. Way 0 holds frames 0 to 511.
 
 12
-00:02:54,849 --> 00:03:10,934
-Access 1 1 0 0. Tag 1 1, set 0. Set 0 holds tags 0 0 and 0 1. Miss. The LRU column shows way 0 for set 0, so LRU replaces way 0.
+00:01:47,179 --> 00:01:51,851
+Way 1 holds frames 512 to 1023.
 
 13
-00:03:11,384 --> 00:03:22,072
-Access 1 1 1 0. Tag 1 1, set 1. Miss. The LRU way of set 1 is way 0, so replace way 0 of set 1.
+00:01:52,301 --> 00:02:01,411
+Each row is one set, with one frame from each way. So there are 512 sets: set 0 to set 511.
 
 14
-00:03:22,522 --> 00:03:35,429
-Access 1 0 0 0. Tag 1 0, set 0. Miss. Way 0 of set 0 was just used, so now way 1 is the LRU way. Replace way 1.
+00:02:01,861 --> 00:02:14,063
+512 sets times 2 ways is 1024 frames, as before. 1024 frames of 32 bytes hold 32 kilobytes.
 
 15
-00:03:35,879 --> 00:03:45,223
-Access 0 0 1 1. Tag 0 0, set 1. Miss. The LRU way of set 1 is way 1. Replace it.
+00:02:14,513 --> 00:02:21,724
+Now the address bits. A block has 32 bytes, which is 2 to the 5. So the offset is 5 bits.
 
 16
-00:03:45,673 --> 00:03:57,321
-Access 1 0 0 0. Set 0, way 1 holds tag 1 0. Hit. Way 1 is now the most recent, so way 0 is the LRU way.
+00:02:22,174 --> 00:02:27,657
+There are 512 sets, which is 2 to the 9. So the index is 9 bits.
 
 17
-00:03:57,771 --> 00:04:08,757
-Access 0 0 0 0. Tag 0 0, set 0. Miss. The LRU way of set 0 is way 0, so replace way 0.
+00:02:28,107 --> 00:02:33,120
+The tag is the rest: 32 minus 9 minus 5 is 18 bits.
 
 18
-00:04:09,207 --> 00:04:22,050
-Access 1 0 0 0. It is still in way 1. Hit! The new DM column shows the direct-mapped cache of video 14 a. There, this access was a conflict miss.
+00:02:33,570 --> 00:02:37,965
+The direct-mapped cache had a 10 bit index and a 17 bit tag.
 
 19
-00:04:22,500 --> 00:04:42,767
-Plus: 0 0 0 0 and 1 0 0 0 can now both be in set 0. Minus: new conflicts can appear. The DM column shows that 0 0 1 1 hit in the direct-mapped cache, but now it misses. In practice, conflict avoidance usually wins.
+00:02:38,415 --> 00:02:49,209
+Compare the two rows. Bit 14 moved from the index to the tag. Each doubling of the ways halves the sets, so one bit moves from the index to the tag.
 
 20
-00:04:43,217 --> 00:04:59,473
-Set-associativity adds a design choice. On a miss in a full set, which block is replaced? An example, not from the slides: a 4-way set gets A, B, C and D. A loop then uses A again and again. Then E misses.
+00:02:49,659 --> 00:02:57,510
+The lookup. Take address hex C 0 4 4. Its 32 bits split into the tag, the index and the offset.
 
 21
-00:04:59,923 --> 00:05:12,808
-Random replacement picks any way. FIFO, first in first out, replaces the block that came in first: A. But A is in use by the loop. So FIFO does not match temporal locality.
+00:02:57,960 --> 00:03:05,448
+The index is bits 13 to 5: 0 0 0 0 0 0 0 1 0. That is 2.
 
 22
-00:05:13,258 --> 00:05:25,013
-LRU, least recently used, replaces B, the block with the oldest use. LRU fits temporal locality: that block is the least likely to be used soon.
+00:03:05,898 --> 00:03:11,743
+Index 2 selects set 2. The cache reads both ways of set 2 at the same time.
 
 23
-00:05:25,463 --> 00:05:38,817
-NMRU, not most recently used, replaces any block except the most recent one. It is easier to build than LRU. For a 2-way cache, NMRU is the same as LRU.
+00:03:12,193 --> 00:03:16,332
+The tag is bits 31 to 14. They give tag 3.
 
 24
-00:05:39,267 --> 00:05:52,451
-Belady's policy replaces the block that will be used furthest in the future. Hardware cannot know the future. So it is an unachievable optimum, used only to compare the other policies.
+00:03:16,782 --> 00:03:25,742
+Each way has its own comparator. Way 0 holds tag 5. 3 is not equal to 5, so way 0 does not match.
 
 25
-00:05:52,901 --> 00:06:13,424
-How does the cache find the least recently used block? Each block in a set has an age count. In a 4-way cache, 2 extra bits per block hold an age from 0 to 3. When a block is used or replaced, its age becomes 0. Every age lower than its previous age gets plus 1.
+00:03:26,192 --> 00:03:33,680
+Way 1 holds tag 3, and its valid bit is 1. A tag match and a valid bit give a hit in way 1.
 
 26
-00:06:13,874 --> 00:06:18,845
-An example. The 4 blocks of a set have ages 3, 0, 2 and 1.
+00:03:34,130 --> 00:03:39,015
+A mux selects the data of way 1. If no way matches, it is a miss.
 
 27
-00:06:19,295 --> 00:06:36,468
-The program uses block 2. Its previous age was 2, so it becomes 0. The ages lower than 2 are block 1 with 0 and block 3 with 1. They become 1 and 2. Block 0 has age 3, which is not lower, so it stays 3.
+00:03:39,465 --> 00:03:45,460
+The offset bits, 0 0 1 0 0, then select byte 4 of the block.
 
 28
-00:06:36,918 --> 00:06:43,809
-The block with the largest age is the least recently used. On the next miss, LRU replaces it.
+00:03:45,910 --> 00:03:52,438
+Slide 25 repeats the paper simulation with a 2-way cache. Pause the video and try it.
 
 29
-00:06:44,259 --> 00:06:54,627
-Slide 29 runs the algorithm on one 4-way set. Block 0 is empty. Blocks 1, 2 and 3 have ages 0, 2 and 1.
+00:03:52,888 --> 00:04:00,483
+The cache holds 8 bytes in 2 byte blocks: 4 frames. With 2 ways, the 4 frames form 2 sets.
 
 30
-00:06:55,077 --> 00:07:02,735
-A hit in block 3. Its age 1 becomes 0. Only block 1 has a lower age, so it becomes 1.
+00:04:00,933 --> 00:04:04,197
+A block has 2 bytes, so the offset is 1 bit.
 
 31
-00:07:03,185 --> 00:07:15,281
-A miss. The data moves into the empty block 0, with age 0. An empty block has no previous age, so all the other ages get plus 1: 2, 3 and 1.
+00:04:04,647 --> 00:04:06,567
+2 sets need 1 index bit.
 
 32
-00:07:15,731 --> 00:07:27,977
-Another miss. The set is full. Block 2 has the largest age, 3, so the data replaces block 2. Its age becomes 0, and all the other ages get plus 1.
+00:04:07,017 --> 00:04:09,022
+The tag is the other 2 bits.
 
 33
-00:07:28,427 --> 00:07:39,840
-A hit in block 3. Its age 2 becomes 0. Blocks 0 and 2 had lower ages, so they get plus 1. Block 1 is now the least recently used.
+00:04:09,472 --> 00:04:16,363
+At the start, way 0 is the least recently used way in each set. The LRU column shows it.
 
 34
-00:07:40,290 --> 00:07:55,117
-Higher associativity gives a lower miss rate, because there are fewer conflicts. In the average access time, t avg equals t hit plus percent miss times t miss, the percent miss term goes down.
+00:04:16,813 --> 00:04:22,701
+Access 1 1 0 0. Its index bit is 0, so it goes to set 0.
 
 35
-00:07:55,567 --> 00:08:04,996
-But t hit goes up, because of the extra compares and the wider mux. The designer must balance both terms of the average access time.
+00:04:23,151 --> 00:04:35,119
+Set 0 holds tags 0 0 and 0 1. No tag is 1 1, so it is a miss. The LRU way of set 0 is way 0. Replace way 0.
 
 36
-00:08:05,446 --> 00:08:19,633
-The block size and the number of sets are usually powers of two. Then the offset, index and tag are just groups of address bits. The hardware takes them out of the address with wires, and needs no arithmetic.
+00:04:35,569 --> 00:04:40,945
+Access 1 1 1 0. Its index bit is 1, so it goes to set 1.
 
 37
-00:08:20,083 --> 00:08:36,595
-Assignment 5, question 1. The block size is 32 bytes, the cache holds 16384 blocks, and addresses are 32 bits. Find the bits for three organizations. Pause the video and try it.
+00:04:41,395 --> 00:04:52,019
+Set 1 holds tags 0 0 and 0 1. No tag is 1 1: miss. The LRU way of set 1 is way 0. Replace way 0.
 
 38
-00:08:37,045 --> 00:08:45,087
-The block size does not change, so the offset is log 2 of 32, which is 5 bits, in all three cases.
+00:04:52,469 --> 00:04:58,954
+Access 1 0 0 0. Its index bit is 0, so it goes to set 0 again.
 
 39
-00:08:45,537 --> 00:09:05,527
-Part a, 2-way. 16384 blocks divided by 2 ways is 8192 sets. Log 2 of 8192 is 13 index bits. The tag is 32 minus 5 minus 13, which is 14 bits.
+00:04:59,404 --> 00:05:11,585
+Set 0 holds tags 1 1 and 0 1. No tag is 1 0: miss. Way 0 was just used, so the LRU way is now way 1. Replace way 1.
 
 40
-00:09:05,977 --> 00:09:16,174
-Part b, fully associative. There is only 1 set, so 0 index bits. The tag is 32 minus 5, which is 27 bits.
+00:05:12,035 --> 00:05:17,603
+Access 0 0 1 1. Its index bit is 1, so it goes to set 1.
 
 41
-00:09:16,624 --> 00:09:35,333
-Part c, direct-mapped. 1 way, so 16384 sets. Log 2 of 16384 is 14 index bits. The tag is 13 bits. Check: from direct-mapped to 2-way, one bit moves from the index to the tag.
+00:05:18,053 --> 00:05:28,784
+Set 1 holds tags 1 1 and 0 1. No tag is 0 0: miss. The LRU way of set 1 is way 1. Replace way 1.
 
 42
-00:09:35,783 --> 00:09:57,970
-Assignment 5, question 2. Three caches, each with 8 blocks of 16 bytes and LRU. The addresses are 12 bits, in hex. The offset is log 2 of 16, 4 bits: exactly the last hex digit. So the first two hex digits are the block address, the tag and index together. The tables hold these.
+00:05:29,234 --> 00:05:34,930
+Access 1 0 0 0 again. Its index bit is 0: set 0.
 
 43
-00:09:58,420 --> 00:10:15,615
-Direct-mapped: 8 sets, so 3 index bits and 5 tag bits. For hex 1 A 3, the block address is 1 A, binary 0 0 0 1 1 0 1 0. The index is the low 3 bits, 0 1 0, so set 2.
+00:05:35,380 --> 00:05:44,383
+Way 1 of set 0 holds tag 1 0. Hit. Now way 1 is the most recent, so way 0 is the LRU way.
 
 44
-00:10:16,065 --> 00:10:22,827
-Fully associative: 1 set, so no index bits. The tag is all 8 bits of the block address.
+00:05:44,833 --> 00:05:50,315
+Access 0 0 0 0. Its index bit is 0: set 0.
 
 45
-00:10:23,277 --> 00:10:37,336
-4-way: 2 sets, so 1 index bit and 7 tag bits. The index is the last bit of the block address. 1 A is even, so set 0. Pause the video and fill the three tables yourself first.
+00:05:50,765 --> 00:06:00,941
+Set 0 holds tags 1 1 and 1 0. No tag is 0 0: miss. The LRU way is way 0. Replace way 0.
 
 46
-00:10:37,786 --> 00:10:48,069
-Part a, direct-mapped. Address 1 1 0. The block address is 1 1. Its low 3 bits are 0 0 1, so block 1. Miss.
+00:06:01,391 --> 00:06:06,725
+Access 1 0 0 0. Its index bit is 0: set 0.
 
 47
-00:10:48,519 --> 00:10:53,745
-1 3 6. Block address 1 3, index 3. Miss. Fill block 3.
+00:06:07,175 --> 00:06:11,164
+Way 1 of set 0 still holds tag 1 0. Hit.
 
 48
-00:10:54,195 --> 00:11:00,041
-2 0 2. Block address 2 0, index 0. Miss. Fill block 0.
+00:06:11,614 --> 00:06:22,921
+The new DM column shows the direct-mapped cache of video 14 a. In that cache, the last access, 1 0 0 0, was a conflict miss.
 
 49
-00:11:00,491 --> 00:11:03,947
-1 A 3. Block address 1 A, index 2. Miss.
+00:06:23,371 --> 00:06:31,392
+The plus: 0 0 0 0 and 1 0 0 0 are now both in set 0, one in each way.
 
 50
-00:11:04,397 --> 00:11:14,295
-1 0 2. Block address 1 0, index 0. Block 0 holds 2 0. Miss. 1 0 replaces 2 0.
+00:06:31,842 --> 00:06:39,458
+The minus: new conflicts can appear. 0 0 1 1 hit in the direct-mapped cache, but now it misses.
 
 51
-00:11:14,745 --> 00:11:19,033
-3 6 1. Block address 3 6, index 6. Miss.
+00:06:39,908 --> 00:06:43,215
+In practice, conflict avoidance usually wins.
 
 52
-00:11:19,483 --> 00:11:28,955
-2 0 4. Block address 2 0, index 0 again. Block 0 holds 1 0. Miss. 2 0 comes back.
+00:06:43,665 --> 00:06:51,153
+Set-associativity adds a design choice. On a miss in a full set, the cache must choose one way to replace.
 
 53
-00:11:29,405 --> 00:11:35,677
-1 1 4. Block address 1 1, index 1. Block 1 holds 1 1. Hit.
+00:06:51,603 --> 00:06:59,923
+An example, not from the slides. A 4-way set gets blocks A, B, C and D, at times t 1 to t 4.
 
 54
-00:11:36,127 --> 00:11:39,541
-1 A 4. Block address 1 A, index 2. Hit.
+00:07:00,373 --> 00:07:05,962
+A loop then uses A again and again, at times t 5, t 6 and t 7.
 
 55
-00:11:39,991 --> 00:11:44,641
-1 7 7. Block address 1 7, index 7. Miss.
+00:07:06,412 --> 00:07:11,703
+At time t 8, block E misses. The set is full, so one block must go.
 
 56
-00:11:45,091 --> 00:11:52,729
-3 0 1. Block address 3 0, index 0. Miss. 3 0 replaces 2 0.
+00:07:12,153 --> 00:07:14,350
+Random replacement picks any way.
 
 57
-00:11:53,179 --> 00:11:59,003
-2 0 6. Index 0 again. Block 0 holds 3 0. Miss.
+00:07:14,800 --> 00:07:26,725
+FIFO, first in first out, replaces the block that came in first: A, filled at t 1. But the loop still uses A. So FIFO does not match temporal locality.
 
 58
-00:11:59,453 --> 00:12:11,549
-1 3 5. Index 3. Hit. Total: 10 misses in 13. Blocks 2 0, 1 0 and 3 0 all need block 0, so they kick each other out.
+00:07:27,175 --> 00:07:38,930
+LRU, least recently used, replaces B. B has the oldest use, at t 2. LRU fits temporal locality: B is the least likely to be used soon.
 
 59
-00:12:11,999 --> 00:12:32,585
-Part b, fully associative. A block can go in any of the 8 ways, and the tag is the whole block address. The first six accesses are six different blocks: 1 1, 1 3, 2 0, 1 A, 1 0 and 3 6. Each one misses and fills the next empty way, ways 0 to 5.
+00:07:39,380 --> 00:07:48,660
+NMRU, not most recently used, replaces any block except the most recent one, A. It is easier to build than LRU.
 
 60
-00:12:33,035 --> 00:12:37,451
-2 0 4. Block 2 0 is still in way 2. Hit.
+00:07:49,110 --> 00:07:58,006
+For a 2-way cache, NMRU is the same as LRU. With 2 ways, the way that is not the most recent is the least recent.
 
 61
-00:12:37,901 --> 00:12:46,648
-1 1 4 and 1 A 4 also hit. The panel lists both: block 1 1 in way 0, and block 1 A in way 3.
+00:07:58,456 --> 00:08:12,216
+Belady's policy replaces the block that will be used furthest in the future. Hardware cannot know the future. So it is an unachievable optimum. It is used only to compare the other policies.
 
 62
-00:12:47,098 --> 00:12:51,642
-1 7 7. Block 1 7 is new. Miss. Fill way 6.
+00:08:12,666 --> 00:08:22,415
+To find the least recently used block, each block in a set has an age count. In a 4-way set, the ages are 0, 1, 2 and 3.
 
 63
-00:12:52,092 --> 00:12:58,961
-3 0 1. Block 3 0 is new. Miss. Fill way 7. Now all 8 ways are full.
+00:08:22,865 --> 00:08:29,244
+4 ages need 2 bits per block: 0 0, 0 1, 1 0 and 1 1.
 
 64
-00:12:59,411 --> 00:13:03,315
-2 0 6 and 1 3 5 hit, in ways 2 and 1.
+00:08:29,694 --> 00:08:33,747
+When a block is used or replaced, its age becomes 0.
 
 65
-00:13:03,765 --> 00:13:11,509
-Total: 8 misses in 13 accesses. There are exactly 8 different blocks, and each one misses only once.
+00:08:34,197 --> 00:08:40,597
+Every age lower than the previous age of that block gets plus 1. The other ages stay.
 
 66
-00:13:11,959 --> 00:13:26,786
-Part c, 4-way. The index is the last bit of the block address. Odd block addresses go to set 1. 1 1 0 and 1 3 6 have odd block addresses, so they fill ways 0 and 1 of set 1.
+00:08:41,047 --> 00:08:46,018
+An example. The 4 blocks of a set have ages 3, 0, 2 and 1.
 
 67
-00:13:27,236 --> 00:13:37,945
-2 0 2, 1 A 3, 1 0 2 and 3 6 1 have even block addresses. They fill the 4 ways of set 0. Set 0 is now full.
+00:08:46,468 --> 00:08:52,527
+The program uses block 2. Its previous age was 2. Its age becomes 0.
 
 68
-00:13:38,395 --> 00:13:43,451
-2 0 4. Block 2 0 is in set 0, way 0. Hit.
+00:08:52,977 --> 00:09:00,721
+The ages lower than 2 get plus 1. Block 1 goes from 0 to 1, and block 3 goes from 1 to 2.
 
 69
-00:13:43,901 --> 00:13:52,605
-1 1 4 hits in set 1, way 0. 1 A 4 hits in set 0, way 1. The panel lists both accesses.
+00:09:01,171 --> 00:09:06,141
+Block 0 has age 3. 3 is not lower than 2, so it stays 3.
 
 70
-00:13:53,055 --> 00:13:58,069
-1 7 7. Odd, so set 1. Miss. Fill the empty way 2.
+00:09:06,591 --> 00:09:15,871
+Now the largest age is 3, in block 0. Block 0 is the least recently used. On the next miss, LRU replaces it.
 
 71
-00:13:58,519 --> 00:14:17,847
-3 0 1. Even, so set 0. Miss, and set 0 is full. List the uses of set 0. 2 0 and 1 A were used again later, and 3 6 came after 1 0. So 1 0 is the least recently used. 3 0 replaces it in way 2.
+00:09:16,321 --> 00:09:22,508
+Slide 29 runs the algorithm on one 4-way set. Block 0 is empty.
 
 72
-00:14:18,297 --> 00:14:24,739
-2 0 6 hits in set 0, way 0. 1 3 5 hits in set 1, way 1.
+00:09:22,958 --> 00:09:26,457
+Blocks 1, 2 and 3 have ages 0, 2 and 1.
 
 73
-00:14:25,189 --> 00:14:37,947
-The summary. Direct-mapped: 10 misses in 13. Fully associative and 4-way: 8 misses each. Associativity removed the 2 conflict misses of the direct-mapped cache.
+00:09:26,907 --> 00:09:30,683
+A hit in block 3. Its age 1 becomes 0.
 
 74
-00:14:38,397 --> 00:14:53,117
-Now the Fall 2022 midterm, question 2. Part A, 3 marks. Two 4-way caches with 16-bit addresses. Find the tag, index and offset bits of both. Pause the video and try it.
+00:09:31,133 --> 00:09:39,261
+Only block 1 had an age lower than 1. Its age 0 becomes 1. Block 2 has age 2, so it stays.
 
 75
-00:14:53,567 --> 00:15:11,209
-Cache 1. 1024 divided by 16 is 64 blocks. 64 divided by 4 ways is 16 sets. So the offset is 4 bits, the index is 4 bits, and the tag is 16 minus 8, which is 8 bits.
+00:09:39,711 --> 00:09:45,471
+A miss. The data moves into the empty block 0. Its age becomes 0.
 
 76
-00:15:11,659 --> 00:15:29,814
-Cache 2. 16384 divided by 256 is also 64 blocks, so also 16 sets and a 4-bit index. The offset is log 2 of 256, 8 bits. The tag is 4 bits.
+00:09:45,921 --> 00:09:55,713
+An empty block has no previous age. So every other valid age gets plus 1. Blocks 1, 2 and 3 become 2, 3 and 1.
 
 77
-00:15:30,264 --> 00:15:36,152
-Both caches have 16 sets. The larger blocks move bits from the tag to the offset.
+00:09:56,163 --> 00:10:04,269
+Another miss. Now the set is full. Block 2 has the largest age, 3. It is the least recently used block.
 
 78
-00:15:36,602 --> 00:15:45,754
-Part B, 5 marks. Which cache gives the higher hit rate for this program? First, find the addresses. Pause the video and try it.
+00:10:04,719 --> 00:10:08,666
+The data replaces block 2. Its age becomes 0.
 
 79
-00:15:46,204 --> 00:16:05,425
-Each row of A is 4096 bytes, hex 1 0 0 0, and each element is 4 bytes. So A of j, i is at 4096 times j plus 4 times i. B of i is at hex 4 0 1 0 plus 4 times i.
+00:10:09,116 --> 00:10:15,836
+Blocks 0, 1 and 3 had ages lower than 3. They get plus 1, and become 1, 3 and 2.
 
 80
-00:16:05,875 --> 00:16:20,851
-The inner loop runs over j, so the program walks down a column of A: A 0 0, A 1 0, A 2 0, A 3 0, then B 0. Then the same for i equal to 1. That gives 10 addresses.
+00:10:16,286 --> 00:10:19,891
+A hit in block 3. Its age 2 becomes 0.
 
 81
-00:16:21,301 --> 00:16:47,563
-Cache 1 has 16-byte blocks: tag bits 15 to 8, index bits 7 to 4, offset bits 3 to 0. The first four addresses, hex 0, 1 0 0 0, 2 0 0 0 and 3 0 0 0, all have index 0. Their tags are 0 0, 1 0, 2 0 and 3 0. Four misses fill the 4 ways of set 0.
+00:10:20,341 --> 00:10:29,451
+Blocks 0 and 2 had ages lower than 2. They get plus 1, and become 2 and 1. Block 1 has age 3, so it stays.
 
 82
-00:16:48,013 --> 00:17:00,173
-B of 0 is at hex 4 0 1 0. Bits 7 to 4 are 0 0 0 1, so the index is 1. The tag is 4 0. Miss, into set 1.
+00:10:29,901 --> 00:10:35,682
+Now block 1 has the largest age, 3. It is the least recently used block.
 
 83
-00:17:00,623 --> 00:17:11,417
-Now i is 1. A 0 1 is at hex 4, in the same 16-byte block as A 0 0. Hit. A 1 1, A 2 1 and A 3 1 hit too.
+00:10:36,132 --> 00:10:41,295
+Higher associativity gives a lower miss rate, because there are fewer conflicts.
 
 84
-00:17:11,867 --> 00:17:17,627
-B of 1 is at hex 4 0 1 4, the same block as B of 0. Hit.
+00:10:41,745 --> 00:10:52,198
+In the average access time of video 14 a, t avg equals t hit plus percent miss times t miss. The percent miss term goes down.
 
 85
-00:17:18,077 --> 00:17:23,091
-Cache 1 has 5 hits in 10 accesses. The hit rate is 50 percent.
+00:10:52,648 --> 00:10:57,171
+But t hit goes up, because of the extra compares and the wider mux.
 
 86
-00:17:23,541 --> 00:17:46,026
-Cache 2 has 256-byte blocks: tag bits 15 to 12, index bits 11 to 8, offset bits 7 to 0. Hex 0, 1 0 0 0, 2 0 0 0 and 3 0 0 0 all have index 0, with tags 0 to 3. Four misses fill set 0.
+00:10:57,621 --> 00:11:01,589
+The designer must balance both terms of the average access time.
 
 87
-00:17:46,476 --> 00:18:03,052
-B of 0 at hex 4 0 1 0. Bits 11 to 8 are 0 0 0 0, so the index is also 0, with tag 4. Set 0 is full. The least recently used block is tag 0. It is evicted.
+00:11:02,039 --> 00:11:10,743
+The block size and the number of sets are usually powers of two. Then the offset, the index and the tag are groups of address bits.
 
 88
-00:18:03,502 --> 00:18:13,038
-A 0 1 at hex 4 has tag 0, which was just evicted. Miss. LRU now evicts tag 1, which is the next block needed.
+00:11:11,193 --> 00:11:16,889
+The hardware takes the three fields out of the address with wires. It needs no arithmetic.
 
 89
-00:18:13,488 --> 00:18:21,232
-This repeats. Five blocks take turns in a 4-way set, and LRU always evicts the block that comes next.
+00:11:17,339 --> 00:11:28,795
+Assignment 5, question 1. Find the tag, index and offset bits for three organizations. The addresses are 32 bits. Pause the video and try it.
 
 90
-00:18:21,682 --> 00:18:32,285
-Cache 2 has 0 hits in 10 accesses. So cache 1, with the 16-byte blocks, has the higher hit rate: 50 percent against 0 percent.
+00:11:29,245 --> 00:11:36,114
+A block has 32 bytes, which is 2 to the 5. So the offset is 5 bits in all three cases.
 
 91
-00:18:32,735 --> 00:18:46,068
-Part C, 2 marks. For cache 2, can we get a higher hit rate without a larger cache? Pause and try it. The problem: 5 blocks map to set 0, but the set has only 4 ways.
+00:11:36,564 --> 00:11:42,537
+The cache holds 16384 blocks. That is 2 to the 14.
 
 92
-00:18:46,518 --> 00:19:07,894
-Yes. Keep 16384 bytes and 256-byte blocks, but make the cache 8-way: 8 sets with a 3-bit index. The 5 blocks still go to set 0, with 5-bit tags 0, 2, 4, 6 and 8. Now they fit. 5 misses, then 5 hits: 50 percent.
+00:11:42,987 --> 00:11:58,689
+Part a, 2-way. 16384 blocks in sets of 2 ways give 16384 divided by 2: 8192 sets. That is 2 to the 13.
 
 93
-00:19:08,344 --> 00:19:16,579
-Smaller blocks also work. With 16-byte blocks, A goes to set 0 and B to set 1: also 50 percent.
+00:11:59,139 --> 00:12:01,187
+So the index is 13 bits.
 
 94
-00:19:17,029 --> 00:19:24,069
-So the answer is yes. These are conflict misses: raise the associativity or use smaller blocks.
+00:12:01,637 --> 00:12:06,607
+The tag is 32 minus 13 minus 5, which is 14 bits.
 
 95
-00:19:24,519 --> 00:19:42,844
-The last exam question: Fall 2019, question 3. A 32 kilobyte, 4-way cache with 16-byte blocks. Part A asks for the bits. Part B asks for 5 addresses in the same set but in different ways. Pause the video and try it.
+00:12:07,057 --> 00:12:16,188
+Part b, fully associative. All 16384 blocks are in 1 set. So there are 0 index bits.
 
 96
-00:19:43,294 --> 00:20:07,017
-Part A. The offset is log 2 of 16, 4 bits. 32 kilobytes divided by 16 bytes is 2048 blocks. Divided by 4 ways, that is 512 sets, so 9 index bits. The paper does not give the address width. Assume 32 bits, as in RISC-V, and say so. Then the tag is 19 bits.
+00:12:16,638 --> 00:12:20,798
+The tag is 32 minus 5, which is 27 bits.
 
 97
-00:20:07,467 --> 00:20:33,920
-Part B. Same set means the same index bits. Different ways means different tags. So keep the index and offset at 0, and change only the tag. One tag step is 512 times 16 bytes, hex 2 0 0 0. So A to E are hex 0, 2 0 0 0, 4 0 0 0, 6 0 0 0 and 8 0 0 0.
+00:12:21,248 --> 00:12:31,509
+Part c, direct-mapped. 1 way per set gives 16384 sets, 2 to the 14. So the index is 14 bits.
 
 98
-00:20:34,370 --> 00:20:53,378
-Part C. The table shows 15 accesses to one set. They go to ways 0, 1, 2, 3, 0, 1, and so on, and every access misses. Fill in the access labels. Pause and try it. The first four accesses fill the empty ways: A, B, C, D.
+00:12:31,959 --> 00:12:36,951
+The tag is 32 minus 14 minus 5, which is 13 bits.
 
 99
-00:20:53,828 --> 00:21:04,815
-Access 5 must miss and replace way 0. So it is the new block, E. LRU replaces A, the least recently used block, in way 0.
+00:12:37,401 --> 00:12:46,084
+Compare parts a and c. From direct-mapped to 2-way, the number of sets halves. So bit 18 moves from the index to the tag.
 
 100
-00:21:05,265 --> 00:21:14,971
-Access 6 must miss and use way 1. A was just evicted, so access A again. It misses, and LRU replaces B in way 1.
+00:12:46,534 --> 00:12:58,353
+Assignment 5, question 2. Three caches, each with 8 blocks of 16 bytes and LRU. The addresses are 12 bits, in hex. Pause the video and try it.
 
 101
-00:21:15,421 --> 00:21:23,976
-The pattern continues: B, C, D, E, A, B, C, D, E. Each access asks for a block that is not in the set.
+00:12:58,803 --> 00:13:05,885
+Take address 1 A 3. A block has 16 bytes, which is 2 to the 4. So the offset is 4 bits.
 
 102
-00:21:24,426 --> 00:21:33,471
-The rule: 5 blocks cycling through a 4-way LRU set miss every time, as in cache 2 of Fall 2022.
+00:13:06,335 --> 00:13:12,202
+4 bits are exactly one hex digit. So the offset is the last hex digit, 3.
 
 103
-00:21:33,921 --> 00:21:42,199
-The recap. One. Sets equal blocks divided by ways. Direct-mapped has 1 way. Fully associative has 1 set.
+00:13:12,652 --> 00:13:20,993
+The first two hex digits, 1 A, are the block address: the tag and the index together. The tables hold these block addresses.
 
 104
-00:21:42,649 --> 00:21:50,051
-Two. The offset is log 2 of the block size, the index is log 2 of the sets, and the tag is the rest.
+00:13:21,443 --> 00:13:27,203
+Direct-mapped: 8 sets of 1 way. 8 is 2 to the 3, so the index is 3 bits.
 
 105
-00:21:50,501 --> 00:21:56,069
-Three. The index selects the set, and all tags of the set are compared in parallel.
+00:13:27,653 --> 00:13:29,744
+The tag is the other 5 bits.
 
 106
-00:21:56,519 --> 00:22:01,106
-Four. Associativity removes conflicts but makes t hit longer.
+00:13:30,194 --> 00:13:35,869
+For 1 A 3, the index bits are 0 1 0. So 1 A 3 goes to set 2.
 
 107
-00:22:01,556 --> 00:22:10,879
-Five. LRU ages: the used block gets age 0, and the lower ages get plus 1. The largest age is the victim.
+00:13:36,319 --> 00:13:44,233
+Fully associative: 1 set of 8 ways. There are no index bits. The tag is all 8 bits of the block address.
 
 108
-00:22:11,329 --> 00:22:15,915
-Six. With 16-byte blocks, the last hex digit is the offset.
+00:13:44,683 --> 00:13:50,379
+4-way: the 8 blocks form 2 sets of 4 ways. 2 sets need 1 index bit.
 
 109
-00:22:16,365 --> 00:22:29,784
+00:13:50,829 --> 00:13:53,048
+The tag is the other 7 bits.
+
+110
+00:13:53,498 --> 00:14:05,914
+The index bit is the last bit of the block address. 1 A is even, so the bit is 0, and 1 A 3 goes to set 0. Pause the video and fill the three tables yourself first.
+
+111
+00:14:06,364 --> 00:14:14,065
+Part a, direct-mapped. Address 1 1 0. Its index bits are 0 0 1, so it goes to set 1.
+
+112
+00:14:14,515 --> 00:14:18,718
+Set 1 is empty. Miss. Block 1 1 fills set 1.
+
+113
+00:14:19,168 --> 00:14:24,928
+Address 1 3 6. Its index bits are 0 1 1, so it goes to set 3.
+
+114
+00:14:25,378 --> 00:14:29,773
+Set 3 is empty. Miss. Block 1 3 fills set 3.
+
+115
+00:14:30,223 --> 00:14:36,495
+Address 2 0 2. Its index bits are 0 0 0, so it goes to set 0.
+
+116
+00:14:36,945 --> 00:14:41,766
+Set 0 is empty. Miss. Block 2 0 fills set 0.
+
+117
+00:14:42,216 --> 00:14:47,848
+Address 1 A 3. Its index bits are 0 1 0, so it goes to set 2.
+
+118
+00:14:48,298 --> 00:14:52,159
+Set 2 is empty. Miss. Block 1 A fills set 2.
+
+119
+00:14:52,609 --> 00:14:59,137
+Address 1 0 2. Its index bits are 0 0 0, so it goes to set 0.
+
+120
+00:14:59,587 --> 00:15:04,835
+Set 0 holds 2 0. Miss. 1 0 replaces 2 0.
+
+121
+00:15:05,285 --> 00:15:11,045
+Address 3 6 1. Its index bits are 1 1 0, so it goes to set 6.
+
+122
+00:15:11,495 --> 00:15:15,719
+Set 6 is empty. Miss. Block 3 6 fills set 6.
+
+123
+00:15:16,169 --> 00:15:22,484
+Address 2 0 4. Its index bits are 0 0 0, so it goes to set 0.
+
+124
+00:15:22,934 --> 00:15:28,267
+Set 0 holds 1 0. Miss. 2 0 replaces 1 0.
+
+125
+00:15:28,717 --> 00:15:34,627
+Address 1 1 4. Its index bits are 0 0 1, so it goes to set 1.
+
+126
+00:15:35,077 --> 00:15:37,274
+Set 1 holds 1 1. Hit.
+
+127
+00:15:37,724 --> 00:15:43,356
+Address 1 A 4. Its index bits are 0 1 0, so it goes to set 2.
+
+128
+00:15:43,806 --> 00:15:45,854
+Set 2 holds 1 A. Hit.
+
+129
+00:15:46,304 --> 00:15:52,171
+Address 1 7 7. Its index bits are 1 1 1, so it goes to set 7.
+
+130
+00:15:52,621 --> 00:15:57,271
+Set 7 is empty. Miss. Block 1 7 fills set 7.
+
+131
+00:15:57,721 --> 00:16:04,207
+Address 3 0 1. Its index bits are 0 0 0, so it goes to set 0.
+
+132
+00:16:04,657 --> 00:16:09,990
+Set 0 holds 2 0. Miss. 3 0 replaces 2 0.
+
+133
+00:16:10,440 --> 00:16:16,755
+Address 2 0 6. Its index bits are 0 0 0, so it goes to set 0.
+
+134
+00:16:17,205 --> 00:16:22,559
+Set 0 holds 3 0. Miss. 2 0 replaces 3 0.
+
+135
+00:16:23,009 --> 00:16:28,855
+Address 1 3 5. Its index bits are 0 1 1, so it goes to set 3.
+
+136
+00:16:29,305 --> 00:16:31,630
+Set 3 holds 1 3. Hit.
+
+137
+00:16:32,080 --> 00:16:36,901
+Count the No answers in the Hit column: 10 misses in 13 accesses.
+
+138
+00:16:37,351 --> 00:16:43,773
+Blocks 2 0, 1 0 and 3 0 all need set 0. So they kick each other out.
+
+139
+00:16:44,223 --> 00:16:55,529
+Part b, fully associative. There is 1 set of 8 ways, W 0 to W 7. A block can go in any way, and the tag is the whole block address.
+
+140
+00:16:55,979 --> 00:17:10,358
+The first six accesses are six different blocks: 1 1, 1 3, 2 0, 1 A, 1 0 and 3 6. Each one misses and fills the next empty way, W 0 to W 5.
+
+141
+00:17:10,808 --> 00:17:15,523
+2 0 4. Block 2 0 is still in W 2. Hit.
+
+142
+00:17:15,973 --> 00:17:20,026
+1 1 4. Block 1 1 is in W 0. Hit.
+
+143
+00:17:20,476 --> 00:17:23,996
+1 A 4. Block 1 A is in W 3. Hit.
+
+144
+00:17:24,446 --> 00:17:30,611
+1 7 7. Block 1 7 is new. Miss. It fills the empty W 6.
+
+145
+00:17:31,061 --> 00:17:38,848
+3 0 1. Block 3 0 is new. Miss. It fills W 7. Now all 8 ways are full.
+
+146
+00:17:39,298 --> 00:17:43,671
+2 0 6. Block 2 0 is in W 2. Hit.
+
+147
+00:17:44,121 --> 00:17:48,345
+1 3 5. Block 1 3 is in W 1. Hit.
+
+148
+00:17:48,795 --> 00:17:52,635
+Count the No answers: 8 misses in 13 accesses.
+
+149
+00:17:53,085 --> 00:17:59,933
+There are exactly 8 different blocks, one in each way. Each block misses only once, the first time.
+
+150
+00:18:00,383 --> 00:18:12,266
+Part c, 4-way. There are 2 sets of 4 ways. The index is the last bit of the block address. Even block addresses go to set 0, and odd ones go to set 1.
+
+151
+00:18:12,716 --> 00:18:21,697
+1 1 0 and 1 3 6 have odd block addresses, 1 1 and 1 3. They go to set 1 and fill ways 0 and 1.
+
+152
+00:18:22,147 --> 00:18:32,814
+2 0 2, 1 A 3, 1 0 2 and 3 6 1 have even block addresses. They fill the 4 ways of set 0. Now set 0 is full.
+
+153
+00:18:33,264 --> 00:18:38,320
+2 0 4. Block 2 0 is in set 0, way 0. Hit.
+
+154
+00:18:38,770 --> 00:18:43,037
+1 1 4. Block 1 1 is in set 1, way 0. Hit.
+
+155
+00:18:43,487 --> 00:18:47,647
+1 A 4. Block 1 A is in set 0, way 1. Hit.
+
+156
+00:18:48,097 --> 00:18:55,585
+1 7 7. 1 7 is odd, so set 1. Miss. It fills the empty way 2 of set 1.
+
+157
+00:18:56,035 --> 00:19:05,272
+3 0 1. 3 0 is even, so set 0. Miss, and set 0 is full. LRU must choose a block to replace.
+
+158
+00:19:05,722 --> 00:19:08,794
+List the uses of set 0, oldest first.
+
+159
+00:19:09,244 --> 00:19:14,577
+2 0 and 1 A were used again later. So their first uses do not count.
+
+160
+00:19:15,027 --> 00:19:24,137
+Of the other uses, 1 0 is the oldest, because 3 6 came after it. So 1 0 is the least recently used block.
+
+161
+00:19:24,587 --> 00:19:28,725
+3 0 replaces 1 0 in way 2 of set 0.
+
+162
+00:19:29,175 --> 00:19:34,146
+2 0 6. Block 2 0 is in set 0, way 0. Hit.
+
+163
+00:19:34,596 --> 00:19:39,161
+1 3 5. Block 1 3 is in set 1, way 1. Hit.
+
+164
+00:19:39,611 --> 00:19:44,838
+The summary. Each square is one access. Direct-mapped: 10 misses in 13.
+
+165
+00:19:45,288 --> 00:19:48,552
+Fully associative: 8 misses in 13.
+
+166
+00:19:49,002 --> 00:19:51,733
+4-way: also 8 misses in 13.
+
+167
+00:19:52,183 --> 00:20:03,404
+10 minus 8 is 2. These 2 misses, at 2 0 4 and 2 0 6, were conflict misses in the direct-mapped cache. Associativity removed them.
+
+168
+00:20:03,854 --> 00:20:18,681
+Now the Fall 2022 midterm, question 2. Part A, 3 marks. Two 4-way caches with 16 bit addresses. Find the tag, index and offset bits of both. Pause the video and try it.
+
+169
+00:20:19,131 --> 00:20:28,944
+Cache 1. 1024 bytes in 16 byte blocks give 1024 divided by 16: 64 blocks.
+
+170
+00:20:29,394 --> 00:20:39,655
+64 blocks in sets of 4 ways give 64 divided by 4: 16 sets. The grid shows them: 16 rows of 4 ways.
+
+171
+00:20:40,105 --> 00:20:45,353
+A block has 16 bytes, which is 2 to the 4. So the offset is 4 bits.
+
+172
+00:20:45,803 --> 00:20:49,899
+16 sets is 2 to the 4, so the index is 4 bits.
+
+173
+00:20:50,349 --> 00:20:54,680
+The tag is 16 minus 4 minus 4, which is 8 bits.
+
+174
+00:20:55,130 --> 00:21:07,375
+Cache 2. 16384 bytes in 256 byte blocks also give 64 blocks. So it also has 16 sets of 4 ways.
+
+175
+00:21:07,825 --> 00:21:13,905
+A block has 256 bytes, which is 2 to the 8. So the offset is 8 bits.
+
+176
+00:21:14,355 --> 00:21:17,385
+16 sets again give a 4 bit index.
+
+177
+00:21:17,835 --> 00:21:22,059
+The tag is 16 minus 4 minus 8, which is 4 bits.
+
+178
+00:21:22,509 --> 00:21:28,738
+Both caches have 16 sets. The larger blocks move 4 bits from the tag to the offset.
+
+179
+00:21:29,188 --> 00:21:39,769
+Part B, 5 marks. Find which cache gives the higher hit rate for the program in the question. First, find the addresses. Pause the video and try it.
+
+180
+00:21:40,219 --> 00:21:50,886
+Each row of A has 4096 bytes. That is hex 1 0 0 0. So row j of A starts at hex j 0 0 0.
+
+181
+00:21:51,336 --> 00:21:59,549
+Each element is 4 bytes. So A of j, i is at 4096 times j plus 4 times i.
+
+182
+00:21:59,999 --> 00:22:09,599
+B starts at hex 4 0 1 0, after the rows of A. So B of i is at hex 4 0 1 0 plus 4 times i.
+
+183
+00:22:10,049 --> 00:22:24,257
+The inner loop runs over j. So the program walks down column 0 of A. It writes A of 0, 0, then A of 1, 0, A of 2, 0 and A of 3, 0. Then it writes B of 0.
+
+184
+00:22:24,707 --> 00:22:28,825
+Then the same for i equal to 1. That gives 10 addresses.
+
+185
+00:22:29,275 --> 00:22:39,195
+Cache 1 has 16 byte blocks. Its tag is bits 15 to 8, the index is bits 7 to 4, and the offset is bits 3 to 0.
+
+186
+00:22:39,645 --> 00:22:54,557
+The first four addresses are hex 0, 1 0 0 0, 2 0 0 0 and 3 0 0 0. Their index bits, 7 to 4, are all 0. So all four go to set 0.
+
+187
+00:22:55,007 --> 00:23:03,284
+Their tags are 0 0, 1 0, 2 0 and 3 0. Four misses fill the 4 ways of set 0.
+
+188
+00:23:03,734 --> 00:23:13,334
+B of 0 is at hex 4 0 1 0. Its index bits, 7 to 4, are 0 0 0 1. So it goes to set 1.
+
+189
+00:23:13,784 --> 00:23:18,157
+Its tag is 4 0. Set 1 is empty, so it is a miss.
+
+190
+00:23:18,607 --> 00:23:30,298
+Now i is 1. A of 0, 1 is at hex 4. Only its offset differs from hex 0. So it is in the same 16 byte block as A of 0, 0. Hit.
+
+191
+00:23:30,748 --> 00:23:35,697
+A of 1, 1, A of 2, 1 and A of 3, 1 hit for the same reason.
+
+192
+00:23:36,147 --> 00:23:42,782
+B of 1 is at hex 4 0 1 4. Only its offset differs from B of 0. Hit.
+
+193
+00:23:43,232 --> 00:23:50,421
+Cache 1 has 5 hits in 10 accesses. The hit rate is 5 divided by 10: 50 percent.
+
+194
+00:23:50,871 --> 00:24:02,263
+Cache 2 has 256 byte blocks. Its tag is bits 15 to 12, the index is bits 11 to 8, and the offset is bits 7 to 0.
+
+195
+00:24:02,713 --> 00:24:16,281
+Look at hex 0, 1 0 0 0, 2 0 0 0 and 3 0 0 0. Their index bits, 11 to 8, are all 0. So all four go to set 0.
+
+196
+00:24:16,731 --> 00:24:23,003
+Their tags are 0, 1, 2 and 3. Four misses fill the 4 ways of set 0.
+
+197
+00:24:23,453 --> 00:24:34,803
+B of 0 is at hex 4 0 1 0. Its index bits, 11 to 8, are also 0 0 0 0. So it also goes to set 0.
+
+198
+00:24:35,253 --> 00:24:43,295
+Its tag is 4. Set 0 is full. The least recently used block is tag 0, so tag 4 replaces it.
+
+199
+00:24:43,745 --> 00:24:49,761
+Now A of 0, 1 at hex 4. Its tag is 0, which was just evicted. Miss.
+
+200
+00:24:50,211 --> 00:24:56,078
+LRU now evicts tag 1. Tag 1 is the next block that the program needs.
+
+201
+00:24:56,528 --> 00:25:06,704
+The same pattern repeats. Five blocks take turns in a 4-way set. LRU always evicts the block that comes next, so every access misses.
+
+202
+00:25:07,154 --> 00:25:09,970
+Cache 2 has 0 hits in 10 accesses.
+
+203
+00:25:10,420 --> 00:25:17,481
+So cache 1, with the 16 byte blocks, has the higher hit rate: 50 percent against 0 percent.
+
+204
+00:25:17,931 --> 00:25:26,827
+Part C, 2 marks. Find a change that gives cache 2 a higher hit rate, with the same cache size. Pause the video and try it.
+
+205
+00:25:27,277 --> 00:25:32,803
+The problem: 5 blocks map to set 0, but the set has only 4 ways.
+
+206
+00:25:33,253 --> 00:25:47,013
+Keep 16384 bytes and 256 byte blocks, but make the cache 8-way. 64 blocks in sets of 8 ways give 8 sets. So the index is 3 bits.
+
+207
+00:25:47,463 --> 00:25:51,729
+The tag is 16 minus 3 minus 8, which is 5 bits.
+
+208
+00:25:52,179 --> 00:26:01,630
+The 5 blocks still go to set 0, now with the 5 bit tags 0, 2, 4, 6 and 8. All 5 fit in the 8 ways.
+
+209
+00:26:02,080 --> 00:26:11,125
+So there are 5 misses for i equal to 0, then 5 hits for i equal to 1. 5 hits in 10 is 50 percent.
+
+210
+00:26:11,575 --> 00:26:19,810
+Smaller blocks also work. With 16 byte blocks, A goes to set 0 and B to set 1: also 50 percent.
+
+211
+00:26:20,260 --> 00:26:27,684
+So the answer is yes. The misses are conflict misses: raise the associativity, or use smaller blocks.
+
+212
+00:26:28,134 --> 00:26:46,438
+The last exam question: Fall 2019, question 3. A 32 kilobyte, 4-way cache with 16 byte blocks. Part A asks for the bits. Part B asks for 5 addresses in the same set but in different ways. Pause the video and try it.
+
+213
+00:26:46,888 --> 00:26:52,669
+Part A. A block has 16 bytes, which is 2 to the 4. So the offset is 4 bits.
+
+214
+00:26:53,119 --> 00:26:58,623
+32 kilobytes divided by 16 bytes is 2048 blocks.
+
+215
+00:26:59,073 --> 00:27:09,847
+2048 blocks divided by 4 ways is 512 sets. 512 is 2 to the 9, so the index is 9 bits.
+
+216
+00:27:10,297 --> 00:27:21,881
+The paper does not give the address width. Assume 32 bits, as in RISC-V, and say so. Then the tag is 32 minus 9 minus 4, which is 19 bits.
+
+217
+00:27:22,331 --> 00:27:27,045
+Part B. Same set means the same index bits. Use set 0.
+
+218
+00:27:27,495 --> 00:27:34,834
+Different ways means different tags. So keep the index and the offset at 0, and change only the tag.
+
+219
+00:27:35,284 --> 00:27:47,892
+The tag starts at bit 13. So tag plus 1 adds 2 to the 13 to the address. That is 512 sets times 16 bytes: hex 2 0 0 0.
+
+220
+00:27:48,342 --> 00:28:00,737
+So A to E are hex 0, 2 0 0 0, 4 0 0 0, 6 0 0 0 and 8 0 0 0. Their tags are 0 to 4.
+
+221
+00:28:01,187 --> 00:28:16,099
+Part C. The table shows 15 accesses to one set. They go to ways 0, 1, 2, 3, 0, 1, and so on, and every access misses. Fill in the labels A to E. Pause the video and try it.
+
+222
+00:28:16,549 --> 00:28:21,221
+The first four accesses fill the empty ways: A, B, C and D.
+
+223
+00:28:21,671 --> 00:28:32,273
+Access 5 must miss and go to way 0. So it is a new block, E. LRU replaces A, the least recently used block, in way 0.
+
+224
+00:28:32,723 --> 00:28:42,515
+Access 6 must miss and go to way 1. A was just evicted, so access A again. It misses, and LRU replaces B in way 1.
+
+225
+00:28:42,965 --> 00:28:52,395
+The pattern continues: B, C, D, E, A, B, C, D, E. Each access asks for the block that LRU evicted last.
+
+226
+00:28:52,845 --> 00:29:02,125
+The rule: 5 blocks that cycle through a 4-way LRU set miss every time, as in cache 2 of Fall 2022.
+
+227
+00:29:02,575 --> 00:29:10,852
+The recap. One. Sets equal blocks divided by ways. Direct-mapped has 1 way. Fully associative has 1 set.
+
+228
+00:29:11,302 --> 00:29:19,323
+Two. The offset is log 2 of the block size. The index is log 2 of the number of sets. The tag is the rest.
+
+229
+00:29:19,773 --> 00:29:25,341
+Three. The index selects the set, and all tags of the set are compared in parallel.
+
+230
+00:29:25,791 --> 00:29:30,378
+Four. Associativity removes conflicts but makes t hit longer.
+
+231
+00:29:30,828 --> 00:29:40,151
+Five. LRU ages: the used block gets age 0, and the lower ages get plus 1. The largest age is the victim.
+
+232
+00:29:40,601 --> 00:29:45,273
+Six. With 16 byte blocks, the last hex digit is the offset.
+
+233
+00:29:45,723 --> 00:29:59,141
 Seven. N plus 1 blocks in an N-way LRU set miss every time. Video 15 covers misses, writes and the performance of the hierarchy. That is the end of video 14 b.

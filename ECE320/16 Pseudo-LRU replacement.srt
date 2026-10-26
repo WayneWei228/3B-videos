@@ -3,389 +3,865 @@
 This is ECE 320, video 16. The topic is pseudo-LRU replacement, or PLRU. It is unit 8 of the slides.
 
 2
-00:00:11,031 --> 00:00:25,901
-After this video, you can do four things. You can explain why true LRU is expensive. You can read the PLRU tree bits. You can find the victim on a miss. And you can update the bits on a hit or a fill.
+00:00:11,031 --> 00:00:19,031
+After this video, you can do four things. One: explain why true LRU is expensive, by counting the bits.
 
 3
-00:00:26,351 --> 00:00:44,655
-First, recall true LRU from lecture 7. In a 4-way set, each block has an age count. The age goes from 0 to 3, so it needs 2 bits. Here the ages are 1, 3, 0 and 2. This is a row of the example on slide 45.
+00:00:19,481 --> 00:00:25,348
+Two: read the PLRU tree bits, B0, B1 and B2, of a 4-way set.
 
 4
-00:00:45,105 --> 00:00:59,377
-Now a hit in block 3. Its age becomes 0. All ages lower than its previous age, 2, get plus 1. So blocks 0 and 2 change too. One access changed three age counts.
+00:00:25,798 --> 00:00:28,721
+Three: walk the tree to find the victim on a miss.
 
 5
-00:00:59,827 --> 00:01:09,491
-On a miss, the cache replaces the block with the largest age. Here that is block 1, with age 3. It is the least recently used block.
+00:00:29,171 --> 00:00:34,973
+Four: update the bits on a hit or a fill, and compare PLRU with true LRU.
 
 6
-00:01:09,941 --> 00:01:20,629
-So true LRU needs 2 bits for each of the 4 blocks. That is 8 bits per set. And every access must compare the age of every block in the set.
+00:00:35,423 --> 00:00:50,037
+First, recall true LRU from lecture 7. In a 4-way set, each block has an age count. Here the ages are 1, 3, 0 and 2. This is a row of the example on slide 45.
 
 7
-00:01:21,079 --> 00:01:33,367
-Slide 2 of unit 8 says that true LRU is expensive to implement. Count the bits. For 4 ways, the age counts need 4 times 2, which is 8 bits per set.
+00:00:50,487 --> 00:00:59,191
+The age goes from 0 to 3. These 4 values need 2 bits: 0 0, 0 1, 1 0 and 1 1.
 
 8
-00:01:33,817 --> 00:01:52,014
-With N ways, each age goes from 0 to N minus 1. That needs log 2 of N bits per block. So true LRU needs N times log 2 of N bits per set. For 8 ways, that is 24 bits. For 16 ways, it is 64 bits.
+00:00:59,641 --> 00:01:04,035
+Now a hit in block 3. Its age was 2. It becomes 0.
 
 9
-00:01:52,464 --> 00:02:10,149
-PLRU needs only N minus 1 bits per set. Slide 3 gives this rule. That is 3 bits for 4 ways, 7 bits for 8 ways, and 15 bits for 16 ways. For 2 ways, the 1 PLRU bit gives exact LRU.
+00:01:04,485 --> 00:01:12,059
+The ages lower than 2 get plus 1. Block 0 goes from 1 to 2. Block 2 goes from 0 to 1.
 
 10
-00:02:10,599 --> 00:02:22,610
-The work per access is also smaller. Here is an 8-way PLRU tree with some example bit values. It has 7 bits, B0 to B6, in 3 levels.
+00:01:12,509 --> 00:01:18,077
+Block 1 has age 3. That is not lower than 2, so block 1 keeps age 3.
 
 11
-00:02:23,060 --> 00:02:36,137
-On a miss, the cache reads only the 3 bits on one path. B0 is 1, so go right. B2 is 1, so go right. B6 is 0, so go left. The victim is way 6.
+00:01:18,527 --> 00:01:21,300
+So one access changed three age counts.
 
 12
-00:02:36,587 --> 00:02:52,907
-After the fill of way 6, the cache walks up and writes only the same 3 bits. Each bit points away from way 6. B6 becomes 1, B2 becomes 0, and B0 becomes 0. The other 4 bits do not change.
+00:01:21,750 --> 00:01:31,414
+On a miss, the cache replaces the block with the largest age. Here that is block 1, with age 3. It is the least recently used block.
 
 13
-00:02:53,357 --> 00:02:59,544
-True LRU must compare all 8 ages on every access, and all of them can change.
+00:01:31,864 --> 00:01:38,840
+So true LRU needs 2 bits for each of the 4 blocks. 4 times 2 is 8 bits per set.
 
 14
-00:02:59,994 --> 00:03:09,551
-This is why the slides call PLRU a hardware friendly approximation of LRU. It uses fewer bits, and its updates are simple.
+00:01:39,290 --> 00:01:43,237
+And every access must compare the age of every block in the set.
 
 15
-00:03:10,001 --> 00:03:25,767
-PLRU is a hardware friendly approximation of LRU. It uses a binary tree to hold the least recently used information of one set. Each node of the tree is one bit. The leaves of the tree are the ways.
+00:01:43,687 --> 00:01:57,319
+Slide 2 of unit 8 says that true LRU is expensive to implement. Count the bits. A 4-way set has 4 age counts, and each has 2 bits. 4 times 2 is 8 bits per set.
 
 16
-00:03:26,217 --> 00:03:36,755
-On a miss, the cache must find a victim. Only then does it walk the tree. It starts at the root and follows the bits down to one way. That way is the victim.
+00:01:57,769 --> 00:02:09,246
+With N ways, each age goes from 0 to N minus 1. That needs log 2 of N bits. So true LRU needs N times log 2 of N bits per set.
 
 17
-00:03:37,205 --> 00:03:44,992
-On a hit, the cache does not walk down. It only updates the PLRU bits on the path from the hit way up to the root.
+00:02:09,696 --> 00:02:15,115
+For 8 ways, each age has 3 bits. 8 times 3 is 24 bits.
 
 18
-00:03:45,442 --> 00:04:00,589
-While it walks up, it sets each bit to point away from the way that was just used. So the way just used cannot be the next victim. This keeps the LRU information. A fill after a miss updates the bits in the same way.
+00:02:15,565 --> 00:02:21,943
+For 16 ways, each age has 4 bits. 16 times 4 is 64 bits.
 
 19
-00:04:01,039 --> 00:04:21,775
-Slide 3 uses a 4-way set-associative cache. The tree needs N minus 1 bits, where N is the number of ways. So 4 ways need 3 bits: B0, B1 and B2. B0 is the root. B1 is above ways 0 and 1. B2 is above ways 2 and 3.
+00:02:22,393 --> 00:02:28,025
+PLRU needs only N minus 1 bits per set. Slide 3 gives this rule.
 
 20
-00:04:22,225 --> 00:04:31,227
-B0 chooses between the two halves of the set. Its left side is ways 0 and 1. Its right side is ways 2 and 3.
+00:02:28,475 --> 00:02:34,854
+That is 3 bits for 4 ways, 7 bits for 8 ways, and 15 bits for 16 ways.
 
 21
-00:04:31,677 --> 00:04:38,461
-B1 chooses between way 0 and way 1. B2 chooses between way 2 and way 3.
+00:02:35,304 --> 00:02:45,928
+For 2 ways, true LRU needs 2 times 1, which is 2 bits. PLRU needs 1 bit. With 2 ways, this 1 bit gives exact LRU.
 
 22
-00:04:38,911 --> 00:04:55,445
-The value of a bit tells which side is LRU. 0 means that the left side of the tree is LRU. 1 means that the right side is LRU. The slides write the state as B0, B1, B2 in square brackets.
+00:02:46,378 --> 00:03:00,693
+The work per access is also smaller. Here is an 8-way PLRU tree with some example bit values. It has one bit in each node: 8 minus 1, which is 7 bits, B0 to B6.
 
 23
-00:04:55,895 --> 00:05:16,332
-An example: the state 0 1 1. B0 is 0, so the left half, ways 0 and 1, is LRU. B1 is 1, so way 1 is the LRU way of the left pair. B2 is 1, so way 3 is the LRU way of the right pair. The dashed arrows show where each bit points.
+00:03:01,143 --> 00:03:04,919
+The nodes are in 3 levels, from the root down to the ways.
 
 24
-00:05:16,782 --> 00:05:36,430
-Slide 4 starts with the state 0 0 0. To show the cache set, we give the blocks names. The set holds A, B, C and D in ways 0 to 3. These names are ours. The slides show only the ways. Now block E misses. The cache must replace a block.
+00:03:05,369 --> 00:03:11,427
+On a miss, the cache reads only the bits on one path. B0 is 1, so go right.
 
 25
-00:05:36,880 --> 00:05:40,912
-Walk the tree from the root. B0 is 0, so go left.
+00:03:11,877 --> 00:03:13,861
+B2 is 1, so go right.
 
 26
-00:05:41,362 --> 00:05:50,365
-B1 is 0, so go left again. The walk ends at way 0. Way 0 is chosen to be replaced. Block A is evicted.
+00:03:14,311 --> 00:03:21,458
+B6 is 0, so go left. The victim is way 6. The cache read only 3 of the 7 bits.
 
 27
-00:05:50,815 --> 00:06:01,481
-Block E fills way 0. Now update the state. Walk up from way 0. Way 0 is on the left of B1, so B1 becomes 1, to point right.
+00:03:21,908 --> 00:03:32,319
+After the fill of way 6, the cache walks up and writes the same 3 bits. Each bit points away from way 6. B6 becomes 1, to point right.
 
 28
-00:06:01,931 --> 00:06:15,862
-Walk up one more level. Way 0 is also on the left of B0, so B0 becomes 1. B2 is not on the path, so it stays 0. The new state is 1 1 0, as on the slide.
+00:03:32,769 --> 00:03:35,350
+B2 becomes 0, to point left.
 
 29
-00:06:16,312 --> 00:06:24,845
-Now both bits on the path point away from way 0. So the next miss cannot choose way 0, which holds the newest block.
+00:03:35,800 --> 00:03:38,531
+B0 becomes 0, to point left.
 
 30
-00:06:25,295 --> 00:06:38,159
-Slide 5 continues from the state 1 1 0. The set now holds E, B, C and D. Block F misses. Find the victim and the new state. Pause the video and try it.
+00:03:38,981 --> 00:03:41,093
+The other 4 bits do not change.
 
 31
-00:06:38,609 --> 00:06:40,785
-B0 is 1, so go right.
+00:03:41,543 --> 00:03:51,505
+True LRU with 8 ways has 8 ages of 3 bits. It must compare all 8 ages on every access, and all of them can change.
 
 32
-00:06:41,235 --> 00:06:49,555
-Now the walk is at B2. B2 is 0, so go left. Way 2 is chosen to be replaced. Block C is evicted.
+00:03:51,955 --> 00:04:01,513
+This is why the slides call PLRU a hardware friendly approximation of LRU. It uses fewer bits, and its updates are simple.
 
 33
-00:06:50,005 --> 00:07:07,285
-F fills way 2. Walk up from way 2. Way 2 is on the left of B2, so B2 becomes 1. It is on the right of B0, so B0 becomes 0. B1 is not on the path, so it stays 1. The new state is 0 1 1.
+00:04:01,963 --> 00:04:09,515
+PLRU is a hardware friendly approximation of LRU. It uses fewer bits than true LRU.
 
 34
-00:07:07,735 --> 00:07:17,293
-Slide 6 starts with the state 0 1 1. The set holds E, B, F and D. Block G misses. Pause the video and try it.
+00:04:09,965 --> 00:04:15,554
+PLRU keeps the least recently used information of one set in a binary tree.
 
 35
-00:07:17,743 --> 00:07:20,175
-B0 is 0, so go left.
+00:04:16,004 --> 00:04:18,201
+Each node of the tree is one bit.
 
 36
-00:07:20,625 --> 00:07:26,577
-B1 is 1, so go right. Way 1 is chosen to be replaced. Block B is evicted.
+00:04:18,651 --> 00:04:20,934
+The leaves of the tree are the ways.
 
 37
-00:07:27,027 --> 00:07:41,384
-G fills way 1. Way 1 is on the right of B1, so B1 becomes 0. It is on the left of B0, so B0 becomes 1. B2 stays 1. The new state is 1 0 1.
+00:04:21,384 --> 00:04:31,923
+On a miss, the cache must find a victim. Only then does it walk the tree. It starts at the root and follows the bits down to one way. That way is the victim.
 
 38
-00:07:41,834 --> 00:07:51,669
-Slide 7 starts with the state 1 0 1. The set holds E, G, F and D. Block H misses. Pause the video and try it.
+00:04:32,373 --> 00:04:40,159
+On a hit, the cache does not walk down. It only updates the PLRU bits on the path from the hit way up to the root.
 
 39
-00:07:52,119 --> 00:07:54,295
-B0 is 1, so go right.
+00:04:40,609 --> 00:04:54,156
+While it walks up, it sets each bit to point away from the way that was just used. The dashed arrows show this. So the way just used cannot be the next victim. This keeps the LRU information.
 
 40
-00:07:54,745 --> 00:08:01,017
-B2 is 1, so go right. Way 3 is chosen to be replaced. Block D is evicted.
+00:04:54,606 --> 00:05:02,030
+A fill after a miss updates the bits in the same way. The two bits above the new block now point away from it.
 
 41
-00:08:01,467 --> 00:08:16,656
-H fills way 3. Way 3 is on the right of B2, so B2 becomes 0. It is on the right of B0, so B0 becomes 0. B1 stays 0. The new state is 0 0 0.
+00:05:02,480 --> 00:05:11,739
+Slide 3 uses a 4-way set-associative cache. The leaves of the tree are the 4 ways, W0 to W3.
 
 42
-00:08:17,106 --> 00:08:29,074
-Be careful with the text of slide 7. It writes B1 equals 0, but the bit on the path is B2. The drawing and the result, 0 0 0, are correct.
+00:05:12,189 --> 00:05:25,714
+The tree needs N minus 1 bits, where N is the number of ways. There is one bit in each node. So 4 ways need 4 minus 1, which is 3 bits: B0, B1 and B2.
 
 43
-00:08:29,524 --> 00:08:39,743
-Slide 8 starts again with the state 0 0 0. The set holds E, G, F and H. Block I misses. Pause the video and try it.
+00:05:26,164 --> 00:05:31,988
+The slides write the state of the set as B0, B1, B2 in square brackets.
 
 44
-00:08:40,193 --> 00:08:42,625
-B0 is 0, so go left.
+00:05:32,438 --> 00:05:36,833
+B0 is the root. It chooses between the two halves of the set.
 
 45
-00:08:43,075 --> 00:08:49,624
-B1 is 0, so go left. Way 0 is chosen to be replaced. Block E is evicted.
+00:05:37,283 --> 00:05:40,675
+The left side of B0 is ways 0 and 1.
 
 46
-00:08:50,074 --> 00:09:00,890
-I fills way 0. B1 becomes 1, and B0 becomes 1. The new state is 1 1 0. This is the same result as on slide 4.
+00:05:41,125 --> 00:05:44,261
+The right side of B0 is ways 2 and 3.
 
 47
-00:09:01,340 --> 00:09:19,388
-The text of slide 8 has two typos. It writes B2 where it means B1. And it writes B0 equals 0, B2 equals 1. The drawing shows B0 equals 1 and B1 equals 1. The result on the slide, 1 1 0, is correct.
+00:05:44,711 --> 00:05:47,932
+B1 chooses between way 0 and way 1.
 
 48
-00:09:19,838 --> 00:09:39,123
-Put slides 4 to 8 together. The end state of each slide is the start state of the next one. The state goes from 0 0 0 to 1 1 0, 0 1 1 and 1 0 1. Then it is 0 0 0 again. The miss on slide 8 gives 1 1 0.
+00:05:48,382 --> 00:05:51,646
+B2 chooses between way 2 and way 3.
 
 49
-00:09:39,573 --> 00:09:49,685
-Five misses in a row replace way 0, way 2, way 1, way 3, and then way 0 again. In 4 misses, each way is replaced once.
+00:05:52,096 --> 00:05:59,136
+The value of a bit tells which side is LRU. 0 means that the left side of the tree is LRU.
 
 50
-00:09:50,135 --> 00:09:59,799
-Rule 1, for a miss. Start at the root. If the bit is 0, go left. If it is 1, go right. The way at the end of the walk is the victim.
+00:05:59,586 --> 00:06:02,957
+1 means that the right side of the tree is LRU.
 
 51
-00:10:00,249 --> 00:10:18,980
-Rule 2, for a hit or a fill. Set each bit on the path to point away from the used way. The table lists the result for each way. For example, the tree shows a use of way 2. B2 becomes 1 and B0 becomes 0. Both bits point away from way 2.
+00:06:03,407 --> 00:06:10,020
+An example: the state 0 1 1. The dashed arrows show the side that each bit points to.
 
 52
-00:10:19,430 --> 00:10:30,993
-A dash in the table means that the bit is not on the path. It keeps its value. So each access writes exactly 2 bits, and their values depend only on the way number.
+00:06:10,470 --> 00:06:15,547
+B0 is 0, so the left half, ways 0 and 1, is LRU.
 
 53
-00:10:31,443 --> 00:10:47,101
-Slide 9 shows hits. It starts with the state 0 1 1. This is the state after slide 5, so the set holds E, B, F and D. Block F hits in way 2. Find the new state. Pause the video and try it.
+00:06:15,997 --> 00:06:20,435
+B1 is 1, so way 1 is the LRU way of the left pair.
 
 54
-00:10:47,551 --> 00:10:56,234
-On a hit, the cache does not walk down the tree. It walks up from way 2, and sets each bit on the path to point away from way 2.
+00:06:20,885 --> 00:06:25,535
+B2 is 1, so way 3 is the LRU way of the right pair.
 
 55
-00:10:56,684 --> 00:11:11,916
-B2 must be 1, to point at way 3. It is already 1. B0 must be 0, to point at the left half. It is already 0. So the state does not change: 0 1 1. The slide writes, unchanged.
+00:06:25,985 --> 00:06:29,228
+Slide 4 starts with the state 0 0 0.
 
 56
-00:11:12,366 --> 00:11:16,526
-Next, block E hits in way 0. Pause the video and try it.
+00:06:29,678 --> 00:06:45,465
+To show the cache set, we give the blocks names. The set holds A, B, C and D in ways 0 to 3. These names are ours. The slides show only the ways. Now block E misses. The cache must replace a block.
 
 57
-00:11:16,976 --> 00:11:28,325
-Walk up from way 0. B1 must point away from way 0, so B1 must be 1. B0 must point away from the left half, so B0 must be 1.
+00:06:45,915 --> 00:06:49,840
+Walk down from the root. B0 is 0, so go left.
 
 58
-00:11:28,775 --> 00:11:36,775
-B1 is already 1. B0 changes from 0 to 1. The new state is 1 1 1, as on the slide.
+00:06:50,290 --> 00:06:54,429
+B1 is 0, so go left. The walk ends at way 0.
 
 59
-00:11:37,225 --> 00:11:46,633
-From 1 1 1, the next miss goes right, and then right again, to way 3. Ways 0 and 2 were just used, and the tree keeps both of them.
+00:06:54,879 --> 00:07:00,148
+Way 0 is chosen to be replaced. Block A, in way 0, is evicted.
 
 60
-00:11:47,083 --> 00:12:03,147
-Slide 11 is a note about the approximation. It starts with the state 1 0 1. This is the state after slide 6, so the set holds E, G, F and D. Block F hits in way 2. Pause the video and try it.
+00:07:00,598 --> 00:07:05,761
+Block E fills way 0. Now walk up from way 0, and update the bits.
 
 61
-00:12:03,597 --> 00:12:08,696
-Walk up from way 2. B2 must be 1, and B0 must be 0.
+00:07:06,211 --> 00:07:11,651
+Way 0 is on the left of B1. So B1 becomes 1, to point right.
 
 62
-00:12:09,146 --> 00:12:17,637
-B2 is already 1. B0 changes from 1 to 0. The new state is 0 0 1, as on the slide.
+00:07:12,101 --> 00:07:19,418
+Go up to B0. Way 0 is on the left of B0. So B0 becomes 1, to point right.
 
 63
-00:12:18,087 --> 00:12:26,087
-Then the slide asks for a new replacement. A new block, X, misses. Find the victim. Pause the video and try it.
+00:07:19,868 --> 00:07:28,273
+B2 is not on the path, so it keeps its value, 0. The new state is 1 1 0. This is the state on the slide.
 
 64
-00:12:26,537 --> 00:12:28,969
-B0 is 0, so go left.
+00:07:28,723 --> 00:07:37,257
+Now both bits on the path point away from way 0. So the next miss cannot choose way 0, which holds the newest block.
 
 65
-00:12:29,419 --> 00:12:35,968
-B1 is 0, so go left. Way 0 is chosen to be replaced. Block E is evicted.
+00:07:37,707 --> 00:07:41,205
+Slide 5 continues from the state 1 1 0.
 
 66
-00:12:36,418 --> 00:12:42,754
-X fills way 0. B0 and B1 become 1. The new state is 1 1 1.
+00:07:41,655 --> 00:07:52,109
+The set now holds E, B, C and D. Block F is not in the set, so it misses. Find the victim and the new state. Pause the video and try it.
 
 67
-00:12:43,204 --> 00:12:57,263
-The slide draws the tree 0 0 1 for the new replacement, but it does not show the result. The walk gives way 0. Next, we check if way 0 really holds the least recently used block.
+00:07:52,559 --> 00:07:56,292
+Walk down from the root. B0 is 1, so go right.
 
 68
-00:12:57,713 --> 00:13:12,881
-Here is the full history of this set. A, B, C and D fill the set first. Then E, F and G miss, on slides 4, 5 and 6. Then F hits, on slide 11. Call these times t 1 to t 8.
+00:07:56,742 --> 00:08:00,753
+B2 is 0, so go left. The walk ends at way 2.
 
 69
-00:13:13,331 --> 00:13:23,976
-Now look at the last use of each block in the set. E was last used at time 5. G at time 7, F at time 8, and D at time 4.
+00:08:01,203 --> 00:08:06,152
+Way 2 is chosen to be replaced. Block C, in way 2, is evicted.
 
 70
-00:13:24,426 --> 00:13:30,634
-True LRU replaces the block with the oldest last use. That is D, in way 3.
+00:08:06,602 --> 00:08:11,359
+Block F fills way 2. Now walk up from way 2, and update the bits.
 
 71
-00:13:31,084 --> 00:13:44,375
-PLRU walks the tree 0 0 1 and replaces way 0. That is block E. But E was used after D. So here PLRU does not choose the least recently used block.
+00:08:11,809 --> 00:08:17,079
+Way 2 is on the left of B2. So B2 becomes 1, to point right.
 
 72
-00:13:44,825 --> 00:14:07,182
-The reason is that each bit only records which side of its node was used more recently. The hit on F set B0 to point left. But the oldest block, D, is on the right side too, next to F. Three bits cannot hold the full order of four blocks. This is why PLRU is only an approximation of LRU.
+00:08:17,529 --> 00:08:24,803
+Go up to B0. Way 2 is on the right of B0. So B0 becomes 0, to point left.
 
 73
-00:14:07,632 --> 00:14:28,219
-Now compare the two policies on the misses of slides 4 to 8. Both sets start with A, B, C and D, used in that order. The bottom line shows this use order, from old to new. For this order, the PLRU state is 0 0 0. That is the start state of slide 4.
+00:08:25,253 --> 00:08:31,184
+B1 is not on the path, so it keeps its value, 1. The new state is 0 1 1.
 
 74
-00:14:28,669 --> 00:14:38,375
-E misses. Both policies replace A, in way 0. For true LRU, A is the oldest block, in red. E is now the newest block.
+00:08:31,634 --> 00:08:34,706
+Slide 6 starts with the state 0 1 1.
 
 75
-00:14:38,825 --> 00:14:51,092
-F misses. PLRU walks the tree 1 1 0 and replaces way 2, block C. True LRU replaces its oldest block, B, in way 1. The victims differ.
+00:08:35,156 --> 00:08:41,257
+The set holds E, B, F and D. Block G misses. Pause the video and try it.
 
 76
-00:14:51,542 --> 00:15:02,358
-G misses. PLRU walks the tree 0 1 1 and replaces way 1, block B. True LRU replaces its oldest block, C, in way 2.
+00:08:41,707 --> 00:08:45,633
+Walk down from the root. B0 is 0, so go left.
 
 77
-00:15:02,808 --> 00:15:10,467
-H misses. Both policies replace block D, in way 3. D is the oldest block for true LRU.
+00:08:46,083 --> 00:08:49,709
+B1 is 1, so go right. The walk ends at way 1.
 
 78
-00:15:10,917 --> 00:15:15,141
-I misses. Both policies replace block E, in way 0.
+00:08:50,159 --> 00:08:54,959
+Way 1 is chosen to be replaced. Block B, in way 1, is evicted.
 
 79
-00:15:15,591 --> 00:15:35,260
-Here all accesses miss, so both policies have 5 misses. But between the accesses, they hold different blocks. After F, PLRU still holds B, and true LRU still holds C. A later access to one of these blocks gives a hit in one policy and a miss in the other.
+00:08:55,409 --> 00:09:00,209
+Block G fills way 1. Now walk up from way 1, and update the bits.
 
 80
-00:15:35,710 --> 00:15:54,121
-A practice question in exam style. It is not from the slides, but it uses only the slide rules. The state is 1 1 1. Then the set gets a hit on way 3, a miss, a hit on way 1, and a miss. Find each victim and each new state. Pause the video and try it.
+00:09:00,659 --> 00:09:05,929
+Way 1 is on the right of B1. So B1 becomes 0, to point left.
 
 81
-00:15:54,571 --> 00:16:07,669
-Hit on way 3. Walk up. Way 3 is on the right of B2, so B2 becomes 0. It is on the right of B0, so B0 becomes 0. The state is 0 1 0.
+00:09:06,379 --> 00:09:13,376
+Go up to B0. Way 1 is on the left of B0. So B0 becomes 1, to point right.
 
 82
-00:16:08,119 --> 00:16:22,199
-Miss. B0 is 0, so go left. B1 is 1, so go right. The victim is way 1. After the fill, B1 becomes 0 and B0 becomes 1. The state is 1 0 0.
+00:09:13,826 --> 00:09:20,119
+B2 is not on the path, so it keeps its value, 1. The new state is 1 0 1.
 
 83
-00:16:22,649 --> 00:16:32,719
-Hit on way 1. B1 must be 0, and B0 must be 1. Both bits already have these values. The state stays 1 0 0.
+00:09:20,569 --> 00:09:23,641
+Slide 7 starts with the state 1 0 1.
 
 84
-00:16:33,169 --> 00:16:47,654
-Miss. B0 is 1, so go right. B2 is 0, so go left. The victim is way 2. After the fill, B2 becomes 1 and B0 becomes 0. The state is 0 0 1.
+00:09:24,091 --> 00:09:30,043
+The set holds E, G, F and D. Block H misses. Pause the video and try it.
 
 85
-00:16:48,104 --> 00:17:03,037
-The answer: the victims are way 1 and then way 2. The final state is 0 0 1. The method: on a miss, walk down. On every access, set the 2 bits on the path to point away from the used way.
+00:09:30,493 --> 00:09:34,227
+Walk down from the root. B0 is 1, so go right.
 
 86
-00:17:03,487 --> 00:17:26,079
-A second practice question, also not from the slides. The set holds A, B, C and D, used in that order. So the PLRU state is 0 0 0. The true LRU order is A, B, C, D, from oldest to newest. The accesses are A, E, B and F. Do both policies. Pause the video and try it.
+00:09:34,677 --> 00:09:38,538
+B2 is 1, so go right. The walk ends at way 3.
 
 87
-00:17:26,529 --> 00:17:40,759
-A hits in way 0, in both policies. PLRU sets B0 and B1 to 1, so the state is 1 1 0. In true LRU, A becomes the newest block. The oldest block is now B.
+00:09:38,988 --> 00:09:44,193
+Way 3 is chosen to be replaced. Block D, in way 3, is evicted.
 
 88
-00:17:41,209 --> 00:17:51,470
-E misses. PLRU goes right, then left, to way 2. So C is evicted. True LRU evicts its oldest block, B, in way 1.
+00:09:44,643 --> 00:09:49,571
+Block H fills way 3. Now walk up from way 3, and update the bits.
 
 89
-00:17:51,920 --> 00:18:03,269
-B comes back. PLRU still holds B, so it is a hit. True LRU evicted B, so it is a miss. True LRU now evicts C, its oldest block.
+00:09:50,021 --> 00:09:55,461
+Way 3 is on the right of B2. So B2 becomes 0, to point left.
 
 90
-00:18:03,719 --> 00:18:14,002
-F misses in both. PLRU goes right, then right, to way 3. So D is evicted. True LRU also evicts D, its oldest block.
+00:09:55,911 --> 00:10:03,186
+Go up to B0. Way 3 is on the right of B0. So B0 becomes 0, to point left.
 
 91
-00:18:14,452 --> 00:18:27,764
-PLRU has 2 misses, and true LRU has 3. So PLRU is not always worse. It is an approximation: it can choose a different victim, and the result can be better or worse.
+00:10:03,636 --> 00:10:10,143
+B1 is not on the path, so it keeps its value, 0. The new state is 0 0 0.
 
 92
-00:18:28,214 --> 00:18:39,670
-Here is the recap. One. True LRU with age counts needs N times log 2 of N bits per set. Every access compares all ages. It is expensive.
+00:10:10,593 --> 00:10:22,561
+Be careful with the text of slide 7. It writes B1 equals 0, but the bit on the path is B2. The drawing and the result, 0 0 0, are correct.
 
 93
-00:18:40,120 --> 00:18:49,699
-Two. PLRU uses a binary tree of N minus 1 bits per set. For 4 ways, the bits are B0, B1 and B2.
+00:10:23,011 --> 00:10:26,744
+Slide 8 starts again with the state 0 0 0.
 
 94
-00:18:50,149 --> 00:18:57,850
-Three. A bit of 0 means that the left side is LRU. A bit of 1 means that the right side is LRU.
+00:10:27,194 --> 00:10:33,125
+The set holds E, G, F and H. Block I misses. Pause the video and try it.
 
 95
-00:18:58,300 --> 00:19:05,703
-Four. On a miss, walk from the root. Go left on 0 and right on 1. The way at the end is the victim.
+00:10:33,575 --> 00:10:37,500
+Walk down from the root. B0 is 0, so go left.
 
 96
-00:19:06,153 --> 00:19:14,387
-Five. On a hit or a fill, set each bit on the path to point away from the used way. The other bits keep their value.
+00:10:37,950 --> 00:10:42,089
+B1 is 0, so go left. The walk ends at way 0.
 
 97
-00:19:14,837 --> 00:19:24,416
-Six. PLRU is an approximation. It can evict a block that is not the true least recently used block, as on slide 11.
+00:10:42,539 --> 00:10:47,851
+Way 0 is chosen to be replaced. Block E, in way 0, is evicted.
 
 98
-00:19:24,866 --> 00:19:35,127
+00:10:48,301 --> 00:10:53,357
+Block I fills way 0. Now walk up from way 0, and update the bits.
+
+99
+00:10:53,807 --> 00:10:59,247
+Way 0 is on the left of B1. So B1 becomes 1, to point right.
+
+100
+00:10:59,697 --> 00:11:07,014
+Go up to B0. Way 0 is on the left of B0. So B0 becomes 1, to point right.
+
+101
+00:11:07,464 --> 00:11:17,000
+B2 is not on the path, so it keeps its value, 0. The new state is 1 1 0. This is the same result as on slide 4.
+
+102
+00:11:17,450 --> 00:11:25,173
+The text of slide 8 has two typos. First, it writes B2 where it means B1, the second bit of the walk.
+
+103
+00:11:25,623 --> 00:11:38,892
+Second, it writes B0 equals 0, B2 equals 1. The drawing shows B0 equals 1 and B1 equals 1. The result on the slide, 1 1 0, is correct.
+
+104
+00:11:39,342 --> 00:11:46,211
+Put the misses of slides 4 to 8 in a row. The end state of each slide is the start state of the next one.
+
+105
+00:11:46,661 --> 00:11:52,101
+The victims are way 0, way 2, way 1, way 3, and then way 0 again.
+
+106
+00:11:52,551 --> 00:11:55,495
+So the first 4 misses replace each way once.
+
+107
+00:11:55,945 --> 00:12:05,609
+Rule 1, for a miss. Start at the root. If the bit is 0, go left. If it is 1, go right. The way at the end of the walk is the victim.
+
+108
+00:12:06,059 --> 00:12:13,995
+Rule 2, for a hit or a fill. Set each bit on the path from the used way to the root to point away from that way.
+
+109
+00:12:14,445 --> 00:12:18,200
+The table lists the result of rule 2 for each used way.
+
+110
+00:12:18,650 --> 00:12:26,735
+For example, a use of way 2. Way 2 is on the left of B2, so B2 becomes 1, to point at way 3.
+
+111
+00:12:27,185 --> 00:12:33,607
+Way 2 is on the right of B0, so B0 becomes 0, to point at the left half.
+
+112
+00:12:34,057 --> 00:12:41,523
+A dash in the table means that the bit is not on the path. It keeps its value. Here B1 keeps its value.
+
+113
+00:12:41,973 --> 00:12:50,016
+So each row has 2 values: each access writes exactly 2 bits. Their values depend only on the way number.
+
+114
+00:12:50,466 --> 00:12:57,485
+Slide 9 shows hits. It starts with the state 0 1 1. This is the state after slide 5.
+
+115
+00:12:57,935 --> 00:13:06,020
+The set holds E, B, F and D. Block F hits in way 2. Find the new state. Pause the video and try it.
+
+116
+00:13:06,470 --> 00:13:10,822
+On a hit, the cache does not walk down. It walks up from way 2.
+
+117
+00:13:11,272 --> 00:13:17,821
+Way 2 is on the left of B2. B2 must be 1, to point right. It is already 1.
+
+118
+00:13:18,271 --> 00:13:27,189
+Go up to B0. Way 2 is on the right of B0. B0 must be 0, to point left. It is already 0.
+
+119
+00:13:27,639 --> 00:13:35,852
+B1 is not on the path, so it keeps its value, 1. The new state is 0 1 1. The slide writes, unchanged.
+
+120
+00:13:36,302 --> 00:13:40,462
+Next, block E hits in way 0. Pause the video and try it.
+
+121
+00:13:40,912 --> 00:13:45,413
+On a hit, the cache does not walk down. It walks up from way 0.
+
+122
+00:13:45,863 --> 00:13:52,541
+Way 0 is on the left of B1. B1 must be 1, to point right. It is already 1.
+
+123
+00:13:52,991 --> 00:14:00,308
+Go up to B0. Way 0 is on the left of B0. So B0 becomes 1, to point right.
+
+124
+00:14:00,758 --> 00:14:08,673
+B2 is not on the path, so it keeps its value, 1. The new state is 1 1 1. This is the state on the slide.
+
+125
+00:14:09,123 --> 00:14:13,709
+From 1 1 1, look at the next miss. B0 is 1, so go right.
+
+126
+00:14:14,159 --> 00:14:18,298
+B2 is 1, so go right. The next victim is way 3.
+
+127
+00:14:18,748 --> 00:14:23,505
+Ways 0 and 2 were just used, and the tree keeps both of them safe.
+
+128
+00:14:23,955 --> 00:14:32,830
+Slide 11 is a note about the approximation. It starts with the state 1 0 1. This is the state after slide 6.
+
+129
+00:14:33,280 --> 00:14:39,915
+The set holds E, G, F and D. Block F hits in way 2. Pause the video and try it.
+
+130
+00:14:40,365 --> 00:14:44,717
+On a hit, the cache does not walk down. It walks up from way 2.
+
+131
+00:14:45,167 --> 00:14:51,716
+Way 2 is on the left of B2. B2 must be 1, to point right. It is already 1.
+
+132
+00:14:52,166 --> 00:14:59,441
+Go up to B0. Way 2 is on the right of B0. So B0 becomes 0, to point left.
+
+133
+00:14:59,891 --> 00:15:08,573
+B1 is not on the path, so it keeps its value, 0. The new state is 0 0 1. This is the state on the slide.
+
+134
+00:15:09,023 --> 00:15:17,023
+Then the slide asks for a new replacement. A new block, X, misses. Find the victim. Pause the video and try it.
+
+135
+00:15:17,473 --> 00:15:21,399
+Walk down from the root. B0 is 0, so go left.
+
+136
+00:15:21,849 --> 00:15:25,987
+B1 is 0, so go left. The walk ends at way 0.
+
+137
+00:15:26,437 --> 00:15:31,749
+Way 0 is chosen to be replaced. Block E, in way 0, is evicted.
+
+138
+00:15:32,199 --> 00:15:37,213
+Block X fills way 0. Now walk up from way 0, and update the bits.
+
+139
+00:15:37,663 --> 00:15:43,103
+Way 0 is on the left of B1. So B1 becomes 1, to point right.
+
+140
+00:15:43,553 --> 00:15:50,870
+Go up to B0. Way 0 is on the left of B0. So B0 becomes 1, to point right.
+
+141
+00:15:51,320 --> 00:15:57,229
+B2 is not on the path, so it keeps its value, 1. The new state is 1 1 1.
+
+142
+00:15:57,679 --> 00:16:09,754
+The slide draws the tree 0 0 1 for this replacement, but it does not show the result. Next, we check if way 0 really holds the least recently used block.
+
+143
+00:16:10,204 --> 00:16:15,623
+Here is the full history of this set. Each use has a time, t 1 to t 8.
+
+144
+00:16:16,073 --> 00:16:20,467
+First, A, B, C and D fill the set, at t 1 to t 4.
+
+145
+00:16:20,917 --> 00:16:25,077
+Then E, F and G miss, on slides 4, 5 and 6.
+
+146
+00:16:25,527 --> 00:16:28,386
+Then F hits, on slide 11, at t 8.
+
+147
+00:16:28,836 --> 00:16:37,156
+True LRU needs the last use of each block in the set. Block E, in way 0, was last used at t 5.
+
+148
+00:16:37,606 --> 00:16:40,209
+Block G was last used at t 7.
+
+149
+00:16:40,659 --> 00:16:46,355
+Block F was used at t 6 and again at t 8. So its last use is t 8.
+
+150
+00:16:46,805 --> 00:16:49,237
+Block D was last used at t 4.
+
+151
+00:16:49,687 --> 00:16:55,895
+True LRU replaces the block with the oldest last use. That is D, in way 3.
+
+152
+00:16:56,345 --> 00:17:02,531
+Now PLRU, with the state 0 0 1. B0 is 0, so go left.
+
+153
+00:17:02,981 --> 00:17:09,467
+B1 is 0, so go left again. PLRU replaces way 0. That is block E.
+
+154
+00:17:09,917 --> 00:17:18,749
+But E was last used at t 5, after D at t 4. So here PLRU does not choose the least recently used block.
+
+155
+00:17:19,199 --> 00:17:29,972
+The reason: each bit only records which side of its node was used more recently. The hit on F, in way 2, set B0 to 0, to point left.
+
+156
+00:17:30,422 --> 00:17:36,950
+But the oldest block, D, is on the right side too, next to F. B0 cannot show this.
+
+157
+00:17:37,400 --> 00:17:49,709
+This part is not on the slides. It shows why 3 bits are only an approximation. Each cell here is one use order of the 4 ways, from the oldest use to the newest use.
+
+158
+00:17:50,159 --> 00:18:03,535
+The oldest way can be any of the 4 ways. The next one can be any of the other 3, then 2, then 1. So there are 4 times 3 times 2 times 1, which is 24 use orders.
+
+159
+00:18:03,985 --> 00:18:17,297
+Use the 4 ways in one order, from any start state. The PLRU bits then depend only on the order. 3 bits have 2 times 2 times 2, which is 8 states. Each column is one state.
+
+160
+00:18:17,747 --> 00:18:27,625
+Each state has 3 orders. For example, the state 0 0 1 has 3 orders. 8 states times 3 orders is 24 orders.
+
+161
+00:18:28,075 --> 00:18:42,517
+The slide 11 example used the ways in the order W3, W0, W1, W2. This order gives the state 0 0 1, and PLRU replaces way 0.
+
+162
+00:18:42,967 --> 00:18:49,239
+In the two other orders of this column, way 0 is the oldest. There, PLRU is right.
+
+163
+00:18:49,689 --> 00:18:55,321
+In the slide 11 order, way 3 is the oldest. There, PLRU is wrong.
+
+164
+00:18:55,771 --> 00:19:03,174
+The 3 bits cannot tell these 3 orders apart. So PLRU cannot always find the true LRU way.
+
+165
+00:19:03,624 --> 00:19:11,453
+Now compare the two policies on the misses of slides 4 to 8. Both sets start with A, B, C and D.
+
+166
+00:19:11,903 --> 00:19:20,394
+The bottom line shows the true LRU use order, from old to new: A, B, C, D. The oldest block is in red.
+
+167
+00:19:20,844 --> 00:19:27,585
+For this order, the PLRU state is 0 0 0. That is the start state of slide 4.
+
+168
+00:19:28,035 --> 00:19:37,187
+E misses. Both policies replace A, in way 0. For true LRU, A was the oldest block. E is now the newest block.
+
+169
+00:19:37,637 --> 00:19:44,123
+F misses. PLRU walks the tree 1 1 0 to way 2. It replaces block C.
+
+170
+00:19:44,573 --> 00:19:50,226
+True LRU replaces its oldest block, B, in way 1. The victims differ.
+
+171
+00:19:50,676 --> 00:19:57,268
+G misses. PLRU walks the tree 0 1 1 to way 1. It replaces block B.
+
+172
+00:19:57,718 --> 00:20:01,878
+True LRU replaces its oldest block, C, in way 2.
+
+173
+00:20:02,328 --> 00:20:09,987
+H misses. Both policies replace block D, in way 3. D is the oldest block for true LRU.
+
+174
+00:20:10,437 --> 00:20:14,661
+I misses. Both policies replace block E, in way 0.
+
+175
+00:20:15,111 --> 00:20:22,364
+Here all accesses miss, so both policies have 5 misses. The victims differ only at F and G.
+
+176
+00:20:22,814 --> 00:20:31,902
+But between the accesses, the sets hold different blocks. After F, PLRU still holds B, and true LRU still holds C.
+
+177
+00:20:32,352 --> 00:20:38,453
+A later access to one of these blocks gives a hit in one policy and a miss in the other.
+
+178
+00:20:38,903 --> 00:20:57,314
+A practice question in exam style. It is not from the slides, but it uses only the slide rules. The state is 1 1 1. Then the set gets a hit on way 3, a miss, a hit on way 1, and a miss. Find each victim and each new state. Pause the video and try it.
+
+179
+00:20:57,764 --> 00:21:01,177
+First, a hit on way 3. Walk up from way 3.
+
+180
+00:21:01,627 --> 00:21:07,067
+Way 3 is on the right of B2. So B2 becomes 0, to point left.
+
+181
+00:21:07,517 --> 00:21:14,792
+Go up to B0. Way 3 is on the right of B0. So B0 becomes 0, to point left.
+
+182
+00:21:15,242 --> 00:21:20,255
+B1 is not on the path, so it keeps 1. The state is 0 1 0.
+
+183
+00:21:20,705 --> 00:21:25,655
+Next, a miss. Walk down from the root. B0 is 0, so go left.
+
+184
+00:21:26,105 --> 00:21:29,774
+B1 is 1, so go right. The victim is way 1.
+
+185
+00:21:30,224 --> 00:21:37,755
+The new block fills way 1. Way 1 is on the right of B1. So B1 becomes 0, to point left.
+
+186
+00:21:38,205 --> 00:21:45,202
+Go up to B0. Way 1 is on the left of B0. So B0 becomes 1, to point right.
+
+187
+00:21:45,652 --> 00:21:51,007
+B2 is not on the path, so it keeps 0. The state is 1 0 0.
+
+188
+00:21:51,457 --> 00:21:54,550
+Next, a hit on way 1. Walk up from way 1.
+
+189
+00:21:55,000 --> 00:22:01,805
+Way 1 is on the right of B1. B1 must be 0, to point left. It is already 0.
+
+190
+00:22:02,255 --> 00:22:10,511
+Go up to B0. Way 1 is on the left of B0. B0 must be 1, to point right. It is already 1.
+
+191
+00:22:10,961 --> 00:22:16,572
+B2 is not on the path, so it keeps 0. The state stays 1 0 0.
+
+192
+00:22:17,022 --> 00:22:21,758
+Next, a miss. Walk down from the root. B0 is 1, so go right.
+
+193
+00:22:22,208 --> 00:22:26,261
+B2 is 0, so go left. The victim is way 2.
+
+194
+00:22:26,711 --> 00:22:33,922
+The new block fills way 2. Way 2 is on the left of B2. So B2 becomes 1, to point right.
+
+195
+00:22:34,372 --> 00:22:41,647
+Go up to B0. Way 2 is on the right of B0. So B0 becomes 0, to point left.
+
+196
+00:22:42,097 --> 00:22:47,451
+B1 is not on the path, so it keeps 0. The state is 0 0 1.
+
+197
+00:22:47,901 --> 00:22:54,237
+The answer: the victims are way 1 and then way 2. The final state is 0 0 1.
+
+198
+00:22:54,687 --> 00:23:02,730
+The method: on a miss, walk down. On every access, set the 2 bits on the path to point away from the used way.
+
+199
+00:23:03,180 --> 00:23:25,772
+A second practice question, also not from the slides. The set holds A, B, C and D, used in that order. So the PLRU state is 0 0 0. The true LRU order is A, B, C, D, from oldest to newest. The accesses are A, E, B and F. Do both policies. Pause the video and try it.
+
+200
+00:23:26,222 --> 00:23:37,827
+A hits in way 0 in PLRU. Way 0 is on the left of B1 and on the left of B0. So both bits become 1, and the state is 1 1 0.
+
+201
+00:23:38,277 --> 00:23:44,976
+A also hits in true LRU. A becomes the newest block. The oldest block is now B.
+
+202
+00:23:45,426 --> 00:23:53,426
+E misses. The PLRU walk on the state 1 1 0 ends at way 2. So C, in way 2, is evicted.
+
+203
+00:23:53,876 --> 00:23:57,908
+True LRU evicts its oldest block, B, in way 1.
+
+204
+00:23:58,358 --> 00:24:03,094
+B comes back. PLRU still holds B, in way 1, so it is a hit.
+
+205
+00:24:03,544 --> 00:24:10,264
+True LRU evicted B, so it is a miss. True LRU now evicts C, its oldest block.
+
+206
+00:24:10,714 --> 00:24:18,202
+F misses in PLRU. The walk on the state 1 0 1 ends at way 3. So D is evicted.
+
+207
+00:24:18,652 --> 00:24:23,857
+F also misses in true LRU. It evicts D, its oldest block.
+
+208
+00:24:24,307 --> 00:24:28,105
+Count the misses. PLRU has 2 misses: E and F.
+
+209
+00:24:28,555 --> 00:24:31,989
+True LRU has 3 misses: E, B and F.
+
+210
+00:24:32,439 --> 00:24:41,911
+So PLRU is not always worse. It is an approximation: it can choose a different victim, and the result can be better or worse.
+
+211
+00:24:42,361 --> 00:24:53,817
+Here is the recap. One. True LRU with age counts needs N times log 2 of N bits per set. Every access compares all ages. It is expensive.
+
+212
+00:24:54,267 --> 00:25:03,846
+Two. PLRU uses a binary tree of N minus 1 bits per set. For 4 ways, the bits are B0, B1 and B2.
+
+213
+00:25:04,296 --> 00:25:11,997
+Three. A bit of 0 means that the left side is LRU. A bit of 1 means that the right side is LRU.
+
+214
+00:25:12,447 --> 00:25:19,850
+Four. On a miss, walk from the root. Go left on 0 and right on 1. The way at the end is the victim.
+
+215
+00:25:20,300 --> 00:25:28,535
+Five. On a hit or a fill, set each bit on the path to point away from the used way. The other bits keep their value.
+
+216
+00:25:28,985 --> 00:25:38,563
+Six. PLRU is an approximation. It can evict a block that is not the true least recently used block, as on slide 11.
+
+217
+00:25:39,013 --> 00:25:49,275
 Seven. Check the slide text against the drawings. Slides 7 and 8 have typos, but their results are correct. That is the end of video 16.

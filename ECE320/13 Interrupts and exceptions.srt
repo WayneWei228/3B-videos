@@ -3,369 +3,777 @@
 This is ECE 320, video 13. The topic is interrupts and exceptions in the five stage pipeline.
 
 2
-00:00:09,069 --> 00:00:24,215
-After this video, you can explain precise exceptions and the commit point. You can show which instructions finish, which are flushed, and which P C is saved. Then we solve question 3 of the spring 2020 quiz.
+00:00:09,069 --> 00:00:15,703
+After this video, you can do four things. One: tell an exception, an interrupt and a trap apart.
 
 3
-00:00:24,665 --> 00:00:29,273
-Start with a program. It runs i 1, then i 2, then i 3.
+00:00:16,153 --> 00:00:19,737
+Two: explain precise exceptions and the commit point.
 
 4
-00:00:29,723 --> 00:00:42,502
-An interrupt comes after i 1. Control goes to a handler, which is a routine outside the program. The hardware saves the P C of i 2, the next instruction to run.
+00:00:20,187 --> 00:00:25,201
+Three: show which instructions finish, which are flushed, and which P C is saved.
 
 5
-00:00:42,952 --> 00:00:58,355
-The handler runs i h 1, i h 2, and so on. At the end, it returns. The program restarts at i 2. This is the basic part: an unplanned function call, and a return to the point of interruption.
+00:00:25,651 --> 00:00:33,267
+Four: solve a pipeline design question on interrupts. It is question 3 of the spring 2020 quiz.
 
 6
-00:00:58,805 --> 00:01:13,034
-Now the tricky part. The program did not call the handler, so it could not prepare. It saved no registers. So the hardware must save the P C. And the handler must save every register that it changes.
+00:00:33,717 --> 00:00:38,325
+Start with a program. It runs i 1, then i 2, then i 3.
 
 7
-00:01:13,484 --> 00:01:17,985
-The slides use interrupt as the general word. There are three kinds.
+00:00:38,775 --> 00:00:46,625
+An interrupt comes after i 1. Control goes to a handler. The handler is a routine outside the program.
 
 8
-00:01:18,435 --> 00:01:31,705
-A synchronous interrupt is also called an exception. It is tied to one instruction, for example an overflow. The faulting instruction cannot be finished, so the hardware must handle it at once.
+00:00:47,075 --> 00:00:52,899
+The hardware saves the P C of i 2. i 2 is the next instruction to run.
 
 9
-00:01:32,155 --> 00:01:44,997
-An asynchronous interrupt is also called an interrupt. It is an external event, not tied to any instruction. The hardware has some freedom when to handle it, but it cannot wait forever.
+00:00:53,349 --> 00:00:58,149
+The handler runs i h 1, i h 2, and so on, to its end.
 
 10
-00:01:45,447 --> 00:01:58,525
-A trap is a system call. The program runs an instruction that causes an exception on purpose. In RISC-V, this instruction is e call. The slide asks: why not use jal instead?
+00:00:58,599 --> 00:01:03,015
+At the end, the handler returns. The program restarts at i 2.
 
 11
-00:01:58,975 --> 00:02:13,887
-A model answer. The jal target is P C plus an offset, so the program must know where the handler is. A trap uses the exception path. The hardware saves the P C and selects the handler address itself.
+00:01:03,465 --> 00:01:09,759
+This is the basic part: an unplanned function call, and a return to the point of interruption.
 
 12
-00:02:14,337 --> 00:02:22,827
-Now put exceptions into the five stage pipeline. The slides call the execute stage E. In this course we write X.
+00:01:10,209 --> 00:01:17,569
+Now the tricky part. The program did not call the handler, so it could not prepare. It saved no registers.
 
 13
-00:02:23,277 --> 00:02:35,501
-Each kind of exception is found in a different stage. A bad P C address in F. An illegal opcode in D. An overflow in X. A bad data address in M.
+00:01:18,019 --> 00:01:24,163
+So the hardware must save the P C. And the handler must save every register that it changes.
 
 14
-00:02:35,951 --> 00:02:40,367
-Asynchronous interrupts are different. They can arrive in any cycle.
+00:01:24,613 --> 00:01:29,114
+The slides use interrupt as the general word. There are three kinds.
 
 15
-00:02:40,817 --> 00:02:59,441
-This causes a problem. Load word number 1 has a bad data address, found in M in cycle 4. Instruction 2 has an illegal opcode, found in D in cycle 3. The younger instruction is found first. But the handler must see number 1 first.
+00:01:29,564 --> 00:01:42,833
+A synchronous interrupt is also called an exception. It is tied to one instruction, for example an overflow. The faulting instruction cannot be finished, so the hardware must handle it at once.
 
 16
-00:02:59,891 --> 00:03:11,262
-So the slide asks two questions. One: how to handle several exceptions in different stages at the same time. Two: how and where to handle external interrupts.
+00:01:43,283 --> 00:01:56,126
+An asynchronous interrupt is also called an interrupt. It is an external event, not tied to any instruction. The hardware has some freedom when to handle it, but it cannot wait forever.
 
 17
-00:03:11,712 --> 00:03:23,403
-The I S A defines a serial order. Instructions run one after another. So an interrupt falls between two instructions, here between i 1 and i 2.
+00:01:56,576 --> 00:02:06,368
+A trap is a system call. The program runs an instruction that causes an exception on purpose. In RISC-V, this instruction is e call.
 
 18
-00:03:23,853 --> 00:03:35,309
-But the pipeline overlaps instructions. At the moment of the interrupt, i 1, i 2 and i 3 are all in progress. The interrupt line cuts through all three.
+00:02:06,818 --> 00:02:10,039
+The slide asks: why not use jal instead?
 
 19
-00:03:35,759 --> 00:03:49,327
-The rule is: the interrupt must still seem to happen between two instructions. Older instructions finish completely. Younger instructions act as if they never happened. This is a precise interrupt.
+00:02:10,489 --> 00:02:17,913
+A model answer. The jal target is P C plus an offset, so the program must know where the handler is.
 
 20
-00:03:49,777 --> 00:04:03,665
-Here is a state that is not precise. i 3 already wrote x 5 plus 1. The handler returns to i 2, so i 3 runs again. Now x 5 has plus 2. The result is wrong.
+00:02:18,363 --> 00:02:25,467
+A trap uses the exception path. The hardware saves the P C and selects the handler address itself.
 
 21
-00:04:04,115 --> 00:04:16,083
-The answer to question 1 is a commit point. Choose it before the state elements change, so before the memory write and the write back. The slides use M as the commit point.
+00:02:25,917 --> 00:02:34,408
+Now put exceptions into the five stage pipeline. The slides call the execute stage E. In this course we write X.
 
 22
-00:04:16,533 --> 00:04:32,895
-Each stage can raise an exception flag. The flag does not act at once. It goes into the pipeline register, with the instruction. At each stage, a new flag joins the old one. So the flags reach the commit point in program order.
+00:02:34,858 --> 00:02:41,023
+Each kind of exception is found in a different stage. A bad P C address is found in F.
 
 23
-00:04:33,345 --> 00:04:42,199
-Each instruction also carries its own P C down the pipeline. At the commit point, the hardware knows which instruction faulted.
+00:02:41,473 --> 00:02:43,863
+An illegal opcode is found in D.
 
 24
-00:04:42,649 --> 00:05:03,001
-At the commit point, the hardware writes two registers. E P C, the exception P C, gets the P C of the interrupted instruction. The P C itself must change to the handler, so without E P C, the way back is lost. Cause gets the reason. Asynchronous interrupts are also checked here.
+00:02:44,313 --> 00:02:46,361
+An overflow is found in X.
 
 25
-00:05:03,451 --> 00:05:13,883
-Then the commit logic kills the instruction in M, and all younger ones in X, D and F. And it selects the handler P C for the next fetch.
+00:02:46,811 --> 00:02:49,200
+A bad data address is found in M.
 
 26
-00:05:14,333 --> 00:05:21,543
-Now animate an exception. Five instructions run with no hazards. Cycles 1 to 3 are normal.
+00:02:49,650 --> 00:02:54,066
+Asynchronous interrupts are different. They can arrive in any cycle.
 
 27
-00:05:21,993 --> 00:05:31,337
-In cycle 4, add number 2 is in X, and it overflows. The hardware only sets the exception flag. Nothing else happens yet.
+00:02:54,516 --> 00:03:02,815
+Now an example with a problem. Load word number 1 has a bad data address. It is found in M, in cycle 4.
 
 28
-00:05:31,787 --> 00:05:46,443
-In cycle 5, number 2 reaches the commit point M. Number 1 is older. It is in W, and it finishes. Now the hardware acts. E P C gets the P C of number 2. Cause gets overflow.
+00:03:03,265 --> 00:03:09,238
+Instruction number 2 has an illegal opcode. It is found in D, in cycle 3.
 
 29
-00:05:46,893 --> 00:05:53,592
-In the same cycle, the hardware kills number 2 in M, the load in X, sub in D, and or in F.
+00:03:09,688 --> 00:03:16,472
+So the younger instruction is found first. But the handler must see number 1 first, in program order.
 
 30
-00:05:54,042 --> 00:06:02,639
-From cycle 6, the killed instructions show dashes. Number 2 does not write back. The younger instructions change nothing.
+00:03:16,922 --> 00:03:24,431
+So the slide asks two questions. One: how to handle several exceptions in different stages at the same time.
 
 31
-00:06:03,089 --> 00:06:16,231
-In cycle 6, F fetches the first handler instruction. So the older instruction completes, and the faulting and younger ones are flushed. After the handler, the program restarts at number 2.
+00:03:24,881 --> 00:03:27,804
+Two: how and where to handle external interrupts.
 
 32
-00:06:16,681 --> 00:06:26,046
-Now, priority. Case a: one instruction raises two flags. A bad P C address in F, and an illegal opcode in D.
+00:03:28,254 --> 00:03:33,545
+The I S A defines a serial order. Instructions run one after another.
 
 33
-00:06:26,496 --> 00:06:40,768
-The fetch address was bad, so the bits that D decodes are garbage. The illegal opcode is only a result of the first fault. So Cause is P C address. Within one instruction, the earliest stage wins.
+00:03:33,995 --> 00:03:39,264
+So an interrupt falls between two instructions: between i 1 and i 2.
 
 34
-00:06:41,218 --> 00:06:52,205
-Case b: two instructions fault in the same cycle. In cycle 4, load word is in M with a bad data address. Add is in X, and it overflows.
+00:03:39,714 --> 00:03:48,098
+But the pipeline overlaps instructions. At the moment of the interrupt, i 1, i 2 and i 3 are all in progress.
 
 35
-00:06:52,655 --> 00:07:00,847
-Load word is older, and it is at the commit point now. So load word wins. Add is killed, and its flag never reaches M.
+00:03:48,548 --> 00:03:50,895
+The interrupt line cuts through all three.
 
 36
-00:07:01,297 --> 00:07:07,718
-So, within one instruction, the earliest stage wins. Between instructions, the oldest one wins.
+00:03:51,345 --> 00:03:55,825
+A precise interrupt must still seem to happen between two instructions.
 
 37
-00:07:08,168 --> 00:07:18,557
-Question 2: how and where to handle external interrupts. The slide answer: check them at the commit point. Here, a request arrives in cycle c.
+00:03:56,275 --> 00:04:00,115
+So the older instruction, i 1, finishes completely.
 
 38
-00:07:19,007 --> 00:07:34,837
-The hardware treats the instruction in M as interrupted. E P C gets the P C of i 2. i 2 and the younger instructions i 3, i 4 and i 5 are killed. The older i 1 in W finishes.
+00:04:00,565 --> 00:04:05,706
+The younger instructions, i 2 and i 3, act as if they never happened.
 
 39
-00:07:35,287 --> 00:07:45,868
-In the next cycle, F fetches the first handler instruction. After the handler, the program restarts at i 2. This is the same path as an exception.
+00:04:06,156 --> 00:04:14,881
+Now a state that is not precise. x 5 is 7. Before the interrupt, i 3 adds 1, and writes 8 into x 5.
 
 40
-00:07:46,318 --> 00:08:06,606
-A summary, with the example from before. In cycle 5, the faulting add, number 2, is in M. It and the three younger instructions are killed. The older add in W finishes. E P C gets the P C of number 2, and Cause gets overflow. In cycle 6, F fetches the handler.
+00:04:15,331 --> 00:04:23,801
+The handler returns to i 2, so i 3 runs again. x 5 becomes 9, but it must be 8. The result is wrong.
 
 41
-00:08:07,056 --> 00:08:25,765
-Number 2 was found in X in cycle 4, and the hardware acted in cycle 5, 1 cycle later. The hardware always acts at the commit point. So a fault found in F acts 3 cycles later, in D 2 cycles, in X 1 cycle, and in M at once.
+00:04:24,251 --> 00:04:30,011
+Question 1 asks how to handle several exceptions in different stages at the same time.
 
 42
-00:08:26,215 --> 00:08:42,706
-Compare a wrong branch guess from video 11. The branch resolves in X. Only F and D are flushed. The branch and the older instructions go on. No E P C is saved. F fetches the correct target in the next cycle.
+00:04:30,461 --> 00:04:36,669
+The answer is a commit point. The slides put it in M, inside the data memory access.
 
 43
-00:08:43,156 --> 00:09:01,161
-Now the spring 2020 quiz, question 3. Interrupts happen at a high frequency, so context saving must be fast. The context is the 31 registers x 1 to x 31. Normally, the handler saves them in main memory.
+00:04:37,119 --> 00:04:46,377
+Choose the commit point before any state element changes. The data memory is one state element. The commit point comes before its write.
 
 44
-00:09:01,611 --> 00:09:12,342
-This quiz resolves interrupts and exceptions at the W stage. The slides use M. The method is the same: one commit point, and act only there.
+00:04:46,827 --> 00:04:52,865
+The register file is the other state element. It is written in W, after the commit point.
 
 45
-00:09:12,792 --> 00:09:21,837
-There are five parts. Parts A and B have no cache. Part C adds a data cache, and uses the cache ideas from video 14.
+00:04:53,315 --> 00:05:00,291
+Each stage can raise an exception flag. F, D, X and M each find one kind of exception.
 
 46
-00:09:22,287 --> 00:09:31,098
-Part A. With no cache, describe one way to save and restore the P C when an interrupt happens. Pause the video and try it.
+00:05:00,741 --> 00:05:06,650
+The flag does not act at once. It goes into the pipeline register, with the instruction.
 
 47
-00:09:31,548 --> 00:09:43,111
-Follow the slides. First, carry each instruction's P C down the pipeline, in every pipeline register, up to the commit point. Here, the commit point is W.
+00:05:07,100 --> 00:05:11,068
+At each later stage, a new flag joins the old ones.
 
 48
-00:09:43,561 --> 00:10:00,798
-At W, write E P C with the P C of the interrupted instruction, and write Cause. Kill the younger instructions in F, D, X and M. The instruction in W does not write back. Then the P C select picks the handler address.
+00:05:11,518 --> 00:05:14,953
+So the flags reach the commit point in program order.
 
 49
-00:10:01,248 --> 00:10:11,445
-To restore, add a return instruction at the end of the handler. It copies E P C into the P C. Fetch restarts at the interrupted instruction.
+00:05:15,403 --> 00:05:24,256
+Each instruction also carries its own P C down the pipeline. At the commit point, the hardware knows which instruction faulted.
 
 50
-00:10:11,895 --> 00:10:28,706
-Part B adds two instructions. Save context saves all 31 registers. Load context restores them. The register file gets two sets, set 0 and set 1. A bit s selects the current set. Now s is 0.
+00:05:24,706 --> 00:05:42,007
+At the commit point, the hardware writes two registers. The first is E P C, the exception P C. It gets the P C of the interrupted instruction. The P C itself must change to the handler, so without E P C, the way back is lost.
 
 51
-00:10:29,156 --> 00:10:39,332
-The copy operation copies the current set s into the other set, s X O R 1. Now set 1 holds the same values as set 0.
+00:05:42,457 --> 00:05:46,873
+The second register is Cause. It gets the reason for the exception.
 
 52
-00:10:39,782 --> 00:10:46,331
-The swap operation changes s to s X O R 1. Now set 1 is the current set.
+00:05:47,323 --> 00:05:51,035
+Asynchronous interrupts are also checked at the commit point.
 
 53
-00:10:46,781 --> 00:11:00,712
-If both come in the same cycle, the register file copies first, then swaps. This design does not support nested interrupts. We use the copy for save context, and the swap for load context.
+00:05:51,485 --> 00:05:58,141
+Then the commit logic kills the instruction in M, and all younger ones in X, D and F.
 
 54
-00:11:01,162 --> 00:11:08,991
-Part B 1. How does an application benefit from save context and load context? Pause the video and try it.
+00:05:58,591 --> 00:06:01,471
+And it selects the handler P C for the next fetch.
 
 55
-00:11:09,441 --> 00:11:22,177
-Without them, the handler saves the context with 31 store words. At the end, it restores it with 31 load words. That is 62 memory instructions for each interrupt.
+00:06:01,921 --> 00:06:09,132
+Now animate an exception. Five instructions run with no hazards. Cycles 1 to 3 are normal.
 
 56
-00:11:22,627 --> 00:11:38,670
-With them, the handler uses 2 instructions. The copy and the swap happen inside the register file, with no memory access. So each interrupt costs much less time. This matters because interrupts come at a high frequency.
+00:06:09,582 --> 00:06:18,926
+In cycle 4, add number 2 is in X, and it overflows. The hardware only sets the exception flag. Nothing else happens yet.
 
 57
-00:11:39,120 --> 00:11:48,571
-Part B 2. Which changes does the pipeline need, apart from the register file? Go stage by stage. Pause the video and try it.
+00:06:19,376 --> 00:06:23,216
+In cycle 5, number 2 reaches the commit point M.
 
 58
-00:11:49,021 --> 00:11:53,757
-F needs no change. The new instructions are fetched like all others.
+00:06:23,666 --> 00:06:28,509
+Number 1 is older. It is in W in cycle 5, and it finishes.
 
 59
-00:11:54,207 --> 00:12:08,244
-D decodes the two new opcodes. It makes two new control bits: copy for save context, and swap for load context. The instructions write no register, so Reg W En is 0.
+00:06:28,959 --> 00:06:35,017
+Now the hardware acts. E P C gets the P C of number 2. Cause gets overflow.
 
 60
-00:12:08,694 --> 00:12:16,417
-X and M do no work. They only carry the two bits down the pipeline registers, like Reg W En.
+00:06:35,467 --> 00:06:42,166
+In the same cycle, the hardware kills number 2 in M, the load in X, sub in D, and or in F.
 
 61
-00:12:16,867 --> 00:12:33,912
-W is the commit point, so the copy or swap happens here. All older instructions have written their results, so the copy is complete. And if an interrupt kills save context, it has changed nothing. Younger instructions have not written yet.
+00:06:42,616 --> 00:06:51,213
+From cycle 6, the killed instructions show dashes. Number 2 does not write back. The younger instructions change nothing.
 
 62
-00:12:34,362 --> 00:12:52,197
-One hazard remains. After load context swaps the sets, the younger instructions in D, X and M have read registers from the old set. Flush F, D, X and M, and fetch again after load context. This is like a wrong branch guess.
+00:06:51,663 --> 00:06:55,567
+In cycle 6, F fetches the first handler instruction.
 
 63
-00:12:52,647 --> 00:13:01,841
-Part B 3. The change breaks some existing interrupt handlers. Describe the problem, and how to fix it. Pause the video and try it.
+00:06:56,017 --> 00:07:03,868
+The notes on the right sum it up. The older instruction finishes. The faulting instruction and the younger ones are flushed.
 
 64
-00:13:02,291 --> 00:13:15,689
-Trace the two sets. P is the program registers. Interrupt 1 runs save context: a copy, so set 1 also holds P. Then handler 1 changes set 0 to H 1.
+00:07:04,318 --> 00:07:07,731
+After the handler, the program restarts at number 2.
 
 65
-00:13:16,139 --> 00:13:30,923
-Now an existing handler enables interrupts again, and a nested interrupt comes. Handler 2 runs save context. The copy writes H 1 into set 1. The saved program registers P are lost.
+00:07:08,181 --> 00:07:16,715
+Now, priority. Case a: one instruction raises two flags. The first is a bad P C address, found in F.
 
 66
-00:13:31,373 --> 00:13:46,029
-Handler 2 changes set 0, then swaps. Handler 1 gets H 1 back, which is correct. But handler 1 then swaps to set 0. The program resumes with the registers of handler 2. That is wrong.
+00:07:17,165 --> 00:07:20,301
+The second is an illegal opcode, found in D.
 
 67
-00:13:46,479 --> 00:13:58,105
-The fix: keep interrupts disabled from save context to load context. A handler that must allow nested interrupts uses store word and load word, as before.
+00:07:20,751 --> 00:07:29,135
+The fetch address was bad, so the bits that D decodes are garbage. The illegal opcode is only a result of the first fault.
 
 68
-00:13:58,555 --> 00:14:12,209
-A second problem: load context restores all 31 registers. So a handler can no longer return a result in a register, for example after e call. It must return it through memory.
+00:07:29,585 --> 00:07:34,833
+So Cause is P C address. Within one instruction, the earliest stage wins.
 
 69
-00:14:12,659 --> 00:14:29,875
-Part C adds a data cache. It uses the cache ideas from video 14: blocks, sets, tags, and L R U. Acquire context reserves an address range for the context, and release context frees it. Pause the video and try it.
+00:07:35,283 --> 00:07:43,667
+Case b: two instructions fault in the same cycle. In cycle 4, load word is in M, with a bad data address.
 
 70
-00:14:30,325 --> 00:14:43,402
-First, the size. 31 registers times 4 bytes is 124 bytes. The quiz gives no block size. Assume 32 byte blocks, as in the lecture example.
+00:07:44,117 --> 00:07:48,341
+In the same cycle 4, add is in X, and it overflows.
 
 71
-00:14:43,852 --> 00:14:54,775
-If r s 1 is a multiple of 32, the range fills 4 lines. Each line holds 8 registers. The last line has 4 unused bytes.
+00:07:48,791 --> 00:07:56,983
+Load word is older, and it is at the commit point now. So load word wins. Add is killed, and its flag never reaches M.
 
 72
-00:14:55,225 --> 00:15:07,342
-If r s 1 starts more than 4 bytes into a line, the range touches 5 lines. So the hardware must handle every line from the first to the last address of the range.
+00:07:57,433 --> 00:08:00,739
+So, within one instruction, the earliest stage wins.
 
 73
-00:15:07,792 --> 00:15:22,811
-Now the pipeline, stage by stage. F needs no change. D decodes the two new opcodes and reads r s 1. It makes two control bits, acquire and release. The instructions write no register.
+00:08:01,189 --> 00:08:06,245
+Between instructions, the oldest one wins. It reaches the commit point first.
 
 74
-00:15:23,261 --> 00:15:30,770
-X computes the start address. The A L U passes r s 1, as for a load word with offset 0.
+00:08:06,695 --> 00:08:10,663
+Question 2 asks how and where to handle external interrupts.
 
 75
-00:15:31,220 --> 00:15:46,623
-M is the main change. Here the instructions use the data cache. Acquire fills each line of the range and locks it. Release unlocks the lines. A fill is a cache miss, so the pipeline stalls, as for a load word miss.
+00:08:11,113 --> 00:08:17,023
+The slide answer: check them at the commit point, M. A request arrives in cycle c.
 
 76
-00:15:47,073 --> 00:16:02,326
-W does nothing. To save the context, the handler still uses 31 store words, and later 31 load words. They access the data cache in M and always hit, because locked lines never leave the cache.
+00:08:17,473 --> 00:08:25,217
+The hardware treats the instruction in M, i 2, as interrupted. E P C gets the P C of i 2.
 
 77
-00:16:02,776 --> 00:16:14,104
-Now the cache. Take a 2 way set associative cache with 4 sets. Each frame has a valid bit, a tag and a 32 byte block, as in video 14.
+00:08:25,667 --> 00:08:30,147
+The younger instructions i 3, i 4 and i 5 are killed.
 
 78
-00:16:14,554 --> 00:16:19,482
-Add one new bit to every frame: a lock bit, L. It starts at 0.
+00:08:30,597 --> 00:08:33,242
+The older i 1 in W finishes.
 
 79
-00:16:19,932 --> 00:16:41,948
-Acquire context goes through each line of the range. On a miss, it fills the line from memory. Then it sets L to 1. The lines start at hex 1 0 0 0, 32 bytes apart. The set is the line address over 32, mod 4. So the 4 lines fall into sets 0, 1, 2 and 3.
+00:08:33,692 --> 00:08:38,193
+In cycle c plus 1, F fetches the first handler instruction.
 
 80
-00:16:42,398 --> 00:16:52,723
-The replacement policy, for example L R U, must never pick a frame with L equal to 1. So a locked line stays in the cache until release.
+00:08:38,643 --> 00:08:45,257
+After the handler, the program restarts at i 2. The P C gets the value in E P C.
 
 81
-00:16:53,173 --> 00:17:04,288
-Release context sets L back to 0. The line becomes a normal block again. In a write back cache, it is written to memory when it is replaced, if it is dirty.
+00:08:45,707 --> 00:08:51,061
+An exception uses the same path: E P C, kill, and the handler P C.
 
 82
-00:17:04,738 --> 00:17:32,813
-One more check. Each set needs at least one unlocked way. In a direct mapped cache, the other blocks of a locked set cannot be cached, so they must go to memory. Also, if r s 1 is hex 1 0 1 0, the range touches 5 lines. Lines hex 1 0 0 0 and hex 1 0 8 0 both map to set 0, so both ways of set 0 lock. So r s 1 must be a multiple of 32.
+00:08:51,511 --> 00:08:59,063
+A summary, with the example from before. In cycle 5, the faulting add, number 2, is in M. It is killed.
 
 83
-00:17:33,263 --> 00:17:40,047
-Last, compare the cost for each interrupt of the three designs: no cache, part C, and part B.
+00:08:59,513 --> 00:09:03,844
+The three younger instructions, in X, D and F, are killed too.
 
 84
-00:17:40,497 --> 00:17:48,241
-With no cache, the handler runs 31 store words and 31 load words. Each one waits for main memory.
+00:09:04,294 --> 00:09:07,963
+The older add, number 1, is in W. It finishes.
 
 85
-00:17:48,691 --> 00:17:59,528
-With part C, the same 62 instructions always hit in the data cache. Assume a hit takes 1 cycle in M. Then that is about 62 cycles.
+00:09:08,413 --> 00:09:15,965
+E P C gets the P C of number 2, and Cause gets overflow. In cycle 6, F fetches the handler.
 
 86
-00:17:59,978 --> 00:18:14,250
-With part B, save context and load context are only 2 instructions, plus one flush. So part B is the fastest. Part C keeps the register file unchanged and has no swap hazard.
+00:09:16,415 --> 00:09:26,143
+Number 2 was found in X in cycle 4. The hardware acted on it in M in cycle 5. 5 minus 4 is 1 cycle later.
 
 87
-00:18:14,700 --> 00:18:22,956
-Recap. One. An interrupt is an unplanned call to a handler. The hardware saves the restart P C in E P C.
+00:09:26,593 --> 00:09:35,297
+The hardware always acts at the commit point, M. Each cycle, an instruction moves one stage. So count the stages to M.
 
 88
-00:18:23,406 --> 00:18:32,195
-Two. An exception is tied to one instruction, which cannot finish. An interrupt is external. A trap is an exception on purpose.
+00:09:35,747 --> 00:09:41,849
+A fault found in F moves 3 stages to M. So the hardware acts 3 cycles later.
 
 89
-00:18:32,645 --> 00:18:39,984
-Three. The pipeline finds exceptions in F, D, X and M. So it finds them out of program order.
+00:09:42,299 --> 00:09:46,395
+A fault found in D moves 2 stages: 2 cycles later.
 
 90
-00:18:40,434 --> 00:18:47,026
-Four. Precise means: older instructions finish, and the faulting and younger ones have no effect.
+00:09:46,845 --> 00:09:52,157
+A fault found in M is already at the commit point. The hardware acts at once.
 
 91
-00:18:47,476 --> 00:18:58,953
-Five. Carry the flags and the P Cs to the commit point M. Act only there. Write E P C and Cause, kill M, X, D and F, and fetch the handler.
+00:09:52,607 --> 00:09:57,833
+Compare a wrong branch guess from video 11. The branch resolves in X.
 
 92
-00:18:59,403 --> 00:19:09,558
-Six. Within one instruction, the earliest stage wins. Between instructions, the oldest wins. Check asynchronous interrupts at the commit point too.
+00:09:58,283 --> 00:10:00,438
+Only F and D are flushed.
 
 93
-00:19:10,008 --> 00:19:24,621
+00:10:00,888 --> 00:10:03,661
+The branch and the older instructions go on.
+
+94
+00:10:04,111 --> 00:10:10,575
+No E P C is saved, and no Cause. F fetches the correct target in the next cycle.
+
+95
+00:10:11,025 --> 00:10:21,137
+Now the spring 2020 quiz, question 3. Interrupts happen at a high frequency, so context saving and restoring must be fast.
+
+96
+00:10:21,587 --> 00:10:30,291
+The context is the 31 registers x 1 to x 31. x 0 is always 0, so it is not saved.
+
+97
+00:10:30,741 --> 00:10:33,749
+Normally, the handler saves them in main memory.
+
+98
+00:10:34,199 --> 00:10:38,551
+This quiz resolves interrupts and exceptions at the W stage.
+
+99
+00:10:39,001 --> 00:10:44,783
+The slides use M. The method is the same: one commit point, and act only there.
+
+100
+00:10:45,233 --> 00:10:48,646
+There are five parts. Parts A and B have no cache.
+
+101
+00:10:49,096 --> 00:10:54,408
+Part C adds a data cache. It uses the cache ideas from video 14.
+
+102
+00:10:54,858 --> 00:11:03,669
+Part A. With no cache, describe one way to save and restore the P C when an interrupt happens. Pause the video and try it.
+
+103
+00:11:04,119 --> 00:11:11,756
+Follow the slides. First, carry the P C of each instruction down the pipeline, in every pipeline register.
+
+104
+00:11:12,206 --> 00:11:17,155
+Carry it up to the commit point. In this quiz, the commit point is W.
+
+105
+00:11:17,605 --> 00:11:22,597
+At W, write E P C with the P C of the interrupted instruction.
+
+106
+00:11:23,047 --> 00:11:25,159
+Also write Cause with the reason.
+
+107
+00:11:25,609 --> 00:11:29,300
+Kill the younger instructions in F, D, X and M.
+
+108
+00:11:29,750 --> 00:11:32,865
+The instruction in W does not write back.
+
+109
+00:11:33,315 --> 00:11:36,109
+Then the P C select picks the handler address.
+
+110
+00:11:36,559 --> 00:11:46,757
+To restore, add a return instruction at the end of the handler. It copies E P C into the P C. Fetch restarts at the interrupted instruction.
+
+111
+00:11:47,207 --> 00:11:55,569
+Part B adds two new instructions. Save context saves all 31 registers. Load context restores them.
+
+112
+00:11:56,019 --> 00:12:00,115
+The register file gets two sets, set 0 and set 1.
+
+113
+00:12:00,565 --> 00:12:04,213
+A bit s selects the current set. Now s is 0.
+
+114
+00:12:04,663 --> 00:12:10,658
+The copy operation copies the current set s into the other set, s X O R 1.
+
+115
+00:12:11,108 --> 00:12:17,529
+Now set 1 holds the same values as set 0: 5, 9, and so on, to 7.
+
+116
+00:12:17,979 --> 00:12:25,745
+The swap operation changes s to s X O R 1. Now s is 1, so set 1 is the current set.
+
+117
+00:12:26,195 --> 00:12:31,357
+If both come in the same cycle, the register file copies first, then swaps.
+
+118
+00:12:31,807 --> 00:12:34,986
+This design does not support nested interrupts.
+
+119
+00:12:35,436 --> 00:12:40,087
+We use the copy for save context, and the swap for load context.
+
+120
+00:12:40,537 --> 00:12:48,366
+Part B 1. How does an application benefit from save context and load context? Pause the video and try it.
+
+121
+00:12:48,816 --> 00:12:55,280
+Without them, the handler saves the context with 31 store words, one for each register.
+
+122
+00:12:55,730 --> 00:12:59,890
+At the end, it restores the context with 31 load words.
+
+123
+00:13:00,340 --> 00:13:05,801
+31 plus 31 is 62 memory instructions for each interrupt.
+
+124
+00:13:06,251 --> 00:13:11,606
+With them, the handler uses 2 instructions: save context and load context.
+
+125
+00:13:12,056 --> 00:13:17,453
+The copy and the swap happen inside the register file, with no memory access.
+
+126
+00:13:17,903 --> 00:13:24,794
+So each interrupt costs much less time. This matters, because interrupts come at a high frequency.
+
+127
+00:13:25,244 --> 00:13:34,695
+Part B 2. Which changes does the pipeline need, apart from the register file? Go stage by stage. Pause the video and try it.
+
+128
+00:13:35,145 --> 00:13:39,881
+F needs no change. The new instructions are fetched like all others.
+
+129
+00:13:40,331 --> 00:13:54,368
+D decodes the two new opcodes. It makes two new control bits: copy for save context, and swap for load context. The instructions write no register, so Reg W En is 0.
+
+130
+00:13:54,818 --> 00:14:02,541
+X and M do no work. They only carry the two bits down the pipeline registers, like Reg W En.
+
+131
+00:14:02,991 --> 00:14:07,833
+W is the commit point, so the copy or swap happens in W.
+
+132
+00:14:08,283 --> 00:14:20,678
+All older instructions have written their results, so the copy is complete. And if an interrupt kills save context, it has changed nothing. Younger instructions have not written yet.
+
+133
+00:14:21,128 --> 00:14:31,411
+One hazard remains. After load context swaps the sets, the younger instructions in D, X and M have read registers from the old set.
+
+134
+00:14:31,861 --> 00:14:38,901
+Flush F, D, X and M, and fetch again after load context. This is like a wrong branch guess.
+
+135
+00:14:39,351 --> 00:14:48,545
+Part B 3. The change breaks some existing interrupt handlers. Describe the problem, and how to fix it. Pause the video and try it.
+
+136
+00:14:48,995 --> 00:14:55,737
+Trace the two sets. P means the program registers. At the start, the program uses set 0.
+
+137
+00:14:56,187 --> 00:15:02,181
+Interrupt 1 runs save context. It is a copy, so set 1 also holds P.
+
+138
+00:15:02,631 --> 00:15:07,218
+Handler 1 changes set 0. Set 0 now holds H 1.
+
+139
+00:15:07,668 --> 00:15:22,452
+Now an existing handler enables interrupts again, and a nested interrupt comes. Handler 2 runs save context. The copy writes H 1 into set 1. The saved program registers P are lost.
+
+140
+00:15:22,902 --> 00:15:25,761
+Handler 2 changes set 0 to H 2.
+
+141
+00:15:26,211 --> 00:15:34,659
+Handler 2 runs load context. The swap makes s equal to 1. Handler 1 gets H 1 back, which is correct.
+
+142
+00:15:35,109 --> 00:15:44,965
+Then handler 1 runs load context. It swaps back to set 0. The program resumes with the registers of handler 2. That is wrong.
+
+143
+00:15:45,415 --> 00:15:57,041
+The fix: keep interrupts disabled from save context to load context. A handler that must allow nested interrupts uses store word and load word, as before.
+
+144
+00:15:57,491 --> 00:16:11,145
+A second problem: load context restores all 31 registers. So a handler can no longer return a result in a register, for example after e call. It must return it through memory.
+
+145
+00:16:11,595 --> 00:16:22,603
+Part C adds a data cache. Acquire context reserves an address range for the context. The lines of the range stay in the cache until release context.
+
+146
+00:16:23,053 --> 00:16:31,821
+Part C uses the cache ideas from video 14: blocks, sets, tags, and L R U. Pause the video and try it.
+
+147
+00:16:32,271 --> 00:16:40,932
+First, the size. Each register has 4 bytes. 31 registers times 4 bytes is 124 bytes.
+
+148
+00:16:41,382 --> 00:16:47,462
+The quiz gives no block size. Assume 32 byte blocks, as in the lecture example.
+
+149
+00:16:47,912 --> 00:16:56,360
+Take r s 1 equal to hex 1 0 0 0, a multiple of 32. Then the range fills 4 lines.
+
+150
+00:16:56,810 --> 00:17:04,106
+Each line holds 32 over 4, so 8 registers. The first line holds x 1 to x 8.
+
+151
+00:17:04,556 --> 00:17:10,828
+The last line holds x 25 to x 31. Its last 4 bytes are unused.
+
+152
+00:17:11,278 --> 00:17:18,574
+Now take r s 1 equal to hex 1 0 1 0. The range starts 16 bytes into a line.
+
+153
+00:17:19,024 --> 00:17:21,499
+Now the range touches 5 lines.
+
+154
+00:17:21,949 --> 00:17:31,954
+So a start more than 4 bytes into a line gives 5 lines. The hardware must handle every line from the first to the last address of the range.
+
+155
+00:17:32,404 --> 00:17:36,628
+Now the pipeline, stage by stage. F needs no change.
+
+156
+00:17:37,078 --> 00:17:47,211
+D decodes the two new opcodes and reads r s 1. It makes two control bits, acquire and release. The instructions write no register.
+
+157
+00:17:47,661 --> 00:17:55,171
+X computes the start address. The A L U passes r s 1, as for a load word with offset 0.
+
+158
+00:17:55,621 --> 00:18:06,095
+M is the main change: the instructions use the data cache in M. Acquire fills each line of the range and locks it. Release unlocks the lines.
+
+159
+00:18:06,545 --> 00:18:11,303
+A fill is a cache miss, so the pipeline stalls, as for a load word miss.
+
+160
+00:18:11,753 --> 00:18:15,721
+W does nothing. The instructions write no register.
+
+161
+00:18:16,171 --> 00:18:23,147
+To save the context, the handler still uses 31 store words, and later 31 load words.
+
+162
+00:18:23,597 --> 00:18:29,719
+They access the data cache in M, and they always hit. The locked lines never leave the cache.
+
+163
+00:18:30,169 --> 00:18:34,287
+Acquire context runs only once, when the program starts.
+
+164
+00:18:34,737 --> 00:18:40,347
+Now the cache. Take a 2 way set associative cache: way 0 and way 1.
+
+165
+00:18:40,797 --> 00:18:44,275
+The cache has 4 sets, set 0 to set 3.
+
+166
+00:18:44,725 --> 00:18:51,381
+Each frame has a valid bit V, a tag, and a 32 byte block, as in video 14.
+
+167
+00:18:51,831 --> 00:18:56,759
+Add one new bit to every frame: a lock bit, L. It starts at 0.
+
+168
+00:18:57,209 --> 00:19:05,699
+Acquire context goes through each line of the range. On a miss, it fills the line from memory. Then it sets L to 1.
+
+169
+00:19:06,149 --> 00:19:15,920
+The set comes from the address bits. A 32 byte block gives 5 offset bits, bits 4 to 0, because 32 is 2 to the 5.
+
+170
+00:19:16,370 --> 00:19:26,951
+The 4 sets give 2 index bits, bits 6 and 5, because 4 is 2 to the 2. This is the same as the line address over 32, mod 4.
+
+171
+00:19:27,401 --> 00:19:42,271
+The lines start at hex 1 0 0 0, 32 bytes apart. So their index bits count 0 0, 0 1, 1 0, 1 1. The 4 lines fall into sets 0, 1, 2 and 3.
+
+172
+00:19:42,721 --> 00:19:49,377
+So acquire context fills way 0 of sets 0 to 3, and sets L to 1 in each frame.
+
+173
+00:19:49,827 --> 00:20:00,152
+The replacement policy, for example L R U, must never pick a frame with L equal to 1. So a locked line stays in the cache until release.
+
+174
+00:20:00,602 --> 00:20:07,365
+One more check. Each set needs at least one unlocked way. Way 1 stays free for the other blocks.
+
+175
+00:20:07,815 --> 00:20:16,732
+In a direct mapped cache, each set has only one way. The other blocks of a locked set cannot be cached, so they must go to memory.
+
+176
+00:20:17,182 --> 00:20:29,086
+Also, take r s 1 equal to hex 1 0 1 0. The range touches 5 lines, from hex 1 0 0 0 to hex 1 0 8 0.
+
+177
+00:20:29,536 --> 00:20:39,307
+Lines hex 1 0 0 0 and hex 1 0 8 0 both have index bits 0 0. So both map to set 0.
+
+178
+00:20:39,757 --> 00:20:44,429
+So both ways of set 0 lock, and set 0 has no free way.
+
+179
+00:20:44,879 --> 00:20:48,356
+So r s 1 must be a multiple of 32.
+
+180
+00:20:48,806 --> 00:20:54,353
+Release context sets L back to 0. The line becomes a normal block again.
+
+181
+00:20:54,803 --> 00:21:00,797
+In a write back cache, the line is written to memory when it is replaced, if it is dirty.
+
+182
+00:21:01,247 --> 00:21:08,031
+Last, compare the cost for each interrupt of the three designs: no cache, part C, and part B.
+
+183
+00:21:08,481 --> 00:21:16,225
+With no cache, the handler runs 31 store words and 31 load words. Each one waits for main memory.
+
+184
+00:21:16,675 --> 00:21:24,014
+With part C, the same 31 plus 31, so 62 instructions, always hit in the data cache.
+
+185
+00:21:24,464 --> 00:21:31,803
+Assume a hit takes 1 cycle in M. 62 hits times 1 cycle is about 62 cycles.
+
+186
+00:21:32,253 --> 00:21:41,106
+With part B, save context and load context are only 2 instructions, plus one flush. So part B is the fastest.
+
+187
+00:21:41,556 --> 00:21:50,623
+Part C keeps the register file unchanged and has no swap hazard. But it still runs 62 instructions for each interrupt.
+
+188
+00:21:51,073 --> 00:21:57,643
+Part B needs a second register set and a flush after load context, and it allows no nesting.
+
+189
+00:21:58,093 --> 00:22:06,349
+Recap. One. An interrupt is an unplanned call to a handler. The hardware saves the restart P C in E P C.
+
+190
+00:22:06,799 --> 00:22:15,589
+Two. An exception is tied to one instruction, which cannot finish. An interrupt is external. A trap is an exception on purpose.
+
+191
+00:22:16,039 --> 00:22:23,377
+Three. The pipeline finds exceptions in F, D, X and M. So it finds them out of program order.
+
+192
+00:22:23,827 --> 00:22:30,419
+Four. Precise means: older instructions finish, and the faulting and younger ones have no effect.
+
+193
+00:22:30,869 --> 00:22:42,347
+Five. Carry the flags and the P Cs to the commit point M. Act only there. Write E P C and Cause, kill M, X, D and F, and fetch the handler.
+
+194
+00:22:42,797 --> 00:22:52,951
+Six. Within one instruction, the earliest stage wins. Between instructions, the oldest wins. Check asynchronous interrupts at the commit point too.
+
+195
+00:22:53,401 --> 00:23:08,015
 Seven. In the quiz, the commit point is W. Do the copy and swap there, flush after load context, and allow no nesting. In part C, lock the context lines in the cache. That is the end of video 13.

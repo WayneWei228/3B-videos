@@ -3,309 +3,665 @@
 This is ECE 320, video 10 a. We fill pipeline diagrams for past exam questions, one cycle at a time.
 
 2
-00:00:10,242 --> 00:00:30,637
-After this video, you can fill a pipeline diagram with and without forwarding. You can explain every stall, every forward and every flush. And you can fill the forwarding table and the stall table. These questions carry the largest part of the midterm marks. Video 10 b continues with more questions.
+00:00:10,242 --> 00:00:15,255
+After this video, you can fill a pipeline diagram with and without forwarding.
 
 3
-00:00:31,087 --> 00:00:49,860
-Here is the method. Go through the instructions in program order. For each source register, first find the producer. The producer is the latest older instruction that writes this register. Skip flushed rows, and skip x0. If there is no producer, there is no hazard.
+00:00:15,705 --> 00:00:19,801
+You can explain every stall, every forward and every flush.
 
 4
-00:00:50,310 --> 00:01:14,054
-Next, find two times. When does the value exist? An ALU result exists at the end of X. A load result exists only at the end of M. And when is the value needed? An ALU input or an address is needed in X. Store data is needed in M. A branch with no forwarding into its compare unit needs its operands in D.
+00:00:20,251 --> 00:00:31,558
+And you can fill the forwarding table and the stall table. These questions carry the largest part of the midterm marks. Video 10 b continues with more questions.
 
 5
-00:01:14,504 --> 00:01:44,861
-Then ask: is there a path in the same cycle? The slides say that the from stage and the to stage are in the same cycle. MX works when the consumer is in X and the producer is in M. The producer must not be a load. WX works when the consumer is in X and the producer is in W. WM is for store data only: the store is in M and the producer is in W. And the register file works when the consumer is in D after the producer's W.
+00:00:32,008 --> 00:00:51,869
+The method has five steps. Go through the instructions in program order. Step 1: for each source register, find the producer. The producer is the latest older instruction that writes this register. Skip flushed rows, and skip x0. If there is no producer, there is no hazard.
 
 6
-00:01:45,311 --> 00:01:51,007
-If a path exists, the value is forwarded. You write one row in the forwarding table.
+00:00:52,319 --> 00:01:01,749
+Step 2: find when the value exists. An ALU result exists at the end of X. A load result exists only at the end of M.
 
 7
-00:01:51,457 --> 00:02:03,191
-If no path exists, the consumer stalls in D. D repeats, and the repeat gets a star. The instruction behind it repeats F. In the next cycle, test again.
+00:01:02,199 --> 00:01:17,111
+Step 3: find when the value is needed. An ALU input or an address is needed in X. Store data is needed in M. A branch with no forwarding into its compare unit needs its operands in D.
 
 8
-00:02:03,641 --> 00:02:19,406
-Last, branches. A branch resolves in X. The pipeline guesses not taken. If the branch is taken, the 2 younger instructions are flushed. They get a dash. The target is fetched in the next cycle. This costs 2 cycles.
+00:01:17,561 --> 00:01:27,182
+Step 4: test if a path exists in the same cycle. The slides say that the from stage and the to stage of a path are in the same cycle.
 
 9
-00:02:19,856 --> 00:02:34,192
-Let us see the two times in real diagrams. On the left, add writes x1. It computes x1 in X, in cycle 3. So the value exists at the end of cycle 3, in the X M register.
+00:01:27,632 --> 00:01:34,864
+MX works when the consumer is in X and the producer is in M. The producer must not be a load.
 
 10
-00:02:34,642 --> 00:02:48,893
-The next instruction, sub, is in X in cycle 4. In cycle 4, add is in M. So x1 goes by MX. The green arrow is vertical, because both stages are in the same cycle.
+00:01:35,314 --> 00:01:40,349
+WX works when the consumer is in X and the producer is in W.
 
 11
-00:02:49,343 --> 00:02:57,108
-Two instructions later, and is in X in cycle 5. add is in W. So x1 goes by WX.
+00:01:40,799 --> 00:01:47,327
+WM is for store data only. The store is in M, and the producer is in W.
 
 12
-00:02:57,558 --> 00:03:20,193
-Three instructions later, or is in D in cycle 5. In the same cycle, add writes x1 in W. There is no forwarding into D. D sees only values written in earlier cycles. So or reads the old x1, and D repeats once. This is the W D case. In cycle 6, or reads the new value.
+00:01:47,777 --> 00:01:53,131
+The register file works when the consumer is in D after the producer's W.
 
 13
-00:03:20,643 --> 00:03:39,821
-On the right, the producer is a load. The load value exists only at the end of M, in cycle 4. sub wants x1 in X in cycle 4. That is too early, even with MX. This is the load-use case. sub stalls one cycle, then gets x1 by WX.
+00:01:53,581 --> 00:01:59,277
+If a path exists, the value is forwarded. You write one row in the forwarding table.
 
 14
-00:03:40,271 --> 00:03:59,471
-Now look at the instruction and. It is 2 instructions after the load, but the stall moved it. Its D is now in cycle 5, the cycle of the load's W. This is the W D case again, so it stalls once more. Rule: after any stall, compare the real cycles again.
+00:01:59,727 --> 00:02:11,461
+If no path exists, the consumer stalls in D. D repeats, and the repeat gets a star. The instruction behind it repeats F. In the next cycle, test again.
 
 15
-00:03:59,921 --> 00:04:21,959
-From the same timing facts you get this table. It gives the path, or the number of stalls, for each distance. First row: an ALU result used as an ALU input or an address. One later: MX. Two later: WX. Three later: one stall, the W D case. Four or more later: the register file.
+00:02:11,911 --> 00:02:28,529
+Step 5 is for branches. A branch resolves in X. The pipeline guesses not taken. If the branch is taken, the 2 younger instructions are flushed. They get a dash. The target is fetched in the next cycle. This costs 2 cycles.
 
 16
-00:04:22,409 --> 00:04:36,489
-Second row: a load result used in the ALU. One later: one stall, then WX. Two later: WX. Three later: one stall, the W D case. Four later: the register file.
+00:02:28,979 --> 00:02:41,545
+Now the two times in real diagrams. On the left, add writes x1. It computes x1 in X, in cycle 3. So the value exists at the end of cycle 3.
 
 17
-00:04:36,939 --> 00:04:56,203
-Third row: store data. The store needs the data in M. One later: WM. Two later: two stalls. The reason is that store data has no WX path in the class datapath. So the store must read the register file in D, after the W of the producer.
+00:02:41,995 --> 00:02:56,651
+The next instruction, sub, reads x1. sub is in X in cycle 4, and add is in M. So x1 goes by MX. The green arrow is vertical, because both stages are in the same cycle.
 
 18
-00:04:56,653 --> 00:05:12,695
-Last row: no forwarding at all, as in Assignment 3 part a. The same holds for a branch with no compare forwarding. The consumer reads in D after the producer's W. That costs 3, 2, 1 and 0 stalls.
+00:02:57,101 --> 00:03:04,866
+Two instructions later, and is in X in cycle 5. add is in W. So x1 goes by WX.
 
 19
-00:05:13,145 --> 00:05:31,577
-Use this table only when no stall comes between the two instructions. After a stall, compare the real cycles again. In the load example below, and is 2 instructions after the load. The table says WX, but the stall moved it, and now it stalls once.
+00:03:05,316 --> 00:03:25,156
+Three instructions later, or is in D in cycle 5. In the same cycle, add writes x1 in W. There is no forwarding into D. D sees only values written in earlier cycles. So or reads the old x1, and D repeats once. This is the W D case.
 
 20
-00:05:32,027 --> 00:05:46,086
-Now the notation. This is slide 47. add has a load-use stall. In cycle 3 it stays in D. That cycle is written D star. A star marks every repeat except the last one.
+00:03:25,606 --> 00:03:30,022
+In cycle 6, or reads the new x1 from the register file.
 
 21
-00:05:46,536 --> 00:05:59,059
-The instruction behind it, sub, cannot enter D in cycle 3. So it repeats F. That cycle is written F star. Every D stall gives an F stall to the next instruction.
+00:03:30,472 --> 00:03:40,861
+On the right, the producer is a load, and sub reads x1. Without a stall, sub would be in X in cycle 4. In cycle 4, the load is in M.
 
 22
-00:05:59,509 --> 00:06:23,167
-This is part 2, slide 4. The branch B E Q is in X in cycle 4. It resolves there: taken. The pipeline guessed not taken, so it fetched store word and add. These 2 instructions are flushed. They get a dash in their later cycles. The target is fetched in cycle 5, the cycle after X. So a taken branch costs 2 cycles.
+00:03:41,311 --> 00:03:56,266
+The load value exists only at the end of M, in cycle 4. So sub cannot get it in X in cycle 4, even with MX. This is the load-use case. sub stalls one cycle: D star in cycle 3.
 
 23
-00:06:23,617 --> 00:06:40,727
-Our first question is Assignment 3, question 4. There are 6 instructions. In part a, there is no forwarding. In part b, there is full forwarding, also into the branch compare unit. The branch is not taken. Pause the video and try it.
+00:03:56,716 --> 00:04:03,777
+In cycle 5, sub is in X and the load is in W. So sub gets x1 by WX.
 
 24
-00:06:41,177 --> 00:06:53,507
-Step 1 of the method: find the producers. S L T reads t2, which the load writes. B E Q reads t1, which S L T writes. The branch is not taken.
+00:04:04,227 --> 00:04:19,182
+Now the instruction and. It is 2 instructions after the load, but the stall moved it. Its D is now in cycle 5, the cycle of the load's W. This is the W D case again, so it stalls once more.
 
 25
-00:06:53,957 --> 00:07:06,715
-sub reads t2 from the load. add reads t2 from sub, the latest writer. And store word uses t2 as its base address. The producer is add. Nothing writes t3.
+00:04:19,632 --> 00:04:27,739
+In cycle 6, and reads x1 from the register file. Rule: after any stall, compare the real cycles again.
 
 26
-00:07:07,165 --> 00:07:20,477
-Part a, no forwarding. In cycles 1 and 2, the load is fetched and decoded. It reads t3. Nothing older writes t3, so there is no hazard. S L T is fetched in cycle 2.
+00:04:28,189 --> 00:04:44,637
+The table gives the path, or the number of stalls, for each distance. Each cell has its own small diagram. First row: an ALU result used as an ALU input or an address. One instruction later, the path is MX.
 
 27
-00:07:20,927 --> 00:07:43,049
-In cycle 3, S L T is in D. It needs t2. The load writes t2 only in W, in cycle 5. There is no forwarding. So S L T must read t2 in D after cycle 5. S L T repeats D in cycles 3, 4 and 5. B E Q repeats F in the same cycles.
+00:04:45,087 --> 00:04:46,836
+Two later: WX.
 
 28
-00:07:43,499 --> 00:07:57,110
-In cycle 6, S L T reads t2 from the register file. The load wrote it in cycle 5, an earlier cycle. So S L T gets the new value. B E Q does its last F.
+00:04:47,286 --> 00:04:55,158
+Three later: one stall. The consumer's D is in the cycle of the producer's W. This is the W D case.
 
 29
-00:07:57,560 --> 00:08:10,979
-B E Q needs t1 from S L T. S L T writes t1 in W in cycle 9. So B E Q repeats D in cycles 7, 8 and 9. sub waits in F.
+00:04:55,608 --> 00:05:01,453
+Four or more later: the consumer reads the register file in D. There is no stall.
 
 30
-00:08:11,429 --> 00:08:28,495
-In cycle 10, B E Q reads t1. In cycle 11, B E Q is in X and resolves. It is not taken. The pipeline guessed not taken, so sub is the right next instruction. Nothing is flushed. The add at SKIP is fetched.
+00:05:01,903 --> 00:05:09,839
+Second row: a load result used in the ALU. One later: one stall, then WX. This is load-use.
 
 31
-00:08:28,945 --> 00:08:46,588
-sub reads t2 from the load, long after the load's W. So sub has no stall. Then add needs t2 from sub. sub writes t2 in cycle 14. So add repeats D in cycles 12, 13 and 14. store word waits in F.
+00:05:10,289 --> 00:05:12,039
+Two later: WX.
 
 32
-00:08:47,038 --> 00:08:58,494
-store word uses t2 as its base address. add writes t2 in cycle 18. So store word repeats D in cycles 16, 17 and 18.
+00:05:12,489 --> 00:05:15,667
+Three later: one stall, the W D case.
 
 33
-00:08:58,944 --> 00:09:18,336
-In cycle 19, store word reads t2. It finishes W in cycle 22. The run takes 22 cycles. There are 4 RAW hazards, each between neighbours, and each costs 3 stall cycles. This diagram is the same as the published solution.
+00:05:16,117 --> 00:05:18,443
+Four later: the register file.
 
 34
-00:09:18,786 --> 00:09:39,735
-Part b, with full forwarding. In cycle 3, S L T is in D. Its X would be cycle 4. In cycle 4 the load is in M, and its value exists only at the end of M. So MX cannot help. This is the load-use case. S L T stalls one cycle. B E Q repeats F.
+00:05:18,893 --> 00:05:24,738
+Third row: store data. The store needs the data in M. One later: WM.
 
 35
-00:09:40,185 --> 00:09:51,001
-In cycle 5, S L T is in X and the load is in W. t2 goes by WX, from the M W register to the ALU.
+00:05:25,188 --> 00:05:37,028
+Two later: two stalls. Store data has no WX path in the class datapath. So the store must read the register file in D, after the W of the producer.
 
 36
-00:09:51,451 --> 00:10:07,601
-In cycle 6, B E Q is in X and S L T is in M. t1 goes by MX. The question says that there is forwarding into the branch compare unit. B E Q resolves not taken, so nothing is flushed.
+00:05:37,478 --> 00:05:40,657
+Three later: one stall, the W D case.
 
 37
-00:10:08,051 --> 00:10:20,253
-sub needs t2 from the load. sub is in D in cycle 6. The load wrote t2 in cycle 5. So the register file already has it. No forward is needed.
+00:05:41,107 --> 00:05:43,432
+Four later: the register file.
 
 38
-00:10:20,703 --> 00:10:26,399
-In cycle 8, add is in X and sub is in M. t2 goes by MX.
+00:05:43,882 --> 00:05:58,602
+Last row: no forwarding at all, as in Assignment 3 part a. The same holds for a branch with no compare forwarding. The consumer reads in D after the producer's W. One later: 3 stalls.
 
 39
-00:10:26,849 --> 00:10:44,215
-In cycle 9, store word is in X and add is in M. store word uses t2 as its address, and the address goes through the ALU. So t2 goes by MX, not by WM. The published solution has the same note.
+00:05:59,052 --> 00:06:00,780
+Two later: 2 stalls.
 
 40
-00:10:44,665 --> 00:10:57,507
-The run ends in cycle 11. Without forwarding it took 22 cycles. So forwarding gives a speedup of 22 over 11, which is 2. Only the load-use stall is left.
+00:06:01,230 --> 00:06:03,107
+Three later: 1 stall.
 
 41
-00:10:57,957 --> 00:11:22,128
-Now a real midterm question: fall 2019, question 2. It has 14 instructions. The pipeline has forwarding, but no forwarding into the decode stage. Branches resolve in X, and the pipeline guesses not taken. The branch in instruction 8 is taken. Part A asks for the diagram and two tables. It is worth 18 marks.
+00:06:03,557 --> 00:06:05,328
+Four later: no stall.
 
 42
-00:11:22,578 --> 00:11:40,541
-Two facts of the class datapath decide many cells. First, MX and WX feed only the ALU inputs. The store data has only the WM path. Second, there is no forwarding into D. Pause the video and try it. Then continue.
+00:06:05,778 --> 00:06:14,119
+Use the table only when no stall comes between the two instructions. After a stall, compare the real cycles again.
 
 43
-00:11:40,991 --> 00:11:50,313
-Step 1 of the method: write the producer of each source register. Number 1 and number 2 read registers that nothing older writes.
+00:06:14,569 --> 00:06:24,148
+In the load example, and is 2 instructions after the load. The table says WX. But the stall moved and, and now it stalls once.
 
 44
-00:11:50,763 --> 00:12:07,681
-Number 3 uses x3 as its base address. The producer is the load, number 2. Number 4 add also reads x3 from number 2. Orange means a load producer. That is a warning: a load value exists only at the end of M.
+00:06:24,598 --> 00:06:37,846
+Now the notation. Slide 47 shows a load-use stall. add stays in D in cycle 3. That cycle is written D star. A star marks every repeat except the last one.
 
 45
-00:12:08,131 --> 00:12:26,883
-Number 5 and number 6 are stores. Each uses x6 two times: as the base address and as the store data. The producer is add number 4. Number 7 reads x8, and nothing older writes it. Number 8 reads x6 from number 4, and it is taken.
+00:06:38,296 --> 00:06:50,819
+The instruction behind it, sub, cannot enter D in cycle 3. So it repeats F. That cycle is written F star. Every D stall gives an F stall to the next instruction.
 
 46
-00:12:27,333 --> 00:12:52,037
-So number 9 and number 10 are on the wrong path. They will be flushed, so they are not producers. That is why number 11 gets x7 from the load number 7, not from number 9. Number 14 reads x7 from number 11, and x8 from the load number 13. Number 13 writes x8 after number 12, so number 13 is the latest producer.
+00:06:51,269 --> 00:06:59,290
+Part 2, slide 4, shows a taken branch. B E Q is in X in cycle 4. It resolves there: taken.
 
 47
-00:12:52,487 --> 00:13:07,228
-Now fill the diagram. Cycles 1 to 3. Number 1 store word and number 2 load word read x3 and x4. Nothing older writes them, so there is no hazard. Number 3 is fetched in cycle 3.
+00:06:59,740 --> 00:07:08,871
+The pipeline guessed not taken, so it fetched store word and add. These 2 instructions are flushed. They get a dash in their later cycles.
 
 48
-00:13:07,678 --> 00:13:28,393
-In cycle 4, number 3 is in D. Its base x3 comes from the load number 2. The X of number 3 would be cycle 5. In cycle 5, the load is in M, and its value exists only at the end of M. This is load-use. Number 3 stalls one cycle. Number 4 repeats F.
+00:07:09,321 --> 00:07:19,582
+The target is fetched in cycle 5, the cycle after X. The 2 flushed rows are 2 lost cycles. So a taken branch costs 2 cycles.
 
 49
-00:13:28,843 --> 00:13:38,848
-In cycle 6, number 3 is in X and the load is in W. x3 goes by WX, into the ALU, for the base address.
+00:07:20,032 --> 00:07:25,301
+Our first question is Assignment 3, question 4. There are 6 instructions.
 
 50
-00:13:39,298 --> 00:13:58,775
-In the same cycle, number 4 add is in D, and it also needs x3. The load writes x3 in this cycle, but D sees only earlier writes. So number 4 reads the old x3. This is the W D case. Number 4 repeats D, and number 5 repeats F.
+00:07:25,751 --> 00:07:28,119
+In part a, there is no forwarding.
 
 51
-00:13:59,225 --> 00:14:08,484
-In cycle 7, number 4 reads x3 again from the register file. Now it gets the new value. Number 5 does its last F.
+00:07:28,569 --> 00:07:33,519
+In part b, there is full forwarding, also into the branch compare unit.
 
 52
-00:14:08,934 --> 00:14:25,958
-Number 5 store word uses x6 as base and as data. In cycle 9, number 5 is in X and add number 4 is in M. The base x6 goes by MX. Number 6 is in D, and it waits. The next step shows why.
+00:07:33,969 --> 00:07:39,771
+All memory accesses hit, and the branch is not taken. Pause the video and try it.
 
 53
-00:14:26,408 --> 00:14:35,027
-In cycle 10, number 5 is in M and number 4 is in W. The store data x6 goes by WM.
+00:07:40,221 --> 00:07:47,560
+Step 1 of the method: find the producers. S L T reads t2. The load, number 1, writes t2.
 
 54
-00:14:35,477 --> 00:15:08,367
-Now number 6. It is also a store, with x6 as base and data. In cycle 9, its X would be cycle 10, while number 4 is in W. The base could use WX. But store data has no WX path, and WM would need number 6 in M in cycle 10. So number 6 stalls. In cycle 10, number 6 is in D in the cycle of number 4's W. That is the W D case, so it repeats D again. Number 7 waits in F.
+00:07:48,010 --> 00:07:53,322
+B E Q reads t1, which S L T writes. The branch is not taken.
 
 55
-00:15:08,817 --> 00:15:18,651
-In cycle 11, number 6 reads x6 from the register file. So number 6 has 2 stall cycles. Number 7 does its last F.
+00:07:53,772 --> 00:07:55,799
+sub reads t2 from the load.
 
 56
-00:15:19,101 --> 00:15:35,891
-Cycles 12 and 13. Number 7 load word reads x8, and nothing older writes x8. Number 8 B E Q reads x6 and x8. Number 4 wrote x6 in cycle 10, long before. So there is no hazard.
+00:07:56,249 --> 00:08:01,795
+add reads t2. The producer is sub, the latest older writer of t2.
 
 57
-00:15:36,341 --> 00:15:48,309
-In cycle 14, B E Q is in X. It resolves: taken. The pipeline guessed not taken, so it fetched number 9 and number 10. Both are on the wrong path.
+00:08:02,245 --> 00:08:06,960
+store word uses t2 as its base address. The producer is add.
 
 58
-00:15:48,759 --> 00:16:04,652
-In cycle 15, number 9 and number 10 are flushed. They get a dash in each later cycle. The target T1, instruction 11, is fetched in cycle 15, the cycle after X. The taken branch costs 2 cycles.
+00:08:07,410 --> 00:08:12,914
+store word also reads t3, and so does the load. Nothing writes t3.
 
 59
-00:16:05,102 --> 00:16:21,891
-Number 11 needs x7. Number 9 also writes x7, but number 9 is flushed. So the producer is the load number 7. It wrote x7 in cycle 15. Number 11 reads it in D in cycle 16. No stall.
+00:08:13,364 --> 00:08:24,564
+Part a has no forwarding. In cycles 1 and 2, the load is fetched and decoded. In D it reads t3. Nothing older writes t3, so there is no hazard.
 
 60
-00:16:22,341 --> 00:16:34,011
-In cycles 17 and 18, number 12 and number 13 read only x0. x0 is never a hazard. Number 14 is fetched in cycle 18.
+00:08:25,014 --> 00:08:33,782
+In cycle 3, S L T is in D. It needs t2. The load writes t2 only in W, in cycle 5.
 
 61
-00:16:34,461 --> 00:17:00,978
-Number 14 add needs x7 and x8. x8 comes from the load number 13. The X of number 14 would be cycle 20, when the load is in M: load-use. x7 comes from number 11. Number 11 is in W in cycle 19, the same cycle as this D: the W D case. Both reasons ask for a stall in cycle 19. One D star covers both.
+00:08:34,232 --> 00:08:44,451
+There is no forwarding. So S L T must read t2 in D after cycle 5. S L T repeats D in cycles 3, 4 and 5.
 
 62
-00:17:01,428 --> 00:17:15,529
-In cycle 20, number 14 reads x7 from the register file. In cycle 21, number 14 is in X and the load number 13 is in W. x8 goes by WX.
+00:08:44,901 --> 00:08:50,853
+B E Q is behind S L T. B E Q repeats F in the same cycles.
 
 63
-00:17:15,979 --> 00:17:25,387
-Number 14 finishes in cycle 23. The run takes 23 cycles. There are 4 forwards and 5 stall cycles in D.
+00:08:51,303 --> 00:09:02,481
+In cycle 6, S L T reads t2 from the register file. The load wrote it in cycle 5, an earlier cycle. So S L T gets the new value.
 
 64
-00:17:25,837 --> 00:17:41,219
-Now the forwarding table. Each forward is one row. Row 1: source number 2, destination number 3, register x3, from W to X, in cycle 6. The picture below shows the two rows in that cycle.
+00:09:02,931 --> 00:09:06,281
+B E Q does its last F in cycle 6.
 
 65
-00:17:41,669 --> 00:17:50,735
-Row 2: from number 4 to number 5, x6, from M to X, in cycle 9. This is the base address of number 5.
+00:09:06,731 --> 00:09:16,629
+In cycle 7, B E Q is in D. It needs t1 from S L T. S L T writes t1 in W in cycle 9.
 
 66
-00:17:51,185 --> 00:18:05,095
-Row 3: from number 4 to number 5 again, x6, from W to M, in cycle 10. This is the store data of number 5. One instruction can receive two forwards, one for each source.
+00:09:17,079 --> 00:09:21,133
+So B E Q repeats D in cycles 7, 8 and 9.
 
 67
-00:18:05,545 --> 00:18:25,555
-Row 4: from number 13 to number 14, x8, from W to X, in cycle 21. There is no forward for x7 into number 14. Number 11 writes x7 in cycle 19, and number 14 reads it from the register file in D, in cycle 20.
+00:09:21,583 --> 00:09:23,972
+sub waits in F in the same cycles.
 
 68
-00:18:26,005 --> 00:18:42,709
-Now the stall table. Each stall gets one row with its stage, its cycles and the reason. Number 3 stalls in D in cycle 4: load-use on x3. Because number 3 holds D, number 4 stalls in F in cycle 4.
+00:09:24,422 --> 00:09:29,030
+In cycle 10, B E Q reads t1 from the register file.
 
 69
-00:18:43,159 --> 00:18:59,415
-Number 4 stalls in D in cycle 6. The reason is the W D case. Number 2 writes x3 in W in cycle 6. D in the same cycle reads the old value. Number 5 stalls in F in cycle 6.
+00:09:29,480 --> 00:09:34,877
+In cycle 11, B E Q is in X and resolves. It is not taken.
 
 70
-00:18:59,865 --> 00:19:18,617
-Number 6 stalls in D in cycles 9 and 10. Its store data x6 has only the WM path, and WM is not possible in time. So number 6 reads x6 in D after cycle 10. Number 7 stalls in F in cycles 9 and 10.
+00:09:35,327 --> 00:09:41,343
+The pipeline guessed not taken. So sub is the right next instruction, and nothing is flushed.
 
 71
-00:19:19,067 --> 00:19:40,358
-Number 14 stalls in D in cycle 19. There are two reasons: load-use on x8 from number 13, and the W D case on x7 from number 11. Write both reasons. The flushed instructions number 9 and number 10 do not go in the stall table. They go in the diagram, with dashes.
+00:09:41,793 --> 00:09:45,185
+The add at the label SKIP is fetched in cycle 11.
 
 72
-00:19:40,808 --> 00:19:50,600
-Here is the recap of video 10 a. One. For each source register, find the producer, the time the value exists, and the time it is needed.
+00:09:45,635 --> 00:09:54,553
+sub reads t2 in D in cycle 11. The load wrote t2 in cycle 5, long before. So sub has no stall.
 
 73
-00:19:51,050 --> 00:20:04,959
-Two. A path works only when both stages are in the same cycle. MX, but not from a load. WX. WM for store data. Or the register file, after the producer's W.
+00:09:55,003 --> 00:10:00,656
+add needs t2 from sub. sub writes t2 in W in cycle 14.
 
 74
-00:20:05,409 --> 00:20:14,753
-Three. If there is no path, the consumer stalls in D, and the instruction behind it stalls in F. Test again in the next cycle.
+00:10:01,106 --> 00:10:05,159
+So add repeats D in cycles 12, 13 and 14.
 
 75
-00:20:15,203 --> 00:20:23,630
-Four. There is no forwarding into D. A D in the cycle of the producer's W reads the old value and stalls once.
+00:10:05,609 --> 00:10:08,511
+store word waits in F in the same cycles.
 
 76
-00:20:24,080 --> 00:20:32,443
-Five. In the class datapath, store data has only the WM path. Two instructions later, it costs 2 stalls.
+00:10:08,961 --> 00:10:15,958
+store word uses t2 as its base address. add writes t2 in W in cycle 18.
 
 77
-00:20:32,893 --> 00:20:40,423
-Six. A taken branch resolves in X. Two rows get dashes, and the target is fetched in the next cycle.
+00:10:16,408 --> 00:10:21,165
+So store word repeats D in cycles 16, 17 and 18.
 
 78
-00:20:40,873 --> 00:20:54,719
+00:10:21,615 --> 00:10:26,373
+In cycle 19, store word reads t2 from the register file.
+
+79
+00:10:26,823 --> 00:10:36,551
+store word finishes W in cycle 22. So the run takes 22 cycles. The diagram is the same as the published solution.
+
+80
+00:10:37,001 --> 00:10:51,529
+Count the D star cells. There are 4 RAW hazards, that is, read after write hazards. Each is between neighbours, and each gives 3 D star cells. 4 times 3 is 12 stall cycles.
+
+81
+00:10:51,979 --> 00:11:04,288
+Part b has full forwarding. In cycle 3, S L T is in D, and it needs t2 from the load. Its X would be cycle 4. In cycle 4, the load is in M.
+
+82
+00:11:04,738 --> 00:11:16,002
+The load value exists only at the end of M. So MX cannot help. This is the load-use case. S L T stalls one cycle: D star in cycle 3.
+
+83
+00:11:16,452 --> 00:11:19,289
+B E Q repeats F in cycle 3.
+
+84
+00:11:19,739 --> 00:11:28,251
+In cycle 5, S L T is in X and the load is in W. t2 goes by WX into the ALU.
+
+85
+00:11:28,701 --> 00:11:41,416
+In cycle 6, B E Q is in X and S L T is in M. t1 goes by MX into the compare unit. The question allows forwarding into the branch compare unit.
+
+86
+00:11:41,866 --> 00:11:48,159
+B E Q resolves in X in cycle 6. It is not taken, so nothing is flushed.
+
+87
+00:11:48,609 --> 00:12:00,812
+sub needs t2 from the load. sub is in D in cycle 6. The load wrote t2 in cycle 5. So the register file already has it. No forward is needed.
+
+88
+00:12:01,262 --> 00:12:06,958
+In cycle 8, add is in X and sub is in M. t2 goes by MX.
+
+89
+00:12:07,408 --> 00:12:24,773
+In cycle 9, store word is in X and add is in M. store word uses t2 as its address, and the address goes through the ALU. So t2 goes by MX, not by WM. The published solution has the same note.
+
+90
+00:12:25,223 --> 00:12:27,378
+The run ends in cycle 11.
+
+91
+00:12:27,828 --> 00:12:39,049
+Part a took 22 cycles. Two runs of 11 cycles fit in 22 cycles. So 22 over 11 is 2: forwarding gives a speedup of 2.
+
+92
+00:12:39,499 --> 00:12:43,062
+Only the load-use stall is left: one D star.
+
+93
+00:12:43,512 --> 00:12:50,893
+Now a real midterm question: fall 2019, question 2. It has 14 instructions.
+
+94
+00:12:51,343 --> 00:12:56,805
+The pipeline has forwarding as in class, but no forwarding into the decode stage.
+
+95
+00:12:57,255 --> 00:13:04,593
+Branch direction and target are known in X. The pipeline guesses not taken until the branch resolves.
+
+96
+00:13:05,043 --> 00:13:07,667
+The branch in instruction 8 is taken.
+
+97
+00:13:08,117 --> 00:13:15,221
+Part A asks for the pipeline diagram, the forwarding table and the stall table. It is worth 18 marks.
+
+98
+00:13:15,671 --> 00:13:27,383
+Two facts of the class datapath decide many cells. First, MX and WX feed only the ALU inputs. So store data has only the WM path.
+
+99
+00:13:27,833 --> 00:13:39,055
+Second, there is no forwarding into D. A D in the same cycle as the producer's W reads the old value. Pause the video and try it. Then continue.
+
+100
+00:13:39,505 --> 00:13:49,681
+Step 1 of the method: write the producer of each source register. Number 1 and number 2 read x3 and x4. Nothing older writes them.
+
+101
+00:13:50,131 --> 00:13:55,997
+Number 3 uses x3 as its base address. The producer is the load, number 2.
+
+102
+00:13:56,447 --> 00:14:07,050
+Number 4 add also reads x3 from number 2. Orange means a load producer. That is a warning: a load value exists only at the end of M.
+
+103
+00:14:07,500 --> 00:14:18,465
+Number 5 and number 6 are stores. Each uses x6 two times: as the base address and as the store data. The producer is add number 4.
+
+104
+00:14:18,915 --> 00:14:22,499
+Number 7 reads x8, and nothing older writes it.
+
+105
+00:14:22,949 --> 00:14:28,261
+Number 8 B E Q reads x6 from number 4. The branch is taken.
+
+106
+00:14:28,711 --> 00:14:35,175
+So number 9 and number 10 are on the wrong path. They are flushed, so they are not producers.
+
+107
+00:14:35,625 --> 00:14:45,396
+Number 11 reads x7. Number 9 also writes x7, but number 9 is flushed. So the producer is the load number 7.
+
+108
+00:14:45,846 --> 00:14:51,862
+Number 12 and number 13 read only x0. x0 is never a hazard.
+
+109
+00:14:52,312 --> 00:14:55,704
+Number 14 reads x7 from number 11.
+
+110
+00:14:56,154 --> 00:15:07,354
+Number 14 also reads x8. Number 12 and number 13 both write x8. Number 13 is later, so the load number 13 is the producer.
+
+111
+00:15:07,804 --> 00:15:19,857
+Now fill the diagram. In cycles 1 to 3, number 1 store word and number 2 load word read x3 and x4. Nothing older writes them, so there is no hazard.
+
+112
+00:15:20,307 --> 00:15:32,297
+In cycle 4, number 3 is in D. Its base x3 comes from the load number 2. The X of number 3 would be cycle 5. In cycle 5, the load is in M.
+
+113
+00:15:32,747 --> 00:15:40,747
+The load value exists only at the end of M. This is load-use, so number 3 stalls: D star in cycle 4.
+
+114
+00:15:41,197 --> 00:15:44,013
+Number 4 repeats F in cycle 4.
+
+115
+00:15:44,463 --> 00:15:54,404
+In cycle 6, number 3 is in X and the load is in W. x3 goes by WX into the ALU, for the base address.
+
+116
+00:15:54,854 --> 00:16:12,902
+In cycle 6, number 4 add is in D, and it also needs x3. The load writes x3 in cycle 6, but D sees only earlier writes. So number 4 reads the old x3. This is the W D case, and number 4 repeats D.
+
+117
+00:16:13,352 --> 00:16:16,232
+Number 5 repeats F in cycle 6.
+
+118
+00:16:16,682 --> 00:16:23,551
+In cycle 7, number 4 reads x3 again from the register file. Now it gets the new value.
+
+119
+00:16:24,001 --> 00:16:27,415
+Number 5 does its last F in cycle 7.
+
+120
+00:16:27,865 --> 00:16:40,302
+Number 5 store word uses x6 as base and as data. In cycle 9, number 5 is in X and add number 4 is in M. The base x6 goes by MX.
+
+121
+00:16:40,752 --> 00:16:46,064
+Number 6 is in D in cycle 9, and it waits. The next steps show why.
+
+122
+00:16:46,514 --> 00:16:56,221
+In cycle 10, number 5 is in M and number 4 is in W. The store data x6 of number 5 goes by WM.
+
+123
+00:16:56,671 --> 00:17:07,487
+Now number 6, seen from cycle 9. It is also a store, with x6 as base and data. Its X would be cycle 10, while number 4 is in W.
+
+124
+00:17:07,937 --> 00:17:20,054
+The base could use WX. But store data has no WX path, and WM would need number 6 in M in cycle 10. So number 6 stalls in cycle 9.
+
+125
+00:17:20,504 --> 00:17:30,232
+In cycle 10, number 6 is in D in the cycle of number 4's W. That is the W D case, so number 6 repeats D again.
+
+126
+00:17:30,682 --> 00:17:34,117
+Number 7 waits in F in cycles 9 and 10.
+
+127
+00:17:34,567 --> 00:17:39,025
+In cycle 11, number 6 reads x6 from the register file.
+
+128
+00:17:39,475 --> 00:17:43,507
+Count the D star cells of number 6: 2 stall cycles.
+
+129
+00:17:43,957 --> 00:17:47,456
+Number 7 does its last F in cycle 11.
+
+130
+00:17:47,906 --> 00:17:55,223
+In cycle 12, number 7 load word is in D. It reads x8, and nothing older writes x8.
+
+131
+00:17:55,673 --> 00:18:07,940
+In cycle 13, number 8 B E Q is in D. It reads x6 and x8. Number 4 wrote x6 in cycle 10, long before. So there is no hazard.
+
+132
+00:18:08,390 --> 00:18:13,126
+In cycle 14, B E Q is in X. It resolves: taken.
+
+133
+00:18:13,576 --> 00:18:20,147
+The pipeline guessed not taken, so it fetched number 9 and number 10. Both are on the wrong path.
+
+134
+00:18:20,597 --> 00:18:27,125
+In cycle 15, number 9 and number 10 are flushed. They get a dash in each later cycle.
+
+135
+00:18:27,575 --> 00:18:33,911
+The target T1, instruction 11, is fetched in cycle 15, the cycle after X.
+
+136
+00:18:34,361 --> 00:18:38,585
+So the taken branch costs 2 cycles: the 2 flushed rows.
+
+137
+00:18:39,035 --> 00:18:55,824
+Number 11 needs x7. Number 9 also writes x7, but number 9 is flushed. So the producer is the load number 7. It wrote x7 in cycle 15. Number 11 reads it in D in cycle 16. No stall.
+
+138
+00:18:56,274 --> 00:19:04,829
+In cycles 17 and 18, number 12 and number 13 read only x0. x0 is never a hazard.
+
+139
+00:19:05,279 --> 00:19:18,292
+Number 14 add needs x7 and x8. x8 comes from the load number 13. The X of number 14 would be cycle 20, when the load is in M. That is load-use.
+
+140
+00:19:18,742 --> 00:19:30,070
+x7 comes from number 11. Number 11 is in W in cycle 19, the same cycle as the D of number 14. That is the W D case.
+
+141
+00:19:30,520 --> 00:19:36,109
+Both reasons ask for a stall in cycle 19. One D star covers both.
+
+142
+00:19:36,559 --> 00:19:41,466
+In cycle 20, number 14 reads x7 from the register file.
+
+143
+00:19:41,916 --> 00:19:50,855
+In cycle 21, number 14 is in X and the load number 13 is in W. x8 goes by WX.
+
+144
+00:19:51,305 --> 00:19:57,065
+Number 14 finishes in cycle 23. So the run takes 23 cycles.
+
+145
+00:19:57,515 --> 00:20:00,864
+Count the forwarding arrows. There are 4 forwards.
+
+146
+00:20:01,314 --> 00:20:05,474
+Count the D star cells. There are 5 stall cycles in D.
+
+147
+00:20:05,924 --> 00:20:22,137
+Now the forwarding table. Each forward is one row. Row 1: source number 2, destination number 3, register x3, from W to X, in cycle 6. The small diagram shows the two instructions in that cycle.
+
+148
+00:20:22,587 --> 00:20:31,654
+Row 2: from number 4 to number 5, x6, from M to X, in cycle 9. This is the base address of number 5.
+
+149
+00:20:32,104 --> 00:20:41,448
+Row 3: from number 4 to number 5 again, x6, from W to M, in cycle 10. This is the store data of number 5.
+
+150
+00:20:41,898 --> 00:20:50,389
+Rows 2 and 3 have the same destination, number 5. One instruction can receive two forwards, one for each source.
+
+151
+00:20:50,839 --> 00:20:57,943
+Row 4: from number 13 to number 14, x8, from W to X, in cycle 21.
+
+152
+00:20:58,393 --> 00:21:11,235
+There is no forward for x7 into number 14. Number 11 writes x7 in cycle 19, and number 14 reads it from the register file in D, in cycle 20.
+
+153
+00:21:11,685 --> 00:21:23,120
+Now the stall table. Each stall gets one row with its stage, its cycles and the reason. Number 3 stalls in D in cycle 4: load-use on x3.
+
+154
+00:21:23,570 --> 00:21:28,498
+Because number 3 holds D, number 4 stalls in F in cycle 4.
+
+155
+00:21:28,948 --> 00:21:42,068
+Number 4 stalls in D in cycle 6. The reason is the W D case. Number 2 writes x3 in W in cycle 6. D in the same cycle reads the old value.
+
+156
+00:21:42,518 --> 00:21:45,505
+Number 5 stalls in F in cycle 6.
+
+157
+00:21:45,955 --> 00:22:00,824
+Number 6 stalls in D in cycles 9 and 10. Its store data x6 has only the WM path, and WM is not possible in time. So number 6 reads x6 in D after cycle 10.
+
+158
+00:22:01,274 --> 00:22:04,687
+Number 7 stalls in F in cycles 9 and 10.
+
+159
+00:22:05,137 --> 00:22:18,684
+Number 14 stalls in D in cycle 19. There are two reasons: load-use on x8 from number 13, and the W D case on x7 from number 11. Write both reasons.
+
+160
+00:22:19,134 --> 00:22:27,241
+The flushed instructions number 9 and number 10 do not go in the stall table. They go in the diagram, with dashes.
+
+161
+00:22:27,691 --> 00:22:36,821
+The recap of video 10 a. One. For each source register, find the producer, the time the value exists, and the time it is needed.
+
+162
+00:22:37,271 --> 00:22:51,181
+Two. A path works only when both stages are in the same cycle. MX, but not from a load. WX. WM for store data. Or the register file, after the producer's W.
+
+163
+00:22:51,631 --> 00:23:00,975
+Three. If there is no path, the consumer stalls in D, and the instruction behind it stalls in F. Test again in the next cycle.
+
+164
+00:23:01,425 --> 00:23:09,851
+Four. There is no forwarding into D. A D in the cycle of the producer's W reads the old value and stalls once.
+
+165
+00:23:10,301 --> 00:23:18,664
+Five. In the class datapath, store data has only the WM path. Two instructions later, it costs 2 stalls.
+
+166
+00:23:19,114 --> 00:23:26,645
+Six. A taken branch resolves in X. Two rows get dashes, and the target is fetched in the next cycle.
+
+167
+00:23:27,095 --> 00:23:40,940
 Seven. After any stall, compare the real cycles again. Flushed rows are never producers. Video 10 b continues with Part B of this question and with the fall 2022 paper.
