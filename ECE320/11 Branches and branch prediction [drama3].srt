@@ -3,489 +3,1009 @@
 This is ECE 320, video 11. The topic is branches in the pipeline, and branch prediction.
 
 2
-00:00:06,627 --> 00:00:19,397
-After this video, you can draw a pipeline diagram with a branch and a predictor. You can calculate the branch CPI. And you can fill predictor tables, as in assignment 4 and the spring 2020 quiz.
+00:00:06,627 --> 00:00:13,778
+After this video, you can draw a pipeline diagram with a branch: the flush, the 2-cycle penalty, and a predicted-taken branch.
 
 3
-00:00:19,847 --> 00:00:32,154
-F must fetch a new instruction in every cycle, so it needs the next P C. A branch decides it. Taken means the next P C is the target. Not taken means P C plus 4.
+00:00:14,228 --> 00:00:17,200
+You can calculate the CPI with a branch penalty.
 
 4
-00:00:32,604 --> 00:00:41,753
-F knows only the P C. D knows the opcode and the offset, so it knows the target. Only X knows the outcome, and the jump register value.
+00:00:17,650 --> 00:00:24,663
+You can trace a one-bit B H T, a two-bit counter, and a global-history predictor, as in assignment 4.
 
 5
-00:00:42,203 --> 00:00:50,980
-So the next P C is decided in X, but F needs it earlier. By then, F and D hold two younger instructions. This is a control hazard.
+00:00:25,113 --> 00:00:30,964
+And you can fill a B H T and B T B table for a loop branch, as in the spring 2020 quiz.
 
 6
-00:00:51,430 --> 00:00:59,928
-Option a: stall F until the branch is in X. Orange marks the branch in X. Every branch loses 2 cycles.
+00:00:31,414 --> 00:00:36,894
+F must fetch a new instruction in every cycle. So in every cycle, F needs the next P C.
 
 7
-00:01:00,378 --> 00:01:10,920
-Option b: guess and keep fetching. At fetch, the hardware cannot tell that it is a branch. So the default guess is not taken. If that is right, no cycle is lost.
+00:00:37,344 --> 00:00:44,589
+A branch decides the next P C. Taken means that the condition is true. Then the next P C is the branch target.
 
 8
-00:01:11,370 --> 00:01:18,661
-Option c: the branch is taken, so the guess is wrong. The two wrong instructions are removed. 2 cycles are lost.
+00:00:45,039 --> 00:00:50,472
+Not taken means that the condition is false. Then the next P C is P C plus 4.
 
 9
-00:01:19,111 --> 00:01:28,631
-This is speculation. The game is percent correct times gain, minus percent wrong times penalty. A wrong guess costs no more than waiting, so guessing never loses.
+00:00:50,922 --> 00:00:54,870
+In F, only the P C is known. The instruction bits are not read yet.
 
 10
-00:01:29,081 --> 00:01:36,001
-Here is slide 4, drawn with the course rules. The guess is not taken. In cycles 1 to 3, F fetches in order.
+00:00:55,320 --> 00:01:03,168
+In D, the opcode and the offset are known. So D knows that it is a branch, and its target: P C plus offset.
 
 11
-00:01:36,451 --> 00:01:47,179
-In cycle 4, the branch is in X, and it is taken. The green arrow is M X forwarding of x 3. Store word in D, and add in F, are on the wrong path.
+00:01:03,618 --> 00:01:09,330
+Only X knows the outcome: the branch condition, or the register value of a jump and link register.
 
 12
-00:01:47,629 --> 00:01:55,570
-In cycle 5, both become nops, shown as dashes. F fetches the target in the same cycle. The penalty is 2 cycles.
+00:01:09,780 --> 00:01:14,099
+So the next P C is decided in X, but F needs it at once.
 
 13
-00:01:56,020 --> 00:01:58,017
-The target finishes in cycle 9.
+00:01:14,549 --> 00:01:19,054
+By then, F and D hold 2 younger instructions. This is a control hazard.
 
 14
-00:01:58,467 --> 00:02:07,755
-The flush is safe. Registers change only in W, and memory only in M. The wrong instructions reached only D, so they changed no permanent state.
+00:01:19,504 --> 00:01:26,145
+Option a: wait. F stalls until the branch reaches X, in cycle 3. There, the outcome is known.
 
 15
-00:02:08,205 --> 00:02:18,236
-Slide 6 shows the hardware, simplified here. F has the P C and the instruction memory. X has the branch compare unit, and an adder for P C plus immediate.
+00:01:26,595 --> 00:01:30,960
+F stalls in cycles 2 and 3. So every branch loses 2 cycles.
 
 16
-00:02:18,686 --> 00:02:26,488
-Two signals meet in the control. Branch comes from decode. Cond comes from the branch compare unit. Taken means Branch and Cond.
+00:01:31,410 --> 00:01:38,960
+Option b: guess, and keep fetching. In cycle 1, F does not know yet that it fetched a branch.
 
 17
-00:02:26,938 --> 00:02:35,622
-If taken, P C Sel selects the target. F Kill and D Kill set the kill bits, so the two younger instructions become nops.
+00:01:39,410 --> 00:01:49,905
+So the default guess is not taken: F fetches P C plus 4, then P C plus 8. If the guess is right, F did useful work in every cycle. No cycle is lost.
 
 18
-00:02:36,072 --> 00:02:43,409
-Slide 7: a conditional branch. Its condition is known in X. If it is taken, the two instructions behind it become bubbles.
+00:01:50,355 --> 00:01:56,346
+Option c: the same guess, but the branch is taken. In cycle 3, X finds that the guess is wrong.
 
 19
-00:02:43,859 --> 00:02:53,426
-Slide 8: jump and link register. Its target is a register value, and that value is sure only in X. So it has the same two bubbles.
+00:01:56,796 --> 00:02:01,567
+The two wrong instructions, P C plus 4 and P C plus 8, become bubbles.
 
 20
-00:02:53,876 --> 00:03:02,978
-With the guess not taken, every taken branch loses 2 cycles. Every J A L R also loses 2 cycles, because it always changes the P C.
+00:02:02,017 --> 00:02:07,543
+In cycles 2 and 3, F fetched wrong instructions. So 2 cycles are lost: the same as waiting.
 
 21
-00:03:03,428 --> 00:03:08,119
-Slide 9 gives a quick estimate. 20 percent of instructions are conditional branches.
+00:02:07,993 --> 00:02:15,841
+This is speculation. Slide 10 gives its game: percent correct times gain, minus percent wrong times penalty.
 
 22
-00:03:08,569 --> 00:03:14,699
-75 percent of them are taken. With the guess not taken, each taken branch is a wrong guess.
+00:02:16,291 --> 00:02:21,957
+In this pipeline, a wrong guess costs 2 cycles, the same as waiting. So guessing never loses.
 
 23
-00:03:15,149 --> 00:03:23,369
-Each wrong guess costs 2 cycles. So the CPI is 1, plus point 2 times point 7 5 times 2. That is 1.3.
+00:02:22,407 --> 00:02:31,788
+The diagram is slide 4, drawn with the course rules. The guess is not taken. So in cycles 1 to 3, F fetches in program order.
 
 24
-00:03:23,819 --> 00:03:30,785
-So branches make the program 30 percent slower. A deeper pipeline has a larger penalty, so the loss is worse.
+00:02:32,238 --> 00:02:35,535
+In cycle 4, the branch is in X, and it is taken.
 
 25
-00:03:31,235 --> 00:03:39,176
-To do better, the hardware must guess the outcome. The guess must be made in F. But the instruction bits are ready only at the end of F.
+00:02:35,985 --> 00:02:41,140
+The green arrow forwards x 3 from add immediate, in M, to the branch in X.
 
 26
-00:03:39,626 --> 00:03:50,818
-So the predictor uses only the P C. It has two parts. A target buffer maps a P C to its taken target. A direction predictor maps a P C to taken or not taken.
+00:02:41,590 --> 00:02:46,095
+Store word is in D, and add is in F. Both are on the wrong path.
 
 27
-00:03:51,268 --> 00:04:03,296
-Slide 18 asks three questions: is it a branch, is it taken, and where does it go. In F, the predictor answers all three. The branch still resolves in X, and a wrong guess is flushed, as before.
+00:02:46,545 --> 00:02:50,631
+In cycle 5, both become nops, shown as dashes.
 
 28
-00:04:03,746 --> 00:04:13,730
-To map a P C, use some P C bits as an index into an array. N entries need log 2 of N bits. So 256 entries need 8 bits.
+00:02:51,081 --> 00:02:56,097
+In the same cycle 5, F fetches the target. That is cycle X plus 1.
 
 29
-00:04:14,180 --> 00:04:23,468
-Use the lowest bits after bits 1 and 0. Those two are always zero, because instructions are 4 bytes. The low bits change most often, so they spread the branches best.
+00:02:56,547 --> 00:03:04,024
+F fetched store word in cycle 3, and add in cycle 4. Both did no work. So the penalty is 2 cycles.
 
 30
-00:04:23,918 --> 00:04:36,411
-Hex 1048 and hex 1448 differ only in bit 10. Both use entry hex 12. This is aliasing. It is OK, because the data is only a guess, and X still checks.
+00:03:04,474 --> 00:03:06,471
+The target finishes in cycle 9.
 
 31
-00:04:36,861 --> 00:04:50,328
-The simplest direction predictor is the branch history table, B H T. Most branches are biased, for example loop back edges. Each entry is one bit: 0 for not taken, 1 for taken. There are no tags.
+00:03:06,921 --> 00:03:11,843
+The flush is safe. Registers change only in W, and memory only in M.
 
 32
-00:04:50,778 --> 00:04:55,422
-In F, the bit is the prediction: the branch goes the same way as last time.
+00:03:12,293 --> 00:03:16,519
+The wrong instructions reached only D. So they changed no permanent state.
 
 33
-00:04:55,872 --> 00:05:02,327
-In X, the real outcome is known. Through a write port, the predictor writes a new value only if the guess was wrong.
+00:03:16,969 --> 00:03:24,632
+Slide 6 shows the hardware. The figure is a simplified form. F has the P C and the instruction memory.
 
 34
-00:05:02,777 --> 00:05:13,505
-Slide 21 tests the B H T on an inner loop with 3 passes. Its branch goes taken, taken, taken, not taken, again and again. The entry starts at N.
+00:03:25,082 --> 00:03:29,029
+X has the branch compare unit, and an adder for P C plus immediate.
 
 35
-00:05:13,955 --> 00:05:23,057
-Time 1 is wrong, and the entry becomes T. Times 2 and 3 are correct. Time 4 is the exit: wrong, and the entry becomes N.
+00:03:29,479 --> 00:03:33,612
+The Branch signal comes from decode. It is true for a branch instruction.
 
 36
-00:05:23,507 --> 00:05:28,523
-Time 5 starts the next run. The entry says N, but the branch is taken. Wrong again.
+00:03:34,062 --> 00:03:38,706
+The Cond signal comes from the branch compare unit. It is true when the branch condition is true.
 
 37
-00:05:28,973 --> 00:05:31,945
-The pattern repeats: 6 misses in 12.
+00:03:39,156 --> 00:03:42,129
+Taken means Branch and Cond, both true.
 
 38
-00:05:32,395 --> 00:05:39,775
-So there are two built-in misses per run: the exit, and the next first pass. The predictor changes its mind too quickly.
+00:03:42,579 --> 00:03:46,758
+If the branch is taken, P C Sel sets the P C mux to the target.
 
 39
-00:05:40,225 --> 00:05:56,571
-The fix is the two-bit saturating counter. It counts from 0 to 3: N, small n, small t, and T. Taken adds 1, not taken subtracts 1, and it stops at 0 and 3. t and T predict taken.
+00:03:47,208 --> 00:03:54,453
+F Kill and D Kill set the kill bits. So the two younger instructions become nops: no register write, and no memory write.
 
 40
-00:05:57,021 --> 00:06:03,935
-Same branch. Time 1: state N predicts not taken. It is taken: wrong. Move to n.
+00:03:54,903 --> 00:04:00,661
+Slide 7: a conditional branch. Its condition is known in X, in cycle 3.
 
 41
-00:06:04,385 --> 00:06:09,307
-Time 2: n predicts not taken. Wrong again. Move to t.
+00:04:01,111 --> 00:04:04,919
+If it is taken, the two instructions behind it become bubbles.
 
 42
-00:06:09,757 --> 00:06:13,798
-Time 3: t predicts taken. Correct. Move to T.
+00:04:05,369 --> 00:04:12,846
+Slide 8: jump and link register. Its target is a register value. That value is sure only in X, in cycle 3.
 
 43
-00:06:14,248 --> 00:06:21,957
-Time 4 is the exit. T predicts taken: wrong. But the counter moves only to t, which still predicts taken.
+00:04:13,296 --> 00:04:15,107
+So it has the same two bubbles.
 
 44
-00:06:22,407 --> 00:06:30,673
-Time 5: t predicts taken. Correct. The counter must miss twice before it changes its mind. This is hysteresis.
+00:04:15,557 --> 00:04:24,660
+With the guess not taken, every taken branch loses 2 cycles. Every J A L R also loses 2 cycles, because it always changes the P C.
 
 45
-00:06:31,123 --> 00:06:36,371
-In total, 5 misses. After warm-up, only one miss per run, at the exit.
+00:04:25,110 --> 00:04:32,029
+Slide 9 gives a quick estimate. Take 100 instructions. 20 percent of them, so 20, are conditional branches.
 
 46
-00:06:36,821 --> 00:06:44,234
-Branches can be correlated. In this code from slide 24, if conditions A and B are true, condition C is false.
+00:04:32,479 --> 00:04:44,089
+75 percent of the branches are taken: 20 times point 7 5 is 15. With the guess not taken, each taken branch is a wrong guess.
 
 47
-00:06:44,684 --> 00:06:52,439
-A branch history shift register, the B H R, holds the recent outcomes. A new outcome enters at the right.
+00:04:44,539 --> 00:04:49,137
+Each wrong guess costs 2 cycles. 15 times 2 is 30 lost cycles.
 
 48
-00:06:52,889 --> 00:07:00,439
-The P C selects a row, and the B H R selects a column. So each branch has one prediction per history pattern.
+00:04:49,587 --> 00:04:57,992
+So the 100 instructions take 100 plus 30, which is 130 cycles. The CPI is 130 over 100, which is 1.3.
 
 49
-00:07:00,889 --> 00:07:10,920
-Slide 26 uses the same T T T N branch with 2 history bits. So it has 4 one-bit entries. All start at N, and the B H R starts at N N.
+00:04:58,442 --> 00:05:04,628
+The 30 lost cycles are 30 percent of the 100. So branches make the program 30 percent slower.
 
 50
-00:07:11,370 --> 00:07:25,116
-Time 1 reads entry N N, marked orange. It is wrong, so N N becomes T. The outcome T shifts in, and the B H R becomes N T. Time 2 reads N T, and is also wrong.
+00:05:05,078 --> 00:05:08,979
+A deeper pipeline has a larger penalty, so the loss is worse.
 
 51
-00:07:25,566 --> 00:07:36,247
-Time 3 reads T T: wrong, so T T becomes T. Time 4 also sees T T, but this is the exit. Wrong, and T T becomes N.
+00:05:09,429 --> 00:05:15,281
+To do better, the hardware must guess the outcome. F makes the guess when it selects the next P C.
 
 52
-00:07:36,697 --> 00:07:39,995
-In times 5 to 8, only time 6 is correct.
+00:05:15,731 --> 00:05:18,436
+But the instruction bits are ready only at the end of F.
 
 53
-00:07:40,445 --> 00:07:50,336
-In total, 9 misses: worse than the 2-bit counter. History T T comes before both T and N. The history is too short to capture the pattern.
+00:05:18,886 --> 00:05:21,115
+So the predictor uses only the P C.
 
 54
-00:07:50,786 --> 00:08:04,300
-Slide 27 uses 3 history bits, so 8 entries. In times 1 to 6, each new pattern starts at N. So the predictor misses 5 times while it learns. Time 4 is correct only because the exit is N.
+00:05:21,565 --> 00:05:26,023
+It has two parts. A target buffer maps a P C to its taken target.
 
 55
-00:08:04,750 --> 00:08:09,998
-From time 7, every prediction is correct. Each pattern of the loop has its own entry.
+00:05:26,473 --> 00:05:30,374
+A direction predictor maps a P C to taken or not taken.
 
 56
-00:08:10,448 --> 00:08:18,250
-History T T T is always followed by the exit. N T T is followed by taken. The history must be long enough to see the pattern.
+00:05:30,824 --> 00:05:37,140
+Slide 18 asks three questions. First: is it a branch. The predictor answers it.
 
 57
-00:08:18,700 --> 00:08:29,474
-A hybrid predictor combines two schemes. A simple B H T predicts independent branches. A correlated B H T, with global history, predicts the branches that need history.
+00:05:37,590 --> 00:05:41,723
+Second: is it taken. The direction predictor answers it.
 
 58
-00:08:29,924 --> 00:08:39,676
-A chooser assigns each branch to one of them. Branches start in the simple B H T, and move after too many misses. Accuracy is 90 to 97 percent.
+00:05:42,173 --> 00:05:45,796
+Third: where does it go. The target buffer answers it.
 
 59
-00:08:40,126 --> 00:08:51,644
-When should we predict? In D, the target is known. But F has already fetched P C plus 4. So even a correct taken guess costs one cycle: a mis-fetch.
+00:05:46,246 --> 00:05:51,726
+The branch still resolves in X. A wrong guess is flushed, as before.
 
 60
-00:08:52,094 --> 00:09:00,499
-In F, a correct guess costs 0 cycles. But F knows only the P C. So it needs the branch target buffer.
+00:05:52,176 --> 00:05:57,999
+To map a P C to a table entry, the hardware uses some P C bits as an index into an array.
 
 61
-00:09:00,949 --> 00:09:12,109
-The branch target buffer, B T B, records past targets. If branch X went to Y last time, fetch Y after X. It is read in F, in parallel with the instruction memory.
+00:05:58,449 --> 00:06:09,533
+N entries need log 2 of N index bits. The index in the figure has 8 bits, bits 9 to 2. 8 bits give 2 to the 8, which is 256 entries.
 
 62
-00:09:12,559 --> 00:09:23,631
-Every instruction reads the B T B. Each entry has a tag, the full P C. A tag match means a known branch: use its target. Otherwise use P C plus 4.
+00:06:09,983 --> 00:06:14,674
+Bits 1 and 0 are always 0, because each instruction is 4 bytes.
 
 63
-00:09:24,081 --> 00:09:29,747
-Every taken branch writes its entry in X. The tag gets the P C, and the target gets the target P C.
+00:06:15,124 --> 00:06:21,718
+So the index uses the lowest bits above them. The low bits change most often, so they spread the branches best.
 
 64
-00:09:30,197 --> 00:09:44,175
-An example. The index is P C bits 9 to 2. Hex 4 1 C and hex 1 C both give entry 7. But the tag there is hex 1 C. No match, so fetch P C plus 4. The tag stops aliasing.
+00:06:22,168 --> 00:06:26,580
+Hex 1048 and hex 1448 differ only in bit 10.
 
 65
-00:09:44,625 --> 00:09:51,777
-A B T B works because most branches use direct targets. The target is in the instruction, so it is the same every time.
+00:06:27,030 --> 00:06:38,083
+Their index bits, 9 to 2, are the same: 0 0 0 1 0 0 1 0, which is hex 12. So both use entry hex 12. This is aliasing.
 
 66
-00:09:52,227 --> 00:10:02,583
-Indirect targets are in a register, so they can change. J A L R is common, because every procedure return is one. Each caller has a different return address.
+00:06:38,533 --> 00:06:44,663
+Aliasing is OK. It gives a nonsense guess, not a wrong result, because X still checks the branch.
 
 67
-00:10:03,033 --> 00:10:12,646
-The return address stack, R A S, predicts returns. A call pushes P C plus 4. A return pops the top as its predicted target.
+00:06:45,113 --> 00:06:52,915
+The simplest direction predictor is the branch history table, B H T. The index bits of the P C select one entry.
 
 68
-00:10:13,096 --> 00:10:21,780
-Call 1 pushes hex 104. Return 1 pops hex 104: correct. The B T B guesses P C plus 4: wrong.
+00:06:53,365 --> 00:06:58,891
+Each entry is one bit: 0 for not taken, 1 for taken. There are no tags.
 
 69
-00:10:22,230 --> 00:10:31,518
-Call 2 pushes hex 304. Return 2 pops hex 304: correct. The B T B gives the old target, hex 104: wrong.
+00:06:59,341 --> 00:07:08,629
+It works because most branches are biased: they go one way 90 percent of the time or more. For example, a loop back edge is taken on every pass but the last.
 
 70
-00:10:31,968 --> 00:10:40,838
-F must know before decode that it is a return, because a pop changes the stack. Pre-decode bits in the instruction memory mark calls and returns.
+00:07:09,079 --> 00:07:13,537
+In F, the entry bit is the prediction: the branch goes the same way as last time.
 
 71
-00:10:41,288 --> 00:10:50,105
-Slide 35 puts it all together. Start with the base. In F, the P C goes to the plus 4 adder, and the mux gives the next P C.
+00:07:13,987 --> 00:07:19,328
+In X, the real outcome is known. The predictor writes the entry only if the guess was wrong.
 
 72
-00:10:50,555 --> 00:10:57,011
-In parallel, the P C reads the B T B, marked orange. On a tag hit, it gives the stored target.
+00:07:19,778 --> 00:07:23,864
+Slide 21 tests the B H T on an inner loop with 3 passes.
 
 73
-00:10:57,461 --> 00:11:01,919
-The P C also reads the B H T. It predicts taken or not taken.
+00:07:24,314 --> 00:07:31,685
+Its branch goes taken, taken, taken, not taken, again and again. The entry starts at N.
 
 74
-00:11:02,369 --> 00:11:08,493
-The R A S gives the return P C. The pre-decode bits in the instruction memory tell if the instruction is a return.
+00:07:32,135 --> 00:07:40,526
+Time 1: the entry is N, so it predicts not taken. The branch is taken: wrong. The entry becomes T.
 
 75
-00:11:08,943 --> 00:11:17,163
-The mux picks the R A S top for a return. It picks the B T B target on a tag hit with a taken prediction. Otherwise, P C plus 4.
+00:07:40,976 --> 00:07:46,548
+Times 2 and 3: the entry is T, and the branch is taken. Both are correct.
 
 76
-00:11:17,613 --> 00:11:30,198
-A correct guess costs 0 cycles, even when taken. The CPI is 1.1 with 75 percent accuracy, and 1.02 with 95 percent. Real penalties are often 10 cycles or more.
+00:07:46,998 --> 00:07:53,546
+Time 4 is the exit: not taken. The entry says T: wrong. The entry becomes N.
 
 77
-00:11:30,648 --> 00:11:41,411
-Predication removes the branch. In conventional code, a mis-predicted branch flushes both sub and add. But add is on both paths, so flushing it is waste.
+00:07:53,996 --> 00:08:01,380
+Time 5 starts the next run. The entry says N, but the branch is taken. Wrong again, and the entry becomes T.
 
 78
-00:11:41,861 --> 00:11:52,031
-With predication, every instruction is fetched. A predicate register, p 3, controls sub. If it is false, sub is annulled in place, and add is kept.
+00:08:01,830 --> 00:08:06,753
+The pattern repeats. Count the wrong results: 6 misses in 12.
 
 79
-00:11:52,481 --> 00:12:02,791
-The benefit: no mis-predictions, and fewer branches in the tables. The cost: annulled instructions still use slots. With accurate predictors, it may not help.
+00:08:07,203 --> 00:08:12,822
+So each run has two built-in misses: the exit, and the first pass of the next run.
 
 80
-00:12:03,241 --> 00:12:13,318
-A practice problem with the slide numbers. Pause the video and try it. CPI equals 1, plus the branch fraction, times the wrong fraction, times the penalty.
+00:08:13,272 --> 00:08:15,734
+The predictor changes its mind too quickly.
 
 81
-00:12:13,768 --> 00:12:20,223
-a. Stall on every branch: 1 plus point 2 times 1 times 2 is 1.4.
+00:08:16,184 --> 00:08:24,589
+The fix is the two-bit saturating counter. It counts from 0 to 3. The states are N, small n, small t, and T.
 
 82
-00:12:20,673 --> 00:12:26,803
-b. Predict not taken: point 7 5 of the branches are wrong. The CPI is 1.3.
+00:08:25,039 --> 00:08:31,123
+Taken adds 1: the arcs on top, labeled T. At T, taken stays at T.
 
 83
-00:12:27,253 --> 00:12:33,291
-c. 75 percent correct means 25 percent wrong. The CPI is 1.1.
+00:08:31,573 --> 00:08:39,836
+Not taken subtracts 1: the arcs below, labeled N. At N, not taken stays at N.
 
 84
-00:12:33,741 --> 00:12:39,964
-d. 95 percent correct means 5 percent wrong. The CPI is 1.02.
+00:08:40,286 --> 00:08:44,394
+States t and T predict taken. States N and n predict not taken.
 
 85
-00:12:40,414 --> 00:12:48,959
-e. With a 10-cycle penalty, the CPI is 1.1 again. A good predictor matters more in a deep pipeline.
+00:08:44,844 --> 00:08:52,367
+Same branch as before. Time 1: state N predicts not taken. The branch is taken: wrong. The counter moves to n.
 
 86
-00:12:49,409 --> 00:13:02,644
-Assignment 4. Pause and try each part. This 2-bit machine is not the slide counter. States 0 X predict taken. From 1 1, taken goes to 0 0. Always use the machine of the question.
+00:08:52,817 --> 00:08:57,368
+Time 2: n predicts not taken. Wrong again. The counter moves to t.
 
 87
-00:13:03,094 --> 00:13:14,100
-b1 skips the add when the element is 0. b2 loops while x1 is not 0. n is 8, the array alternates 1 and 0, and all entries start at 1 0.
+00:08:57,818 --> 00:09:02,648
+Time 3: t predicts taken. Correct. The counter moves to T.
 
 88
-00:13:14,550 --> 00:13:26,810
-Part a. x2 counts the non-zero elements, so x2 is 4. b1 alternates not taken, taken. b2 is taken 7 times, then not taken.
+00:09:03,098 --> 00:09:10,807
+Time 4 is the exit. T predicts taken: wrong. But the counter moves only to t, which still predicts taken.
 
 89
-00:13:27,260 --> 00:13:40,124
-Part b, no history. Pause and try it. Yellow marks the entry read. Row 2: b2 reads 1 0 and predicts not taken, but it is taken. It moves to 1 1.
+00:09:11,257 --> 00:09:19,523
+Time 5: t predicts taken. Correct. The counter must miss twice before it changes its mind. This is hysteresis.
 
 90
-00:13:40,574 --> 00:13:52,509
-Row 4 moved b2 from 1 1 to 0 0. So in row 6, b2 predicts taken: correct. In row 5, b1 reads 1 1 and is correct.
+00:09:19,973 --> 00:09:25,954
+Times 6 to 12 follow the same rules. Count the wrong results: 5 misses.
 
 91
-00:13:52,959 --> 00:14:01,969
-b1 moves between 1 0 and 1 1. Both predict not taken, so every taken b1 misses. b2 stays at 0 0.
+00:09:26,404 --> 00:09:30,491
+After warm-up, only one miss per run is left: the exit.
 
 92
-00:14:02,419 --> 00:14:10,638
-The final b2 is not taken: a miss. Total: 7 mispredicts, 4 from b1 and 3 from b2.
+00:09:30,941 --> 00:09:37,210
+Branches can be correlated. Slide 24 shows this code with three branches: A, B and C.
 
 93
-00:14:11,088 --> 00:14:19,958
-Part c adds one global history bit: the outcome of the last branch, b1 or b2. It starts at 1, and selects set 0 or set 1.
+00:09:37,660 --> 00:09:45,694
+If conditions A and B are true, then aa and bb are both 0. So aa equals bb, and condition C is false.
 
 94
-00:14:20,408 --> 00:14:28,117
-Before each b1, the last branch is a taken b2. So b1 always reads set 1, the same as with no history.
+00:09:46,144 --> 00:09:53,574
+A branch history shift register, the B H R, holds the last outcomes. A new outcome enters at the right.
 
 95
-00:14:28,567 --> 00:14:34,140
-b2 follows b1, which alternates. So b2 trains both sets, with 2 misses each.
+00:09:54,024 --> 00:09:58,297
+The P C bits select a row of the table, for example branch B.
 
 96
-00:14:34,590 --> 00:14:42,114
-With the final b2, that is 9 mispredicts: 4 from b1 and 5 from b2. One bit made it worse.
+00:09:58,747 --> 00:10:05,434
+The B H R selects a column. The B H R in the figure is N T, so the column is N T.
 
 97
-00:14:42,564 --> 00:14:49,158
-Part d uses 2 history bits. Here the newest outcome enters on the left. The history starts at 1 1.
+00:10:05,884 --> 00:10:08,996
+So each branch has one prediction per history pattern.
 
 98
-00:14:49,608 --> 00:14:57,410
-b1 sees history 1 1 before a not taken, and 1 0 before a taken. So it uses two different entries.
+00:10:09,446 --> 00:10:23,285
+Slide 26 uses the same T T T N branch, with 2 history bits. 2 bits give 4 patterns: N N, N T, T N and T T. So the branch has 4 one-bit entries.
 
 99
-00:14:57,860 --> 00:15:09,145
-Entry S 1 0 trains to 0 0, which predicts taken. S 1 1 stays at 1 0, which predicts not taken. From row 9, b1 is always correct.
+00:10:23,735 --> 00:10:27,961
+All entries start at N, and the B H R starts at N N.
 
 100
-00:15:09,595 --> 00:15:17,443
-Total: 7 mispredicts, 2 from b1 and 5 from b2. After warm-up, only the final b2 misses.
+00:10:28,411 --> 00:10:35,330
+Time 1 reads entry N N, in the yellow frame. It predicts N, but the outcome is T: wrong.
 
 101
-00:15:17,893 --> 00:15:23,884
-Compare the results: 7, 9, and 7 mispredicts. All three miss the loop exit.
+00:10:35,780 --> 00:10:42,272
+So entry N N becomes T. Then the outcome T shifts into the B H R, which becomes N T.
 
 102
-00:15:24,334 --> 00:15:36,408
-Part e. More history bits mean more entries to train, so a longer start-up. One bit is too short-sighted to help b1. For large n, two bits are best.
+00:10:42,722 --> 00:10:48,434
+Time 2 reads entry N T. It predicts N, but the outcome is T: wrong again.
 
 103
-00:15:36,858 --> 00:15:49,974
-Part f. With random input, nothing predicts b1, but all learn b2. Part g. History helps only when there is a pattern, and the history is long enough to see it.
+00:10:48,884 --> 00:10:56,268
+Time 3 reads entry T T. It predicts N, but the outcome is T: wrong. So T T becomes T.
 
 104
-00:15:50,424 --> 00:16:02,824
-Now the spring 2020 quiz, question 2 part A. There is no forwarding into D or into the branch compare unit. The branch is predicted taken, but resolves not taken. Pause and try it.
+00:10:56,718 --> 00:11:04,009
+Time 4 reads T T again, now T. But this is the exit, N: wrong. So T T becomes N.
 
 105
-00:16:03,274 --> 00:16:14,141
-Add needs t 0 from the load: a load-use stall in cycle 3, then W X forwarding in cycle 5. The branch is fetched in cycle 5.
+00:11:04,459 --> 00:11:07,757
+In times 5 to 8, only time 6 is correct.
 
 106
-00:16:14,591 --> 00:16:27,541
-The branch needs a 0 from add immediate, with no forwarding. So it reads a 0 in D after that W, in cycle 9. The predictor says taken, so F fetches hex 10 from cycle 6.
+00:11:08,207 --> 00:11:16,148
+Times 9 and 10 are also correct. Count the wrong results: 9 misses in 12. That is worse than the 2-bit counter, with 5.
 
 107
-00:16:27,991 --> 00:16:33,053
-In cycle 10, the branch resolves in X: not taken. The guess was wrong.
+00:11:16,598 --> 00:11:25,282
+History T T comes before T at time 3, and before N at time 4. One entry cannot give both. The history is too short.
 
 108
-00:16:33,503 --> 00:16:41,166
-The wrong load and add become dashes. In cycle 11, F fetches the nop at hex 20. It finishes in cycle 15.
+00:11:25,732 --> 00:11:34,138
+Slide 27 uses 3 history bits. 3 bits give 2 to the 3, which is 8 patterns. So the branch has 8 entries.
 
 109
-00:16:41,616 --> 00:16:52,901
-But the quiz table has 14 columns. It fits if the register file writes, then reads, in one cycle. Then every later cell moves one cycle earlier. State your assumption in the exam.
+00:11:34,588 --> 00:11:39,510
+In times 1 to 6, each history pattern is new. So each time reads a fresh entry.
 
 110
-00:16:53,351 --> 00:17:08,165
-Part B adds a 2-bit counter B H T and a B T B. States 1 0 and 1 1 predict taken. a 0 starts at hex 1000, and a 1 is hex 1010. Pause and fill the table.
+00:11:39,960 --> 00:11:44,744
+A fresh entry says N. So the predictor misses 5 times while it learns.
 
 111
-00:17:08,615 --> 00:17:22,361
-At the branch, a 0 is hex 1004, 1008, then 100 C: taken. Then hex 1010: not taken. So the branch runs 4 times.
+00:11:45,194 --> 00:11:50,023
+Time 4 is correct only because the exit is N, the same as the fresh entry.
 
 112
-00:17:22,811 --> 00:17:32,610
-Run 1 is given. 0 1 predicts not taken, but it is taken. Move to 1 0. The B T B gets the target hex 10.
+00:11:50,473 --> 00:11:53,399
+From time 7, every prediction is correct.
 
 113
-00:17:33,060 --> 00:17:40,398
-Runs 2 and 3: 1 0 and 1 1 predict taken, with target hex 10. Both are correct.
+00:11:53,849 --> 00:12:01,166
+Each pattern of the loop, N T T, T T T, T T N and T N T, has its own entry.
 
 114
-00:17:40,848 --> 00:17:49,393
-Run 4: 1 1 predicts taken, but it is not taken. Move to 1 0. A not taken branch does not write the B T B.
+00:12:01,616 --> 00:12:06,957
+History T T T is always followed by the exit, N.
 
 115
-00:17:49,843 --> 00:17:57,644
-The last row: the entry is 1 0, predict taken, target hex 10. Rows 5 and 6 stay blank.
+00:12:07,407 --> 00:12:10,519
+History N T T is always followed by taken.
 
 116
-00:17:58,094 --> 00:18:05,943
-Recap. One. Branches and J A L R resolve in X. By then, F and D hold two younger instructions.
+00:12:10,969 --> 00:12:13,662
+The history must be long enough to see the pattern.
 
 117
-00:18:06,393 --> 00:18:13,452
-Two. A wrong guess flushes them, and fetches the right P C in the next cycle. The penalty is 2 cycles.
+00:12:14,112 --> 00:12:20,614
+A hybrid predictor combines two schemes. A simple B H T predicts the independent branches.
 
 118
-00:18:13,902 --> 00:18:19,428
-Three. CPI is 1, plus the branch fraction, times the wrong fraction, times the penalty.
+00:12:21,064 --> 00:12:26,243
+A correlated B H T, with global history, predicts the branches that need history.
 
 119
-00:18:19,878 --> 00:18:25,869
-Four. Index tables with the P C bits above bits 1 and 0. Aliasing only spoils a guess.
+00:12:26,693 --> 00:12:29,383
+A chooser assigns each branch to one of them.
 
 120
-00:18:26,319 --> 00:18:34,622
-Five. A one-bit B H T misses twice per loop run, a two-bit counter once. Use the machine of the question.
+00:12:29,833 --> 00:12:36,056
+Branches start in the simple B H T. They move to the correlated one after too many misses.
 
 121
-00:18:35,072 --> 00:18:41,806
-Six. A history predictor keeps one entry per P C and pattern. The history must be long enough.
+00:12:36,506 --> 00:12:40,082
+The slides give 90 to 97 percent correct predictions.
 
 122
-00:18:42,256 --> 00:18:51,156
-Seven. In F, the B T B gives the target, the B H T the direction, and the R A S the return address.
+00:12:40,532 --> 00:12:45,176
+Option a: predict in D. In D, the branch target is known.
 
 123
-00:18:51,606 --> 00:18:57,318
+00:12:45,626 --> 00:12:49,341
+But in cycle 2, F has already fetched P C plus 4.
+
+124
+00:12:49,791 --> 00:12:57,918
+A taken guess fetches the target in cycle 3. So even a correct taken guess costs 1 cycle. This is a mis-fetch.
+
+125
+00:12:58,368 --> 00:13:06,030
+Option b: predict in F. A correct taken guess fetches the target in cycle 2, right after the branch. 0 cycles are lost.
+
+126
+00:13:06,480 --> 00:13:15,017
+But in F, only the P C is known. So the predictor must also tell if it is a branch, and where it goes. That is the job of the branch target buffer.
+
+127
+00:13:15,467 --> 00:13:24,105
+The branch target buffer, B T B, records past targets. If a branch went to a target last time, F fetches that target after it.
+
+128
+00:13:24,555 --> 00:13:33,657
+Every instruction reads the B T B in F. Each entry has a tag: the full P C of a branch. A comparator checks the tag against the P C.
+
+129
+00:13:34,107 --> 00:13:39,819
+A tag match is a hit: the P C is a known branch. Then the mux selects the stored target.
+
+130
+00:13:40,269 --> 00:13:43,520
+No match: the mux selects P C plus 4.
+
+131
+00:13:43,970 --> 00:13:49,635
+Every taken branch writes its entry in X. The tag gets the P C, and the target gets the target P C.
+
+132
+00:13:50,085 --> 00:14:02,113
+An example. The index is P C bits 9 to 2. Hex 1 C has the index bits 0 0 0 0 0 1 1 1, which is 7.
+
+133
+00:14:02,563 --> 00:14:09,460
+Hex 4 1 C has the same index bits, so it also reads entry 7. Only bit 10 is different.
+
+134
+00:14:09,910 --> 00:14:16,366
+Entry 7 holds the tag hex 1 C. Hex 4 1 C does not match, so there is no hit.
+
+135
+00:14:16,816 --> 00:14:26,139
+So F fetches P C plus 4: hex 4 1 C plus 4 is hex 4 2 0. The tag stops aliasing.
+
+136
+00:14:26,589 --> 00:14:33,416
+A B T B works because most branches use direct targets. The target is P C plus an offset, in the instruction.
+
+137
+00:14:33,866 --> 00:14:39,392
+So the taken target is the same every time. The B T B stores it once: a good guess.
+
+138
+00:14:39,842 --> 00:14:45,740
+Indirect targets are in a register, so they can change. The B T B holds only the last target.
+
+139
+00:14:46,190 --> 00:14:53,899
+J A L R is common: every procedure return is a J A L R. One function returns to a different place for each caller.
+
+140
+00:14:54,349 --> 00:15:02,290
+The return address stack, R A S, predicts returns. A call, J A L, pushes P C plus 4.
+
+141
+00:15:02,740 --> 00:15:07,477
+A return pops the top of the stack. The popped value is the predicted target.
+
+142
+00:15:07,927 --> 00:15:14,057
+Call 1 is at hex 100. It pushes hex 100 plus 4, which is hex 104.
+
+143
+00:15:14,507 --> 00:15:18,640
+Return 1 pops hex 104. That is the correct return address.
+
+144
+00:15:19,090 --> 00:15:26,288
+The B T B has no entry for this return yet. So it guesses P C plus 4, hex 510: wrong.
+
+145
+00:15:26,738 --> 00:15:33,612
+Call 2 is at hex 300. It pushes hex 300 plus 4, which is hex 304.
+
+146
+00:15:34,062 --> 00:15:36,709
+Return 2 pops hex 304: correct.
+
+147
+00:15:37,159 --> 00:15:43,149
+The B T B holds the last target of this return, hex 104. That is wrong now.
+
+148
+00:15:43,599 --> 00:15:55,070
+F must know that an instruction is a return before decode, because a pop changes the stack. Pre-decode bits, stored with each instruction in the instruction memory, mark calls and returns.
+
+149
+00:15:55,520 --> 00:16:04,337
+Slide 35 puts it all together. Start with the base. In F, the P C goes to the plus 4 adder, and the mux gives the next P C.
+
+150
+00:16:04,787 --> 00:16:09,988
+In parallel, the P C reads the B T B. On a tag hit, it gives the stored target.
+
+151
+00:16:10,438 --> 00:16:14,897
+The P C also reads the B H T. It predicts taken or not taken.
+
+152
+00:16:15,347 --> 00:16:19,294
+The R A S gives the return P C: the top of the stack.
+
+153
+00:16:19,744 --> 00:16:23,552
+The pre-decode bits in the instruction memory tell if the instruction is a return.
+
+154
+00:16:24,002 --> 00:16:26,696
+The mux picks the R A S top for a return.
+
+155
+00:16:27,146 --> 00:16:30,814
+It picks the B T B target on a tag hit with a taken prediction.
+
+156
+00:16:31,264 --> 00:16:33,401
+Otherwise, it picks P C plus 4.
+
+157
+00:16:33,851 --> 00:16:37,566
+A correct guess costs 0 cycles, even for a taken branch.
+
+158
+00:16:38,016 --> 00:16:48,000
+With 75 percent correct: per 100 instructions, 5 of the 20 branches are wrong. 5 times 2 is 10 lost cycles, so the CPI is 1.1.
+
+159
+00:16:48,450 --> 00:16:59,494
+With 95 percent correct: 1 of the 20 branches is wrong. 1 times 2 is 2 lost cycles, so the CPI is 1.02. Real penalties are often 10 cycles or more.
+
+160
+00:16:59,944 --> 00:17:06,957
+Predication removes the branch. In conventional code, the branch is mis-predicted. It flushes both sub and add.
+
+161
+00:17:07,407 --> 00:17:13,026
+But add is on both paths. It is fetched again at targ, so flushing it is waste.
+
+162
+00:17:13,476 --> 00:17:18,956
+With predication, there is no branch. The set-predicate instruction writes the predicate register, p 3.
+
+163
+00:17:19,406 --> 00:17:25,211
+p 3 controls sub. If p 3 is false, sub is annulled in place: it does not write.
+
+164
+00:17:25,661 --> 00:17:28,614
+Add is kept. It runs with no bubble.
+
+165
+00:17:29,064 --> 00:17:35,612
+The benefit: no mis-predictions, and fewer branches in the predictor tables.
+
+166
+00:17:36,062 --> 00:17:43,771
+The cost: annulled instructions still use pipeline slots. With accurate predictors, predication may not help, and may even hurt.
+
+167
+00:17:44,221 --> 00:17:47,936
+A practice problem with the slide numbers. Pause the video and try it.
+
+168
+00:17:48,386 --> 00:17:54,145
+Count per 100 instructions. 20 percent are branches, so each row shows 20 branches.
+
+169
+00:17:54,595 --> 00:18:06,390
+a. Stall on every branch: all 20 branches lose 2 cycles. 20 times 2 is 40 lost cycles. So the CPI is 100 plus 40, over 100: 1.4.
+
+170
+00:18:06,840 --> 00:18:15,107
+b. Predict not taken: the 15 taken branches are wrong. 15 times 2 is 30, so the CPI is 1.3.
+
+171
+00:18:15,557 --> 00:18:24,663
+c. 75 percent correct means 25 percent wrong: 5 of the 20 branches. 5 times 2 is 10, so the CPI is 1.1.
+
+172
+00:18:25,113 --> 00:18:35,980
+d. 95 percent correct means 5 percent wrong: 1 of the 20 branches. 1 times 2 is 2, so the CPI is 1.02.
+
+173
+00:18:36,430 --> 00:18:44,464
+e. The same 1 wrong branch, but with a 10-cycle penalty. 1 times 10 is 10, so the CPI is 1.1 again.
+
+174
+00:18:44,914 --> 00:18:49,233
+With a deep pipeline, the penalty is large. So a good predictor matters more.
+
+175
+00:18:49,683 --> 00:18:57,392
+Assignment 4, question 1. Pause the video and try each part. The question gives its own 2-bit state machine.
+
+176
+00:18:57,842 --> 00:19:04,529
+States 0 0 and 0 1 predict taken. States 1 0 and 1 1 predict not taken.
+
+177
+00:19:04,979 --> 00:19:16,496
+It is not the slide counter. From 1 1, taken goes to 0 0. From 0 1, not taken goes to 1 0. Always use the machine of the question.
+
+178
+00:19:16,946 --> 00:19:24,821
+b1 is branch if equal to zero, on x4. It skips the add immediate of x2 when the element x4 is 0.
+
+179
+00:19:25,271 --> 00:19:31,494
+b2 is branch if not equal to zero, on x1. It loops while x1 is not 0.
+
+180
+00:19:31,944 --> 00:19:42,161
+x1 starts at n, which is 8. The array alternates 1 and 0. All entries start at 1 0. b1 and b2 do not alias.
+
+181
+00:19:42,611 --> 00:19:53,385
+Part a. The 8 elements are 1, 0, 1, 0, 1, 0, 1, 0. x2 counts the non-zero ones: 4. So x2 is 4.
+
+182
+00:19:53,835 --> 00:19:58,897
+b1 is taken when x4 is 0: not taken, taken, and so on.
+
+183
+00:19:59,347 --> 00:20:07,659
+Add immediate counts x1 down from 8 to 0. b2 is taken while x1 is not 0: 7 times, then not taken.
+
+184
+00:20:08,109 --> 00:20:16,887
+Part b uses one entry per branch, with no history. Pause the video and try it. The yellow frame marks the entry that is read.
+
+185
+00:20:17,337 --> 00:20:26,067
+Row 1: b1 reads 1 0. It predicts not taken, and it is not taken: correct. On N, 1 0 stays at 1 0.
+
+186
+00:20:26,517 --> 00:20:36,873
+Row 2: b2 reads 1 0 and predicts not taken. But it is taken: a miss. On T, b2 moves to 1 1.
+
+187
+00:20:37,323 --> 00:20:44,661
+Row 3: b1 reads 1 0. The element is 0, so b1 is taken: a miss. b1 moves to 1 1.
+
+188
+00:20:45,111 --> 00:20:54,167
+Row 4: b2 reads 1 1, predicts not taken, and is taken: a miss. On T, 1 1 moves to 0 0.
+
+189
+00:20:54,617 --> 00:21:02,511
+Row 5: b1 reads 1 1, predicts not taken, and is not taken: correct. b1 moves back to 1 0.
+
+190
+00:21:02,961 --> 00:21:09,927
+Row 6: b2 reads 0 0 and predicts taken: correct. b2 stays at 0 0.
+
+191
+00:21:10,377 --> 00:21:17,436
+b1 moves between 1 0 and 1 1. Both predict not taken, so every taken b1 misses.
+
+192
+00:21:17,886 --> 00:21:21,787
+b2 stays at 0 0, and it is correct each time.
+
+193
+00:21:22,237 --> 00:21:29,528
+Rows 11 to 15 repeat this pattern. The final b2, in row 16, is not taken: a miss.
+
+194
+00:21:29,978 --> 00:21:34,715
+Count the misses: 7. 4 are from b1, and 3 are from b2.
+
+195
+00:21:35,165 --> 00:21:44,175
+Part c adds one global history bit: the outcome of the last branch, b1 or b2. 1 means taken. It starts at 1.
+
+196
+00:21:44,625 --> 00:21:50,244
+The history bit selects the entry: set 0 or set 1. Each branch has its own two entries.
+
+197
+00:21:50,694 --> 00:21:59,192
+Before each b1, the last branch is b2, and b2 is taken. So the history is 1, and b1 always reads set 1.
+
+198
+00:21:59,642 --> 00:22:04,286
+That is the same as no history. b1 still misses each taken branch.
+
+199
+00:22:04,736 --> 00:22:14,348
+b2 follows b1. b1 alternates not taken and taken, so b2 sees the history 0, then 1, again and again.
+
+200
+00:22:14,798 --> 00:22:20,408
+So b2 trains both sets. Each set misses twice before it reaches 0 0.
+
+201
+00:22:20,858 --> 00:22:25,363
+From row 10, b2 reads 0 0 in both sets, and it is correct.
+
+202
+00:22:25,813 --> 00:22:31,188
+The final b2, in row 16, is not taken: a miss.
+
+203
+00:22:31,638 --> 00:22:39,347
+Count the misses: 9. 4 are from b1, and 5 are from b2. One history bit made it worse.
+
+204
+00:22:39,797 --> 00:22:46,944
+Part d uses 2 history bits. In this question, the newest outcome enters on the left. The history starts at 1 1.
+
+205
+00:22:47,394 --> 00:22:53,385
+2 bits give 4 patterns. So each branch has 4 entries, S 0 0 to S 1 1.
+
+206
+00:22:53,835 --> 00:23:01,683
+b1 sees the history 1 1 before each not taken, and 1 0 before each taken. So b1 uses two different entries.
+
+207
+00:23:02,133 --> 00:23:10,724
+Entry S 1 0 sees only taken outcomes. It moves from 1 0 to 1 1, then to 0 0, which predicts taken.
+
+208
+00:23:11,174 --> 00:23:17,625
+Entry S 1 1 sees only not taken outcomes. It stays at 1 0, which predicts not taken.
+
+209
+00:23:18,075 --> 00:23:24,855
+So from row 9, b1 is always correct. b1 misses only twice, in rows 3 and 7.
+
+210
+00:23:25,305 --> 00:23:32,178
+b2 misses 4 times while its entries S 0 1 and S 1 1 train, and once at the final exit.
+
+211
+00:23:32,628 --> 00:23:40,477
+Total: 7 mispredicts, 2 from b1 and 5 from b2. After warm-up, only the final b2 misses.
+
+212
+00:23:40,927 --> 00:23:50,261
+Compare the results. Each block is one mispredict. No history has 7, 1 history bit has 9, and 2 history bits have 7.
+
+213
+00:23:50,711 --> 00:23:53,683
+All three miss the last b2: the loop exit.
+
+214
+00:23:54,133 --> 00:23:59,381
+Part e. More history bits mean more entries to train, so a longer start-up.
+
+215
+00:23:59,831 --> 00:24:04,940
+One history bit is too short-sighted to help b1: b1 still misses 4 times.
+
+216
+00:24:05,390 --> 00:24:12,495
+For large n, 2 bits are best. They capture the alternating b1, which then misses only twice, at the start.
+
+217
+00:24:12,945 --> 00:24:24,044
+Part f. With random input, no scheme predicts b1, but all learn that b2 is taken. This does not depend on n. For large n, the start-up costs become small.
+
+218
+00:24:24,494 --> 00:24:32,110
+Part g. History helps when there is a pattern, and the history is long enough to see it. Otherwise it hurts, because training takes longer.
+
+219
+00:24:32,560 --> 00:24:42,266
+Now the spring 2020 quiz, question 2 part A. Pause the video and try it. There is bypassing, but not into D, and not into the branch compare unit.
+
+220
+00:24:42,716 --> 00:24:46,896
+The branch, blt, is predicted taken, but it resolves not taken.
+
+221
+00:24:47,346 --> 00:24:53,801
+Add needs t 0 from the load. That is a load-use stall: add waits in D in cycle 3.
+
+222
+00:24:54,251 --> 00:25:00,334
+In cycle 5, the load is in W. W X forwarding gives t 0 to add in X.
+
+223
+00:25:00,784 --> 00:25:03,014
+The branch is fetched in cycle 5.
+
+224
+00:25:03,464 --> 00:25:10,708
+The branch needs a 0 from add immediate, with no forwarding. Add immediate writes a 0 in W, in cycle 8.
+
+225
+00:25:11,158 --> 00:25:17,284
+D reads only values that were written in earlier cycles. So the branch reads a 0 in D in cycle 9.
+
+226
+00:25:17,734 --> 00:25:22,610
+The predictor says taken. So from cycle 6, F fetches the target, hex 10.
+
+227
+00:25:23,060 --> 00:25:28,122
+In cycle 10, the branch resolves in X: not taken. The guess was wrong.
+
+228
+00:25:28,572 --> 00:25:32,977
+The wrong load and add become dashes, from cycle 11.
+
+229
+00:25:33,427 --> 00:25:36,910
+In cycle 11, F fetches the nop at hex 20.
+
+230
+00:25:37,360 --> 00:25:39,811
+The nop finishes in cycle 15.
+
+231
+00:25:40,261 --> 00:25:43,280
+But the quiz table has only 14 columns.
+
+232
+00:25:43,730 --> 00:25:52,878
+It fits if the register file writes, then reads, in the same cycle. Then the branch reads a 0 in D in cycle 8, the cycle of the write.
+
+233
+00:25:53,328 --> 00:26:00,841
+Every later cell moves one cycle earlier, so the nop finishes in cycle 14. State your assumption in the exam.
+
+234
+00:26:01,291 --> 00:26:10,208
+Part B adds a 2-bit counter B H T and a B T B. Pause the video and fill the table for blt.
+
+235
+00:26:10,658 --> 00:26:13,630
+States 1 0 and 1 1 predict taken.
+
+236
+00:26:14,080 --> 00:26:19,142
+a 0 starts at hex 1000, and a 1 is hex 1010.
+
+237
+00:26:19,592 --> 00:26:31,156
+Add immediate adds 4 to a 0 before each blt. So blt sees hex 1004, 1008 and 100 C. Each is less than a 1: taken.
+
+238
+00:26:31,606 --> 00:26:38,943
+Then blt sees hex 1010, which equals a 1: not taken. So blt runs 4 times.
+
+239
+00:26:39,393 --> 00:26:47,799
+Run 1 is given. The entry 0 1 predicts not taken, but blt is taken. So the entry moves to 1 0.
+
+240
+00:26:48,249 --> 00:26:53,496
+A taken branch writes the B T B. So the B T B now holds the target, hex 10.
+
+241
+00:26:53,946 --> 00:27:03,049
+Run 2: the entry is 1 0. It predicts taken, with the target hex 10. Correct, so the entry moves to 1 1.
+
+242
+00:27:03,499 --> 00:27:09,675
+Run 3: 1 1 predicts taken. Correct, and the entry stays at 1 1.
+
+243
+00:27:10,125 --> 00:27:19,181
+Run 4: 1 1 predicts taken, but blt is not taken. The entry moves to 1 0. A not-taken branch does not write the B T B.
+
+244
+00:27:19,631 --> 00:27:25,993
+The last row is the state after the loop: entry 1 0, predict taken, target hex 10.
+
+245
+00:27:26,443 --> 00:27:30,762
+Rows 5 and 6 stay blank, because blt runs only 4 times.
+
+246
+00:27:31,212 --> 00:27:39,060
+Recap. One. Branches and J A L R resolve in X. By then, F and D hold two younger instructions.
+
+247
+00:27:39,510 --> 00:27:46,569
+Two. A wrong guess flushes them, and fetches the right P C in the next cycle. The penalty is 2 cycles.
+
+248
+00:27:47,019 --> 00:27:52,546
+Three. CPI is 1, plus the branch fraction, times the wrong fraction, times the penalty.
+
+249
+00:27:52,996 --> 00:27:58,986
+Four. Index tables with the P C bits above bits 1 and 0. Aliasing only spoils a guess.
+
+250
+00:27:59,436 --> 00:28:07,740
+Five. A one-bit B H T misses twice per loop run, a two-bit counter once. Use the machine of the question.
+
+251
+00:28:08,190 --> 00:28:14,924
+Six. A history predictor keeps one entry per P C and pattern. The history must be long enough.
+
+252
+00:28:15,374 --> 00:28:24,273
+Seven. In F, the B T B gives the target, the B H T the direction, and the R A S the return address.
+
+253
+00:28:24,723 --> 00:28:30,435
 Eight. In the exam, state your register file assumption. That is the end of video 11.
