@@ -1,0 +1,895 @@
+1
+00:00:00,000 --> 00:00:12,160
+This is ECE 320, video 17 c, a midterm review. It covers the spring 2020 quiz 2, and one method for each question type.
+
+2
+00:00:12,610 --> 00:00:17,111
+Question 1 calculates the CPI with a memory hierarchy.
+
+3
+00:00:17,561 --> 00:00:26,116
+Question 2 runs a loop with a predicted-taken branch, then fills a two-bit counter, B H T and B T B table.
+
+4
+00:00:26,566 --> 00:00:34,758
+Question 3 is a design question on interrupts: save the P C, shadow registers, and the context in the cache.
+
+5
+00:00:35,208 --> 00:00:42,269
+At the end, one method card for each midterm question type gives the steps and the common mistakes.
+
+6
+00:00:42,719 --> 00:00:47,989
+The spring 2020 quiz 2 has 6 questions and 84 marks.
+
+7
+00:00:48,439 --> 00:00:55,713
+Questions 1 to 3 carry 42 marks. All three use lecture slides 1 to 8, so we solve them.
+
+8
+00:00:56,163 --> 00:01:08,110
+Question 4 is out-of-order execution. Questions 5 and 6 are memory consistency and cache coherence. They are not on slides 1 to 8, so we skip them.
+
+9
+00:01:08,560 --> 00:01:17,371
+Each question starts with the full question. Then pause the video and try it. Then follow the solution, and check the one-line answer.
+
+10
+00:01:17,821 --> 00:01:34,717
+Spring 2020 quiz 2, question 1. For memory instructions, 60 percent hit in L 1, at 5 cycles. 20 percent hit in L 2, at 10 cycles. 20 percent go to local memory, at 300 cycles.
+
+11
+00:01:35,167 --> 00:01:44,809
+The other instructions: arithmetic and logical instructions are 50 percent, at 4 cycles. Branches are 10 percent, at 2 cycles.
+
+12
+00:01:45,259 --> 00:01:55,414
+Part A asks for the CPI of the memory instructions. Part B asks for the overall CPI. Pause the video and try parts A and B.
+
+13
+00:01:55,864 --> 00:02:03,715
+Assume that each latency is the total time of an access served at that level. State the assumption in the exam.
+
+14
+00:02:04,165 --> 00:02:13,402
+Part A is a weighted average over the levels. The strip shows where the memory instructions are served: 60, 20 and 20 percent.
+
+15
+00:02:13,852 --> 00:02:19,356
+L 1 serves 60 percent at 5 cycles. Point 6 times 5 is 3.
+
+16
+00:02:19,806 --> 00:02:24,990
+L 2 serves 20 percent at 10 cycles. Point 2 times 10 is 2.
+
+17
+00:02:25,440 --> 00:02:32,160
+Local memory serves 20 percent at 300 cycles. Point 2 times 300 is 60.
+
+18
+00:02:32,610 --> 00:02:43,383
+Add the parts. 3 plus 2 plus 60 is 65. So the CPI of the memory instructions is 65. Memory dominates the bar.
+
+19
+00:02:43,833 --> 00:02:57,273
+Part B. Arithmetic and logical instructions are 50 percent, and branches are 10 percent. Memory instructions are the rest: 100 minus 50 minus 10 is 40 percent.
+
+20
+00:02:57,723 --> 00:03:00,582
+Arithmetic: point 5 times 4 is 2.
+
+21
+00:03:01,032 --> 00:03:03,976
+Branches: point 1 times 2 is point 2.
+
+22
+00:03:04,426 --> 00:03:10,186
+Memory: point 4 times 65, the CPI from part A, is 26.
+
+23
+00:03:10,636 --> 00:03:16,567
+The overall CPI is 2 plus point 2 plus 26, which is 28.2.
+
+24
+00:03:17,017 --> 00:03:26,553
+The answer. Part A: the CPI of the memory instructions is 65. Part B: the overall CPI is 28.2.
+
+25
+00:03:27,003 --> 00:03:34,192
+Part C, 4 marks. An optimization makes arithmetic and logical instructions 2 times faster.
+
+26
+00:03:34,642 --> 00:03:42,706
+But half of the memory instructions that went to local memory now go to remote memory, at 450 cycles.
+
+27
+00:03:43,156 --> 00:03:47,657
+The question: does program P benefit. Pause the video and try it.
+
+28
+00:03:48,107 --> 00:03:53,803
+First, the new memory CPI. L 1 and L 2 do not change: 3 and 2.
+
+29
+00:03:54,253 --> 00:04:01,635
+Half of the 20 percent local accesses stay local: 10 percent. Point 1 times 300 is 30.
+
+30
+00:04:02,085 --> 00:04:08,741
+The other 10 percent go to remote memory. Point 1 times 450 is 45.
+
+31
+00:04:09,191 --> 00:04:16,871
+The memory CPI is 3 plus 2 plus 30 plus 45, which is 80. Before, it was 65.
+
+32
+00:04:17,321 --> 00:04:26,259
+Now the overall CPI. Arithmetic takes 4 divided by 2, which is 2 cycles. Point 5 times 2 is 1.
+
+33
+00:04:26,709 --> 00:04:30,656
+Branches do not change. Point 1 times 2 is point 2.
+
+34
+00:04:31,106 --> 00:04:34,029
+Memory: point 4 times 80 is 32.
+
+35
+00:04:34,479 --> 00:04:39,983
+The new CPI is 1 plus point 2 plus 32, which is 33.2.
+
+36
+00:04:40,433 --> 00:04:44,507
+The old CPI, from parts A and B, is 28.2.
+
+37
+00:04:44,957 --> 00:04:49,309
+The arithmetic part saves 2 minus 1, which is 1 cycle.
+
+38
+00:04:49,759 --> 00:04:54,794
+But the memory part adds 32 minus 26, which is 6 cycles.
+
+39
+00:04:55,244 --> 00:05:04,780
+The instruction count and the clock do not change. 33.2 is more than 28.2, so program P does not benefit.
+
+40
+00:05:05,230 --> 00:05:12,675
+It is slower: the speedup is 28.2 divided by 33.2, which is point 8 5.
+
+41
+00:05:13,125 --> 00:05:23,067
+Question 2 part A. Run program Q on the 5-stage pipeline. There is bypassing, but not into D, and not into the branch compare unit.
+
+42
+00:05:23,517 --> 00:05:30,557
+The branch, blt, is predicted taken, but it resolves not taken. Pause the video and try it.
+
+43
+00:05:31,007 --> 00:05:37,727
+Add needs t 0 from the load. That is a load-use stall: add waits in D in cycle 3.
+
+44
+00:05:38,177 --> 00:05:44,811
+In cycle 5, the load is in W. W X forwarding gives t 0 to add in X.
+
+45
+00:05:45,261 --> 00:05:47,651
+The branch is fetched in cycle 5.
+
+46
+00:05:48,101 --> 00:05:56,549
+The branch needs a 0 from add immediate, with no forwarding. Add immediate writes a 0 in W, in cycle 8.
+
+47
+00:05:56,999 --> 00:06:04,401
+D reads only values that were written in earlier cycles. So the branch reads a 0 in D in cycle 9.
+
+48
+00:06:04,851 --> 00:06:10,377
+The predictor says taken. So from cycle 6, F fetches the target, hex 10.
+
+49
+00:06:10,827 --> 00:06:15,925
+In cycle 10, the branch resolves in X: not taken. The guess was wrong.
+
+50
+00:06:16,375 --> 00:06:20,237
+The wrong load and add become dashes, from cycle 11.
+
+51
+00:06:20,687 --> 00:06:24,441
+In cycle 11, F fetches the nop at hex 20.
+
+52
+00:06:24,891 --> 00:06:27,153
+The nop finishes in cycle 15.
+
+53
+00:06:27,603 --> 00:06:30,525
+But the quiz table has only 14 columns.
+
+54
+00:06:30,975 --> 00:06:41,151
+It fits if the register file writes, then reads, in the same cycle. Then the branch reads a 0 in D in cycle 8, the cycle of the write.
+
+55
+00:06:41,601 --> 00:06:49,815
+Every later cell moves one cycle earlier, so the nop finishes in cycle 14. State your assumption in the exam.
+
+56
+00:06:50,265 --> 00:07:10,147
+The answer. Add stalls once for the load, then uses W X. blt waits in D for add immediate. The wrong-path load and add are flushed, and the nop is fetched in the cycle after X. The last W is in cycle 15, or 14 with a same-cycle write and read.
+
+57
+00:07:10,597 --> 00:07:18,619
+Part B adds a 2-bit counter B H T and a B T B. Pause the video and fill the table for blt.
+
+58
+00:07:19,069 --> 00:07:22,183
+States 1 0 and 1 1 predict taken.
+
+59
+00:07:22,633 --> 00:07:27,583
+a 0 starts at hex 1000, and a 1 is hex 1010.
+
+60
+00:07:28,033 --> 00:07:40,406
+Add immediate adds 4 to a 0 before each blt. So blt sees hex 1004, 1008 and 100 C. Each is less than a 1: taken.
+
+61
+00:07:40,856 --> 00:07:48,664
+Then blt sees hex 1010, which equals a 1: not taken. So blt runs 4 times.
+
+62
+00:07:49,114 --> 00:07:57,839
+Run 1 is given. The entry 0 1 predicts not taken, but blt is taken. So the entry moves to 1 0.
+
+63
+00:07:58,289 --> 00:08:04,476
+A taken branch writes the B T B. So the B T B now holds the target, hex 10.
+
+64
+00:08:04,926 --> 00:08:13,203
+Run 2: the entry is 1 0. It predicts taken, with the target hex 10. Correct, so the entry moves to 1 1.
+
+65
+00:08:13,653 --> 00:08:18,816
+Run 3: 1 1 predicts taken. Correct, and the entry stays at 1 1.
+
+66
+00:08:19,266 --> 00:08:30,231
+Run 4: 1 1 predicts taken, but blt is not taken. The entry moves to 1 0. A not-taken branch does not write the B T B.
+
+67
+00:08:30,681 --> 00:08:36,996
+The last row is the state after the loop: entry 1 0, predict taken, target hex 10.
+
+68
+00:08:37,446 --> 00:08:42,459
+Rows 5 and 6 stay blank, because blt runs only 4 times.
+
+69
+00:08:42,909 --> 00:08:59,123
+The answer. The entry goes 0 1, 1 0, 1 1, 1 1. The predictions are not taken, then taken 3 times. The outcomes are taken 3 times, then not taken. The last row is 1 0, taken, hex 10.
+
+70
+00:08:59,573 --> 00:09:09,685
+Now the spring 2020 quiz, question 3. Interrupts happen at a high frequency, so context saving and restoring must be fast.
+
+71
+00:09:10,135 --> 00:09:18,839
+The context is the 31 registers x 1 to x 31. x 0 is always 0, so it is not saved.
+
+72
+00:09:19,289 --> 00:09:22,297
+Normally, the handler saves them in main memory.
+
+73
+00:09:22,747 --> 00:09:27,099
+This quiz resolves interrupts and exceptions at the W stage.
+
+74
+00:09:27,549 --> 00:09:33,330
+The slides use M. The method is the same: one commit point, and act only there.
+
+75
+00:09:33,780 --> 00:09:37,193
+There are five parts. Parts A and B have no cache.
+
+76
+00:09:37,643 --> 00:09:42,955
+Part C adds a data cache. It uses the cache ideas from video 14.
+
+77
+00:09:43,405 --> 00:09:52,216
+Part A. With no cache, describe one way to save and restore the P C when an interrupt happens. Pause the video and try it.
+
+78
+00:09:52,666 --> 00:10:00,303
+Follow the slides. First, carry the P C of each instruction down the pipeline, in every pipeline register.
+
+79
+00:10:00,753 --> 00:10:05,703
+Carry it up to the commit point. In this quiz, the commit point is W.
+
+80
+00:10:06,153 --> 00:10:11,145
+At W, write E P C with the P C of the interrupted instruction.
+
+81
+00:10:11,595 --> 00:10:13,707
+Also write Cause with the reason.
+
+82
+00:10:14,157 --> 00:10:17,847
+Kill the younger instructions in F, D, X and M.
+
+83
+00:10:18,297 --> 00:10:21,412
+The instruction in W does not write back.
+
+84
+00:10:21,862 --> 00:10:24,657
+Then the P C select picks the handler address.
+
+85
+00:10:25,107 --> 00:10:35,304
+To restore, add a return instruction at the end of the handler. It copies E P C into the P C. Fetch restarts at the interrupted instruction.
+
+86
+00:10:35,754 --> 00:10:44,117
+Part B adds two new instructions. Save context saves all 31 registers. Load context restores them.
+
+87
+00:10:44,567 --> 00:10:48,663
+The register file gets two sets, set 0 and set 1.
+
+88
+00:10:49,113 --> 00:10:52,761
+A bit s selects the current set. Now s is 0.
+
+89
+00:10:53,211 --> 00:10:59,205
+The copy operation copies the current set s into the other set, s X O R 1.
+
+90
+00:10:59,655 --> 00:11:06,077
+Now set 1 holds the same values as set 0: 5, 9, and so on, to 7.
+
+91
+00:11:06,527 --> 00:11:14,292
+The swap operation changes s to s X O R 1. Now s is 1, so set 1 is the current set.
+
+92
+00:11:14,742 --> 00:11:19,905
+If both come in the same cycle, the register file copies first, then swaps.
+
+93
+00:11:20,355 --> 00:11:23,533
+This design does not support nested interrupts.
+
+94
+00:11:23,983 --> 00:11:28,634
+We use the copy for save context, and the swap for load context.
+
+95
+00:11:29,084 --> 00:11:36,913
+Part B 1. How does an application benefit from save context and load context? Pause the video and try it.
+
+96
+00:11:37,363 --> 00:11:43,827
+Without them, the handler saves the context with 31 store words, one for each register.
+
+97
+00:11:44,277 --> 00:11:48,437
+At the end, it restores the context with 31 load words.
+
+98
+00:11:48,887 --> 00:11:54,349
+31 plus 31 is 62 memory instructions for each interrupt.
+
+99
+00:11:54,799 --> 00:12:00,153
+With them, the handler uses 2 instructions: save context and load context.
+
+100
+00:12:00,603 --> 00:12:06,001
+The copy and the swap happen inside the register file, with no memory access.
+
+101
+00:12:06,451 --> 00:12:13,341
+So each interrupt costs much less time. This matters, because interrupts come at a high frequency.
+
+102
+00:12:13,791 --> 00:12:23,242
+Part B 2. Which changes does the pipeline need, apart from the register file? Go stage by stage. Pause the video and try it.
+
+103
+00:12:23,692 --> 00:12:28,428
+F needs no change. The new instructions are fetched like all others.
+
+104
+00:12:28,878 --> 00:12:42,915
+D decodes the two new opcodes. It makes two new control bits: copy for save context, and swap for load context. The instructions write no register, so Reg W En is 0.
+
+105
+00:12:43,365 --> 00:12:51,088
+X and M do no work. They only carry the two bits down the pipeline registers, like Reg W En.
+
+106
+00:12:51,538 --> 00:12:56,381
+W is the commit point, so the copy or swap happens in W.
+
+107
+00:12:56,831 --> 00:13:09,225
+All older instructions have written their results, so the copy is complete. And if an interrupt kills save context, it has changed nothing. Younger instructions have not written yet.
+
+108
+00:13:09,675 --> 00:13:19,958
+One hazard remains. After load context swaps the sets, the younger instructions in D, X and M have read registers from the old set.
+
+109
+00:13:20,408 --> 00:13:27,448
+Flush F, D, X and M, and fetch again after load context. This is like a wrong branch guess.
+
+110
+00:13:27,898 --> 00:13:37,093
+Part B 3. The change breaks some existing interrupt handlers. Describe the problem, and how to fix it. Pause the video and try it.
+
+111
+00:13:37,543 --> 00:13:44,284
+Trace the two sets. P means the program registers. At the start, the program uses set 0.
+
+112
+00:13:44,734 --> 00:13:50,729
+Interrupt 1 runs save context. It is a copy, so set 1 also holds P.
+
+113
+00:13:51,179 --> 00:13:55,765
+Handler 1 changes set 0. Set 0 now holds H 1.
+
+114
+00:13:56,215 --> 00:14:10,999
+Now an existing handler enables interrupts again, and a nested interrupt comes. Handler 2 runs save context. The copy writes H 1 into set 1. The saved program registers P are lost.
+
+115
+00:14:11,449 --> 00:14:14,308
+Handler 2 changes set 0 to H 2.
+
+116
+00:14:14,758 --> 00:14:23,206
+Handler 2 runs load context. The swap makes s equal to 1. Handler 1 gets H 1 back, which is correct.
+
+117
+00:14:23,656 --> 00:14:33,512
+Then handler 1 runs load context. It swaps back to set 0. The program resumes with the registers of handler 2. That is wrong.
+
+118
+00:14:33,962 --> 00:14:45,589
+The fix: keep interrupts disabled from save context to load context. A handler that must allow nested interrupts uses store word and load word, as before.
+
+119
+00:14:46,039 --> 00:14:59,692
+A second problem: load context restores all 31 registers. So a handler can no longer return a result in a register, for example after e call. It must return it through memory.
+
+120
+00:15:00,142 --> 00:15:11,150
+Part C adds a data cache. Acquire context reserves an address range for the context. The lines of the range stay in the cache until release context.
+
+121
+00:15:11,600 --> 00:15:20,368
+Part C uses the cache ideas from video 14: blocks, sets, tags, and L R U. Pause the video and try it.
+
+122
+00:15:20,818 --> 00:15:29,479
+First, the size. Each register has 4 bytes. 31 registers times 4 bytes is 124 bytes.
+
+123
+00:15:29,929 --> 00:15:36,009
+The quiz gives no block size. Assume 32 byte blocks, as in the lecture example.
+
+124
+00:15:36,459 --> 00:15:44,907
+Take r s 1 equal to hex 1 0 0 0, a multiple of 32. Then the range fills 4 lines.
+
+125
+00:15:45,357 --> 00:15:52,653
+Each line holds 32 over 4, so 8 registers. The first line holds x 1 to x 8.
+
+126
+00:15:53,103 --> 00:15:59,375
+The last line holds x 25 to x 31. Its last 4 bytes are unused.
+
+127
+00:15:59,825 --> 00:16:07,121
+Now take r s 1 equal to hex 1 0 1 0. The range starts 16 bytes into a line.
+
+128
+00:16:07,571 --> 00:16:10,046
+Now the range touches 5 lines.
+
+129
+00:16:10,496 --> 00:16:20,501
+So a start more than 4 bytes into a line gives 5 lines. The hardware must handle every line from the first to the last address of the range.
+
+130
+00:16:20,951 --> 00:16:25,175
+Now the pipeline, stage by stage. F needs no change.
+
+131
+00:16:25,625 --> 00:16:35,759
+D decodes the two new opcodes and reads r s 1. It makes two control bits, acquire and release. The instructions write no register.
+
+132
+00:16:36,209 --> 00:16:43,718
+X computes the start address. The A L U passes r s 1, as for a load word with offset 0.
+
+133
+00:16:44,168 --> 00:16:54,643
+M is the main change: the instructions use the data cache in M. Acquire fills each line of the range and locks it. Release unlocks the lines.
+
+134
+00:16:55,093 --> 00:16:59,850
+A fill is a cache miss, so the pipeline stalls, as for a load word miss.
+
+135
+00:17:00,300 --> 00:17:04,268
+W does nothing. The instructions write no register.
+
+136
+00:17:04,718 --> 00:17:11,694
+To save the context, the handler still uses 31 store words, and later 31 load words.
+
+137
+00:17:12,144 --> 00:17:18,267
+They access the data cache in M, and they always hit. The locked lines never leave the cache.
+
+138
+00:17:18,717 --> 00:17:22,834
+Acquire context runs only once, when the program starts.
+
+139
+00:17:23,284 --> 00:17:28,895
+Now the cache. Take a 2 way set associative cache: way 0 and way 1.
+
+140
+00:17:29,345 --> 00:17:32,822
+The cache has 4 sets, set 0 to set 3.
+
+141
+00:17:33,272 --> 00:17:39,928
+Each frame has a valid bit V, a tag, and a 32 byte block, as in video 14.
+
+142
+00:17:40,378 --> 00:17:45,306
+Add one new bit to every frame: a lock bit, L. It starts at 0.
+
+143
+00:17:45,756 --> 00:17:54,247
+Acquire context goes through each line of the range. On a miss, it fills the line from memory. Then it sets L to 1.
+
+144
+00:17:54,697 --> 00:18:04,467
+The set comes from the address bits. A 32 byte block gives 5 offset bits, bits 4 to 0, because 32 is 2 to the 5.
+
+145
+00:18:04,917 --> 00:18:15,499
+The 4 sets give 2 index bits, bits 6 and 5, because 4 is 2 to the 2. This is the same as the line address over 32, mod 4.
+
+146
+00:18:15,949 --> 00:18:30,818
+The lines start at hex 1 0 0 0, 32 bytes apart. So their index bits count 0 0, 0 1, 1 0, 1 1. The 4 lines fall into sets 0, 1, 2 and 3.
+
+147
+00:18:31,268 --> 00:18:37,924
+So acquire context fills way 0 of sets 0 to 3, and sets L to 1 in each frame.
+
+148
+00:18:38,374 --> 00:18:48,699
+The replacement policy, for example L R U, must never pick a frame with L equal to 1. So a locked line stays in the cache until release.
+
+149
+00:18:49,149 --> 00:18:55,912
+One more check. Each set needs at least one unlocked way. Way 1 stays free for the other blocks.
+
+150
+00:18:56,362 --> 00:19:05,279
+In a direct mapped cache, each set has only one way. The other blocks of a locked set cannot be cached, so they must go to memory.
+
+151
+00:19:05,729 --> 00:19:17,633
+Also, take r s 1 equal to hex 1 0 1 0. The range touches 5 lines, from hex 1 0 0 0 to hex 1 0 8 0.
+
+152
+00:19:18,083 --> 00:19:27,854
+Lines hex 1 0 0 0 and hex 1 0 8 0 both have index bits 0 0. So both map to set 0.
+
+153
+00:19:28,304 --> 00:19:32,976
+So both ways of set 0 lock, and set 0 has no free way.
+
+154
+00:19:33,426 --> 00:19:36,903
+So r s 1 must be a multiple of 32.
+
+155
+00:19:37,353 --> 00:19:42,900
+Release context sets L back to 0. The line becomes a normal block again.
+
+156
+00:19:43,350 --> 00:19:49,345
+In a write back cache, the line is written to memory when it is replaced, if it is dirty.
+
+157
+00:19:49,795 --> 00:20:06,392
+Here are the answers of question 3 in one view. Part A: carry each P C down to W. At W, write E P C and Cause, kill the younger instructions, and fetch the handler. A return instruction copies E P C back.
+
+158
+00:20:06,842 --> 00:20:17,253
+Part B 1: two instructions with no memory access replace 31 store words and 31 load words. So each interrupt is much faster.
+
+159
+00:20:17,703 --> 00:20:31,719
+Part B 2: D decodes the new instructions and makes the copy and swap bits. X and M carry the bits. W does the copy or the swap. Flush the younger instructions after load context.
+
+160
+00:20:32,169 --> 00:20:44,542
+Part B 3: a nested save context overwrites the saved set, so the program resumes with wrong registers. Keep interrupts off from save context to load context.
+
+161
+00:20:44,992 --> 00:21:03,445
+Part C: D decodes and reads r s 1, X passes the address, and M fills and locks the lines. The cache gets a lock bit per frame. L R U skips locked lines, each set keeps a free way, and r s 1 is aligned to 32 bytes.
+
+162
+00:21:03,895 --> 00:21:10,765
+Method card 1: Amdahl's law and CPU time. Draw the old time as a bar of length 1.
+
+163
+00:21:11,215 --> 00:21:20,025
+Mark the part f that the change speeds up. Here f is point 6 of the old time. The rest, 1 minus f, is point 4.
+
+164
+00:21:20,475 --> 00:21:28,817
+Divide that part by its speedup. Point 6 over 3 is point 2. A part that gets slower is multiplied instead.
+
+165
+00:21:29,267 --> 00:21:42,877
+Add the parts. The new time is point 4 plus point 2, which is point 6. The speedup is 1 over point 6, which is 1.67. The slide formula gives the same result.
+
+166
+00:21:43,327 --> 00:21:55,530
+For CPU time, use I C times CPI times the clock period. Change only the factors that the question changes. The CPI of a mix is a weighted sum.
+
+167
+00:21:55,980 --> 00:22:06,348
+Common mistakes. f is a part of the time, not of the instructions. Keep the part that does not change. And a speedup below 1 means slower: say so.
+
+168
+00:22:06,798 --> 00:22:17,827
+Method card 2: the hazard pairs RAW, WAR and WAW. First, for each instruction, write the register it writes and the registers it reads.
+
+169
+00:22:18,277 --> 00:22:35,216
+RAW means read after write. A younger instruction reads a register that an older one writes. Take the most recent older writer. Here: 1 2 on x 1, 2 3 on x 3, 2 4 on x 3, and 3 4 on x 1.
+
+170
+00:22:35,666 --> 00:22:46,738
+Instruction 4 reads x 1 from instruction 3, not from instruction 1. Instruction 3 writes x 1 between them, so 1 4 is not a pair.
+
+171
+00:22:47,188 --> 00:22:58,964
+WAW means write after write: 1 and 3 both write x 1. WAR means write after read: 2 reads x 1, and then 3 writes x 1.
+
+172
+00:22:59,414 --> 00:23:09,675
+In the 5-stage pipeline, reads happen in D and writes in W, in program order. So only RAW needs forwarding or a stall.
+
+173
+00:23:10,125 --> 00:23:22,051
+Common mistakes. Do not count a pair when a writer comes between them. A store writes no register; its data register is a read. And x 0 never makes a hazard.
+
+174
+00:23:22,501 --> 00:23:35,877
+Method card 3: pipeline diagram rules. One row per instruction, one column per cycle. Each instruction goes F, D, X, M, W, one stage per cycle, in order.
+
+175
+00:23:36,327 --> 00:23:46,225
+An A L U result exists at the end of X. A load result exists at the end of M. Here the load has its value at the end of cycle 4.
+
+176
+00:23:46,675 --> 00:23:58,067
+Add needs x 1 in X. Cycle 4 is too early, so add stalls in D. The repeat gets a star: D star in cycle 3, then D in cycle 4.
+
+177
+00:23:58,517 --> 00:24:05,941
+The store behind it cannot enter D, so it repeats F: F star in cycle 3, then F in cycle 4.
+
+178
+00:24:06,391 --> 00:24:14,562
+In cycle 5, the load is in W and add is in X. W X forwarding gives x 1 to the A L U.
+
+179
+00:24:15,012 --> 00:24:27,129
+Store data uses only W M. In cycle 7, add is in W and the store is in M. There is no forwarding into D, and branches resolve in X.
+
+180
+00:24:27,579 --> 00:24:40,614
+Common mistakes. A load has no M X path. A D in the same cycle as the producer's W reads the old value, so it stalls 1 cycle. And flushed cells are dashes.
+
+181
+00:24:41,064 --> 00:24:51,859
+Method card 4: the forwarding table and the stall table. For each source register, find its producer: the most recent older instruction that writes it.
+
+182
+00:24:52,309 --> 00:25:08,949
+Compare when the value exists with when the consumer needs it. The table shows the result by distance, checked with the course simulator. For example, a load followed at once by an A L U use stalls 1 cycle, then uses W X.
+
+183
+00:25:09,399 --> 00:25:27,937
+If a path exists in the same cycle, write one forwarding row: source, destination, register, from stage, to stage. The example of card 3 has two rows: W X of x 1 in cycle 5, and W M of x 3 in cycle 7.
+
+184
+00:25:28,387 --> 00:25:40,611
+If there is no path, the consumer stalls in D, and the next instruction repeats F. Write one stall row for each: add stalls in D in cycle 3, the store in F.
+
+185
+00:25:41,061 --> 00:25:47,205
+A stall moves all later instructions. So check the real cycles again, row by row.
+
+186
+00:25:47,655 --> 00:26:03,037
+Common mistakes. A register file read in D is not a forward. Flushed instructions get no rows. And store data from 2 instructions ahead stalls 2 cycles, because only W M feeds store data.
+
+187
+00:26:03,487 --> 00:26:17,951
+Method card 5: pipeline design questions. First, write what the new instruction does as a register transfer. The example: r d gets the memory word at r s 1 plus r s 2.
+
+188
+00:26:18,401 --> 00:26:28,086
+Go stage by stage. F usually needs no change. D decodes the new opcode, reads the source registers, and makes the control bits.
+
+189
+00:26:28,536 --> 00:26:39,843
+X, M and W: name the work in each stage. Here, the A L U adds r s 1 and r s 2, M reads memory, and W writes r d.
+
+190
+00:26:40,293 --> 00:26:45,498
+New control bits ride down the pipeline registers, like Reg W En.
+
+191
+00:26:45,948 --> 00:26:54,609
+Then check the hazards. When does the new value exist? Does it need a forwarding path, or a stall? Run a short program to check.
+
+192
+00:26:55,059 --> 00:27:01,545
+If interrupts matter, change the state only at the commit point. Then the exception stays precise.
+
+193
+00:27:01,995 --> 00:27:17,888
+Common mistakes. The old instructions need the new control bits too, set to 0. A new register, like HI or LO, needs its own hazard check. And give every stage, even when it has no change, and say why.
+
+194
+00:27:18,338 --> 00:27:28,855
+Method card 6: branch prediction. Branches resolve in X. A wrong guess flushes the 2 younger instructions, so the penalty is 2 cycles.
+
+195
+00:27:29,305 --> 00:27:44,687
+The CPI is 1, plus the branch fraction, times the wrong fraction, times the penalty. With 20 percent branches and 25 percent wrong: 1 plus point 2 times point 2 5 times 2, which is 1.1.
+
+196
+00:27:45,137 --> 00:27:54,971
+For a table question, trace each run of the branch in order. Read the entry, predict, compare with the actual outcome, then update the entry.
+
+197
+00:27:55,421 --> 00:28:07,176
+Use the state machine of the question. In a two-bit counter, taken moves one state right, and not taken one state left. States 1 0 and 1 1 predict taken.
+
+198
+00:28:07,626 --> 00:28:17,311
+The B T B gives the target in F. Follow the rule of the question. In the spring 2020 quiz, only a taken branch writes it.
+
+199
+00:28:17,761 --> 00:28:27,148
+In a pipeline diagram with no forwarding into the compare unit, the branch reads its operands in D, after the producer's W.
+
+200
+00:28:27,598 --> 00:28:36,942
+Common mistakes. Predict first, then update. Start from the given state. And keep the flushed instructions in the diagram, as dashes.
+
+201
+00:28:37,392 --> 00:28:55,035
+Method card 7: interrupts and exceptions. The pipeline finds exceptions in different stages. A bad P C in F, an illegal opcode in D, an overflow in X, a bad data address in M. So it finds them out of program order.
+
+202
+00:28:55,485 --> 00:29:03,293
+Carry the flag and the P C of each instruction down to the commit point. On the slides, the commit point is M.
+
+203
+00:29:03,743 --> 00:29:18,591
+Act only at the commit point. Write E P C and Cause. Kill the faulting instruction in M and the younger ones in X, D and F. The older one in W finishes. Then fetch the handler address.
+
+204
+00:29:19,041 --> 00:29:23,883
+At the end of the handler, the return copies E P C back into the P C.
+
+205
+00:29:24,333 --> 00:29:35,448
+In a design question, give the change in each stage, and why. Make every new state change at the commit point. Check nested interrupts and the younger instructions.
+
+206
+00:29:35,898 --> 00:29:46,586
+Common mistakes. Do not act where the fault is found. Save the P C of the interrupted instruction. And check nested interrupts and the younger instructions.
+
+207
+00:29:47,036 --> 00:29:57,191
+Method card 8: caches. Split the address. The offset has log 2 of the block size bits. 16 byte blocks give 4 offset bits.
+
+208
+00:29:57,641 --> 00:30:18,313
+The index has log 2 of the number of sets. Sets are blocks over ways: 1024 over 16 is 64 blocks, and 64 over 2 ways is 32 sets, so 5 index bits. The tag is the rest: 32 minus 5 minus 4 is 23 bits.
+
+209
+00:30:18,763 --> 00:30:30,731
+Lookup: hex 1 2 3 4 has offset 4, set 3, and tag 9. The index picks set 3. Compare the tag with every valid way. An equal tag is a hit.
+
+210
+00:30:31,181 --> 00:30:40,290
+The average access time is t hit plus the miss rate times t miss. The miss time of a level is the average time of the next level.
+
+211
+00:30:40,740 --> 00:30:51,556
+Work from the last level back. L 2: 10 plus point 2 times 100 is 30. L 1: 1 plus point 1 times 30 is 4 cycles.
+
+212
+00:30:52,006 --> 00:30:59,537
+The CPI is the base CPI plus the misses per instruction times the miss penalty, for each cache.
+
+213
+00:30:59,987 --> 00:31:12,275
+Common mistakes. Use the number of sets for the index, not the number of blocks. Keep byte addresses and block addresses apart. And in an empty cache, every first access misses.
+
+214
+00:31:12,725 --> 00:31:25,674
+Method card 9: pseudo L R U. A 4-way set has 3 tree bits. B 0 is at the root, B 1 is over ways 0 and 1, and B 2 is over ways 2 and 3.
+
+215
+00:31:26,124 --> 00:31:33,036
+A bit of 0 means the left side is L R U. A bit of 1 means the right side is L R U.
+
+216
+00:31:33,486 --> 00:31:44,537
+On a miss, walk from the root and follow the bits. Here B 0 is 0, so go left. B 1 is 1, so go right. The victim is way 1, which holds B.
+
+217
+00:31:44,987 --> 00:31:47,312
+Fill way 1 with the new block, E.
+
+218
+00:31:47,762 --> 00:32:00,221
+Then every bit on the path from way 1 to the root points away from way 1. B 1 becomes 0, and B 0 becomes 1. B 2 is not on the path, so it stays 0.
+
+219
+00:32:00,671 --> 00:32:12,127
+Common mistakes. Change only the path bits. Point them away from the used way. And P L R U is not true L R U: the victim can be a different way.
+
+220
+00:32:12,577 --> 00:32:30,646
+Recap. Question 1. The CPI is a weighted sum. The memory CPI is 65, and the overall CPI is 28.2. In part C, 33.2 is more than 28.2, so program P does not benefit.
+
+221
+00:32:31,096 --> 00:32:45,709
+Question 2 part A. A load-use stall, no forwarding into D or the compare unit, and a wrong guess that flushes 2 instructions. State your register file assumption: 15 or 14 cycles.
+
+222
+00:32:46,159 --> 00:32:59,834
+Part B. blt runs 4 times. The entry goes 0 1, 1 0, 1 1, 1 1, and ends at 1 0. The B T B holds hex 10 after the first taken run.
+
+223
+00:33:00,284 --> 00:33:17,628
+Question 3. Save the P C in E P C at the commit point. Save context is a copy and load context is a swap, at W. Flush after load context, and allow no nesting. Part C adds a lock bit to each cache line.
+
+224
+00:33:18,078 --> 00:33:28,745
+For every question type, draw the picture first, then apply the steps of its method card. Good luck on the midterm. That is the end of video 17 c.

@@ -1,0 +1,955 @@
+1
+00:00:00,000 --> 00:00:17,237
+This is ECE 320, video 17 b. We solve the Fall 2022 midterm, all four questions, in order. The file name is f 2020 midterm, but the header says Fall 2022.
+
+2
+00:00:17,687 --> 00:00:22,487
+Question 1 is Amdahl's law with a slowdown. It is worth 6 marks.
+
+3
+00:00:22,937 --> 00:00:31,343
+Question 2 is caches. You split the address into tag, index and offset, fill an access table, and improve the cache.
+
+4
+00:00:31,793 --> 00:00:37,318
+Question 3 is a pipeline diagram with a forwarding table and a stall table.
+
+5
+00:00:37,768 --> 00:00:45,597
+Question 4 is a pipeline design question. It uses the CLSD pattern and a cache in the memory stage.
+
+6
+00:00:46,047 --> 00:00:53,173
+Question 1 is about performance. A processor has a multiplication unit, and Alice makes it faster.
+
+7
+00:00:53,623 --> 00:01:02,988
+In part A, multiplications become 5 times faster. They take 40 percent of the original time. Find the overall speedup.
+
+8
+00:01:03,438 --> 00:01:13,806
+In part B, the same change makes data cache accesses 3 times slower. They take 30 percent of the original time. Is the program faster?
+
+9
+00:01:14,256 --> 00:01:24,773
+Draw the original time as one bar of length 1. Multiplication is point 4, cache accesses are point 3, and the other work is point 3.
+
+10
+00:01:25,223 --> 00:01:30,514
+Pause the video and try it. Find the new time of each part, then add the parts.
+
+11
+00:01:30,964 --> 00:01:36,233
+Part A. The old time is 1. Multiplication is the marked part, point 4.
+
+12
+00:01:36,683 --> 00:01:42,913
+The rest is 1 minus point 4, which is point 6. The optimization does not change it.
+
+13
+00:01:43,363 --> 00:01:50,637
+The multiplication part becomes 5 times faster. Point 4 divided by 5 is point 0 8.
+
+14
+00:01:51,087 --> 00:01:57,359
+Add the parts. The new time is point 6 plus point 0 8, which is point 6 8.
+
+15
+00:01:57,809 --> 00:02:05,404
+Speedup is the old time divided by the new time. 1 divided by point 6 8 is 1.47.
+
+16
+00:02:05,854 --> 00:02:14,409
+This is Amdahl's law. f is the fraction of the old time that becomes faster, here point 4. s is its speedup, 5.
+
+17
+00:02:14,859 --> 00:02:19,595
+The answer to part A: the overall speedup is about 1.47.
+
+18
+00:02:20,045 --> 00:02:28,215
+Part B. Draw the old time again: other work point 3, multiplication point 4, and cache accesses point 3.
+
+19
+00:02:28,665 --> 00:02:32,185
+The other work does not change. It stays point 3.
+
+20
+00:02:32,635 --> 00:02:39,846
+Multiplication is still 5 times faster. It becomes point 0 8, a gain of point 3 2.
+
+21
+00:02:40,296 --> 00:02:48,147
+Cache accesses become 3 times slower. Point 3 times 3 is point 9. That is a loss of point 6.
+
+22
+00:02:48,597 --> 00:02:55,807
+Add the parts. The new time is point 3 plus point 0 8 plus point 9, which is 1.28.
+
+23
+00:02:56,257 --> 00:03:03,148
+The speedup is 1 divided by 1.28, which is point 7 8. This is less than 1.
+
+24
+00:03:03,598 --> 00:03:13,198
+This is the general form of Amdahl's law. A slowdown of 3 is a speedup of one third, so that part takes 3 times its old time.
+
+25
+00:03:13,648 --> 00:03:26,256
+The answer to part B: no. The new time is 1.28 of the old time. The loss of point 6 is larger than the gain of point 3 2. So the program runs slower.
+
+26
+00:03:26,706 --> 00:03:41,533
+Now the Fall 2022 midterm, question 2. Part A, 3 marks. Two 4-way caches with 16 bit addresses. Find the tag, index and offset bits of both. Pause the video and try it.
+
+27
+00:03:41,983 --> 00:03:51,796
+Cache 1. 1024 bytes in 16 byte blocks give 1024 divided by 16: 64 blocks.
+
+28
+00:03:52,246 --> 00:04:02,507
+64 blocks in sets of 4 ways give 64 divided by 4: 16 sets. The grid shows them: 16 rows of 4 ways.
+
+29
+00:04:02,957 --> 00:04:08,205
+A block has 16 bytes, which is 2 to the 4. So the offset is 4 bits.
+
+30
+00:04:08,655 --> 00:04:12,751
+16 sets is 2 to the 4, so the index is 4 bits.
+
+31
+00:04:13,201 --> 00:04:17,532
+The tag is 16 minus 4 minus 4, which is 8 bits.
+
+32
+00:04:17,982 --> 00:04:30,227
+Cache 2. 16384 bytes in 256 byte blocks also give 64 blocks. So it also has 16 sets of 4 ways.
+
+33
+00:04:30,677 --> 00:04:36,757
+A block has 256 bytes, which is 2 to the 8. So the offset is 8 bits.
+
+34
+00:04:37,207 --> 00:04:40,237
+16 sets again give a 4 bit index.
+
+35
+00:04:40,687 --> 00:04:44,911
+The tag is 16 minus 4 minus 8, which is 4 bits.
+
+36
+00:04:45,361 --> 00:04:51,590
+Both caches have 16 sets. The larger blocks move 4 bits from the tag to the offset.
+
+37
+00:04:52,040 --> 00:05:02,621
+Part B, 5 marks. Find which cache gives the higher hit rate for the program in the question. First, find the addresses. Pause the video and try it.
+
+38
+00:05:03,071 --> 00:05:13,738
+Each row of A has 4096 bytes. That is hex 1 0 0 0. So row j of A starts at hex j 0 0 0.
+
+39
+00:05:14,188 --> 00:05:22,401
+Each element is 4 bytes. So A of j, i is at 4096 times j plus 4 times i.
+
+40
+00:05:22,851 --> 00:05:32,451
+B starts at hex 4 0 1 0, after the rows of A. So B of i is at hex 4 0 1 0 plus 4 times i.
+
+41
+00:05:32,901 --> 00:05:47,109
+The inner loop runs over j. So the program walks down column 0 of A. It writes A of 0, 0, then A of 1, 0, A of 2, 0 and A of 3, 0. Then it writes B of 0.
+
+42
+00:05:47,559 --> 00:05:51,677
+Then the same for i equal to 1. That gives 10 addresses.
+
+43
+00:05:52,127 --> 00:06:02,047
+Cache 1 has 16 byte blocks. Its tag is bits 15 to 8, the index is bits 7 to 4, and the offset is bits 3 to 0.
+
+44
+00:06:02,497 --> 00:06:17,409
+The first four addresses are hex 0, 1 0 0 0, 2 0 0 0 and 3 0 0 0. Their index bits, 7 to 4, are all 0. So all four go to set 0.
+
+45
+00:06:17,859 --> 00:06:26,136
+Their tags are 0 0, 1 0, 2 0 and 3 0. Four misses fill the 4 ways of set 0.
+
+46
+00:06:26,586 --> 00:06:36,186
+B of 0 is at hex 4 0 1 0. Its index bits, 7 to 4, are 0 0 0 1. So it goes to set 1.
+
+47
+00:06:36,636 --> 00:06:41,009
+Its tag is 4 0. Set 1 is empty, so it is a miss.
+
+48
+00:06:41,459 --> 00:06:53,150
+Now i is 1. A of 0, 1 is at hex 4. Only its offset differs from hex 0. So it is in the same 16 byte block as A of 0, 0. Hit.
+
+49
+00:06:53,600 --> 00:06:58,549
+A of 1, 1, A of 2, 1 and A of 3, 1 hit for the same reason.
+
+50
+00:06:58,999 --> 00:07:05,634
+B of 1 is at hex 4 0 1 4. Only its offset differs from B of 0. Hit.
+
+51
+00:07:06,084 --> 00:07:13,273
+Cache 1 has 5 hits in 10 accesses. The hit rate is 5 divided by 10: 50 percent.
+
+52
+00:07:13,723 --> 00:07:25,115
+Cache 2 has 256 byte blocks. Its tag is bits 15 to 12, the index is bits 11 to 8, and the offset is bits 7 to 0.
+
+53
+00:07:25,565 --> 00:07:39,133
+Look at hex 0, 1 0 0 0, 2 0 0 0 and 3 0 0 0. Their index bits, 11 to 8, are all 0. So all four go to set 0.
+
+54
+00:07:39,583 --> 00:07:45,855
+Their tags are 0, 1, 2 and 3. Four misses fill the 4 ways of set 0.
+
+55
+00:07:46,305 --> 00:07:57,655
+B of 0 is at hex 4 0 1 0. Its index bits, 11 to 8, are also 0 0 0 0. So it also goes to set 0.
+
+56
+00:07:58,105 --> 00:08:06,147
+Its tag is 4. Set 0 is full. The least recently used block is tag 0, so tag 4 replaces it.
+
+57
+00:08:06,597 --> 00:08:12,613
+Now A of 0, 1 at hex 4. Its tag is 0, which was just evicted. Miss.
+
+58
+00:08:13,063 --> 00:08:18,930
+LRU now evicts tag 1. Tag 1 is the next block that the program needs.
+
+59
+00:08:19,380 --> 00:08:29,556
+The same pattern repeats. Five blocks take turns in a 4-way set. LRU always evicts the block that comes next, so every access misses.
+
+60
+00:08:30,006 --> 00:08:32,822
+Cache 2 has 0 hits in 10 accesses.
+
+61
+00:08:33,272 --> 00:08:40,333
+So cache 1, with the 16 byte blocks, has the higher hit rate: 50 percent against 0 percent.
+
+62
+00:08:40,783 --> 00:08:49,679
+Part C, 2 marks. Find a change that gives cache 2 a higher hit rate, with the same cache size. Pause the video and try it.
+
+63
+00:08:50,129 --> 00:08:55,655
+The problem: 5 blocks map to set 0, but the set has only 4 ways.
+
+64
+00:08:56,105 --> 00:09:09,865
+Keep 16384 bytes and 256 byte blocks, but make the cache 8-way. 64 blocks in sets of 8 ways give 8 sets. So the index is 3 bits.
+
+65
+00:09:10,315 --> 00:09:14,581
+The tag is 16 minus 3 minus 8, which is 5 bits.
+
+66
+00:09:15,031 --> 00:09:24,482
+The 5 blocks still go to set 0, now with the 5 bit tags 0, 2, 4, 6 and 8. All 5 fit in the 8 ways.
+
+67
+00:09:24,932 --> 00:09:33,977
+So there are 5 misses for i equal to 0, then 5 hits for i equal to 1. 5 hits in 10 is 50 percent.
+
+68
+00:09:34,427 --> 00:09:42,662
+Smaller blocks also work. With 16 byte blocks, A goes to set 0 and B to set 1: also 50 percent.
+
+69
+00:09:43,112 --> 00:09:50,536
+So the answer is yes. The misses are conflict misses: raise the associativity, or use smaller blocks.
+
+70
+00:09:50,986 --> 00:09:54,975
+Question 3 is a pipeline diagram, for 16 marks.
+
+71
+00:09:55,425 --> 00:09:58,604
+There is forwarding as in class, but none into D.
+
+72
+00:09:59,054 --> 00:10:09,977
+One rule is new. There is no forwarding into the branch compare unit. So the branch must read both operands in D, after the W of each producer.
+
+73
+00:10:10,427 --> 00:10:16,443
+Branches resolve in X, and the pipeline guesses not taken until the branch resolves.
+
+74
+00:10:16,893 --> 00:10:19,431
+The branch in instruction 4 is taken.
+
+75
+00:10:19,881 --> 00:10:25,300
+A flushed stage gets a dash. Then you fill the forwarding table and the stall table.
+
+76
+00:10:25,750 --> 00:10:36,609
+The paper writes L W x5, x4 of x1, in number 5 and number 7. That is not valid RISC-V. Read it as an offset of 4.
+
+77
+00:10:37,059 --> 00:10:51,160
+If you read it as x4 plus x1, the timing does not change, because x4 was written in cycle 5, long before. Write your assumption in the exam. Pause the video and try the question.
+
+78
+00:10:51,610 --> 00:11:00,207
+Step 1: the producers. Number 1 load word reads x2, and nothing older writes x2. Number 1 writes x4.
+
+79
+00:11:00,657 --> 00:11:07,057
+Number 2 store word uses x4 as store data. The producer is the load number 1.
+
+80
+00:11:07,507 --> 00:11:12,883
+Number 3 add reads x4 two times. The producer is also number 1.
+
+81
+00:11:13,333 --> 00:11:20,117
+Number 4 B E Q compares x4 and x1. x4 comes from the load number 1.
+
+82
+00:11:20,567 --> 00:11:22,893
+x1 comes from add number 3.
+
+83
+00:11:23,343 --> 00:11:24,943
+The branch is taken.
+
+84
+00:11:25,393 --> 00:11:31,921
+So number 5 and number 6 are on the wrong path. They are flushed, and they are not producers.
+
+85
+00:11:32,371 --> 00:11:42,419
+Number 7 reads x1. Number 6 also writes x1, but number 6 is flushed. So number 7 gets x1 from add number 3.
+
+86
+00:11:42,869 --> 00:11:51,487
+Number 7 load word writes x5. Number 8 uses x5 as base and as data. The producer is number 7.
+
+87
+00:11:51,937 --> 00:11:56,268
+Number 9 and number 10 also read x5 from number 7.
+
+88
+00:11:56,718 --> 00:12:03,225
+Number 11 reads only x0. Number 12 reads x8, and nothing writes x8.
+
+89
+00:12:03,675 --> 00:12:12,443
+Now the diagram. In cycles 1 to 4, one instruction enters per cycle: the load, the store, the add and the B E Q.
+
+90
+00:12:12,893 --> 00:12:28,274
+In cycle 5, the load is in W. Number 2 is in M, and it needs x4 as store data. So x4 goes by WM. There is no load-use stall, because store data is needed only in M.
+
+91
+00:12:28,724 --> 00:12:36,916
+Number 3 is in X, and it needs x4. So x4 goes by WX. One W feeds two forwards.
+
+92
+00:12:37,366 --> 00:12:43,787
+Number 4 B E Q is in D in cycle 5, and it waits. The next steps show why.
+
+93
+00:12:44,237 --> 00:12:52,707
+Number 4 B E Q gets no forwarded values. It must read x4 and x1 in D after their W.
+
+94
+00:12:53,157 --> 00:12:57,274
+x4 is written by the load number 1 in cycle 5.
+
+95
+00:12:57,724 --> 00:13:02,353
+x1 is written by add number 3 in W, in cycle 7.
+
+96
+00:13:02,803 --> 00:13:06,942
+So B E Q repeats D in cycles 5, 6 and 7.
+
+97
+00:13:07,392 --> 00:13:10,443
+Number 5 repeats F in the same cycles.
+
+98
+00:13:10,893 --> 00:13:16,375
+In cycle 8, B E Q reads x4 and x1 from the register file.
+
+99
+00:13:16,825 --> 00:13:20,111
+Number 5 does its last F in cycle 8.
+
+100
+00:13:20,561 --> 00:13:25,019
+In cycle 9, B E Q is in X. It resolves: taken.
+
+101
+00:13:25,469 --> 00:13:33,043
+The pipeline guessed not taken. So number 5, now in D, and number 6, now in F, are on the wrong path.
+
+102
+00:13:33,493 --> 00:13:38,335
+In cycle 10, number 5 and number 6 are flushed. They get dashes.
+
+103
+00:13:38,785 --> 00:13:42,540
+T1, instruction 7, is fetched in cycle 10.
+
+104
+00:13:42,990 --> 00:13:59,203
+Number 7 needs x1. Number 6 also writes x1, but number 6 is flushed. So the producer is add number 3. It wrote x1 in cycle 7. Number 7 reads x1 in D in cycle 11. No stall.
+
+105
+00:13:59,653 --> 00:14:13,840
+Number 8 store word uses x5 as base and as data. The producer is the load number 7. In cycle 12, number 8 is in D. Its X would be cycle 13, while the load is in M.
+
+106
+00:14:14,290 --> 00:14:20,306
+The base is needed in X. This is load-use, so number 8 stalls in cycle 12.
+
+107
+00:14:20,756 --> 00:14:30,335
+In cycle 13, number 8 tries again. Its X would be cycle 14, while the load is in W. The base could take WX.
+
+108
+00:14:30,785 --> 00:14:38,678
+But the store data has no WX path in the class datapath. So number 8 stalls again in cycle 13.
+
+109
+00:14:39,128 --> 00:14:52,653
+In cycle 14, the load writes x5 in W. Number 8 is in D in the same cycle, so it reads the old x5. This is the W D case, and D repeats once more.
+
+110
+00:14:53,103 --> 00:14:57,519
+Number 9 waits in F in cycles 12, 13 and 14.
+
+111
+00:14:57,969 --> 00:15:02,748
+In cycle 15, number 8 reads x5 from the register file.
+
+112
+00:15:03,198 --> 00:15:14,398
+Count the D star cells of number 8: 3 stall cycles. Each has a different reason: load-use, no WX path for store data, and the W D case.
+
+113
+00:15:14,848 --> 00:15:26,389
+Number 9 store word needs x5 as store data. The load wrote x5 in cycle 14. Number 9 reads it in D in cycle 16. No stall.
+
+114
+00:15:26,839 --> 00:15:32,706
+Number 10 reads x5 from the register file in cycle 17. No stall.
+
+115
+00:15:33,156 --> 00:15:49,860
+Number 11 and number 12 do not read x5. They only write it. The writes of number 10, number 11 and number 12 come in program order, in cycles 20, 21 and 22. So these write after write pairs are safe.
+
+116
+00:15:50,310 --> 00:15:52,678
+The run ends in cycle 22.
+
+117
+00:15:53,128 --> 00:16:05,352
+Now the two tables. There are only two forwards, both from the load number 1 in cycle 5. Row 1: x4 goes from W to M, into the store data of number 2.
+
+118
+00:16:05,802 --> 00:16:10,069
+Row 2: x4 goes from W to X, into number 3.
+
+119
+00:16:10,519 --> 00:16:18,775
+The stall table. Number 4 stalls in D in cycles 5, 6 and 7, because the compare unit gets no forwarding.
+
+120
+00:16:19,225 --> 00:16:29,081
+Number 5 stalls in F in the same cycles. Number 5 is flushed later, but its F stars are real stalls. Write them in the table.
+
+121
+00:16:29,531 --> 00:16:42,181
+Number 8 stalls in D in cycles 12, 13 and 14. Write the three reasons: load-use for the base, no WX path for the store data, and the W D case.
+
+122
+00:16:42,631 --> 00:16:45,789
+Number 9 stalls in F in the same cycles.
+
+123
+00:16:46,239 --> 00:16:57,524
+Here is the whole diagram. The red rings mark the 6 D star cycles: number 4 in cycles 5 to 7, and number 8 in cycles 12 to 14.
+
+124
+00:16:57,974 --> 00:17:17,387
+The answer to question 3. The run takes 22 cycles. There are two forwards, both from the load number 1 in cycle 5. Number 4 and number 8 stall in D for 3 cycles each, and the instruction behind each one stalls in F. Number 5 and number 6 are flushed.
+
+125
+00:17:17,837 --> 00:17:24,771
+Now question 4 of the fall 2022 paper. It uses the class pipeline with forwarding.
+
+126
+00:17:25,221 --> 00:17:27,205
+There is no forwarding into D.
+
+127
+00:17:27,655 --> 00:17:31,196
+There is also no forwarding into the branch compare unit.
+
+128
+00:17:31,646 --> 00:17:39,219
+A C L S D pattern is a sequence of consecutive loads that write the same destination register.
+
+129
+00:17:39,669 --> 00:17:46,517
+In program P, numbers 1 and 2 both load into x 1. This is a write after write pair.
+
+130
+00:17:46,967 --> 00:17:50,125
+Nobody reads the x 1 value of number 1.
+
+131
+00:17:50,575 --> 00:17:56,825
+Number 4 reads x 1. Its producer is number 2, the latest writer of x 1.
+
+132
+00:17:57,275 --> 00:18:03,547
+Part A asks you to execute program P and explain every stall. Pause the video and try it.
+
+133
+00:18:03,997 --> 00:18:14,088
+The instructions enter the pipeline one per cycle. Number 1 enters in cycle 1, number 2 in cycle 2, number 3 in cycle 3.
+
+134
+00:18:14,538 --> 00:18:19,935
+Number 1 computes its address, x 4 plus 0, in X in cycle 3.
+
+135
+00:18:20,385 --> 00:18:27,489
+Number 1 reads D mem in M, in cycle 4. Its value exists at the end of cycle 4.
+
+136
+00:18:27,939 --> 00:18:36,195
+Number 3 reads x 3 in D, in cycle 4. No instruction before it writes x 3, so there is no hazard.
+
+137
+00:18:36,645 --> 00:18:39,419
+Number 4 is in X in cycle 6.
+
+138
+00:18:39,869 --> 00:18:48,637
+Number 2, the latest writer of x 1, is in W in cycle 6. So x 1 goes by WX. There is no stall.
+
+139
+00:18:49,087 --> 00:18:55,551
+Program P takes 8 cycles with no stalls. So the stall explanation is: there are none.
+
+140
+00:18:56,001 --> 00:19:00,715
+The work of number 1 is wasted, because number 2 overwrites x 1.
+
+141
+00:19:01,165 --> 00:19:07,032
+Part B adds a cache in M. The data memory is a 2-way set associative cache.
+
+142
+00:19:07,482 --> 00:19:09,146
+It has 16 sets.
+
+143
+00:19:09,596 --> 00:19:11,687
+Each block has 16 bytes.
+
+144
+00:19:12,137 --> 00:19:18,963
+It uses L R U replacement. A larger age means that the block was used less recently.
+
+145
+00:19:19,413 --> 00:19:22,933
+M stalls on a miss. A hit takes 1 cycle.
+
+146
+00:19:23,383 --> 00:19:26,327
+A miss with a vacant way takes 2 cycles.
+
+147
+00:19:26,777 --> 00:19:30,937
+A miss in a full set evicts a block and takes 4 cycles.
+
+148
+00:19:31,387 --> 00:19:36,635
+The table shows the cache at the start: sets 0 to 3, each with two ways.
+
+149
+00:19:37,085 --> 00:19:41,565
+At the start of program P, x 4 holds hex 410.
+
+150
+00:19:42,015 --> 00:19:44,831
+And x 5 holds hex 610.
+
+151
+00:19:45,281 --> 00:19:55,201
+Part B asks for the pipeline diagram, the final registers and cache, and the M latency of numbers 1 and 2. Pause the video and try it.
+
+152
+00:19:55,651 --> 00:20:03,395
+First, split each address. A block has 16 bytes, and 16 is 2 to the 4. So the offset has 4 bits.
+
+153
+00:20:03,845 --> 00:20:09,648
+The cache has 16 sets, and 16 is 2 to the 4. So the index has 4 bits.
+
+154
+00:20:10,098 --> 00:20:15,837
+The tag is the rest: 32 minus 4 minus 4, which is 24 bits.
+
+155
+00:20:16,287 --> 00:20:28,703
+Number 1 loads from hex 410. Each hex digit gives 4 bits: 0 1 0 0, then 0 0 0 1, then 0 0 0 0.
+
+156
+00:20:29,153 --> 00:20:33,142
+The 4 offset bits are all 0, so the offset is 0.
+
+157
+00:20:33,592 --> 00:20:38,947
+The 4 index bits are 0 0 0 1, so number 1 uses set 1.
+
+158
+00:20:39,397 --> 00:20:45,797
+The tag bits are 0 1 0 0, with zeros above them. So the tag is hex 4.
+
+159
+00:20:46,247 --> 00:20:58,961
+Number 2 loads from hex 610. Its bits are 0 1 1 0, then 0 0 0 1, then 0 0 0 0. Its offset is also 0.
+
+160
+00:20:59,411 --> 00:21:05,662
+Its index bits are also 0 0 0 1, so number 2 also uses set 1.
+
+161
+00:21:06,112 --> 00:21:10,507
+Its tag bits are 0 1 1 0, so the tag is hex 6.
+
+162
+00:21:10,957 --> 00:21:12,855
+So both loads use set 1.
+
+163
+00:21:13,305 --> 00:21:17,039
+Set 1 of the given cache holds tag hex 6 in way 0.
+
+164
+00:21:17,489 --> 00:21:19,643
+Way 1 holds tag hex 8.
+
+165
+00:21:20,093 --> 00:21:26,493
+Number 2 has tag hex 6. So the block of number 2 is already in the cache, in way 0.
+
+166
+00:21:26,943 --> 00:21:36,373
+Now run the two loads through set 1. At the start, way 0 has age 1. So way 0 is the least recently used block.
+
+167
+00:21:36,823 --> 00:21:46,551
+Number 1 looks for tag hex 4. Way 0 holds tag hex 6, and way 1 holds tag hex 8. No way matches, so it is a miss.
+
+168
+00:21:47,001 --> 00:21:55,278
+Both ways are valid, so the set is full. L R U picks way 0, the larger age, and evicts tag hex 6.
+
+169
+00:21:55,728 --> 00:21:58,501
+A miss in a full set takes 4 cycles.
+
+170
+00:21:58,951 --> 00:22:03,623
+Then the ages change. The used way, way 0, gets age 0.
+
+171
+00:22:04,073 --> 00:22:12,457
+Way 1 had age 0, lower than the old age of way 0, which was 1. So way 1 gets plus 1: age 1.
+
+172
+00:22:12,907 --> 00:22:20,395
+Number 2 looks for tag hex 6. The set now holds tags hex 4 and hex 8. So this is a miss too.
+
+173
+00:22:20,845 --> 00:22:27,245
+Way 1 now has the larger age, 1. So L R U evicts way 1, tag hex 8.
+
+174
+00:22:27,695 --> 00:22:33,477
+The ages change again. Way 1 gets age 0, and way 0 gets age 1.
+
+175
+00:22:33,927 --> 00:22:36,487
+The latency is again 4 cycles.
+
+176
+00:22:36,937 --> 00:22:43,187
+This is the important point. The dead load, number 1, evicted the block that number 2 needs.
+
+177
+00:22:43,637 --> 00:22:50,144
+Number 1 enters M in cycle 4. It misses in a full set, so M takes 4 cycles.
+
+178
+00:22:50,594 --> 00:22:55,735
+M is busy, so number 2 cannot enter M. It repeats X: X star.
+
+179
+00:22:56,185 --> 00:23:04,036
+Number 1 stays in M in cycles 4, 5, 6 and 7. Every repeat except the last gets a star.
+
+180
+00:23:04,486 --> 00:23:08,134
+Number 3 repeats D in cycles 4, 5 and 6.
+
+181
+00:23:08,584 --> 00:23:11,592
+Number 4 repeats F in the same cycles.
+
+182
+00:23:12,042 --> 00:23:15,605
+Number 1 writes x 1 in W, in cycle 8.
+
+183
+00:23:16,055 --> 00:23:24,012
+Number 2 enters M in cycle 8. It also misses in a full set, so it stays in M for cycles 8 to 11.
+
+184
+00:23:24,462 --> 00:23:28,302
+Number 2 writes x 1 in W in cycle 12.
+
+185
+00:23:28,752 --> 00:23:36,069
+Number 4 is in X in cycle 12. So x 1 goes by WX, with no extra stall.
+
+186
+00:23:36,519 --> 00:23:39,079
+Program P now takes 14 cycles.
+
+187
+00:23:39,529 --> 00:23:45,268
+Part A took 8 cycles. So the misses add 14 minus 8, which is 6 cycles.
+
+188
+00:23:45,718 --> 00:23:51,265
+The M latency is 4 cycles for number 1, and 4 cycles for number 2.
+
+189
+00:23:51,715 --> 00:23:59,544
+The final registers. x 1 holds the word at address hex 610, the value that number 2 loads.
+
+190
+00:23:59,994 --> 00:24:06,586
+x 3 was hex 2 F 0. Number 3 adds 1, so x 3 is hex 2 F 1.
+
+191
+00:24:07,036 --> 00:24:12,519
+Number 4 adds 1 to x 1. So x 6 is that memory word plus 1.
+
+192
+00:24:12,969 --> 00:24:15,123
+The other registers do not change.
+
+193
+00:24:15,573 --> 00:24:18,752
+The final cache. Only set 1 changes.
+
+194
+00:24:19,202 --> 00:24:23,234
+In set 1, way 0 holds tag hex 4 with age 1.
+
+195
+00:24:23,684 --> 00:24:26,649
+Way 1 holds tag hex 6 with age 0.
+
+196
+00:24:27,099 --> 00:24:31,878
+The M latency of number 1 is 4 cycles: a miss in a full set.
+
+197
+00:24:32,328 --> 00:24:38,493
+Number 2 also takes 4 cycles. It misses, because number 1 evicted its block.
+
+198
+00:24:38,943 --> 00:24:48,522
+The exam gives no memory values. So write x 1 as the memory word at hex 610, and x 6 as that word plus 1.
+
+199
+00:24:48,972 --> 00:25:00,833
+Part C asks for the side effects, and if each one helps or hurts. Pause the video and try it. If every access hits, program P takes 8 cycles, as in Part A.
+
+200
+00:25:01,283 --> 00:25:07,918
+Side effect one. Number 1 misses: 4 cycles in M, 3 more than a 1-cycle hit.
+
+201
+00:25:08,368 --> 00:25:16,027
+Nobody reads the x 1 value of number 1. So M is busy for a dead value. This degrades performance.
+
+202
+00:25:16,477 --> 00:25:24,157
+Side effect two. Number 1 changes the cache. It evicts block hex 6, the block that number 2 needs.
+
+203
+00:25:24,607 --> 00:25:30,537
+So number 2 misses too, and adds 3 more cycles. This also degrades performance.
+
+204
+00:25:30,987 --> 00:25:36,555
+In total, 8 plus 3 plus 3 is 14 cycles, the result of Part B.
+
+205
+00:25:37,005 --> 00:25:46,776
+Side effect three. In another program, the block of number 1 can be useful. A later load to that block then hits. This benefits performance.
+
+206
+00:25:47,226 --> 00:25:53,178
+Without the access of number 1, number 2 hits, because block hex 6 stays in the cache.
+
+207
+00:25:53,628 --> 00:25:56,849
+Program P then takes 8 cycles, not 14.
+
+208
+00:25:57,299 --> 00:26:07,475
+Part D asks for a change to the pipeline control that improves the C L S D pattern. Pause the video and try it. Then look at cycle 3.
+
+209
+00:26:07,925 --> 00:26:12,683
+In cycle 3, number 2 is in D. The F D register holds it.
+
+210
+00:26:13,133 --> 00:26:17,037
+Number 1 is in X. The D X register holds it.
+
+211
+00:26:17,487 --> 00:26:23,183
+The class pipeline already has a kill or no op mux before D X, for stalls.
+
+212
+00:26:23,633 --> 00:26:28,859
+Add a new check to the hazard unit. First, the instruction in X is a load.
+
+213
+00:26:29,309 --> 00:26:31,976
+Second, the instruction in D is a load.
+
+214
+00:26:32,426 --> 00:26:34,495
+Third, both have the same rd.
+
+215
+00:26:34,945 --> 00:26:38,081
+Fourth, the load in D does not read that rd.
+
+216
+00:26:38,531 --> 00:26:45,977
+Add a new mux before the X M register. Its second input is a no op: an instruction that does nothing.
+
+217
+00:26:46,427 --> 00:26:53,317
+If all four checks are true, the hazard unit sets a kill signal. Then the new mux selects the no op.
+
+218
+00:26:53,767 --> 00:26:58,823
+In cycle 4, the X M register holds the no op, not number 1.
+
+219
+00:26:59,273 --> 00:27:07,871
+The no op does not access the cache, and it writes no register in W. So number 1 shows dashes in M and W.
+
+220
+00:27:08,321 --> 00:27:19,115
+Do not kill number 1 if number 2 reads rd. For example, load word x 1, 0 of x 1 needs the x 1 value of number 1.
+
+221
+00:27:19,565 --> 00:27:29,123
+One more caution. If number 1 had a bad address, it would raise an exception. The kill removes that exception. Mention this in the exam.
+
+222
+00:27:29,573 --> 00:27:38,639
+Now run program P with the kill. In cycle 3, number 1 is in X and number 2 is in D. Both are loads to x 1.
+
+223
+00:27:39,089 --> 00:27:44,039
+Number 2 does not read x 1. So the hazard unit kills number 1.
+
+224
+00:27:44,489 --> 00:27:49,481
+Number 1 shows dashes in M and W. It does not access the cache.
+
+225
+00:27:49,931 --> 00:27:53,835
+Number 2 accesses set 1 in M, in cycle 5.
+
+226
+00:27:54,285 --> 00:27:58,509
+Its tag, hex 6, is still in way 0. So this is a hit.
+
+227
+00:27:58,959 --> 00:28:01,007
+A hit takes 1 cycle in M.
+
+228
+00:28:01,457 --> 00:28:05,723
+Then way 0 gets age 0, and way 1 gets age 1.
+
+229
+00:28:06,173 --> 00:28:12,573
+Number 4 gets x 1 from number 2 by WX, in cycle 6, as in Part A.
+
+230
+00:28:13,023 --> 00:28:21,855
+Program P takes 8 cycles. Part B took 14 cycles. So the kill saves 14 minus 8, which is 6 cycles.
+
+231
+00:28:22,305 --> 00:28:31,244
+The registers end with the same values. So yes, changes to the pipeline control can improve the C L S D pattern.
+
+232
+00:28:31,694 --> 00:28:42,190
+The answers to question 4. Part A: program P takes 8 cycles with no stall. Number 4 gets x 1 from number 2 by W X.
+
+233
+00:28:42,640 --> 00:28:56,443
+Part B: both loads miss in a full set, so each spends 4 cycles in M. The run takes 14 cycles. Set 1 ends with tag hex 4 in way 0 and tag hex 6 in way 1.
+
+234
+00:28:56,893 --> 00:29:06,343
+Part C: the dead load keeps M busy and evicts the block of the next load. Both degrade performance. Its block can help a later load.
+
+235
+00:29:06,793 --> 00:29:18,164
+Part D: yes. The hazard unit kills the first load when both loads write the same rd and the second does not read it. Program P then takes 8 cycles.
+
+236
+00:29:18,614 --> 00:29:26,038
+Recap. Question 1: draw the old time as a bar. Divide each part by its speedup, and add the parts.
+
+237
+00:29:26,488 --> 00:29:35,512
+Question 2: sets are blocks divided by ways. Then find the offset, index and tag bits, and trace each set with LRU.
+
+238
+00:29:35,962 --> 00:29:46,799
+Question 3: find the producers first. With no forwarding into D, the consumer waits for the producer's W. A taken branch flushes 2 instructions.
+
+239
+00:29:47,249 --> 00:30:01,287
+Question 4: run program P, then add the cache in M. A miss stalls M. The first load is dead, so the pipeline can kill it. That is the end of video 17 b. Good luck in the midterm.

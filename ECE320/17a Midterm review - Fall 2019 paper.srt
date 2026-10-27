@@ -1,0 +1,1103 @@
+1
+00:00:00,000 --> 00:00:08,363
+This video solves the fall 2019 midterm of E C E 320, all four questions, in order.
+
+2
+00:00:08,813 --> 00:00:13,314
+Question 1, 10 marks: performance, hazards and Amdahl's law.
+
+3
+00:00:13,764 --> 00:00:22,127
+Question 2, 22 marks: a pipeline diagram, a forwarding table, a stall table, and a forwarding optimization.
+
+4
+00:00:22,577 --> 00:00:29,553
+Question 3, 12 marks: cache address bits, addresses in the same set, and an L R U pattern.
+
+5
+00:00:30,003 --> 00:00:36,915
+Question 4, 12 marks: a pipeline design question, with new registers HI and LO.
+
+6
+00:00:37,365 --> 00:00:45,130
+The paper gives 60 minutes. Its instructions say: if information is missing, state an assumption and continue.
+
+7
+00:00:45,580 --> 00:00:55,543
+Question 1 part A, 4 marks. Half of program P can be accelerated by a factor of 4. Find the speedup. Pause the video and try it.
+
+8
+00:00:55,993 --> 00:01:02,670
+50 percent of the program can be accelerated. So the accelerated fraction f is point 5.
+
+9
+00:01:03,120 --> 00:01:08,368
+The accelerated part becomes 4 times faster. So its speedup s is 4.
+
+10
+00:01:08,818 --> 00:01:16,839
+Draw the old time as one bar of length 1. The gray half is not accelerated. The blue half is accelerated.
+
+11
+00:01:17,289 --> 00:01:20,297
+In the new time, the gray half stays point 5.
+
+12
+00:01:20,747 --> 00:01:27,638
+The blue half becomes 4 times shorter. Point 5 divided by 4 is point 1 2 5.
+
+13
+00:01:28,088 --> 00:01:34,061
+So the new time is point 5 plus point 1 2 5. That is point 6 2 5.
+
+14
+00:01:34,511 --> 00:01:44,965
+This is Amdahl's law. The speedup is the old time divided by the new time. That is 1 divided by the sum of 1 minus f and f over s.
+
+15
+00:01:45,415 --> 00:01:54,076
+Put in the values: 1 divided by point 5 plus point 1 2 5. That is 1 divided by point 6 2 5.
+
+16
+00:01:54,526 --> 00:01:57,129
+The answer: the speedup is 1.6.
+
+17
+00:01:57,579 --> 00:02:13,707
+Question 1 part B, 4 marks. Find all RAW, WAW and WAR pairs in these four instructions. Write each pair as a b, where a and b are instruction numbers. Pause the video and try it.
+
+18
+00:02:14,157 --> 00:02:23,117
+First, list the reads and writes of each instruction. Instruction 1, the add, reads x1 and x3, and writes x1.
+
+19
+00:02:23,567 --> 00:02:27,812
+Instruction 2, the load word, reads x2 and writes x1.
+
+20
+00:02:28,262 --> 00:02:34,086
+Instruction 3, the store word, reads x1 and x3. It writes no register.
+
+21
+00:02:34,536 --> 00:02:39,805
+Instruction 4, the subtract, reads x2 and x1, and writes x4.
+
+22
+00:02:40,255 --> 00:02:45,205
+Now the RAW pairs. Instructions 3 and 4 read x1.
+
+23
+00:02:45,655 --> 00:02:53,847
+Their most recent older writer of x1 is instruction 2. So the RAW pairs are 2 3 and 2 4.
+
+24
+00:02:54,297 --> 00:03:02,382
+The pairs 1 3 and 1 4 are not RAW pairs, because instruction 2 writes x1 in between.
+
+25
+00:03:02,832 --> 00:03:11,451
+Now the WAW pairs. Instructions 1 and 2 both write x1. So 1 2 is a WAW pair.
+
+26
+00:03:11,901 --> 00:03:22,738
+Now the WAR pairs. Instruction 1 reads x1, and then instruction 2 writes x1. So 1 2 is also a WAR pair.
+
+27
+00:03:23,188 --> 00:03:27,860
+The answer: RAW 2 3 and 2 4, WAW 1 2, and WAR 1 2.
+
+28
+00:03:28,310 --> 00:03:35,819
+Question 1 part C, 2 marks. Why do micro-architects use Amdahl's law? Pause the video and try it.
+
+29
+00:03:36,269 --> 00:03:45,741
+Use the numbers of part A. f is point 5. With s equal to 4, the new time is point 6 2 5. The speedup is 1.6.
+
+30
+00:03:46,191 --> 00:03:56,239
+Make the blue part 10 times faster. It becomes point 0 5. The new time is point 5 5, and the speedup is only 1.82.
+
+31
+00:03:56,689 --> 00:04:04,113
+Make the blue part infinitely fast. It becomes 0. The new time is point 5, and the speedup is 2.
+
+32
+00:04:04,563 --> 00:04:12,798
+The gray part never becomes shorter. So the speedup can never be more than 1 divided by 1 minus f. Here that is 2.
+
+33
+00:04:13,248 --> 00:04:29,547
+A good answer: Amdahl's law gives the overall speedup of a change before it is built. The part that the change does not improve limits the gain. So architects make the common case fast, and do not spend hardware on rare cases.
+
+34
+00:04:29,997 --> 00:04:41,005
+Question 1, the answers to write. Part A: the speedup is 1 divided by point 6 2 5, which is 1.6. Show the formula and the values.
+
+35
+00:04:41,455 --> 00:04:48,729
+Part B: RAW 2 3 and 2 4. WAW 1 2. WAR 1 2. The four instructions are on the right.
+
+36
+00:04:49,179 --> 00:05:00,422
+Part C: Amdahl's law gives the overall speedup before you build the change. The part that is not improved limits the gain. So make the common case fast.
+
+37
+00:05:00,872 --> 00:05:06,781
+Question 2, pipelined execution, 22 marks. It has 14 instructions.
+
+38
+00:05:07,231 --> 00:05:12,693
+The pipeline has forwarding as in class, but no forwarding into the decode stage.
+
+39
+00:05:13,143 --> 00:05:20,481
+Branch direction and target are known in X. The pipeline guesses not taken until the branch resolves.
+
+40
+00:05:20,931 --> 00:05:23,555
+The branch in instruction 8 is taken.
+
+41
+00:05:24,005 --> 00:05:31,109
+Part A asks for the pipeline diagram, the forwarding table and the stall table. It is worth 18 marks.
+
+42
+00:05:31,559 --> 00:05:43,271
+Two facts of the class datapath decide many cells. First, MX and WX feed only the ALU inputs. So store data has only the WM path.
+
+43
+00:05:43,721 --> 00:05:54,943
+Second, there is no forwarding into D. A D in the same cycle as the producer's W reads the old value. Pause the video and try it. Then continue.
+
+44
+00:05:55,393 --> 00:06:04,673
+Step 1: write the producer of each source register. Number 1 and number 2 read x3 and x4. Nothing older writes them.
+
+45
+00:06:05,123 --> 00:06:10,989
+Number 3 uses x3 as its base address. The producer is the load, number 2.
+
+46
+00:06:11,439 --> 00:06:22,042
+Number 4 add also reads x3 from number 2. Orange means a load producer. That is a warning: a load value exists only at the end of M.
+
+47
+00:06:22,492 --> 00:06:33,457
+Number 5 and number 6 are stores. Each uses x6 two times: as the base address and as the store data. The producer is add number 4.
+
+48
+00:06:33,907 --> 00:06:37,491
+Number 7 reads x8, and nothing older writes it.
+
+49
+00:06:37,941 --> 00:06:43,253
+Number 8 B E Q reads x6 from number 4. The branch is taken.
+
+50
+00:06:43,703 --> 00:06:50,167
+So number 9 and number 10 are on the wrong path. They are flushed, so they are not producers.
+
+51
+00:06:50,617 --> 00:07:00,388
+Number 11 reads x7. Number 9 also writes x7, but number 9 is flushed. So the producer is the load number 7.
+
+52
+00:07:00,838 --> 00:07:06,854
+Number 12 and number 13 read only x0. x0 is never a hazard.
+
+53
+00:07:07,304 --> 00:07:10,696
+Number 14 reads x7 from number 11.
+
+54
+00:07:11,146 --> 00:07:22,346
+Number 14 also reads x8. Number 12 and number 13 both write x8. Number 13 is later, so the load number 13 is the producer.
+
+55
+00:07:22,796 --> 00:07:34,849
+Now fill the diagram. In cycles 1 to 3, number 1 store word and number 2 load word read x3 and x4. Nothing older writes them, so there is no hazard.
+
+56
+00:07:35,299 --> 00:07:47,289
+In cycle 4, number 3 is in D. Its base x3 comes from the load number 2. The X of number 3 would be cycle 5. In cycle 5, the load is in M.
+
+57
+00:07:47,739 --> 00:07:55,739
+The load value exists only at the end of M. This is load-use, so number 3 stalls: D star in cycle 4.
+
+58
+00:07:56,189 --> 00:07:59,005
+Number 4 repeats F in cycle 4.
+
+59
+00:07:59,455 --> 00:08:09,396
+In cycle 6, number 3 is in X and the load is in W. x3 goes by WX into the ALU, for the base address.
+
+60
+00:08:09,846 --> 00:08:27,894
+In cycle 6, number 4 add is in D, and it also needs x3. The load writes x3 in cycle 6, but D sees only earlier writes. So number 4 reads the old x3. This is the W D case, and number 4 repeats D.
+
+61
+00:08:28,344 --> 00:08:31,224
+Number 5 repeats F in cycle 6.
+
+62
+00:08:31,674 --> 00:08:38,543
+In cycle 7, number 4 reads x3 again from the register file. Now it gets the new value.
+
+63
+00:08:38,993 --> 00:08:42,407
+Number 5 does its last F in cycle 7.
+
+64
+00:08:42,857 --> 00:08:55,294
+Number 5 store word uses x6 as base and as data. In cycle 9, number 5 is in X and add number 4 is in M. The base x6 goes by MX.
+
+65
+00:08:55,744 --> 00:09:01,056
+Number 6 is in D in cycle 9, and it waits. The next steps show why.
+
+66
+00:09:01,506 --> 00:09:11,213
+In cycle 10, number 5 is in M and number 4 is in W. The store data x6 of number 5 goes by WM.
+
+67
+00:09:11,663 --> 00:09:22,479
+Now number 6, seen from cycle 9. It is also a store, with x6 as base and data. Its X would be cycle 10, while number 4 is in W.
+
+68
+00:09:22,929 --> 00:09:35,046
+The base could use WX. But store data has no WX path, and WM would need number 6 in M in cycle 10. So number 6 stalls in cycle 9.
+
+69
+00:09:35,496 --> 00:09:45,224
+In cycle 10, number 6 is in D in the cycle of number 4's W. That is the W D case, so number 6 repeats D again.
+
+70
+00:09:45,674 --> 00:09:49,109
+Number 7 waits in F in cycles 9 and 10.
+
+71
+00:09:49,559 --> 00:09:54,017
+In cycle 11, number 6 reads x6 from the register file.
+
+72
+00:09:54,467 --> 00:09:58,499
+Count the D star cells of number 6: 2 stall cycles.
+
+73
+00:09:58,949 --> 00:10:02,448
+Number 7 does its last F in cycle 11.
+
+74
+00:10:02,898 --> 00:10:10,215
+In cycle 12, number 7 load word is in D. It reads x8, and nothing older writes x8.
+
+75
+00:10:10,665 --> 00:10:22,932
+In cycle 13, number 8 B E Q is in D. It reads x6 and x8. Number 4 wrote x6 in cycle 10, long before. So there is no hazard.
+
+76
+00:10:23,382 --> 00:10:28,118
+In cycle 14, B E Q is in X. It resolves: taken.
+
+77
+00:10:28,568 --> 00:10:35,139
+The pipeline guessed not taken, so it fetched number 9 and number 10. Both are on the wrong path.
+
+78
+00:10:35,589 --> 00:10:42,117
+In cycle 15, number 9 and number 10 are flushed. They get a dash in each later cycle.
+
+79
+00:10:42,567 --> 00:10:48,903
+The target T1, instruction 11, is fetched in cycle 15, the cycle after X.
+
+80
+00:10:49,353 --> 00:10:53,577
+So the taken branch costs 2 cycles: the 2 flushed rows.
+
+81
+00:10:54,027 --> 00:11:10,816
+Number 11 needs x7. Number 9 also writes x7, but number 9 is flushed. So the producer is the load number 7. It wrote x7 in cycle 15. Number 11 reads it in D in cycle 16. No stall.
+
+82
+00:11:11,266 --> 00:11:19,821
+In cycles 17 and 18, number 12 and number 13 read only x0. x0 is never a hazard.
+
+83
+00:11:20,271 --> 00:11:33,284
+Number 14 add needs x7 and x8. x8 comes from the load number 13. The X of number 14 would be cycle 20, when the load is in M. That is load-use.
+
+84
+00:11:33,734 --> 00:11:45,062
+x7 comes from number 11. Number 11 is in W in cycle 19, the same cycle as the D of number 14. That is the W D case.
+
+85
+00:11:45,512 --> 00:11:51,101
+Both reasons ask for a stall in cycle 19. One D star covers both.
+
+86
+00:11:51,551 --> 00:11:56,458
+In cycle 20, number 14 reads x7 from the register file.
+
+87
+00:11:56,908 --> 00:12:05,847
+In cycle 21, number 14 is in X and the load number 13 is in W. x8 goes by WX.
+
+88
+00:12:06,297 --> 00:12:12,057
+Number 14 finishes in cycle 23. So the run takes 23 cycles.
+
+89
+00:12:12,507 --> 00:12:15,856
+Count the forwarding arrows. There are 4 forwards.
+
+90
+00:12:16,306 --> 00:12:20,466
+Count the D star cells. There are 5 stall cycles in D.
+
+91
+00:12:20,916 --> 00:12:37,129
+Now the forwarding table. Each forward is one row. Row 1: source number 2, destination number 3, register x3, from W to X, in cycle 6. The small diagram shows the two instructions in that cycle.
+
+92
+00:12:37,579 --> 00:12:46,646
+Row 2: from number 4 to number 5, x6, from M to X, in cycle 9. This is the base address of number 5.
+
+93
+00:12:47,096 --> 00:12:56,440
+Row 3: from number 4 to number 5 again, x6, from W to M, in cycle 10. This is the store data of number 5.
+
+94
+00:12:56,890 --> 00:13:05,381
+Rows 2 and 3 have the same destination, number 5. One instruction can receive two forwards, one for each source.
+
+95
+00:13:05,831 --> 00:13:12,935
+Row 4: from number 13 to number 14, x8, from W to X, in cycle 21.
+
+96
+00:13:13,385 --> 00:13:26,227
+There is no forward for x7 into number 14. Number 11 writes x7 in cycle 19, and number 14 reads it from the register file in D, in cycle 20.
+
+97
+00:13:26,677 --> 00:13:38,112
+Now the stall table. Each stall gets one row with its stage, its cycles and the reason. Number 3 stalls in D in cycle 4: load-use on x3.
+
+98
+00:13:38,562 --> 00:13:43,490
+Because number 3 holds D, number 4 stalls in F in cycle 4.
+
+99
+00:13:43,940 --> 00:13:57,060
+Number 4 stalls in D in cycle 6. The reason is the W D case. Number 2 writes x3 in W in cycle 6. D in the same cycle reads the old value.
+
+100
+00:13:57,510 --> 00:14:00,497
+Number 5 stalls in F in cycle 6.
+
+101
+00:14:00,947 --> 00:14:15,816
+Number 6 stalls in D in cycles 9 and 10. Its store data x6 has only the WM path, and WM is not possible in time. So number 6 reads x6 in D after cycle 10.
+
+102
+00:14:16,266 --> 00:14:19,679
+Number 7 stalls in F in cycles 9 and 10.
+
+103
+00:14:20,129 --> 00:14:33,676
+Number 14 stalls in D in cycle 19. There are two reasons: load-use on x8 from number 13, and the W D case on x7 from number 11. Write both reasons.
+
+104
+00:14:34,126 --> 00:14:42,233
+The flushed instructions number 9 and number 10 do not go in the stall table. They go in the diagram, with dashes.
+
+105
+00:14:42,683 --> 00:14:50,469
+Part B of the same question asks for an optimization of the forwarding hardware, and for the new forwarding logic.
+
+106
+00:14:50,919 --> 00:14:54,077
+Forwarding into the decode stage is not allowed.
+
+107
+00:14:54,527 --> 00:15:02,825
+The diagram is the Part A answer: 23 cycles. Pause the video and look for the stalls that a new path could remove.
+
+108
+00:15:03,275 --> 00:15:08,331
+Number 6 store word stalls 2 cycles in D, in cycles 9 and 10.
+
+109
+00:15:08,781 --> 00:15:12,280
+Its store data x6 comes from add number 4.
+
+110
+00:15:12,730 --> 00:15:18,661
+In cycle 10, add number 4 is in W. So the new x6 already exists.
+
+111
+00:15:19,111 --> 00:15:25,041
+Number 6 could be in X in cycle 10. The base address can already take WX.
+
+112
+00:15:25,491 --> 00:15:31,678
+Only a path into the store-data input is missing. That missing path is the optimization.
+
+113
+00:15:32,128 --> 00:15:43,008
+The sketch shows the class pipeline, as on slide 39. The store data, rs2 X, goes from the D X register straight to the X M register.
+
+114
+00:15:43,458 --> 00:15:49,879
+Now the forwarding paths. MX and WX go into the two muxes in front of the ALU.
+
+115
+00:15:50,329 --> 00:15:54,916
+WM goes into a mux at the data input of the data memory.
+
+116
+00:15:55,366 --> 00:16:00,209
+The red line is the store data in X. It passes no forwarding mux.
+
+117
+00:16:00,659 --> 00:16:07,613
+In cycle 10, add number 4 is in W. Its new x6 is in the M W register.
+
+118
+00:16:08,063 --> 00:16:15,978
+Number 6 is in D and wants to go to X. No path can bring the new x6 to the store data of number 6.
+
+119
+00:16:16,428 --> 00:16:22,636
+The optimization: add a mux on the store-data line in X, before the X M register.
+
+120
+00:16:23,086 --> 00:16:33,859
+Its new input comes from the WX path: the value in the M W register. So the new x6 replaces the old x6 from rs2 X.
+
+121
+00:16:34,309 --> 00:16:41,392
+The forwarding control logic drives the select input of the new mux. The next slide shows the logic.
+
+122
+00:16:41,842 --> 00:16:54,578
+The new logic compares register numbers in the pipeline registers, like the existing forwarding logic. Condition 1: the instruction in X is a store. Number 6 is a store.
+
+123
+00:16:55,028 --> 00:17:04,329
+Condition 2: its rs2 equals the destination register of the instruction in M W. x6 equals x6.
+
+124
+00:17:04,779 --> 00:17:10,369
+Condition 3: that register is not x0. x6 is not x0.
+
+125
+00:17:10,819 --> 00:17:15,277
+All three conditions are true, so the AND gives select equal to 1.
+
+126
+00:17:15,727 --> 00:17:22,063
+With select 1, the mux passes the M W value, the new x6, to rs2 M.
+
+127
+00:17:22,513 --> 00:17:26,609
+With select 0, it passes rs2 X, as before.
+
+128
+00:17:27,059 --> 00:17:39,390
+The new logic has the same form as the logic on slide 39. There, if rs1 in D X equals rd in X M, the A mux selects the MX input.
+
+129
+00:17:39,840 --> 00:17:46,859
+If rs1 in D X equals rd in M W, the A mux selects the WX input.
+
+130
+00:17:47,309 --> 00:17:57,954
+So the answer for Part B: add a WX path into the store-data input, with the select logic above. It is a model answer, not an official one.
+
+131
+00:17:58,404 --> 00:18:05,380
+The diagram now has the new path. In cycle 9, number 6 is in D, and nothing stops it now.
+
+132
+00:18:05,830 --> 00:18:14,150
+In cycle 10, add number 4 is in W. WM gives x6 to the store data of number 5, as before.
+
+133
+00:18:14,600 --> 00:18:20,211
+The new WX path gives x6 to number 6, for its base and its store data.
+
+134
+00:18:20,661 --> 00:18:33,098
+The run now ends in cycle 21. Part A ended in cycle 23. 23 minus 21 is 2 cycles: the 2 D star cycles of number 6 are gone.
+
+135
+00:18:33,548 --> 00:18:39,863
+Three stalls are left. Count the D star cells: number 3, number 4 and number 14.
+
+136
+00:18:40,313 --> 00:18:49,230
+Number 3 and number 14 have load-use stalls. No path can help them, because a load value exists only at the end of M.
+
+137
+00:18:49,680 --> 00:18:56,997
+Number 4 has the W D case. Only forwarding into D could remove it, and the question excludes that.
+
+138
+00:18:57,447 --> 00:19:11,314
+Question 2, the answers. Part A ends in cycle 23. Check the count: 4 cycles to fill the pipeline, 12 finished instructions, 5 D star cycles, and 2 flushed cycles.
+
+139
+00:19:11,764 --> 00:19:20,724
+Write the diagram, the 4 forwards and the 4 stalls in D. Each stall in D also makes the next instruction repeat F.
+
+140
+00:19:21,174 --> 00:19:29,622
+Part B removes the 2 D star cycles of number 6. 4 plus 12 plus 3 plus 2 is 21 cycles.
+
+141
+00:19:30,072 --> 00:19:36,899
+The answer for Part B: add a WX path into the store-data input, with its select logic.
+
+142
+00:19:37,349 --> 00:19:53,519
+Question 3, caches, 12 marks. A 32 kilobyte, 4-way cache with 16 byte blocks. Part A asks for the bits. Part B asks for 5 addresses in the same set but in different ways. Pause the video and try it.
+
+143
+00:19:53,969 --> 00:19:59,751
+Part A. A block has 16 bytes, which is 2 to the 4. So the offset is 4 bits.
+
+144
+00:20:00,201 --> 00:20:05,705
+32 kilobytes divided by 16 bytes is 2048 blocks.
+
+145
+00:20:06,155 --> 00:20:16,928
+2048 blocks divided by 4 ways is 512 sets. 512 is 2 to the 9, so the index is 9 bits.
+
+146
+00:20:17,378 --> 00:20:28,962
+The paper does not give the address width. Assume 32 bits, as in RISC-V, and say so. Then the tag is 32 minus 9 minus 4, which is 19 bits.
+
+147
+00:20:29,412 --> 00:20:34,127
+Part B. Same set means the same index bits. Use set 0.
+
+148
+00:20:34,577 --> 00:20:41,915
+Different ways means different tags. So keep the index and the offset at 0, and change only the tag.
+
+149
+00:20:42,365 --> 00:20:54,973
+The tag starts at bit 13. So tag plus 1 adds 2 to the 13 to the address. That is 512 sets times 16 bytes: hex 2 0 0 0.
+
+150
+00:20:55,423 --> 00:21:07,818
+So A to E are hex 0, 2 0 0 0, 4 0 0 0, 6 0 0 0 and 8 0 0 0. Their tags are 0 to 4.
+
+151
+00:21:08,268 --> 00:21:23,180
+Part C. The table shows 15 accesses to one set. They go to ways 0, 1, 2, 3, 0, 1, and so on, and every access misses. Fill in the labels A to E. Pause the video and try it.
+
+152
+00:21:23,630 --> 00:21:28,302
+The first four accesses fill the empty ways: A, B, C and D.
+
+153
+00:21:28,752 --> 00:21:39,355
+Access 5 must miss and go to way 0. So it is a new block, E. LRU replaces A, the least recently used block, in way 0.
+
+154
+00:21:39,805 --> 00:21:49,597
+Access 6 must miss and go to way 1. A was just evicted, so access A again. It misses, and LRU replaces B in way 1.
+
+155
+00:21:50,047 --> 00:21:59,476
+The pattern continues: B, C, D, E, A, B, C, D, E. Each access asks for the block that LRU evicted last.
+
+156
+00:21:59,926 --> 00:22:05,857
+The rule: 5 blocks that cycle through one 4-way L R U set miss every time.
+
+157
+00:22:06,307 --> 00:22:16,440
+Question 3, the answers. Part A: offset 4 bits, index 9 bits, and tag 19 bits. Write that you assume 32-bit addresses.
+
+158
+00:22:16,890 --> 00:22:29,477
+Part B: hex 0, 2 0 0 0, 4 0 0 0, 6 0 0 0 and 8 0 0 0. Same index, tags 0 to 4.
+
+159
+00:22:29,927 --> 00:22:37,692
+Part C: A B C D E, three times. Each access asks for the block that L R U evicted last.
+
+160
+00:22:38,142 --> 00:22:52,051
+A design question asks you to change the pipeline. Use the same six questions every time. First, the new state. Which new registers hold the new values? In which stage are they read and written?
+
+161
+00:22:52,501 --> 00:22:58,560
+Second, the paths and the muxes. Which wires carry the new values? Which mux selects them?
+
+162
+00:22:59,010 --> 00:23:04,578
+Third, the control signals. The decoder sets new signals for each new instruction.
+
+163
+00:23:05,028 --> 00:23:13,647
+Fourth, the hazards. Find the new read after write cases. Then decide: forward by MX or WX, or stall.
+
+164
+00:23:14,097 --> 00:23:19,302
+Fifth, precise state. Write new state in W, after M, the commit point.
+
+165
+00:23:19,752 --> 00:23:25,747
+Sixth, run a program on the new hardware. Fill the pipeline diagram and count the cycles.
+
+166
+00:23:26,197 --> 00:23:33,535
+A design question gives marks for each of these six parts. So name every new register, mux and signal.
+
+167
+00:23:33,985 --> 00:23:46,529
+Question 4 of the fall 2019 midterm. Homer adds two 32-bit registers, HI and LO, in the decode stage. He also adds three new instructions.
+
+168
+00:23:46,979 --> 00:23:52,505
+W mul multiplies register rs1 by register rs2.
+
+169
+00:23:52,955 --> 00:24:00,272
+Each register has 32 bits. So the product has 32 plus 32, which is 64 bits.
+
+170
+00:24:00,722 --> 00:24:05,543
+W mul writes the upper 32 bits of the product into HI.
+
+171
+00:24:05,993 --> 00:24:08,937
+It writes the lower 32 bits into LO.
+
+172
+00:24:09,387 --> 00:24:13,675
+Move from HI copies HI into register rd.
+
+173
+00:24:14,125 --> 00:24:17,944
+Move from LO copies LO into register rd.
+
+174
+00:24:18,394 --> 00:24:25,413
+The question asks for all the necessary changes to the 5-stage pipeline. Pause the video and try it.
+
+175
+00:24:25,863 --> 00:24:34,439
+Start with one row for each instruction. W mul reads rs1 and rs2 in D, from the register file.
+
+176
+00:24:34,889 --> 00:24:38,729
+In X, a multiplier makes the 64-bit product.
+
+177
+00:24:39,179 --> 00:24:46,837
+We assume that the multiplier takes one X cycle. The question gives no latency, so state this in the exam.
+
+178
+00:24:47,287 --> 00:24:57,847
+In M, the X M register carries the product. A class pipeline register holds a 32-bit result. So X M needs 32 more bits.
+
+179
+00:24:58,297 --> 00:25:09,412
+In W, W mul writes HI and LO. The M W register also carries all 64 bits, so it also gets 32 more bits.
+
+180
+00:25:09,862 --> 00:25:17,094
+Move from HI and move from LO read HI or LO in D. A new mux selects the value.
+
+181
+00:25:17,544 --> 00:25:21,000
+In X, the ALU passes the value to its output.
+
+182
+00:25:21,450 --> 00:25:28,853
+In W, the instruction writes rd, as any ALU instruction does. Reg W En is 1.
+
+183
+00:25:29,303 --> 00:25:36,044
+So treat HI and LO like the register file. Read them in D, and write them in W.
+
+184
+00:25:36,494 --> 00:25:50,190
+Do not write HI and LO at the end of X. An older instruction can still raise an exception in M. The handler then sees a result of a younger instruction. That state is not precise.
+
+185
+00:25:50,640 --> 00:25:56,443
+W comes after M, the commit point. So a write in W keeps the state precise.
+
+186
+00:25:56,893 --> 00:26:05,170
+The figure shows the class pipeline with forwarding, in gray. It has the five stages F, D, X, M and W.
+
+187
+00:26:05,620 --> 00:26:13,044
+The green line is the MX path. It carries a result from the X M register to the ALU input A.
+
+188
+00:26:13,494 --> 00:26:20,171
+The blue line is the WX path. It carries a result from W to the ALU input A.
+
+189
+00:26:20,621 --> 00:26:24,845
+Change one. Add the two new registers, HI and LO, in D.
+
+190
+00:26:25,295 --> 00:26:36,922
+Change two. Add a mux in D, before the D X register. Its select signal, H L Sel, picks rs1, HI or LO for the ALU input A.
+
+191
+00:26:37,372 --> 00:26:43,644
+Change three. Extend the ALU with a multiplier. Its result has 64 bits.
+
+192
+00:26:44,094 --> 00:26:54,675
+A class pipeline register holds a 32-bit result. So the X M and M W registers each grow from 32 to 64 bits.
+
+193
+00:26:55,125 --> 00:27:01,995
+Change four. In W, bits 63 to 32 of the M W register go to HI.
+
+194
+00:27:02,445 --> 00:27:04,941
+Bits 31 to 0 go to LO.
+
+195
+00:27:05,391 --> 00:27:12,303
+A new write enable, H L W En, controls this write. It is 1 only for W mul.
+
+196
+00:27:12,753 --> 00:27:19,153
+Change five. The forwarding mux of input A must select the correct half of a forwarded product.
+
+197
+00:27:19,603 --> 00:27:22,056
+Move from LO takes the lower half.
+
+198
+00:27:22,506 --> 00:27:25,130
+Move from HI takes the upper half.
+
+199
+00:27:25,580 --> 00:27:34,433
+Now the decoder. W mul sets H L Sel to rs1. So the ALU input A gets the rs1 value.
+
+200
+00:27:34,883 --> 00:27:37,187
+A L U Sel selects multiply.
+
+201
+00:27:37,637 --> 00:27:42,288
+H L W En is 1, so W writes HI and LO.
+
+202
+00:27:42,738 --> 00:27:47,943
+Reg W En is 0, because W mul writes no x register.
+
+203
+00:27:48,393 --> 00:27:51,743
+Move from HI sets H L Sel to HI.
+
+204
+00:27:52,193 --> 00:27:57,142
+A L U Sel is pass A. The ALU passes input A to its output.
+
+205
+00:27:57,592 --> 00:28:01,304
+Reg W En is 1, so W writes rd.
+
+206
+00:28:01,754 --> 00:28:04,783
+W B Sel selects the ALU result.
+
+207
+00:28:05,233 --> 00:28:09,543
+Move from LO is the same, but H L Sel selects LO.
+
+208
+00:28:09,993 --> 00:28:13,726
+All other instructions set H L Sel to rs1.
+
+209
+00:28:14,176 --> 00:28:19,488
+They set H L W En to 0, so they never write HI or LO.
+
+210
+00:28:19,938 --> 00:28:21,986
+Their other signals do not change.
+
+211
+00:28:22,436 --> 00:28:28,644
+The names H L Sel and H L W En are our names. The question gives no names.
+
+212
+00:28:29,094 --> 00:28:35,558
+Next, the hazards. Only W mul writes HI and LO, and it writes them in W.
+
+213
+00:28:36,008 --> 00:28:43,091
+Move from HI and move from LO read HI or LO in D. They use the value in X.
+
+214
+00:28:43,541 --> 00:28:49,151
+So the forwarding unit compares opcodes. It does not need to compare register numbers.
+
+215
+00:28:49,601 --> 00:28:56,279
+Case one, MX. In this short run, move from HI, number 2, is in X in cycle 4.
+
+216
+00:28:56,729 --> 00:29:03,982
+W mul, number 1, is in M in the same cycle. The X M register holds the new HI.
+
+217
+00:29:04,432 --> 00:29:09,211
+So mux A selects the X M register. This is the MX condition.
+
+218
+00:29:09,661 --> 00:29:16,146
+Case two, WX. In this run, move from LO, number 3, is in X in cycle 5.
+
+219
+00:29:16,596 --> 00:29:19,903
+W mul is in W in the same cycle.
+
+220
+00:29:20,353 --> 00:29:28,118
+The instruction in M, number 2, is not a W mul. A W mul in M would hold a newer value.
+
+221
+00:29:28,568 --> 00:29:34,115
+So mux A selects the M W register. This is the WX condition.
+
+222
+00:29:34,565 --> 00:29:40,325
+Case three. In this run, move from HI, number 4, is in D in cycle 5.
+
+223
+00:29:40,775 --> 00:29:48,711
+W mul is in W in the same cycle. There is no forwarding into D, so D reads the old HI.
+
+224
+00:29:49,161 --> 00:29:54,494
+So number 4 stalls one cycle: D star. This is the W D case.
+
+225
+00:29:54,944 --> 00:30:07,765
+The x registers need no change. W mul reads rs1 and rs2, and the move instructions write rd. The class forwarding and stall logic handles these.
+
+226
+00:30:08,215 --> 00:30:15,789
+Part B asks you to run this sequence on the new pipeline. Use arrows for forwarding. Pause the video and try it.
+
+227
+00:30:16,239 --> 00:30:26,201
+Number 1, W mul, multiplies in X in cycle 3. We assume one X cycle, so the product exists at the end of cycle 3.
+
+228
+00:30:26,651 --> 00:30:30,534
+Number 2, move from LO, is in X in cycle 4.
+
+229
+00:30:30,984 --> 00:30:38,003
+W mul is in M in cycle 4. So LO goes by MX, from the X M register.
+
+230
+00:30:38,453 --> 00:30:42,591
+Number 3, move from HI, is in X in cycle 5.
+
+231
+00:30:43,041 --> 00:30:51,041
+W mul is in W in cycle 5. So HI goes by WX, from the M W register.
+
+232
+00:30:51,491 --> 00:30:55,374
+Number 4, move from LO, is in D in cycle 5.
+
+233
+00:30:55,824 --> 00:31:07,216
+W mul writes LO in W in the same cycle. There is no forwarding into D. So D reads the old LO, and number 4 repeats D: D star.
+
+234
+00:31:07,666 --> 00:31:12,317
+Number 4 holds D, so number 5 repeats F: F star.
+
+235
+00:31:12,767 --> 00:31:16,543
+In cycle 6, number 4 reads the new LO in D.
+
+236
+00:31:16,993 --> 00:31:21,131
+In cycle 7, the store, number 5, reads x 6 in D.
+
+237
+00:31:21,581 --> 00:31:27,853
+Number 2 wrote x 6 in W in cycle 6. So the register file already has it.
+
+238
+00:31:28,303 --> 00:31:30,479
+The sequence takes 10 cycles.
+
+239
+00:31:30,929 --> 00:31:35,687
+There is one stall cycle in D and one in F, both in cycle 5.
+
+240
+00:31:36,137 --> 00:31:43,283
+Forwarding table, row 1. Number 1 forwards LO to number 2, from M to X, in cycle 4.
+
+241
+00:31:43,733 --> 00:31:50,133
+Row 2. Number 1 forwards HI to number 3, from W to X, in cycle 5.
+
+242
+00:31:50,583 --> 00:32:02,103
+Stall table, row 1. Number 4 stalls in D in cycle 5. W mul writes LO in W in the same cycle, so D reads the old LO.
+
+243
+00:32:02,553 --> 00:32:08,569
+Row 2. Number 5 stalls in F in cycle 5, because number 4 holds D.
+
+244
+00:32:09,019 --> 00:32:19,771
+This answer uses the model design of Part A, with a one-cycle multiply. With a slower multiplier, the cycles change. So state your assumption.
+
+245
+00:32:20,221 --> 00:32:29,139
+Part C. Homer removes the branch compare unit from X. The ALU compares instead, and a new adder computes the target.
+
+246
+00:32:29,589 --> 00:32:37,951
+The figure shows the X stage of the class pipeline. There, the ALU computes the branch target, PC plus immediate.
+
+247
+00:32:38,401 --> 00:32:44,503
+The branch compare unit takes its inputs from the D X register, before the forwarding muxes.
+
+248
+00:32:44,953 --> 00:32:53,699
+So the compare unit gets no forwarded values. The branch must read its operands in D, after the W of the producer.
+
+249
+00:32:54,149 --> 00:33:01,765
+In Homer's design, the ALU compares the two operands. It gives B R equal and B R less than.
+
+250
+00:33:02,215 --> 00:33:11,495
+The ALU inputs come after the forwarding muxes. So the branch gets its operands by MX or WX, with no new paths.
+
+251
+00:33:11,945 --> 00:33:19,967
+The ALU is now busy with the compare. So a new adder computes the target, PC plus immediate, at the same time.
+
+252
+00:33:20,417 --> 00:33:22,571
+The branch still resolves in X.
+
+253
+00:33:23,021 --> 00:33:27,715
+Pause the video and try it. Find how many stall cycles Homer saves.
+
+254
+00:33:28,165 --> 00:33:34,287
+First, the class pipeline. The branch, number 2, comes right after add, which writes x 1.
+
+255
+00:33:34,737 --> 00:33:38,151
+Add writes x 1 in W, in cycle 5.
+
+256
+00:33:38,601 --> 00:33:44,979
+The branch must read x 1 in D after that W. So it reads x 1 in cycle 6.
+
+257
+00:33:45,429 --> 00:33:51,808
+Before that, the branch repeats D in cycles 3, 4 and 5. That is 3 stall cycles.
+
+258
+00:33:52,258 --> 00:33:56,290
+In Homer's design, the branch is in X in cycle 4.
+
+259
+00:33:56,740 --> 00:34:02,756
+Add is in M in cycle 4. So x 1 goes by MX, and there is no stall.
+
+260
+00:34:03,206 --> 00:34:06,043
+The run takes 8 cycles, not 11.
+
+261
+00:34:06,493 --> 00:34:11,571
+With a load as the producer, the class pipeline also stalls 3 cycles.
+
+262
+00:34:12,021 --> 00:34:15,711
+Homer's design stalls one cycle: the load-use case.
+
+263
+00:34:16,161 --> 00:34:19,788
+Then x 1 goes by WX, in cycle 5.
+
+264
+00:34:20,238 --> 00:34:23,161
+The run takes 9 cycles, not 11.
+
+265
+00:34:23,611 --> 00:34:29,115
+Now a taken branch in Homer's design. It resolves in X, in cycle 4.
+
+266
+00:34:29,565 --> 00:34:33,362
+The two younger instructions are flushed. They show dashes.
+
+267
+00:34:33,812 --> 00:34:42,559
+The target is fetched in cycle 5, not 3. So a wrong guess still costs 2 cycles: the fetches in cycles 3 and 4.
+
+268
+00:34:43,009 --> 00:34:52,630
+The answer for Part C: Homer removes the stalls of a branch that uses a recent result. The penalty of a wrong guess does not change.
+
+269
+00:34:53,080 --> 00:35:04,109
+Question 4, the answers. Part A: name each new register, mux, signal and hazard case. HI and LO are read in D and written in W.
+
+270
+00:35:04,559 --> 00:35:17,317
+Part B: the run takes 10 cycles. LO goes by MX, HI goes by WX, and number 4 stalls 1 cycle in D. State your one-cycle multiply.
+
+271
+00:35:17,767 --> 00:35:30,033
+Part C: the branch gets its operands through the forwarding muxes of the ALU. This removes the stalls after a recent result. A wrong guess still costs 2 cycles.
+
+272
+00:35:30,483 --> 00:35:42,729
+Recap. Question 1: Amdahl's law is 1 divided by the sum of 1 minus f and f over s. For a RAW pair, use the most recent older writer.
+
+273
+00:35:43,179 --> 00:35:56,981
+Question 2: find the producers first. Then test each source register: MX, WX, WM, or a stall. Store data has only WM, and there is no forwarding into D.
+
+274
+00:35:57,431 --> 00:36:09,442
+Question 3: offset bits from the block size, index bits from the number of sets, and the tag is the rest. 5 blocks in a 4-way L R U set miss every time.
+
+275
+00:36:09,892 --> 00:36:16,100
+Question 4: use the six design questions, from the new state to a run of the program.
+
+276
+00:36:16,550 --> 00:36:29,755
+Before you hand in a diagram, check the count: 4, plus the finished instructions, plus the D star cycles, plus 2 for each taken branch. This check is our own; it is not on the slides.
