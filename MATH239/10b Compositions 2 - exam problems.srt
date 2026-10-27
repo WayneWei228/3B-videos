@@ -1,203 +1,387 @@
 1
-00:00:00,000 --> 00:00:09,664
-This is MATH 239, video 10b. We solve exam-type problems on compositions. Video 10a gives the method.
+00:00:00,000 --> 00:00:13,589
+This is MATH 239, video 10b. We solve exam-type problems on compositions. Video 10a gives the method. For each problem, pause the video and try it first.
 
 2
-00:00:10,114 --> 00:00:24,023
-The problems are: Tutorial 3, question 2, parts a to d. Assignment 3, questions 2 and 3. And question 3 of the practice midterm. For each problem, pause the video and try it first.
+00:00:14,039 --> 00:00:20,077
+First, Tutorial 3, question 2, parts a to d. They restrict the lengths and the parts.
 
 3
-00:00:24,473 --> 00:00:43,524
-The practice midterm says: define a relevant set and a weight function, and justify how you get the generating series. So a full answer has four parts. First, the set. Write it as a union of Cartesian products of part sets, and say why the union is disjoint.
+00:00:20,527 --> 00:00:27,844
+Then Assignment 3, question 2: 100 odd parts, and parts that alternate between odd and even.
 
 4
-00:00:43,974 --> 00:00:49,926
-Second, the weight function. For compositions, it is usually the size, the sum of the parts.
+00:00:28,294 --> 00:00:33,243
+Then Assignment 3, question 3: compare two sets with series algebra.
 
 5
-00:00:50,376 --> 00:01:02,728
-Third, the lemmas. Name each lemma when you use it. The Product Lemma needs the weight of a list to be the sum of the weights of its entries. The String Lemma needs no element of weight 0.
+00:00:33,693 --> 00:00:39,133
+Last, question 3 of the practice midterm: lengths and parts modulo 5.
 
 6
-00:01:03,178 --> 00:01:11,669
-Fourth, the answer. Write it as the coefficient of x to the n in a ratio of two polynomials, as the question asks.
+00:00:39,583 --> 00:00:50,634
+The practice midterm says: define a relevant set and a weight function, and justify how you get the generating series. So a full answer has four parts.
 
 7
-00:01:12,119 --> 00:01:26,753
-Tutorial 3, question 2a. A is the set of compositions with length congruent to 1 modulo 3. Pause the video and try it. The allowed lengths are 1, 4, 7, 10, and so on. They are purple.
+00:00:51,084 --> 00:00:58,892
+First, the set. Write it as a union of Cartesian products of part sets, and say why the union is disjoint.
 
 8
-00:01:27,203 --> 00:01:44,099
-Any positive integer can be a part. So the compositions of length 3 j plus 1 form P to the 3 j plus 1. A is the union of these sets over all j. The union is disjoint, because each composition has one length.
+00:00:59,342 --> 00:01:05,294
+Second, the weight function. For compositions, it is usually the size, the sum of the parts.
 
 9
-00:01:44,549 --> 00:02:01,381
-By the Sum Lemma, add the series of these sets. By the Product Lemma, each one is x over 1 minus x, to the power 3 j plus 1. Take out one factor. The rest is a geometric series in x over 1 minus x, cubed.
+00:01:05,744 --> 00:01:09,029
+Third, the lemmas. Name each lemma when you use it.
 
 10
-00:02:01,831 --> 00:02:14,781
-Multiply top and bottom by 1 minus x, cubed. The answer is x minus 2 x squared plus x cubed, over 1 minus 3 x plus 3 x squared minus 2 x cubed.
+00:01:09,479 --> 00:01:14,962
+The Product Lemma needs the weight of a list to be the sum of the weights of its entries.
 
 11
-00:02:15,231 --> 00:02:27,497
-Check with n equal to 4. The composition 4 has length 1. The composition 1 1 1 1 has length 4. So the count is 2, and the series gives 2 at x to the 4.
+00:01:15,412 --> 00:01:19,209
+The String Lemma needs a set with no element of weight 0.
 
 12
-00:02:27,947 --> 00:02:40,278
-Question 2b. B is the set of compositions of even length with each part at most 3. Pause the video and try it. The allowed lengths are 0, 2, 4, and so on.
+00:01:19,659 --> 00:01:28,150
+Fourth, the answer. Write it as the coefficient of x to the n in a ratio of two polynomials, as the question asks.
 
 13
-00:02:40,728 --> 00:02:47,555
-Step 1. The parts are 1, 2 and 3. Their series is x plus x squared plus x cubed.
+00:01:28,600 --> 00:01:42,488
+Tutorial 3, question 2 a. A is the set of compositions whose length is congruent to 1 modulo 3. Find phi of A as a ratio of two polynomials. Pause the video and try it.
 
 14
-00:02:48,005 --> 00:03:04,495
-Step 2. The compositions of length 2 j form P to the 2 j. B is the disjoint union over j. By the Sum and Product Lemmas, phi of B is the sum of x plus x squared plus x cubed, to the 2 j.
+00:01:42,938 --> 00:01:47,802
+The allowed lengths are 1, 4, 7, 10, and so on. They are purple.
 
 15
-00:03:04,945 --> 00:03:14,865
-This is a geometric series in the square of phi of P. The answer is 1 over 1 minus x plus x squared plus x cubed, squared.
+00:01:48,252 --> 00:02:03,697
+Any positive integer can be a part, so P is the set of positive integers. The compositions of length 3 j plus 1 form P to the 3 j plus 1. A is the union of these sets over all j.
 
 16
-00:03:15,315 --> 00:03:26,643
-Expand the square to get one fraction of polynomials. The square is x squared plus 2 x cubed plus 3 x to the 4 plus 2 x to the 5 plus x to the 6.
+00:02:04,147 --> 00:02:09,161
+The union is disjoint, because each composition has exactly one length.
 
 17
-00:03:27,093 --> 00:03:43,712
-Question 2c. C is the set of compositions with at least 100 parts. Pause the video and try it. Here the length has no upper bound, so we do not add 100 cases. Instead, cut each composition after part 100.
+00:02:09,611 --> 00:02:21,195
+The weight is the size. By the Sum Lemma, add the series of these sets. By the Product Lemma, each one is x over 1 minus x, to the power 3 j plus 1.
 
 18
-00:03:44,162 --> 00:03:55,149
-The first piece has exactly 100 parts: it is in P to the 100. The second piece has any number of parts, zero or more: it is in P star.
+00:02:21,645 --> 00:02:30,114
+Take out one factor x over 1 minus x. The rest is a geometric series in x over 1 minus x, cubed.
 
 19
-00:03:55,599 --> 00:04:12,153
-Two pieces give back the composition, and each composition gives exactly one pair. So C equals P to the 100, times P star. The size of the composition is the size of the first piece plus the size of the second piece.
+00:02:30,564 --> 00:02:43,620
+Multiply the top and the bottom by 1 minus x, cubed. The top becomes x times 1 minus x, squared. The bottom becomes 1 minus x, cubed, minus x cubed.
 
 20
-00:04:12,603 --> 00:04:34,235
-So the Product Lemma and the String Lemma apply. Phi of C is x over 1 minus x, to the 100, times 1 over 1 minus x over 1 minus x. This simplifies to x to the 100 times 1 minus x, over 1 minus x to the 100, times 1 minus 2 x.
+00:02:44,070 --> 00:02:54,139
+Expand both. The answer is x minus 2 x squared plus x cubed, over 1 minus 3 x plus 3 x squared minus 2 x cubed.
 
 21
-00:04:34,685 --> 00:04:46,739
-Question 2d. D is the set of compositions of odd length with each part at least 2. Pause the video and try it. The allowed lengths are 1, 3, 5, and so on.
+00:02:54,589 --> 00:03:03,272
+Check with n equal to 4. The composition 4 has length 1, and 1 1 1 1 has length 4. So the count is 2.
 
 22
-00:04:47,189 --> 00:05:01,717
-The parts are 2, 3, 4, and so on, with series x squared over 1 minus x. The compositions of length 2 j plus 1 form P to the 2 j plus 1. D is their disjoint union.
+00:03:03,722 --> 00:03:20,895
+Now expand the series. Multiply both sides by the bottom, and compare the coefficients. The first four are 0, 1, 1, 1. After them, a n is 3 a n minus 1, minus 3 a n minus 2, plus 2 a n minus 3.
 
 23
-00:05:02,167 --> 00:05:14,497
-By the Sum and Product Lemmas, phi of D is the sum of phi of P to the 2 j plus 1. Take out one factor. The rest is a geometric series in phi of P squared.
+00:03:21,345 --> 00:03:29,516
+At x to the 4: 3 times 1, minus 3 times 1, plus 2 times 1, is 2. This matches the list.
 
 24
-00:05:14,947 --> 00:05:24,931
-Substitute and clear the fractions. The answer is x squared minus x cubed, over 1 minus 2 x plus x squared minus x to the 4.
+00:03:29,966 --> 00:03:38,371
+Question 2 b. B is the set of compositions of even length with each part at most 3. Pause the video and try it.
 
 25
-00:05:25,381 --> 00:05:39,397
-Check with n equal to 6. The composition 6 has length 1, and 2 2 2 has length 3. 4 2 and 3 3 have even length, so they are not in D. The count is 2, the same as the series.
+00:03:38,821 --> 00:03:43,237
+The allowed lengths are 0, 2, 4, and so on. They are purple.
 
 26
-00:05:39,847 --> 00:05:58,685
-Assignment 3, question 2a. Count the compositions of n with exactly 100 parts, all odd. Pause the video and try it. Let O be the odd positive integers. Its series is x over 1 minus x squared. The set is O to the 100.
+00:03:43,687 --> 00:03:50,514
+Step 1. The parts are 1, 2 and 3. Their series is x plus x squared plus x cubed.
 
 27
-00:05:59,135 --> 00:06:08,479
-The weight is the sum of the parts. By the Product Lemma, the series is x to the 100 over 1 minus x squared, to the 100.
+00:03:50,964 --> 00:04:07,327
+Step 2. The compositions of length 2 j form P to the 2 j. B is their disjoint union over j. By the Sum and Product Lemmas, phi of B is the sum of x plus x squared plus x cubed, to the 2 j.
 
 28
-00:06:08,929 --> 00:06:27,275
-Now find the coefficient. Divide out x to the 100: we need the coefficient of x to the n minus 100. The negative binomial series, with x squared in place of x, gives i plus 99 choose 99, times x to the 2 i.
+00:04:07,777 --> 00:04:18,358
+This is a geometric series in the square of phi of P. So phi of B is 1 over 1 minus the square of x plus x squared plus x cubed.
 
 29
-00:06:27,725 --> 00:06:45,027
-The coefficient row starts at x to the 100. Every odd position is 0, because 100 odd numbers have an even sum. The even positions are 1, 100, 5050, 171700.
+00:04:18,808 --> 00:04:27,213
+To get one fraction of polynomials, expand the square on a grid. Each cell is the product of one term from each factor.
 
 30
-00:06:45,477 --> 00:07:01,349
-We need 2 i equal to n minus 100, so i is n over 2 minus 50. The answer is n over 2 plus 49, choose 99, when n is even and at least 100. Otherwise it is 0.
+00:04:27,663 --> 00:04:41,850
+Cells on one diagonal have the same power. The x to the 4 diagonal has 3 cells. So the square is x squared plus 2 x cubed plus 3 x to the 4 plus 2 x to the 5 plus x to the 6.
 
 31
-00:07:01,799 --> 00:07:16,817
-Assignment 3, question 2b. The parts must alternate: part 1 odd, part 2 even, part 3 odd, and so on. Pause the video and try it. Here are the five compositions of 7 with this property.
+00:04:42,300 --> 00:04:52,732
+So phi of B is 1 over 1 minus x squared minus 2 x cubed minus 3 x to the 4 minus 2 x to the 5 minus x to the 6.
 
 32
-00:07:17,267 --> 00:07:25,118
-Odd parts are blue. Even parts are purple. Each composition starts with an odd part, and the colours alternate.
+00:04:53,182 --> 00:05:05,683
+Question 2 c. C is the set of compositions with at least 100 parts. Pause the video and try it. The length has no upper bound. So we do not add one case for each length.
 
 33
-00:07:25,568 --> 00:07:35,061
-Group the parts in pairs from the left: an odd part, then an even part. 1 2 1 2 1 is two pairs and one odd part at the end.
+00:05:06,133 --> 00:05:09,739
+Instead, cut each composition after part 100.
 
 34
-00:07:35,511 --> 00:07:49,805
-So there are two cases. If the last part is odd, the composition is k pairs and then one odd part. If the last part is even, or there are no parts, it is k pairs only. The two sets are disjoint.
+00:05:10,189 --> 00:05:15,586
+The first piece has exactly 100 parts. It is in P to the 100.
 
 35
-00:07:50,255 --> 00:08:09,305
-The series for odd parts is x over 1 minus x squared. For even parts it is x squared over 1 minus x squared. By the Product and String Lemmas, S 2 has series 1 over 1 minus phi O times phi E. S 1 has the same series times phi O.
+00:05:16,036 --> 00:05:20,153
+The second piece has zero or more parts. It is in P star.
 
 36
-00:08:09,755 --> 00:08:26,054
-By the Sum Lemma, add them: 1 plus phi O, over 1 minus phi O phi E. Multiply top and bottom by 1 minus x squared, squared. You get the fraction in the question. Its coefficient of x to the 7 is 5.
+00:05:20,603 --> 00:05:30,331
+The two pieces give back the composition, and each composition gives exactly one pair. So C is P to the 100, times P star.
 
 37
-00:08:26,504 --> 00:08:45,789
-Assignment 3, question 3. Pause the video and try it. For a n, the parts are 1, 4, 7, and so on. Their series is x over 1 minus x cubed. Any length is allowed, so the String Lemma gives 1 minus x cubed, over 1 minus x minus x cubed.
+00:05:30,781 --> 00:05:38,760
+The weight is the size. The size of the composition is the size of the first piece plus the size of the second piece.
 
 38
-00:08:46,239 --> 00:09:02,005
-For b n, the parts are 3, 4, 5, and so on. Their series is x cubed over 1 minus x. The String Lemma gives 1 minus x, over 1 minus x minus x cubed. Both have the same denominator.
+00:05:39,210 --> 00:05:51,114
+So the Product Lemma and the String Lemma apply. Phi of C is x over 1 minus x, to the 100, times 1 over 1 minus x over 1 minus x.
 
 39
-00:09:02,455 --> 00:09:15,724
-To compare a n with b n plus 2, multiply A by x squared. This moves its coefficients two places to the right. The two rows agree from x cubed on. The green cells show this.
+00:05:51,564 --> 00:06:00,332
+Video 10a showed that 1 over 1 minus x over 1 minus x is 1 minus x, over 1 minus 2 x.
 
 40
-00:09:16,174 --> 00:09:42,542
-Prove it with algebra. x squared A minus B has the numerator x squared minus x to the 5, minus 1, plus x. This factors as x squared minus 1, times the denominator. So the difference is x squared minus 1. It has no terms of degree 3 or more. So a k minus 2 equals b k for k at least 3. That is, a n equals b n plus 2 for n at least 1.
+00:06:00,782 --> 00:06:09,955
+So phi of C is x to the 100 times 1 minus x, over 1 minus x to the 100, times 1 minus 2 x.
 
 41
-00:09:42,992 --> 00:10:02,725
-Practice midterm, question 3. Pause the video and try it. Step 1: the allowed parts are the numbers congruent to 2 or 3 mod 5: 2, 3, 7, 8, 12, 13, and so on. Their series is x squared plus x cubed, over 1 minus x to the 5.
+00:06:10,405 --> 00:06:18,512
+Question 2 d. D is the set of compositions of odd length with each part at least 2. Pause the video and try it.
 
 42
-00:10:03,175 --> 00:10:08,103
-Step 2: the allowed lengths are 1, 6, 11, and so on. They are purple.
+00:06:18,962 --> 00:06:23,378
+The allowed lengths are 1, 3, 5, and so on. They are purple.
 
 43
-00:10:08,553 --> 00:10:32,425
-So the set is the disjoint union over j of P to the 5 j plus 1. Name the weight: the size. By the Sum and Product Lemmas, the series is the sum of phi of P to the 5 j plus 1. This is phi of P over 1 minus phi of P to the 5. Phi of P has no constant term, so the geometric series is valid.
+00:06:23,828 --> 00:06:38,335
+The parts are 2, 3, 4, and so on, with the series x squared over 1 minus x. The compositions of length 2 j plus 1 form P to the 2 j plus 1. D is their disjoint union.
 
 44
-00:10:32,875 --> 00:10:52,907
-The green row shows the coefficients. For n up to 11, only one part fits, so the count is 1 when n is 2, 3, 7 or 8 mod 5. From n equal to 12, six parts fit too. A brute force count agrees with every coefficient up to n equal to 25.
+00:06:38,785 --> 00:06:52,289
+By the Sum and Product Lemmas, phi of D is the sum of phi of P to the 2 j plus 1. Take out one factor phi of P. The rest is a geometric series in phi of P squared.
 
 45
-00:10:53,357 --> 00:11:08,141
-The question forbids an infinite sum. So write the answer as one fraction: multiply top and bottom by 1 minus x to the 5, to the 5. The answer is the coefficient of x to the n in this fraction.
+00:06:52,739 --> 00:06:58,691
+Substitute phi of P. Its square is x to the 4 over 1 minus x, squared.
 
 46
-00:11:08,591 --> 00:11:14,991
-Recap. Any length: the set is P star, and the series is 1 over 1 minus phi of P.
+00:06:59,141 --> 00:07:11,386
+Multiply the top and the bottom by 1 minus x, squared. The result is x squared times 1 minus x, over 1 minus x, squared, minus x to the 4.
 
 47
-00:11:15,441 --> 00:11:20,604
-Exactly k parts: P to the k, and the series is phi of P to the k.
+00:07:11,836 --> 00:07:20,327
+Expand. The answer is x squared minus x cubed, over 1 minus 2 x plus x squared minus x to the 4.
 
 48
-00:11:21,054 --> 00:11:32,702
-Length congruent to r mod m: the union of P to the m j plus r. The series is phi of P to the r, over 1 minus phi of P to the m.
+00:07:20,777 --> 00:07:33,406
+Check with n equal to 6. Here are the 5 compositions of 6 with parts at least 2. 2 4, 3 3 and 4 2 have even length, so they are not in D. The count is 2.
 
 49
-00:11:33,152 --> 00:11:44,352
-At least k parts: cut after part k. The set is P to the k times P star, and the series is phi of P to the k over 1 minus phi of P.
+00:07:33,856 --> 00:07:51,093
+Expand the series. Multiply both sides by the bottom, and compare the coefficients. The first four are 0, 0, 1, 1. After them, d n is 2 d n minus 1, minus d n minus 2, plus d n minus 4.
 
 50
-00:11:44,802 --> 00:11:50,221
-Parts whose type alternates: group them in pairs, and add an optional last part.
+00:07:51,543 --> 00:07:57,922
+At x to the 6: 2 times 1, minus 1, plus 1, is 2. This matches the list.
 
 51
-00:11:50,671 --> 00:11:58,308
+00:07:58,372 --> 00:08:10,212
+Assignment 3, question 2 a. Count the compositions of n with exactly 100 parts, all odd. Give the series and a formula. Pause the video and try it.
+
+52
+00:08:10,662 --> 00:08:22,779
+Let O be the odd positive integers. Its series is x plus x cubed, and so on, which is x over 1 minus x squared. The set is O to the 100.
+
+53
+00:08:23,229 --> 00:08:32,573
+The weight is the sum of the parts. By the Product Lemma, the series is x to the 100 over 1 minus x squared, to the 100.
+
+54
+00:08:33,023 --> 00:08:41,258
+Now find the coefficient. Divide out x to the 100. We need the coefficient of x to the n minus 100.
+
+55
+00:08:41,708 --> 00:08:51,351
+The negative binomial series, with x squared in place of x, gives i plus 99 choose 99, times x to the 2 i.
+
+56
+00:08:51,801 --> 00:09:01,123
+The coefficient row starts at x to the 100. Every odd position is 0, because 100 odd numbers have an even sum.
+
+57
+00:09:01,573 --> 00:09:16,315
+The even positions are i plus 99 choose 99, for i equal to 0, 1, 2 and 3. That is 1, 100, 5050 and 171700.
+
+58
+00:09:16,765 --> 00:09:27,325
+We need 2 i equal to n minus 100. So i is n over 2 minus 50, and i plus 99 is n over 2 plus 49.
+
+59
+00:09:27,775 --> 00:09:36,713
+The answer is n over 2 plus 49, choose 99, when n is even and at least 100. Otherwise it is 0.
+
+60
+00:09:37,163 --> 00:09:51,329
+Assignment 3, question 2 b. Part i must have the same parity as i: part 1 odd, part 2 even, part 3 odd, and so on. Prove the formula for the count. Pause the video and try it.
+
+61
+00:09:51,779 --> 00:09:55,363
+Here are the five compositions of 7 with this property.
+
+62
+00:09:55,813 --> 00:10:02,106
+Odd parts are blue, and even parts are purple. The first part is odd, and the colours alternate.
+
+63
+00:10:02,556 --> 00:10:12,049
+Group the parts in pairs from the left: an odd part, then an even part. 1 2 1 2 1 is two pairs and one odd part at the end.
+
+64
+00:10:12,499 --> 00:10:20,841
+If the last part is odd, the composition is k pairs and then one odd part. These compositions form S 1.
+
+65
+00:10:21,291 --> 00:10:30,955
+If the last part is even, or there are no parts, the composition is k pairs only. These form S 2. S 1 and S 2 are disjoint.
+
+66
+00:10:31,405 --> 00:10:39,853
+The odd parts have the series x over 1 minus x squared. The even parts have x squared over 1 minus x squared.
+
+67
+00:10:40,303 --> 00:10:47,129
+By the Product and String Lemmas, S 2 has the series 1 over 1 minus phi O times phi E.
+
+68
+00:10:47,579 --> 00:10:51,782
+By the Product Lemma, S 1 has the same series, times phi O.
+
+69
+00:10:52,232 --> 00:10:58,355
+By the Sum Lemma, add them: 1 plus phi O, over 1 minus phi O times phi E.
+
+70
+00:10:58,805 --> 00:11:10,303
+Multiply the top and the bottom by 1 minus x squared, squared. The top becomes 1 plus x minus 2 x squared minus x cubed plus x to the 4.
+
+71
+00:11:10,753 --> 00:11:18,753
+The bottom becomes 1 minus 2 x squared minus x cubed plus x to the 4. This is the fraction in the question.
+
+72
+00:11:19,203 --> 00:11:36,270
+Check n equal to 7. From the bottom, s n is 2 s n minus 2, plus s n minus 3, minus s n minus 4. At x to the 7: 2 times 3, plus 1, minus 2, is 5. This matches the five compositions.
+
+73
+00:11:36,720 --> 00:11:40,667
+Assignment 3, question 3. Pause the video and try it.
+
+74
+00:11:41,117 --> 00:11:51,805
+For a n, the parts are 1, 4, 7, and so on. Their series is x plus x to the 4, and so on, which is x over 1 minus x cubed.
+
+75
+00:11:52,255 --> 00:12:09,236
+Any length is allowed. By the String Lemma, A is 1 over 1 minus x over 1 minus x cubed. Multiply the top and the bottom by 1 minus x cubed. A is 1 minus x cubed, over 1 minus x minus x cubed.
+
+76
+00:12:09,686 --> 00:12:20,907
+For b n, the parts are 3, 4, 5, and so on. Their series is x cubed plus x to the 4, and so on, which is x cubed over 1 minus x.
+
+77
+00:12:21,357 --> 00:12:29,997
+By the String Lemma, B is 1 minus x, over 1 minus x minus x cubed. A and B have the same denominator.
+
+78
+00:12:30,447 --> 00:12:42,394
+To compare a n with b n plus 2, multiply A by x squared. This moves its coefficients two places to the right. Here are the rows of x squared A and of B.
+
+79
+00:12:42,844 --> 00:12:47,260
+The two rows agree from x cubed on. The green cells show this.
+
+80
+00:12:47,710 --> 00:12:55,027
+Their difference is minus 1 at x to the 0, then 0, then 1 at x squared, and 0 after that.
+
+81
+00:12:55,477 --> 00:13:08,747
+Prove it with algebra. The numerator of x squared A minus B is x squared minus x to the 5, minus 1, plus x. This is x squared minus 1, times the denominator.
+
+82
+00:13:09,197 --> 00:13:24,834
+So x squared A minus B is x squared minus 1. It has no terms of degree 3 or more. So a k minus 2 equals b k for k at least 3. That is, a n equals b n plus 2 for n at least 1.
+
+83
+00:13:25,284 --> 00:13:29,252
+Practice midterm, question 3. Pause the video and try it.
+
+84
+00:13:29,702 --> 00:13:42,481
+Step 1. The allowed parts are the numbers congruent to 2 or 3 mod 5: 2, 3, 7, 8, 12, 13, and so on. They are the blue cells of the first row.
+
+85
+00:13:42,931 --> 00:13:55,283
+Take out x squared plus x cubed. The rest is a geometric series in x to the 5. So phi of P is x squared plus x cubed, over 1 minus x to the 5.
+
+86
+00:13:55,733 --> 00:14:00,853
+Step 2. The allowed lengths are 1, 6, 11, and so on. They are purple.
+
+87
+00:14:01,303 --> 00:14:08,876
+So the set is the disjoint union over j of P to the 5 j plus 1. The weight is the size.
+
+88
+00:14:09,326 --> 00:14:25,966
+By the Sum and Product Lemmas, phi of S is the sum of phi of P to the 5 j plus 1. Take out one factor. The rest is a geometric series in phi of P to the 5. Phi of P has no constant term, so this is valid.
+
+89
+00:14:26,416 --> 00:14:38,683
+The green row shows the coefficients. Six parts have size at least 12. So for n up to 11, only one part fits, and the count is 1 at 2, 3, 7 and 8.
+
+90
+00:14:39,133 --> 00:14:51,570
+At n equal to 12 the count is 2: the composition 12, and six parts equal to 2. A brute force count agrees with every coefficient up to n equal to 25.
+
+91
+00:14:52,020 --> 00:15:04,671
+The question forbids an infinite sum. So multiply the top and the bottom by 1 minus x to the 5, to the 5. The answer is the coefficient of x to the n in this fraction.
+
+92
+00:15:05,121 --> 00:15:11,521
+Recap. Any length: the set is P star, and the series is 1 over 1 minus phi of P.
+
+93
+00:15:11,971 --> 00:15:17,133
+Exactly k parts: P to the k, and the series is phi of P to the k.
+
+94
+00:15:17,583 --> 00:15:29,231
+Length congruent to r mod m: the union of P to the m j plus r. The series is phi of P to the r, over 1 minus phi of P to the m.
+
+95
+00:15:29,681 --> 00:15:40,881
+At least k parts: cut after part k. The set is P to the k times P star, and the series is phi of P to the k over 1 minus phi of P.
+
+96
+00:15:41,331 --> 00:15:46,750
+Parts whose type alternates: group them in pairs, and add an optional last part.
+
+97
+00:15:47,200 --> 00:15:54,837
 In every answer, define the set and the weight, name each lemma, and check a small n by listing the compositions.

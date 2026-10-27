@@ -3,381 +3,649 @@
 This is MATH 239, video 14. The topic is recursive decompositions and excluded substrings.
 
 2
-00:00:09,005 --> 00:00:29,719
-After this video, you can read and build recursive expressions, and show that they are unambiguous. You can turn them into equations for the generating series. You can solve practice problem P4-3 and question 9 of the practice midterm. And you can count the strings that avoid a given substring.
+00:00:09,005 --> 00:00:12,695
+After this video, you can do the four things in this list.
 
 3
-00:00:30,169 --> 00:00:46,127
-Example 3.7 showed a set with no regular expression: the strings of k 0s followed by k 1s. A regular expression cannot remember the number k. Here is the string 0 0 0 1 1 1.
+00:00:13,145 --> 00:00:21,636
+Example 3.7 showed a set with no regular expression: the strings of k 0s followed by k 1s.
 
 4
-00:00:46,577 --> 00:01:02,897
-A recursive expression can describe it. B equals epsilon, or 0, then B, then 1. The letter B appears on both sides. The outer 0 and 1 are orange. The middle part, 0 0 1 1, must be in B again.
+00:00:22,086 --> 00:00:29,681
+A regular expression cannot remember the number k. Here is the string 0 0 0 1 1 1.
 
 5
-00:01:03,347 --> 00:01:08,125
-Peel again: 0 0 1 1 is 0, then 0 1, then 1.
+00:00:30,131 --> 00:00:40,029
+A recursive expression can describe this set. B equals epsilon, or 0, then B, then 1. The letter B appears on both sides.
 
 6
-00:01:08,575 --> 00:01:12,010
-And 0 1 is 0, then epsilon, then 1.
+00:00:40,479 --> 00:00:50,890
+In 0 0 0 1 1 1, the outer 0 and the outer 1 are orange. The middle part, 0 0 1 1, must be in B again.
 
 7
-00:01:12,460 --> 00:01:33,111
-Epsilon is the base case. Each string is produced in one way: a nonempty string must use 0 B 1, and the peeling is forced. So the expression is unambiguous. It leads to B of x equals 1 plus x squared B of x. So B of x is one over one minus x squared.
+00:00:51,340 --> 00:00:56,119
+Peel again: 0 0 1 1 is 0, then 0 1, then 1.
 
 8
-00:01:33,561 --> 00:01:44,846
-Example 3.22 is simpler. S equals epsilon, or 0 or 1, followed by S. Take the string 0 1 1 0 in the blue box.
+00:00:56,569 --> 00:01:00,003
+And 0 1 is 0, then epsilon, then 1.
 
 9
-00:01:45,296 --> 00:01:57,712
-A string produced by S is empty, or one bit followed by a shorter string produced by S. So take off the first bit: 0. The rest, 1 1 0, must be in S.
+00:01:00,453 --> 00:01:02,416
+Epsilon is the base case.
 
 10
-00:01:58,162 --> 00:02:02,130
-Take off the next bit, 1. Then 1 0 must be in S.
+00:01:02,866 --> 00:01:12,850
+Each string is produced in one way. A nonempty string must use 0 B 1, and the peeling is forced. So the expression is unambiguous.
 
 11
-00:02:02,580 --> 00:02:04,479
-Then 1, and 0 is left.
+00:01:13,300 --> 00:01:24,308
+Translate. Epsilon gives 1. 0 B 1 gives x, times B of x, times x. So B of x equals 1 plus x squared B of x.
 
 12
-00:02:04,929 --> 00:02:20,993
-Then 0, and epsilon is left: the base case. By induction on the length, every string is produced exactly once. So S of x equals 1 plus 2 x S of x, and S of x is one over one minus 2 x.
+00:01:24,758 --> 00:01:32,587
+Then B of x times one minus x squared equals 1. So B of x is one over one minus x squared.
 
 13
-00:02:21,443 --> 00:02:27,459
-Here is the method. A recursive expression uses a letter, such as S, on both sides.
+00:01:33,037 --> 00:01:40,163
+Example 3.22 is simpler. S equals epsilon, or 0 or 1, followed by S.
 
 14
-00:02:27,909 --> 00:02:41,498
-Show that it is unambiguous. The parts of each union must produce disjoint sets. And each string must have only one way to peel off the outer part. Then induction on the length finishes the proof.
+00:01:40,613 --> 00:01:47,055
+A string produced by S is empty, or one bit followed by a shorter string produced by S.
 
 15
-00:02:41,948 --> 00:02:51,825
-Then translate, as for regular expressions. Each letter becomes its generating series. The series appears on both sides of the equation.
+00:01:47,505 --> 00:01:51,068
+Take the string 0 1 1 0, in the blue box.
 
 16
-00:02:52,275 --> 00:02:54,302
-Solve the equation for the series.
+00:01:51,518 --> 00:01:56,510
+Take off the first bit, 0. The rest, 1 1 0, must be in S.
 
 17
-00:02:54,752 --> 00:03:08,000
-If the expression is ambiguous, the equation is wrong, because it counts constructions. So always prove that the expression is unambiguous first. P4-3 shows both cases.
+00:01:56,960 --> 00:02:00,928
+Take off the next bit, 1. Then 1 0 must be in S.
 
 18
-00:03:08,450 --> 00:03:21,037
-Practice problem P4-3. Pause the video and try part a. P equals one star, or 1 1, then P, then 0. List the strings of P with length at most 6.
+00:02:01,378 --> 00:02:04,045
+Then take off 1, and 0 is left.
 
 19
-00:03:21,487 --> 00:03:28,228
-Level 0 is one star: epsilon, 1, 1 1, up to six 1s. That is 7 strings.
+00:02:04,495 --> 00:02:08,527
+Then take off 0, and epsilon is left: the base case.
 
 20
-00:03:28,678 --> 00:03:46,875
-Level 1: put a level 0 string between 1 1 and 0. This adds 3 bits. So the inside has length at most 3: 1 1 0, 1 1 1 0, 1 1 1 1 0, and 1 1 1 1 1 0. The orange bits are the added ones.
+00:02:08,977 --> 00:02:13,286
+By induction on the length, every string is produced exactly once.
 
 21
-00:03:47,325 --> 00:03:56,755
-Level 2: put a level 1 string inside again. Only 1 1 0 is short enough. This gives 1 1 1 1 0 0.
+00:02:13,736 --> 00:02:24,253
+Translate. Epsilon gives 1. 0 or 1 gives x plus x, which is 2 x. So S of x equals 1 plus 2 x S of x.
 
 22
-00:03:57,205 --> 00:04:04,159
-In total, there are 7 plus 4 plus 1, which is 12 strings. This matches the posted answer.
+00:02:24,703 --> 00:02:28,309
+Solve: S of x is one over one minus 2 x.
 
 23
-00:04:04,609 --> 00:04:24,065
-Part b asks for a direct description. Pause the video and try it. Look at 1 1 1 1 1 0 0. Each level adds two 1s at the front and one 0 at the end. With j levels, there are 2 j added 1s and j 0s. The base part has k 1s.
+00:02:28,759 --> 00:02:34,775
+Here is the method. A recursive expression uses a letter, such as S, on both sides.
 
 24
-00:04:24,515 --> 00:04:32,878
-So P is the set of strings 1 to the 2 j plus k, then 0 to the j, with j and k at least 0.
+00:02:35,225 --> 00:02:40,942
+Show that it is unambiguous. The parts of each union must produce disjoint sets.
 
 25
-00:04:33,328 --> 00:04:51,461
-Part c: why is the construction unambiguous? The two parts of the union are disjoint. Strings from one star have no 0. Strings from 1 1 P 0 end with 0. So 1 1 1 1 1 0 0 must come from 1 1 P 0.
+00:02:41,392 --> 00:02:48,667
+And each string must have only one way to peel off the outer part. Then induction on the length finishes the proof.
 
 26
-00:04:51,911 --> 00:05:04,626
-Remove the first two 1s and the last 0. The shorter string 1 1 1 1 0 is unique, and it is in P. It has a 0, so again it comes from 1 1 P 0.
+00:02:49,117 --> 00:02:58,994
+Then translate, as for regular expressions. Each letter becomes its generating series. The series appears on both sides of the equation.
 
 27
-00:05:05,076 --> 00:05:14,505
-Remove again: 1 1 1 has no 0, so it comes from one star. Each step is forced. So each string has exactly one construction.
+00:02:59,444 --> 00:03:01,471
+Solve the equation for the series.
 
 28
-00:05:14,955 --> 00:05:21,355
-Part d. Pause the video and try it. The expression is unambiguous, so we can translate it.
+00:03:01,921 --> 00:03:15,169
+If the expression is ambiguous, the equation is wrong, because it counts constructions. So always prove that the expression is unambiguous first. P4-3 shows both cases.
 
 29
-00:05:21,805 --> 00:05:38,979
-One star leads to one over one minus x. The second part, 1 1, P, 0, leads to x squared times phi P of x times x. So phi P of x equals one over one minus x, plus x cubed phi P of x.
+00:03:15,619 --> 00:03:28,205
+Practice problem P4-3. Pause the video and try part a. P equals one star, or 1 1, then P, then 0. List the strings of P with length at most 6.
 
 30
-00:05:39,429 --> 00:05:45,253
-Solve: phi P of x is one over one minus x, times one minus x cubed.
+00:03:28,655 --> 00:03:35,397
+Level 0 is one star: epsilon, 1, 1 1, up to six 1s. That is 7 strings.
 
 31
-00:05:45,703 --> 00:05:58,204
-Check. The list in part a gives the counts 1, 1, 1, 2, 2, 2, 3 for lengths 0 to 6. Brute force agrees up to length 9. The series gives the same numbers.
+00:03:35,847 --> 00:03:46,300
+Level 1: put a level 0 string between 1 1 and 0. This adds 3 bits. So the inside has length at most 6 minus 3, which is 3.
 
 32
-00:05:58,654 --> 00:06:19,241
-Parts e and f use a different recursion: Q equals zero star, or 1 Q, or Q 1. Pause the video and try them. Epsilon is in Q, from zero star. So the string 1 comes from 1 Q with Q equal to epsilon. It also comes from Q 1 with Q equal to epsilon.
+00:03:46,750 --> 00:03:57,118
+The strings are 1 1 0, 1 1 1 0, 1 1 1 1 0, and 1 1 1 1 1 0. The orange bits are the added ones.
 
 33
-00:06:19,691 --> 00:06:28,011
-So the sets produced by 1 Q and Q 1 overlap. The union is not disjoint, and the expression is ambiguous.
+00:03:57,568 --> 00:04:06,997
+Level 2: put a level 1 string inside again. Only 1 1 0 is short enough. This gives 1 1 1 1 0 0.
 
 34
-00:06:28,461 --> 00:06:49,666
-The equation in the question adds the series of the three parts. Solve it: phi Q is one over one minus x, times one minus 2 x. Its coefficients are 1, 3, 7, 15. But Q has only 2 strings of length 1: 0 and 1. And 4 strings of length 2, and 7 of length 3.
+00:04:07,447 --> 00:04:14,402
+In total, there are 7 plus 4 plus 1, which is 12 strings. This matches the posted answer.
 
 35
-00:06:50,116 --> 00:07:00,207
-The series counts constructions, not strings. Strings with two or more constructions are counted more than once. That is why the equation is wrong.
+00:04:14,852 --> 00:04:23,599
+Part b asks for a direct description. Pause the video and try it. Look at the string 1 1 1 1 1 0 0.
 
 36
-00:07:00,657 --> 00:07:21,627
-Practice midterm, question 9. Pause the video and try it. P is the set of palindromes: strings that do not change when you reverse them. The set is not a rational language, so use a recursive expression: P equals epsilon, or 0, or 1, or 0 P 0, or 1 P 1.
+00:04:24,049 --> 00:04:34,395
+Each level adds two 1s at the front and one 0 at the end. With j levels, there are 2 j added 1s and j 0s. Here j is 2.
 
 37
-00:07:22,077 --> 00:07:30,419
-Here is the palindrome 0 1 1 0 1 1 0. Its first and last bits are equal: 0 and 0.
+00:04:34,845 --> 00:04:37,875
+The base part has k 1s. Here k is 1.
 
 38
-00:07:30,869 --> 00:07:38,165
-Remove them. The middle, 1 1 0 1 1, is again a palindrome. Its outer bits are 1 and 1.
+00:04:38,325 --> 00:04:46,687
+So P is the set of strings 1 to the 2 j plus k, then 0 to the j, with j and k at least 0.
 
 39
-00:07:38,615 --> 00:07:43,009
-Remove them: 1 0 1 is left, with outer bits 1 and 1.
+00:04:47,137 --> 00:05:00,257
+Part c: why is the construction unambiguous? The two parts of the union are disjoint. Strings from one star have no 0. Strings from 1 1 P 0 end with 0.
 
 40
-00:07:43,459 --> 00:07:46,361
-Then 0 is left. This is a base case.
+00:05:00,707 --> 00:05:09,177
+So 1 1 1 1 1 0 0 must come from 1 1 P 0. Remove the first two 1s and the last 0.
 
 41
-00:07:46,811 --> 00:07:53,189
-A palindrome of even length ends at epsilon. One of odd length ends at 0 or 1.
+00:05:09,627 --> 00:05:18,736
+The shorter string, 1 1 1 1 0, is unique, and it is in P. It has a 0, so again it comes from 1 1 P 0.
 
 42
-00:07:53,639 --> 00:08:18,215
-Now the justification. The five parts produce disjoint sets. Epsilon, 0 and 1 have length at most 1. The strings from 0 P 0 have length at least 2 and start with 0. The strings from 1 P 1 start with 1. For a string of length at least 2, the middle is unique. By induction, each palindrome is produced exactly once.
+00:05:19,186 --> 00:05:23,666
+Remove again: 1 1 1 has no 0, so it comes from one star.
 
 43
-00:08:18,665 --> 00:08:33,300
-The expression produces exactly the palindromes. If the middle is a palindrome, so is 0, middle, 0. And a palindrome of length at least 2 has equal end bits, and its middle is a palindrome.
+00:05:24,116 --> 00:05:28,767
+Each step is forced. So each string has exactly one construction.
 
 44
-00:08:33,750 --> 00:08:50,155
-Translate. Epsilon gives 1. 0 and 1 give 2 x. 0 P 0 and 1 P 1 give 2 x squared phi P of x. Solve: phi P of x is one plus 2 x, over one minus 2 x squared.
+00:05:29,217 --> 00:05:40,502
+Part d. Pause the video and try it. The expression is a disjoint union, and it is unambiguous. So we can translate it, and add the series of the two parts.
 
 45
-00:08:50,605 --> 00:09:06,029
-Check. A palindrome is fixed by its first half. So there are 2 to the power n over 2, rounded up, palindromes of length n: 1, 2, 2, 4, 4, 8. Brute force and the series give the same numbers.
+00:05:40,952 --> 00:05:44,131
+One star leads to one over one minus x.
 
 46
-00:09:06,479 --> 00:09:22,607
-Now a new problem. Fix a nonempty string kappa. A string sigma contains kappa if sigma equals alpha, kappa, beta, for some strings alpha and beta. They can be empty. Here kappa is 0 1 0 1 1, in red.
+00:05:44,581 --> 00:05:53,882
+The second part, 1 1, P, 0, leads to x squared, times phi P of x, times x. That is x cubed phi P of x.
 
 47
-00:09:23,057 --> 00:09:30,801
-If sigma does not contain kappa, then sigma avoids kappa. This string avoids 0 1 0 1 1.
+00:05:54,332 --> 00:06:00,369
+So phi P of x equals one over one minus x, plus x cubed phi P of x.
 
 48
-00:09:31,251 --> 00:09:41,875
-Let A be the set of strings that avoid kappa. The goal is the generating series of A. The notes develop a general method in three examples and a theorem.
+00:06:00,819 --> 00:06:10,782
+Move x cubed phi P of x to the left side. Then phi P of x, times one minus x cubed, equals one over one minus x.
 
 49
-00:09:42,325 --> 00:10:02,101
-Example 3.24 uses kappa equals 0 1 0 1 1. A is the set of strings that avoid kappa. B is the set of strings with exactly one occurrence of kappa, at the very end. Take a string sigma in A or B. It is empty, or it has a last bit.
+00:06:11,232 --> 00:06:17,440
+Divide. Phi P of x is one over one minus x, times one minus x cubed.
 
 50
-00:10:02,551 --> 00:10:05,623
-Remove the last bit b. The rest is alpha.
+00:06:17,890 --> 00:06:24,930
+Check. The list in part a gives the counts 1, 1, 1, 2, 2, 2, 3 for lengths 0 to 6.
 
 51
-00:10:06,073 --> 00:10:18,255
-Alpha avoids kappa. If alpha contained kappa, then sigma would contain kappa before its end. That is not allowed in A, and not allowed in B. So alpha is in A.
+00:06:25,380 --> 00:06:30,287
+Brute force agrees up to length 9, and the series gives the same numbers.
 
 52
-00:10:18,705 --> 00:10:33,254
-Conversely, alpha in A followed by any bit gives a string in A or in B. So A union B equals epsilon union A times 0 or 1. This gives phi A plus phi B equals 1 plus 2 x phi A.
+00:06:30,737 --> 00:06:39,782
+Parts e and f use a different recursion: Q equals zero star, or 1 Q, or Q 1. Pause the video and try them.
 
 53
-00:10:33,704 --> 00:10:53,437
-Every string in B is alpha, kappa, with alpha in A. Is the converse true? Take alpha in A and add kappa. Another occurrence of kappa must overlap the final kappa. The table tests every overlap. Shift 1: the last bit, 1, must equal the first bit, 0. It does not.
+00:06:40,232 --> 00:06:47,805
+Epsilon is in Q, from zero star. So the string 1 comes from 1 Q, with Q equal to epsilon.
 
 54
-00:10:53,887 --> 00:10:59,455
-Shift 2: the bits 1 1 must equal 0 1. The first bit fails, in red.
+00:06:48,255 --> 00:06:52,330
+It also comes from Q 1, with Q equal to epsilon.
 
 55
-00:10:59,905 --> 00:11:05,239
-Shift 3: 0 1 1 against 0 1 0. The last bit fails.
+00:06:52,780 --> 00:07:01,100
+So the sets produced by 1 Q and Q 1 overlap. The union is not disjoint, and the expression is ambiguous.
 
 56
-00:11:05,689 --> 00:11:11,897
-Shift 4: 1 0 1 1 against 0 1 0 1. The first bit fails.
+00:07:01,550 --> 00:07:17,785
+The equation in the question adds the series of the three parts. Solve it. Phi Q, times one minus 2 x, equals one over one minus x. So phi Q is one over one minus x, times one minus 2 x.
 
 57
-00:11:12,347 --> 00:11:23,867
-So 0 1 0 1 1 cannot overlap itself. Then B equals A followed by 0 1 0 1 1, and phi B equals x to the 5 phi A.
+00:07:18,235 --> 00:07:21,413
+Its coefficients are 1, 3, 7, 15.
 
 58
-00:11:24,317 --> 00:11:29,607
-Substitute phi B equals x to the 5 phi A into the first equation.
+00:07:21,863 --> 00:07:28,647
+But Q has only 2 strings of length 1. It has 4 strings of length 2, and 7 of length 3.
 
 59
-00:11:30,057 --> 00:11:36,009
-Solve for phi A. The result is one over one minus 2 x plus x to the 5.
+00:07:29,097 --> 00:07:39,188
+The series counts constructions, not strings. Strings with two or more constructions are counted more than once. That is why the equation is wrong.
 
 60
-00:11:36,459 --> 00:11:53,441
-Check. Up to length 4, all strings avoid kappa: 1, 2, 4, 8, 16. At length 5, only kappa itself fails: 31. At length 6, four strings contain kappa: 60. Brute force and the series agree up to length 8.
+00:07:39,638 --> 00:07:49,430
+Practice midterm, question 9. Pause the video and try it. P is the set of palindromes: strings that do not change when you reverse them.
 
 61
-00:11:53,891 --> 00:12:08,035
-Example 3.25 uses kappa equals 0 1 1 0 1. The first equation is the same as before. Now test the overlaps. Shift 1: 1 against 0. It fails.
+00:07:49,880 --> 00:08:00,803
+The set is not a rational language, so use a recursive expression: P equals epsilon, or 0, or 1, or 0 P 0, or 1 P 1.
 
 62
-00:12:08,485 --> 00:12:15,418
-Shift 2: 0 1 against 0 1. They agree. So kappa can overlap itself in two bits.
+00:08:01,253 --> 00:08:09,594
+Here is the palindrome 0 1 1 0 1 1 0. Its first and last bits are equal: 0 and 0.
 
 63
-00:12:15,868 --> 00:12:20,220
-Shift 3: 1 0 1 against 0 1 1. It fails.
+00:08:10,044 --> 00:08:17,340
+Remove them. The middle, 1 1 0 1 1, is again a palindrome. Its outer bits are 1 and 1.
 
 64
-00:12:20,670 --> 00:12:26,003
-Shift 4: 1 1 0 1 against 0 1 1 0. It fails.
+00:08:17,790 --> 00:08:22,185
+Remove them: 1 0 1 is left, with outer bits 1 and 1.
 
 65
-00:12:26,453 --> 00:12:44,373
-So the string 0 1 1, 0 1 1 0 1, equals 0 1 1 0 1, 1 0 1. It is in A times kappa, but it is not in B. It has an early kappa. The tail after the early kappa is gamma equals 1 0 1.
+00:08:22,635 --> 00:08:25,536
+Then 0 is left. This is a base case.
 
 66
-00:12:44,823 --> 00:12:57,815
-Each string in A times kappa is in B, or it is a string of B followed by 1 0 1. The two cases are disjoint. We checked this set identity by brute force up to length 12.
+00:08:25,986 --> 00:08:32,365
+A palindrome of even length ends at epsilon. One of odd length ends at 0 or 1.
 
 67
-00:12:58,265 --> 00:13:03,919
-Translate: x to the 5 phi A equals one plus x cubed, times phi B.
+00:08:32,815 --> 00:08:41,199
+Now the justification. The five parts produce disjoint sets. Epsilon, 0 and 1 have length at most 1.
 
 68
-00:13:04,369 --> 00:13:08,593
-Solve for phi B and substitute it into the first equation.
+00:08:41,649 --> 00:08:50,267
+The strings from 0 P 0 have length at least 2 and start with 0. The strings from 1 P 1 start with 1.
 
 69
-00:13:09,043 --> 00:13:18,536
-The result: phi A equals one plus x cubed, over one minus 2 x plus x cubed minus 2 x to the 4 plus x to the 5.
+00:08:50,717 --> 00:09:01,405
+For a string of length at least 2, the middle is unique: remove the first and the last bit. By induction on the length, each palindrome is produced exactly once.
 
 70
-00:13:18,986 --> 00:13:34,261
-Note: the notes print a different fraction on page 86. That fraction gives 5 strings of length 1, which is impossible. So it is a misprint. Our fraction agrees with brute force, and with the theorem on the next slides.
+00:09:01,855 --> 00:09:09,578
+The expression produces exactly the palindromes. If the middle is a palindrome, so is 0, middle, 0.
 
 71
-00:13:34,711 --> 00:13:44,076
-The general result needs the set C. Take kappa equals 0 1 0 1 0. Write kappa, then gamma equals 1 0.
+00:09:10,028 --> 00:09:16,257
+And a palindrome of length at least 2 has equal end bits, and its middle is a palindrome.
 
 72
-00:13:44,526 --> 00:13:47,769
-Now write eta equals 0 1, then kappa.
+00:09:16,707 --> 00:09:26,798
+Translate. Epsilon gives 1. 0 and 1 give 2 x. 0 P 0 and 1 P 1 give 2 x squared phi P of x.
 
 73
-00:13:48,219 --> 00:14:02,704
-Both give the same string, 0 1 0 1 0 1 0. So kappa gamma equals eta kappa, and 1 0 is in C. C is the set of tails that are left over when kappa overlaps itself.
+00:09:27,248 --> 00:09:38,939
+Then phi P of x, times one minus 2 x squared, equals 1 plus 2 x. So phi P of x is one plus 2 x, over one minus 2 x squared.
 
 74
-00:14:03,154 --> 00:14:20,818
-Theorem 3.26: let kappa have length n, and let C of x be the sum of x to the length of gamma, over gamma in C. Then phi A equals one plus C of x, over one minus 2 x times one plus C of x, plus x to the n.
+00:09:39,389 --> 00:09:49,629
+Check. A palindrome is fixed by its first half, which has n over 2 bits, rounded up. So there are 2 to that power palindromes of length n.
 
 75
-00:14:21,268 --> 00:14:37,183
-The proof follows the examples. Let B be the strings with exactly one kappa, at the very end. As before, phi A plus phi B equals 1 plus 2 x phi A. Also, a string of B is alpha kappa with alpha in A.
+00:09:50,079 --> 00:09:56,585
+The counts are 1, 2, 2, 4, 4, 8. Brute force and the series give the same numbers.
 
 76
-00:14:37,633 --> 00:14:51,542
-Now take sigma equals alpha kappa, with alpha in A, and suppose sigma is not in B. Then sigma has an early kappa. Alpha avoids kappa, so each early kappa overlaps the final kappa.
+00:09:57,035 --> 00:10:09,558
+Now a new problem. Fix a nonempty string kappa. A string sigma contains kappa if sigma equals alpha, kappa, beta, for some strings alpha and beta. They can be empty.
 
 77
-00:14:51,992 --> 00:15:06,904
-Take the first early kappa. Write sigma as rho, kappa, gamma, where rho is the part before it. The final kappa gives sigma equals rho, eta, kappa. So kappa gamma equals eta kappa, and gamma is in C.
+00:10:10,008 --> 00:10:18,776
+Here kappa is 0 1 0 1 1, in red. This string contains it. Alpha is 1 1, and beta is 0 1 0.
 
 78
-00:15:07,354 --> 00:15:28,794
-Rho kappa has exactly one kappa, at its end, because this kappa is the first one. So rho kappa is in B. And rho, eta, gamma are unique. So A kappa is B, union B gamma over gamma in C, and the union is disjoint. This gives x to the n phi A equals one plus C of x, times phi B.
+00:10:19,226 --> 00:10:26,970
+If sigma does not contain kappa, then sigma avoids kappa. This string avoids 0 1 0 1 1.
 
 79
-00:15:29,244 --> 00:15:35,921
-Solve for phi B and substitute into the first equation. Solving for phi A gives the theorem.
+00:10:27,420 --> 00:10:37,895
+Let A be the set of strings that avoid kappa. The goal is the generating series of A. The notes develop a general method, with examples and a theorem.
 
 80
-00:15:36,371 --> 00:15:49,705
-Try the theorem on a short example: kappa equals 1 1. The overlap table has one row. The shifted 1 agrees with the first 1. So gamma equals 1, and C of x equals x.
+00:10:38,345 --> 00:10:46,985
+Example 3.24 uses kappa equals 0 1 0 1 1. A is the set of strings that avoid kappa.
 
 81
-00:15:50,155 --> 00:16:02,848
-The theorem gives one plus x, over one minus 2 x times one plus x, plus x squared. This simplifies to one plus x, over one minus x minus x squared.
+00:10:47,435 --> 00:10:52,811
+B is the set of strings with exactly one occurrence of kappa, at the very end.
 
 82
-00:16:03,298 --> 00:16:16,546
-This is the series for no 0 0 from the last video. Swap 0 and 1 in every string: this is a bijection between the two sets. So the counts are the Fibonacci numbers again.
+00:10:53,261 --> 00:10:58,487
+Take a string sigma in A or in B. It is empty, or it has a last bit.
 
 83
-00:16:16,996 --> 00:16:29,540
-One more example, with two overlaps: kappa equals 0 1 0 1 0. Shift 1: the last 0 agrees with the first 0. Gamma is 1 0 1 0.
+00:10:58,937 --> 00:11:02,052
+Remove the last bit, b. The rest is alpha.
 
 84
-00:16:29,990 --> 00:16:33,638
-Shift 2: 1 0 against 0 1. It fails.
+00:11:02,502 --> 00:11:14,683
+Alpha avoids kappa. If alpha contained kappa, then sigma would contain kappa before its end. That is not allowed in A, and not allowed in B. So alpha is in A.
 
 85
-00:16:34,088 --> 00:16:40,509
-Shift 3: 0 1 0 against 0 1 0. They agree. Gamma is 1 0.
+00:11:15,133 --> 00:11:24,947
+Conversely, alpha in A, followed by any bit, is in A or in B. So A union B equals epsilon, union A times 0 or 1.
 
 86
-00:16:40,959 --> 00:16:46,570
-Shift 4: 1 0 1 0 against 0 1 0 1. It fails.
+00:11:25,397 --> 00:11:32,586
+These unions are disjoint. So translate: phi A plus phi B equals 1 plus 2 x phi A.
 
 87
-00:16:47,020 --> 00:16:55,233
-So C has two strings, 1 0 1 0 and 1 0. C of x equals x squared plus x to the 4.
+00:11:33,036 --> 00:11:38,263
+Every string in B is alpha, kappa, with alpha in A. Is the converse true?
 
 88
-00:16:55,683 --> 00:17:03,769
-The theorem gives one plus x squared plus x to the 4, over one minus 2 x times that, plus x to the 5.
+00:11:38,713 --> 00:11:50,958
+Take alpha in A and add kappa. Another occurrence of kappa must overlap the final kappa. The top row of the table is the final kappa. The table tests every overlap.
 
 89
-00:17:04,219 --> 00:17:19,600
-Check by brute force. Lengths 0 to 4: all strings. Length 5: 31. Length 6: 60. Length 7: 117. Length 8: 228. The series gives the same numbers.
+00:11:51,408 --> 00:11:56,336
+Shift 1: the last bit, 1, must equal the first bit, 0. It does not.
 
 90
-00:17:20,050 --> 00:17:28,477
-Here is the method. First, write the overlap table of kappa, and find every gamma with kappa gamma equal to eta kappa.
+00:11:56,786 --> 00:12:02,354
+Shift 2: the bits 1 1 must equal 0 1. The first bit fails, in red.
 
 91
-00:17:28,927 --> 00:17:32,852
-Then C of x is the sum of x to the length of each gamma.
+00:12:02,804 --> 00:12:08,137
+Shift 3: 0 1 1 against 0 1 0. The last bit fails.
 
 92
-00:17:33,302 --> 00:17:35,947
-Then apply Theorem 3.26.
+00:12:08,587 --> 00:12:14,795
+Shift 4: 1 0 1 1 against 0 1 0 1. The first bit fails.
 
 93
-00:17:36,397 --> 00:17:49,411
-Then check the first few counts by brute force. In a written answer, define A and B, and justify both set identities. Or cite Theorem 3.26 by name and show the set C.
+00:12:15,245 --> 00:12:23,523
+So 0 1 0 1 1 cannot overlap itself. Then B equals A followed by 0 1 0 1 1.
 
 94
-00:17:49,861 --> 00:18:04,026
-To recap. A recursive expression uses its own letter on the right side. To show that it is unambiguous, check that the unions are disjoint and that each string peels in one way. Then use induction.
+00:12:23,973 --> 00:12:28,602
+Kappa has length 5. So phi B equals x to the 5 phi A.
 
 95
-00:18:04,476 --> 00:18:19,367
-Translate it to an equation for the series and solve. If the expression is ambiguous, the equation counts constructions and is wrong. Palindromes have the series one plus 2 x, over one minus 2 x squared.
+00:12:29,052 --> 00:12:34,343
+Substitute phi B equals x to the 5 phi A into the first equation.
 
 96
-00:18:19,817 --> 00:18:33,705
-For strings that avoid kappa, use the two set identities, or Theorem 3.26 with the overlap set C. The next video starts Chapter 4: Fibonacci numbers and linear recurrences.
+00:12:34,793 --> 00:12:46,057
+Collect phi A. Phi A, times one minus 2 x plus x to the 5, equals 1. So phi A is one over one minus 2 x plus x to the 5.
+
+97
+00:12:46,507 --> 00:12:52,203
+Check. Up to length 4, every string avoids kappa: 1, 2, 4, 8, 16.
+
+98
+00:12:52,653 --> 00:12:58,242
+At length 5, only kappa itself fails. 32 minus 1 is 31.
+
+99
+00:12:58,692 --> 00:13:04,900
+At length 6, these four strings contain kappa. 64 minus 4 is 60.
+
+100
+00:13:05,350 --> 00:13:08,465
+Brute force and the series agree up to length 8.
+
+101
+00:13:08,915 --> 00:13:17,981
+Example 3.25 uses kappa equals 0 1 1 0 1. The first equation is the same as before.
+
+102
+00:13:18,431 --> 00:13:23,061
+Now test the overlaps. Shift 1: 1 against 0. It fails.
+
+103
+00:13:23,511 --> 00:13:30,444
+Shift 2: 0 1 against 0 1. They agree. So kappa can overlap itself in two bits.
+
+104
+00:13:30,894 --> 00:13:35,246
+Shift 3: 1 0 1 against 0 1 1. It fails.
+
+105
+00:13:35,696 --> 00:13:41,029
+Shift 4: 1 1 0 1 against 0 1 1 0. It fails.
+
+106
+00:13:41,479 --> 00:13:52,957
+Look at the string 0 1 1 0 1 1 0 1. It is 0 1 1, then kappa. 0 1 1 avoids kappa, so this string is in A times kappa.
+
+107
+00:13:53,407 --> 00:14:01,215
+It also starts with kappa: it is kappa, then 1 0 1. So it has an early kappa, and it is not in B.
+
+108
+00:14:01,665 --> 00:14:06,123
+The tail after the early kappa is gamma equals 1 0 1.
+
+109
+00:14:06,573 --> 00:14:12,739
+Each string in A times kappa is in B, or it is a string of B followed by 1 0 1.
+
+110
+00:14:13,189 --> 00:14:19,333
+The two cases are disjoint. We checked this set identity by brute force up to length 12.
+
+111
+00:14:19,783 --> 00:14:34,097
+Translate. A kappa gives x to the 5 phi A. B gives phi B, and B 1 0 1 gives x cubed phi B. So x to the 5 phi A equals one plus x cubed, times phi B.
+
+112
+00:14:34,547 --> 00:14:38,878
+Solve for phi B, and substitute it into the first equation.
+
+113
+00:14:39,328 --> 00:14:44,064
+Multiply both sides by one plus x cubed, and collect phi A.
+
+114
+00:14:44,514 --> 00:14:50,935
+Expand the bottom: one minus 2 x, times one plus x cubed, plus x to the 5.
+
+115
+00:14:51,385 --> 00:15:00,879
+The result: phi A equals one plus x cubed, over one minus 2 x plus x cubed minus 2 x to the 4 plus x to the 5.
+
+116
+00:15:01,329 --> 00:15:04,785
+Note: the notes print a different fraction on page 86.
+
+117
+00:15:05,235 --> 00:15:14,899
+That fraction gives 5 strings of length 1. But there are only 2 to the 1, which is 2, binary strings of length 1. So it is a misprint.
+
+118
+00:15:15,349 --> 00:15:20,255
+Our fraction agrees with brute force, and with the theorem on the next slides.
+
+119
+00:15:20,705 --> 00:15:30,071
+The general result needs the set C. Take kappa equals 0 1 0 1 0. Write kappa, then gamma equals 1 0.
+
+120
+00:15:30,521 --> 00:15:33,763
+Now write eta equals 0 1, then kappa.
+
+121
+00:15:34,213 --> 00:15:43,600
+Both give the same string, 0 1 0 1 0 1 0. So kappa gamma equals eta kappa, and 1 0 is in C.
+
+122
+00:15:44,050 --> 00:15:48,850
+C is the set of tails that are left over when kappa overlaps itself.
+
+123
+00:15:49,300 --> 00:15:57,855
+Theorem 3.26. Let kappa be a nonempty string of length n, and let A be the set of strings that avoid kappa.
+
+124
+00:15:58,305 --> 00:16:11,275
+C is the set of nonempty gamma with kappa gamma equal to eta kappa, for a nonempty prefix eta of kappa. C of x is the sum of x to the length of gamma, over gamma in C.
+
+125
+00:16:11,725 --> 00:16:19,619
+Then phi A equals one plus C of x, over one minus 2 x times one plus C of x, plus x to the n.
+
+126
+00:16:20,069 --> 00:16:31,887
+The proof follows the examples. Let B be the strings with exactly one kappa, at the very end. As before, phi A plus phi B equals 1 plus 2 x phi A.
+
+127
+00:16:32,337 --> 00:16:36,156
+Also, a string of B is alpha kappa, with alpha in A.
+
+128
+00:16:36,606 --> 00:16:45,502
+Now take sigma equals alpha kappa, with alpha in A, and suppose that sigma is not in B. Then sigma has an early kappa.
+
+129
+00:16:45,952 --> 00:16:53,120
+Alpha avoids kappa, so each early kappa overlaps the final kappa. Take the first early kappa.
+
+130
+00:16:53,570 --> 00:16:59,245
+Write sigma as rho, kappa, gamma. Rho is the part before the first early kappa.
+
+131
+00:16:59,695 --> 00:17:03,364
+The final kappa gives sigma equals rho, eta, kappa.
+
+132
+00:17:03,814 --> 00:17:07,633
+So kappa gamma equals eta kappa, and gamma is in C.
+
+133
+00:17:08,083 --> 00:17:15,763
+Rho kappa has exactly one kappa, at its end, because this kappa is the first one. So rho kappa is in B.
+
+134
+00:17:16,213 --> 00:17:24,874
+Rho, eta and gamma are unique. So A kappa is B, union B gamma over gamma in C, and the union is disjoint.
+
+135
+00:17:25,324 --> 00:17:30,380
+This gives x to the n phi A equals one plus C of x, times phi B.
+
+136
+00:17:30,830 --> 00:17:37,827
+Solve for phi B and substitute it into the first equation. Solving for phi A gives the theorem.
+
+137
+00:17:38,277 --> 00:17:47,813
+Try the theorem on a short example: kappa equals 1 1. The overlap table has one row. The shifted 1 agrees with the first 1.
+
+138
+00:17:48,263 --> 00:17:51,826
+So gamma equals 1, and C of x equals x.
+
+139
+00:17:52,276 --> 00:18:01,940
+Kappa has length n equal to 2. The theorem gives one plus x, over one minus 2 x times one plus x, plus x squared.
+
+140
+00:18:02,390 --> 00:18:14,123
+Expand the bottom. One minus 2 x, times one plus x, is one minus x minus 2 x squared. Add x squared: one minus x minus x squared.
+
+141
+00:18:14,573 --> 00:18:18,520
+This is the series for no 0 0 from the last video.
+
+142
+00:18:18,970 --> 00:18:27,823
+Swap 0 and 1 in every string. This is a bijection between the two sets. So the counts are the Fibonacci numbers again.
+
+143
+00:18:28,273 --> 00:18:40,817
+One more example, with two overlaps: kappa equals 0 1 0 1 0. Shift 1: the last 0 agrees with the first 0. Gamma is 1 0 1 0.
+
+144
+00:18:41,267 --> 00:18:44,915
+Shift 2: 1 0 against 0 1. It fails.
+
+145
+00:18:45,365 --> 00:18:51,787
+Shift 3: 0 1 0 against 0 1 0. They agree. Gamma is 1 0.
+
+146
+00:18:52,237 --> 00:18:57,847
+Shift 4: 1 0 1 0 against 0 1 0 1. It fails.
+
+147
+00:18:58,297 --> 00:19:08,729
+So C has two strings, 1 0 1 0 and 1 0. Their lengths are 4 and 2, so C of x equals x to the 4 plus x squared.
+
+148
+00:19:09,179 --> 00:19:19,185
+Kappa has length 5. The theorem gives one plus x squared plus x to the 4, over one minus 2 x times that, plus x to the 5.
+
+149
+00:19:19,635 --> 00:19:27,315
+Check by brute force. For lengths 0 to 4, all strings avoid kappa: 1, 2, 4, 8, 16.
+
+150
+00:19:27,765 --> 00:19:34,869
+Length 5: 32 minus 1 is 31. Length 6: 64 minus 4 is 60.
+
+151
+00:19:35,319 --> 00:19:42,551
+Length 7: 117. Length 8: 228. The series gives the same numbers.
+
+152
+00:19:43,001 --> 00:19:51,278
+Here is the method. First, write the overlap table of kappa. Find every gamma with kappa gamma equal to eta kappa.
+
+153
+00:19:51,728 --> 00:19:55,653
+Then C of x is the sum of x to the length of each gamma.
+
+154
+00:19:56,103 --> 00:19:58,749
+Then apply Theorem 3.26.
+
+155
+00:19:59,199 --> 00:20:02,079
+Then check the first few counts by brute force.
+
+156
+00:20:02,529 --> 00:20:09,675
+In a written answer, define A and B, and justify both set identities. Then translate and solve.
+
+157
+00:20:10,125 --> 00:20:14,520
+Or cite Theorem 3.26 by name, and show the set C.
+
+158
+00:20:14,970 --> 00:20:19,877
+To recap. A recursive expression uses its own letter on the right side.
+
+159
+00:20:20,327 --> 00:20:29,863
+To show that it is unambiguous, check that the unions are disjoint and that each string peels in one way. Then use induction on the length.
+
+160
+00:20:30,313 --> 00:20:39,486
+Translate it to an equation for the series, and solve. If the expression is ambiguous, the equation counts constructions and is wrong.
+
+161
+00:20:39,936 --> 00:20:45,269
+Palindromes have the series one plus 2 x, over one minus 2 x squared.
+
+162
+00:20:45,719 --> 00:20:49,687
+For strings that avoid kappa, use the two set identities.
+
+163
+00:20:50,137 --> 00:21:00,399
+Or use Theorem 3.26 with the overlap set C. The next video starts Chapter 4: Fibonacci numbers and linear recurrences.

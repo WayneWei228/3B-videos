@@ -3,421 +3,653 @@
 This is MATH 239, video 18 b. We solve questions 6 to 10 of the Practice Midterm. Video 18 a did questions 1 to 5.
 
 2
-00:00:11,821 --> 00:00:29,997
-Question 6 is about binary strings. Question 7 asks for one coefficient. Question 8 is about a product of series. Question 9 is about palindromes. Question 10 is about recurrences. For each question, pause the video and try it first.
+00:00:11,821 --> 00:00:19,010
+Question 6 is about binary strings: ambiguity, a generating series, and a condition on blocks.
 
 3
-00:00:30,447 --> 00:00:41,540
-Question 6 a. Here is an expression for a set of binary strings. Is it ambiguous or unambiguous? We must prove the answer. Pause the video and try it.
+00:00:19,460 --> 00:00:24,772
+Question 7 asks for one coefficient. It uses two binomial series.
 
 4
-00:00:41,990 --> 00:00:51,803
-Read the expression in three parts. The first part, 000 star, makes a block of 0s. Its length is a multiple of 3.
+00:00:25,222 --> 00:00:30,214
+Question 8 is about the product of two series, and a proof by coefficients.
 
 5
-00:00:52,253 --> 00:01:04,669
-The middle part repeats a piece. Each piece is 111, then pairs 11, so a block of 1s of odd length, at least 3. Then it has 0s in groups of four, possibly none.
+00:00:30,664 --> 00:00:34,931
+Question 9 is about palindromes and a recursive expression.
 
 6
-00:01:05,119 --> 00:01:16,298
-The last part is epsilon, or 111 star. 111 star is 11 followed by 1 star. So it is a block of 1s of length at least 2.
+00:00:35,381 --> 00:00:46,602
+Question 10 is about recurrences. The announcement of October 22 says that recurrences are not on this midterm. The question is still good practice.
 
 7
-00:01:16,748 --> 00:01:29,676
-The middle part and the last part can both make a block of 1s. So one block of 1s can come from two places. An expression is ambiguous when some string is produced in two or more ways.
+00:00:47,052 --> 00:00:50,508
+For each question, pause the video and try it first.
 
 8
-00:01:30,126 --> 00:01:32,430
-Take the short string 111.
+00:00:50,958 --> 00:01:02,051
+Question 6 a. Here is an expression for a set of binary strings. Is it ambiguous or unambiguous? We must prove the answer. Pause the video and try it.
 
 9
-00:01:32,880 --> 00:01:44,763
-Way 1. The first part gives epsilon. The middle part makes one pass: the piece 111, with no extra pairs and no 0s. The last part gives epsilon.
+00:01:02,501 --> 00:01:12,315
+Read the expression in three parts. The first part, 000 star, makes a block of 0s. Its length is a multiple of 3.
 
 10
-00:01:45,213 --> 00:01:54,599
-Way 2. The first part gives epsilon. The middle part makes zero passes. The last part, 111 star, gives 111.
+00:01:12,765 --> 00:01:22,898
+The middle part repeats a piece. Each piece starts with 111, then pairs 11. So it starts with a block of 1s of odd length, at least 3.
 
 11
-00:01:55,049 --> 00:02:02,985
-These are two different productions of the same string. So the expression is ambiguous. One example is enough for the proof.
+00:01:23,348 --> 00:01:27,209
+Then the piece has 0s in groups of four, possibly none.
 
 12
-00:02:03,435 --> 00:02:11,350
-Longer strings of 1s have even more productions. For 11111, way 1 is one pass of length 5.
+00:01:27,659 --> 00:01:38,838
+The last part is epsilon, or 111 star. 111 star is 11 followed by 1 star. So it is a block of 1s of length at least 2.
 
 13
-00:02:11,800 --> 00:02:16,003
-Way 2 is a pass 111, then the end gives 11.
+00:01:39,288 --> 00:01:46,925
+The middle part and the last part can both make a block of 1s. So one block of 1s can come from two places.
 
 14
-00:02:16,453 --> 00:02:30,213
-Way 3 is zero passes, and the end gives all five 1s. So 11111 has three productions. A computer count agrees: 111 has two, and 11111 has three.
+00:01:47,375 --> 00:01:52,602
+An expression is ambiguous when some string is produced in two or more ways.
 
 15
-00:02:30,663 --> 00:02:38,769
-Here is the written answer. Say ambiguous. Give one string, and show two different productions of it. This is the full proof.
+00:01:53,052 --> 00:01:55,356
+Take the short string 111.
 
 16
-00:02:39,219 --> 00:02:54,921
-A common mistake: each part is unambiguous, so the student says the whole is unambiguous. This is not enough. By Lemma 3.9, each concatenation must also split in only one way. Here it does not.
+00:01:55,806 --> 00:02:07,689
+Way 1. The first part gives epsilon. The middle part makes one pass: the piece 111, with no extra pairs and no 0s. The last part gives epsilon.
 
 17
-00:02:55,371 --> 00:03:06,677
-Question 6 b. We are told that this expression is unambiguous. Find the generating series of its strings, with length as the weight. Pause the video and try it.
+00:02:08,139 --> 00:02:17,525
+Way 2. The first part gives epsilon. The middle part makes zero passes. The last part, 111 star, gives 111.
 
 18
-00:03:07,127 --> 00:03:27,650
-Piece A is 011, then 111 star. Its strings are one 0, then a block of 1s of length 2, 5, 8, and so on. 011 gives x cubed. 111 star gives one over one minus x cubed. So piece A gives x cubed over one minus x cubed.
+00:02:17,975 --> 00:02:25,911
+These are two different productions of the same string. So the expression is ambiguous. One example is enough for the proof.
 
 19
-00:03:28,100 --> 00:03:50,180
-Piece B is 000, then 0 star, then 1, then 1 star. So it is a block of at least three 0s, then a block of at least one 1. It gives x cubed, times one over one minus x, times x, times one over one minus x. That is x to the 4 over the square of one minus x.
+00:02:26,361 --> 00:02:33,999
+Longer strings of 1s have more productions. Take 11111. Way 1 is one pass of length 5.
 
 20
-00:03:50,630 --> 00:03:56,902
-The end is epsilon, 0, or 00. It gives 1 plus x plus x squared.
+00:02:34,449 --> 00:02:38,801
+Way 2 is one pass 111, then the end gives 11.
 
 21
-00:03:57,352 --> 00:04:00,957
-Now combine the parts. The two pieces are on the left.
+00:02:39,251 --> 00:02:49,149
+Way 3 is zero passes, and the end gives all five 1s. So 11111 has three productions. A computer count agrees.
 
 22
-00:04:01,407 --> 00:04:16,405
-The piece is A or B. By the Sum Lemma, one piece gives A of x plus B of x. The union is disjoint. A piece of type A starts with one 0 and then a 1. A piece of type B starts with three 0s.
+00:02:49,599 --> 00:02:57,706
+Here is the written answer. Say ambiguous. Give one string, and show two different productions of it. This is the full proof.
 
 23
-00:04:16,855 --> 00:04:24,172
-The pieces repeat with a star. By the String Lemma, the repetition gives one over one minus A minus B.
+00:02:58,156 --> 00:03:13,857
+A common mistake: each part is unambiguous, so the student says the whole is unambiguous. This is not enough. By Lemma 3.9, each concatenation must also split in only one way. Here it does not.
 
 24
-00:04:24,622 --> 00:04:30,937
-Then the end follows. By the Product Lemma, multiply by 1 plus x plus x squared.
+00:03:14,307 --> 00:03:25,614
+Question 6 b. We are told that this expression is unambiguous. Find the generating series of its strings, with length as the weight. Pause the video and try it.
 
 25
-00:04:31,387 --> 00:04:55,749
-So phi of x is a fraction. The top is 1 plus x plus x squared. The bottom is one, minus x cubed over one minus x cubed, minus x to the 4 over the square of one minus x. The expression is unambiguous, so by Theorem 3.13 this is the generating series. The question does not ask us to simplify it.
+00:03:26,064 --> 00:03:35,920
+Piece A is 011, then 111 star. Its strings are one 0, then a block of 1s of length 2, 5, 8, and so on.
 
 26
-00:04:56,199 --> 00:05:02,365
-Expand the series. The coefficients start 1, 1, 1, 1, 2, 4, 8, 13.
+00:03:36,370 --> 00:03:41,063
+Each bit has weight 1. So the string 011 gives x cubed.
 
 27
-00:05:02,815 --> 00:05:14,548
-Length 4 must have 2 strings. They are 0001, which is one piece of type B, and 0110, which is piece A, then the end 0.
+00:03:41,513 --> 00:03:48,063
+Each 111 adds 3 bits. So 111 star gives one over one minus x cubed.
 
 28
-00:05:14,998 --> 00:05:29,675
-Length 5 must have 4 strings. They are 00001, 00010, 00011, and 01100. The coefficients agree.
+00:03:48,513 --> 00:03:53,206
+Multiply. Piece A gives x cubed over one minus x cubed.
 
 29
-00:05:30,125 --> 00:05:39,000
-A computer listed all strings up to length 12. Each one is produced at most once. The counts match the series for each length.
+00:03:53,656 --> 00:04:03,469
+Piece B is 000, then 0 star, then 1, then 1 star. So it is three or more 0s, then one or more 1s.
 
 30
-00:05:39,450 --> 00:05:52,655
-Question 6 c. We need an unambiguous expression for the strings where each block of 1s of even length is followed by a block of 0s of length at least 3. Pause the video and try it.
+00:04:03,919 --> 00:04:10,085
+000 gives x cubed. 0 star gives one over one minus x.
 
 31
-00:05:53,105 --> 00:06:05,649
-Test some strings. In 0110001, the block 11 is even. The next block is 000, of length 3. So the string is in the set.
+00:04:10,535 --> 00:04:14,716
+1 gives x. 1 star gives one over one minus x.
 
 32
-00:06:06,099 --> 00:06:14,505
-In 110, the block 11 is even, but the next 0 block has length 1. So 110 is not in the set.
+00:04:15,166 --> 00:04:23,870
+Multiply. x cubed times x is x to the 4. So piece B gives x to the 4 over the square of one minus x.
 
 33
-00:06:14,955 --> 00:06:24,256
-In 0111, the only 1 block is 111. It is odd, so there is no condition. 0111 is in the set.
+00:04:24,320 --> 00:04:33,643
+The end is epsilon, 0, or 00. They give 1, x and x squared. So the end gives 1 plus x plus x squared.
 
 34
-00:06:24,706 --> 00:06:32,386
-In the string 11, the even block is at the end. No block of 0s follows it. So 11 is not in the set.
+00:04:34,093 --> 00:04:37,698
+Now combine the parts. The two pieces are on the left.
 
 35
-00:06:32,836 --> 00:06:50,948
-Start from the block decomposition, 0 star, then 1 1 star 0 0 star, repeated, then 1 star. It produces each binary string once, block by block. Each pass of the middle part is a block of 1s, then the block of 0s after it.
+00:04:38,148 --> 00:04:44,847
+A piece is of type A or of type B. By the Sum Lemma, one piece gives A of x plus B of x.
 
 36
-00:06:51,398 --> 00:07:02,513
-Split each pass by the length of its 1 block. If the 1 block is odd, write it as 1, then 11 star. Any 0 block of length at least 1 can follow.
+00:04:45,297 --> 00:04:57,435
+The Sum Lemma needs a disjoint union. A piece of type A starts with exactly one 0, then a 1. A piece of type B starts with three 0s. So no string is in both.
 
 37
-00:07:02,963 --> 00:07:13,800
-If the 1 block is even, write it as 11, then 11 star. Then the 0 block must have length at least 3: 000, then 0 star.
+00:04:57,885 --> 00:05:05,203
+The pieces repeat with a star. By the String Lemma, the repetition gives one over one minus A minus B.
 
 38
-00:07:14,250 --> 00:07:23,978
-The last part, 1 star, is a block of 1s with nothing after it. So it must be empty or odd: epsilon, or 1 then 11 star.
+00:05:05,653 --> 00:05:11,967
+Then the end follows. By the Product Lemma, multiply by 1 plus x plus x squared.
 
 39
-00:07:24,428 --> 00:07:27,927
-Put the parts together. This is the expression for the set.
+00:05:12,417 --> 00:05:26,945
+So phi of x is a fraction. The top is 1 plus x plus x squared. The bottom is one, minus x cubed over one minus x cubed, minus x to the 4 over the square of one minus x.
 
 40
-00:07:28,377 --> 00:07:30,019
-Here is the expression.
+00:05:27,395 --> 00:05:37,785
+The expression is unambiguous, so by Theorem 3.13 this is the generating series. The question does not ask us to simplify it.
 
 41
-00:07:30,469 --> 00:07:38,341
-The written answer has short explanations. Step 1. Start from the block decomposition. It is unambiguous.
+00:05:38,235 --> 00:05:44,400
+Expand the series. The coefficients start 1, 1, 1, 1, 2, 4, 8, 13.
 
 42
-00:07:38,791 --> 00:07:56,754
-Step 2. Each pass is a 1 block and the 0 block after it. An odd 1 block can have any 0 block after it. An even 1 block needs a 0 block of length at least 3. The two cases are disjoint, because the parity of the 1 block differs.
+00:05:44,850 --> 00:05:49,949
+The coefficient of x to the 4 is 2. So length 4 must have 2 strings.
 
 43
-00:07:57,204 --> 00:08:04,201
-Step 3. The last block of 1s has no 0 block after it. So it must be odd, or not there.
+00:05:50,399 --> 00:05:55,049
+The first is 0001. It is one piece of type B.
 
 44
-00:08:04,651 --> 00:08:12,545
-Step 4. We only restricted the parts of an unambiguous expression. So the new expression is unambiguous.
+00:05:55,499 --> 00:06:00,427
+The second is 0110. It is piece A, then the end 0.
 
 45
-00:08:12,995 --> 00:08:37,144
-Examples. 011000101 splits into 0, then 11 with 000, then 1 with 0, then the last block 1. The string 1100011 ends in an even block, so the expression does not produce it. A computer check of all strings up to length 11 agrees with the condition.
+00:06:00,877 --> 00:06:17,709
+The coefficient of x to the 5 is 4. The 4 strings of length 5 are 00001, 00010, 00011, and 01100. The coefficients agree.
 
 46
-00:08:37,594 --> 00:08:51,183
-Question 7. Find the coefficient of x to the 70 in x cubed over one minus 4 x to the 30, to the power 20, times one minus x, cubed. Pause the video and try it.
+00:06:18,159 --> 00:06:27,034
+A computer listed all strings up to length 12. Each one is produced at most once. The counts match the series for each length.
 
 47
-00:08:51,633 --> 00:09:06,865
-First remove the x cubed. Multiplying by x cubed shifts every coefficient 3 places to the right. So we need the coefficient of x to the 67 in F of x, the product of the two inverse powers.
+00:06:27,484 --> 00:06:40,689
+Question 6 c. We need an unambiguous expression for the strings where each block of 1s of even length is followed by a block of 0s of length at least 3. Pause the video and try it.
 
 48
-00:09:07,315 --> 00:09:20,414
-Each factor is a binomial series. One over one minus y, to the power t, is the sum over j of j plus t minus 1 choose t minus 1, times y to the j.
+00:06:41,139 --> 00:06:44,041
+A block is a maximal run of equal bits.
 
 49
-00:09:20,864 --> 00:09:35,627
-Expand the first factor with y equal to 4 x to the 30 and t equal to 20. The term for j is j plus 19 choose 19, times 4 to the j, times x to the 30 j.
+00:06:44,491 --> 00:06:57,035
+Test some strings. In 0110001, the block 11 is even. The next block is 000, of length 3. So the string is in the set.
 
 50
-00:09:36,077 --> 00:09:51,671
-The product formula pairs a power x to the 30 j from the first factor with x to the m from the second. We need 30 j plus m equal to 67. j equal to 0 gives m equal to 67.
+00:06:57,485 --> 00:07:05,890
+In 110, the block 11 is even, but the next 0 block has length 1. So 110 is not in the set.
 
 51
-00:09:52,121 --> 00:09:55,705
-j equal to 1 gives m equal to 37.
+00:07:06,340 --> 00:07:15,641
+In 0111, the only 1 block is 111. It is odd, so there is no condition. 0111 is in the set.
 
 52
-00:09:56,155 --> 00:09:59,270
-j equal to 2 gives m equal to 7.
+00:07:16,091 --> 00:07:23,771
+In the string 11, the even block is at the end. No block of 0s follows it. So 11 is not in the set.
 
 53
-00:09:59,720 --> 00:10:06,419
-j equal to 3 needs 90, which is more than 67. So there are exactly three terms.
+00:07:24,221 --> 00:07:36,637
+Start from the block decomposition: 0 star, then 1 1 star 0 0 star, repeated, then 1 star. It produces each binary string once, block by block.
 
 54
-00:10:06,869 --> 00:10:16,085
-j equal to 0. The first factor gives 1. The second gives 69 choose 2, which is 2346.
+00:07:37,087 --> 00:07:42,677
+Each pass of the middle part is a block of 1s, then the block of 0s after it.
 
 55
-00:10:16,535 --> 00:10:31,916
-j equal to 1. The first factor gives 20 choose 19, times 4, which is 80. The second gives 39 choose 2, which is 741. The product is 59280.
+00:07:43,127 --> 00:07:51,788
+The notes write the same decomposition as 0 star, then 1 star 1 0 star 0, repeated, then 1 star.
 
 56
-00:10:32,366 --> 00:10:50,265
-j equal to 2. The first factor gives 21 choose 19, times 16, which is 3360. The second gives 9 choose 2, which is 36. The product is 120960.
+00:07:52,238 --> 00:08:02,393
+Split each pass by the length of its 1 block. An odd 1 block is 1, then 11 star. Any 0 block of length at least 1 can follow it.
 
 57
-00:10:50,715 --> 00:11:00,016
-The answer is the sum: 182586. A computer expansion of the series gives the same number.
+00:08:02,843 --> 00:08:13,061
+An even 1 block is 11, then 11 star. The 0 block after it must have length at least 3: 000, then 0 star.
 
 58
-00:11:00,466 --> 00:11:12,199
-Common mistakes: forgetting the factor 4 to the j, reading x to the 70 and not x to the 67, and using the wrong top number in the binomial coefficient.
+00:08:13,511 --> 00:08:23,239
+The last part, 1 star, is a block of 1s with nothing after it. So it must be empty or odd: epsilon, or 1 then 11 star.
 
 59
-00:11:12,649 --> 00:11:20,884
-Question 8. A of x is the sum of x to the n over n factorial. Pause the video and try all three parts.
+00:08:23,689 --> 00:08:27,188
+Put the parts together. This is the expression for the set.
 
 60
-00:11:21,334 --> 00:11:28,203
-Part a. Put 2 x in place of x. 2 x to the n equals 2 to the n times x to the n.
+00:08:27,638 --> 00:08:29,281
+Here is the expression.
 
 61
-00:11:28,653 --> 00:11:39,256
-So the coefficient in position n is multiplied by 2 to the n. The row 1, 1, one half, one sixth becomes 1, 2, 2, four thirds.
+00:08:29,731 --> 00:08:37,603
+The written answer has short explanations. Step 1. Start from the block decomposition. It is unambiguous.
 
 62
-00:11:39,706 --> 00:11:47,109
-The answer to part a: the coefficient of x to the n in A of 2 x is 2 to the n over n factorial.
+00:08:38,053 --> 00:08:56,015
+Step 2. Each pass is a 1 block and the 0 block after it. An odd 1 block can have any 0 block after it. An even 1 block needs a 0 block of length at least 3. The two cases are disjoint, because the parity of the 1 block differs.
 
 63
-00:11:47,559 --> 00:11:58,673
-Part b. Use the product formula. The coefficient of x to the n in A times B is the sum over k of a sub k times b sub n minus k.
+00:08:56,465 --> 00:09:03,463
+Step 3. The last block of 1s has no 0 block after it. So it must be odd, or not there.
 
 64
-00:11:59,123 --> 00:12:14,995
-Draw the grid. Row i is the term of degree i in the first factor. Column j is the term of degree j in the second. The cell holds the product of the two coefficients, one over i factorial j factorial.
+00:09:03,913 --> 00:09:11,806
+Step 4. We only restricted the parts of an unambiguous expression. So the new expression is unambiguous.
 
 65
-00:12:15,445 --> 00:12:24,448
-The cells with i plus j equal to n give the terms of x to the n. For n equal to 3, this is the purple diagonal.
+00:09:12,256 --> 00:09:24,523
+An example. 011000101 splits into 0, then 11 with 000, then 1 with 0, then the last block 1.
 
 66
-00:12:24,898 --> 00:12:36,077
-The sum is one sixth plus one half plus one half plus one sixth. That is four thirds. It equals 2 cubed over 3 factorial. This agrees with part a.
+00:09:24,973 --> 00:09:33,506
+0001110 splits into 000, then the odd block 111 with 0.
 
 67
-00:12:36,527 --> 00:12:52,015
-In general, the coefficient of x to the n in A of x squared is the sum over k from 0 to n of one over k factorial times n minus k factorial. This is a finite sum, as the question asks.
+00:09:33,956 --> 00:09:43,215
+1100011 ends in an even block of 1s. So the expression does not produce it, and it is not in the set.
 
 68
-00:12:52,465 --> 00:13:09,659
-Part c. Prove that A of 2 x equals A of x squared. Compare the coefficients. Line 1: by part b, the coefficient of x to the n in A of x squared is the sum of one over k factorial times n minus k factorial.
+00:09:43,665 --> 00:09:48,891
+A computer check of all strings up to length 11 agrees with the condition.
 
 69
-00:13:10,109 --> 00:13:21,437
-Line 2: multiply and divide by n factorial. Each term becomes n choose k. So we have one over n factorial, times the sum of n choose k.
+00:09:49,341 --> 00:10:02,931
+Question 7. Find the coefficient of x to the 70 in x cubed over one minus 4 x to the 30, to the power 20, times one minus x, cubed. Pause the video and try it.
 
 70
-00:13:21,887 --> 00:13:39,914
-Line 3: by the Binomial Theorem with x equal to 1, the sum of n choose k over k is 2 to the n. The picture shows it: each row of binomial coefficients sums to a power of 2. Row 3 is 1, 3, 3, 1, with sum 8.
+00:10:03,381 --> 00:10:10,421
+Call the product of the two inverse powers F of x. Then the function is x cubed times F of x.
 
 71
-00:13:40,364 --> 00:13:48,257
-Line 4: by part a, 2 to the n over n factorial is the coefficient of x to the n in A of 2 x.
+00:10:10,871 --> 00:10:19,745
+Multiplying by x cubed moves every coefficient 3 places to the right. The coefficient f 0 moves to x cubed.
 
 72
-00:13:48,707 --> 00:14:04,409
-This holds for every n in N. Two formal power series are equal when all their coefficients are equal. So A of 2 x equals A of x squared. Name the results you use: the product formula and the Binomial Theorem.
+00:10:20,195 --> 00:10:30,713
+So the coefficient of x to the 70 in x cubed F is the coefficient of x to the 70 minus 3 in F. That is x to the 67.
 
 73
-00:14:04,859 --> 00:14:22,373
-Question 9. P is the set of palindromes: the strings that do not change when we reverse them. Find an unambiguous expression, the generating series by length, and a reason why the expression is unambiguous. Pause the video and try it.
+00:10:31,163 --> 00:10:44,987
+Each factor of F is a binomial series. One over one minus y, to the power t, is the sum over j of j plus t minus 1 choose t minus 1, times y to the j.
 
 74
-00:14:22,823 --> 00:14:30,951
-Take the palindrome 0110110. Its first bit equals its last bit. Both are 0.
+00:10:45,437 --> 00:11:03,997
+Expand the first factor with the binomial series. Here y is 4 x to the 30, and t is 20, so t minus 1 is 19. The term for j is j plus 19 choose 19, times 4 to the j, times x to the 30 j.
 
 75
-00:14:31,401 --> 00:14:39,423
-Remove the two end bits. The middle, 11011, is again a palindrome. Its end bits are both 1.
+00:11:04,447 --> 00:11:15,476
+Expand the second factor. Here y is x, and t is 3, so t minus 1 is 2. The term for m is m plus 2 choose 2, times x to the m.
 
 76
-00:14:39,873 --> 00:14:44,310
-Remove them. 101 remains. It is a palindrome too.
+00:11:15,926 --> 00:11:31,521
+A term of x to the 67 pairs x to the 30 j from the first factor with x to the m from the second. So 30 j plus m equals 67. j equal to 0 gives m equal to 67.
 
 77
-00:14:44,760 --> 00:14:52,120
-Remove the ends again. The single bit 0 remains. A string of length 0 or 1 is a palindrome.
+00:11:31,971 --> 00:11:37,816
+j equal to 1 gives m equal to 67 minus 30, which is 37.
 
 78
-00:14:52,570 --> 00:15:07,375
-This gives a recursive expression. P is epsilon, or 0, or 1, or 0 P 0, or 1 P 1. The notes use the same idea for the set B equal to epsilon or 0 B 1.
+00:11:38,266 --> 00:11:43,727
+j equal to 2 gives m equal to 67 minus 60, which is 7.
 
 79
-00:15:07,825 --> 00:15:11,751
-Now show that each palindrome is produced exactly once.
+00:11:44,177 --> 00:11:52,924
+j equal to 3 needs 30 times 3, which is 90. This is more than 67. So there are exactly three terms.
 
 80
-00:15:12,201 --> 00:15:31,465
-A string of length 0 is produced only by epsilon. A string of length 1 is produced only by 0 or by 1. A string of length at least 2 must come from 0 P 0 or 1 P 1. Its first bit equals its last bit, because f of s equals s.
+00:11:53,374 --> 00:12:12,211
+j equal to 0, so m is 67. The first factor gives 19 choose 19, times 4 to the 0, which is 1. The second gives 69 choose 2, which is 2346. The product is 2346.
 
 81
-00:15:31,915 --> 00:15:38,677
-The first bit tells us which case. A string that starts with 0 can only come from 0 P 0.
+00:12:12,661 --> 00:12:32,885
+j equal to 1, so m is 37. The first factor gives 20 choose 19, times 4, which is 80. The second gives 39 choose 2, which is 741. The product is 80 times 741, which is 59280.
 
 82
-00:15:39,127 --> 00:15:55,042
-Then the middle is a shorter palindrome. By induction on the length, the middle is produced exactly once. So the whole string is produced exactly once. Also each string produced is a palindrome, so the expression gives exactly P.
+00:12:33,335 --> 00:12:56,461
+j equal to 2, so m is 7. The first factor gives 21 choose 19, times 4 squared, which is 3360. The second gives 9 choose 2, which is 36. The product is 3360 times 36, which is 120960.
 
 83
-00:15:55,492 --> 00:16:07,780
-The expression is unambiguous, so the Sum and Product Lemmas give the equation. Phi of x equals 1, plus x, plus x, plus x squared phi, plus x squared phi.
+00:12:56,911 --> 00:13:07,471
+The answer is the sum of the three products: 182586. A computer expansion of the series gives the same number.
 
 84
-00:16:08,230 --> 00:16:14,737
-Solve for phi: phi of x equals 1 plus 2 x, over 1 minus 2 x squared.
+00:13:07,921 --> 00:13:19,654
+Common mistakes: forgetting the factor 4 to the j, reading x to the 70 and not x to the 67, and using the wrong top number in the binomial coefficient.
 
 85
-00:16:15,187 --> 00:16:30,397
-Check. The coefficients are 1, 2, 2, 4, 4, 8, 8. A palindrome is fixed by its first half, so there are 2 to the ceiling of n over 2 of length n. A computer count up to length 14 agrees.
+00:13:20,104 --> 00:13:34,461
+Question 8. A of x is the sum of x to the n over n factorial. Its coefficients start 1, 1, one half, one sixth, one 24th. Pause the video and try all three parts.
 
 86
-00:16:30,847 --> 00:16:46,954
-Question 10 a. Solve the recurrence a sub n minus 7 a sub n minus 1 plus 6 a sub n minus 2 equals 0, with a sub 0 equal to 5 and a sub 1 equal to 10. Pause the video and try it.
+00:13:34,911 --> 00:13:41,781
+Part a. Put 2 x in place of x. 2 x to the n equals 2 to the n times x to the n.
 
 87
-00:16:47,404 --> 00:17:02,657
-By Theorem 4.8, the generating series is P of x over Q of x, with Q of x equal to 1 minus 7 x plus 6 x squared. The coefficients of Q are the coefficients of the recurrence.
+00:13:42,231 --> 00:13:46,775
+So the coefficient of x to the n is multiplied by 2 to the n.
 
 88
-00:17:03,107 --> 00:17:13,923
-Find the inverse roots. The auxiliary polynomial is t squared minus 7 t plus 6. It factors as t minus 1 times t minus 6.
+00:13:47,225 --> 00:13:56,675
+The row 1, 1, one half, one sixth becomes 1, 2, 2, four thirds. For example, one sixth times 2 cubed is four thirds.
 
 89
-00:17:14,373 --> 00:17:25,808
-So the inverse roots are 1 and 6, each with multiplicity 1. By the Main Theorem, a sub n equals A times 1 to the n plus B times 6 to the n.
+00:13:57,125 --> 00:14:04,528
+The answer to part a: the coefficient of x to the n in A of 2 x is 2 to the n over n factorial.
 
 90
-00:17:26,258 --> 00:17:41,981
-For which n does this hold? Theorem 4.8 gives P of x equal to 5 minus 25 x. Its degree is less than 2. So there is no polynomial part R, and the form holds for all n at least 0.
+00:14:04,978 --> 00:14:16,093
+Part b. Use the product formula. The coefficient of x to the n in A times B is the sum over k of a sub k times b sub n minus k.
 
 91
-00:17:42,431 --> 00:17:57,983
-Use the initial conditions. n equal to 0 gives A plus B equal to 5. n equal to 1 gives A plus 6 B equal to 10. Subtract: 5 B equals 5. So B equals 1, and A equals 4.
+00:14:16,543 --> 00:14:21,343
+Draw the grid. Row i holds the term of degree i of the first factor.
 
 92
-00:17:58,433 --> 00:18:16,225
-The answer is a sub n equals 4 plus 6 to the n. The table checks it. The recurrence gives 5, 10, 40, 220, 1300. The formula gives the same numbers. A computer check agrees for the first 20 terms.
+00:14:21,793 --> 00:14:26,038
+Column j holds the term of degree j of the second factor.
 
 93
-00:18:16,675 --> 00:18:29,539
-You can also check with partial fractions. 4 over one minus x plus 1 over one minus 6 x gives 5 minus 25 x over the product. This is P over Q.
+00:14:26,488 --> 00:14:42,339
+A cell holds the product of the two coefficients, one over i factorial times j factorial. For example, row x squared over 2 and column x cubed over 6 give one half times one sixth, which is one twelfth.
 
 94
-00:18:29,989 --> 00:18:41,146
-A common mistake is a sign error in Q of x. Write the recurrence with all terms on the left side equal to 0. Then copy its coefficients into Q.
+00:14:42,789 --> 00:14:51,919
+The cells with i plus j equal to n give the terms of x to the n. For n equal to 3, these are the 4 purple cells.
 
 95
-00:18:41,596 --> 00:18:48,764
-Question 10 b. Here we go the other way: from a formula to a recurrence. Pause the video and try it.
+00:14:52,369 --> 00:15:05,148
+Their sum is one sixth plus one half plus one half plus one sixth. That is four thirds, or 8 over 6. It equals 2 cubed over 3 factorial. This agrees with part a.
 
 96
-00:18:49,214 --> 00:18:56,446
-The term 3 to the n has a constant coefficient. So 3 is an inverse root with multiplicity 1.
+00:15:05,598 --> 00:15:21,086
+In general, the coefficient of x to the n in A of x squared is the sum over k from 0 to n of one over k factorial times n minus k factorial. This is a finite sum, as the question asks.
 
 97
-00:18:56,896 --> 00:19:07,264
-The term n minus 4 times minus 2 to the n has a polynomial of degree 1. So minus 2 is an inverse root with multiplicity 2.
+00:15:21,536 --> 00:15:38,731
+Part c. Prove that A of 2 x equals A of x squared. Compare the coefficients. Line 1: by part b, the coefficient of x to the n in A of x squared is the sum of one over k factorial times n minus k factorial.
 
 98
-00:19:07,714 --> 00:19:18,978
-So Q of x is one minus 3 x, times the square of one plus 2 x. Expand it: 1 plus x minus 8 x squared minus 12 x cubed.
+00:15:39,181 --> 00:15:50,509
+Line 2: multiply and divide by n factorial. Each term becomes n choose k. So we have one over n factorial, times the sum of n choose k.
 
 99
-00:19:19,428 --> 00:19:43,513
-To justify this, write the generating series. 3 to the n gives one over one minus 3 x. n times minus 2 to the n gives minus 2 x over the square of one plus 2 x. Minus 4 times minus 2 to the n gives minus 4 over one plus 2 x. Over the common denominator Q, the numerator P has degree at most 2.
+00:15:50,959 --> 00:16:01,113
+Line 3: the Binomial Theorem with x equal to 1 gives the sum of n choose k. It is 1 plus 1, to the n, which is 2 to the n.
 
 100
-00:19:43,963 --> 00:19:58,683
-By Theorem 4.8, the coefficients of Q give the recurrence. b sub n plus b sub n minus 1, minus 8 b sub n minus 2, minus 12 b sub n minus 3, equals 0.
+00:16:01,563 --> 00:16:10,609
+The picture shows the rows of binomial coefficients. Row 3 is 1, 3, 3, 1. Its sum is 8, which is 2 cubed.
 
 101
-00:19:59,133 --> 00:20:14,387
-The numerator has degree at most 2. So the recurrence holds for n at least 3. We need three initial conditions. From the formula, b sub 0 is minus 3, b sub 1 is 9, and b sub 2 is 1.
+00:16:11,059 --> 00:16:18,952
+Line 4: by part a, 2 to the n over n factorial is the coefficient of x to the n in A of 2 x.
 
 102
-00:20:14,837 --> 00:20:32,629
-Check it. For n equal to 3: 35 plus 1, minus 8 times 9, minus 12 times minus 3, gives 0. The rows for n equal to 4 and 5 also give 0. A computer check agrees up to n equal to 19.
+00:16:19,402 --> 00:16:29,642
+This holds for every n in N. Two formal power series are equal when all their coefficients are equal. So A of 2 x equals A of x squared.
 
 103
-00:20:33,079 --> 00:20:47,329
-A common mistake is a recurrence with too few terms. The order must be the sum of the multiplicities, 1 plus 2, which is 3. A computer check shows that no recurrence of order 2 fits the values.
+00:16:30,092 --> 00:16:47,607
+Question 9. P is the set of palindromes: the strings that do not change when we reverse them. Find an unambiguous expression, the generating series by length, and a reason why the expression is unambiguous. Pause the video and try it.
 
 104
-00:20:47,779 --> 00:21:04,505
-Here is a summary of question 6. To show an expression is ambiguous, give one string with two productions. For a series, use the Sum, String and Product Lemmas. For a set of strings with a block condition, restrict the block decomposition.
+00:16:48,057 --> 00:16:56,185
+Take the palindrome 0110110. Its first bit equals its last bit. Both are 0.
 
 105
-00:21:04,955 --> 00:21:16,283
-Question 7 used two binomial series and a list of index pairs. Question 8 compared coefficients, with the product formula and the Binomial Theorem.
+00:16:56,635 --> 00:17:04,656
+Remove the two end bits. The middle, 11011, is again a palindrome. Its end bits are both 1.
 
 106
-00:21:16,733 --> 00:21:25,821
-Question 9 used a recursive expression. Question 10 used Theorem 4.8 and the Main Theorem, in both directions.
+00:17:05,106 --> 00:17:11,719
+Remove them. 101 remains. It is a palindrome too. Its end bits are both 1.
+
+107
+00:17:12,169 --> 00:17:19,529
+Remove the ends again. The single bit 0 remains. A string of length 0 or 1 is a palindrome.
+
+108
+00:17:19,979 --> 00:17:27,915
+This gives a recursive expression. P is epsilon, or 0, or 1, or 0 P 0, or 1 P 1.
+
+109
+00:17:28,365 --> 00:17:33,976
+The notes use the same idea for the set B equal to epsilon or 0 B 1.
+
+110
+00:17:34,426 --> 00:17:38,351
+Now show that each palindrome is produced exactly once.
+
+111
+00:17:38,801 --> 00:17:42,791
+A string of length 0 is produced only by epsilon.
+
+112
+00:17:43,241 --> 00:17:47,785
+A string of length 1 is produced only by 0 or by 1.
+
+113
+00:17:48,235 --> 00:17:58,965
+A string of length at least 2 must come from 0 P 0 or 1 P 1. Its first bit equals its last bit, because f of s equals s.
+
+114
+00:17:59,415 --> 00:18:10,615
+The first bit tells us which case. A string that starts with 0 can only come from 0 P 0. A string that starts with 1 can only come from 1 P 1.
+
+115
+00:18:11,065 --> 00:18:21,391
+Then the middle is a shorter palindrome. By induction on the length, the middle is produced exactly once. So the whole string is produced exactly once.
+
+116
+00:18:21,841 --> 00:18:29,030
+Also, each string that the expression produces is a palindrome. So the expression gives exactly P.
+
+117
+00:18:29,480 --> 00:18:36,179
+The expression is unambiguous. So the Sum and Product Lemmas turn each part of it into one term.
+
+118
+00:18:36,629 --> 00:18:44,010
+Epsilon has length 0, so it gives 1. The strings 0 and 1 have length 1, so each gives x.
+
+119
+00:18:44,460 --> 00:18:53,719
+0 P 0 adds two bits to a palindrome. So it gives x squared times phi of x. 1 P 1 gives the same term.
+
+120
+00:18:54,169 --> 00:19:00,931
+So phi of x equals 1, plus x, plus x, plus x squared phi, plus x squared phi.
+
+121
+00:19:01,381 --> 00:19:10,811
+Move the two phi terms to the left side. Then collect: phi of x, times 1 minus 2 x squared, equals 1 plus 2 x.
+
+122
+00:19:11,261 --> 00:19:17,042
+Divide: phi of x equals 1 plus 2 x, over 1 minus 2 x squared.
+
+123
+00:19:17,492 --> 00:19:21,993
+Check. The coefficients are 1, 2, 2, 4, 4, 8, 8, 16.
+
+124
+00:19:22,443 --> 00:19:37,675
+A palindrome is fixed by its first half. So there are 2 to the ceiling of n over 2 palindromes of length n. For n equal to 5, this is 2 cubed, which is 8. A computer count up to length 14 agrees.
+
+125
+00:19:38,125 --> 00:19:59,011
+Question 10 a. Recurrences are not on this term's midterm, but this is good practice. Solve the recurrence a sub n minus 7 a sub n minus 1 plus 6 a sub n minus 2 equals 0, with a sub 0 equal to 5 and a sub 1 equal to 10. Pause the video and try it.
+
+126
+00:19:59,461 --> 00:20:14,714
+By Theorem 4.8, the generating series is P of x over Q of x, with Q of x equal to 1 minus 7 x plus 6 x squared. The coefficients of Q are the coefficients of the recurrence.
+
+127
+00:20:15,164 --> 00:20:30,801
+Find the inverse roots. The auxiliary polynomial is t squared minus 7 t plus 6. It factors as t minus 1 times t minus 6. Check: 1 plus 6 is 7, and 1 times 6 is 6.
+
+128
+00:20:31,251 --> 00:20:35,689
+So the inverse roots are 1 and 6, each with multiplicity 1.
+
+129
+00:20:36,139 --> 00:20:42,368
+By the Main Theorem, a sub n equals A times 1 to the n plus B times 6 to the n.
+
+130
+00:20:42,818 --> 00:21:02,658
+For which n does this hold? Theorem 4.8 gives P of x equal to 5 plus 10 minus 35, times x. That is 5 minus 25 x. Its degree is 1, less than 2. So there is no polynomial part R, and the form holds for all n at least 0.
+
+131
+00:21:03,108 --> 00:21:12,687
+Use the initial conditions. n equal to 0 gives A plus B equal to 5. n equal to 1 gives A plus 6 B equal to 10.
+
+132
+00:21:13,137 --> 00:21:20,753
+Subtract the first equation from the second: 5 B equals 5. So B equals 1, and A equals 4.
+
+133
+00:21:21,203 --> 00:21:25,000
+The answer is a sub n equals 4 plus 6 to the n.
+
+134
+00:21:25,450 --> 00:21:39,978
+Check it with a table. The recurrence gives a sub n equals 7 a sub n minus 1, minus 6 a sub n minus 2. From 5 and 10, it gives 40, 220 and 1300.
+
+135
+00:21:40,428 --> 00:21:51,244
+The formula gives the same numbers: 4 plus 1, 4 plus 6, 4 plus 36, and so on. A computer check agrees for the first 20 terms.
+
+136
+00:21:51,694 --> 00:22:10,617
+You can also check with partial fractions. Put 4 over one minus x plus 1 over one minus 6 x over the common denominator. The top is 4 times one minus 6 x, plus one minus x. That is 5 minus 25 x. This is P over Q.
+
+137
+00:22:11,067 --> 00:22:22,224
+A common mistake is a sign error in Q of x. Write the recurrence with all terms on the left side equal to 0. Then copy its coefficients into Q.
+
+138
+00:22:22,674 --> 00:22:29,842
+Question 10 b. Here we go the other way: from a formula to a recurrence. Pause the video and try it.
+
+139
+00:22:30,292 --> 00:22:37,524
+The term 3 to the n has a constant coefficient. So 3 is an inverse root with multiplicity 1.
+
+140
+00:22:37,974 --> 00:22:48,342
+The term n minus 4 times minus 2 to the n has a polynomial of degree 1. So minus 2 is an inverse root with multiplicity 2.
+
+141
+00:22:48,792 --> 00:22:54,147
+So Q of x is one minus 3 x, times the square of one plus 2 x.
+
+142
+00:22:54,597 --> 00:23:05,882
+Expand Q. First, one plus 2 x, squared, is 1 plus 2 times 2 x plus 2 x squared. That is 1 plus 4 x plus 4 x squared.
+
+143
+00:23:06,332 --> 00:23:17,148
+Now multiply by one minus 3 x on a product grid. The rows are 1 and minus 3 x. The columns are 1, 4 x and 4 x squared.
+
+144
+00:23:17,598 --> 00:23:22,334
+Add the cells of the same degree. Degree 0 has only the cell 1.
+
+145
+00:23:22,784 --> 00:23:26,027
+Degree 1: 4 x minus 3 x is x.
+
+146
+00:23:26,477 --> 00:23:31,789
+Degree 2: 4 x squared minus 12 x squared is minus 8 x squared.
+
+147
+00:23:32,239 --> 00:23:40,687
+Degree 3: minus 12 x cubed. So Q of x is 1 plus x minus 8 x squared minus 12 x cubed.
+
+148
+00:23:41,137 --> 00:23:51,718
+To justify this, write the generating series of b sub n as a sum of three series. 3 to the n gives one over one minus 3 x.
+
+149
+00:23:52,168 --> 00:23:58,291
+n times minus 2 to the n gives minus 2 x over the square of one plus 2 x.
+
+150
+00:23:58,741 --> 00:24:04,543
+Minus 4 times minus 2 to the n gives minus 4 over one plus 2 x.
+
+151
+00:24:04,993 --> 00:24:10,241
+Over the common denominator Q, the numerator P has degree at most 2.
+
+152
+00:24:10,691 --> 00:24:25,411
+By Theorem 4.8, the coefficients of Q give the recurrence. b sub n plus b sub n minus 1, minus 8 b sub n minus 2, minus 12 b sub n minus 3, equals 0.
+
+153
+00:24:25,861 --> 00:24:33,883
+The numerator has degree at most 2. So the recurrence holds for n at least 3, and we need three initial conditions.
+
+154
+00:24:34,333 --> 00:24:47,303
+Use the formula. b sub 0 is 1 plus minus 4, which is minus 3. b sub 1 is 3 plus 6, which is 9. b sub 2 is 9 minus 8, which is 1.
+
+155
+00:24:47,753 --> 00:25:01,577
+Check the row for n equal to 3. 35 plus 1, minus 8 times 9, minus 12 times minus 3. That is 36 minus 72 plus 36, which is 0.
+
+156
+00:25:02,027 --> 00:25:10,006
+The rows for n equal to 4 and 5 also give 0. A computer check agrees up to n equal to 19.
+
+157
+00:25:10,456 --> 00:25:24,707
+A common mistake is a recurrence with too few terms. The order must be the sum of the multiplicities, 1 plus 2, which is 3. A computer check shows that no recurrence of order 2 fits the values.
+
+158
+00:25:25,157 --> 00:25:32,901
+Here is a summary. Question 6 a: to show that an expression is ambiguous, give one string with two productions.
+
+159
+00:25:33,351 --> 00:25:40,647
+Question 6 b: for the series of an unambiguous expression, use the Sum, String and Product Lemmas.
+
+160
+00:25:41,097 --> 00:25:46,622
+Question 6 c: for a condition on blocks, restrict the block decomposition.
+
+161
+00:25:47,072 --> 00:25:55,435
+Question 7 used two binomial series and the index pairs with 30 j plus m equal to 67.
+
+162
+00:25:55,885 --> 00:26:01,773
+Question 8 compared coefficients, with the product formula and the Binomial Theorem.
+
+163
+00:26:02,223 --> 00:26:10,159
+Question 9 used a recursive expression. The series is 1 plus 2 x over 1 minus 2 x squared.
+
+164
+00:26:10,609 --> 00:26:16,369
+Question 10 used Theorem 4.8 and the Main Theorem, in both directions.

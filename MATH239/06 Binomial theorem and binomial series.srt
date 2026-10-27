@@ -3,297 +3,661 @@
 This is MATH 239, video 6. The topic is the Binomial Theorem and the binomial series, section 2.1 of the notes.
 
 2
-00:00:10,157 --> 00:00:32,066
-After this video, you can prove two formulas: one for 1 plus x to the n, and one for 1 over 1 minus x to the t. You can use them to find a coefficient of a product. We solve Exercises 2.1 and 2.2 of the notes, Tutorial 2 question 2, and Practice Midterm question 7.
+00:00:10,157 --> 00:00:19,223
+After this video, you can prove two formulas: one for 1 plus x to the n, and one for 1 over 1 minus x to the t.
 
 3
-00:00:32,516 --> 00:00:56,921
-Chapter 2 calculates with power series. A power series G of x is a sum of g n times x to the n. Think of it as a row of coefficients. The coefficient of x to the n in G of x is written with square brackets: x to the n, then G of x. x is an indeterminate. It has no value. The first example: every coefficient is 1.
+00:00:19,673 --> 00:00:24,580
+You can use the Binomial Theorem to prove the Vandermonde Convolution.
 
 4
-00:00:57,371 --> 00:01:07,526
-Multiply G by x. Every term moves up one power. So each coefficient moves one cell to the right, and the first cell becomes 0.
+00:00:25,030 --> 00:00:29,211
+You can find a coefficient of a product of binomial series.
 
 5
-00:01:07,976 --> 00:01:20,179
-Subtract x G from G. In every cell after the first, 1 minus 1 is 0. Only the constant 1 stays. So 1 minus x, times G, equals 1.
+00:00:29,661 --> 00:00:39,069
+We solve Exercises 2.1 and 2.2 of the notes, Tutorial 2 question 2, and Practice Midterm question 7.
 
 6
-00:01:20,629 --> 00:01:35,093
-This is the geometric series. 1 over 1 minus x is the series 1 plus x plus x squared, and so on. We never put a number in for x, so we do not need convergence. This is algebra.
+00:00:39,519 --> 00:00:47,327
+Chapter 2 calculates with power series. A power series G of x is the sum of g n times x to the n.
 
 7
-00:01:35,543 --> 00:01:54,081
-Theorem 2.2 is the Binomial Theorem. For each natural number n, 1 plus x to the n equals the sum over k from 0 to n of n choose k, times x to the k. First, look at n equals 3: three factors of 1 plus x.
+00:00:47,777 --> 00:00:56,353
+The coefficient of x to the n in G of x is written with square brackets: x to the n, then G of x. It is g n.
 
 8
-00:01:54,531 --> 00:02:05,219
-To multiply out, take one term from each factor, and multiply. Here we take x from factor 1, and 1 from factors 2 and 3. The product is x.
+00:00:56,803 --> 00:01:00,089
+x is an indeterminate. It has no value.
 
 9
-00:02:05,669 --> 00:02:14,821
-Each factor gives 2 choices. So there are 2 to the 3, which is 8, products. The orange cells show where each product takes x.
+00:01:00,539 --> 00:01:09,349
+The first example: every coefficient is 1. Draw G as a row of cells. Cell n holds the coefficient of x to the n.
 
 10
-00:02:15,271 --> 00:02:24,466
-Group the products by the power of x. One product is 1. Three products are x. Three are x squared. One is x cubed.
+00:01:09,799 --> 00:01:16,839
+Multiply G by x. Every term moves up one power. So each 1 moves one cell to the right.
 
 11
-00:02:24,916 --> 00:02:45,140
-So 1 plus x, all cubed, is 1 plus 3 x plus 3 x squared plus x cubed. The number of products equal to x to the k is the number of ways to pick the k factors that give x. That is n choose k. The notes prove this with a bijection. The next two slides show the proof.
+00:01:17,289 --> 00:01:19,764
+The first cell of x G becomes 0.
 
 12
-00:02:45,590 --> 00:03:08,993
-P of n is the set of all subsets of 1 to n. Curly 0 1 to the n is the set of indicator vectors: vectors of length n with entries 0 or 1. Example 1.12 gives a bijection. For n equals 8, the subset 2, 3, 5, 7 gives the vector with a 1 in positions 2, 3, 5 and 7.
+00:01:20,214 --> 00:01:26,529
+Subtract x G from G. In every cell after the first, 1 minus 1 is 0.
 
 13
-00:03:09,443 --> 00:03:23,181
-The inverse map collects the positions of the 1s. The two maps are mutually inverse bijections. Also, the entries of alpha add up to the size of S. Here 4 ones, and S has 4 elements.
+00:01:26,979 --> 00:01:35,491
+In the first cell, 1 minus 0 is 1. Only the constant 1 stays. So 1 minus x, times G, equals 1.
 
 14
-00:03:23,631 --> 00:03:41,871
-Put x to the size of S on each subset. Because of the bijection, the sum of x to the size of S over all subsets equals the sum of x to the a 1 plus up to a n, over all indicator vectors. The table shows all 8 pairs for n equals 3.
+00:01:35,941 --> 00:01:44,218
+This is the geometric series. 1 over 1 minus x is the series 1 plus x plus x squared, and so on.
 
 15
-00:03:42,321 --> 00:03:54,503
-The last column adds to 1 plus 3 x plus 3 x squared plus x cubed. This is 1 plus x, all cubed, again. Now we simplify the two sums in general.
+00:01:44,668 --> 00:01:50,513
+We never put a number in for x, so we do not need convergence. This is algebra.
 
 16
-00:03:54,953 --> 00:04:05,427
-Start from the equation of the last slide. The left side, LHS, sums over subsets. The right side, RHS, sums over indicator vectors.
+00:01:50,963 --> 00:02:04,403
+Theorem 2.2 is the Binomial Theorem. For each natural number n, 1 plus x to the n equals the sum over k from 0 to n of n choose k, times x to the k.
 
 17
-00:04:05,877 --> 00:04:21,365
-Left side. Group the subsets by their size k. By Theorem 1.5, there are n choose k subsets of size k. Each gives x to the k. So the left side is the sum of n choose k, x to the k.
+00:02:04,853 --> 00:02:09,333
+First, look at n equals 3: three factors of 1 plus x.
 
 18
-00:04:21,815 --> 00:04:40,333
-Right side. A sum over all vectors is a sum over a 1 in 0, 1, then a 2 in 0, 1, and so on. Also x to the a 1 plus a 2 is x to the a 1 times x to the a 2. So the nested sums split into a product of n separate sums.
+00:02:09,783 --> 00:02:20,941
+To multiply out, take one term from each factor, and multiply. This row takes x from factor 1, and 1 from factors 2 and 3. The product is x.
 
 19
-00:04:40,783 --> 00:04:56,548
-Here is why the split is correct, for n equals 2. Each cell of the grid is one vector a 1, a 2. Its entry is x to the a 1 times x to the a 2. The sum of all cells is the row sum times the column sum.
+00:02:21,391 --> 00:02:31,225
+Each factor gives 2 choices. So there are 2 times 2 times 2, which is 8, products. The orange cells show where each product takes x.
 
 20
-00:04:56,998 --> 00:05:09,734
-Each separate sum is x to the 0 plus x to the 1, which is 1 plus x. There are n of them, so the right side is 1 plus x to the n. This proves the Binomial Theorem.
+00:02:31,675 --> 00:02:35,814
+Group the products by the power of x. One product is 1.
 
 21
-00:05:10,184 --> 00:05:34,760
-Example 2.3 uses the Binomial Theorem to prove the Vandermonde Convolution. Start with an obvious identity: 1 plus x to the m plus n equals 1 plus x to the m, times 1 plus x to the n. The grid shows m equals 3 and n equals 4. Each row is a term of the first factor. Each column is a term of the second.
+00:02:36,264 --> 00:02:38,013
+Three products are x.
 
 22
-00:05:35,210 --> 00:05:52,575
-A cell is the product of its row term and its column term. The cell in row j and column i is m choose j, times n choose i, times x to the j plus i. All cells with the same j plus i are on one diagonal.
+00:02:38,463 --> 00:02:40,511
+Three products are x squared.
 
 23
-00:05:53,025 --> 00:06:07,340
-The coefficient of x cubed on the right is the sum of the purple diagonal: 4 plus 18 plus 12 plus 1, which is 35. On the left, it is 7 choose 3, which is also 35.
+00:02:40,961 --> 00:02:42,924
+One product is x cubed.
 
 24
-00:06:07,790 --> 00:06:27,203
-In general, re-index the double sum by k equals j plus i. Two equal polynomials have equal coefficients. So m plus n choose k equals the sum over j of m choose j times n choose k minus j. This is the Vandermonde Convolution.
+00:02:43,374 --> 00:02:49,625
+So 1 plus x, all cubed, is 1 plus 3 x plus 3 x squared plus x cubed.
 
 25
-00:06:27,653 --> 00:06:38,533
-Now a series with infinitely many terms. For t equals 1, 1 over 1 minus x is the geometric series. Every coefficient is 1.
+00:02:50,075 --> 00:03:03,749
+The number of products equal to x to the k is the number of ways to pick the k factors that give x. That is 3 choose k. The notes prove the general case with a bijection, on the next two slides.
 
 26
-00:06:38,983 --> 00:07:06,631
-Recall multisets from Chapter 1. M of t is the set of all multisets with t types of elements. A multiset is a multiplicity vector m 1 to m t of natural numbers. Its size is m 1 plus up to m t. By Theorem 1.9, the number of size n is n plus t minus 1, choose t minus 1. For t equals 2 this is n plus 1: 1, 2, 3, 4, and so on.
+00:03:04,199 --> 00:03:07,655
+P of n is the set of all subsets of 1 to n.
 
 27
-00:07:07,081 --> 00:07:18,601
-For t equals 3, the counts are 1, 3, 6, 10, 15. The orange cell: there are 6 choose 2, which is 15, multisets of size 4 with 3 types.
+00:03:08,105 --> 00:03:16,425
+Curly 0 1 to the n is the set of indicator vectors: vectors of length n with entries 0 or 1.
 
 28
-00:07:19,051 --> 00:07:43,009
-Theorem 2.4 is the binomial series. For each positive integer t, 1 over 1 minus x to the t equals the sum over n of n plus t minus 1, choose t minus 1, times x to the n. So the row for t is the multiset count for t types. The row for t equals 4 starts 1, 4, 10, 20.
+00:03:16,875 --> 00:03:27,265
+Example 1.12 gives a bijection between the two sets. Take n equals 8, and the subset S equal to 2, 3, 5, 7.
 
 29
-00:07:43,459 --> 00:08:01,357
-The notes call this the binomial series with a negative integer exponent. The general binomial series comes in Section 4.4.1. Also, n plus t minus 1 choose t minus 1 equals n plus t minus 1 choose n.
+00:03:27,715 --> 00:03:35,800
+Its indicator vector alpha has a 1 in positions 2, 3, 5 and 7, and a 0 in the other positions.
 
 30
-00:08:01,807 --> 00:08:20,815
-The proof follows the same plan as the Binomial Theorem. A multiset with t types is a vector of t natural numbers. So M of t equals N to the t. By Theorem 1.9, the left sum collects x to the size of mu, over all multisets mu.
+00:03:36,250 --> 00:03:43,013
+The inverse map collects the positions of the 1s. So the two maps are mutually inverse bijections.
 
 31
-00:08:21,265 --> 00:08:39,804
-A sum over N to the t is t nested sums, one for each m i, from 0 to infinity. And x to the size of mu is the product of x to the m i. The grid shows t equals 2. Cell m 1, m 2 holds x to the m 1 plus m 2.
+00:03:43,463 --> 00:03:50,076
+The entries of alpha add up to the size of S. Here there are 4 ones, and S has 4 elements.
 
 32
-00:08:40,254 --> 00:08:53,694
-The purple cells have m 1 plus m 2 equal to 4. There are 5 of them. So the coefficient of x to the 4 is 5, which is 4 plus 1 choose 1. This matches the formula.
+00:03:50,526 --> 00:03:56,563
+In general, S matches alpha, and the size of S is a 1 plus a 2, up to a n.
 
 33
-00:08:54,144 --> 00:09:09,376
-The nested sums split into a product of t equal sums. Each one is the geometric series, 1 over 1 minus x. So the result is 1 over 1 minus x to the t. This proves Theorem 2.4.
+00:03:57,013 --> 00:04:03,861
+Put x to the size of S on each subset. The table shows all 8 subsets for n equals 3.
 
 34
-00:09:09,826 --> 00:09:22,626
-Exam questions use these formulas with a small change. Here is 1 over 1 minus y, the geometric series in a new indeterminate y. Every coefficient is 1.
+00:04:04,311 --> 00:04:15,298
+Because of the bijection, the sum of x to the size of S over all subsets equals the sum of x to the a 1 plus up to a n, over all indicator vectors.
 
 35
-00:09:23,076 --> 00:09:40,911
-Now replace y by 3 x squared. The term y to the i becomes 3 to the i, times x to the 2 i. So the cell of y to the i moves to x to the 2 i, and gets the factor 3 to the i. The odd powers of x get 0.
+00:04:15,748 --> 00:04:21,999
+The last column of the table adds to 1 plus 3 x plus 3 x squared plus x cubed.
 
 36
-00:09:41,361 --> 00:10:06,150
-The general rule. Replace x by c x to the m in Theorem 2.4. The coefficient of x to the m i is i plus t minus 1 choose t minus 1, times c to the i. Other powers have coefficient 0. In the Binomial Theorem, replace x by c x: the coefficient of x to the k is n choose k times c to the k.
+00:04:22,449 --> 00:04:28,529
+This is 1 plus x, all cubed, again. Now we simplify the two sums in general.
 
 37
-00:10:06,600 --> 00:10:21,299
-The shift rule. Multiplying by x to the a moves every cell a places to the right. So the coefficient of x to the n in x to the a times F equals the coefficient of x to the n minus a in F.
+00:04:28,979 --> 00:04:35,059
+Start from the equation of the last slide. The left side, LHS, sums over subsets.
 
 38
-00:10:21,749 --> 00:10:35,722
-Now some exercises from the notes. Exercise 2.1 asks for coefficients. Part a: the coefficient of x to the 8 in 1 minus x to the minus 7. Pause the video and try it.
+00:04:35,509 --> 00:04:39,413
+The right side, RHS, sums over indicator vectors.
 
 39
-00:10:36,172 --> 00:10:51,340
-This is Theorem 2.4 with t equals 7. The coefficient of x to the n is n plus 6 choose 6. With n equals 8, we get 14 choose 6, which is 3003. The green cell shows it.
+00:04:39,863 --> 00:04:48,588
+Left side. Group the subsets by their size k. By Theorem 1.5, there are n choose k subsets of size k.
 
 40
-00:10:51,790 --> 00:11:01,369
-Part b: the coefficient of x to the 10 in x to the 6, times 1 minus 2 x to the minus 5. Pause the video and try it.
+00:04:49,038 --> 00:04:56,611
+Each subset of size k gives x to the k. So the left side is the sum of n choose k, x to the k.
 
 41
-00:11:01,819 --> 00:11:22,171
-First expand 1 minus 2 x to the minus 5. Replace x by 2 x in Theorem 2.4 with t equals 5. The coefficient of x to the i is i plus 4 choose 4, times 2 to the i: 1, 10, 60, 280, 1120.
+00:04:57,061 --> 00:05:12,656
+Right side. A sum over all vectors is a sum over a 1 in 0, 1, then a 2 in 0, 1, and so on. Also, x to the a 1 plus up to a n is x to the a 1, times x to the a 2, and so on.
 
 42
-00:11:22,621 --> 00:11:40,541
-Multiplying by x to the 6 moves the row 6 places to the right. So we need the coefficient of x to the 4 in the original row. That is 8 choose 4 times 2 to the 4, which is 70 times 16, or 1120.
+00:05:13,106 --> 00:05:16,989
+So the nested sums split into a product of n separate sums.
 
 43
-00:11:40,991 --> 00:11:51,636
-Part c: the coefficient of x to the 8 in x cubed plus 5 x to the 4, times 1 plus 3 x to the 6. Pause the video and try it.
+00:05:17,439 --> 00:05:24,671
+Here is why the split is correct, for n equals 2. Each cell of the grid is one vector a 1, a 2.
 
 44
-00:11:52,086 --> 00:12:14,998
-Split the product into two terms. In x cubed times F, the row of F moves 3 places. In 5 x to the 4 times F, it moves 4 places and every cell is multiplied by 5. By the shift rule, we need the coefficient of x to the 5 in F, plus 5 times the coefficient of x to the 4 in F.
+00:05:25,121 --> 00:05:34,294
+The entry of a cell is x to the a 1, times x to the a 2. For example, cell 1, 1 is x times x, which is x squared.
 
 45
-00:12:15,448 --> 00:12:36,141
-From the Binomial Theorem with x replaced by 3 x: 6 choose 5 times 3 to the 5 is 1458. 5 times 6 choose 4 times 3 to the 4 is 6075. The sum of the orange column is 7533.
+00:05:34,744 --> 00:05:45,069
+The sum of the 4 cells is 1 plus 2 x plus x squared. This is the row sum, 1 plus x, times the column sum, 1 plus x.
 
 46
-00:12:36,591 --> 00:12:47,215
-Part d: the coefficient of x to the 9 in 1 minus 4 x to the 5, plus 1 minus 3 x to the minus 2. Pause the video and try it.
+00:05:45,519 --> 00:05:50,917
+Each separate sum is x to the 0 plus x to the 1, which is 1 plus x.
 
 47
-00:12:47,665 --> 00:13:05,500
-The coefficient of a sum is the sum of the coefficients. Look at the first term. 1 minus 4 x to the 5 has a positive exponent. By the Binomial Theorem, it is a polynomial. Its coefficients are 5 choose k times minus 4 to the k.
+00:05:51,367 --> 00:05:57,959
+There are n of them, so the right side is 1 plus x to the n. This proves the Binomial Theorem.
 
 48
-00:13:05,950 --> 00:13:17,406
-A polynomial of degree 5 has no x to the 9 term. So the first part gives 0. Do not use the binomial series formula for a positive exponent.
+00:05:58,409 --> 00:06:13,961
+Example 2.3 uses the Binomial Theorem to prove the Vandermonde Convolution. Start with an identity: 1 plus x to the m plus n equals 1 plus x to the m, times 1 plus x to the n.
 
 49
-00:13:17,856 --> 00:13:37,376
-The second term is Theorem 2.4 with t equals 2 and x replaced by 3 x. The coefficient is 9 plus 1 choose 1, times 3 to the 9. That is 10 times 3 to the 9, which is 196,830. This is the answer.
+00:06:14,411 --> 00:06:22,475
+The grid shows m equals 3 and n equals 4. Each row is a term of the first factor, 1 plus x, cubed.
 
 50
-00:13:37,826 --> 00:13:51,330
-Tutorial 2, question 2. Find the coefficient of x to the 11 in x squared over 1 minus x cubed to the 5, times 1 minus 3 x squared. Pause the video and try it.
+00:06:22,925 --> 00:06:27,597
+Each column is a term of the second factor, 1 plus x, to the 4.
 
 51
-00:13:51,780 --> 00:14:02,575
-Step 1, the shift. The factor x squared moves everything 2 places. So we need the coefficient of x to the 9 in the product of the two other factors.
+00:06:28,047 --> 00:06:38,031
+A cell is the product of its row term and its column term. For example, row 3 x times column 6 x squared is 18 x cubed.
 
 52
-00:14:03,025 --> 00:14:18,043
-Step 2, expand each factor with Theorem 2.4. The first factor has terms i plus 4 choose 4, times x to the 3 i. The second has terms 3 to the j, times x to the 2 j.
+00:06:38,481 --> 00:06:47,377
+In general, the cell in row j and column i is m choose j, times n choose i, times x to the j plus i.
 
 53
-00:14:18,493 --> 00:14:34,515
-Step 3. A product of one term from each factor has exponent 3 i plus 2 j. The grid shows this exponent for each pair i, j. The rows are the terms of the first factor. The columns are the terms of the second.
+00:06:47,827 --> 00:06:55,784
+All cells with the same j plus i are on one diagonal. The purple diagonal holds the x cubed terms.
 
 54
-00:14:34,965 --> 00:14:53,162
-We need exponent 9. Two cells are green: i equals 1 with j equals 3, and i equals 3 with j equals 0. The red cells are larger than 9. Larger i or j only makes the exponent larger, so no other pair works.
+00:06:56,234 --> 00:07:05,706
+On the right side, the coefficient of x cubed is the sum of the diagonal: 4 plus 18 plus 12 plus 1, which is 35.
 
 55
-00:14:53,612 --> 00:15:12,087
-Step 4, add the products. i equals 1, j equals 3 gives 5 choose 4, times 3 cubed, which is 135. i equals 3, j equals 0 gives 7 choose 4, which is 35. The coefficient is 170.
+00:07:06,156 --> 00:07:10,636
+On the left side, it is 7 choose 3, which is also 35.
 
 56
-00:15:12,537 --> 00:15:28,942
-Practice Midterm question 7. Find the exact value of the coefficient of x to the 70 in x cubed, over 1 minus 4 x to the 30, to the 20, times 1 minus x, all cubed. Pause the video and try it.
+00:07:11,086 --> 00:07:23,865
+In general, re-index the double sum by k equals j plus i. Two equal polynomials have equal coefficients, so compare the coefficient of x to the k on both sides.
 
 57
-00:15:29,392 --> 00:15:36,091
-Step 1, the shift. Remove x cubed. Now we need the coefficient of x to the 67.
+00:07:24,315 --> 00:07:35,024
+So m plus n choose k equals the sum over j of m choose j, times n choose k minus j. This is the Vandermonde Convolution.
 
 58
-00:15:36,541 --> 00:16:05,703
-Step 2, expand. The first factor is Theorem 2.4 with t equals 20, and x replaced by 4 x to the 30. Its terms are i plus 19 choose 19, times 4 to the i, times x to the 30 i. The second factor has t equals 3. Its terms are j plus 2 choose 2, times x to the j. We need 30 i plus j equal to 67. For i equals 0, j is 67.
+00:07:35,474 --> 00:07:46,354
+Now a series with infinitely many terms. For t equals 1, 1 over 1 minus x is the geometric series. Every coefficient is 1.
 
 59
-00:16:06,153 --> 00:16:09,140
-For i equals 1, j is 37.
+00:07:46,804 --> 00:07:54,207
+Recall multisets from Chapter 1. M of t is the set of all multisets with t types of elements.
 
 60
-00:16:09,590 --> 00:16:12,001
-For i equals 2, j is 7.
+00:07:54,657 --> 00:08:03,553
+A multiset is a multiplicity vector m 1 to m t of natural numbers. Its size is m 1 plus up to m t.
 
 61
-00:16:12,451 --> 00:16:48,711
-For i equals 3, 30 i is 90, which is more than 67. So there are three terms. Add them: 69 choose 2, plus 20 times 4 times 39 choose 2, plus 21 choose 19 times 16 times 9 choose 2. This is 2346 plus 59,280 plus 120,960, which is 182,586. The question allows you to stop at the sum of binomials.
+00:08:04,003 --> 00:08:12,131
+By Theorem 1.9, the number of multisets of size n is n plus t minus 1, choose t minus 1.
 
 62
-00:16:49,161 --> 00:17:06,185
-Exercise 2.2 goes the other way. Part f gives the first coefficients: 1, 6, 24, 80, 240, 672. Find a binomial series that begins like this. Pause the video and try it.
+00:08:12,581 --> 00:08:20,367
+For t equals 2 this is n plus 1 choose 1, which is n plus 1: 1, 2, 3, 4, and so on.
 
 63
-00:17:06,635 --> 00:17:25,323
-From the substitution rule, a coefficient has the form c to the n times a binomial coefficient. The coefficients grow by about 2 each time, so try c equals 2. 80 is 8 times 10, and 672 is 32 times 21.
+00:08:20,817 --> 00:08:27,580
+For t equals 3 it is n plus 2 choose 2: 1, 3, 6, 10, 15, and so on.
 
 64
-00:17:25,773 --> 00:17:44,248
-Divide each coefficient by 2 to the n. The result is 1, 3, 6, 10, 15, 21. This is the row for t equals 3 on the binomial series slide: n plus 2 choose 2. So the series is 1 over 1 minus 2 x, cubed.
+00:08:28,030 --> 00:08:37,161
+The orange cell: there are 4 plus 2 choose 2, which is 6 choose 2, which is 15, multisets of size 4 with 3 types.
 
 65
-00:17:44,698 --> 00:17:54,106
-Part e: 1 minus 4 x squared plus 12 x to the 4 minus 32 x to the 6, and so on. Pause the video and try it.
+00:08:37,611 --> 00:08:53,525
+Theorem 2.4 is the binomial series. For each positive integer t, 1 over 1 minus x to the t equals the sum over n of n plus t minus 1, choose t minus 1, times x to the n.
 
 66
-00:17:54,556 --> 00:18:10,364
-Only even powers appear, so the series has x squared in place of x: m equals 2. Column n holds the coefficient of x to the 2 n. The signs alternate, so c is negative. Try c equals minus 2.
+00:08:53,975 --> 00:08:59,223
+So the row for t types is the series 1 over 1 minus x to the t.
 
 67
-00:18:10,814 --> 00:18:30,974
-Divide by minus 2 to the n. The result is 1, 2, 3, 4, 5, 6. This is n plus 1 choose 1, the row for t equals 2. So the series is 1 over 1 minus minus 2 x squared, squared. That is 1 over 1 plus 2 x squared, all squared.
+00:08:59,673 --> 00:09:03,663
+The row for t equals 4 starts 1, 4, 10, 20.
 
 68
-00:18:31,424 --> 00:18:40,469
-Here is the method for every question of this type. Step 1: pull out any power x to the a, and lower the target exponent by a.
+00:09:04,113 --> 00:09:14,097
+The notes call this the binomial series with a negative integer exponent. The general binomial series comes in Section 4.4.1.
 
 69
-00:18:40,919 --> 00:18:49,922
-Step 2: expand each factor with the Binomial Theorem or the binomial series. Write the general term with its own index.
+00:09:14,547 --> 00:09:21,288
+Also, n plus t minus 1 choose t minus 1 equals n plus t minus 1 choose n.
 
 70
-00:18:50,372 --> 00:19:03,983
-Step 3: write the exponent equation, for example 3 i plus 2 j equals 9. List every solution in natural numbers. Go through the values of the index with the largest step.
+00:09:21,738 --> 00:09:33,066
+The proof follows the same plan as the Binomial Theorem. A multiset with t types is a vector of t natural numbers. So M of t equals N to the t.
 
 71
-00:19:04,433 --> 00:19:09,617
-Step 4: each solution gives one product of coefficients. Add the products.
+00:09:33,516 --> 00:09:40,492
+By Theorem 1.9, the left sum collects x to the size of mu, over all multisets mu.
 
 72
-00:19:10,067 --> 00:19:31,315
-Common errors: a positive exponent gives a polynomial, so its coefficients are zero after x to the n. After the substitution of c x to the m, do not forget the factor c to the i. Do not miss a solution. In a written answer, name the result you use, show the solutions, and show the sum.
+00:09:40,942 --> 00:09:52,739
+A sum over N to the t is t nested sums, one for each m i, from 0 to infinity. And x to the size of mu is the product of the x to the m i.
 
 73
-00:19:31,765 --> 00:19:44,266
-To recap. The geometric series comes from 1 minus x, times G, equals 1. The Binomial Theorem comes from the bijection between subsets and indicator vectors.
+00:09:53,189 --> 00:10:03,664
+The grid shows t equals 2. Cell m 1, m 2 holds x to the m 1 plus m 2. For example, cell 1, 2 holds x cubed.
 
 74
-00:19:44,716 --> 00:19:59,329
-The Vandermonde Convolution compares coefficients in a product of two binomials. The binomial series for 1 over 1 minus x to the t comes from multisets, because M of t equals N to the t.
+00:10:04,114 --> 00:10:09,426
+The purple cells have m 1 plus m 2 equal to 4. There are 5 of them.
 
 75
-00:19:59,779 --> 00:20:15,801
-To find a coefficient: substitute c x to the m, shift by x to the a, solve the exponent equation, and add the products. The next video makes formal power series exact: sums, products, inverses and composition.
+00:10:09,876 --> 00:10:17,769
+So the coefficient of x to the 4 is 5. The formula gives 4 plus 1 choose 1, which is also 5.
+
+76
+00:10:18,219 --> 00:10:21,825
+The nested sums split into a product of t equal sums.
+
+77
+00:10:22,275 --> 00:10:33,155
+Each sum is the geometric series, 1 over 1 minus x. So the result is 1 over 1 minus x to the t. This proves Theorem 2.4.
+
+78
+00:10:33,605 --> 00:10:46,405
+Exam questions use these formulas with a small change. Here is 1 over 1 minus y, the geometric series in a new indeterminate y. Every coefficient is 1.
+
+79
+00:10:46,855 --> 00:10:49,436
+Now replace y by 3 x squared.
+
+80
+00:10:49,886 --> 00:10:56,883
+The term y to the i becomes 3 x squared to the i, which is 3 to the i times x to the 2 i.
+
+81
+00:10:57,333 --> 00:11:03,243
+So the cell of y to the i moves to x to the 2 i, and gets the factor 3 to the i.
+
+82
+00:11:03,693 --> 00:11:11,351
+For example, y squared moves to x to the 4. It gets the factor 3 squared, so the coefficient is 9.
+
+83
+00:11:11,801 --> 00:11:13,935
+The odd powers of x get 0.
+
+84
+00:11:14,385 --> 00:11:30,918
+The general rule. Replace x by c x to the m in Theorem 2.4. The coefficient of x to the m i is i plus t minus 1 choose t minus 1, times c to the i. Other powers have coefficient 0.
+
+85
+00:11:31,368 --> 00:11:40,136
+In the Binomial Theorem, replace x by c x: the coefficient of x to the k is n choose k, times c to the k.
+
+86
+00:11:40,586 --> 00:11:46,111
+The shift rule. Multiplying by x to the a moves every cell a places to the right.
+
+87
+00:11:46,561 --> 00:11:54,881
+So the coefficient of x to the n in x to the a times F equals the coefficient of x to the n minus a in F.
+
+88
+00:11:55,331 --> 00:12:09,305
+Now some exercises from the notes. Exercise 2.1 asks for coefficients. Part a: the coefficient of x to the 8 in 1 minus x to the minus 7. Pause the video and try it.
+
+89
+00:12:09,755 --> 00:12:17,499
+This is Theorem 2.4 with t equals 7. The coefficient of x to the n is n plus 6 choose 6.
+
+90
+00:12:17,949 --> 00:12:24,775
+With n equals 8, we get 14 choose 6, which is 3003. The green cell shows it.
+
+91
+00:12:25,225 --> 00:12:34,804
+Part b: the coefficient of x to the 10 in x to the 6, times 1 minus 2 x to the minus 5. Pause the video and try it.
+
+92
+00:12:35,254 --> 00:12:50,401
+First expand 1 minus 2 x to the minus 5. Replace x by 2 x in Theorem 2.4 with t equals 5. The coefficient of x to the i is i plus 4 choose 4, times 2 to the i.
+
+93
+00:12:50,851 --> 00:12:56,504
+The row starts 1, 10, 60, 280, 1120.
+
+94
+00:12:56,954 --> 00:13:01,754
+Multiplying by x to the 6 moves the row 6 places to the right.
+
+95
+00:13:02,204 --> 00:13:11,676
+So the coefficient of x to the 10 is the coefficient of x to the 10 minus 6, which is x to the 4, in the row before the shift.
+
+96
+00:13:12,126 --> 00:13:20,083
+That is 8 choose 4 times 2 to the 4, which is 70 times 16, or 1120.
+
+97
+00:13:20,533 --> 00:13:31,179
+Part c: the coefficient of x to the 8 in x cubed plus 5 x to the 4, times 1 plus 3 x to the 6. Pause the video and try it.
+
+98
+00:13:31,629 --> 00:13:43,106
+Let F be 1 plus 3 x to the 6. By the Binomial Theorem with x replaced by 3 x, its coefficients are 6 choose k, times 3 to the k.
+
+99
+00:13:43,556 --> 00:13:50,148
+Split the product into two terms. In x cubed times F, the row of F moves 3 places.
+
+100
+00:13:50,598 --> 00:13:58,065
+In 5 x to the 4 times F, the row moves 4 places, and every cell is multiplied by 5.
+
+101
+00:13:58,515 --> 00:14:10,397
+We need the column of x to the 8. By the shift rule, it holds the coefficient of x to the 5 in F, plus 5 times the coefficient of x to the 4 in F.
+
+102
+00:14:10,847 --> 00:14:22,922
+The coefficient of x to the 5 in F is 6 choose 5 times 3 to the 5. That is 6 times 243, which is 1458.
+
+103
+00:14:23,372 --> 00:14:36,855
+5 times the coefficient of x to the 4 in F is 5 times 6 choose 4 times 3 to the 4. That is 5 times 15 times 81, which is 6075.
+
+104
+00:14:37,305 --> 00:14:47,203
+The sum of the orange column is 1458 plus 6075, which is 7533.
+
+105
+00:14:47,653 --> 00:14:58,277
+Part d: the coefficient of x to the 9 in 1 minus 4 x to the 5, plus 1 minus 3 x to the minus 2. Pause the video and try it.
+
+106
+00:14:58,727 --> 00:15:06,173
+The coefficient of a sum is the sum of the coefficients. Look at the first term, 1 minus 4 x to the 5.
+
+107
+00:15:06,623 --> 00:15:17,204
+It has a positive exponent. By the Binomial Theorem, it is a polynomial. Its coefficients are 5 choose k, times minus 4 to the k.
+
+108
+00:15:17,654 --> 00:15:23,926
+A polynomial of degree 5 has no x to the 9 term. So the first part gives 0.
+
+109
+00:15:24,376 --> 00:15:29,112
+Do not use the binomial series formula for a positive exponent.
+
+110
+00:15:29,562 --> 00:15:35,749
+The second term is Theorem 2.4 with t equals 2, and x replaced by 3 x.
+
+111
+00:15:36,199 --> 00:15:41,873
+The coefficient of x to the 9 is 9 plus 1 choose 1, times 3 to the 9.
+
+112
+00:15:42,323 --> 00:15:55,422
+3 to the 9 is 19,683. So the answer is 10 times 19,683, which is 196,830.
+
+113
+00:15:55,872 --> 00:16:09,376
+Tutorial 2, question 2. Find the coefficient of x to the 11 in x squared over 1 minus x cubed to the 5, times 1 minus 3 x squared. Pause the video and try it.
+
+114
+00:16:09,826 --> 00:16:23,522
+Step 1, the shift. The factor x squared moves everything 2 places. So we need the coefficient of x to the 11 minus 2, which is x to the 9, in the product of the two other factors.
+
+115
+00:16:23,972 --> 00:16:33,743
+Step 2, expand each factor with Theorem 2.4. The first factor has terms i plus 4 choose 4, times x to the 3 i.
+
+116
+00:16:34,193 --> 00:16:38,801
+The second factor has terms 3 to the j, times x to the 2 j.
+
+117
+00:16:39,251 --> 00:16:49,320
+Step 3. A product of one term from each factor has exponent 3 i plus 2 j. The grid shows this exponent for each pair i, j.
+
+118
+00:16:49,770 --> 00:16:52,394
+The rows are the terms of the first factor.
+
+119
+00:16:52,844 --> 00:16:55,831
+The columns are the terms of the second factor.
+
+120
+00:16:56,281 --> 00:17:05,987
+We need exponent 9. Two cells are green: i equals 1 with j equals 3, and i equals 3 with j equals 0.
+
+121
+00:17:06,437 --> 00:17:14,715
+The red cells are larger than 9. Larger i or j only makes the exponent larger, so no other pair works.
+
+122
+00:17:15,165 --> 00:17:27,218
+Step 4, add the products. i equals 1, j equals 3 gives 5 choose 4, times 3 cubed. That is 5 times 27, which is 135.
+
+123
+00:17:27,668 --> 00:17:35,327
+i equals 3, j equals 0 gives 7 choose 4, times 3 to the 0. That is 35.
+
+124
+00:17:35,777 --> 00:17:41,558
+The coefficient is 135 plus 35, which is 170.
+
+125
+00:17:42,008 --> 00:17:58,413
+Practice Midterm question 7. Find the exact value of the coefficient of x to the 70 in x cubed, over 1 minus 4 x to the 30, to the 20, times 1 minus x, all cubed. Pause the video and try it.
+
+126
+00:17:58,863 --> 00:18:08,079
+Step 1, the shift. Remove x cubed. 70 minus 3 is 67, so we need the coefficient of x to the 67.
+
+127
+00:18:08,529 --> 00:18:25,809
+Step 2, expand. The first factor is Theorem 2.4 with t equals 20, and x replaced by 4 x to the 30. Its terms are i plus 19 choose 19, times 4 to the i, times x to the 30 i.
+
+128
+00:18:26,259 --> 00:18:33,449
+The second factor has t equals 3. Its terms are j plus 2 choose 2, times x to the j.
+
+129
+00:18:33,899 --> 00:18:46,421
+Step 3. We need 30 i plus j equal to 67, with j at least 0. Each bar has length 67: an orange part 30 i, and a blue part j.
+
+130
+00:18:46,871 --> 00:18:54,423
+For i equals 0, there is no orange part. j is 67 minus 0, which is 67.
+
+131
+00:18:54,873 --> 00:19:00,121
+For i equals 1, j is 67 minus 30, which is 37.
+
+132
+00:19:00,571 --> 00:19:05,521
+For i equals 2, j is 67 minus 60, which is 7.
+
+133
+00:19:05,971 --> 00:19:14,867
+For i equals 3, 30 i is 90, which is more than 67. Then j is negative. So there are only three terms.
+
+134
+00:19:15,317 --> 00:19:27,413
+Step 4, one term for each bar. For i equals 0, j plus 2 is 69. The term is 69 choose 2, which is 2346.
+
+135
+00:19:27,863 --> 00:19:44,737
+For i equals 1, j plus 2 is 39. The term is 20 choose 19, times 4, times 39 choose 2. That is 20 times 4 times 741, which is 59,280.
+
+136
+00:19:45,187 --> 00:20:02,745
+For i equals 2, j plus 2 is 9. The term is 21 choose 19, times 4 squared, times 9 choose 2. That is 210 times 16 times 36, which is 120,960.
+
+137
+00:20:03,195 --> 00:20:17,893
+Add the three terms: 2346 plus 59,280 plus 120,960 is 182,586.
+
+138
+00:20:18,343 --> 00:20:22,738
+The question says that you can stop at the sum of binomials and powers.
+
+139
+00:20:23,188 --> 00:20:40,212
+Exercise 2.2 goes the other way. Part f gives the first coefficients: 1, 6, 24, 80, 240, 672. Find a binomial series that begins like this. Pause the video and try it.
+
+140
+00:20:40,662 --> 00:20:47,745
+From the substitution rule, a coefficient has the form c to the n, times a binomial coefficient.
+
+141
+00:20:48,195 --> 00:21:00,760
+The coefficients have many factors of 2, so try c equals 2. For example, 80 is 2 cubed times 10, and 672 is 2 to the 5 times 21.
+
+142
+00:21:01,210 --> 00:21:03,941
+Divide each coefficient by 2 to the n.
+
+143
+00:21:04,391 --> 00:21:07,996
+The result is 1, 3, 6, 10, 15, 21.
+
+144
+00:21:08,446 --> 00:21:14,697
+This is the row for t equals 3 on the binomial series slide: n plus 2 choose 2.
+
+145
+00:21:15,147 --> 00:21:18,880
+So the series is 1 over 1 minus 2 x, cubed.
+
+146
+00:21:19,330 --> 00:21:28,738
+Part e: 1 minus 4 x squared plus 12 x to the 4 minus 32 x to the 6, and so on. Pause the video and try it.
+
+147
+00:21:29,188 --> 00:21:39,812
+Only even powers appear, so the series has x squared in place of x: m equals 2. Column n holds the coefficient of x to the 2 n.
+
+148
+00:21:40,262 --> 00:21:45,147
+The signs alternate, so c is negative. Try c equals minus 2.
+
+149
+00:21:45,597 --> 00:21:48,755
+Divide each coefficient by minus 2 to the n.
+
+150
+00:21:49,205 --> 00:21:52,319
+The result is 1, 2, 3, 4, 5, 6.
+
+151
+00:21:52,769 --> 00:21:56,780
+This is n plus 1 choose 1, the row for t equals 2.
+
+152
+00:21:57,230 --> 00:22:06,702
+So the series is 1 over 1 minus minus 2 x squared, all squared. That is 1 over 1 plus 2 x squared, all squared.
+
+153
+00:22:07,152 --> 00:22:16,197
+Here is the method for every question of this type. Step 1: pull out any power x to the a, and lower the target exponent by a.
+
+154
+00:22:16,647 --> 00:22:25,650
+Step 2: expand each factor with the Binomial Theorem or the binomial series. Write the general term with its own index.
+
+155
+00:22:26,100 --> 00:22:39,711
+Step 3: write the exponent equation, for example 3 i plus 2 j equals 9. List every solution in natural numbers. Go through the values of the index with the largest step.
+
+156
+00:22:40,161 --> 00:22:45,345
+Step 4: each solution gives one product of coefficients. Add the products.
+
+157
+00:22:45,795 --> 00:22:53,496
+Common errors. A positive exponent gives a polynomial, so its coefficients are zero after x to the n.
+
+158
+00:22:53,946 --> 00:22:59,642
+After the substitution of c x to the m, do not forget the factor c to the i.
+
+159
+00:23:00,092 --> 00:23:03,612
+Do not miss a solution of the exponent equation.
+
+160
+00:23:04,062 --> 00:23:09,438
+In a written answer, name the result you use, show the solutions, and show the sum.
+
+161
+00:23:09,888 --> 00:23:16,075
+To recap. The geometric series comes from 1 minus x, times G, equals 1.
+
+162
+00:23:16,525 --> 00:23:22,306
+The Binomial Theorem comes from the bijection between subsets and indicator vectors.
+
+163
+00:23:22,756 --> 00:23:28,111
+The Vandermonde Convolution compares coefficients in a product of two binomials.
+
+164
+00:23:28,561 --> 00:23:37,094
+The binomial series for 1 over 1 minus x to the t comes from multisets, because M of t equals N to the t.
+
+165
+00:23:37,544 --> 00:23:43,069
+To find a coefficient, substitute c x to the m, and shift by x to the a.
+
+166
+00:23:43,519 --> 00:23:53,845
+Then solve the exponent equation, and add the products. The next video makes formal power series exact: sums, products, inverses and composition.

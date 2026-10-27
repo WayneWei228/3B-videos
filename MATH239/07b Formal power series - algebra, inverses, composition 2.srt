@@ -3,245 +3,525 @@
 This is MATH 239, video 7b. It continues video 7a on formal power series. We use the supplemental notes, pages 4 to 6.
 
 2
-00:00:12,311 --> 00:00:35,970
-After this video, you can use inverses and composition to solve tutorial problem T3-1 and practice midterm question 8. You can prove that some series are not rational. You can find square roots one coefficient at a time, as in T2-3. And you can get the coefficients of the square root of 1 minus 4 x from a Taylor series.
+00:00:12,311 --> 00:00:16,002
+After this video, you can do the four things in this list.
 
 3
-00:00:36,420 --> 00:00:55,257
-Tutorial problem T3-1 has three series. For each one, find a rational expression, or explain why it is not a power series. Pause the video and try it. Start with f of x, the sum of x plus x squared to the i, for i from 0 to 30.
+00:00:16,452 --> 00:00:28,271
+Tutorial problem T3-1 has three series. For each one, find a rational expression, or explain why it is not a power series. Pause the video and try it.
 
 4
-00:00:55,707 --> 00:01:14,950
-Use the finite geometric sum. Multiply 1 plus y plus up to y to the 30 by y. Every coefficient moves one place to the right. Subtract: all the middle terms cancel. So 1 minus y, times the sum, is 1 minus y to the 31.
+00:00:28,721 --> 00:00:35,697
+Start with f of x, the sum of x plus x squared to the power i, for i from 0 to 30.
 
 5
-00:01:15,400 --> 00:01:37,587
-Now put y equal to x plus x squared. f of x is 1 minus x plus x squared to the 31, over 1 minus x minus x squared. The denominator has constant term 1, so its inverse exists. f is a sum of 31 polynomials, so it is a polynomial of degree 60.
+00:00:36,147 --> 00:00:47,496
+Let y be x plus x squared. Then f is 1 plus y plus y squared, and so on, up to y to the 30. The top row shows these coefficients.
 
 6
-00:01:38,037 --> 00:01:57,834
-Part b. Let y be x squared over 1 minus x to the 7. The inverse of 1 minus x to the 7 exists, so y is a formal power series. Its coefficients are 1 at x squared, x to the 9, x to the 16, and so on. Its constant term is 0.
+00:00:47,946 --> 00:00:53,130
+Multiply the sum by y. Every coefficient moves one place to the right.
 
 7
-00:01:58,284 --> 00:02:18,188
-Take y squared out of the sum. Then g is y squared times the geometric series in y. This is a composition with y, and y of 0 is 0, so it is well defined by Theorem 3.2 from video 7a. So g equals y squared over 1 minus y.
+00:00:53,580 --> 00:01:00,172
+Subtract the second row from the first. All the middle terms cancel: 1 minus 1 is 0.
 
 8
-00:02:18,638 --> 00:02:35,278
-Simplify. 1 minus y is 1 minus x to the 7 minus x squared, over 1 minus x to the 7. So g is x to the 4 over 1 minus x to the 7, times 1 minus x to the 7 minus x squared.
+00:01:00,622 --> 00:01:09,859
+Only 1 and minus y to the 31 are left. So 1 minus y, times the sum, is 1 minus y to the 31.
 
 9
-00:02:35,728 --> 00:02:51,643
-Check the first coefficients. The sum of the powers of y and the rational expression give the same series: x to the 4, plus x to the 6, plus x to the 8, and so on. A computer check agrees up to x to the 39.
+00:01:10,309 --> 00:01:22,341
+Now put y equal to x plus x squared. So f of x is 1 minus the 31st power of x plus x squared, over 1 minus x minus x squared.
 
 10
-00:02:52,093 --> 00:03:00,797
-Part c. h of x is the sum of the powers of 1 over 1 minus x to the 7. The table shows the first powers.
+00:01:22,791 --> 00:01:27,143
+The denominator has constant term 1, so its inverse exists.
 
 11
-00:03:01,247 --> 00:03:21,535
-1 over 1 minus x to the 7 has constant term 1. So each power has constant term 1. The constant term of h would be 1 plus 1 plus 1, with no end. So h of x is not a formal power series. This is the same problem as with B of x equal to 1 plus x.
+00:01:27,593 --> 00:01:37,343
+The largest power, x plus x squared to the 30, has degree 2 times 30, which is 60. So f is a polynomial of degree 60.
 
 12
-00:03:21,985 --> 00:03:44,214
-Now practice midterm question 8. A of x is the sum of x to the n over n factorial. Part a asks for the coefficient of x to the n in A of 2 x. Part b asks for the coefficient of x to the n in A of x squared. Part c asks for a proof that the two series are equal. Pause the video and try it.
+00:01:37,793 --> 00:01:48,843
+Part b. g of x is the sum, for i at least 2, of the i-th power of x squared over 1 minus x to the 7. Pause the video and try it.
 
 13
-00:03:44,664 --> 00:04:02,264
-Part a. A of 2 x is a composition with B of x equal to 2 x, and B of 0 is 0. Replace x by 2 x. The term x to the n becomes 2 to the n, x to the n. So each coefficient is multiplied by 2 to the n.
+00:01:49,293 --> 00:02:02,029
+Let y be x squared over 1 minus x to the 7. The inverse of 1 minus x to the 7 exists, so y is a formal power series. The row shows its coefficients.
 
 14
-00:04:02,714 --> 00:04:08,709
-So the coefficient of x to the n in A of 2 x is 2 to the n over n factorial.
+00:02:02,479 --> 00:02:19,141
+1 over 1 minus x to the 7 is 1 plus x to the 7 plus x to the 14, and so on. Multiply by x squared. So y has the coefficient 1 at x squared, at x to the 9, at x to the 16, and so on.
 
 15
-00:04:09,159 --> 00:04:21,916
-Part b. Square A of x with the product formula. The grid shows the products of the terms. Cell i, j holds 1 over i factorial times 1 over j factorial.
+00:02:19,591 --> 00:02:21,852
+The constant term of y is 0.
 
 16
-00:04:22,366 --> 00:04:36,766
-The coefficient of x to the n is the sum over k from 0 to n of 1 over k factorial times n minus k factorial. It has n plus 1 terms. This is the answer to part b.
+00:02:22,302 --> 00:02:28,809
+Take y squared out of the sum. Then g is y squared times the geometric series in y.
 
 17
-00:04:37,216 --> 00:04:45,323
-Try n equal to 3. The diagonal has 1 sixth, 1 half, 1 half, and 1 sixth. The sum is 4 thirds.
+00:02:29,259 --> 00:02:42,507
+This is a composition with y, and y of 0 is 0. So it is well defined, by Theorem 3.2 from video 7a. So g equals y squared over 1 minus y.
 
 18
-00:04:45,773 --> 00:04:54,157
-From part a, 2 cubed over 3 factorial is 8 over 6, which is also 4 thirds. This suggests part c.
+00:02:42,957 --> 00:02:51,703
+Simplify. 1 minus y is 1 minus x to the 7, minus x squared, all over 1 minus x to the 7.
 
 19
-00:04:54,607 --> 00:05:00,388
-Part c. Start from the answer to part b. Pause the video and try to finish the proof.
+00:02:52,153 --> 00:03:00,943
+y squared is x to the 4 over the square of 1 minus x to the 7. Multiply it by the inverse of 1 minus y.
 
 20
-00:05:00,838 --> 00:05:17,521
-Multiply and divide by n factorial. Then each term is n factorial over k factorial times n minus k factorial, which is n choose k. So the sum is 1 over n factorial times the sum of n choose k.
+00:03:01,393 --> 00:03:13,617
+One factor 1 minus x to the 7 cancels. So g is x to the 4, over 1 minus x to the 7, times 1 minus x to the 7 minus x squared.
 
 21
-00:05:17,971 --> 00:05:44,211
-The sum of n choose k, for k from 0 to n, is 2 to the n. This is the Binomial Theorem with x equal to 1. Also, both sides count the subsets of a set of size n. For n equal to 3: 1 plus 3 plus 3 plus 1 is 8. So the coefficient is 2 to the n over n factorial. That is the coefficient of x to the n in A of 2 x, from part a.
+00:03:14,067 --> 00:03:28,083
+Check the answer. The table shows y squared, y cubed, y to the 4, and y to the 5. The power y to the i starts at x to the 2 i. Higher powers start after x to the 11.
 
 22
-00:05:44,661 --> 00:05:59,039
-So the two series have the same coefficient of x to the n for every n. By the definition of equality, A of 2 x equals A of x squared. The table shows the first six coefficients of both sides.
+00:03:28,533 --> 00:03:33,055
+Column x to the 6 has only one 1. It comes from y cubed.
 
 23
-00:05:59,489 --> 00:06:22,828
-A formal power series is rational if it is a ratio of two polynomials, P of x over Q of x. Most generating series in this course are rational. For example, the inverse of 1 minus x plus 2 x squared, and f and g of T3-1. Chapter 4 of the course notes finds their coefficients with partial fractions.
+00:03:33,505 --> 00:03:41,100
+Column x to the 11 has a 2. It comes from y squared: x squared times x to the 9, two times.
 
 24
-00:06:23,278 --> 00:06:32,729
-Not every series is rational. Theorem 4.1: if A of x squared equals 1 plus x, then A of x is not rational.
+00:03:41,550 --> 00:03:52,067
+Add the columns. g of x is x to the 4, plus x to the 6, plus x to the 8, plus x to the 10, plus 2 x to the 11, and so on.
 
 25
-00:06:33,179 --> 00:06:50,587
-The proof is by contradiction. Suppose A equals P over Q. Square it: 1 plus x equals P squared over Q squared. Multiply by Q squared: P squared equals 1 plus x times Q squared. Both sides are polynomials.
+00:03:52,517 --> 00:03:59,749
+The rational expression gives the same coefficients. A computer check agrees up to x to the 39.
 
 26
-00:06:51,037 --> 00:07:13,757
-Compare the degrees. The degree of P squared is 2 times the degree of P, an even number. The degree of the right side is 1 plus 2 times the degree of Q, an odd number. An even number is not odd. This contradiction proves the theorem. The proof uses only one fact: 1 plus x is a polynomial of odd degree.
+00:04:00,199 --> 00:04:10,951
+Part c. h of x is the sum of the powers of 1 over 1 minus x to the 7. Pause the video and try it. The table shows the first powers.
 
 27
-00:07:14,207 --> 00:07:32,425
-Theorem 4.2 extends this. If A of x is rational and A of x squared is a polynomial, then A of x is a polynomial. The notes omit its proof. These theorems do not yet show that such an A of x exists. That is Exercise 4.1.
+00:04:11,401 --> 00:04:18,505
+1 over 1 minus x to the 7 has constant term 1. So each power has constant term 1.
 
 28
-00:07:32,875 --> 00:07:48,939
-Exercise 4.1 asks you to show that a series with A of x squared equal to 1 plus x exists. Pause the video and try it. Use the product formula on A times A. The grid shows the products a sub i a sub j.
+00:04:18,955 --> 00:04:27,510
+So the constant term of h would be 1 plus 1 plus 1, with no end. So h of x is not a formal power series.
 
 29
-00:07:49,389 --> 00:07:58,947
-The constant term gives a sub 0 squared equals 1. So a sub 0 is 1 or minus 1. Take a sub 0 equal to 1.
+00:04:27,960 --> 00:04:33,720
+This is the same problem as with B of x equal to 1 plus x, in video 7a.
 
 30
-00:07:59,397 --> 00:08:11,877
-The diagonal for x to the 1 has two orange corner cells, a 0 a 1 and a 1 a 0. Together they are 2 a sub 1. This must equal 1, so a sub 1 is 1 half.
+00:04:34,170 --> 00:04:40,890
+Now practice midterm question 8. A of x is the sum of x to the n over n factorial.
 
 31
-00:08:12,327 --> 00:08:23,612
-For x squared, the corners give 2 a sub 2, and the middle cell gives a sub 1 squared, which is known. The sum must be 0. So a sub 2 is minus 1 eighth.
+00:04:41,340 --> 00:04:45,543
+Part a asks for the coefficient of x to the n in A of 2 x.
 
 32
-00:08:24,062 --> 00:08:32,467
-For x cubed, the corners give 2 a sub 3, and the two middle cells give 2 a 1 a 2. So a sub 3 is 1 sixteenth.
+00:04:45,993 --> 00:04:51,987
+Part b asks for the coefficient of x to the n in A of x squared, as a finite sum.
 
 33
-00:08:32,917 --> 00:08:59,627
-In general, the diagonal for x to the n has the new unknown a sub n only in the two corners. The middle cells use earlier coefficients. Since a sub 0 is not 0, each a sub n has exactly one value. So the series exists, and by Theorem 4.1 it is not rational. The choice a sub 0 equal to minus 1 gives minus A of x. So there are two solutions.
+00:04:52,437 --> 00:04:57,835
+Part c asks for a proof that the two series are equal. Pause the video and try it.
 
 34
-00:09:00,077 --> 00:09:14,562
-Exercise 4.2 shows that there are no other solutions. If A of x squared equals B of x squared, then A of x equals plus or minus B of x. The chain shows the proof in four steps.
+00:04:58,285 --> 00:05:07,565
+Part a. A of 2 x is a composition with B of x equal to 2 x, and B of 0 is 0. Replace x by 2 x.
 
 35
-00:09:15,012 --> 00:09:30,521
-Move B squared to the left side and factor. A minus B, times A plus B, equals A squared minus B squared. This uses A times B equals B times A, which is true because the product formula is symmetric.
+00:05:08,015 --> 00:05:15,823
+The term x to the n becomes 2 to the n, x to the n. So each coefficient is multiplied by 2 to the n.
 
 36
-00:09:30,971 --> 00:09:49,361
-Now A minus B times A plus B is the zero series. By A2-1 from video 7a, one of the two factors is 0. So A equals B, or A equals minus B. Thus the equation A of x squared equals 1 plus x has exactly two solutions.
+00:05:16,273 --> 00:05:21,969
+For example, the coefficient of x cubed is 1 sixth times 8, which is 4 thirds.
 
 37
-00:09:49,811 --> 00:10:08,712
-Tutorial problem T2-3 defines a square root of A of x: a series B of x with B times B equal to A, and a constant term at least 0. Part a asks for the first four coefficients of the square root of 1 minus 4 x. Pause the video and try it.
+00:05:22,419 --> 00:05:28,413
+So the coefficient of x to the n in A of 2 x is 2 to the n over n factorial.
 
 38
-00:10:09,162 --> 00:10:18,698
-The constant term: b sub 0 squared equals 1. The condition b sub 0 at least 0 gives b sub 0 equal to 1.
+00:05:28,863 --> 00:05:34,879
+Part b. Find the coefficient of x to the n in A of x squared, as a finite sum.
 
 39
-00:10:19,148 --> 00:10:28,876
-The coefficient of x: the two corner cells give 2 b 0 b 1, which must equal minus 4. So b sub 1 is minus 2.
+00:05:35,329 --> 00:05:43,692
+Use the product formula. Both factors are A of x, so a sub k and b sub k are both 1 over k factorial.
 
 40
-00:10:29,326 --> 00:10:40,057
-The coefficient of x squared: 2 b 0 b 2 plus b 1 squared equals 0. b 1 squared is 4. So b sub 2 is minus 2.
+00:05:44,142 --> 00:05:48,217
+Row i of the grid is x to the i over i factorial.
 
 41
-00:10:40,507 --> 00:10:58,448
-The coefficient of x cubed: 2 b 0 b 3 plus 2 b 1 b 2 equals 0. 2 b 1 b 2 is 8. So b sub 3 is minus 4. The square root starts 1 minus 2 x minus 2 x squared minus 4 x cubed.
+00:05:48,667 --> 00:05:52,571
+Column j is x to the j over j factorial.
 
 42
-00:10:58,898 --> 00:11:20,679
-Part b asks why x has no square root. Part c asks for a condition that every nonzero series with a square root satisfies. Pause the video and try it. Suppose B of x squared equals x. The constant term of x is 0, so b sub 0 squared is 0, and b sub 0 is 0.
+00:05:53,021 --> 00:06:04,903
+So cell i, j holds 1 over i factorial times 1 over j factorial. For example, cell 1, 2 holds 1 times 1 half, which is 1 half.
 
 43
-00:11:21,129 --> 00:11:40,415
-Let b sub n x to the n be the lowest nonzero term of B, with n at least 1. In the grid, n is 2. As in A2-1, only one cell on the diagonal 2 n is not 0. So the lowest term of B squared is b sub n squared, x to the 2 n.
+00:06:05,353 --> 00:06:19,753
+The coefficient of x to the n is the sum over k from 0 to n of 1 over k factorial times n minus k factorial. It has n plus 1 terms. This is the answer to part b.
 
 44
-00:11:40,865 --> 00:11:49,633
-But the lowest term of x is x to the 1. 2 n is even and 1 is odd, so they are not equal. So x has no square root.
+00:06:20,203 --> 00:06:26,369
+Try n equal to 3. The diagonal has 1 sixth, 1 half, 1 half, and 1 sixth.
 
 45
-00:11:50,083 --> 00:12:03,715
-The same argument answers part c. If a nonzero series equals B squared, its lowest term has the power 2 n. So the lowest power of x with a nonzero coefficient must be even.
+00:06:26,819 --> 00:06:29,827
+The sum is 8 sixths, which is 4 thirds.
 
 46
-00:12:04,165 --> 00:12:22,170
-Chapter 4 of the course notes needs a series A of x with A of x squared equal to 1 minus 4 x. 1 minus 4 x has odd degree, so A of x is not rational. Partial fractions cannot give its coefficients. The notes use a Taylor series.
+00:06:30,277 --> 00:06:38,661
+From part a, 2 cubed over 3 factorial is 8 over 6, which is also 4 thirds. This suggests part c.
 
 47
-00:12:22,620 --> 00:12:40,881
-The formal derivative is defined by the usual rule. The term a sub n x to the n becomes n a sub n x to the n minus 1. In the picture, each coefficient moves one place to the left and is multiplied by its old power. No limits are needed.
+00:06:39,111 --> 00:06:44,977
+Part c. Prove that A of 2 x equals A of x squared. Pause the video and try it.
 
 48
-00:12:41,331 --> 00:13:06,505
-Do it k times. The k-th derivative has coefficient i plus k factorial over i factorial, times a sub i plus k, at x to the i. The notes omit the factor a sub i plus k in this line. The constant term is k factorial times a sub k. So a sub k equals the k-th derivative at 0, over k factorial.
+00:06:45,427 --> 00:06:56,051
+Start from part b. The coefficient of x to the n in A of x squared is the sum of 1 over k factorial times n minus k factorial.
 
 49
-00:13:06,955 --> 00:13:26,667
-This is the formula from calculus. But the chain rule, the product rule and the power rule are proved for functions. A formal power series does not always converge, so it is not always a function. So the notes compute with calculus, and then check the result as a formal power series.
+00:06:56,501 --> 00:07:13,184
+Multiply and divide by n factorial. Then each term is n factorial over k factorial times n minus k factorial, which is n choose k. So the sum is 1 over n factorial times the sum of n choose k.
 
 50
-00:13:27,117 --> 00:13:41,986
-The notes use two names. A of x is the formal power series with A of x squared equal to 1 minus 4 x. B of x is the Taylor series at 0 of the function, the square root of 1 minus 4 x.
+00:07:13,634 --> 00:07:22,658
+The sum of n choose k, for k from 0 to n, is 2 to the n. This is the Binomial Theorem with x equal to 1.
 
 51
-00:13:42,436 --> 00:14:07,055
-By the power rule and induction, the k-th derivative is minus 2, times 2 k minus 2 factorial over k minus 1 factorial, times 1 minus 4 x to the power 1 minus 2 k over 2. The notes print the exponent minus 1 half in the middle; it should be plus 1 half. For k equal to 1, the derivative at 0 is minus 2.
+00:07:23,108 --> 00:07:28,996
+For n equal to 3: 1 plus 3 plus 3 plus 1 is 8, which is 2 cubed.
 
 52
-00:14:07,505 --> 00:14:31,633
-For the induction step, differentiate once more. The power rule and the chain rule give the factor 1 minus 2 k over 2, times minus 4. That is 2 times 2 k minus 1. It turns 2 k minus 2 factorial into 2 k factorial, and k minus 1 factorial into k factorial. This is the formula for k plus 1.
+00:07:29,446 --> 00:07:38,257
+So the coefficient is 2 to the n over n factorial. That is the coefficient of x to the n in A of 2 x, from part a.
 
 53
-00:14:32,083 --> 00:14:51,133
-Put x equal to 0, where the last factor is 1, and divide by k factorial. b sub k is minus 2 over k, times 2 k minus 2 choose k minus 1. The table gives minus 2, minus 2, minus 4, minus 10, minus 28.
+00:07:38,707 --> 00:07:48,669
+So the two series have the same coefficient of x to the n for every n. By the definition of equality, A of 2 x equals A of x squared.
 
 54
-00:14:51,583 --> 00:15:12,831
-So B of x is 1 minus 2 times the sum over k of 1 over k, times 2 k minus 2 choose k minus 1, x to the k. The first coefficients agree with T2-3. But we still must show that B of x squared is 1 minus 4 x as a formal power series, for every coefficient.
+00:07:49,119 --> 00:07:52,703
+The table shows the first six coefficients of both sides.
 
 55
-00:15:13,281 --> 00:15:35,148
-We must show that every coefficient of B of x squared equals the coefficient of 1 minus 4 x. Put the formula for b sub k into the product formula, and you get an identity that is hard to prove directly. The notes use convergence instead. Let C of x be B of x squared minus 1 minus 4 x.
+00:07:53,153 --> 00:08:00,449
+A formal power series is rational if it is a ratio of two polynomials, P of x over Q of x.
 
 56
-00:15:35,598 --> 00:15:57,913
-The ratio of two consecutive coefficients is 2 times 2 k minus 1, over k plus 1. It goes to 4. By the ratio test, B of x converges for x between minus 1 quarter and 1 quarter. There, B of x equals the square root of 1 minus 4 x, so C of x is 0 at every point.
+00:08:00,899 --> 00:08:17,049
+Most generating series in this course are rational. For example, the inverse of 1 minus x plus 2 x squared, and f and g of T3-1. Chapter 4 of the course notes finds their coefficients with partial fractions.
 
 57
-00:15:58,363 --> 00:16:21,616
-Theorem 5.1 says this is enough: if a power series converges to 0 on an interval from 0 to epsilon, then all its coefficients are 0. The proof sketch: a power series is continuous where it converges. So c sub 0, the value at 0, is the limit of the values 0. So c sub 0 is 0.
+00:08:17,499 --> 00:08:26,949
+Not every series is rational. Theorem 4.1: if A of x squared equals 1 plus x, then A of x is not rational.
 
 58
-00:16:22,066 --> 00:16:38,535
-Now divide by x. C sub 1 of x is c sub 1 plus c sub 2 x and so on. It is also 0 on the interval, so the same argument gives c sub 1 equal to 0. Repeat, one coefficient at a time.
+00:08:27,399 --> 00:08:31,645
+The proof is by contradiction. Suppose A equals P over Q.
 
 59
-00:16:38,985 --> 00:16:59,487
-So B of x squared equals 1 minus 4 x as formal power series. If A of x squared is also 1 minus 4 x, then A squared equals B squared. By Exercise 4.2, A is plus or minus B. This is Theorem 5.2. Chapter 4 uses this series.
+00:08:32,095 --> 00:08:35,913
+Square it: 1 plus x equals P squared over Q squared.
 
 60
-00:16:59,937 --> 00:17:18,305
-To recap. In T3-1 we used a finite geometric sum, and a composition with a series whose constant term is 0. When the inner series has constant term 1, the constant term is an infinite sum, and the result is not a formal power series.
+00:08:36,363 --> 00:08:44,427
+Multiply by Q squared: P squared equals 1 plus x, times Q squared. Both sides are polynomials.
 
 61
-00:17:18,755 --> 00:17:25,645
-To prove that two series are equal, compare the coefficients, as in practice midterm question 8.
+00:08:44,877 --> 00:08:55,843
+Compare the degrees. The degree of P squared is 2 times the degree of P, an even number. For example, if P has degree 3, P squared has degree 6.
 
 62
-00:17:26,095 --> 00:17:48,730
-A series whose square is a polynomial of odd degree is not rational. Square roots are found one diagonal at a time, and there are exactly two. Finally, a Taylor series and a convergence argument give the coefficients of the square root of 1 minus 4 x. The next video is about the generating series of a weighted set.
+00:08:56,293 --> 00:09:04,975
+The degree of the right side is 1 plus 2 times the degree of Q, an odd number. If Q has degree 2, the degree is 5.
+
+63
+00:09:05,425 --> 00:09:12,465
+An even number is not odd, so the two degrees are not equal. This contradiction proves the theorem.
+
+64
+00:09:12,915 --> 00:09:24,670
+Theorem 4.2 extends this. If A of x is rational and A of x squared is a polynomial, then A of x is a polynomial. The notes omit its proof.
+
+65
+00:09:25,120 --> 00:09:31,285
+These theorems do not yet show that such an A of x exists. That is Exercise 4.1.
+
+66
+00:09:31,735 --> 00:09:41,271
+Exercise 4.1 asks you to show that a series with A of x squared equal to 1 plus x exists. Pause the video and try it.
+
+67
+00:09:41,721 --> 00:09:47,951
+Use the product formula on A times A. The grid shows the products a sub i a sub j.
+
+68
+00:09:48,401 --> 00:09:57,958
+The constant term gives a sub 0 squared equals 1. So a sub 0 is 1 or minus 1. Take a sub 0 equal to 1.
+
+69
+00:09:58,408 --> 00:10:10,888
+The diagonal for x to the 1 has two orange corner cells, a 0 a 1 and a 1 a 0. Together they are 2 a sub 1. This must equal 1, so a sub 1 is 1 half.
+
+70
+00:10:11,338 --> 00:10:25,973
+For x squared, the corners give 2 a sub 2. The middle cell gives a sub 1 squared, which is 1 quarter. The sum must be 0. So 2 a sub 2 is minus 1 quarter, and a sub 2 is minus 1 eighth.
+
+71
+00:10:26,423 --> 00:10:39,031
+For x cubed, the corners give 2 a sub 3. The two middle cells give 2 a 1 a 2, which is minus 1 eighth. So 2 a sub 3 is 1 eighth, and a sub 3 is 1 sixteenth.
+
+72
+00:10:39,481 --> 00:10:55,587
+In general, the diagonal for x to the n has the new unknown a sub n only in the two corners. The middle cells use earlier coefficients. Since a sub 0 is not 0, each a sub n has exactly one value.
+
+73
+00:10:56,037 --> 00:11:00,624
+So the series exists, and by Theorem 4.1 it is not rational.
+
+74
+00:11:01,074 --> 00:11:07,751
+The choice a sub 0 equal to minus 1 gives minus A of x. So there are two solutions.
+
+75
+00:11:08,201 --> 00:11:19,743
+Exercise 4.2 shows that there are no other solutions. If A of x squared equals B of x squared, then A of x equals plus or minus B of x.
+
+76
+00:11:20,193 --> 00:11:25,078
+Move B squared to the left side. A squared minus B squared is 0.
+
+77
+00:11:25,528 --> 00:11:32,931
+Factor it. A minus B, times A plus B, equals A squared plus A B minus B A minus B squared.
+
+78
+00:11:33,381 --> 00:11:41,167
+This is A squared minus B squared, because A times B equals B times A. The product formula is symmetric.
+
+79
+00:11:41,617 --> 00:11:50,641
+So A minus B, times A plus B, is the zero series. By A2-1 from video 7a, one of the two factors is 0.
+
+80
+00:11:51,091 --> 00:11:54,249
+So A equals B, or A equals minus B.
+
+81
+00:11:54,699 --> 00:12:02,848
+So the equation A of x squared equals 1 plus x has exactly two solutions: A of x and minus A of x.
+
+82
+00:12:03,298 --> 00:12:22,199
+Tutorial problem T2-3 defines a square root of A of x: a series B of x with B times B equal to A, and a constant term at least 0. Part a asks for the first four coefficients of the square root of 1 minus 4 x. Pause the video and try it.
+
+83
+00:12:22,649 --> 00:12:29,455
+Use the product formula on B times B. The grid shows the products b sub i b sub j.
+
+84
+00:12:29,905 --> 00:12:39,441
+The constant term: b sub 0 squared equals 1. The condition b sub 0 at least 0 gives b sub 0 equal to 1.
+
+85
+00:12:39,891 --> 00:12:49,619
+The coefficient of x: the two corner cells give 2 b 0 b 1, which must equal minus 4. So b sub 1 is minus 2.
+
+86
+00:12:50,069 --> 00:13:03,509
+The coefficient of x squared: 2 b 0 b 2 plus b 1 squared equals 0. b 1 squared is 4. So 2 b sub 2 is minus 4, and b sub 2 is minus 2.
+
+87
+00:13:03,959 --> 00:13:21,772
+The coefficient of x cubed: 2 b 0 b 3 plus 2 b 1 b 2 equals 0. 2 b 1 b 2 is 2 times minus 2 times minus 2, which is 8. So 2 b sub 3 is minus 8, and b sub 3 is minus 4.
+
+88
+00:13:22,222 --> 00:13:28,131
+So the square root starts 1 minus 2 x minus 2 x squared minus 4 x cubed.
+
+89
+00:13:28,581 --> 00:13:31,248
+Part b asks why x has no square root.
+
+90
+00:13:31,698 --> 00:13:39,719
+Part c asks for a condition that every nonzero series with a square root satisfies. Pause the video and try it.
+
+91
+00:13:40,169 --> 00:13:50,324
+Suppose B of x squared equals x. The constant term of x is 0. So b sub 0 squared is 0, and b sub 0 is 0.
+
+92
+00:13:50,774 --> 00:14:03,510
+Let b sub n x to the n be the lowest nonzero term of B, with n at least 1. In the grid, n is 2. So the rows and the columns before b 2 are all 0.
+
+93
+00:14:03,960 --> 00:14:17,080
+As in A2-1, only one cell on the diagonal 2 n is not 0: b sub n times b sub n. So the lowest term of B squared is b sub n squared, x to the 2 n.
+
+94
+00:14:17,530 --> 00:14:26,298
+But the lowest term of x is x to the 1. 2 n is even and 1 is odd, so they are not equal. So x has no square root.
+
+95
+00:14:26,748 --> 00:14:40,380
+The same argument answers part c. If a nonzero series equals B squared, its lowest term has the power 2 n. So the lowest power of x with a nonzero coefficient must be even.
+
+96
+00:14:40,830 --> 00:14:56,467
+Chapter 4 of the course notes needs a series A of x with A of x squared equal to 1 minus 4 x. 1 minus 4 x has odd degree, so A of x is not rational. Partial fractions cannot give its coefficients.
+
+97
+00:14:56,917 --> 00:14:58,816
+The notes use a Taylor series.
+
+98
+00:14:59,266 --> 00:15:08,909
+The formal derivative is defined by the usual rule. The term a sub n x to the n becomes n a sub n x to the n minus 1.
+
+99
+00:15:09,359 --> 00:15:17,721
+In the picture, each coefficient moves one place to the left and is multiplied by its old power. No limits are needed.
+
+100
+00:15:18,171 --> 00:15:26,235
+Do it again. The second derivative is 2 a 2, then 2 times 3 a 3, then 3 times 4 a 4, and so on.
+
+101
+00:15:26,685 --> 00:15:42,579
+Do it k times. The k-th derivative has coefficient i plus k factorial over i factorial, times a sub i plus k, at x to the i. The notes omit the factor a sub i plus k in this line.
+
+102
+00:15:43,029 --> 00:15:58,367
+The constant term, with i equal to 0, is k factorial times a sub k. So a sub k equals the k-th derivative at 0, over k factorial. For k equal to 2, this is 2 a sub 2.
+
+103
+00:15:58,817 --> 00:16:06,647
+This is the formula from calculus. But the chain rule, the product rule and the power rule are proved for functions.
+
+104
+00:16:07,097 --> 00:16:18,894
+A formal power series does not always converge, so it is not always a function. So the notes compute with calculus, and then check the result as a formal power series.
+
+105
+00:16:19,344 --> 00:16:27,216
+The notes use two names. A of x is the formal power series with A of x squared equal to 1 minus 4 x.
+
+106
+00:16:27,666 --> 00:16:34,407
+B of x is the Taylor series at 0 of the function, the square root of 1 minus 4 x.
+
+107
+00:16:34,857 --> 00:16:51,967
+By the power rule and induction, for k at least 1, the k-th derivative is minus 2, times 2 k minus 2 factorial over k minus 1 factorial, times 1 minus 4 x to the power 1 minus 2 k, over 2.
+
+108
+00:16:52,417 --> 00:16:57,451
+The notes print the exponent minus 1 half in the middle. It should be plus 1 half.
+
+109
+00:16:57,901 --> 00:17:08,013
+For k equal to 1, the power rule gives 1 half, times minus 4, which is minus 2. So the first derivative at 0 is minus 2.
+
+110
+00:17:08,463 --> 00:17:21,754
+For the induction step, differentiate once more. The power rule and the chain rule give the factor 1 minus 2 k, over 2, times minus 4. That is 2 times 2 k minus 1.
+
+111
+00:17:22,204 --> 00:17:38,161
+Write it as 2 k minus 1, times 2 k, over k. It turns 2 k minus 2 factorial into 2 k factorial, and k minus 1 factorial into k factorial. This is the formula for k plus 1.
+
+112
+00:17:38,611 --> 00:17:51,625
+Put x equal to 0, where the last factor is 1, and divide by k factorial. So b sub k is minus 2 over k, times 2 k minus 2 choose k minus 1.
+
+113
+00:17:52,075 --> 00:17:58,411
+The table lists the k-th derivative at 0 and k factorial, for k up to 5.
+
+114
+00:17:58,861 --> 00:18:09,378
+Divide the first column by the second. b sub 1 to b sub 5 are minus 2, minus 2, minus 4, minus 10, and minus 28.
+
+115
+00:18:09,828 --> 00:18:19,876
+So B of x is 1 minus 2 times the sum over k of 1 over k, times 2 k minus 2 choose k minus 1, x to the k.
+
+116
+00:18:20,326 --> 00:18:33,702
+b sub 1, b sub 2 and b sub 3 agree with T2-3. But we still must show that B of x squared is 1 minus 4 x as a formal power series, for every coefficient.
+
+117
+00:18:34,152 --> 00:18:41,320
+We must show that every coefficient of B of x squared equals the coefficient of 1 minus 4 x.
+
+118
+00:18:41,770 --> 00:18:57,343
+The formula for b sub k in the product formula gives an identity that is hard to prove directly. The notes use convergence instead. Let C of x be B of x squared, minus the series 1 minus 4 x.
+
+119
+00:18:57,793 --> 00:19:10,145
+The ratio of two consecutive coefficients is 2 times 2 k minus 1, over k plus 1. For large k this is close to 4 k over k, so it goes to 4.
+
+120
+00:19:10,595 --> 00:19:24,441
+By the ratio test, B of x converges for x between minus 1 quarter and 1 quarter. There, B of x equals the square root of 1 minus 4 x, so C of x is 0 at every point.
+
+121
+00:19:24,891 --> 00:19:36,069
+Theorem 5.1 says this is enough: if a power series converges to 0 on an interval from 0 to epsilon, then all its coefficients are 0.
+
+122
+00:19:36,519 --> 00:19:48,850
+The proof sketch: a power series is continuous where it converges. So c sub 0, the value at 0, is the limit of the values 0. So c sub 0 is 0.
+
+123
+00:19:49,300 --> 00:20:02,868
+Now divide by x. C sub 1 of x is c sub 1 plus c sub 2 x, and so on. It is also 0 on the interval, so the same argument gives c sub 1 equal to 0.
+
+124
+00:20:03,318 --> 00:20:09,633
+Repeat, one coefficient at a time. Each step removes the next coefficient, and it is 0.
+
+125
+00:20:10,083 --> 00:20:14,989
+So B of x squared equals 1 minus 4 x as formal power series.
+
+126
+00:20:15,439 --> 00:20:30,671
+If A of x squared is also 1 minus 4 x, then A squared equals B squared. By Exercise 4.2, A is plus or minus B. This is Theorem 5.2. Chapter 4 uses this series.
+
+127
+00:20:31,121 --> 00:20:49,489
+To recap. In T3-1 we used a finite geometric sum, and a composition with a series whose constant term is 0. When the inner series has constant term 1, the constant term is an infinite sum, and the result is not a formal power series.
+
+128
+00:20:49,939 --> 00:20:56,830
+To prove that two series are equal, compare the coefficients, as in practice midterm question 8.
+
+129
+00:20:57,280 --> 00:21:02,144
+A series whose square is a polynomial of odd degree is not rational.
+
+130
+00:21:02,594 --> 00:21:07,586
+Square roots are found one diagonal at a time, and there are exactly two.
+
+131
+00:21:08,036 --> 00:21:16,036
+Finally, a Taylor series and a convergence argument give the coefficients of the square root of 1 minus 4 x.
+
+132
+00:21:16,486 --> 00:21:20,689
+The next video is about the generating series of a weighted set.

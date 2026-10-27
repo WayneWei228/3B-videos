@@ -3,281 +3,485 @@
 This is MATH 239, video 10a. The topic is compositions. This video uses the Sum, Product and String Lemmas from video 9.
 
 2
-00:00:11,010 --> 00:00:27,927
-After this video, you can define a composition and its length and size. You can write a set of compositions with the star operation. You can count all compositions of n. And you can find the generating series when the parts or the length have restrictions.
+00:00:11,010 --> 00:00:16,791
+After this video, you can define a composition, its parts, its length and its size.
 
 3
-00:00:28,377 --> 00:00:38,724
-Here is the problem. In how many ways can we write n as an ordered sum of positive integers? The picture shows n equals 6 as six unit cells.
+00:00:17,241 --> 00:00:24,132
+You can write a set of compositions with the star operation, or as a union of Cartesian products.
 
 4
-00:00:39,174 --> 00:00:52,550
-Cut the row of cells into consecutive pieces. Here the cuts give 3, then 1, then 2. This list is a composition. Its entries are the parts. Each part is a positive integer.
+00:00:24,582 --> 00:00:29,211
+You can prove that there are 2 to the n minus 1 compositions of n.
 
 5
-00:00:53,000 --> 00:01:01,917
-The length of a composition is the number of parts. Here the length is 3. The size is the sum of the parts. Here the size is 6.
+00:00:29,661 --> 00:00:35,080
+And you can find the generating series when the parts or the lengths have restrictions.
 
 6
-00:01:02,367 --> 00:01:17,365
-The order of the parts matters. 3, 1, 2 and 1, 2, 3 are different compositions. There is exactly one composition with no parts. It is the empty composition, epsilon, and its size is 0.
+00:00:35,530 --> 00:00:41,951
+Here is the problem. In how many ways can we write n as an ordered sum of positive integers?
 
 7
-00:01:17,815 --> 00:01:23,468
-Here are all compositions of 5, sorted by length. Each block is one part.
+00:00:42,401 --> 00:00:46,604
+Take n equal to 6. Draw it as a row of six unit cells.
 
 8
-00:01:23,918 --> 00:01:26,755
-Length 1: only the composition 5.
+00:00:47,054 --> 00:00:51,193
+Cut the row into consecutive pieces. Here we make two cuts.
 
 9
-00:01:27,205 --> 00:01:32,368
-Length 2: four compositions. 4 1, 1 4, 3 2 and 2 3.
+00:00:51,643 --> 00:01:00,773
+The pieces have 3, 1 and 2 cells. So the parts are c 1 equal to 3, c 2 equal to 1, and c 3 equal to 2.
 
 10
-00:01:32,818 --> 00:01:35,079
-Length 3: six compositions.
+00:01:01,223 --> 00:01:08,626
+A composition is such a list, gamma, from c 1 to c k. Each part c i is a positive integer.
 
 11
-00:01:35,529 --> 00:01:42,313
-Length 4: four compositions. Each has three parts equal to 1 and one part equal to 2.
+00:01:09,076 --> 00:01:15,348
+The length of a composition is the number of parts. This one has 3 parts, so its length is 3.
 
 12
-00:01:42,763 --> 00:01:46,881
-Length 5: one composition, five parts equal to 1.
+00:01:15,798 --> 00:01:20,278
+The size is the sum of the parts. 3 plus 1 plus 2 is 6.
 
 13
-00:01:47,331 --> 00:01:59,512
-The total is 16, which is 2 to the 4. The counts by length are the binomial coefficients 4 choose k. The next slides prove both facts with generating series.
+00:01:20,728 --> 00:01:27,853
+The order of the parts matters. 3, 1, 2 and 1, 2, 3 are different compositions of 6.
 
 14
-00:01:59,962 --> 00:02:10,714
-Let P be the set of positive integers. One part of a composition is one element of P. P to the 0 has one element: the empty composition.
+00:01:28,303 --> 00:01:37,605
+Exactly one composition has no parts. It is the empty composition, epsilon. Its length is 0, and its size is 0.
 
 15
-00:02:11,164 --> 00:02:14,684
-P to the 1 holds the compositions with one part.
+00:01:38,055 --> 00:01:45,308
+Now list all compositions of 5, sorted by length. The top row shows 5 as five unit cells.
 
 16
-00:02:15,134 --> 00:02:24,009
-A composition of length k is a list of k elements of P. So it is an element of the Cartesian product P to the k.
+00:01:45,758 --> 00:01:49,726
+Length 1: one composition. Its only part is 5.
 
 17
-00:02:24,459 --> 00:02:29,024
-P to the 3 holds the compositions with three parts, and so on.
+00:01:50,176 --> 00:01:55,339
+Length 2: four compositions. 1 4, 2 3, 3 2 and 4 1.
 
 18
-00:02:29,474 --> 00:02:44,599
-The length can be any natural number. So the set C of all compositions is the union of all P to the k. This union is P star. The union is disjoint, because each composition has exactly one length.
+00:01:55,789 --> 00:01:58,050
+Length 3: six compositions.
 
 19
-00:02:45,049 --> 00:02:51,193
-Now the generating series. The weight of a composition is its size, the sum of its parts.
+00:01:58,500 --> 00:02:05,284
+Length 4: four compositions. Each has three parts equal to 1 and one part equal to 2.
 
 20
-00:02:51,643 --> 00:03:06,022
-One part is an element of P, with weight equal to its value. So phi of P is x plus x squared plus x cubed, and so on. By the geometric series, this is x over 1 minus x.
+00:02:05,734 --> 00:02:09,553
+Length 5: one composition. All five parts are 1.
 
 21
-00:03:06,472 --> 00:03:17,736
-The size of a list is the sum of the sizes of its parts. So the Product Lemma gives: phi of P to the k equals x over 1 minus x, to the power k.
+00:02:10,003 --> 00:02:16,851
+Add the counts. 1 plus 4 plus 6 plus 4 plus 1 is 16. That is 2 to the 4.
 
 22
-00:03:18,186 --> 00:03:22,175
-These are the compositions of length k, weighted by size.
+00:02:17,301 --> 00:02:25,130
+The counts are the binomial coefficients 4 choose 0 to 4 choose 4. The next slides prove both facts.
 
 23
-00:03:22,625 --> 00:03:39,585
-C is P star, and P has no element of weight 0. So the String Lemma applies. Phi of C equals 1 over 1 minus x over 1 minus x. The orange row is 1 minus phi of P. Phi of C is its inverse.
+00:02:25,580 --> 00:02:34,433
+Let P be the set of positive integers: 1, 2, 3, and so on. One part of a composition is one element of P.
 
 24
-00:03:40,035 --> 00:04:01,155
-Multiply top and bottom by 1 minus x. This gives 1 minus x over 1 minus 2 x, which also equals 1 plus x over 1 minus 2 x. The green row shows its coefficients. Check the product at x cubed: 4 minus 2 minus 1 minus 1 is 0, as it must be.
+00:02:34,883 --> 00:02:39,534
+P to the 0 has one element: the empty composition, epsilon.
 
 25
-00:04:01,605 --> 00:04:12,763
-Here is the String Lemma as a picture. Row k is phi of P, to the power k. Row 0 is the series 1. It holds only the empty composition.
+00:02:39,984 --> 00:02:46,683
+P to the 1 is the set of lists with one element of P. These are the compositions with one part.
 
 26
-00:04:13,213 --> 00:04:28,402
-Row 1 is x over 1 minus x. Row 2 is its square. The purple cell marks the first nonzero coefficient. Row k starts at x to the k, because each of the k parts has size at least 1.
+00:02:47,133 --> 00:02:53,597
+P to the 2 is the set of pairs c 1, c 2. These are the compositions with two parts.
 
 27
-00:04:28,852 --> 00:04:39,903
-Cell n of row k counts the compositions of n with length k. Row 3, column 5 shows 6. This is the length-3 column of the last slide.
+00:02:54,047 --> 00:03:03,796
+In general, a composition of length k is a list of k elements of P. So it is an element of the Cartesian product P to the k.
 
 28
-00:04:40,353 --> 00:04:49,633
-Row 4 and row 5 continue the pattern. The entries are binomial coefficients: n minus 1 choose k minus 1.
+00:03:04,246 --> 00:03:08,811
+P to the 3 holds the compositions with three parts, and so on.
 
 29
-00:04:50,083 --> 00:05:10,157
-The String Lemma adds all the rows. Column n of the sum counts all compositions of size n. The sum row is 1, 1, 2, 4, 8, 16. So the number of compositions of n is 2 to the n minus 1, for n at least 1. For n equal to 0, it is 1.
+00:03:09,261 --> 00:03:18,840
+The length can be any natural number. So the set C of all compositions is the union of all P to the k. This union is P star.
 
 30
-00:05:10,607 --> 00:05:21,701
-Check column 5. The rows give 0, 1, 4, 6, 4 and 1. The total is 16, the same as the list of all compositions of 5.
+00:03:19,290 --> 00:03:24,303
+The union is disjoint, because each composition has exactly one length.
 
 31
-00:05:22,151 --> 00:05:34,183
-Here is a direct, bijective proof. Write n as n unit cells in a row. Between the cells there are n minus 1 gaps. For n equal to 5, there are 4 gaps.
+00:03:24,753 --> 00:03:30,897
+Now the generating series. The weight of a composition is its size, the sum of its parts.
 
 32
-00:05:34,633 --> 00:05:43,315
-In each gap, we cut or we do not cut. Each gap has 2 choices, so there are 2 to the n minus 1 choices in total.
+00:03:31,347 --> 00:03:44,894
+One part is an element of P. Its weight is its value. So phi of P is x plus x squared plus x cubed, and so on. The blue row shows a 1 at every power from x to the 1.
 
 33
-00:05:43,765 --> 00:05:53,536
-Each set of cuts gives one composition, and each composition gives one set of cuts. Cuts at gaps 2 and 3 give the parts 2, 1 and 2.
+00:03:45,344 --> 00:03:52,171
+Take out x. The rest is a geometric series. So phi of P is x over 1 minus x.
 
 34
-00:05:53,986 --> 00:06:09,709
-A composition of length k has k minus 1 cuts. So there are n minus 1 choose k minus 1 such compositions. This matches the rows of the table. The notes prove this bijection in Proposition 2.23.
+00:03:52,621 --> 00:04:05,655
+The weight of a list is the sum of the weights of its parts. So the Product Lemma gives phi of P to the k: x over 1 minus x, to the power k. These are the compositions of length k.
 
 35
-00:06:10,159 --> 00:06:23,385
-Most exam questions restrict the compositions. The notes give a method in three steps. Step 1. Find the allowed values for one part. This gives a set P and its series phi of P.
+00:04:06,105 --> 00:04:14,340
+The x to the 0 cell of phi of P is 0. So P has no element of weight 0, and the String Lemma applies.
 
 36
-00:06:23,835 --> 00:06:37,510
-Step 2. Find the allowed lengths. If any length is allowed, the set is P star. If the length must be even, the set is P squared, star. If the length is exactly k, the set is P to the k.
+00:04:14,790 --> 00:04:21,979
+C is P star. So by the String Lemma, phi of C is 1 over 1 minus x over 1 minus x.
 
 37
-00:06:37,960 --> 00:06:48,968
-Step 3. Apply the Sum, Product and String Lemmas, and name each lemma in your written solution. The next slides use this method on the examples of the notes.
+00:04:22,429 --> 00:04:29,469
+The orange row is 1 minus phi of P. Its first cell is 1. Every other cell is minus 1.
 
 38
-00:06:49,418 --> 00:07:00,981
-Example 2.18. Let F be the set of compositions with each part 1 or 2. Step 1: P is the set 1, 2. Its series is x plus x squared.
+00:04:29,919 --> 00:04:39,135
+Multiply the top and the bottom by 1 minus x. The bottom is 1 minus x, minus x, which is 1 minus 2 x.
 
 39
-00:07:01,431 --> 00:07:12,609
-Step 2: any length is allowed, so F is P star. The left side shows the 5 compositions of 4 in F. The orange blocks are parts equal to 2.
+00:04:39,585 --> 00:04:47,073
+Write the top as 1 minus 2 x, plus x. So phi of C is 1 plus x over 1 minus 2 x.
 
 40
-00:07:13,059 --> 00:07:24,174
-Step 3: the String Lemma gives phi of F equals 1 over 1 minus x minus x squared. Phi of P has no constant term, so the lemma applies.
+00:04:47,523 --> 00:04:59,662
+x over 1 minus 2 x is x plus 2 x squared plus 4 x cubed, and so on. So the green row of phi of C is 1, 1, 2, 4, 8, 16.
 
 41
-00:07:24,624 --> 00:07:39,429
-Expand the series. The coefficients are 1, 1, 2, 3, 5, 8, 13. The coefficient of x to the 4 is 5, which matches the list. Chapter 4 finds an exact formula for these numbers.
+00:05:00,112 --> 00:05:16,901
+Check that the green row is the inverse of the orange row. Take the coefficient of x cubed in the product: 1 times 4, minus 1 times 2, minus 1 times 1, minus 1 times 1. This is 0, as it must be.
 
 42
-00:07:39,879 --> 00:07:53,597
-Example 2.19. Let H be the set of compositions with each part at least 2. The allowed parts are 2, 3, 4, and so on. Their series is x squared over 1 minus x.
+00:05:17,351 --> 00:05:28,445
+Here is the String Lemma as a table. Row k is phi of P, to the power k. Row 0 is the series 1. It counts only the empty composition.
 
 43
-00:07:54,047 --> 00:08:08,596
-Any length is allowed, so the String Lemma gives 1 over 1 minus x squared over 1 minus x. Clear the inner fraction. The result is 1 minus x, over 1 minus x minus x squared.
+00:05:28,895 --> 00:05:34,527
+Row 1 is x over 1 minus x. It counts the compositions with one part.
 
 44
-00:08:09,046 --> 00:08:17,665
-This also equals 1 plus x squared over 1 minus x minus x squared. The denominator is the same as for F.
+00:05:34,977 --> 00:05:40,310
+Row 2 is the square of row 1. It counts the compositions with two parts.
 
 45
-00:08:18,115 --> 00:08:31,768
-Example 2.20. Let J be the set of compositions with each part odd. The allowed parts are 1, 3, 5, and so on. Their series is x over 1 minus x squared.
+00:05:40,760 --> 00:05:45,325
+Row 3 is the cube. It counts the compositions with three parts.
 
 46
-00:08:32,218 --> 00:08:37,978
-The String Lemma gives 1 minus x squared, over 1 minus x minus x squared.
+00:05:45,775 --> 00:05:55,226
+The purple cells are the first nonzero cells. Row k starts at x to the k, because each of the k parts has size at least 1.
 
 47
-00:08:38,428 --> 00:08:45,383
-This equals 1 plus x over 1 minus x minus x squared. Again the same denominator.
+00:05:55,676 --> 00:06:05,340
+The cell in row k and column x to the n counts the compositions of n with length k. Row 3, column x to the 5 shows 6.
 
 48
-00:08:45,833 --> 00:08:52,894
-So F, H and J have almost the same generating series. The next slide shows what this means.
+00:06:05,790 --> 00:06:08,307
+Rows 4 and 5 continue the pattern.
 
 49
-00:08:53,344 --> 00:08:59,275
-Here are the coefficient rows. Row h n counts compositions with parts at least 2.
+00:06:08,757 --> 00:06:17,440
+Each entry is n minus 1 choose k minus 1. For row 3 and column x to the 5, 4 choose 2 is 6.
 
 50
-00:08:59,725 --> 00:09:03,053
-Row j n counts compositions with odd parts.
+00:06:17,890 --> 00:06:26,082
+The String Lemma adds all the rows. The green row holds the column sums: 1, 1, 2, 4, 8, 16.
 
 51
-00:09:03,503 --> 00:09:07,236
-Row f n counts compositions with parts 1 or 2.
+00:06:26,532 --> 00:06:33,465
+Check column x to the 5. 0 plus 1 plus 4 plus 6 plus 4 plus 1 is 16.
 
 52
-00:09:07,686 --> 00:09:28,251
-Each row is a shift of the f row. Phi of H is 1 plus x squared times phi of F. Phi of J is 1 plus x times phi of F. So for n at least 2, h n equals j n minus 1, equals f n minus 2. The three green cells are all equal to 8.
+00:06:33,915 --> 00:06:47,441
+These sums are the coefficients of 1 plus x over 1 minus 2 x. So there are 2 to the n minus 1 compositions of n, for n at least 1. For n equal to 0, there is 1.
 
 53
-00:09:28,701 --> 00:09:44,275
-Multiplication by x squared moves every coefficient two places to the right. So the sets H n, J n minus 1 and F n minus 2 have the same size. We proved this without a formula for the numbers.
+00:06:47,891 --> 00:06:54,525
+Here is a second proof, with a bijection. Write n as n unit cells in a row. Here n is 5.
 
 54
-00:09:44,725 --> 00:09:54,495
-Here are the three sets for n equal to 7. Each has 8 compositions. Exercise 2.17 asks for bijections between them.
+00:06:54,975 --> 00:07:00,138
+Between the cells there are n minus 1 gaps. 5 cells have 4 gaps.
 
 55
-00:09:54,945 --> 00:10:09,644
-Example 2.22. Let Q be the set of compositions with each part at least 2 and an even number of parts. Step 1 is the same as for H: phi of P is x squared over 1 minus x.
+00:07:00,588 --> 00:07:05,516
+At each gap, we cut or we do not cut. So each gap has 2 choices.
 
 56
-00:10:10,094 --> 00:10:24,963
-Step 2. An even length is 2 j. Group the parts in pairs. A composition of length 2 j is a list of j pairs, so it is an element of P squared, to the j. So Q is P squared, star.
+00:07:05,966 --> 00:07:12,963
+The 4 gaps give 2 times 2 times 2 times 2 choices. That is 2 to the 4, which is 16.
 
 57
-00:10:25,413 --> 00:10:43,227
-Step 3. The Product Lemma gives phi of P squared. The String Lemma then gives 1 over 1 minus phi of P squared. This is 1 minus x squared, over 1 minus x squared minus x to the 4. Here the squares are of 1 minus x.
+00:07:13,413 --> 00:07:19,920
+Each set of cuts gives one composition. Cuts at gaps 2 and 3 give the parts 2, 1 and 2.
 
 58
-00:10:43,677 --> 00:10:54,770
-Check with n equal to 7. The compositions are 2 5, 5 2, 3 4 and 4 3. There are 4, and the coefficient of x to the 7 is 4.
+00:07:20,370 --> 00:07:34,770
+Each composition gives back its set of cuts. So the compositions of n match the subsets of the n minus 1 gaps, and there are 2 to the n minus 1. The notes prove this in Proposition 2.23.
 
 59
-00:10:55,220 --> 00:11:12,500
-Practice problem P3-5. Fix p at least 2. Count the compositions of n where every part is 1 or p. Pause the video and try it. Step 1: the set of parts is 1 and p. Its series is x plus x to the p.
+00:07:35,220 --> 00:07:49,791
+A composition of length k has k minus 1 cuts. So n minus 1 choose k minus 1 compositions of n have length k. For n equal to 5 and k equal to 3, 4 choose 2 is 6.
 
 60
-00:11:12,950 --> 00:11:23,553
-Any length is allowed, so the set is P star. The picture shows the case p equal to 3 and n equal to 7. There are 9 such compositions.
+00:07:50,241 --> 00:08:03,638
+Most exam questions restrict the compositions. The notes use a method in three steps. Step 1. Find the allowed values for one part. This gives a set P and its series phi of P.
 
 61
-00:11:24,003 --> 00:11:42,563
-The String Lemma gives the answer: the coefficient of x to the n in 1 over 1 minus x minus x to the p. For p equal to 3, the coefficients are 1, 1, 1, 2, 3, 4, 6, 9. The coefficient of x to the 7 is 9.
+00:08:04,088 --> 00:08:09,443
+Step 2. Find the allowed lengths. If any length is allowed, the set is P star.
 
 62
-00:11:43,013 --> 00:11:58,927
-Practice problem P3-6. The weight here is the length, not the size. Pause the video and try it. The parts are 1, 2 and 3. Each part adds 1 to the length, so each part has weight 1. Phi of P is 3 x.
+00:08:09,893 --> 00:08:13,605
+If the length must be even, the set is P squared, star.
 
 63
-00:11:59,377 --> 00:12:06,524
-Here are the compositions of length 2. Each part has 3 choices, so there are 9. Each has weight 2.
+00:08:14,055 --> 00:08:17,831
+If the length is exactly k, the set is P to the k.
 
 64
-00:12:06,974 --> 00:12:11,625
-This agrees with the Product Lemma: 3 x squared is 9 x squared.
+00:08:18,281 --> 00:08:29,289
+Step 3. Apply the Sum, Product and String Lemmas, and name each lemma in your written solution. The next slides use this method on the examples of the notes.
 
 65
-00:12:12,075 --> 00:12:29,099
-The String Lemma gives 1 over 1 minus 3 x. The coefficients are 3 to the k. With the size as the weight, the same set gives 1 over 1 minus x minus x squared minus x cubed. Always check which weight the question uses.
+00:08:29,739 --> 00:08:38,891
+Example 2.18. F is the set of compositions with each part equal to 1 or 2. Find its generating series.
 
 66
-00:12:29,549 --> 00:12:38,445
-Recap. A composition is a list of positive integers. Its length is the number of parts. Its size is the sum of the parts.
+00:08:39,341 --> 00:08:47,362
+Step 1. The allowed parts are 1 and 2. So P is the set 1, 2, and phi of P is x plus x squared.
 
 67
-00:12:38,895 --> 00:12:51,417
-All compositions form P star. The String Lemma gives 1 minus x over 1 minus 2 x. So there are 2 to the n minus 1 compositions of n, for n at least 1.
+00:08:47,812 --> 00:08:51,503
+Step 2. Any length is allowed. So F is P star.
 
 68
-00:12:51,867 --> 00:13:02,150
-The compositions of n with length k number n minus 1 choose k minus 1. Choose k minus 1 cuts among n minus 1 gaps.
+00:08:51,953 --> 00:09:01,702
+Step 3. Phi of P has no constant term, so the String Lemma applies. Phi of F is 1 over 1 minus x minus x squared.
 
 69
-00:13:02,600 --> 00:13:10,941
-For a restricted set, find the allowed parts and their series. Then find the allowed lengths. Then apply the lemmas and name them.
+00:09:02,152 --> 00:09:12,157
+Check the answer with n equal to 4. These are the 5 compositions of 4 with parts 1 or 2. The orange blocks are parts equal to 2.
 
 70
-00:13:11,391 --> 00:13:22,954
-Any length gives 1 over 1 minus phi of P. Even length gives 1 over 1 minus phi of P squared. Length exactly k gives phi of P to the k.
+00:09:12,607 --> 00:09:26,922
+Now expand the series. Multiply both sides by 1 minus x minus x squared, and compare the coefficients. f 0 is 1, f 1 is 1, and each f n is the sum of the two before it.
 
 71
-00:13:23,404 --> 00:13:32,876
+00:09:27,372 --> 00:09:40,236
+At x to the 4: f 2 plus f 3 is 2 plus 3, which is 5. This matches the 5 compositions in the list. Chapter 4 finds an exact formula for f n.
+
+72
+00:09:40,686 --> 00:09:46,830
+Example 2.19. H is the set of compositions with each part at least 2.
+
+73
+00:09:47,280 --> 00:09:54,533
+The allowed parts are 2, 3, 4, and so on. In the blue row, every cell from x squared on is 1.
+
+74
+00:09:54,983 --> 00:10:05,927
+So phi of P is x squared plus x cubed, and so on. Take out x squared. By the geometric series, this is x squared over 1 minus x.
+
+75
+00:10:06,377 --> 00:10:14,377
+Any length is allowed. So by the String Lemma, phi of H is 1 over 1 minus x squared over 1 minus x.
+
+76
+00:10:14,827 --> 00:10:22,593
+Multiply the top and the bottom by 1 minus x. The bottom becomes 1 minus x, minus x squared.
+
+77
+00:10:23,043 --> 00:10:34,093
+Write the top as 1 minus x minus x squared, plus x squared. So phi of H is 1 plus x squared over 1 minus x minus x squared.
+
+78
+00:10:34,543 --> 00:10:40,303
+Example 2.20. J is the set of compositions with each part odd.
+
+79
+00:10:40,753 --> 00:10:47,111
+The allowed parts are 1, 3, 5, and so on. In the purple row, every odd cell is 1.
+
+80
+00:10:47,561 --> 00:10:56,905
+So phi of P is x plus x cubed plus x to the 5, and so on. Take out x. This is x over 1 minus x squared.
+
+81
+00:10:57,355 --> 00:11:03,413
+By the String Lemma, phi of J is 1 over 1 minus x over 1 minus x squared.
+
+82
+00:11:03,863 --> 00:11:12,375
+Multiply the top and the bottom by 1 minus x squared. The bottom becomes 1 minus x squared, minus x.
+
+83
+00:11:12,825 --> 00:11:22,916
+Write the top as 1 minus x minus x squared, plus x. So phi of J is 1 plus x over 1 minus x minus x squared.
+
+84
+00:11:23,366 --> 00:11:33,926
+Phi of F from Example 2.18 has the same denominator: 1 minus x minus x squared. The next slide shows what this means.
+
+85
+00:11:34,376 --> 00:11:41,736
+Here are the coefficient rows of the three sets. Row h n counts compositions with each part at least 2.
+
+86
+00:11:42,186 --> 00:11:45,834
+Row j n counts compositions with each part odd.
+
+87
+00:11:46,284 --> 00:11:50,359
+Row f n counts compositions with each part 1 or 2.
+
+88
+00:11:50,809 --> 00:12:03,054
+Phi of H is 1 plus x squared times phi of F. Multiplication by x squared moves every coefficient of the f row two places to the right. The arrows show this.
+
+89
+00:12:03,504 --> 00:12:10,203
+Phi of J is 1 plus x times phi of F. This moves the f row one place to the right.
+
+90
+00:12:10,653 --> 00:12:22,599
+So h n equals j n minus 1, and both equal f n minus 2, for n at least 2. For example, h 7, j 6 and f 5 are all 8.
+
+91
+00:12:23,049 --> 00:12:37,236
+Here are the three sets: H 7, J 6 and F 5. Each has 8 compositions. We proved this without a formula for the numbers. Exercise 2.17 asks for bijections between them.
+
+92
+00:12:37,686 --> 00:12:45,729
+Example 2.22. Q is the set of compositions with each part at least 2 and an even number of parts.
+
+93
+00:12:46,179 --> 00:12:58,040
+Step 1 is the same as for H in Example 2.19. P is the set 2, 3, 4, and so on, and phi of P is x squared over 1 minus x.
+
+94
+00:12:58,490 --> 00:13:08,495
+An even length is 2 j. Group the parts in pairs, from the left. The composition 3, 2, 2, 4 has length 4, so it is 2 pairs.
+
+95
+00:13:08,945 --> 00:13:18,716
+A composition of length 2 j is a list of j pairs. So it is an element of P squared, to the j. So Q is P squared, star.
+
+96
+00:13:19,166 --> 00:13:28,787
+By the Product Lemma, phi of P squared is x squared over 1 minus x, squared. That is x to the 4 over 1 minus x, squared.
+
+97
+00:13:29,237 --> 00:13:37,216
+Phi of P squared has no constant term. So by the String Lemma, phi of Q is 1 over 1 minus that series.
+
+98
+00:13:37,666 --> 00:13:49,357
+Multiply the top and the bottom by 1 minus x, squared. Phi of Q is 1 minus x, squared, over 1 minus x, squared, minus x to the 4.
+
+99
+00:13:49,807 --> 00:14:05,849
+To expand it, multiply out the bottom: 1 minus 2 x plus x squared minus x to the 4. Compare the coefficients. q n is 2 q n minus 1, minus q n minus 2, plus q n minus 4.
+
+100
+00:14:06,299 --> 00:14:11,121
+At x to the 7: 2 times 3, minus 2, plus 0, is 4.
+
+101
+00:14:11,571 --> 00:14:19,677
+Check by listing. The compositions of 7 in Q are 2 5, 3 4, 4 3 and 5 2. There are 4.
+
+102
+00:14:20,127 --> 00:14:30,965
+Practice problem P3-5. Fix p at least 2. Count the compositions of n where every part is 1 or p. Pause the video and try it.
+
+103
+00:14:31,415 --> 00:14:37,324
+Step 1. The allowed parts are 1 and p. Their series is x plus x to the p.
+
+104
+00:14:37,774 --> 00:14:41,337
+Step 2. Any length is allowed, so the set is P star.
+
+105
+00:14:41,787 --> 00:14:53,776
+Step 3. Phi of P has no constant term. By the String Lemma, the answer is the coefficient of x to the n in 1 over 1 minus x minus x to the p.
+
+106
+00:14:54,226 --> 00:15:05,554
+Check the case p equal to 3 and n equal to 7. Here are the 9 compositions of 7 with parts 1 or 3. The orange blocks are parts equal to 3.
+
+107
+00:15:06,004 --> 00:15:23,412
+Expand the series for p equal to 3. Multiply by 1 minus x minus x cubed, and compare the coefficients. The first three coefficients are 1. After them, each g n is g n minus 1 plus g n minus 3.
+
+108
+00:15:23,862 --> 00:15:31,158
+At x to the 7: g 6 plus g 4 is 6 plus 3, which is 9. This matches the list.
+
+109
+00:15:31,608 --> 00:15:43,640
+Practice problem P3-6. C is the set of compositions with each part at most 3. Here the weight is the length, not the size. Pause the video and try it.
+
+110
+00:15:44,090 --> 00:15:50,362
+The parts are 1, 2 and 3. Each part adds 1 to the length. So each part has weight 1.
+
+111
+00:15:50,812 --> 00:15:55,100
+So phi of P is x plus x plus x, which is 3 x.
+
+112
+00:15:55,550 --> 00:16:04,553
+Here are the compositions of length 2. Each part has 3 choices, so there are 3 times 3, which is 9. Each has weight 2.
+
+113
+00:16:05,003 --> 00:16:09,397
+The Product Lemma agrees: 3 x, squared, is 9 x squared.
+
+114
+00:16:09,847 --> 00:16:15,821
+Any length is allowed. By the String Lemma, phi of C is 1 over 1 minus 3 x.
+
+115
+00:16:16,271 --> 00:16:29,412
+By the geometric series, this is 1 plus 3 x plus 9 x squared, and so on. The coefficient of x to the k is 3 to the k. At x squared it is 9, as in the grid.
+
+116
+00:16:29,862 --> 00:16:40,465
+With the size as the weight, the same set gives 1 over 1 minus x minus x squared minus x cubed. Always check which weight the question uses.
+
+117
+00:16:40,915 --> 00:16:49,811
+Recap. A composition is a list of positive integers. Its length is the number of parts. Its size is the sum of the parts.
+
+118
+00:16:50,261 --> 00:17:02,783
+All compositions form P star. The String Lemma gives 1 minus x over 1 minus 2 x. So there are 2 to the n minus 1 compositions of n, for n at least 1.
+
+119
+00:17:03,233 --> 00:17:13,516
+The compositions of n with length k number n minus 1 choose k minus 1. Choose k minus 1 cuts among n minus 1 gaps.
+
+120
+00:17:13,966 --> 00:17:22,307
+For a restricted set, find the allowed parts and their series. Then find the allowed lengths. Then apply the lemmas and name them.
+
+121
+00:17:22,757 --> 00:17:34,320
+Any length gives 1 over 1 minus phi of P. Even length gives 1 over 1 minus phi of P squared. Length exactly k gives phi of P to the k.
+
+122
+00:17:34,770 --> 00:17:44,242
 Always check the weight: size or length. Video 10b solves the tutorial, assignment and midterm problems on compositions.

@@ -3,385 +3,829 @@
 This is MATH 239, video 9. The topic is the Sum Lemma, the Product Lemma, and the String Lemma.
 
 2
-00:00:08,279 --> 00:00:27,970
-After this video, you can state and prove the three lemmas. You can say when the set of strings has a valid weight function. You can build a set from smaller sets and find its generating series. And you can solve Assignment 2 questions 2 and 3, and practice problems 1 to 3 of Assignment 3.
+00:00:08,279 --> 00:00:19,543
+After this video, you can do the five things in this list. The last one is Assignment 2 questions 2 and 3, and practice problems 1 to 3 of Assignment 3.
 
 3
-00:00:28,420 --> 00:00:45,423
-A short recap of the last video. A weight function w gives each element of a set S a natural number. For each n, only finitely many elements have weight n. Here S is the set of subsets of 1, 2, and the weight is the size.
+00:00:19,993 --> 00:00:31,961
+A short recap of the last video. A weight function w gives each element of a set S a natural number. For each n, only finitely many elements have weight n.
 
 4
-00:00:45,873 --> 00:00:58,694
-The generating series phi of S is the sum of x to the weight, over all elements. Group the elements by weight. One subset has weight 0, two have weight 1, and one has weight 2.
+00:00:32,411 --> 00:00:37,787
+Here S is the set of subsets of 1, 2. The weight of a subset is its size.
 
 5
-00:00:59,144 --> 00:01:10,600
-So phi of S is 1 plus 2 x plus x squared. Proposition 2.7 says: the coefficient of x to the n is the number of elements of weight n.
+00:00:38,237 --> 00:00:43,805
+The generating series phi of S is the sum of x to the weight, over all elements.
 
 6
-00:01:11,050 --> 00:01:25,919
-Most sets in this course are too large to list. But we can build them from small sets. Three operations do this. The first is a union of two sets with no common element. The Sum Lemma says: the series add.
+00:00:44,255 --> 00:00:50,890
+Group the elements by weight. One subset has weight 0, two have weight 1, and one has weight 2.
 
 7
-00:01:26,369 --> 00:01:34,775
-The second operation is the Cartesian product: all pairs alpha, beta. The Product Lemma says: the series multiply.
+00:00:51,340 --> 00:00:55,031
+So phi of S is 1 plus 2 x plus x squared.
 
 8
-00:01:35,225 --> 00:01:44,121
-The third operation makes strings of elements of any length. The String Lemma says: the series is 1 over 1 minus phi of A.
+00:00:55,481 --> 00:01:08,174
+Proposition 2.7 says: the coefficient of x to the n is the number of elements of weight n. For example, the coefficient of x is 2, and two subsets have weight 1.
 
 9
-00:01:44,571 --> 00:01:54,256
-So each lemma turns a set operation into an operation on power series. We get the series of a large set from the series of small sets.
+00:01:08,624 --> 00:01:19,867
+Most sets in this course are too large to list. But we can build them from small sets with three operations. The first is a union of two sets with no common element.
 
 10
-00:01:54,706 --> 00:02:07,058
-Here is the Sum Lemma. A and B are disjoint: they have no common element. w is a weight function on the union. The figure shows the elements of A and B with their weights.
+00:01:20,317 --> 00:01:22,834
+The Sum Lemma says: the series add.
 
 11
-00:02:07,508 --> 00:02:17,705
-Count the elements of A by weight. One has weight 0, two have weight 1, none has weight 2, and one has weight 3. This is the row of phi of A.
+00:01:23,284 --> 00:01:28,127
+The second operation is the Cartesian product: all pairs alpha, beta.
 
 12
-00:02:18,155 --> 00:02:22,358
-The same for B. One element of weight 1, and two of weight 2.
+00:01:28,577 --> 00:01:31,819
+The Product Lemma says: the series multiply.
 
 13
-00:02:22,808 --> 00:02:39,405
-Each element of the union is in exactly one of the two sets. So the number of elements of weight n in the union is the sum of the two counts. For weight 1, that is 2 plus 1, which is 3. So phi of the union is phi of A plus phi of B.
+00:01:32,269 --> 00:01:36,088
+The third operation makes strings of elements of any length.
 
 14
-00:02:39,855 --> 00:02:47,578
-The proof has three lines. Line 1 is the definition of phi of the union: a sum over all its elements.
+00:01:36,538 --> 00:01:41,274
+The String Lemma says: the series is 1 over 1 minus phi of A.
 
 15
-00:02:48,028 --> 00:03:01,980
-Line 2 splits the sum into a sum over A and a sum over B. Each element of the union is in A or in B, and the sets are disjoint. So each term occurs exactly once on the right side.
+00:01:41,724 --> 00:01:51,409
+So each lemma turns a set operation into an operation on power series. We get the series of a large set from the series of small sets.
 
 16
-00:03:02,430 --> 00:03:07,934
-Line 3 uses the definition again, for A and for B. This proves the lemma.
+00:01:51,859 --> 00:01:59,945
+Here is the Sum Lemma. A and B are disjoint: they have no common element. w is a weight function on the union.
 
 17
-00:03:08,384 --> 00:03:29,653
-The second line fails when the sets overlap. Here A is 1, 2 and B is 2, 3, with weight equal to the value. The element 2 is in both sets. Phi of A plus phi of B has coefficient 2 at x squared. But the union has only one element of weight 2. The common element is counted twice.
+00:02:00,395 --> 00:02:06,859
+The two boxes show the elements of A and B. The gray label under each element is its weight.
 
 18
-00:03:30,103 --> 00:03:38,615
-An example. S is the set of all subsets of 1, 2, 3. The weight of a subset is its size. There are 8 subsets.
+00:02:07,309 --> 00:02:17,506
+Count the elements of A by weight. One has weight 0, two have weight 1, none has weight 2, and one has weight 3. This is the row of phi of A.
 
 19
-00:03:39,065 --> 00:03:51,524
-Split S with one rule. A holds the subsets that do not contain 3. B holds the subsets that contain 3. No subset is in both, and every subset is in one of them.
+00:02:17,956 --> 00:02:22,159
+The same for B. One element of weight 1, and two of weight 2.
 
 20
-00:03:51,974 --> 00:04:01,297
-A has one subset of size 0, two of size 1, and one of size 2. So phi of A is 1 plus 2 x plus x squared.
+00:02:22,609 --> 00:02:31,910
+Each element of the union is in exactly one of the two sets. So the number of elements of weight n in the union is the sum of the two counts.
 
 21
-00:04:01,747 --> 00:04:11,880
-Each subset in B is a subset of A with 3 added. So each weight goes up by 1. Phi of B is x plus 2 x squared plus x cubed.
+00:02:32,360 --> 00:02:35,411
+For weight 1, that is 2 plus 1, which is 3.
 
 22
-00:04:12,330 --> 00:04:24,127
-Add the rows. By the Sum Lemma, phi of S is 1 plus 3 x plus 3 x squared plus x cubed. The coefficients are 3 choose k, as in chapter 1.
+00:02:35,861 --> 00:02:39,509
+So phi of the union is phi of A plus phi of B.
 
 23
-00:04:24,577 --> 00:04:39,681
-The Sum Lemma also works for infinitely many sets. Let A 0, A 1, A 2, and so on be pairwise disjoint. B is their union, with a weight function. Then phi of B is the sum of all phi of A j.
+00:02:39,959 --> 00:02:48,257
+The weight on A and on B is the same function w. The A2 solutions write the disjoint union with a square cup.
 
 24
-00:04:40,131 --> 00:04:51,694
-Example: all binary strings, with weight equal to the length. S j is the set of strings of length j. The rows show phi of S 0 and phi of S 1.
+00:02:48,707 --> 00:02:56,430
+The proof has three lines. Line 1 is the definition of phi of the union: a sum over all its elements.
 
 25
-00:04:52,144 --> 00:04:58,352
-S 2 has 4 strings, all of weight 2. So its row has a single 4, at x squared.
+00:02:56,880 --> 00:03:01,253
+Line 2 splits the sum into a sum over A and a sum over B.
 
 26
-00:04:58,802 --> 00:05:06,226
-In general, S j has 2 to the j strings, all of weight j. Each row has one nonzero cell.
+00:03:01,703 --> 00:03:10,834
+Each element of the union is in A or in B, and the sets are disjoint. So each term occurs exactly once on the right side.
 
 27
-00:05:06,676 --> 00:05:21,972
-Add the rows. Phi of S is the sum of 2 to the j times x to the j. This is 1 over 1 minus 2 x. The proof of the lemma uses the same steps as the Sum Lemma. It is Exercise 2.6.
+00:03:11,284 --> 00:03:16,788
+Line 3 uses the definition again, for A and for B. This proves the lemma.
 
 28
-00:05:22,422 --> 00:05:37,057
-Now Assignment 2, question 2 a. Pause the video and try it. The set is the natural numbers. The weight has one formula for even numbers and another for odd numbers. The table shows the first ten weights.
+00:03:17,238 --> 00:03:25,686
+The second line fails when the sets overlap. Here A is 1, 2 and B is 2, 3. The weight of an element is its value.
 
 29
-00:05:37,507 --> 00:05:52,675
-The two formulas suggest the split. Let E be the even numbers. Write a as 2 m. Then w equals 3 times 2 m, plus 1, which is 6 m plus 1. The weights are 1, 7, 13, and so on.
+00:03:26,136 --> 00:03:28,248
+The element 2 is in both sets.
 
 30
-00:05:53,125 --> 00:06:08,527
-Let O be the odd numbers. Write a as 2 m plus 1. Then w equals 3 times 2 m plus 1, minus 1, over 2. This is 3 m plus 1. The weights are 1, 4, 7, 10, and so on.
+00:03:28,698 --> 00:03:30,959
+Phi of A is x plus x squared.
 
 31
-00:06:08,977 --> 00:06:22,716
-E and O are disjoint, and their union is all of N. So by the Sum Lemma, phi of N is phi of E plus phi of O. Add the rows: weights 1, 7 and 13 each have two elements.
+00:03:31,409 --> 00:03:34,140
+Phi of B is x squared plus x cubed.
 
 32
-00:06:23,166 --> 00:06:33,193
-Each part is a geometric series. Phi of E is x over 1 minus x to the 6. Phi of O is x over 1 minus x cubed.
+00:03:34,590 --> 00:03:39,219
+Add them. The coefficient of x squared is 1 plus 1, which is 2.
 
 33
-00:06:33,643 --> 00:06:52,779
-Use the common denominator 1 minus x to the 6. It equals 1 minus x cubed, times 1 plus x cubed. The sum is 2 x plus x to the 4, over 1 minus x to the 6. The python check expands this and compares it with a count of the weights.
+00:03:39,669 --> 00:03:44,491
+But the union is 1, 2, 3. It has only one element of weight 2.
 
 34
-00:06:53,229 --> 00:07:07,245
-Next, the Product Lemma. A has weight function omega, and B has weight function nu. The Cartesian product A times B is the set of all pairs alpha, beta. The grid has one cell for each pair.
+00:03:44,941 --> 00:03:51,341
+So the right side counts the common element twice. The second equality needs disjoint sets.
 
 35
-00:07:07,695 --> 00:07:13,924
-Define the weight of a pair as omega of alpha plus nu of beta. Each cell shows this sum.
+00:03:51,791 --> 00:04:00,303
+An example. S is the set of all subsets of 1, 2, 3. The weight of a subset is its size. There are 8 subsets.
 
 36
-00:07:14,374 --> 00:07:19,089
-Look at weight 2. Three cells have weight 2. They are marked in orange.
+00:04:00,753 --> 00:04:05,617
+Split S with one rule. A holds the subsets that do not contain 3.
 
 37
-00:07:19,539 --> 00:07:25,853
-Now the two series. Phi of A is 1 plus 2 x. Phi of B is x plus x squared.
+00:04:06,067 --> 00:04:08,648
+B holds the subsets that contain 3.
 
 38
-00:07:26,303 --> 00:07:43,861
-Multiply them. The result is x plus 3 x squared plus 2 x cubed. The coefficient of x squared is 3, the number of orange cells. The Product Lemma says this always holds: phi of A times B is phi of A times phi of B.
+00:04:09,098 --> 00:04:13,151
+No subset is in both, and every subset is in one of them.
 
 39
-00:07:44,311 --> 00:07:58,412
-The proof has two parts. First, eta must be a weight function. Group the elements of A by weight: A 0, A 1, A 2. Group B the same way. Each block of the grid is a set A k times B l.
+00:04:13,601 --> 00:04:22,924
+A has one subset of size 0, two of size 1, and one of size 2. So phi of A is 1 plus 2 x plus x squared.
 
 40
-00:07:58,862 --> 00:08:14,926
-A pair has weight n exactly when its first part has some weight k, and its second part has weight n minus k. So the pairs of weight n are the union of the blocks A k times B n minus k, for k from 0 to n.
+00:04:23,374 --> 00:04:29,262
+Each subset in B is a subset of A with 3 added. So each weight goes up by 1.
 
 41
-00:08:15,376 --> 00:08:30,864
-There are n plus 1 such blocks, and each block is finite. So only finitely many pairs have weight n. Here, for n equal to 2, the count is 1 times 2, plus 2 times 2, plus 1 times 1. That is 7.
+00:04:29,712 --> 00:04:33,637
+So phi of B is x plus 2 x squared plus x cubed.
 
 42
-00:08:31,314 --> 00:08:42,173
-Second, the series. Write phi of A times B as a double sum, over alpha in A and beta in B, of x to the omega of alpha plus nu of beta.
+00:04:34,087 --> 00:04:41,191
+Add the rows. By the Sum Lemma, phi of S is 1 plus 3 x plus 3 x squared plus x cubed.
 
 43
-00:08:42,623 --> 00:09:01,695
-x to a sum is a product of two powers. So the double sum factors into a product of two single sums. These are phi of A and phi of B. The coefficient of x to the n in the product is the sum of a k times b n minus k, the same count as the blocks.
+00:04:41,641 --> 00:04:46,377
+For example, the coefficient of x squared is 1 plus 2, which is 3.
 
 44
-00:09:02,145 --> 00:09:22,795
-Now part b. Pause the video and try it. The set is all pairs a, b of natural numbers. The weight is 3 a plus 2 b. The key step: write the weight as a sum, w 1 of a plus w 2 of b, with w 1 of a equal to 3 a, and w 2 of b equal to 2 b.
+00:04:46,827 --> 00:04:50,539
+The coefficients are 3 choose k, as in chapter 1.
 
 45
-00:09:23,245 --> 00:09:29,347
-The grid shows the weight of each pair. Rows are values of a, columns are values of b.
+00:04:50,989 --> 00:05:06,093
+The Sum Lemma also works for infinitely many sets. Let A 0, A 1, A 2, and so on be pairwise disjoint. B is their union, with a weight function. Then phi of B is the sum of all phi of A j.
 
 46
-00:09:29,797 --> 00:09:37,541
-Two pairs have weight 6: a equal to 2 with b equal to 0, and a equal to 0 with b equal to 3.
+00:05:06,543 --> 00:05:13,754
+Example: all binary strings, with weight equal to the length. S j is the set of strings of length j.
 
 47
-00:09:37,991 --> 00:09:50,236
-Each factor is a geometric series. Phi of N with weight 3 a is 1 over 1 minus x cubed. With weight 2 b, it is 1 over 1 minus x squared.
+00:05:14,204 --> 00:05:20,241
+S 0 holds only the empty string, epsilon. So phi of S 0 is 1.
 
 48
-00:09:50,686 --> 00:10:03,315
-By the Product Lemma, the answer is 1 over 1 minus x cubed, times 1 minus x squared. The product row has 2 at x to the 6, the same as the two orange cells.
+00:05:20,691 --> 00:05:27,433
+S 1 holds the strings 0 and 1. Both have weight 1, so phi of S 1 is 2 x.
 
 49
-00:10:03,765 --> 00:10:26,165
-The Product Lemma extends to any finite number of factors, by induction. For k copies of A, the series is phi of A to the power k. Assignment 2, question 3 a uses this. Pause the video and try it. T n is the set of tuples of length n with entries 0, 1 or 2. The weight is the sum of the entries.
+00:05:27,883 --> 00:05:34,091
+S 2 has 4 strings, all of weight 2. So its row has a single 4, at x squared.
 
 50
-00:10:26,615 --> 00:10:46,967
-Let A be the set 0, 1, 2, with weight u of a equal to a. Then T n is A to the n. The weight of a tuple is u of a 1 plus up to u of a n. Phi of A is 1 plus x plus x squared. By the Product Lemma, phi of T n is 1 plus x plus x squared, to the n.
+00:05:34,541 --> 00:05:41,965
+In general, S j has 2 to the j strings, all of weight j. Each row has one nonzero cell.
 
 51
-00:10:47,417 --> 00:10:53,647
-Check with n equal to 3. Expand the cube: 1, 3, 6, 7, 6, 3, 1.
+00:05:42,415 --> 00:05:47,897
+Add the rows. Phi of S is the sum of 2 to the j times x to the j.
 
 52
-00:10:54,097 --> 00:11:05,382
-The coefficient of x cubed is 7. The orange list shows the 7 tuples with sum 3: six orders of 0, 1, 2, and the tuple 1, 1, 1.
+00:05:48,347 --> 00:05:52,571
+This is the geometric series 1 over 1 minus 2 x.
 
 53
-00:11:05,832 --> 00:11:30,003
-Part b. Pause the video and try it. An element of S n is a pair of disjoint subsets A and B of 1 to n. The weight is 2 times the size of A plus the size of B. Draw it as a row of positions. Each position is in A, in B, or in neither. Here, for n equal to 3, A is 1 and B is 3. The weight is 2 plus 1, which is 3.
+00:05:53,021 --> 00:05:59,016
+The proof of the lemma uses the same steps as the Sum Lemma. It is Exercise 2.6.
 
 54
-00:11:30,453 --> 00:11:39,775
-Split S n by the size of A. Let S n k be the pairs with A of size k. These sets are disjoint, and their union is S n.
+00:05:59,466 --> 00:06:03,733
+Now Assignment 2, question 2 a. Pause the video and try it.
 
 55
-00:11:40,225 --> 00:11:59,297
-Fix one set A of size k. It gives x to the 2 k. Each of the other n minus k positions can be in B or not. In B adds weight 1, not in B adds 0. So the sum over B is x to the 2 k times 1 plus x, to the n minus k.
+00:06:04,183 --> 00:06:11,820
+The weight has one formula for even numbers, and another for odd numbers. The table shows the first ten weights.
 
 56
-00:11:59,747 --> 00:12:13,294
-There are n choose k choices for A, so phi of S n k is n choose k, times x to the 2 k, times 1 plus x to the n minus k. The rows show k from 0 to 3.
+00:06:12,270 --> 00:06:18,009
+The two formulas suggest the split. Let E be the even numbers. Write a as 2 m.
 
 57
-00:12:13,744 --> 00:12:27,227
-By the Sum Lemma, phi of S n is the sum of these rows over k. For n equal to 3 the sum is 1, 3, 6, 7, 6, 3, 1. This is the same row as for T 3.
+00:06:18,459 --> 00:06:27,120
+Then w equals 3 times 2 m, plus 1, which is 6 m plus 1. The weights are 1, 7, 13, and so on.
 
 58
-00:12:27,677 --> 00:12:46,663
-Part c asks for a bijection from T n to S n. Pause the video and try it. Send a tuple to the pair A, B. A holds the positions with entry 2. B holds the positions with entry 1. The tuple 2, 1 goes to A equal to 1, and B equal to 2.
+00:06:27,570 --> 00:06:31,410
+Let O be the odd numbers. Write a as 2 m plus 1.
 
 59
-00:12:47,113 --> 00:12:58,591
-The inverse g puts 2 at the positions in A, 1 at the positions in B, and 0 elsewhere. The figure shows all 9 elements of T 2 and their images.
+00:06:31,860 --> 00:06:45,407
+Then w equals 3 times 2 m plus 1, minus 1, over 2. That is 6 m plus 2, over 2, which is 3 m plus 1. The weights are 1, 4, 7, 10, and so on.
 
 60
-00:12:59,041 --> 00:13:13,718
-Now the weights. The weight of f of s is 2 times the number of entries equal to 2, plus the number of entries equal to 1. This is the sum of the entries, which is w of s. Each arrow keeps the weight.
+00:06:45,857 --> 00:06:53,238
+Phi of E has a 1 at each weight of an even number: x, x to the 7, x to the 13, and so on.
 
 61
-00:13:14,168 --> 00:13:35,267
-A weight-preserving bijection gives equal generating series. Parts a and b then give the identity: 1 plus x plus x squared to the n equals the sum over k of n choose k, x to the 2 k, 1 plus x to the n minus k. The python check expands both sides for n up to 5.
+00:06:53,688 --> 00:06:58,957
+Phi of O has a 1 at x, x to the 4, x to the 7, and so on.
 
 62
-00:13:35,717 --> 00:13:53,125
-Now strings. A k is the set of strings of length k with letters from A. A 0 has one element: the empty string epsilon. Here A has three letters. a and b have weight 1, and c has weight 2. Each letter is a block with width equal to its weight.
+00:06:59,407 --> 00:07:08,175
+E and O are disjoint, and their union is all of N. So by the Sum Lemma, phi of N is phi of E plus phi of O.
 
 63
-00:13:53,575 --> 00:14:03,793
-The weight of a string is the sum of the weights of its letters. So the width of a string is its weight. By the Product Lemma, phi of A k is phi of A to the k.
+00:07:08,625 --> 00:07:13,489
+Add the rows. The weights 1, 7 and 13 each have two elements.
 
 64
-00:14:04,243 --> 00:14:19,283
-A 2 has 9 strings. The union of all A k is A star, the set of all strings. The sets A k are disjoint, because each string has one length. The weight on A star is w k on strings of length k.
+00:07:13,939 --> 00:07:20,233
+Each part is a geometric series. Phi of E is x over 1 minus x to the 6.
 
 65
-00:14:19,733 --> 00:14:29,269
-Count A 2 by weight: 4 strings of weight 2, 4 of weight 3, and 1 of weight 4. This matches 2 x plus x squared, squared.
+00:07:20,683 --> 00:07:23,733
+Phi of O is x over 1 minus x cubed.
 
 66
-00:14:29,719 --> 00:14:38,615
-Lemma 2.13 says: w star is a weight function on A star if and only if no element of A has weight 0.
+00:07:24,183 --> 00:07:39,842
+Use the common denominator 1 minus x to the 6. It equals 1 minus x cubed, times 1 plus x cubed. So the second fraction becomes x times 1 plus x cubed, over 1 minus x to the 6.
 
 67
-00:14:39,065 --> 00:14:49,092
-First direction. Suppose z is in A with weight 0. Then epsilon, z, z z, z z z, and so on are all strings of weight 0.
+00:07:40,292 --> 00:07:52,196
+Add the tops: x plus x plus x to the 4 is 2 x plus x to the 4. So phi of N is 2 x plus x to the 4, over 1 minus x to the 6.
 
 68
-00:14:49,542 --> 00:14:57,755
-There are infinitely many of them. So the set of strings of weight 0 is infinite, and w star is not a weight function.
+00:07:52,646 --> 00:07:58,811
+Next, the Product Lemma. Here A has three elements. The gray labels give their weights, omega.
 
 69
-00:14:58,205 --> 00:15:14,760
-Second direction. Suppose every element of A has weight at least 1. Then a string of length k has weight at least k. So a string of weight n has length at most n. The gray zeros show this: length k and weight less than k is not possible.
+00:07:59,261 --> 00:08:01,843
+B has two elements, with weights nu.
 
 70
-00:15:15,210 --> 00:15:29,866
-For each length k from 0 to n, A k has finitely many strings of weight n, because w k is a weight function. A finite number of finite sets is finite. So w star is a weight function.
+00:08:02,293 --> 00:08:10,037
+The Cartesian product A times B is the set of all pairs alpha, beta. The grid has one cell for each pair.
 
 71
-00:15:30,316 --> 00:15:49,708
-Here is the String Lemma. If no element of A has weight 0, then phi of A star is 1 over 1 minus phi of A. The table uses the alphabet a, b, c. Row k is phi of A to the k. Row 0 is 1, the empty string. Row 1 is 2 x plus x squared.
+00:08:10,487 --> 00:08:23,308
+Define the weight of a pair as omega of alpha plus nu of beta. Each cell shows this sum. For example, the pair alpha 1, beta 1 has weight 0 plus 1, which is 1.
 
 72
-00:15:50,158 --> 00:15:52,825
-Rows 2 and 3 are the square and the cube.
+00:08:23,758 --> 00:08:28,473
+Look at weight 2. Three cells have weight 2. They are marked in orange.
 
 73
-00:15:53,275 --> 00:16:06,907
-The proof. A star is the disjoint union of the sets A k. By the Infinite Sum Lemma, phi of A star is the sum of phi of A k. By the Product Lemma, each term is phi of A to the k.
+00:08:28,923 --> 00:08:32,464
+Now the two series. Phi of A is 1 plus 2 x.
 
 74
-00:16:07,357 --> 00:16:24,189
-Phi of A has no constant term, because no element has weight 0. So row k starts at x to the k. The purple staircase marks the forced zeros. Each column has only finitely many nonzero cells, so the sum is defined.
+00:08:32,914 --> 00:08:35,239
+Phi of B is x plus x squared.
 
 75
-00:16:24,639 --> 00:16:44,265
-The sum of all powers of phi of A is the geometric series, 1 over 1 minus phi of A. Here the column sums are 1, 2, 5, 12, 29, 70, 169. These are the coefficients of 1 over 1 minus 2 x minus x squared.
+00:08:35,689 --> 00:08:48,873
+Multiply them. 1 plus 2 x, times x plus x squared, is x plus x squared plus 2 x squared plus 2 x cubed. That is x plus 3 x squared plus 2 x cubed.
 
 76
-00:16:44,715 --> 00:17:01,313
-A practice problem from Assignment 3. Pause the video and try it. The alphabet is a and b. a has weight 1 and b has weight 2. First, phi of A is x plus x squared. No letter has weight 0, so the String Lemma applies.
+00:08:49,323 --> 00:08:54,337
+The coefficient of x squared is 3. This is the number of orange cells.
 
 77
-00:17:01,763 --> 00:17:22,797
-By the String Lemma, phi of A star is 1 over 1 minus x minus x squared. To expand it, use b n equals b n minus 1 plus b n minus 2. This comes from multiplying both sides by 1 minus x minus x squared. The terms are 1, 1, 2, 3, 5.
+00:08:54,787 --> 00:09:01,464
+The Product Lemma says that this always holds: phi of A times B is phi of A times phi of B.
 
 78
-00:17:23,247 --> 00:17:37,071
-Part c. The strings of weight 3 are a a a, a b, and b a. Each block covers its weight in units, so each string fills 3 units. There are 3 strings, and the coefficient of x cubed is 3.
+00:09:01,914 --> 00:09:06,245
+The proof has two parts. First, eta must be a weight function.
 
 79
-00:17:37,521 --> 00:17:44,177
-The drawing gives a check for any weight n: count the ways to fill n units with blocks of length 1 and 2.
+00:09:06,695 --> 00:09:15,207
+Group the elements of A by weight: A 0, A 1, A 2. Here A 0 has 1 element, A 1 has 2, and A 2 has 1.
 
 80
-00:17:44,627 --> 00:17:51,539
-Part d changes the weights. Now a has weight 0 and b has weight 1. Pause the video and try it.
+00:09:15,657 --> 00:09:21,566
+Group B the same way: B 0 has 1 element, B 1 has 2, and B 2 has 2.
 
 81
-00:17:51,989 --> 00:17:56,875
-The strings epsilon, a, a a, a a a, and so on all have weight 0.
+00:09:22,016 --> 00:09:29,739
+Each block of the grid is a set A k times B l. For example, the orange block is A 1 times B 2.
 
 82
-00:17:57,325 --> 00:18:13,965
-So infinitely many strings have weight 0. By Lemma 2.13, v star is not a weight function, and the coefficient of x to the 0 would be infinite. The generating series does not exist, and the String Lemma does not apply.
+00:09:30,189 --> 00:09:46,786
+A pair has weight n exactly when its first part has some weight k, and its second part has weight n minus k. So the pairs of weight n are the union of the blocks A k times B n minus k. Here n is 2: the purple blocks.
 
 83
-00:18:14,415 --> 00:18:31,481
-Practice problem 2. Pause the video and try it. B is the integers from 2 up. The weight of k is 2 k plus 1. So the weights are 5, 7, 9, 11, and so on. The smallest weight is 5, so no element has weight 0.
+00:09:47,236 --> 00:09:54,596
+There are n plus 1 such blocks, and each block is finite. So only finitely many pairs have weight n.
 
 84
-00:18:31,931 --> 00:18:48,593
-Phi of B is x to the 5 plus x to the 7 plus x to the 9, and so on. Factor out x to the 5. The rest is a geometric series in x squared. So phi of B is x to the 5 over 1 minus x squared.
+00:09:55,046 --> 00:10:02,278
+For n equal to 2, the count is 1 times 2, plus 2 times 2, plus 1 times 1. That is 7.
 
 85
-00:18:49,043 --> 00:19:04,829
-By the String Lemma, phi of B star is 1 over 1 minus phi of B. Multiply top and bottom by 1 minus x squared. The answer is 1 minus x squared, over 1 minus x squared minus x to the 5.
+00:10:02,728 --> 00:10:13,587
+Second, the series. Write phi of A times B as a double sum, over alpha in A and beta in B, of x to the omega of alpha plus nu of beta.
 
 86
-00:19:05,279 --> 00:19:23,306
-Check one coefficient. Weight 12 has coefficient 2. The strings are 2, 3 and 3, 2, because 5 plus 7 is 12. A single element has an odd weight, so it cannot have weight 12. The python check lists all strings up to weight 15.
+00:10:14,037 --> 00:10:21,375
+x to a sum is a product of two powers. So the double sum factors into a product of two single sums.
 
 87
-00:19:23,756 --> 00:19:49,377
-Practice problem 3. Pause the video and try it. A multiset with types 1 to t is a multiplicity vector. m i is the number of copies of i. The multiset 1, 1, 1, 2, 3, 3 has vector 3, 1, 2. Its weight is the sum of its elements: 11. Each copy of i adds i, so the weight is the sum of i times m i. This is the posted answer.
+00:10:21,825 --> 00:10:24,193
+These are phi of A and phi of B.
 
 88
-00:19:49,827 --> 00:20:07,171
-One step further, with the Product Lemma. M of t is N to the t. Coordinate i contributes i times m i. Its series is the sum of x to the i m, which is 1 over 1 minus x to the i. The rows show t equal to 3.
+00:10:24,643 --> 00:10:36,291
+The coefficient of x to the n in the product is the sum of a k times b n minus k. This is the same count as the blocks: 7 for n equal to 2.
 
 89
-00:20:07,621 --> 00:20:20,357
-By the Product Lemma, phi of M of t is the product over i of 1 over 1 minus x to the i. For t equal to 3, the product row starts 1, 1, 2, 3, 4.
+00:10:36,741 --> 00:10:45,531
+Now part b. Pause the video and try it. The set is all pairs a, b of natural numbers, with weight 3 a plus 2 b.
 
 90
-00:20:20,807 --> 00:20:35,357
-Check weight 4. The four vectors are 4, 0, 0; 2, 1, 0; 0, 2, 0; and 1, 0, 1. These are the multisets 1 1 1 1, 1 1 2, 2 2, and 1 3.
+00:10:45,981 --> 00:10:53,127
+The key step: write the weight as a sum. w 1 of a is 3 a, and w 2 of b is 2 b.
 
 91
-00:20:35,807 --> 00:20:42,271
-A full answer has five parts. First, define the set. Second, define the weight function.
+00:10:53,577 --> 00:10:59,913
+The grid shows the weight of each pair. Rows are values of a, and columns are values of b.
 
 92
-00:20:42,721 --> 00:20:56,246
-Third, decompose the set: a disjoint union, a Cartesian product, or a set of strings. Show that the weight of the big set matches. For a product, the weight must be the sum of the weights of the parts.
+00:11:00,363 --> 00:11:06,742
+For example, row 1, column 2 holds 3 times 1 plus 2 times 2, which is 7.
 
 93
-00:20:56,696 --> 00:21:02,179
-Fourth, name the lemma: by the Sum Lemma, by the Product Lemma, or by the String Lemma.
+00:11:07,192 --> 00:11:14,936
+Two pairs have weight 6: a equal to 2 with b equal to 0, and a equal to 0 with b equal to 3.
 
 94
-00:21:02,629 --> 00:21:12,101
-Fifth, write the series. For the String Lemma, also say why no element has weight 0. For the Sum Lemma, say why the parts are disjoint.
+00:11:15,386 --> 00:11:23,045
+Each factor is a geometric series. With weight 3 a, phi of N is 1 over 1 minus x cubed.
 
 95
-00:21:12,551 --> 00:21:25,713
-To recap. For disjoint sets, the series add. This holds for infinitely many sets too. For a Cartesian product, with the weight of a pair equal to the sum of the weights, the series multiply.
+00:11:23,495 --> 00:11:28,039
+With weight 2 b, phi of N is 1 over 1 minus x squared.
 
 96
-00:21:26,163 --> 00:21:35,614
-The set of strings has a weight function if and only if no letter has weight 0. Then the String Lemma gives 1 over 1 minus phi of A.
+00:11:28,489 --> 00:11:35,187
+By the Product Lemma, the answer is 1 over 1 minus x cubed, times 1 minus x squared.
 
 97
-00:21:36,064 --> 00:21:46,880
-In a written answer, define the set and the weight, decompose the set, name the lemma, and give the series. The next video uses the String Lemma for compositions.
+00:11:35,637 --> 00:11:40,971
+The product row has 2 at x to the 6. This matches the two orange cells.
+
+98
+00:11:41,421 --> 00:11:51,191
+The Product Lemma extends to any finite number of factors, by induction. For k copies of A, the series is phi of A to the power k.
+
+99
+00:11:51,641 --> 00:12:04,719
+Assignment 2, question 3 a uses this. Pause the video and try it. T n is the set of tuples of length n with entries 0, 1 or 2. The weight is the sum of the entries.
+
+100
+00:12:05,169 --> 00:12:15,729
+Let A be the set 0, 1, 2, with weight u of a equal to a. Then T n is A to the n. The figure shows n equal to 3: three entries.
+
+101
+00:12:16,179 --> 00:12:24,541
+Each entry contributes phi of A: 1 plus x plus x squared. There is one element of each weight 0, 1 and 2.
+
+102
+00:12:24,991 --> 00:12:35,061
+The weight of a tuple is the sum of the weights of its entries. So by the Product Lemma, phi of T n is 1 plus x plus x squared, to the n.
+
+103
+00:12:35,511 --> 00:12:44,556
+Check with n equal to 3. First, the square of 1 plus x plus x squared has the coefficients 1, 2, 3, 2, 1.
+
+104
+00:12:45,006 --> 00:12:57,529
+Multiply by 1 plus x plus x squared again. Each new coefficient is the sum of three neighbours in the row above. For x cubed, that is 2 plus 3 plus 2, which is 7.
+
+105
+00:12:57,979 --> 00:13:02,224
+So phi of T 3 is 1, 3, 6, 7, 6, 3, 1.
+
+106
+00:13:02,674 --> 00:13:08,498
+Now count the tuples with sum 3. Six of them are the orders of 0, 1, 2.
+
+107
+00:13:08,948 --> 00:13:15,775
+The seventh is 1, 1, 1. So there are 7 tuples, the same as the coefficient of x cubed.
+
+108
+00:13:16,225 --> 00:13:29,174
+Part b. Pause the video and try it. An element of S n is a pair of disjoint subsets A and B of 1 to n. The weight is 2 times the size of A, plus the size of B.
+
+109
+00:13:29,624 --> 00:13:35,469
+Draw a pair as a row of positions. Each position is in A, in B, or in neither.
+
+110
+00:13:35,919 --> 00:13:41,487
+Here n is 3, A is 1, and B is 3. The weight is 2 plus 1, which is 3.
+
+111
+00:13:41,937 --> 00:13:47,249
+Split S n by the size of A. Let S n k be the pairs with A of size k.
+
+112
+00:13:47,699 --> 00:13:51,198
+These sets are disjoint, and their union is S n.
+
+113
+00:13:51,648 --> 00:13:59,456
+Fix one set A of size k. Here A is 1, so k is 1. The set A gives x to the 2 k, here x squared.
+
+114
+00:13:59,906 --> 00:14:11,725
+Each of the other n minus k positions can be in B or not. In B adds weight 1, and not in B adds 0. So each of these positions gives 1 plus x.
+
+115
+00:14:12,175 --> 00:14:21,732
+So the sum over B is x to the 2 k, times 1 plus x to the n minus k. Here it is x squared times 1 plus x, squared.
+
+116
+00:14:22,182 --> 00:14:35,985
+There are n choose k choices for A. So phi of S n k is n choose k, times x to the 2 k, times 1 plus x to the n minus k. The rows show k from 0 to 3.
+
+117
+00:14:36,435 --> 00:14:47,976
+For example, k equal to 1 gives 3 times x squared, times 1 plus x squared. That is 3, 6, 3 at x squared, x cubed and x to the 4.
+
+118
+00:14:48,426 --> 00:14:52,991
+By the Sum Lemma, phi of S n is the sum of these rows over k.
+
+119
+00:14:53,441 --> 00:15:01,847
+For n equal to 3, the sum is 1, 3, 6, 7, 6, 3, 1. This is the same row as phi of T 3.
+
+120
+00:15:02,297 --> 00:15:09,379
+Part c asks for a bijection from T n to S n that keeps the weight. Pause the video and try it.
+
+121
+00:15:09,829 --> 00:15:17,659
+Send a tuple to the pair A, B. A holds the positions with entry 2. B holds the positions with entry 1.
+
+122
+00:15:18,109 --> 00:15:28,541
+For example, the tuple 2, 1 has entry 2 at position 1, and entry 1 at position 2. So it goes to A equal to 1, and B equal to 2.
+
+123
+00:15:28,991 --> 00:15:35,732
+The inverse g puts 2 at the positions in A, 1 at the positions in B, and 0 elsewhere.
+
+124
+00:15:36,182 --> 00:15:43,094
+The figure shows all 9 elements of T 2 and their images. No two tuples have the same image.
+
+125
+00:15:43,544 --> 00:15:52,312
+Now the weights. The weight of f of s is 2 times the number of entries equal to 2, plus the number of entries equal to 1.
+
+126
+00:15:52,762 --> 00:16:00,335
+This is the sum of the entries, which is w of s. In the figure, w and v are equal on each arrow.
+
+127
+00:16:00,785 --> 00:16:05,009
+A weight-preserving bijection gives equal generating series.
+
+128
+00:16:05,459 --> 00:16:18,579
+Parts a and b then give the identity: 1 plus x plus x squared, to the n, equals the sum over k of n choose k, x to the 2 k, 1 plus x to the n minus k.
+
+129
+00:16:19,029 --> 00:16:24,448
+Now strings. A k is the set of strings of length k, with letters from A.
+
+130
+00:16:24,898 --> 00:16:29,399
+Here A has three letters. a and b have weight 1, and c has weight 2.
+
+131
+00:16:29,849 --> 00:16:33,775
+A 0 has one element: the empty string, epsilon.
+
+132
+00:16:34,225 --> 00:16:43,462
+A 1 holds the three letters. Each letter is a block, and the width of the block is its weight. So phi of A is 2 x plus x squared.
+
+133
+00:16:43,912 --> 00:16:47,496
+The weight of a string is the sum of the weights of its letters.
+
+134
+00:16:47,946 --> 00:16:54,965
+So the width of a string is its weight. For example, the string a c has weight 1 plus 2, which is 3.
+
+135
+00:16:55,415 --> 00:17:00,727
+A 2 has 3 times 3, which is 9 strings: 3 choices for each letter.
+
+136
+00:17:01,177 --> 00:17:05,038
+By the Product Lemma, phi of A k is phi of A to the k.
+
+137
+00:17:05,488 --> 00:17:11,355
+Count A 2 by weight: 4 strings of weight 2, 4 of weight 3, and 1 of weight 4.
+
+138
+00:17:11,805 --> 00:17:19,805
+This matches the square of 2 x plus x squared, which is 4 x squared plus 4 x cubed plus x to the 4.
+
+139
+00:17:20,255 --> 00:17:24,244
+The union of all A k is A star, the set of all strings.
+
+140
+00:17:24,694 --> 00:17:33,419
+The sets A k are disjoint, because each string has one length. The weight on A star is w k on the strings of length k.
+
+141
+00:17:33,869 --> 00:17:42,765
+Lemma 2.13 says: w star is a weight function on A star if and only if no element of A has weight 0.
+
+142
+00:17:43,215 --> 00:17:47,226
+First direction. Suppose z is in A, with weight 0.
+
+143
+00:17:47,676 --> 00:17:53,585
+Then epsilon, z, z z, z z z, and so on are all strings of weight 0.
+
+144
+00:17:54,035 --> 00:18:02,249
+There are infinitely many of them. So the set of strings of weight 0 is infinite, and w star is not a weight function.
+
+145
+00:18:02,699 --> 00:18:07,264
+Second direction. Suppose every element of A has weight at least 1.
+
+146
+00:18:07,714 --> 00:18:13,815
+Then a string of length k has weight at least k. So a string of weight n has length at most n.
+
+147
+00:18:14,265 --> 00:18:21,199
+The gray zeros show this. For example, a string of length 3 cannot have weight 0, 1 or 2.
+
+148
+00:18:21,649 --> 00:18:32,187
+For weight 3, only the lengths 0 to 3 are possible. Each A k has finitely many strings of weight 3, because w k is a weight function.
+
+149
+00:18:32,637 --> 00:18:38,568
+A finite union of finite sets is finite. So w star is a weight function.
+
+150
+00:18:39,018 --> 00:18:47,167
+Here is the String Lemma. If no element of A has weight 0, then phi of A star is 1 over 1 minus phi of A.
+
+151
+00:18:47,617 --> 00:18:53,761
+The table uses the alphabet a, b, c from before. Row k is phi of A to the k.
+
+152
+00:18:54,211 --> 00:18:57,475
+Row 0 is 1. It counts the empty string.
+
+153
+00:18:57,925 --> 00:19:01,147
+Row 1 is phi of A: 2 x plus x squared.
+
+154
+00:19:01,597 --> 00:19:04,690
+Rows 2 to 6 are the higher powers of phi of A.
+
+155
+00:19:05,140 --> 00:19:15,551
+Now the proof. A star is the disjoint union of the sets A k. By the Infinite Sum Lemma, phi of A star is the sum of the series of the A k.
+
+156
+00:19:16,001 --> 00:19:19,563
+By the Product Lemma, each term is phi of A to the k.
+
+157
+00:19:20,013 --> 00:19:30,893
+Phi of A has no constant term, because no element has weight 0. So row k starts at x to the k. The purple staircase marks the forced zeros.
+
+158
+00:19:31,343 --> 00:19:43,695
+So each column has only finitely many nonzero cells. For example, column x cubed has nonzero cells only in rows 2 and 3. So the sum is defined.
+
+159
+00:19:44,145 --> 00:19:50,908
+The sum of all powers of phi of A is the geometric series: 1 over 1 minus phi of A.
+
+160
+00:19:51,358 --> 00:19:57,353
+Add each column. For example, column x cubed gives 4 plus 8, which is 12.
+
+161
+00:19:57,803 --> 00:20:10,155
+The column sums are 1, 2, 5, 12, 29, 70, 169. These are the coefficients of 1 over 1 minus 2 x minus x squared.
+
+162
+00:20:10,605 --> 00:20:20,098
+A practice problem from Assignment 3. Pause the video and try it. The alphabet is a and b. a has weight 1, and b has weight 2.
+
+163
+00:20:20,548 --> 00:20:27,268
+First, phi of A is x plus x squared. No letter has weight 0, so the String Lemma applies.
+
+164
+00:20:27,718 --> 00:20:33,201
+By the String Lemma, phi of A star is 1 over 1 minus x minus x squared.
+
+165
+00:20:33,651 --> 00:20:49,693
+To expand it, call the coefficients b n. Multiply both sides by 1 minus x minus x squared. This gives b n equals b n minus 1 plus b n minus 2, with b 0 and b 1 equal to 1.
+
+166
+00:20:50,143 --> 00:20:57,013
+So the terms are 1, 1, 2, 3, 5. For example, b 4 is 3 plus 2, which is 5.
+
+167
+00:20:57,463 --> 00:21:01,836
+Part c. The strings of weight 3 are a a a, a b, and b a.
+
+168
+00:21:02,286 --> 00:21:07,022
+Each block covers its weight in units. So each string fills 3 units.
+
+169
+00:21:07,472 --> 00:21:11,440
+There are 3 strings, and the coefficient of x cubed is 3.
+
+170
+00:21:11,890 --> 00:21:18,546
+The drawing gives a check for any weight n: count the ways to fill n units with blocks of length 1 and 2.
+
+171
+00:21:18,996 --> 00:21:25,993
+Part d changes the weights. Now a has weight 0, and b has weight 1. Pause the video and try it.
+
+172
+00:21:26,443 --> 00:21:31,329
+The strings epsilon, a, a a, a a a, and so on all have weight 0.
+
+173
+00:21:31,779 --> 00:21:38,349
+So infinitely many strings have weight 0. The coefficient of x to the 0 would be infinite.
+
+174
+00:21:38,799 --> 00:21:48,485
+By Lemma 2.13, v star is not a weight function. The generating series does not exist, and the String Lemma does not apply.
+
+175
+00:21:48,935 --> 00:21:57,489
+Practice problem 2. Pause the video and try it. B is the integers from 2 up. The weight of k is 2 k plus 1.
+
+176
+00:21:57,939 --> 00:22:06,110
+So the weights are 5, 7, 9, 11, and so on. The smallest weight is 5, so no element has weight 0.
+
+177
+00:22:06,560 --> 00:22:12,341
+Phi of B is x to the 5 plus x to the 7 plus x to the 9, and so on.
+
+178
+00:22:12,791 --> 00:22:22,903
+Factor out x to the 5. The rest is a geometric series in x squared. So phi of B is x to the 5 over 1 minus x squared.
+
+179
+00:22:23,353 --> 00:22:28,303
+By the String Lemma, phi of B star is 1 over 1 minus phi of B.
+
+180
+00:22:28,753 --> 00:22:39,633
+Multiply the top and the bottom by 1 minus x squared. The answer is 1 minus x squared, over 1 minus x squared minus x to the 5.
+
+181
+00:22:40,083 --> 00:22:43,027
+This row is the expansion of phi of B star.
+
+182
+00:22:43,477 --> 00:22:47,381
+Check one coefficient. Weight 12 has coefficient 2.
+
+183
+00:22:47,831 --> 00:22:52,481
+The strings are 2, 3 and 3, 2, because 5 plus 7 is 12.
+
+184
+00:22:52,931 --> 00:22:57,305
+A single element has an odd weight, so it cannot have weight 12.
+
+185
+00:22:57,755 --> 00:23:08,507
+Practice problem 3. Pause the video and try it. A multiset with types 1 to t is a multiplicity vector. m i is the number of copies of i.
+
+186
+00:23:08,957 --> 00:23:13,906
+The multiset 1, 1, 1, 2, 3, 3 has the vector 3, 1, 2.
+
+187
+00:23:14,356 --> 00:23:21,673
+Its weight is the sum of its elements: 1 plus 1 plus 1 plus 2 plus 3 plus 3, which is 11.
+
+188
+00:23:22,123 --> 00:23:34,305
+Each copy of i adds i. So the weight is the sum of i times m i: here 1 times 3, plus 2 times 1, plus 3 times 2. This is the posted answer.
+
+189
+00:23:34,755 --> 00:23:42,797
+One step further, with the Product Lemma. M of t is N to the t. Coordinate i contributes i times m i.
+
+190
+00:23:43,247 --> 00:23:49,327
+Its series is the sum of x to the i m, which is 1 over 1 minus x to the i.
+
+191
+00:23:49,777 --> 00:23:55,175
+The rows show t equal to 3. Row i has a 1 at every multiple of i.
+
+192
+00:23:55,625 --> 00:24:02,921
+By the Product Lemma, phi of M of t is the product over i of 1 over 1 minus x to the i.
+
+193
+00:24:03,371 --> 00:24:08,299
+For t equal to 3, the product row starts 1, 1, 2, 3, 4.
+
+194
+00:24:08,749 --> 00:24:17,389
+Check weight 4. The four vectors are 4, 0, 0; 2, 1, 0; 0, 2, 0; and 1, 0, 1.
+
+195
+00:24:17,839 --> 00:24:22,980
+These are the multisets 1 1 1 1, 1 1 2, 2 2, and 1 3.
+
+196
+00:24:23,430 --> 00:24:27,270
+A full answer has five parts. First, define the set.
+
+197
+00:24:27,720 --> 00:24:29,725
+Second, define the weight function.
+
+198
+00:24:30,175 --> 00:24:36,447
+Third, decompose the set: a disjoint union, a Cartesian product, or a set of strings.
+
+199
+00:24:36,897 --> 00:24:45,345
+Show that the weight of the big set matches. For a product, the weight must be the sum of the weights of the parts, as in this example.
+
+200
+00:24:45,795 --> 00:24:51,278
+Fourth, name the lemma: by the Sum Lemma, by the Product Lemma, or by the String Lemma.
+
+201
+00:24:51,728 --> 00:24:53,307
+Fifth, write the series.
+
+202
+00:24:53,757 --> 00:25:01,586
+For the String Lemma, also say why no element has weight 0. For the Sum Lemma, say why the parts are disjoint.
+
+203
+00:25:02,036 --> 00:25:08,159
+To recap. For disjoint sets, the series add. This holds for infinitely many sets too.
+
+204
+00:25:08,609 --> 00:25:15,307
+For a Cartesian product, with the weight of a pair equal to the sum of the weights, the series multiply.
+
+205
+00:25:15,757 --> 00:25:20,920
+The set of strings has a weight function if and only if no letter has weight 0.
+
+206
+00:25:21,370 --> 00:25:25,146
+Then the String Lemma gives 1 over 1 minus phi of A.
+
+207
+00:25:25,596 --> 00:25:32,209
+In a written answer, define the set and the weight, decompose the set, name the lemma, and give the series.
+
+208
+00:25:32,659 --> 00:25:38,035
+The next video uses the String Lemma for compositions: the set C is P star.

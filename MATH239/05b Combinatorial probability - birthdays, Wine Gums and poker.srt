@@ -3,241 +3,533 @@
 This is MATH 239, video 5 b. The topic is combinatorial probability, from Sections 1.1.7 and 1.2 of the notes.
 
 2
-00:00:12,055 --> 00:00:26,327
-After this video, you can find a probability by counting two sets. You can count the complement when the event is hard to count. You can explain why the model changes the answer. And you can count poker hands.
+00:00:12,055 --> 00:00:16,429
+After this video, you can find a probability by counting two sets.
 
 3
-00:00:26,777 --> 00:00:47,983
-We add one assumption to counting: every possible outcome is equally likely. Let omega be the set of all outcomes. An event E is a subset of omega. Each outcome has probability 1 over the size of omega. So the probability of E is the size of E over the size of omega.
+00:00:16,879 --> 00:00:21,039
+You can count the complement when the event is hard to count directly.
 
 4
-00:00:48,433 --> 00:01:01,275
-Example 1.16. Choose a random subset of 1 to 8. What is the probability that it has at most 3 elements? The bars show how many subsets have each size k.
+00:00:21,489 --> 00:00:24,923
+You can explain why the model changes the answer.
 
 5
-00:01:01,725 --> 00:01:18,899
-An outcome is a subset, so omega has 2 to the 8, which is 256, elements. The event E is the subsets of size 0, 1, 2 or 3. By the OR rule, add 1, 8, 28 and 56. That is 93.
+00:00:25,373 --> 00:00:28,872
+And you can count poker hands with the AND and OR rules.
 
 6
-00:01:19,349 --> 00:01:26,837
-So the probability is 93 over 256, which is about 0.363.
+00:00:29,322 --> 00:00:40,885
+We add one assumption to counting: every possible outcome is equally likely. Let omega be the set of all outcomes. An event E is a subset of omega.
 
 7
-00:01:27,287 --> 00:01:40,855
-Example 1.17. Choose a random list of the six letters a to f. What is the probability that the letters f, a, d appear together, in this order? Pause the video and try it.
+00:00:41,335 --> 00:00:50,849
+Each outcome has probability 1 over the size of omega. So the probability of E is the size of E over the size of omega.
 
 8
-00:01:41,305 --> 00:01:56,665
-In such a list, f a d is one block. Treat the block as one new element. Then the list is a list of the four elements b, c, e and the block f a d. Each list with the block gives exactly one such list, and back.
+00:00:51,299 --> 00:01:00,302
+Example 1.16. Choose a random subset of 1 to 8. What is the probability that it has at most 3 elements?
 
 9
-00:01:57,115 --> 00:02:12,539
-There are 4 factorial, which is 24, lists of four elements. There are 6 factorial, which is 720, lists in all. So the probability is 24 over 720, which is 1 over 30.
+00:01:00,752 --> 00:01:11,547
+An outcome is a subset of 1 to 8. Each of the 8 numbers is in or out, so omega has 2 to the 8, which is 256, elements.
 
 10
-00:02:12,989 --> 00:02:23,293
-Example 1.18. Choose a random multiset of size 2 with t types. What is the probability that both elements have the same type?
+00:01:11,997 --> 00:01:20,210
+The bars show how many subsets have each size k, from 0 to 8. All the bars add to 256.
 
 11
-00:02:23,743 --> 00:02:43,903
-By the multiset count from video 2, there are 2 plus t minus 1 choose t minus 1 outcomes. This equals t plus 1 choose 2, which is t plus 1 times t over 2. For t equal to 4, the grid shows the 10 multisets. The blue cells have two different types.
+00:01:20,660 --> 00:01:26,996
+The event E is the subsets of size 0, 1, 2 or 3. These are the green bars.
 
 12
-00:02:44,353 --> 00:02:52,011
-The event has t outcomes: choose one type and take two elements of it. These are the green cells on the diagonal.
+00:01:27,446 --> 00:01:32,886
+By the OR rule, add 1, 8, 28 and 56. That is 93.
 
 13
-00:02:52,461 --> 00:03:08,013
-So the probability is t over t plus 1 times t over 2, which is 2 over t plus 1. For t equal to 4, it is 4 over 10, or 0.4. As t grows, the probability goes to 0.
+00:01:33,336 --> 00:01:40,824
+So the probability is 93 over 256, which is about 0.363.
 
 14
-00:03:08,463 --> 00:03:24,463
-Exercise 1.13 asks about a random permutation of 1 to 7. There are 5040 permutations. Part 1: what is the probability that 1 and 2 are next to each other? Pause the video and try it.
+00:01:41,274 --> 00:01:54,842
+Example 1.17. Choose a random list of the six letters a to f. What is the probability that the letters f, a, d appear together, in this order? Pause the video and try it.
 
 15
-00:03:24,913 --> 00:03:41,617
-Use a block again. The block holds 1 and 2 in one of 2 orders. Then we list 6 elements: the block and the other five numbers. By the AND rule, there are 2 times 6 factorial, which is 1440, permutations.
+00:01:55,292 --> 00:02:00,433
+In such a list, f a d is one block. Treat the block as one new element.
 
 16
-00:03:42,067 --> 00:03:49,150
-So the probability is 1440 over 5040, which is 2 over 7.
+00:02:00,883 --> 00:02:10,974
+Then the list is a list of four elements: b, c, e and the block f a d. Each list with the block gives exactly one such list, and back.
 
 17
-00:03:49,600 --> 00:04:04,085
-Part 2: what is the probability that 1 is to the left of 2? Swap the numbers 1 and 2 in a permutation. A permutation with 1 on the left goes to one with 2 on the left. Swap again, and you are back.
+00:02:11,424 --> 00:02:19,531
+There are 4 factorial, which is 4 times 3 times 2 times 1, which is 24, lists of four elements.
 
 18
-00:04:04,535 --> 00:04:14,797
-So the swap is a bijection between the two halves. Each half has 2520 permutations, and the probability is 1 over 2.
+00:02:19,981 --> 00:02:25,335
+There are 6 factorial, which is 720, lists of all six letters.
 
 19
-00:04:15,247 --> 00:04:34,447
-Part 3: what is the probability that no two odd numbers are next to each other? Pause the video and try it. There are four odd numbers and three even numbers. Four odd numbers need a gap between each pair. In 7 places, the only choice is places 1, 3, 5 and 7.
+00:02:25,785 --> 00:02:31,609
+So the probability is 24 over 720, which is 1 over 30.
 
 20
-00:04:34,897 --> 00:04:43,025
-So the pattern is fixed: odd, even, odd, even, odd, even, odd. Here is one permutation with this pattern.
+00:02:32,059 --> 00:02:42,363
+Example 1.18. Choose a random multiset of size 2 with t types. What is the probability that both elements have the same type?
 
 21
-00:04:43,475 --> 00:05:04,232
-The odd numbers fill their four places in 4 factorial orders. The even numbers fill their three places in 3 factorial orders. By the AND rule, there are 144 permutations, and the probability is 144 over 5040, which is 1 over 35.
+00:02:42,813 --> 00:02:50,323
+By the multiset count from video 2, there are 2 plus t minus 1, choose t minus 1, outcomes.
 
 22
-00:05:04,682 --> 00:05:27,914
-Example 1.20. Let p of n be the probability that at least two of n random people have the same birthday. The notes use 365 days and assume that birthdays are uniform and independent. p of 1 is 0. If n is more than 365, p of n is 1, because two people must share a day.
+00:02:50,773 --> 00:02:56,085
+This equals t plus 1 choose 2, which is t plus 1 times t, over 2.
 
 23
-00:05:28,364 --> 00:05:50,529
-For other n, at least two equal birthdays is hard to count directly. The complement is easy: all n birthdays are different. List the people P 1 to P n. An outcome is the list of their birthdays. Try a small case first: a year of 4 days and 3 people. Each person has 4 choices, so there are 64 lists.
+00:02:56,535 --> 00:03:02,636
+For t equal to 4, the grid shows the multisets. 5 times 4 over 2 is 10.
 
 24
-00:05:50,979 --> 00:06:01,945
-All birthdays different: the first person has 4 choices, the second 3, the third 2. This is a partial list of the 4 days, so there are 24.
+00:03:03,086 --> 00:03:13,667
+The event has t outcomes: choose one type, and take two elements of it. These are the green cells on the diagonal. For t equal to 4, there are 4.
 
 25
-00:06:02,395 --> 00:06:17,008
-So the probability of a common birthday is 1 minus 24 over 64, which is 40 over 64, or 5 over 8. A list of all 64 outcomes by computer confirms 40.
+00:03:14,117 --> 00:03:21,520
+So the probability is t over the quantity t plus 1 times t over 2. That is 2 over t plus 1.
 
 26
-00:06:17,458 --> 00:06:42,973
-With 365 days, the lists with all birthdays different are the partial lists of length n of the 365 days. There are 365 factorial over 365 minus n factorial of them. All lists number 365 to the n. So 1 minus p of n is the ratio, and p of n is 1 minus the ratio.
+00:03:21,970 --> 00:03:30,397
+For t equal to 4, it is 4 over 10, which is 0.4. As t grows, the probability goes to 0.
 
 27
-00:06:43,423 --> 00:06:57,609
-The blue curve is p of n for n from 1 to 80. It rises fast. At n equal to 30, it is already about 0.71. At n equal to 50, it is about 0.97.
+00:03:30,847 --> 00:03:41,833
+Exercise 1.13 asks about a random permutation of 1 to 7. There are 7 factorial, which is 5040, permutations.
 
 28
-00:06:58,059 --> 00:07:14,657
-The orange point is n equal to 23. There, p of 23 is 0.507297, just above one half. So in a group of 23 people, a shared birthday is slightly more likely than not.
+00:03:42,283 --> 00:03:48,683
+Part 1: what is the probability that 1 and 2 are next to each other? Pause the video and try it.
 
 29
-00:07:15,107 --> 00:07:30,531
-Example 1.21 shows that a probability depends on the model. A packet of Wine Gums has 10 candies. Each candy has one of five flavours. What is the probability of exactly k purple candies?
+00:03:49,133 --> 00:03:55,256
+Use a block again. The block holds 1 and 2 in one of 2 orders: 1 2 or 2 1.
 
 30
-00:07:30,981 --> 00:07:45,999
-In the dice model, we record the order of the candies in the roll, from bottom to top. These two rolls are different outcomes. Each candy has 5 choices, so there are 5 to the 10 outcomes, nearly 10 million.
+00:03:55,706 --> 00:04:03,962
+Then we list 6 elements: the block and the other five numbers. There are 6 factorial, which is 720, such lists.
 
 31
-00:07:46,449 --> 00:08:07,249
-In the multiset model, only the number of candies of each flavour matters. Both rolls give the same multiset, 2, 3, 2, 2, 1. A multiset of size 10 with 5 types: there are 14 choose 4, which is 1001, outcomes. Each model makes its own outcomes equally likely.
+00:04:04,412 --> 00:04:12,497
+By the AND rule, there are 2 times 720, which is 1440, permutations.
 
 32
-00:08:07,699 --> 00:08:17,278
-First the dice model. Fix k, for example k equal to 2. Choose the positions of the purple candies. There are 10 choose k ways.
+00:04:12,947 --> 00:04:20,030
+So the probability is 1440 over 5040, which is 2 over 7.
 
 33
-00:08:17,728 --> 00:08:28,395
-Each of the other 10 minus k candies has one of the 4 other flavours. So there are 4 to the 10 minus k ways for them. By the AND rule, multiply.
+00:04:20,480 --> 00:04:24,555
+Part 2: what is the probability that 1 is to the left of 2?
 
 34
-00:08:28,845 --> 00:08:42,242
-Divide by all 5 to the 10 outcomes. For k equal to 2: 45 times 4 to the 8, over 5 to the 10. That is 0.301990.
+00:04:25,005 --> 00:04:32,941
+Swap the numbers 1 and 2 in a permutation. A permutation with 1 on the left goes to one with 2 on the left.
 
 35
-00:08:42,692 --> 00:08:51,631
-Now the multiset model. If k candies are purple, the other 10 minus k candies form a multiset with the 4 other flavours.
+00:04:33,391 --> 00:04:38,575
+Swap again, and you are back. So the swap is a bijection between the two halves.
 
 36
-00:08:52,081 --> 00:09:04,006
-Their numbers m G, m Y, m O and m R add to 10 minus k. By the multiset count, there are 13 minus k choose 3 such multisets.
+00:04:39,025 --> 00:04:49,350
+So each half has 5040 over 2, which is 2520, permutations. The probability is 1 over 2.
 
 37
-00:09:04,456 --> 00:09:24,189
-Divide by 1001. For k equal to 2, there are 11 choose 3, which is 165, packets. So m of 2 is 165 over 1001, which is 0.164835. This is about half of d of 2.
+00:04:49,800 --> 00:04:56,989
+Part 3: what is the probability that no two odd numbers are next to each other? Pause the video and try it.
 
 38
-00:09:24,639 --> 00:09:33,087
-Here are both models side by side. In the dice model, the blue bars, 2 purple candies is the most likely result.
+00:04:57,439 --> 00:05:03,775
+There are four odd numbers, 1, 3, 5 and 7, and three even numbers, 2, 4 and 6.
 
 39
-00:09:33,537 --> 00:09:50,433
-In the multiset model, the orange bars, 0 purple candies is the most likely result, and the bars fall steadily. The two models give different answers. Only measurements of real packets can tell which model is closer to the truth.
+00:05:04,225 --> 00:05:17,473
+Four odd numbers with a gap between each pair need at least 4 plus 3, which is 7, places. There are exactly 7 places. So the odd numbers are in places 1, 3, 5 and 7.
 
 40
-00:09:50,883 --> 00:10:15,182
-Why are they different? One multiset comes from many sequences, and the number changes with the multiset. This number is the multinomial coefficient, n factorial over the product of the m i factorials. For 2, 3, 2, 2, 1 it is 75600. A multiset with all 10 candies purple comes from only 1 sequence.
+00:05:17,923 --> 00:05:23,961
+Here is one permutation with this pattern: odd, even, odd, even, odd, even, odd.
 
 41
-00:10:15,632 --> 00:10:36,261
-Section 1.2.4 counts poker hands. The deck has 52 cards. Each row is a suit and each column is a value. A hand is any 5 cards. The order does not matter, so a hand is a 5 element subset of the deck. The orange cells are one hand: one pair of queens.
+00:05:24,411 --> 00:05:30,277
+The odd numbers fill their four places in 4 factorial, which is 24, orders.
 
 42
-00:10:36,711 --> 00:10:43,965
-Practice problem P1-2 asks: how many distinct poker hands are there? Pause the video and try it.
+00:05:30,727 --> 00:05:36,317
+The even numbers fill their three places in 3 factorial, which is 6, orders.
 
 43
-00:10:44,415 --> 00:11:03,252
-A hand is a 5 element subset of a 52 element set. So there are 52 choose 5, which is 2,598,960, hands. For the hand types, remember one rule: an Ace can be below 2 or above King.
+00:05:36,767 --> 00:05:43,103
+By the AND rule, there are 24 times 6, which is 144, permutations.
 
 44
-00:11:03,702 --> 00:11:16,267
-Example 1.22 counts two types. First the Straight: five consecutive values, but not all of the same suit. The orange hand is 8, 9, 10, Jack, Queen.
+00:05:43,553 --> 00:05:50,422
+So the probability is 144 over 5040, which is 1 over 35.
 
 45
-00:11:16,717 --> 00:11:26,701
-Choose the values. The lowest value can be Ace, 2, up to 10. The last run is 10, Jack, Queen, King, Ace. So there are 10 choices.
+00:05:50,872 --> 00:06:06,616
+Example 1.20. Let p of n be the probability that at least two of n random people have the same birthday. The notes use 365 days, and assume that birthdays are uniform and independent.
 
 46
-00:11:27,151 --> 00:11:39,439
-AND choose a suit for each of the five cards: 4 to the 5 choices. But 4 of these choices give all five cards one suit. That is a Straight Flush, so remove these 4.
+00:06:07,066 --> 00:06:15,258
+p of 1 is 0. If n is more than 365, p of n is 1, because two people must share a day.
 
 47
-00:11:39,889 --> 00:11:45,393
-So there are 10 times 1020, which is 10,200, Straights.
+00:06:15,708 --> 00:06:24,113
+For other n, at least two equal birthdays is hard to count directly. The complement is easy: all n birthdays are different.
 
 48
-00:11:45,843 --> 00:11:55,891
-Next, the Busted hand: any hand that is not of a better type. So it has no pair, no straight and no flush. The orange hand is one example.
+00:06:24,563 --> 00:06:29,662
+List the people P 1 to P n. An outcome is the list of their birthdays.
 
 49
-00:11:56,341 --> 00:12:12,875
-No pair means five different values: 13 choose 5, which is 1287, sets. No straight means the values are not one of the 10 runs. So 1277 value sets remain.
+00:06:30,112 --> 00:06:34,379
+Try a small case first: a year of 4 days, and 3 people.
 
 50
-00:12:13,325 --> 00:12:21,026
-No flush means the suits are not all equal: 4 to the 5 minus 4, which is 1020, choices.
+00:06:34,829 --> 00:06:40,162
+Each person has 4 choices, so there are 4 cubed, which is 64, lists.
 
 51
-00:12:21,476 --> 00:12:35,855
-By the AND rule, there are 1277 times 1020, which is 1,302,540, Busted hands. This is about half of all hands.
+00:06:40,612 --> 00:06:50,959
+All birthdays different: the first person has 4 choices, the second 3, and the third 2. 4 times 3 times 2 is 24 lists.
 
 52
-00:12:36,305 --> 00:12:51,302
-Exercise 1.14 asks for the other rows of the table. Try two of them: Full House and Two Pair. A Full House has three cards of one value and two cards of another value. Pause the video and try it.
+00:06:51,409 --> 00:07:01,265
+So the probability of a common birthday is 1 minus 24 over 64. That is 40 over 64, which is 5 over 8.
 
 53
-00:12:51,752 --> 00:13:03,272
-Choose the value of the three cards: 13 ways. Choose 3 of its 4 suits. Then choose the value of the pair from the other 12 values, and 2 of its 4 suits.
+00:07:01,715 --> 00:07:18,547
+With 365 days, the lists with all birthdays different are the partial lists of length n of the 365 days. There are 365 factorial over 365 minus n factorial of them.
 
 54
-00:13:03,722 --> 00:13:14,474
-By the AND rule, 13 times 4 times 12 times 6 is 3744. The orange hand is three 9s and two Aces.
+00:07:18,997 --> 00:07:23,647
+All lists of n birthdays number 365 to the n.
 
 55
-00:13:14,924 --> 00:13:32,759
-Two Pair: choose the two pair values as a set, 13 choose 2. Do not choose them in order, because the two pairs play the same role. Choose 2 suits for each pair. Then the fifth card has one of the 11 other values, so 44 cards are possible.
+00:07:24,097 --> 00:07:28,236
+So 1 minus p of n is the ratio of these two counts.
 
 56
-00:13:33,209 --> 00:13:43,513
-13 choose 2 is 78. 78 times 6 times 6 times 44 is 123,552.
+00:07:28,686 --> 00:07:31,609
+And p of n is 1 minus the ratio.
 
 57
-00:13:43,963 --> 00:14:04,187
-Here is the table from the notes. N is the number of hands of each type, and p is N over 52 choose 5. The green rows are the ones we counted. Each hand has exactly one type, so by the OR rule the rows add to 2,598,960.
+00:07:32,059 --> 00:07:36,837
+The blue curve is p of n for n from 1 to 80. It rises fast.
 
 58
-00:14:04,637 --> 00:14:22,301
-The other rows use the same method. For example, One Pair is 13 times 4 choose 2, times 12 choose 3 for the three other values, times 4 cubed for their suits. A computer list of every hand gives all nine counts of the table.
+00:07:37,287 --> 00:07:48,039
+The table gives some values. At n equal to 10, p of n is 0.117. At n equal to 20, it is 0.411.
 
 59
-00:14:22,751 --> 00:14:34,441
-To recap. With equally likely outcomes, a probability is the size of the event over the size of omega. A block of letters or numbers becomes one element.
+00:07:48,489 --> 00:07:57,577
+At n equal to 30, it is already 0.706. At n equal to 50, it is 0.970.
 
 60
-00:14:34,891 --> 00:14:45,195
-When the event is hard to count, count the complement, as in the birthday problem. And the model decides what an outcome is, as the Wine Gums show.
+00:07:58,027 --> 00:08:08,395
+The orange point is n equal to 23. There, p of 23 is 0.507297, just above one half.
 
 61
-00:14:45,645 --> 00:14:57,357
+00:08:08,845 --> 00:08:14,371
+So in a group of 23 people, a shared birthday is slightly more likely than not.
+
+62
+00:08:14,821 --> 00:08:30,245
+Example 1.21 shows that a probability depends on the model. A packet of Wine Gums has 10 candies. Each candy has one of five flavours. What is the probability of exactly k purple candies?
+
+63
+00:08:30,695 --> 00:08:36,561
+In the dice model, we record the order of the candies in the roll, from bottom to top.
+
+64
+00:08:37,011 --> 00:08:45,459
+Here is a second roll. It has the same candies in another order. In the dice model, these two rolls are different outcomes.
+
+65
+00:08:45,909 --> 00:08:58,795
+Each candy has 5 choices. So there are 5 to the 10, which is 9,765,625, outcomes. That is nearly 10 million.
+
+66
+00:08:59,245 --> 00:09:04,023
+In the multiset model, only the number of candies of each flavour matters.
+
+67
+00:09:04,473 --> 00:09:11,236
+Both rolls give the same multiset: 2 green, 3 yellow, 2 orange, 2 red and 1 purple.
+
+68
+00:09:11,686 --> 00:09:24,038
+A multiset of size 10 with 5 types: there are 10 plus 5 minus 1, choose 5 minus 1, outcomes. That is 14 choose 4, which is 1001.
+
+69
+00:09:24,488 --> 00:09:31,037
+Each model makes its own outcomes equally likely. So the two models can give different probabilities.
+
+70
+00:09:31,487 --> 00:09:36,074
+First the dice model. Fix k, for example k equal to 2.
+
+71
+00:09:36,524 --> 00:09:41,537
+Choose the positions of the k purple candies. There are 10 choose k ways.
+
+72
+00:09:41,987 --> 00:09:48,174
+For k equal to 2, 10 choose 2 is 10 times 9 over 2, which is 45.
+
+73
+00:09:48,624 --> 00:09:57,072
+Each of the other 10 minus k candies has one of the 4 other flavours. So there are 4 to the 10 minus k ways for them.
+
+74
+00:09:57,522 --> 00:10:06,503
+For k equal to 2, there are 8 other candies: 4 to the 8, which is 65536, ways.
+
+75
+00:10:06,953 --> 00:10:12,436
+By the AND rule, multiply. Then divide by all 5 to the 10 outcomes.
+
+76
+00:10:12,886 --> 00:10:34,006
+For k equal to 2: 45 times 65536 is 2,949,120. Divide by 9,765,625. That is 0.301990.
+
+77
+00:10:34,456 --> 00:10:40,088
+Now the multiset model. Fix k equal to 2 again. Two candies are purple.
+
+78
+00:10:40,538 --> 00:10:45,679
+The other 10 minus k candies form a multiset with the 4 other flavours.
+
+79
+00:10:46,129 --> 00:10:54,641
+Their numbers m G, m Y, m O and m R add to 10 minus k. For k equal to 2, they add to 8.
+
+80
+00:10:55,091 --> 00:11:05,865
+By the multiset count, there are 10 minus k plus 4 minus 1, choose 4 minus 1, such multisets. That is 13 minus k choose 3.
+
+81
+00:11:06,315 --> 00:11:18,091
+For k equal to 2: 8 plus 4 minus 1 is 11. 11 choose 3 is 11 times 10 times 9 over 6, which is 165.
+
+82
+00:11:18,541 --> 00:11:21,655
+Divide by all 1001 multisets.
+
+83
+00:11:22,105 --> 00:11:31,727
+So m of 2 is 165 over 1001, which is 0.164835.
+
+84
+00:11:32,177 --> 00:11:38,022
+Here are both models side by side. The blue bars are d of k, the dice model.
+
+85
+00:11:38,472 --> 00:11:55,240
+In the dice model, d of 0 is 0.107, and d of 2 is 0.302, the largest bar. d of 10 is 1 over 9,765,625.
+
+86
+00:11:55,690 --> 00:11:59,423
+The orange bars are m of k, the multiset model.
+
+87
+00:11:59,873 --> 00:12:14,700
+In the multiset model, m of 0 is 0.286, the largest bar. m of 2 is 0.165, and m of 10 is 1 over 1001. The bars fall steadily.
+
+88
+00:12:15,150 --> 00:12:22,979
+So the two models give different answers. Only measurements of real packets can tell which model is closer to the truth.
+
+89
+00:12:23,429 --> 00:12:30,277
+Why are they different? One multiset comes from many sequences, and the number changes with the multiset.
+
+90
+00:12:30,727 --> 00:12:37,959
+This number is the multinomial coefficient: n factorial over the product of the m i factorials.
+
+91
+00:12:38,409 --> 00:12:56,969
+For 2, 3, 2, 2, 1, it is 10 factorial over 2 factorial, 3 factorial, 2 factorial, 2 factorial and 1 factorial. That is 3,628,800 over 48, which is 75600.
+
+92
+00:12:57,419 --> 00:13:02,177
+A multiset with all 10 candies purple comes from only 1 sequence.
+
+93
+00:13:02,627 --> 00:13:12,013
+Section 1.2.4 counts poker hands. Each column of the grid is a value, from Ace to King. There are 13 values.
+
+94
+00:13:12,463 --> 00:13:19,610
+Each row is a suit. There are 4 suits. So the deck has 13 times 4, which is 52, cards.
+
+95
+00:13:20,060 --> 00:13:27,057
+A hand is any 5 cards. The order does not matter, so a hand is a 5 element subset of the deck.
+
+96
+00:13:27,507 --> 00:13:31,646
+The orange cells are one hand. It has one pair: two queens.
+
+97
+00:13:32,096 --> 00:13:39,349
+Practice problem P1-2 asks: how many distinct poker hands are there? Pause the video and try it.
+
+98
+00:13:39,799 --> 00:14:00,215
+A hand is a 5 element subset of a 52 element set. So there are 52 choose 5 hands. That is 52 times 51 times 50 times 49 times 48, over 5 factorial, which is 2,598,960.
+
+99
+00:14:00,665 --> 00:14:06,276
+For the hand types, remember one rule: an Ace can be below 2 or above King.
+
+100
+00:14:06,726 --> 00:14:15,409
+Example 1.22 counts two types. First the Straight: five consecutive values, but not all of the same suit.
+
+101
+00:14:15,859 --> 00:14:19,272
+The orange hand is 8, 9, 10, Jack, Queen.
+
+102
+00:14:19,722 --> 00:14:26,783
+Choose the values. The lowest value can be Ace, 2, and so on up to 10. So there are 10 choices.
+
+103
+00:14:27,233 --> 00:14:32,673
+The last run is 10, Jack, Queen, King, Ace. Here the Ace is above the King.
+
+104
+00:14:33,123 --> 00:14:40,355
+AND choose a suit for each of the five cards: 4 to the 5, which is 1024, choices.
+
+105
+00:14:40,805 --> 00:14:52,155
+But 4 of these choices give all five cards one suit. That is a Straight Flush, so remove these 4. 1024 minus 4 is 1020.
+
+106
+00:14:52,605 --> 00:14:58,109
+So there are 10 times 1020, which is 10200, Straights.
+
+107
+00:14:58,559 --> 00:15:05,833
+Next, the Busted hand: any hand that is not of a better type. So it has no pair, no straight and no flush.
+
+108
+00:15:06,283 --> 00:15:08,651
+The orange hand is one example.
+
+109
+00:15:09,101 --> 00:15:18,637
+No pair means five different values. There are 13 choose 5, which is 1287, sets of five values.
+
+110
+00:15:19,087 --> 00:15:31,781
+No straight means that the values are not one of the 10 runs. So 1287 minus 10, which is 1277, value sets remain.
+
+111
+00:15:32,231 --> 00:15:40,231
+No flush means that the suits are not all equal: 4 to the 5 minus 4, which is 1020, choices.
+
+112
+00:15:40,681 --> 00:15:52,521
+By the AND rule, there are 1277 times 1020, which is 1,302,540, Busted hands.
+
+113
+00:15:52,971 --> 00:16:07,456
+1,302,540 over 2,598,960 is 0.501. So about half of all hands are Busted.
+
+114
+00:16:07,906 --> 00:16:22,903
+Exercise 1.14 asks for the other rows of the table. Try two of them: Full House and Two Pair. A Full House has three cards of one value and two cards of another value. Pause the video and try it.
+
+115
+00:16:23,353 --> 00:16:27,897
+Choose the value of the three cards: 13 ways. Here it is 9.
+
+116
+00:16:28,347 --> 00:16:32,721
+Choose 3 of its 4 suits: 4 choose 3, which is 4, ways.
+
+117
+00:16:33,171 --> 00:16:43,048
+Choose the value of the pair from the other 12 values. Here it is Ace. Then choose 2 of its 4 suits: 4 choose 2, which is 6, ways.
+
+118
+00:16:43,498 --> 00:16:50,751
+By the AND rule, 13 times 4 times 12 times 6 is 3744.
+
+119
+00:16:51,201 --> 00:17:02,679
+Two Pair: choose the two pair values as a set: 13 choose 2, which is 78, ways. Do not choose them in order, because the two pairs play the same role.
+
+120
+00:17:03,129 --> 00:17:08,185
+Choose 2 suits for each pair: 6 times 6, which is 36, ways.
+
+121
+00:17:08,635 --> 00:17:19,536
+The fifth card has one of the 11 other values, in any of 4 suits. So 11 times 4, which is 44, cards are possible. Here it is the 5.
+
+122
+00:17:19,986 --> 00:17:27,282
+78 times 36 times 44 is 123,552.
+
+123
+00:17:27,732 --> 00:17:32,511
+Here is the table from the notes. N is the number of hands of each type.
+
+124
+00:17:32,961 --> 00:17:35,734
+p is N over 52 choose 5.
+
+125
+00:17:36,184 --> 00:17:39,363
+The green rows are the four types that we counted.
+
+126
+00:17:39,813 --> 00:17:49,455
+Each hand has exactly one type. So by the OR rule, the rows add to 2,598,960.
+
+127
+00:17:49,905 --> 00:18:05,777
+The other rows use the same method. One Pair is 13 times 4 choose 2, times 12 choose 3 for the three other values, times 4 cubed for their suits. That is 1,098,240.
+
+128
+00:18:06,227 --> 00:18:17,747
+Trips is 13 times 4 choose 3, times 12 choose 2 for the two other values, times 4 squared. That is 54912.
+
+129
+00:18:18,197 --> 00:18:22,805
+A computer list of every hand gives all nine counts of the table.
+
+130
+00:18:23,255 --> 00:18:30,914
+To recap. With equally likely outcomes, a probability is the size of the event over the size of omega.
+
+131
+00:18:31,364 --> 00:18:40,985
+A block of letters or numbers becomes one element. The block f a d gives 1 over 30, and 1 and 2 together give 2 over 7.
+
+132
+00:18:41,435 --> 00:18:50,033
+When the event is hard to count, count the complement, as in the birthday problem. p of 23 is 0.507.
+
+133
+00:18:50,483 --> 00:18:54,707
+The model decides what an outcome is, as the Wine Gums show.
+
+134
+00:18:55,157 --> 00:19:06,869
 Poker hands use the AND rule for values and suits, and subtract the cases of a better type. The next video covers the Binomial Theorem and the binomial series.

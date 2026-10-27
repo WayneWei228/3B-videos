@@ -3,353 +3,625 @@
 This is MATH 239, video 3. The topic is bijections and bijective proofs.
 
 2
-00:00:07,149 --> 00:00:32,450
-After this video, you can say when a function is injective, surjective or bijective. You can use two inverse functions to prove that two sets have the same size. You can write a bijective proof in the form the course expects. And you can solve practice problem P1-6, assignment questions A1-1 and A1-3, and Practice Midterm question 2.
+00:00:07,149 --> 00:00:13,165
+After this video, you can say when a function is injective, surjective or bijective.
 
 3
-00:00:32,900 --> 00:00:45,764
-In video 1, we counted subsets and multisets with rows of circles and crosses. Each time, we turned one kind of object into another kind. Now we make this idea exact.
+00:00:13,615 --> 00:00:18,585
+You can use two inverse functions to prove that two sets have the same size.
 
 4
-00:00:46,214 --> 00:00:57,307
-Here are the 8 subsets of 1, 2, 3, and the 8 vectors of zeros and ones of length 3. The empty set goes to the vector 0, 0, 0.
+00:00:19,035 --> 00:00:23,089
+You can write a bijective proof in the form the course expects.
 
 5
-00:00:57,757 --> 00:01:08,723
-The subset with only 1 goes to 1, 0, 0. Each element i of the subset puts a 1 in position i. Each subset gets exactly one vector.
+00:00:23,539 --> 00:00:34,312
+And you can solve practice problem P1-6, assignment questions A1-1 and A1-3, and Practice Midterm question 2.
 
 6
-00:01:09,173 --> 00:01:15,487
-Every vector gets exactly one arrow. No vector gets two arrows, and no vector is missed.
+00:00:34,762 --> 00:00:47,391
+In video 1, we turned one kind of object into another kind to count it. Now we make this idea exact. The problem: show that two sets have the same size, without counting them.
 
 7
-00:01:15,937 --> 00:01:24,812
-Such a perfect pairing is called a bijection. If it exists, the two sets have the same size. We do not have to count either set.
+00:00:47,841 --> 00:00:50,657
+Here are the 8 subsets of 1, 2, 3.
 
 8
-00:01:25,262 --> 00:01:34,030
-A function f from A to B sends each element a of A to one element f of a in B. So each a has exactly one arrow out.
+00:00:51,107 --> 00:00:55,353
+Here are the 8 vectors of length 3 with entries 0 and 1.
 
 9
-00:01:34,480 --> 00:01:44,869
-f is surjective if every b in B is the image of at least one a. So every b has at least one arrow in. The middle picture is surjective.
+00:00:55,803 --> 00:00:59,408
+The empty set goes to the vector 0, 0, 0.
 
 10
-00:01:45,319 --> 00:01:56,135
-f is injective if f of a equals f of a prime only when a equals a prime. So no b has two arrows in. The left picture is injective.
+00:00:59,858 --> 00:01:07,879
+The subset with only 1 goes to 1, 0, 0. Each element i of the subset puts a 1 in position i.
 
 11
-00:01:56,585 --> 00:02:01,961
-The left picture is not surjective. The circled element of B has no arrow in.
+00:01:08,329 --> 00:01:15,433
+For example, the subset 1, 3 puts 1s in positions 1 and 3. So it goes to 1, 0, 1.
 
 12
-00:02:02,411 --> 00:02:08,022
-The middle picture is not injective. The circled element of B has two arrows in.
+00:01:15,883 --> 00:01:21,366
+The other subsets work in the same way. Each subset gets exactly one arrow out.
 
 13
-00:02:08,472 --> 00:02:22,829
-f is bijective if it is injective and surjective. Then every b has exactly one arrow in. The right picture is a bijection. The old names are one-to-one for injective, and onto for surjective.
+00:01:21,816 --> 00:01:28,493
+Every vector gets exactly one arrow in. No vector gets two arrows, and no vector is missed.
 
 14
-00:02:23,279 --> 00:02:35,674
-Take a bijection f from A to B. Because f is surjective, every b is the image of at least one a. Because f is injective, every b is the image of at most one a.
+00:01:28,943 --> 00:01:34,319
+So we paired each element of the left set with exactly one element of the right set.
 
 15
-00:02:36,124 --> 00:02:47,111
-So every b is the image of exactly one a. The green ones count the arrows into each b. The arrows pair off all elements of A with all elements of B.
+00:01:34,769 --> 00:01:43,644
+Such a perfect pairing is called a bijection. If it exists, the two sets have the same size. We do not have to count either set.
 
 16
-00:02:47,561 --> 00:03:02,601
-So A and B have the same number of elements. The notes write A, double arrow, B, when a bijection exists. The converse is also true: two finite sets of the same size always have a bijection between them.
+00:01:44,094 --> 00:01:54,121
+A function f from A to B sends each element a of A to one element f of a in B. So in each picture, each a has exactly one arrow out.
 
 17
-00:03:03,051 --> 00:03:14,123
-Proposition 1.11 gives the tool we use in every bijective proof. Take a function f from A to B, and a function g from B to A.
+00:01:54,571 --> 00:02:04,960
+f is surjective if every b in B is the image of at least one a. So every b has at least one arrow in. The middle picture is surjective.
 
 18
-00:03:14,573 --> 00:03:20,439
-Assume g undoes f. That is, g of f of a equals a, for every a in A.
+00:02:05,410 --> 00:02:16,226
+f is injective if f of a equals f of a prime only when a equals a prime. So no b has two arrows in. The left picture is injective.
 
 19
-00:03:20,889 --> 00:03:27,908
-Also assume f undoes g. That is, f of g of b equals b, for every b in B.
+00:02:16,676 --> 00:02:22,052
+The left picture is not surjective. The circled element of B has no arrow in.
 
 20
-00:03:28,358 --> 00:03:41,521
-Then f is injective. Suppose f of a equals f of a prime. Apply g to both sides. The left side becomes a, and the right side becomes a prime. So a equals a prime.
+00:02:22,502 --> 00:02:28,113
+The middle picture is not injective. The circled element of B has two arrows in.
 
 21
-00:03:41,971 --> 00:03:52,403
-And f is surjective. Take any b in B. Let a be g of b. Then f of a is f of g of b, which is b. So b has an arrow in.
+00:02:28,563 --> 00:02:38,141
+f is bijective if it is injective and surjective. Then every b has exactly one arrow in. The right picture is a bijection.
 
 22
-00:03:52,853 --> 00:04:10,709
-So f is a bijection. The same two lines, with f and g swapped, show that g is a bijection. We call f and g mutually inverse bijections, and write g equals f inverse. The notes leave this proof as Exercise 1.4 b.
+00:02:38,591 --> 00:02:43,157
+The old names are one-to-one for injective, and onto for surjective.
 
 23
-00:04:11,159 --> 00:04:20,161
-A bijective proof that A and B have the same size has four parts. Part 1: define a function f from A to B by a clear rule.
+00:02:43,607 --> 00:02:51,031
+Here is a bijection f from A to B. Because f is surjective, every b is the image of at least one a.
 
 24
-00:04:20,611 --> 00:04:34,243
-Part 2: show that f of a is in B, for every a in A. A rule can give an object that is not in B. So check every condition in the definition of B. Students often forget this part.
+00:02:51,481 --> 00:02:56,259
+Because f is injective, every b is the image of at most one a.
 
 25
-00:04:34,693 --> 00:04:41,221
-Part 3: define the inverse function g from B to A, and check that g of b is in A.
+00:02:56,709 --> 00:03:03,387
+So every b is the image of exactly one a. The green numbers count the arrows into each b.
 
 26
-00:04:41,671 --> 00:04:57,991
-Part 4: show both round trips. g of f of a equals a, and f of g of b equals b. Then Proposition 1.11 says f is a bijection. You do not need separate proofs of injective and surjective.
+00:03:03,837 --> 00:03:08,231
+So the arrows pair off all elements of A with all elements of B.
 
 27
-00:04:58,441 --> 00:05:09,087
-Conclude that A and B have the same size. Assignment question A1-3 part c, and Practice Midterm question 2, ask for these parts.
+00:03:08,681 --> 00:03:12,969
+So A and B have the same number of elements. Here both have 5.
 
 28
-00:05:09,537 --> 00:05:27,457
-Example 1.12 makes the first slide exact. P of n is the set of all subsets of 1 to n. 0 1 to the n is the set of all vectors of length n with entries 0 or 1. Here n is 8 and S is 2, 3, 5, 7.
+00:03:13,419 --> 00:03:17,579
+The notes write A, double arrow, B, when a bijection exists.
 
 29
-00:05:27,907 --> 00:05:40,131
-The map alpha sends a subset S to a vector. Entry i is 1 if i is in S, and 0 if i is not in S. Positions 1, 2 and 3 give 0, 1, 1.
+00:03:18,029 --> 00:03:24,856
+The converse is also true: two finite sets of the same size always have a bijection between them.
 
 30
-00:05:40,581 --> 00:05:48,111
-Continue to position 8. The result is the vector 0, 1, 1, 0, 1, 0, 1, 0.
+00:03:25,306 --> 00:03:36,378
+Proposition 1.11 gives the tool we use in every bijective proof. Take a function f from A to B, and a function g from B to A.
 
 31
-00:05:48,561 --> 00:06:00,487
-The inverse map reads the vector back. S of alpha is the set of positions i where the entry is 1. This gives 2, 3, 5, 7 again. Each map undoes the other.
+00:03:36,828 --> 00:03:43,036
+Assume that g undoes f. That is, g of f of a equals a, for every a in A.
 
 32
-00:06:00,937 --> 00:06:19,283
-So by Proposition 1.11, the two sets have the same size. A vector has 2 choices in each of n positions, so there are 2 to the n vectors. So there are 2 to the n subsets. This is Theorem 1.3, now proved with a bijection.
+00:03:43,486 --> 00:03:50,953
+Also assume that f undoes g. That is, f of g of b equals b, for every b in B.
 
 33
-00:06:19,733 --> 00:06:45,205
-Example 1.13 writes the proof of Theorem 1.9 as a bijection. M of n and t is the set of multisets of size n with t types. B of n plus t minus 1 and t minus 1 is the set of t minus 1 element subsets of 1 to n plus t minus 1. Here n is 10 and t is 4, so we have 13 positions.
+00:03:51,403 --> 00:03:56,288
+Then f is injective. Suppose that f of a equals f of a prime.
 
 34
-00:06:45,655 --> 00:06:57,005
-Take the 3 element subset S equals 2, 7, 11. Mark these positions with crosses. Sort them: s 1 is 2, s 2 is 7, s 3 is 11.
+00:03:56,738 --> 00:04:02,583
+Apply g to both sides. This gives g of f of a equals g of f of a prime.
 
 35
-00:06:57,455 --> 00:07:05,433
-Add two posts: s 0 equals 0 on the left, and s 4 equals n plus t, which is 14, on the right.
+00:04:03,033 --> 00:04:09,753
+By the first assumption, the left side is a, and the right side is a prime. So a equals a prime.
 
 36
-00:07:05,883 --> 00:07:16,145
-The other 10 positions get circles. The crosses cut the circles into 4 runs. The differences of neighbouring posts are 2, 5, 4 and 3.
+00:04:10,203 --> 00:04:14,833
+And f is surjective. Take any b in B. Let a be g of b.
 
 37
-00:07:16,595 --> 00:07:36,264
-Subtract 1 from each difference, because the run does not include the cross at its right end. m i equals s i minus s i minus 1, minus 1. This gives 1, 4, 3, 2. Each m i is at least 0, because s i minus 1 is less than s i.
+00:04:15,283 --> 00:04:22,515
+Then f of a is f of g of b. By the second assumption, this is b. So b has an arrow in.
 
 38
-00:07:36,714 --> 00:07:55,359
-The sum of the m i is s t minus t, which is n. Here 1 plus 4 plus 3 plus 2 equals 10. So mu equals 1, 4, 3, 2 is a multiset of size 10 with 4 types. This is part 2 of the proof: the image is in M of n and t.
+00:04:22,965 --> 00:04:29,983
+So f is a bijection. The same two lines, with f and g swapped, show that g is a bijection.
 
 39
-00:07:55,809 --> 00:08:12,620
-For the inverse, start with a multiset mu equals m 1 to m t. Write m 1 circles, then a cross, then m 2 circles, and so on. Cross number i sits at position s i equals m 1 plus up to m i, plus i.
+00:04:30,433 --> 00:04:40,993
+We call f and g mutually inverse bijections, and write g equals f inverse. The notes leave this proof as Exercise 1.4 b.
 
 40
-00:08:13,070 --> 00:08:18,574
-For mu equals 1, 4, 3, 2: s 1 equals 1 plus 1, which is 2.
+00:04:41,443 --> 00:04:50,446
+A bijective proof that A and B have the same size has four parts. Part 1: define a function f from A to B by a clear rule.
 
 41
-00:08:19,024 --> 00:08:22,821
-s 2 equals 1 plus 4, plus 2, which is 7.
+00:04:50,896 --> 00:05:04,528
+Part 2: show that f of a is in B, for every a in A. A rule can give an object that is not in B. So check every condition in the definition of B. Students often forget this part.
 
 42
-00:08:23,271 --> 00:08:31,613
-s 3 equals 1 plus 4 plus 3, plus 3, which is 11. So we get back S equals 2, 7, 11.
+00:05:04,978 --> 00:05:11,506
+Part 3: define the inverse function g from B to A, and check that g of b is in A.
 
 43
-00:08:32,063 --> 00:08:48,319
-In general, each s i is larger than the one before, because we add m i plus 1. The last cross is at most n plus t minus 1. So S is a t minus 1 element subset of 1 to n plus t minus 1.
+00:05:11,956 --> 00:05:28,681
+Part 4: show both round trips. g of f of a equals a, and f of g of b equals b. Then Proposition 1.11 says that f is a bijection. You do not need separate proofs of injective and surjective.
 
 44
-00:08:48,769 --> 00:09:11,809
-The two maps undo each other. The notes leave this check as Exercise 1.6. So the two sets have the same size, n plus t minus 1 choose t minus 1. For n equals 10 and t equals 4, this is 13 choose 3, which is 286. A computer check lists all 286 multisets.
+00:05:29,131 --> 00:05:39,777
+Conclude that A and B have the same size. Assignment question A1-3 part c, and Practice Midterm question 2, ask for these parts.
 
 45
-00:09:12,259 --> 00:09:25,741
-Here is practice problem P1-6 from Assignment 1. A and B each have 7 elements. The picture shows a function f from A to B. Is it injective, surjective, or bijective?
+00:05:40,227 --> 00:05:48,141
+Example 1.12 makes the first slide exact. P of n is the set of all subsets of 1 to n.
 
 46
-00:09:26,191 --> 00:09:27,834
-Pause the video and try it.
+00:05:48,591 --> 00:05:54,885
+0 1 to the n is the set of all vectors of length n with entries 0 or 1.
 
 47
-00:09:28,284 --> 00:09:43,537
-Look at the arrows into each element of B. b 7 has two arrows in: one from a 5 and one from a 7. So f of a 5 equals f of a 7, but a 5 is not a 7. So f is not injective.
+00:05:55,335 --> 00:05:58,876
+Here n is 8, and S is 2, 3, 5, 7.
 
 48
-00:09:43,987 --> 00:09:53,587
-Now look for an element of B with no arrow in. b 3 has none. No a has f of a equal to b 3. So f is not surjective.
+00:05:59,326 --> 00:06:07,390
+The map alpha sends a subset S to a vector. Entry i is 1 if i is in S, and 0 if i is not in S.
 
 49
-00:09:54,037 --> 00:10:09,589
-So f is not bijective. This agrees with the posted answer. Note one more point. A and B have the same size, 7. Equal size says that some bijection exists. It does not say that a given function is one.
+00:06:07,840 --> 00:06:10,955
+Positions 1, 2 and 3 give 0, 1, 1.
 
 50
-00:10:10,039 --> 00:10:24,823
-Assignment question A1-1 asks for a bijective proof. For n at least 1, the sum of n choose k over even k equals the sum of n choose k over odd k. Pause the video and try it.
+00:06:11,405 --> 00:06:15,479
+Positions 4 to 8 give 0, 1, 0, 1, 0.
 
 51
-00:10:25,273 --> 00:10:38,244
-First, find two sets that the two sides count. n choose k counts the k element subsets of 1 to n. So let A be the subsets of even size, and B the subsets of odd size.
+00:06:15,929 --> 00:06:22,009
+So alpha of S is the vector 0, 1, 1, 0, 1, 0, 1, 0.
 
 52
-00:10:38,694 --> 00:10:51,579
-For n equals 3, the even sizes are 0 and 2. They give 1 plus 3, which is 4 subsets. The odd sizes are 1 and 3. They give 3 plus 1, which is also 4.
+00:06:22,459 --> 00:06:29,371
+The inverse map reads the vector back. S of alpha is the set of positions i where the entry is 1.
 
 53
-00:10:52,029 --> 00:11:09,672
-In general, a subset has exactly one size. So A is a disjoint union of the sets of k element subsets, for even k. Its size is the left side. In the same way, the size of B is the right side. Now we need a bijection from A to B.
+00:06:29,821 --> 00:06:37,053
+The 1s are in positions 2, 3, 5 and 7. This gives S again. Each map undoes the other.
 
 54
-00:11:10,122 --> 00:11:16,735
-The map toggles the element 1. If 1 is not in S, add it. If 1 is in S, remove it.
+00:06:37,503 --> 00:06:51,647
+So by Proposition 1.11, the two sets have the same size. A vector has 2 choices in each of the 8 positions. So there are 2 to the 8, which is 256, vectors.
 
 55
-00:11:17,185 --> 00:11:24,332
-Take n equals 3. The empty set does not contain 1. So f of the empty set is the set 1.
+00:06:52,097 --> 00:07:01,868
+In general, there are 2 to the n vectors, so there are 2 to the n subsets. This is Theorem 1.3, now proved with a bijection.
 
 56
-00:11:24,782 --> 00:11:36,025
-1, 2 contains 1, so f removes it and gives 2. In the same way, 1, 3 goes to 3. 2, 3 does not contain 1, so it goes to 1, 2, 3.
+00:07:02,318 --> 00:07:14,222
+Example 1.13 writes the proof of Theorem 1.9 as a bijection. M of n and t is the set of multisets of size n with t types.
 
 57
-00:11:36,475 --> 00:11:47,888
-Part 2: f of S is in B. The map adds or removes exactly one element. So the size changes by 1, and an even size becomes an odd size.
+00:07:14,672 --> 00:07:24,400
+B of n plus t minus 1 and t minus 1 is the set of t minus 1 element subsets of 1 to n plus t minus 1.
 
 58
-00:11:48,338 --> 00:12:06,578
-Part 3 and 4: apply the toggle twice. The first toggle adds 1 and the second removes it, or the other way. So f of f of S equals S. The same rule, from B to A, is the inverse. By Proposition 1.11, f is a bijection.
+00:07:24,850 --> 00:07:31,485
+Here n is 10 and t is 4. So there are 13 positions, and the subsets have 3 elements.
 
 59
-00:12:07,028 --> 00:12:20,895
-Why do we need n at least 1? The map uses the element 1. For n equals 0, the only subset is the empty set. Then the even sum is 1 and the odd sum is 0, so the identity is false.
+00:07:31,935 --> 00:07:38,505
+Take the 3 element subset S equals 2, 7, 11. Mark these positions with crosses.
 
 60
-00:12:21,345 --> 00:12:29,942
-Here is the solution in the form a marker expects. First, define the two sets, and say why their sizes are the two sides.
+00:07:38,955 --> 00:07:43,094
+Sort them: s 1 is 2, s 2 is 7, s 3 is 11.
 
 61
-00:12:30,392 --> 00:12:37,091
-Second, define the map. Say that it uses the element 1, which exists because n is at least 1.
+00:07:43,544 --> 00:07:51,523
+Add two posts: s 0 equals 0 on the left, and s 4 equals n plus t, which is 14, on the right.
 
 62
-00:12:37,541 --> 00:12:45,541
-Third, show that f sends A into B. The size changes by exactly 1. The same rule sends B into A.
+00:07:51,973 --> 00:07:57,733
+The other positions get circles. There are 13 minus 3, which is 10, circles.
 
 63
-00:12:45,991 --> 00:12:59,559
-Fourth, show that the maps are mutually inverse: f of f of S equals S. Cite Proposition 1.11, and conclude that A and B have the same size. That is the identity.
+00:07:58,183 --> 00:08:05,692
+The crosses cut the circles into 4 runs. The differences of neighbouring posts are 2, 5, 4 and 3.
 
 64
-00:13:00,009 --> 00:13:21,641
-Assignment question A1-3. A n is the set of 0 1 vectors of length n with exactly two 1s. B n is the set of integer pairs b 1, b 2, with 0 at most b 1, at most b 2, at most n minus 2. Find a bijection and prove it. Pause the video and try it.
+00:08:06,142 --> 00:08:20,115
+Subtract 1 from each difference, because the run does not include the cross at its right end. So m i equals s i minus s i minus 1, minus 1. This gives 1, 4, 3, 2.
 
 65
-00:13:22,091 --> 00:13:36,277
-Let the two 1s be in positions i and j, with i less than j. Define f of a as i minus 1, j minus 2. For the second vector, i is 1 and j is 3. So f gives 0, 1.
+00:08:20,565 --> 00:08:25,920
+Each m i is at least 0, because s i minus 1 is less than s i.
 
 66
-00:13:36,727 --> 00:13:46,370
-Apply the rule to all 10 vectors for n equals 5. The first four give 0 0, 0 1, 0 2 and 0 3.
+00:08:26,370 --> 00:08:38,402
+The sum of the m i is s 4 minus 4, which is 14 minus 4, which is 10. In the picture, 1 plus 4 plus 3 plus 2 equals 10, which is n.
 
 67
-00:13:46,820 --> 00:13:52,153
-The other six give 1 1, 1 2, 1 3, 2 2, 2 3 and 3 3.
+00:08:38,852 --> 00:08:49,561
+So mu equals 1, 4, 3, 2 is a multiset of size 10 with 4 types. This is part 2 of the proof: the image is in M of n and t.
 
 68
-00:13:52,603 --> 00:14:00,539
-These are exactly the 10 pairs of B 5, each one time. A computer check confirms this for n up to 9.
+00:08:50,011 --> 00:08:55,174
+For the inverse, start with a multiset mu. Here mu is 1, 4, 3, 2.
 
 69
-00:14:00,989 --> 00:14:09,352
-Now part c, the proof. Here is a vector of length 7 with its 1s at positions i equals 2 and j equals 5.
+00:08:55,624 --> 00:09:07,400
+Write m 1 circles, then a cross, then m 2 circles, and so on. This gives 1 circle, a cross, 4 circles, a cross, 3 circles, a cross, and 2 circles.
 
 70
-00:14:09,802 --> 00:14:31,626
-Here f of a is 2 minus 1, 5 minus 2, which is 1, 3. In general, part 2 shows that f of a is in B n. The positions satisfy 1 at most i, i less than j, and j at most n. Because i and j are integers, i less than j means i is at most j minus 1.
+00:09:07,850 --> 00:09:21,247
+Cross number i sits at position s i. Up to cross i, there are m 1 plus up to m i circles, and i crosses. So s i equals m 1 plus up to m i, plus i.
 
 71
-00:14:32,076 --> 00:14:44,641
-Subtract 1 and 2. So 0 is at most i minus 1, which is at most j minus 2, which is at most n minus 2. These are exactly the conditions of B n.
+00:09:21,697 --> 00:09:26,689
+s 1 equals m 1 plus 1, which is 1 plus 1, which is 2.
 
 72
-00:14:45,091 --> 00:15:02,691
-Part 3: the inverse g puts 1s at positions b 1 plus 1 and b 2 plus 2. Because b 1 is at most b 2, b 1 plus 1 is less than b 2 plus 2. Both positions are between 1 and n. So g of b is in A n.
+00:09:27,139 --> 00:09:33,774
+s 2 equals m 1 plus m 2, plus 2. That is 1 plus 4 plus 2, which is 7.
 
 73
-00:15:03,141 --> 00:15:24,539
-Part 4: g of f of a has 1s at i minus 1 plus 1, which is i, and j minus 2 plus 2, which is j. So it is a. f of g of b gives b 1 plus 1 minus 1, and b 2 plus 2 minus 2. So it is b. By Proposition 1.11, f is a bijection.
+00:09:34,224 --> 00:09:43,269
+s 3 equals m 1 plus m 2 plus m 3, plus 3. That is 1 plus 4 plus 3 plus 3, which is 11.
 
 74
-00:15:24,989 --> 00:15:44,509
-Practice Midterm question 2. A n is the set of 3 element subsets of 1 to n. B n is the set of triples of positive integers with sum at most n. Define a bijection, show that f of S is in B n, and state the inverse. Pause the video and try it.
+00:09:43,719 --> 00:09:46,770
+So we get back S equals 2, 7, 11.
 
 75
-00:15:44,959 --> 00:15:52,127
-Sort the subset: s 1 less than s 2 less than s 3. Here n is 9 and S is 2, 5, 6.
+00:09:47,220 --> 00:10:03,476
+In general, each s i is larger than the one before, because we add m i plus 1. The last cross is at most n plus t minus 1. So S is a t minus 1 element subset of 1 to n plus t minus 1.
 
 76
-00:15:52,577 --> 00:15:58,827
-Measure the gaps, starting from 0. b 1 is the gap from 0 to s 1, which is 2.
+00:10:03,926 --> 00:10:18,667
+The two maps undo each other. The notes leave this check as Exercise 1.6. So the two sets have the same size, n plus t minus 1 choose t minus 1. This proves Theorem 1.9.
 
 77
-00:15:59,277 --> 00:16:03,139
-b 2 is the gap from s 1 to s 2, which is 3.
+00:10:19,117 --> 00:10:36,269
+For n equals 10 and t equals 4, this is 13 choose 3. That is 13 times 12 times 11, over 3 times 2 times 1, which is 286. A computer check lists all 286 multisets.
 
 78
-00:16:03,589 --> 00:16:07,514
-b 3 is the gap from s 2 to s 3, which is 1.
+00:10:36,719 --> 00:10:47,962
+Here is practice problem P1-6 from Assignment 1. The picture shows a function f from A to B. Is it injective, surjective, or bijective?
 
 79
-00:16:07,964 --> 00:16:22,577
-The gaps add up to s 3, which is 6. And s 3 is at most n. So the triple 2, 3, 1 is in B 9. So define f of S as s 1, s 2 minus s 1, s 3 minus s 2.
+00:10:48,412 --> 00:10:54,193
+A has 7 elements, a 1 to a 7. B has 7 elements, b 1 to b 7.
 
 80
-00:16:23,027 --> 00:16:42,867
-The question asks you to illustrate f on the lists A 5 and B 5. The right column keeps the order of B 5 printed in the question, so the arrows cross. First, 1 2 3 goes to 1 1 1. 1 2 4 goes to 1 1 2. 1 2 5 goes to 1 1 3.
+00:10:54,643 --> 00:10:56,286
+Pause the video and try it.
 
 81
-00:16:43,317 --> 00:16:52,021
-Next, 1 3 4 goes to 1 2 1. 1 3 5 goes to 1 2 2. 1 4 5 goes to 1 3 1.
+00:10:56,736 --> 00:11:08,981
+b 7 has two arrows in: one from a 5 and one from a 7. So f of a 5 equals f of a 7, but a 5 is not a 7. So f is not injective.
 
 82
-00:16:52,471 --> 00:17:08,002
-Last, 2 3 4 goes to 2 1 1, 2 3 5 goes to 2 1 2, 2 4 5 goes to 2 2 1, and 3 4 5 goes to 3 1 1. Every triple of B 5 gets exactly one arrow.
+00:11:09,431 --> 00:11:16,493
+b 3 has no arrow in. No a has f of a equal to b 3. So f is not surjective.
 
 83
-00:17:08,452 --> 00:17:30,639
-Here is the written solution. Define f. Then show f of S is in B n. s 1 is at least 1. The elements are integers and s 2 is larger than s 1, so s 2 minus s 1 is at least 1. The same holds for s 3 minus s 2. The three entries add up to s 3, which is at most n.
+00:11:16,943 --> 00:11:21,295
+So f is not bijective. This agrees with the posted answer.
 
 84
-00:17:31,089 --> 00:17:43,782
-State the inverse. It takes partial sums: b 1, then b 1 plus b 2, then b 1 plus b 2 plus b 3. Here b is 2, 2, 1. The first partial sum is 2.
+00:11:21,745 --> 00:11:31,089
+A and B have the same size, 7. Equal size says that some bijection exists. It does not say that a given function is one.
 
 85
-00:17:44,232 --> 00:17:47,581
-The second partial sum is 2 plus 2, which is 4.
+00:11:31,539 --> 00:11:44,317
+Assignment question A1-1 asks for a bijective proof. For n at least 1, the sum of n choose k over even k equals the sum of n choose k over odd k.
 
 86
-00:17:48,031 --> 00:17:57,141
-The third partial sum is 5. So f inverse of 2, 2, 1 is 2, 4, 5. This matches the arrow on the last slide.
+00:11:44,767 --> 00:11:46,410
+Pause the video and try it.
 
 87
-00:17:57,591 --> 00:18:15,916
-Each partial sum is larger than the one before, because each b i is at least 1. The last one is at most n. So we get a 3 element subset of 1 to n. The question does not ask for the round trips. In a full proof, you check them as in A1-3.
+00:11:46,860 --> 00:11:59,831
+First, find two sets that the two sides count. n choose k counts the k element subsets of 1 to n. So let A be the subsets of even size, and B the subsets of odd size.
 
 88
-00:18:16,366 --> 00:18:29,827
-To recap. A function is injective if each b has at most one arrow in, and surjective if each b has at least one. A bijection has exactly one, so the two sets have the same size.
+00:12:00,281 --> 00:12:09,433
+Take n equals 3. Column k holds the subsets of size k. There are 3 choose k of them: 1, 3, 3 and 1.
 
 89
-00:18:30,277 --> 00:18:53,381
-Proposition 1.11 is the working tool. Define f and g, show that each lands in the right set, and check both round trips. We used it for indicator vectors, multisets, A1-1, A1-3 and Practice Midterm question 2. In the next video, we prove identities by counting one set in two ways.
+00:12:09,883 --> 00:12:15,643
+The even sizes are 0 and 2. They give 1 plus 3, which is 4 subsets.
+
+90
+00:12:16,093 --> 00:12:21,426
+The odd sizes are 1 and 3. They give 3 plus 1, which is also 4.
+
+91
+00:12:21,876 --> 00:12:39,519
+In general, a subset has exactly one size. So A is a disjoint union of the sets of k element subsets, for even k. Its size is the left side. In the same way, the size of B is the right side. Now we need a bijection from A to B.
+
+92
+00:12:39,969 --> 00:12:44,641
+The map toggles the element 1. If 1 is not in S, add 1.
+
+93
+00:12:45,091 --> 00:12:47,395
+If 1 is in S, remove 1.
+
+94
+00:12:47,845 --> 00:12:56,250
+Take n equals 3. The empty set does not contain 1. So f adds 1, and f of the empty set is the set 1.
+
+95
+00:12:56,700 --> 00:13:00,668
+1, 2 contains 1. So f removes 1, and gives 2.
+
+96
+00:13:01,118 --> 00:13:05,235
+1, 3 contains 1. So f removes 1, and gives 3.
+
+97
+00:13:05,685 --> 00:13:10,656
+2, 3 does not contain 1. So f adds 1, and gives 1, 2, 3.
+
+98
+00:13:11,106 --> 00:13:22,519
+Part 2: f of S is in B. The map adds or removes exactly one element. So the size changes by 1, and an even size becomes an odd size.
+
+99
+00:13:22,969 --> 00:13:39,460
+Part 3 and 4: apply the toggle twice. The first toggle adds 1 and the second removes it, or the other way. So f of f of S equals S. For example, f of f of the empty set is f of 1, which is the empty set.
+
+100
+00:13:39,910 --> 00:13:47,675
+So the same rule, from B to A, is the inverse. By Proposition 1.11, f is a bijection.
+
+101
+00:13:48,125 --> 00:13:52,243
+Why do we need n at least 1? The map uses the element 1.
+
+102
+00:13:52,693 --> 00:14:04,767
+For n equals 0, the only subset is the empty set. Then the even sum is 0 choose 0, which is 1, and the odd sum is 0. So the identity is false.
+
+103
+00:14:05,217 --> 00:14:13,815
+Here is the solution in the form a marker expects. First, define the two sets, and say why their sizes are the two sides.
+
+104
+00:14:14,265 --> 00:14:20,963
+Second, define the map. Say that it uses the element 1, which exists because n is at least 1.
+
+105
+00:14:21,413 --> 00:14:29,413
+Third, show that f sends A into B. The size changes by exactly 1. The same rule sends B into A.
+
+106
+00:14:29,863 --> 00:14:35,325
+Fourth, show that the maps are mutually inverse: f of f of S equals S.
+
+107
+00:14:35,775 --> 00:14:43,156
+Cite Proposition 1.11, and conclude that A and B have the same size. That is the identity.
+
+108
+00:14:43,606 --> 00:14:52,097
+Assignment question A1-3. A n is the set of 0 1 vectors of length n with exactly two 1s.
+
+109
+00:14:52,547 --> 00:15:01,720
+B n is the set of integer pairs b 1, b 2, with 0 at most b 1, at most b 2, at most n minus 2.
+
+110
+00:15:02,170 --> 00:15:05,989
+Find a bijection and prove it. Pause the video and try it.
+
+111
+00:15:06,439 --> 00:15:15,207
+Let the two 1s be in positions i and j, with i less than j. Define f of a as i minus 1, j minus 2.
+
+112
+00:15:15,657 --> 00:15:26,259
+Take the second vector, for n equals 5. Its 1s are in positions 1 and 3. So f gives 1 minus 1, 3 minus 2, which is 0, 1.
+
+113
+00:15:26,709 --> 00:15:32,832
+The other vectors with i equal to 1 give 0 0, 0 2 and 0 3.
+
+114
+00:15:33,282 --> 00:15:39,234
+The other six vectors give 1 1, 1 2, 1 3, 2 2, 2 3 and 3 3.
+
+115
+00:15:39,684 --> 00:15:45,551
+A 5 has 5 choose 2 vectors. That is 5 times 4 over 2, which is 10.
+
+116
+00:15:46,001 --> 00:15:54,747
+The 10 images are exactly the 10 pairs of B 5, each one time. A computer check confirms this for n up to 9.
+
+117
+00:15:55,197 --> 00:16:03,795
+Now part c, the proof. Here is a vector of length 7. Its 1s are in positions i equals 2 and j equals 5.
+
+118
+00:16:04,245 --> 00:16:08,703
+f of a is 2 minus 1, 5 minus 2, which is 1, 3.
+
+119
+00:16:09,153 --> 00:16:17,601
+Part 2: show that f of a is in B n, for every a. The 1s are in positions i less than j, between 1 and n.
+
+120
+00:16:18,051 --> 00:16:32,985
+Because i and j are integers, i less than j means i is at most j minus 1. So 1 is at most i, i is at most j minus 1, and j minus 1 is at most n minus 1.
+
+121
+00:16:33,435 --> 00:16:46,533
+Subtract 1 from each part. So 0 is at most i minus 1, which is at most j minus 2, which is at most n minus 2. These are exactly the conditions of B n.
+
+122
+00:16:46,983 --> 00:16:59,143
+Part 3: the inverse g puts 1s in positions b 1 plus 1 and b 2 plus 2. For 1, 3, that is 1 plus 1, which is 2, and 3 plus 2, which is 5.
+
+123
+00:16:59,593 --> 00:17:10,516
+Because b 1 is at most b 2, b 1 plus 1 is less than b 2 plus 2. Both positions are between 1 and n. So g of b is in A n.
+
+124
+00:17:10,966 --> 00:17:21,931
+Part 4: g of f of a has 1s in positions i minus 1 plus 1, which is i, and j minus 2 plus 2, which is j. So it is a.
+
+125
+00:17:22,381 --> 00:17:29,635
+f of g of b is b 1 plus 1 minus 1, and b 2 plus 2 minus 2. So it is b.
+
+126
+00:17:30,085 --> 00:17:33,989
+By Proposition 1.11, f is a bijection.
+
+127
+00:17:34,439 --> 00:17:40,796
+Practice Midterm question 2. A n is the set of 3 element subsets of 1 to n.
+
+128
+00:17:41,246 --> 00:17:48,606
+B n is the set of triples of positive integers b 1, b 2, b 3, with sum at most n.
+
+129
+00:17:49,056 --> 00:17:58,549
+Define a bijection f from A n to B n, show that f of S is in B n, and state the inverse. Pause the video and try it.
+
+130
+00:17:58,999 --> 00:18:08,002
+Take n equals 9 and S equals 2, 5, 6. Sort the elements: s 1 is 2, s 2 is 5, and s 3 is 6.
+
+131
+00:18:08,452 --> 00:18:16,260
+Measure the gaps, starting from 0. b 1 is the gap from 0 to s 1: 2 minus 0, which is 2.
+
+132
+00:18:16,710 --> 00:18:21,723
+b 2 is the gap from s 1 to s 2: 5 minus 2, which is 3.
+
+133
+00:18:22,173 --> 00:18:27,528
+b 3 is the gap from s 2 to s 3: 6 minus 5, which is 1.
+
+134
+00:18:27,978 --> 00:18:38,197
+The gaps add up to s 3: 2 plus 3 plus 1 is 6. And 6 is at most n, which is 9. So the triple 2, 3, 1 is in B 9.
+
+135
+00:18:38,647 --> 00:18:44,812
+So define f of S as s 1, s 2 minus s 1, s 3 minus s 2.
+
+136
+00:18:45,262 --> 00:18:55,651
+The question asks you to illustrate f on the lists A 5 and B 5. The left column is A 5: the 10 subsets of 1 to 5 with 3 elements.
+
+137
+00:18:56,101 --> 00:19:01,883
+The right column is B 5, in the order printed in the question. So the arrows cross.
+
+138
+00:19:02,333 --> 00:19:17,629
+First, the subsets that start with 1, 2. For 1, 2, 3, f gives 1, 2 minus 1, 3 minus 2, which is 1, 1, 1. 1 2 4 goes to 1 1 2, and 1 2 5 goes to 1 1 3.
+
+139
+00:19:18,079 --> 00:19:26,783
+Next, 1 3 4 goes to 1 2 1. 1 3 5 goes to 1 2 2. 1 4 5 goes to 1 3 1.
+
+140
+00:19:27,233 --> 00:19:38,753
+Last, 2 3 4 goes to 2 1 1, 2 3 5 goes to 2 1 2, 2 4 5 goes to 2 2 1, and 3 4 5 goes to 3 1 1.
+
+141
+00:19:39,203 --> 00:19:45,432
+There are 10 subsets and 10 triples. Every triple of B 5 gets exactly one arrow.
+
+142
+00:19:45,882 --> 00:19:58,789
+Here is the written solution. Define f: for S equals s 1, s 2, s 3 in increasing order, f of S is s 1, s 2 minus s 1, s 3 minus s 2.
+
+143
+00:19:59,239 --> 00:20:14,663
+Show that f of S is in B n. s 1 is at least 1. The elements are integers and s 2 is larger than s 1, so s 2 minus s 1 is at least 1. The same holds for s 3 minus s 2.
+
+144
+00:20:15,113 --> 00:20:19,209
+The three entries add up to s 3, which is at most n.
+
+145
+00:20:19,659 --> 00:20:28,363
+State the inverse. It takes partial sums: b 1, then b 1 plus b 2, then b 1 plus b 2 plus b 3.
+
+146
+00:20:28,813 --> 00:20:33,719
+Here b is 2, 2, 1. The first partial sum is b 1, which is 2.
+
+147
+00:20:34,169 --> 00:20:37,519
+The second partial sum is 2 plus 2, which is 4.
+
+148
+00:20:37,969 --> 00:20:41,681
+The third partial sum is 4 plus 1, which is 5.
+
+149
+00:20:42,131 --> 00:20:53,117
+So f inverse of 2, 2, 1 is 2, 4, 5. Check: f of 2, 4, 5 is 2, 4 minus 2, 5 minus 4, which is 2, 2, 1.
+
+150
+00:20:53,567 --> 00:21:05,237
+Each partial sum is larger than the one before, because each b i is at least 1. The last one is at most n. So we get a 3 element subset of 1 to n.
+
+151
+00:21:05,687 --> 00:21:12,513
+The question does not ask for the round trips. In a full proof, you check them as in A1-3.
+
+152
+00:21:12,963 --> 00:21:21,241
+To recap. A function is injective if each b has at most one arrow in, and surjective if each b has at least one.
+
+153
+00:21:21,691 --> 00:21:26,213
+A bijection has exactly one, so the two sets have the same size.
+
+154
+00:21:26,663 --> 00:21:35,389
+Proposition 1.11 is the working tool. If g undoes f and f undoes g, then both are bijections.
+
+155
+00:21:35,839 --> 00:21:47,231
+A bijective proof has four parts. Define f, and show that f of a is in B. Define g, and show that g of b is in A. Then check both round trips.
+
+156
+00:21:47,681 --> 00:21:56,705
+We used it for indicator vectors, crosses and circles, the toggle of 1, positions minus shifts, and gaps with partial sums.
+
+157
+00:21:57,155 --> 00:22:01,955
+In the next video, we prove identities by counting one set in two ways.

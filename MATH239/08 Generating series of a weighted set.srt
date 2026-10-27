@@ -3,369 +3,833 @@
 This is MATH 239, video 8. The topic is the generating series of a set with a weight function. This is Section 2.2.1 of the course notes.
 
 2
-00:00:12,141 --> 00:00:32,130
-After this video, you can say when a function is a weight function. You can write the generating series of a set and read its coefficients. You can prove Proposition 2.7. And you can solve the practice, tutorial and assignment questions of this topic, and two questions of the practice midterm.
+00:00:12,141 --> 00:00:18,071
+After this video, you can say when a function is a weight function, and why it must be one.
 
 3
-00:00:32,580 --> 00:00:48,132
-Here is a counting problem with many answers. Count the subsets of 1, 2, 3 of each size. Each row of cells is one subset. A blue cell is an element of the subset. The subsets stand in the column of their size.
+00:00:18,521 --> 00:00:23,065
+You can write the generating series of a set, and read its coefficients.
 
 4
-00:00:48,582 --> 00:00:57,115
-The column heights are the counts. One subset of size 0, three of size 1, three of size 2, and one of size 3.
+00:00:23,515 --> 00:00:31,302
+You can prove Proposition 2.7: the coefficient of x to the n is the number of objects of weight n.
 
 5
-00:00:57,565 --> 00:01:15,912
-Now write one term x to the size for each subset, and add the terms. The result is 1 plus 3 x plus 3 x squared plus x cubed. The coefficient of x to the n is the number of subsets of size n. So one power series holds all the counts.
+00:00:31,752 --> 00:00:39,880
+And you can solve the practice, tutorial and assignment questions of this topic, and two questions of the practice midterm.
 
 6
-00:01:16,362 --> 00:01:32,106
-Section 2.1 did this for the subsets of 1 to n. The sum is 1 plus x, to the n. That is the Binomial Theorem. This video makes the idea general: any set, and any rule for the size of an object.
+00:00:40,330 --> 00:00:46,943
+Here is a counting problem with many answers. Count the subsets of 1, 2, 3 of each size.
 
 7
-00:01:32,556 --> 00:01:49,985
-Here are the coefficients of 1 plus x, cubed, as a row of cells. Cell n holds the coefficient of x to the n. The cells are 1, 3, 3, 1, and then zeros. These are the counts of the subsets of 1, 2, 3 by size.
+00:00:47,393 --> 00:00:57,825
+Each row of three cells is one subset. A blue cell is an element of the subset. For example, the subset 1, 3 has blue cells 1 and 3.
 
 8
-00:01:50,435 --> 00:02:06,435
-The second row is 1 over 1 minus x, cubed. Its coefficients count the multisets with 3 types of elements, by size. The Binomial Series gives the coefficient: n plus t minus 1, choose t minus 1.
+00:00:58,275 --> 00:01:00,921
+The subsets stand in the column of their size.
 
 9
-00:02:06,885 --> 00:02:25,765
-Look at x squared. A multiset with 3 types is a vector m 1, m 2, m 3 of natural numbers. Its size is the sum. There are 6 vectors with sum 2, and 4 choose 2 is 6. So in both rows, a coefficient counts objects of one size.
+00:01:01,371 --> 00:01:05,424
+The column heights are the counts. One subset has size 0.
 
 10
-00:02:26,215 --> 00:02:37,095
-In general, we want a sequence of numbers g 0, g 1, g 2, and so on. For example, g n can be the number of objects of size n.
+00:01:05,874 --> 00:01:07,858
+Three subsets have size 1.
 
 11
-00:02:37,545 --> 00:02:46,569
-We put g n in front of x to the n, and add the terms. The result G of x is the generating series of the sequence g.
+00:01:08,308 --> 00:01:10,249
+Three subsets have size 2.
 
 12
-00:02:47,019 --> 00:03:01,974
-Here x is an indeterminate. It has no value. The power of x only marks the position of each coefficient. So x keeps the numbers g n apart. Chapter 4 shows how to get the numbers back out of the series.
+00:01:10,699 --> 00:01:12,897
+And one subset has size 3.
 
 13
-00:03:02,424 --> 00:03:25,379
-Now the definitions. Take a set S of objects. A function w from S to the natural numbers gives each object a weight. w is a weight function if, for every n, only finitely many objects have weight n. S n is the set of objects of weight n. The notes write script A and omega. The course uses S and w.
+00:01:13,347 --> 00:01:23,373
+Now write one term x to the size for each subset, and add the terms. The result is 1 plus 3 x plus 3 x squared plus x cubed.
 
 14
-00:03:25,829 --> 00:03:37,583
-Example. Let S be the set of all binary strings, and let the weight be the length. The empty string epsilon has length 0. The strings 0 and 1 have length 1.
+00:01:23,823 --> 00:01:32,527
+The coefficient of x to the n is the number of subsets of size n. For example, the coefficient of x squared is 3.
 
 15
-00:03:38,033 --> 00:03:40,231
-There are 4 strings of length 2.
+00:01:32,977 --> 00:01:35,836
+So one power series holds all the counts.
 
 16
-00:03:40,681 --> 00:03:43,113
-And there are 8 strings of length 3.
+00:01:36,286 --> 00:01:52,030
+Section 2.1 did this for the subsets of 1 to n. The sum is 1 plus x, to the n. That is the Binomial Theorem. This video makes the idea general: any set, and any rule for the size of an object.
 
 17
-00:03:43,563 --> 00:03:54,571
-The counts are 1, 2, 4, 8. In general, S n has 2 to the n strings. Each S n is finite, so the length is a weight function on the binary strings.
+00:01:52,480 --> 00:02:00,992
+Here are the coefficients of 1 plus x, cubed, as a row of cells. Cell n holds the coefficient of x to the n.
 
 18
-00:03:55,021 --> 00:04:10,679
-Every object has exactly one weight. So S is the union of S 0, S 1, S 2, and so on, and these sets do not overlap. A countable union of finite sets is finite or countably infinite.
+00:02:01,442 --> 00:02:09,954
+The cells are 1, 3, 3, 1, and then zeros. These are the counts of the subsets of 1, 2, 3 by size.
 
 19
-00:04:11,129 --> 00:04:23,311
-The finite condition can fail. Practice problem P2-4 part b: all binary strings, and the weight v is twice the number of 0s. Pause the video and try it.
+00:02:10,404 --> 00:02:16,399
+The Binomial Theorem gives these coefficients: n choose k, with n equal to 3.
 
 20
-00:04:23,761 --> 00:04:30,715
-A string with no 0s has weight 0. The empty string, 1, and 1 1 all have weight 0.
+00:02:16,849 --> 00:02:20,134
+The second row is 1 over 1 minus x, cubed.
 
 21
-00:04:31,165 --> 00:04:45,352
-So do 1 1 1, 1 1 1 1, and every string of only 1s. There is one for every length. So the set of weight 0 is infinite, and v is not a weight function. The weight 2 set is also infinite.
+00:02:20,584 --> 00:02:25,405
+Its coefficients count the multisets with 3 types of elements, by size.
 
 22
-00:04:45,802 --> 00:05:05,429
-Tutorial 2, question 1 part b has the same problem. Take tuples with entries 1, 2, 3, of any length. The weight counts the places where 1 is followed by 1. Every tuple of only 2s has weight 0. So again infinitely many tuples have weight 0.
+00:02:25,855 --> 00:02:32,255
+The Binomial Series gives the coefficient: n plus t minus 1, choose t minus 1.
 
 23
-00:05:05,879 --> 00:05:20,087
-Why must each S n be finite? The coefficient of x to the n will be the number of objects of weight n. That must be a natural number. Infinitely many terms x to the 0 do not give a coefficient.
+00:02:32,705 --> 00:02:42,305
+Look at x squared. A multiset with 3 types is a vector m 1, m 2, m 3 of natural numbers. Its size is the sum.
 
 24
-00:05:20,537 --> 00:05:38,201
-Definition 2.6. The generating series of S with respect to w is phi S w of x. It is the sum, over all sigma in S, of x to the w of sigma. Here is the set of the 8 subsets of 1, 2, 3.
+00:02:42,755 --> 00:02:45,977
+There are 6 vectors with sum 2. Here they are.
 
 25
-00:05:38,651 --> 00:05:48,464
-Take the weight w of sigma equal to the size of sigma. The empty set has weight 0. The three single elements have weight 1, and so on.
+00:02:46,427 --> 00:02:58,715
+The formula gives 2 plus 3 minus 1, choose 3 minus 1. That is 4 choose 2, which is 6. So in both rows, a coefficient counts objects of one size.
 
 26
-00:05:48,914 --> 00:05:57,789
-Each object gives one term: x to its weight. So the empty set gives x to the 0, and the set 1, 2 gives x squared.
+00:02:59,165 --> 00:03:05,223
+In general, we want a sequence of numbers g 0, g 1, g 2, and so on.
 
 27
-00:05:58,239 --> 00:06:02,356
-Add the 8 terms. This sum is the definition, written out.
+00:03:05,673 --> 00:03:09,855
+For example, g n can be the number of objects of size n.
 
 28
-00:06:02,806 --> 00:06:22,155
-Collect the terms with equal powers. Phi S of x equals 1 plus 3 x plus 3 x squared plus x cubed. Check: put x equal to 1. Each term becomes 1, so the result is the number of objects, 8. And 1 plus 3 plus 3 plus 1 is 8.
+00:03:10,305 --> 00:03:14,273
+We put g n in front of x to the n, and add the terms.
 
 29
-00:06:22,605 --> 00:06:31,885
-Now keep the same 8 subsets, but change the weight. The weight of sigma is now the sum of its elements. The empty set has sum 0.
+00:03:14,723 --> 00:03:19,501
+The result G of x is the generating series of the sequence g.
 
 30
-00:06:32,335 --> 00:06:41,381
-Put each subset in the column of its sum. The set 3 and the set 1, 2 both have sum 3. The set 1, 2, 3 has sum 6.
+00:03:19,951 --> 00:03:25,754
+Here x is an indeterminate. It has no value. We never put a number in for x.
 
 31
-00:06:41,831 --> 00:06:51,495
-Count each column. The series is 1 plus x plus x squared plus 2 x cubed plus x to the 4 plus x to the 5 plus x to the 6.
+00:03:26,204 --> 00:03:33,649
+The power of x only marks the position of each coefficient. For example, x cubed marks g 3.
 
 32
-00:06:51,945 --> 00:07:04,979
-The set is the same, but the series is different. At x equal to 1, both series give 8. So the generating series depends on the set and on the weight. In a solution, always state both.
+00:03:34,099 --> 00:03:40,905
+So x keeps the numbers g n apart. Chapter 4 shows how to get the numbers back out of the series.
 
 33
-00:07:05,429 --> 00:07:22,560
-Proposition 2.7 says why this works. If phi A of x has coefficients a n, then a n is the number of objects of weight n. The proof starts with the definition. The chips are the terms of the example on the last slide, in any order.
+00:03:41,355 --> 00:03:50,443
+Now the definitions. Take a set S of objects. A function w from S to the natural numbers gives each object a weight.
 
 34
-00:07:23,010 --> 00:07:33,143
-Group the objects by weight. Every object has exactly one weight n, so each term goes into exactly one group. The groups are the columns.
+00:03:50,893 --> 00:03:53,965
+S n is the set of objects of weight n.
 
 35
-00:07:33,593 --> 00:07:44,473
-In group n, every term is x to the n. So x to the n comes out of the inner sum. What is left is a sum of 1s, one for each object of weight n.
+00:03:54,415 --> 00:03:58,937
+w is a weight function if, for every n, the set S n is finite.
 
 36
-00:07:44,923 --> 00:08:01,649
-A sum of 1s over A n is the size of A n. So the coefficient of x to the n is the number of objects of weight n. Each A n is finite, so each coefficient is a natural number. This is where the weight function condition is used.
+00:03:59,387 --> 00:04:03,953
+The notes write script A and omega. The course uses S and w.
 
 37
-00:08:02,099 --> 00:08:12,573
-So a generating series is a list of counts. Count the objects of weight n, or read the coefficient of x to the n. The two give the same number.
+00:04:04,403 --> 00:04:09,800
+Example. Let S be the set of all binary strings, and let the weight be the length.
 
 38
-00:08:13,023 --> 00:08:30,410
-We need a short name for one coefficient. Definition 2.8: the coefficient of x to the k in G of x is written as x to the k, in square brackets, then G of x. For 1 over 1 minus x, every coefficient is 1.
+00:04:10,250 --> 00:04:12,981
+The empty string epsilon has length 0.
 
 39
-00:08:30,860 --> 00:08:46,177
-Example 2.9 uses the Binomial Series with t equal to 1 plus b. The coefficient of x to the n is n plus b, choose b. So the coefficient of x to the a is a plus b, choose b.
+00:04:13,431 --> 00:04:16,012
+The strings 0 and 1 have length 1.
 
 40
-00:08:46,627 --> 00:09:01,625
-For example, take 1 over 1 minus x, to the 4. Then 1 plus b is 4, so b is 3. For a equal to 2, the coefficient is 5 choose 3, which is 10. The row shows 10 in the x squared cell.
+00:04:16,462 --> 00:04:18,659
+There are 4 strings of length 2.
 
 41
-00:09:02,075 --> 00:09:13,211
-With this notation, Proposition 2.7 is one line. The coefficient of x to the n in phi S of x is the number of objects of weight n.
+00:04:19,109 --> 00:04:21,541
+And there are 8 strings of length 3.
 
 42
-00:09:13,661 --> 00:09:29,767
-Here is the method for a small set. List the objects. Find the weight of each one. Write one term x to the weight for each object. Collect the equal powers. Then check: at x equal to 1, the sum must be the number of objects.
+00:04:21,991 --> 00:04:24,210
+The counts are 1, 2, 4, 8.
 
 43
-00:09:30,217 --> 00:09:45,087
-For a large or infinite set, you cannot list every object. Then find the count of objects of weight n for a general n, and use it as the coefficient of x to the n. The next questions use both ways.
+00:04:24,660 --> 00:04:33,300
+In general, S n has 2 to the n strings. Each S n is finite, so the length is a weight function on the binary strings.
 
 44
-00:09:45,537 --> 00:10:04,075
-Practice problem P1-8. S is the set of tuples of length 5 with exactly two 1s. The weight is the number of 0s between the two 1s. Find the generating series. Pause the video and try it. There are 5 choose 2, which is 10, tuples.
+00:04:33,750 --> 00:04:43,777
+Every object has exactly one weight. So S is the union of S 0, S 1, S 2, and so on, and these sets do not overlap.
 
 45
-00:10:04,525 --> 00:10:13,507
-Mark the 0s between the 1s in orange. Their number is the weight. For example, 1 0 0 0 1 has weight 3.
+00:04:44,227 --> 00:04:49,091
+A countable union of finite sets is finite or countably infinite.
 
 46
-00:10:13,957 --> 00:10:18,970
-Sort the tuples by weight. Weight 0 means the two 1s are next to each other.
+00:04:49,541 --> 00:05:01,722
+The finite condition can fail. Practice problem P2-4 part b: all binary strings, and the weight v is twice the number of 0s. Pause the video and try it.
 
 47
-00:10:19,420 --> 00:10:27,100
-Count each column. There are 4 tuples of weight 0, 3 of weight 1, 2 of weight 2, and 1 of weight 3.
+00:05:02,172 --> 00:05:09,127
+A string with no 0s has weight 0. The empty string, 1, and 1 1 all have weight 0.
 
 48
-00:10:27,550 --> 00:10:37,491
-So phi S of x equals 4 plus 3 x plus 2 x squared plus x cubed. Check: 4 plus 3 plus 2 plus 1 is 10.
+00:05:09,577 --> 00:05:16,297
+So do 1 1 1, 1 1 1 1, and every string of only 1s. There is one for every length.
 
 49
-00:10:37,941 --> 00:10:56,245
-For n tuples, weight k means the second 1 is k plus 1 places after the first 1. The first 1 can start in n minus k minus 1 places. So the coefficient of x to the k is n minus 1 minus k, for k from 0 to n minus 2.
+00:05:16,747 --> 00:05:21,333
+So the set of weight 0 is infinite, and v is not a weight function.
 
 50
-00:10:56,695 --> 00:11:22,167
-Tutorial 2, question 1 part a. S 4 is the set of tuples of length 4 with entries 1, 2 or 3. The weight is the number of places where a 1 is followed by a 1. Pause the video and try it. The weight depends only on where the 1s are. So first choose the positions of the 1s. Every other entry is 2 or 3. A pattern with k ones gives 2 to the 4 minus k tuples.
+00:05:21,783 --> 00:05:27,693
+The set of weight 2 is also infinite: strings with one 0 and any number of 1s.
 
 51
-00:11:22,617 --> 00:11:35,823
-Weight 0. The 1s are never next to each other. No 1 gives 16 tuples. One 1 has 4 positions, with 8 tuples each. Two 1s apart have 3 patterns, with 4 tuples each.
+00:05:28,143 --> 00:05:40,367
+Tutorial 2, question 1 part b has the same problem. Take tuples with entries 1, 2, 3, of any length. The weight counts the places where 1 is followed by 1.
 
 52
-00:11:36,273 --> 00:11:48,518
-Weight 1. Two 1s next to each other: 3 patterns, with 4 tuples each. Or three 1s with one gap: 1 1 star 1, and 1 star 1 1. Each gives 2 tuples.
+00:05:40,817 --> 00:05:47,622
+Every tuple of only 2s has weight 0. So again infinitely many tuples have weight 0.
 
 53
-00:11:48,968 --> 00:11:56,861
-Weight 2: 1 1 1 star and star 1 1 1, with 2 tuples each. Weight 3: only 1 1 1 1.
+00:05:48,072 --> 00:05:57,800
+Why must each S n be finite? The coefficient of x to the n will be the number of objects of weight n. That must be a natural number.
 
 54
-00:11:57,311 --> 00:12:10,090
-Add the tuples in each column. Weight 0: 16 plus 32 plus 12 is 60. Weight 1: 12 plus 4 is 16. Weight 2: 4. Weight 3: 1.
+00:05:58,250 --> 00:06:05,397
+Infinitely many terms x to the 0 do not give a coefficient. So the sum is not a power series.
 
 55
-00:12:10,540 --> 00:12:23,233
-So the generating series is 60 plus 16 x plus 4 x squared plus x cubed. Check: the sum is 81, and there are 3 to the 4, which is 81, tuples.
+00:06:05,847 --> 00:06:19,436
+Definition 2.6. The generating series of S with respect to w is phi S w of x. It is the sum, over all sigma in S, of x to the w of sigma.
 
 56
-00:12:23,683 --> 00:12:43,267
-Practice problem P2-4 part a. Now the strings have a fixed length n, and v is twice the number of 0s. Pause the video and try it. B n has 2 to the n elements. A finite set always has finitely many objects of each weight. So v is a weight function.
+00:06:19,886 --> 00:06:24,025
+There is one term for each object. The exponent is its weight.
 
 57
-00:12:43,717 --> 00:12:50,629
-Look at n equal to 3. The 0s are orange. The weight is twice the number of orange cells.
+00:06:24,475 --> 00:06:31,045
+Write phi S of x when w is clear. The notes also write A of x for a set script A.
 
 58
-00:12:51,079 --> 00:12:57,223
-The counts are 1, 0, 3, 0, 3, 0, 1. Odd weights do not occur.
+00:06:31,495 --> 00:06:39,346
+Example. Let S be the set of the 8 subsets of 1, 2, 3, and let the weight of sigma be the size of sigma.
 
 59
-00:12:57,673 --> 00:13:17,449
-In general, choose the k positions of the 0s in n choose k ways. Each such string has weight 2 k. So the series is the sum of n choose k, x to the 2 k. By the Binomial Theorem with x squared in place of x, this is 1 plus x squared, to the n.
+00:06:39,796 --> 00:06:41,759
+The empty set has weight 0.
 
 60
-00:13:17,899 --> 00:13:36,139
-Assignment 1, problem 4 part a. S is the set of the 16 subsets of 0, 1, 2, 3. The weight w is the sum of the elements. The weight w star is the product. The empty set has weight 0 for both. Pause the video and try it.
+00:06:42,209 --> 00:06:45,110
+The three sets with one element have weight 1.
 
 61
-00:13:36,589 --> 00:13:46,872
-First w. Put each subset in the column of its sum. The column of 3 holds the sets 3, 1 2, and the same two sets with 0 added.
+00:06:45,560 --> 00:06:48,355
+The three sets with two elements have weight 2.
 
 62
-00:13:47,322 --> 00:13:58,287
-Count the columns. The series is 2 plus 2 x plus 2 x squared plus 4 x cubed plus 2 x to the 4 plus 2 x to the 5 plus 2 x to the 6.
+00:06:48,805 --> 00:06:51,343
+The set 1, 2, 3 has weight 3.
 
 63
-00:13:58,737 --> 00:14:08,572
-Every count is even. The element 0 does not change the sum. So each subset without 0 has a partner with 0, in the same column.
+00:06:51,793 --> 00:06:58,023
+Each object gives one term: x to its weight. So the empty set gives x to the 0.
 
 64
-00:14:09,022 --> 00:14:25,278
-Now the product weight w star. Every subset that contains 0 has product 0. There are 8 such subsets. The empty set also has weight 0. So 9 subsets have weight 0. Pause the video and try the rest.
+00:06:58,473 --> 00:07:00,841
+And the set 1, 2 gives x squared.
 
 65
-00:14:25,728 --> 00:14:36,715
-Sort the subsets by product. The set 1 has product 1. The sets 2 and 1 2 have product 2. The sets 2 3 and 1 2 3 have product 6.
+00:07:01,291 --> 00:07:05,408
+Add the 8 terms. This sum is the definition, written out.
 
 66
-00:14:37,165 --> 00:14:50,135
-So the series for w star is 9 plus x plus 2 x squared plus 2 x cubed plus 2 x to the 6. Check: 9 plus 1 plus 2 plus 2 plus 2 is 16.
+00:07:05,858 --> 00:07:14,157
+Collect the terms with equal powers. Phi S of x equals 1 plus 3 x plus 3 x squared plus x cubed.
 
 67
-00:14:50,585 --> 00:15:04,815
-Part b. Now T is the set of all finite subsets of the natural numbers. Are the two series formal power series? That is the same as: is each weight a weight function? Pause the video and try it.
+00:07:14,607 --> 00:07:24,932
+Check: put x equal to 1. Each term becomes 1, so the result is the number of objects, 8. And 1 plus 3 plus 3 plus 1 is 8.
 
 68
-00:15:05,265 --> 00:15:22,097
-For the sum w. A set with sum n cannot contain an element larger than n. So it is a subset of 0 to n. There are at most 2 to the n plus 1 such sets. So each T n is finite, and the series is a formal power series.
+00:07:25,382 --> 00:07:32,230
+Now keep the same 8 subsets, but change the weight. The weight of sigma is now the sum of its elements.
 
 69
-00:15:22,547 --> 00:15:34,579
-For the product w star. Every set that contains 0 has product 0. The sets 0 1, 0 2, 0 3, and so on, all have weight 0.
+00:07:32,680 --> 00:07:37,437
+Put each subset in the column of its sum. The empty set has sum 0.
 
 70
-00:15:35,029 --> 00:15:44,949
-So infinitely many sets have weight 0. The constant term is not a number, and the series for w star is not a formal power series.
+00:07:37,887 --> 00:07:41,386
+The set 3 and the set 1, 2 both have sum 3.
 
 71
-00:15:45,399 --> 00:16:01,228
-Practice midterm, question 4 part a. S 3 is the set of the 7 nonempty subsets of 1, 2, 3. The weight w is the smallest element. The weight v is the largest element. Pause the video and try it.
+00:07:41,836 --> 00:07:46,359
+The set 1, 2, 3 has sum 1 plus 2 plus 3, which is 6.
 
 72
-00:16:01,678 --> 00:16:13,027
-Sort by the smallest element. Four sets contain 1, so they have minimum 1. The sets 2 and 2 3 have minimum 2. Only the set 3 has minimum 3.
+00:07:46,809 --> 00:07:56,473
+Count each column. The series is 1 plus x plus x squared plus 2 x cubed plus x to the 4 plus x to the 5 plus x to the 6.
 
 73
-00:16:13,477 --> 00:16:23,760
-Sort by the largest element. Only the set 1 has maximum 1. The sets 2 and 1 2 have maximum 2. Four sets have maximum 3.
+00:07:56,923 --> 00:07:59,973
+The set is the same, but the series is different.
 
 74
-00:16:24,210 --> 00:16:46,439
-So phi w is 4 x plus 2 x squared plus x cubed, and phi v is x plus 2 x squared plus 4 x cubed. In general, minimum k leaves the n minus k larger elements free, so there are 2 to the n minus k sets. Maximum k leaves the k minus 1 smaller elements free.
+00:08:00,423 --> 00:08:03,431
+At x equal to 1, both series give 8.
 
 75
-00:16:46,889 --> 00:17:00,287
-Part b. T is now the set of finite subsets of the natural numbers. The empty set has no minimum or maximum, so we use the nonempty subsets. Pause the video and try it.
+00:08:03,881 --> 00:08:10,196
+So the generating series depends on the set and on the weight. In a solution, always state both.
 
 76
-00:17:00,737 --> 00:17:18,507
-For the minimum. The sets 2, 2 3, 2 4, 2 3 4, 2 5, and so on, all have minimum 2. There is no upper limit on the other elements. So infinitely many sets have weight 2, and the series for w is not a formal power series.
+00:08:10,646 --> 00:08:20,459
+Proposition 2.7 says why this works. If phi A of x has coefficients a n, then a n is the number of objects of weight n.
 
 77
-00:17:18,957 --> 00:17:33,400
-For the maximum. A set with maximum n is n, together with any subset Y of 0 to n minus 1. There are n such numbers, so there are 2 to the n choices for Y. Each T n is finite.
+00:08:20,909 --> 00:08:27,267
+The proof starts with the definition: one term x to the w of alpha, for each alpha in A.
 
 78
-00:17:33,850 --> 00:17:45,135
-So v is a weight function, and the series for v is the sum of 2 to the n, x to the n. By the geometric series, this is 1 over 1 minus 2 x.
+00:08:27,717 --> 00:08:32,303
+The chips are the terms of the example on the last slide, in any order.
 
 79
-00:17:45,585 --> 00:18:00,412
-Practice midterm, question 5. S is the set of the numbers 0 to 50. The weight of a is 4 a plus 3. Find the generating series as a simplified rational expression. Pause the video and try it.
+00:08:32,753 --> 00:08:40,711
+Group the objects by weight. Every object has exactly one weight n, so each term goes into exactly one group.
 
 80
-00:18:00,862 --> 00:18:11,593
-Each a gives one term, x to the 4 a plus 3. So 0 gives x cubed, 1 gives x to the 7, and 50 gives x to the 203.
+00:08:41,161 --> 00:08:42,825
+The groups are the columns.
 
 81
-00:18:12,043 --> 00:18:26,059
-As a row of coefficients, there is a 1 at positions 3, 7, 11, 15, and so on. All other coefficients are 0. Each weight occurs at most once, so w is a weight function.
+00:08:43,275 --> 00:08:58,208
+In group n, every term is x to the n. So x to the n comes out of the inner sum. What is left is a sum of 1s, one for each object of weight n. For example, column 3 holds x cubed twice.
 
 82
-00:18:26,509 --> 00:18:51,533
-Take out x cubed. What is left is a finite geometric sum in x to the 4, with 51 terms. The sum of r to the a, for a from 0 to 50, is 1 minus r to the 51, over 1 minus r. With r equal to x to the 4, the result is x cubed times 1 minus x to the 204, over 1 minus x to the 4.
+00:08:58,658 --> 00:09:07,319
+A sum of 1s over A n is the size of A n. So the coefficient of x to the n is the number of objects of weight n.
 
 83
-00:18:51,983 --> 00:19:08,047
-Practice problem P2-3. We know the generating series, and we want the number of elements of weight 15. Pause the video and try it. By Proposition 2.7, the answer is the coefficient of x to the 15.
+00:09:07,769 --> 00:09:15,855
+Each A n is finite, so each coefficient is a natural number. This is where the weight function condition is used.
 
 84
-00:19:08,497 --> 00:19:24,625
-x over 1 minus 2 x, to the 7, is x to the 7 times 1 minus 2 x to the minus 7. The factor x to the 7 moves every coefficient 7 places. So we need the coefficient of x to the 8 in the rest.
+00:09:16,305 --> 00:09:26,779
+So a generating series is a list of counts. Count the objects of weight n, or read the coefficient of x to the n. The two give the same number.
 
 85
-00:19:25,075 --> 00:19:39,837
-Call c k the coefficient of x to the k in 1 minus 2 x, to the minus 7. The Binomial Series with 2 x in place of x gives c k equals k plus 6 choose 6, times 2 to the k.
+00:09:27,229 --> 00:09:40,157
+We need a short name for one coefficient. Definition 2.8: the coefficient of x to the k in G of x is written as x to the k, in square brackets, then G of x.
 
 86
-00:19:40,287 --> 00:19:48,458
-Multiply by 1 plus x. The 1 gives the row of c k. The x gives the same row, moved one place right.
+00:09:40,607 --> 00:09:44,511
+For 1 over 1 minus x, every coefficient is 1.
 
 87
-00:19:48,908 --> 00:20:04,737
-The column of x to the 8 holds c 8 and c 7. So the answer is 14 choose 6 times 2 to the 8, plus 13 choose 6 times 2 to the 7. This is the posted answer. You do not need to evaluate it.
+00:09:44,961 --> 00:09:55,799
+Example 2.9 uses the Binomial Series with t equal to 1 plus b. The coefficient of x to the n is n plus b, choose b.
 
 88
-00:20:05,187 --> 00:20:21,806
-On a test, you must justify each answer. A full answer has four parts. Define the set. Define the weight, and check that it is a weight function. Find the generating series, and name each result that you use. Then read the coefficient.
+00:09:56,249 --> 00:10:00,089
+So the coefficient of x to the a is a plus b, choose b.
 
 89
-00:20:22,256 --> 00:20:33,968
-Here is a full answer to P1-8. It defines S and w. It says why w is a weight function. It gives the counts of each weight, and then the series.
+00:10:00,539 --> 00:10:07,451
+For example, take 1 over 1 minus x, to the 4. Then 1 plus b is 4, so b is 3.
 
 90
-00:20:34,418 --> 00:20:45,682
-When you count with a series, say why the coefficient is the answer: by Proposition 2.7. The practice midterm asks you to name each result that you use.
+00:10:07,901 --> 00:10:17,885
+For a equal to 2, the coefficient is 2 plus 3 choose 3. That is 5 choose 3, which is 10. The row shows 10 in the x squared cell.
 
 91
-00:20:46,132 --> 00:20:58,975
-To recap. A weight function gives each object a natural number, with only finitely many objects of each weight. If one weight has infinitely many objects, there is no power series.
+00:10:18,335 --> 00:10:29,471
+With this notation, Proposition 2.7 is one line. The coefficient of x to the n in phi S of x is the number of objects of weight n.
 
 92
-00:20:59,425 --> 00:21:11,435
-The generating series has one term x to the weight for each object. By Proposition 2.7, the coefficient of x to the n is the number of objects of weight n.
+00:10:29,921 --> 00:10:33,547
+Here is the method for a small set. List the objects.
 
 93
-00:21:11,885 --> 00:21:28,589
-For a small set, list the objects and collect the terms. For a large set, count the objects of weight n in general. The next video gives the Sum, Product and String Lemmas. They build the series of a large set from the series of smaller sets.
+00:10:33,997 --> 00:10:36,045
+Find the weight of each object.
+
+94
+00:10:36,495 --> 00:10:39,461
+Write one term x to the weight for each object.
+
+95
+00:10:39,911 --> 00:10:41,703
+Collect the equal powers.
+
+96
+00:10:42,153 --> 00:10:46,910
+Then check: at x equal to 1, the sum must be the number of objects.
+
+97
+00:10:47,360 --> 00:10:53,824
+For a small set, sorting the objects into columns by weight is the same as collecting terms.
+
+98
+00:10:54,274 --> 00:11:09,143
+For a large or infinite set, you cannot list every object. Then find the count of objects of weight n for a general n, and use it as the coefficient of x to the n. The next questions use both ways.
+
+99
+00:11:09,593 --> 00:11:24,847
+Practice problem P1-8. S is the set of tuples of length 5 with exactly two 1s. The weight is the number of 0s between the two 1s. Find the generating series. Pause the video and try it.
+
+100
+00:11:25,297 --> 00:11:28,390
+There are 5 choose 2, which is 10, tuples.
+
+101
+00:11:28,840 --> 00:11:33,341
+Mark the 0s between the 1s in orange. Their number is the weight.
+
+102
+00:11:33,791 --> 00:11:39,978
+For example, 1 0 0 0 1 has three orange 0s, so its weight is 3.
+
+103
+00:11:40,428 --> 00:11:45,441
+Sort the tuples by weight. Weight 0 means the two 1s are next to each other.
+
+104
+00:11:45,891 --> 00:11:49,689
+Count each column. There are 4 tuples of weight 0.
+
+105
+00:11:50,139 --> 00:11:52,251
+There are 3 tuples of weight 1.
+
+106
+00:11:52,701 --> 00:11:54,706
+There are 2 tuples of weight 2.
+
+107
+00:11:55,156 --> 00:11:57,481
+And there is 1 tuple of weight 3.
+
+108
+00:11:57,931 --> 00:12:07,873
+So phi S of x equals 4 plus 3 x plus 2 x squared plus x cubed. Check: 4 plus 3 plus 2 plus 1 is 10.
+
+109
+00:12:08,323 --> 00:12:14,488
+For n tuples, weight k means that the second 1 is k plus 1 places after the first 1.
+
+110
+00:12:14,938 --> 00:12:23,919
+So the first 1 can be in n minus 1 minus k places. The coefficient of x to the k is n minus 1 minus k.
+
+111
+00:12:24,369 --> 00:12:32,241
+So phi of x is n minus 1, plus n minus 2 times x, and so on, up to x to the n minus 2.
+
+112
+00:12:32,691 --> 00:12:47,113
+Tutorial 2, question 1 part a. S 4 is the set of tuples of length 4 with entries 1, 2 or 3. The weight is the number of places where a 1 is followed by a 1. Pause the video and try it.
+
+113
+00:12:47,563 --> 00:12:54,475
+The weight depends only on where the 1s are. So first choose the positions of the 1s. They are orange.
+
+114
+00:12:54,925 --> 00:13:03,778
+Every other entry is a star: 2 or 3, two choices. So a pattern with k ones gives 2 to the 4 minus k tuples.
+
+115
+00:13:04,228 --> 00:13:11,631
+Weight 0. The 1s are never next to each other. No 1 at all gives 2 to the 4, which is 16 tuples.
+
+116
+00:13:12,081 --> 00:13:15,473
+One 1 has 4 positions, with 8 tuples each.
+
+117
+00:13:15,923 --> 00:13:20,595
+Two 1s with a gap between them: 3 patterns, with 4 tuples each.
+
+118
+00:13:21,045 --> 00:13:26,378
+Weight 1. Two 1s next to each other: 3 patterns, with 4 tuples each.
+
+119
+00:13:26,828 --> 00:13:33,463
+Or three 1s with one gap: 1 1 star 1, and 1 star 1 1. Each gives 2 tuples.
+
+120
+00:13:33,913 --> 00:13:39,075
+Weight 2: 1 1 1 star, and star 1 1 1, with 2 tuples each.
+
+121
+00:13:39,525 --> 00:13:43,301
+Weight 3: only 1 1 1 1, which is 1 tuple.
+
+122
+00:13:43,751 --> 00:13:51,986
+Add the tuples in each column. Weight 0: 16, plus 4 times 8, plus 3 times 4. That is 60.
+
+123
+00:13:52,436 --> 00:13:56,959
+Weight 1: 3 times 4, plus 2 times 2. That is 16.
+
+124
+00:13:57,409 --> 00:13:59,947
+Weight 2: 2 times 2, which is 4.
+
+125
+00:14:00,397 --> 00:14:01,805
+Weight 3: 1.
+
+126
+00:14:02,255 --> 00:14:08,591
+So the generating series is 60 plus 16 x plus 4 x squared plus x cubed.
+
+127
+00:14:09,041 --> 00:14:14,332
+Check: the sum is 81, and there are 3 to the 4, which is 81, tuples.
+
+128
+00:14:14,782 --> 00:14:25,171
+Practice problem P2-4 part a. Now the strings have a fixed length n, and v is twice the number of 0s. Pause the video and try it.
+
+129
+00:14:25,621 --> 00:14:34,624
+B n has 2 to the n elements. A finite set always has finitely many objects of each weight. So v is a weight function.
+
+130
+00:14:35,074 --> 00:14:48,685
+Look at n equal to 3. The 0s are orange. The weight is twice the number of orange cells. For example, 0 1 0 has two 0s, so its weight is 2 times 2, which is 4.
+
+131
+00:14:49,135 --> 00:14:55,279
+The counts are 1, 0, 3, 0, 3, 0, 1. Odd weights do not occur.
+
+132
+00:14:55,729 --> 00:15:04,475
+So the series is 1 plus 3 x squared plus 3 x to the 4 plus x to the 6. That is 1 plus x squared, cubed.
+
+133
+00:15:04,925 --> 00:15:12,541
+In general, choose the k positions of the 0s in n choose k ways. Each such string has weight 2 k.
+
+134
+00:15:12,991 --> 00:15:24,511
+So the series is the sum of n choose k, x to the 2 k. By the Binomial Theorem with x squared in place of x, this is 1 plus x squared, to the n.
+
+135
+00:15:24,961 --> 00:15:32,513
+Assignment 1, problem 4 part a. S is the set of the 16 subsets of 0, 1, 2, 3.
+
+136
+00:15:32,963 --> 00:15:35,779
+The weight w is the sum of the elements.
+
+137
+00:15:36,229 --> 00:15:39,664
+The weight w star is the product of the elements.
+
+138
+00:15:40,114 --> 00:15:44,615
+The empty set has weight 0 for both. Pause the video and try it.
+
+139
+00:15:45,065 --> 00:15:48,777
+First w. Put each subset in the column of its sum.
+
+140
+00:15:49,227 --> 00:15:55,030
+The column of 3 holds the sets 3 and 1 2, and the same two sets with 0 added.
+
+141
+00:15:55,480 --> 00:16:06,445
+Count the columns. The series is 2 plus 2 x plus 2 x squared plus 4 x cubed plus 2 x to the 4 plus 2 x to the 5 plus 2 x to the 6.
+
+142
+00:16:06,895 --> 00:16:21,765
+Every count is even. The element 0 does not change the sum. So each subset without 0 has a partner with 0, in the same column. For example, the empty set and the set 0 both have sum 0.
+
+143
+00:16:22,215 --> 00:16:26,375
+Now the product weight w star. Pause the video and try it.
+
+144
+00:16:26,825 --> 00:16:32,435
+Every subset that contains 0 has product 0. There are 8 such subsets.
+
+145
+00:16:32,885 --> 00:16:37,941
+The empty set also has weight 0. So 9 subsets have weight 0.
+
+146
+00:16:38,391 --> 00:16:42,765
+Sort the other subsets by product. The set 1 has product 1.
+
+147
+00:16:43,215 --> 00:16:45,775
+The sets 2 and 1 2 have product 2.
+
+148
+00:16:46,225 --> 00:16:48,977
+The sets 3 and 1 3 have product 3.
+
+149
+00:16:49,427 --> 00:16:53,011
+The sets 2 3 and 1 2 3 have product 6.
+
+150
+00:16:53,461 --> 00:16:55,871
+No set has product 4 or 5.
+
+151
+00:16:56,321 --> 00:17:04,172
+So the series for w star is 9 plus x plus 2 x squared plus 2 x cubed plus 2 x to the 6.
+
+152
+00:17:04,622 --> 00:17:10,211
+Check: 9 plus 1 plus 2 plus 2 plus 2 is 16, the number of subsets.
+
+153
+00:17:10,661 --> 00:17:24,891
+Part b. Now T is the set of all finite subsets of the natural numbers. Are the two series formal power series? That is the same as: is each weight a weight function? Pause the video and try it.
+
+154
+00:17:25,341 --> 00:17:34,791
+For the sum w. Take weight n, for example n equal to 4. A set with sum 4 cannot contain an element larger than 4.
+
+155
+00:17:35,241 --> 00:17:40,319
+So the set is a subset of 0 to n. That set has n plus 1 elements.
+
+156
+00:17:40,769 --> 00:17:48,961
+So there are at most 2 to the n plus 1 such sets. Each T n is finite, and the series is a formal power series.
+
+157
+00:17:49,411 --> 00:18:01,443
+For the product w star. Every set that contains 0 has product 0. The sets 0 1, 0 2, 0 3, and so on, all have weight 0.
+
+158
+00:18:01,893 --> 00:18:11,813
+So infinitely many sets have weight 0. The constant term is not a number, and the series for w star is not a formal power series.
+
+159
+00:18:12,263 --> 00:18:28,092
+Practice midterm, question 4 part a. S 3 is the set of the 7 nonempty subsets of 1, 2, 3. The weight w is the smallest element. The weight v is the largest element. Pause the video and try it.
+
+160
+00:18:28,542 --> 00:18:33,918
+Sort by the smallest element. Four sets contain 1, so they have minimum 1.
+
+161
+00:18:34,368 --> 00:18:36,949
+The sets 2 and 2 3 have minimum 2.
+
+162
+00:18:37,399 --> 00:18:39,789
+Only the set 3 has minimum 3.
+
+163
+00:18:40,239 --> 00:18:45,124
+Now sort by the largest element. Only the set 1 has maximum 1.
+
+164
+00:18:45,574 --> 00:18:48,241
+The sets 2 and 1 2 have maximum 2.
+
+165
+00:18:48,691 --> 00:18:50,803
+Four sets have maximum 3.
+
+166
+00:18:51,253 --> 00:18:55,711
+So phi w is 4 x plus 2 x squared plus x cubed.
+
+167
+00:18:56,161 --> 00:19:00,193
+And phi v is x plus 2 x squared plus 4 x cubed.
+
+168
+00:19:00,643 --> 00:19:08,814
+In general, minimum k leaves the n minus k larger elements free. So there are 2 to the n minus k sets.
+
+169
+00:19:09,264 --> 00:19:16,539
+Maximum k leaves the k minus 1 smaller elements free. So there are 2 to the k minus 1 sets.
+
+170
+00:19:16,989 --> 00:19:23,986
+Part b. T is now the set of finite subsets of the natural numbers. Pause the video and try it.
+
+171
+00:19:24,436 --> 00:19:29,791
+The empty set has no minimum or maximum, so we use the nonempty subsets.
+
+172
+00:19:30,241 --> 00:19:37,793
+For the minimum. The sets 2, 2 3, 2 4, 2 3 4, 2 5, and so on, all have minimum 2.
+
+173
+00:19:38,243 --> 00:19:47,907
+There is no upper limit on the other elements. So infinitely many sets have weight 2, and the series for w is not a formal power series.
+
+174
+00:19:48,357 --> 00:20:02,223
+For the maximum. A set with maximum n is n, together with any subset Y of 0 to n minus 1. For example, for n equal to 4, Y is a subset of 0, 1, 2, 3.
+
+175
+00:20:02,673 --> 00:20:10,801
+There are n numbers from 0 to n minus 1. So there are 2 to the n choices for Y, and each T n is finite.
+
+176
+00:20:11,251 --> 00:20:17,459
+So v is a weight function, and the series for v is the sum of 2 to the n, x to the n.
+
+177
+00:20:17,909 --> 00:20:24,416
+By the geometric series with 2 x in place of x, this is 1 over 1 minus 2 x.
+
+178
+00:20:24,866 --> 00:20:39,693
+Practice midterm, question 5. S is the set of the numbers 0 to 50. The weight of a is 4 a plus 3. Find the generating series as a simplified rational expression. Pause the video and try it.
+
+179
+00:20:40,143 --> 00:20:49,401
+Each a gives one term, x to the 4 a plus 3. So 0 gives x to the 4 times 0 plus 3, which is x cubed.
+
+180
+00:20:49,851 --> 00:20:53,990
+1 gives x to the 4 plus 3, which is x to the 7.
+
+181
+00:20:54,440 --> 00:21:00,499
+And 50 gives x to the 4 times 50 plus 3, which is x to the 203.
+
+182
+00:21:00,949 --> 00:21:14,965
+As a row of coefficients, there is a 1 at positions 3, 7, 11, 15, and so on. All other coefficients are 0. Each weight occurs at most once, so w is a weight function.
+
+183
+00:21:15,415 --> 00:21:21,111
+Write the definition: the sum over a from 0 to 50 of x to the 4 a plus 3.
+
+184
+00:21:21,561 --> 00:21:28,793
+Take out x cubed. What is left is a finite geometric sum in x to the 4, with 51 terms.
+
+185
+00:21:29,243 --> 00:21:39,419
+The sum of r to the a, for a from 0 to 50, is 1 minus r to the 51, over 1 minus r. Here r is x to the 4.
+
+186
+00:21:39,869 --> 00:21:50,642
+4 times 51 is 204. So the result is x cubed times 1 minus x to the 204, over 1 minus x to the 4.
+
+187
+00:21:51,092 --> 00:22:01,033
+Practice problem P2-3. We know the generating series, and we want the number of elements of weight 15. Pause the video and try it.
+
+188
+00:22:01,483 --> 00:22:07,094
+By Proposition 2.7, the answer is the coefficient of x to the 15.
+
+189
+00:22:07,544 --> 00:22:15,245
+x over 1 minus 2 x, to the 7, is x to the 7 times 1 minus 2 x, to the minus 7.
+
+190
+00:22:15,695 --> 00:22:26,938
+The factor x to the 7 moves every coefficient 7 places. So we need the coefficient of x to the 15 minus 7, which is x to the 8, in the rest.
+
+191
+00:22:27,388 --> 00:22:42,151
+Call c k the coefficient of x to the k in 1 minus 2 x, to the minus 7. The Binomial Series with 2 x in place of x gives c k equals k plus 6 choose 6, times 2 to the k.
+
+192
+00:22:42,601 --> 00:22:46,974
+Multiply by 1 plus x. The 1 gives the row of c k.
+
+193
+00:22:47,424 --> 00:22:50,795
+The x gives the same row, moved one place right.
+
+194
+00:22:51,245 --> 00:22:54,765
+The column of x to the 8 holds c 8 and c 7.
+
+195
+00:22:55,215 --> 00:23:09,444
+So the answer is c 8 plus c 7. That is 14 choose 6 times 2 to the 8, plus 13 choose 6 times 2 to the 7. This is the posted answer. You do not need to evaluate it.
+
+196
+00:23:09,894 --> 00:23:16,763
+On a test, you must justify each answer. A full answer has four parts. First, define the set.
+
+197
+00:23:17,213 --> 00:23:20,904
+Second, define the weight, and check that it is a weight function.
+
+198
+00:23:21,354 --> 00:23:26,239
+Third, find the generating series, and name each result that you use.
+
+199
+00:23:26,689 --> 00:23:28,567
+Fourth, read the coefficient.
+
+200
+00:23:29,017 --> 00:23:34,137
+Here is a full answer to P1-8. It defines S and w.
+
+201
+00:23:34,587 --> 00:23:37,125
+It says why w is a weight function.
+
+202
+00:23:37,575 --> 00:23:40,775
+It gives the counts of each weight, and then the series.
+
+203
+00:23:41,225 --> 00:23:52,489
+When you count with a series, say why the coefficient is the answer: by Proposition 2.7. The practice midterm asks you to name each result that you use.
+
+204
+00:23:52,939 --> 00:24:00,641
+To recap. A weight function gives each object a natural number, with only finitely many objects of each weight.
+
+205
+00:24:01,091 --> 00:24:05,741
+If one weight has infinitely many objects, there is no power series.
+
+206
+00:24:06,191 --> 00:24:10,693
+The generating series has one term x to the weight for each object.
+
+207
+00:24:11,143 --> 00:24:18,183
+By Proposition 2.7, the coefficient of x to the n is the number of objects of weight n.
+
+208
+00:24:18,633 --> 00:24:26,867
+For a small set, list the objects and collect the terms. For a large set, count the objects of weight n in general.
+
+209
+00:24:27,317 --> 00:24:35,488
+The next video gives the Sum, Product and String Lemmas. They build the series of a large set from the series of smaller sets.
