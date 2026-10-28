@@ -3,281 +3,665 @@
 This is ECE 358, video 5 b. The topic is HTTP response time and HTTP messages. Video 5 a explained non-persistent and persistent HTTP. Now we use it to solve problems.
 
 2
-00:00:18,391 --> 00:00:38,317
-After this video, you can write the response time for the five scenarios of table 1 in the question bank. You can decide if parallel or persistent connections help. You can read every line of an HTTP request and response message. And you can use the four methods and the status codes.
+00:00:18,391 --> 00:00:25,389
+After this video, you can write the response time for the five scenarios of table 1 in the question bank.
 
 3
-00:00:38,767 --> 00:00:47,087
-Question 21 asks you to derive the response time for one file with no references. Pause the video and try it.
+00:00:25,839 --> 00:00:29,679
+You can decide if parallel or persistent connections help.
 
 4
-00:00:47,537 --> 00:00:54,747
-Use the time diagram of slide 22. The first RTT opens the TCP connection.
+00:00:30,129 --> 00:00:35,121
+You can read every line of an HTTP request and response message.
 
 5
-00:00:55,197 --> 00:01:01,981
-The second RTT carries the request to the server, and the first bits of the response back to the client.
+00:00:35,571 --> 00:00:38,963
+And you can use the four methods and the status codes.
 
 6
-00:01:02,431 --> 00:01:16,938
-Then the rest of the file arrives in one file transmission time, the file size divided by the rate. State the assumptions: the small messages have no transmission time, and the close is not counted.
+00:00:39,413 --> 00:00:52,021
+Question 21. A client downloads a web page that is one file with no references. Derive the response time with RTT and F T T. Pause the video and try it.
 
 7
-00:01:17,388 --> 00:01:22,636
-Add the three parts. The response time is 2 RTT plus F T T.
+00:00:52,471 --> 00:00:59,660
+Use the time diagram of slide 22. The first RTT opens the TCP connection.
 
 8
-00:01:23,086 --> 00:01:50,435
-Question 25 is the main calculation question of this part. Read the assumptions carefully. A page has one file and N referenced objects, all of size F bits. The server rate is T x bits per second. Closing a TCP connection takes one RTT. And you must close a connection before you open a new one between the same end points. Pause the video and try all five scenarios.
+00:01:00,110 --> 00:01:06,915
+The second RTT carries the request to the server, and the first bits of the response back to the client.
 
 9
-00:01:50,885 --> 00:02:09,061
-Table 1 gives scenario 1: non-persistent with N equal to 0. The answer is 2 RTT plus F over T x. The bar below shows one object: one RTT to open, one RTT for the request, then F over T x.
+00:01:07,365 --> 00:01:15,835
+Then the rest of the file arrives in one F T T. The F T T is the file size divided by the transmission rate.
 
 10
-00:02:09,511 --> 00:02:26,130
-Scenario 2 is persistent with N equal to 0. There is only one object. Persistent HTTP still opens one connection and sends one request. So the answer is the same: 2 RTT plus F over T x.
+00:01:16,285 --> 00:01:20,829
+State the assumptions. The small messages have no transmission time.
 
 11
-00:02:26,580 --> 00:02:48,425
-Scenario 3: non-persistent, 3 referenced objects on the same server, sequential. There are 4 objects, so 4 connections. Assume that the client uses the same source port each time. Then the end points are the same, and the client must first close the old connection. That costs one RTT, three times.
+00:01:21,279 --> 00:01:25,673
+And the close is not counted, because the file has already arrived.
 
 12
-00:02:48,875 --> 00:03:00,438
-So scenario 3 gives 4 times 2 RTT plus F over T x, plus 3 RTT. That is 11 RTT plus 4 F over T x.
+00:01:26,123 --> 00:01:35,467
+Add the three parts: RTT, plus RTT, plus F T T. The response time is 2 RTT plus F T T.
 
 13
-00:03:00,888 --> 00:03:19,619
-Scenario 4: the 3 objects are on 3 different servers. Each new connection has different end points. So the client does not wait for a close. The answer is 4 times 2 RTT plus F over T x, which is 8 RTT plus 4 F over T x.
+00:01:35,917 --> 00:01:46,051
+Question 25 is the main calculation question of this part. A page has one file and N referenced objects. All of them are F bits.
 
 14
-00:03:20,069 --> 00:03:45,178
-Scenario 5: same server, but parallel. The client must get the base file first, because it parses the file to find the references. Then it opens 3 connections at the same time, each with its own port. The question says that all the throughput is available, so each file still takes F over T x. The answer is 4 RTT plus 2 F over T x.
+00:01:46,501 --> 00:01:49,146
+The server rate is T x bits per second.
 
 15
-00:03:45,628 --> 00:03:58,321
-Here are the five results in one table. The general form of scenario 3 is N plus 1 times 2 RTT plus F over T x, plus N RTT for the closes.
+00:01:49,596 --> 00:01:52,625
+The RTT is the same for every server.
 
 16
-00:03:58,771 --> 00:04:15,454
-Scenario 5 depends on an assumption. If one parallel connection reuses the port of the base connection, it must wait for the close. Then the answer is 5 RTT plus 2 F over T x. In the exam, state your assumption.
+00:01:53,075 --> 00:01:56,830
+Closing a TCP connection takes one RTT.
 
 17
-00:04:15,904 --> 00:04:38,581
-A numeric check, with our own numbers: RTT 40 milliseconds and F over T x 10 milliseconds. Scenarios 1 and 2 give 90 milliseconds. Scenario 3 gives 480, scenario 4 gives 360, and scenario 5 gives 180. Parallel connections save the most time.
+00:01:57,280 --> 00:02:09,589
+You must close a connection before you open a new one between the same end points. The end points are the source IP, the source port, the destination IP, and the destination port.
 
 18
-00:04:39,031 --> 00:04:56,930
-Problem set 2, problem 5. The link is very slow: 150 bits per second. A data packet is 100,000 bits. A control packet is 200 bits. N parallel connections share the link equally. Pause the video and try it.
+00:02:10,039 --> 00:02:15,885
+All the required throughput is available. Pause the video and try all five scenarios.
 
 19
-00:04:57,380 --> 00:05:25,369
-First, one object on one connection. The client and server exchange 3 control packets: two for the open, and the request. Each takes 200 over 150, which is 1.33 seconds. Then the object takes 100,000 over 150, which is 666.7 seconds. The total is 670.7 seconds, plus 4 propagation delays.
+00:02:16,335 --> 00:02:26,745
+Table 1 gives scenario 1: non-persistent HTTP with N equal to 0. The answer is 2 RTT plus F over T x.
 
 20
-00:05:25,819 --> 00:05:40,283
-The propagation delay is 10 meters over 3 times 10 to the power 8 meters per second. That is about 0.033 microseconds. It is negligible. Transmission time dominates.
+00:02:27,195 --> 00:02:32,678
+The bar shows one object. One RTT opens the TCP connection.
 
 21
-00:05:40,733 --> 00:06:07,891
-Now the parallel case. The base object takes 670.7 seconds. Then 10 parallel connections share the link. Each gets 15 bits per second. Each connection needs 3 control packets, which take 40 seconds, and its object, which takes 6666.7 seconds. The total is 7377 seconds, plus 8 propagation delays.
+00:02:33,128 --> 00:02:37,800
+One RTT carries the request and the first bits of the response.
 
 22
-00:06:08,341 --> 00:06:24,981
-Compare with non-persistent connections one after the other: 11 times 670.7 is also 7377 seconds. Parallel connections do not help, because they share the same link rate.
+00:02:38,250 --> 00:02:40,810
+Then F over T x sends the file.
 
 23
-00:06:25,431 --> 00:06:46,444
-Now persistent HTTP. After the base object, each object needs only a request and the data. That is 1.33 plus 666.7 seconds, 10 times. The total is 7351 seconds, plus 24 propagation delays.
+00:02:41,260 --> 00:02:58,924
+Scenario 2 is persistent HTTP with N equal to 0. There is only one object. Persistent HTTP still opens one connection and sends one request. So the answer is the same: 2 RTT plus F over T x.
 
 24
-00:06:46,894 --> 00:07:11,683
-Persistent HTTP saves only two control packets per object, 26.7 seconds of 7377. That is less than 1 percent. So the official answer: parallel downloads do not make sense, and persistent HTTP gives no significant gain. On this link, the transmission time of the data dominates.
+00:02:59,374 --> 00:03:10,830
+Scenario 3: non-persistent HTTP, N equal to 3 referenced objects on the same server, sequential connections. Pause the video and try it.
 
 25
-00:07:12,133 --> 00:07:18,875
-Problem 6 uses the same link. Each connection gets an equal share. Pause the video and try it.
+00:03:11,280 --> 00:03:18,917
+The base page needs one connection: an open RTT, a request RTT, and F over T x.
 
 26
-00:07:19,325 --> 00:07:40,381
-Part a. Bob opens 10 parallel connections. The other 4 users have one each. That is 14 connections. Bob gets 10 of 14, which is 71.4 percent, or 107 bits per second. So yes, parallel connections help Bob. He gets a larger share of the link.
+00:03:19,367 --> 00:03:26,791
+Assume that the client uses the same source port each time. Then the next connection has the same end points.
 
 27
-00:07:40,831 --> 00:07:49,983
-Part b. All five users open 5 parallel connections. Now each user has 5 of 25, which is 30 bits per second.
+00:03:27,241 --> 00:03:32,617
+So the client must first close the old connection. That costs one RTT.
 
 28
-00:07:50,433 --> 00:08:06,539
-If Bob alone used only one connection, he would get 1 of 21 connections, only 7.1 bits per second. So yes, Bob must still use parallel downloads. Otherwise, he gets less bandwidth than the other users.
+00:03:33,067 --> 00:03:38,017
+Then object 1 needs its own open, request, and F over T x.
 
 29
-00:08:06,989 --> 00:08:29,133
-HTTP has two types of messages: request and response. Both are ASCII text, so humans can read them. This is the request message of slide 24. The first line is the request line. It has the method, GET, the object, slash index dot html, and the version, HTTP 1.1.
+00:03:38,467 --> 00:03:44,269
+The same happens for object 2 and object 3: a close, and then a new connection.
 
 30
-00:08:29,583 --> 00:08:45,541
-The next lines are header lines. Each header line has a field name and a value. Host gives the server name. User agent gives the browser type. Accept, accept language and accept encoding say what the browser can use.
+00:03:44,719 --> 00:03:55,685
+Count the bars. There are 4 objects, and each object takes 2 RTT plus F over T x. That is 8 RTT plus 4 F over T x.
 
 31
-00:08:45,991 --> 00:08:49,681
-Connection: keep alive asks for a persistent connection.
+00:03:56,135 --> 00:03:59,356
+There are 3 closes, so add 3 RTT.
 
 32
-00:08:50,131 --> 00:09:00,243
-Each line ends with a carriage return and a line feed. A line with only a carriage return and a line feed marks the end of the header lines.
+00:03:59,806 --> 00:04:03,881
+The total is 11 RTT plus 4 F over T x.
 
 33
-00:09:00,693 --> 00:09:14,880
-Slide 25 gives the general format. The request line has three fields: method, URL and version. A space separates the fields. A carriage return and a line feed end the line.
+00:04:04,331 --> 00:04:12,288
+In this drawing, F over T x is one RTT. So the bars end at 11 plus 4, which is 15.
 
 34
-00:09:15,330 --> 00:09:27,234
-Then come the header lines. Each has a field name, its value, and a carriage return and line feed. A blank line, with only a carriage return and line feed, ends the headers.
+00:04:12,738 --> 00:04:21,933
+In general, with N objects: N plus 1, times 2 RTT plus F over T x, plus N RTT for the closes.
 
 35
-00:09:27,684 --> 00:09:35,407
-Last is the entity body. For a GET request, the body is usually empty. A POST request puts data here.
+00:04:22,383 --> 00:04:31,471
+Scenario 4: the 3 referenced objects are on 3 different servers. The connections are sequential. Pause the video and try it.
 
 36
-00:09:35,857 --> 00:09:47,931
-Slide 26 gives four methods. With POST, a web page has form input. The user input goes from the client to the server in the entity body of the POST request.
+00:04:31,921 --> 00:04:39,366
+Each new connection goes to a new server, so it has different end points. The client does not wait for a close.
 
 37
-00:09:48,381 --> 00:09:59,709
-GET can also send a small amount of data to the server. The data goes in the URL field, after a question mark. Here the user data is monkeys and banana.
+00:04:39,816 --> 00:04:48,755
+So the answer is 4 times 2 RTT plus F over T x. That is 8 RTT plus 4 F over T x.
 
 38
-00:10:00,159 --> 00:10:09,567
-HEAD requests only the headers. These are the headers that the server would return if the URL were requested with GET. No object is sent.
+00:04:49,205 --> 00:04:55,797
+Scenario 5: the 3 objects are on the same server, and the connections run in parallel.
 
 39
-00:10:10,017 --> 00:10:18,572
-PUT uploads a new file to the server. It completely replaces the file at the URL with the content of the entity body.
+00:04:56,247 --> 00:05:01,900
+The client must get the base file first. It parses the file to find the references.
 
 40
-00:10:19,022 --> 00:10:31,630
-This is the response message of slide 27. The first line is the status line. It has the protocol version, the status code, 200, and the status phrase, OK.
+00:05:02,350 --> 00:05:09,966
+Then it opens 3 connections at the same time. Each connection has its own source port, so no close is needed.
 
 41
-00:10:32,080 --> 00:10:43,792
-Then the header lines. Date is the time when the server sent this response. Server names the server software. Last modified is the time when the object last changed.
+00:05:10,416 --> 00:05:15,387
+All the throughput is available, so each file still takes F over T x.
 
 42
-00:10:44,242 --> 00:10:54,845
-Content length gives the size of the object in bytes, here 2651 bytes. Content type says it is an HTML file.
+00:05:15,837 --> 00:05:24,093
+The answer is 2 times 2 RTT plus F over T x. That is 4 RTT plus 2 F over T x.
 
 43
-00:10:55,295 --> 00:11:11,124
-After the blank line comes the data, here the requested HTML file. The E tag is a label that the server gives to an object. If the object changes, it gets a new label. This avoids redundant data transfer.
+00:05:24,543 --> 00:05:37,193
+The table collects the five results. The general form of scenario 3 is N plus 1, times 2 RTT plus F over T x, plus N RTT for the closes.
 
 44
-00:11:11,574 --> 00:11:22,369
-The status code is in the first line of the response message. Code 200, OK, means that the request succeeded. The object is later in this message.
+00:05:37,643 --> 00:05:44,577
+The general form of scenario 4 is N plus 1, times 2 RTT plus F over T x.
 
 45
-00:11:22,819 --> 00:11:36,429
-301, moved permanently, means that the object moved. The new location is in the location field. 400, bad request, means that the server did not understand the request.
+00:05:45,027 --> 00:05:53,411
+Now a numeric check, with our own numbers: RTT is 40 milliseconds, and F over T x is 10 milliseconds.
 
 46
-00:11:36,879 --> 00:11:48,101
-404, not found, means that the document is not on this server. 505 means that the server does not support the HTTP version.
+00:05:53,861 --> 00:05:59,706
+Scenarios 1 and 2 give 2 times 40, plus 10, which is 90 milliseconds.
 
 47
-00:11:48,551 --> 00:11:55,164
-Problem set 2, problem 1. Five true or false statements. Pause the video and try them.
+00:06:00,156 --> 00:06:07,665
+Scenario 3 gives 11 times 40, plus 4 times 10, which is 480 milliseconds.
 
 48
-00:11:55,614 --> 00:12:06,430
-Part a is false. Each object needs its own request. The page has 4 objects, so the client sends 4 requests and receives 4 responses.
+00:06:08,115 --> 00:06:15,411
+Scenario 4 gives 8 times 40, plus 4 times 10, which is 360 milliseconds.
 
 49
-00:12:06,880 --> 00:12:14,176
-Part b is true. Both pages come from the same server, so one persistent connection can carry both.
+00:06:15,861 --> 00:06:23,136
+Scenario 5 gives 4 times 40, plus 2 times 10, which is 180 milliseconds.
 
 50
-00:12:14,626 --> 00:12:21,815
-Part c is false. A non-persistent connection carries at most one object, so only one request.
+00:06:23,586 --> 00:06:31,671
+The bars compare the times. With referenced objects, the parallel connections of scenario 5 give the shortest time.
 
 51
-00:12:22,265 --> 00:12:32,377
-Part d is false. The date header is the time when the server sent the response. The last modified header gives the time when the object changed.
+00:06:32,121 --> 00:06:41,380
+Scenario 5 depends on an assumption. If one parallel connection reuses the port of the base connection, it must wait for the close.
 
 52
-00:12:32,827 --> 00:12:41,681
-Part e is false. For example, the response to a HEAD request has an empty body. These answers match the official solution.
+00:06:41,830 --> 00:06:56,315
+Then the answer is 5 RTT plus 2 F over T x. With our numbers, that is 5 times 40, plus 2 times 10, which is 220 milliseconds. In the exam, state your assumption.
 
 53
-00:12:42,131 --> 00:12:56,403
-Problem 2 gives a GET message that Wireshark captured. Find the URL, the HTTP version, the connection type, the IP address of the client, and the browser type. Pause the video and try it.
+00:06:56,765 --> 00:07:05,683
+Problem set 2, problem 5. The link is 10 meters long, and very slow: 150 bits per second in each direction.
 
 54
-00:12:56,853 --> 00:13:13,365
-Part a. The host field gives the server name, gaia dot c s dot umass dot e d u. The request line gives the file, slash c s 453 slash index dot html. Together they make the URL.
+00:07:06,133 --> 00:07:09,183
+A data packet is 100,000 bits.
 
 55
-00:13:13,815 --> 00:13:22,967
-Part b. The version is in the request line, just before the first carriage return and line feed. It is HTTP 1.1.
+00:07:09,633 --> 00:07:12,236
+A control packet is 200 bits.
 
 56
-00:13:23,417 --> 00:13:29,198
-Part c. Connection: keep alive. So the browser requests a persistent connection.
+00:07:12,686 --> 00:07:17,081
+N parallel connections each get 1 over N of the link rate.
 
 57
-00:13:29,648 --> 00:13:42,811
-Part d is a trick question. The IP address of the client is not in the HTTP message. It is in the IP datagram that carried the TCP segment that carried this request.
+00:07:17,531 --> 00:07:26,363
+Each object is 100 kilobits. The base object references 10 objects on the same server. Pause the video and try it.
 
 58
-00:13:43,261 --> 00:13:57,639
-Part e. The user agent field gives the browser: Mozilla 5.0, Netscape. The server needs the browser type, because it can send different versions of the same object to different types of browsers.
+00:07:26,813 --> 00:07:36,050
+First, one object on one connection. The client and the server exchange 3 control packets: two for the open, and the request.
 
 59
-00:13:58,089 --> 00:14:03,316
-Problem 3 gives the response to that GET message. Pause the video and try it.
+00:07:36,500 --> 00:07:45,780
+Each control packet takes 200 over 150, which is 1.33 seconds. So 3 of them take 4 seconds.
 
 60
-00:14:03,766 --> 00:14:20,598
-Part a. The status code 200 and the phrase OK show that the server found the document. The date field gives the time of the reply: Tuesday, 7 March 2008, 12 39 and 45 seconds, G M T.
+00:07:46,230 --> 00:07:54,017
+Then the object takes 100,000 over 150, which is 666.7 seconds.
 
 61
-00:14:21,048 --> 00:14:30,264
-Part b. The last modified field: Saturday, 10 December 2005, 18 27 46, G M T.
+00:07:54,467 --> 00:08:06,563
+One object takes 4 plus 666.7, which is 670.7 seconds, plus 4 propagation delays, one for each packet.
 
 62
-00:14:30,714 --> 00:14:39,994
-Part c. Content length is 3874. So the document has 3874 bytes.
+00:08:07,013 --> 00:08:18,490
+The propagation delay, T p, is 10 meters over 3 times 10 to the power 8 meters per second. That is about 0.033 microseconds.
 
 63
-00:14:40,444 --> 00:14:53,777
-Part d. The first 5 bytes of the document are: less-than sign, exclamation mark, d, o, c. And Connection: keep alive shows that the server agreed to a persistent connection.
+00:08:18,940 --> 00:08:23,228
+So T p is negligible. The transmission time dominates.
 
 64
-00:14:54,227 --> 00:15:16,926
-Question bank questions 22 to 24. Pause the video and try them. Question 22. Both messages are ASCII lines. A request starts with the request line: method, URL and version. A response starts with the status line: version, status code and phrase. Then header lines, a blank line, and the body.
+00:08:23,678 --> 00:08:30,441
+Now the parallel case. The base object takes 670.7 seconds, as before.
 
 65
-00:15:17,376 --> 00:15:33,483
-Question 23. POST sends form input in the body. GET sends a small amount of data in the URL after a question mark. HEAD asks only for the headers. PUT uploads a file and replaces the file at the URL.
+00:08:30,891 --> 00:08:38,891
+Then 10 parallel connections share the link. Each gets 150 over 10, which is 15 bits per second.
 
 66
-00:15:33,933 --> 00:15:47,778
-Question 24. A response has a status line, header lines, a blank line and the data. There are no methods in a response. Methods are only in requests. A response carries a status code.
+00:08:39,341 --> 00:08:46,359
+Each connection needs 3 control packets: 3 times 200 over 15, which is 40 seconds.
 
 67
-00:15:48,228 --> 00:15:57,892
-Here is the recap. One. One object takes 2 RTT plus F over T x. Draw the time bars: open, request, and file.
+00:08:46,809 --> 00:08:54,553
+Its object takes 100,000 over 15, which is 6666.7 seconds.
 
 68
-00:15:58,342 --> 00:16:12,763
-Two. For question 25, a new connection between the same end points must wait for the close, one more RTT. A connection to a new server, or a parallel connection with its own port, does not.
+00:08:55,003 --> 00:09:13,073
+The total is 670.7 plus 40 plus 6666.7, which is 7377 seconds. Add 8 propagation delays: 4 for the base object, and 4 for the parallel connections.
 
 69
-00:16:13,213 --> 00:16:23,048
-Three. Parallel connections share the link rate. On a slow link, they do not help one user. But they take a larger share of the link from other users.
+00:09:13,523 --> 00:09:25,107
+Compare with non-persistent connections one after the other: 11 times 670.7 is also 7377 seconds.
 
 70
-00:16:23,498 --> 00:16:31,562
-Four. An HTTP message has a request line or a status line, header lines, a blank line, and a body.
+00:09:25,557 --> 00:09:30,314
+So parallel connections do not help, because they share the same link rate.
 
 71
-00:16:32,012 --> 00:16:48,161
+00:09:30,764 --> 00:09:45,804
+Now persistent HTTP. After the base object, each object needs only a request and the data: 1.33 plus 666.7, which is 668 seconds.
+
+72
+00:09:46,254 --> 00:09:58,585
+The total is 670.7 plus 10 times 668, which is 7351 seconds, plus 24 propagation delays.
+
+73
+00:09:59,035 --> 00:10:09,381
+Persistent HTTP saves two control packets per object: 10 times 2 times 1.33, which is 26.7 seconds.
+
+74
+00:10:09,831 --> 00:10:19,517
+26.7 of 7377 seconds is 0.36 percent, less than 1 percent.
+
+75
+00:10:19,967 --> 00:10:32,895
+So the official answer: parallel downloads do not make sense, and persistent HTTP gives no significant gain. On this link, the transmission time of the data dominates.
+
+76
+00:10:33,345 --> 00:10:45,739
+Problem 6 uses the same link. Bob shares it with 4 other users. Each connection gets an equal share of the 150 bits per second. Pause the video and try it.
+
+77
+00:10:46,189 --> 00:10:55,896
+Part a. Bob opens 10 parallel connections. The other 4 users have one each. That is 10 plus 4, which is 14 connections.
+
+78
+00:10:56,346 --> 00:11:05,541
+Bob gets 10 of 14 connections. That is 71.4 percent of the link, or 107.1 bits per second.
+
+79
+00:11:05,991 --> 00:11:11,111
+So yes, parallel connections help Bob. He gets a larger share of the link.
+
+80
+00:11:11,561 --> 00:11:19,881
+Part b. All five users open 5 parallel connections. That is 5 times 5, which is 25 connections.
+
+81
+00:11:20,331 --> 00:11:25,536
+Each user has 5 of 25 connections, which is 30 bits per second.
+
+82
+00:11:25,986 --> 00:11:33,431
+If Bob alone used only one connection, there are 1 plus 4 times 5, which is 21 connections.
+
+83
+00:11:33,881 --> 00:11:47,983
+Then Bob gets 150 over 21, only 7.1 bits per second. Each other user gets 5 times 150 over 21, which is 35.7 bits per second.
+
+84
+00:11:48,433 --> 00:11:55,622
+So yes, Bob must still use parallel downloads. Otherwise, he gets less bandwidth than the other users.
+
+85
+00:11:56,072 --> 00:12:00,723
+HTTP has two types of messages: request and response.
+
+86
+00:12:01,173 --> 00:12:04,479
+Both are ASCII text, so humans can read them.
+
+87
+00:12:04,929 --> 00:12:11,265
+The figure shows the request message of slide 24. The first line is the request line.
+
+88
+00:12:11,715 --> 00:12:14,467
+The request line starts with the method, GET.
+
+89
+00:12:14,917 --> 00:12:18,907
+Then comes the object, slash index dot html.
+
+90
+00:12:19,357 --> 00:12:22,621
+Then comes the version, HTTP 1.1.
+
+91
+00:12:23,071 --> 00:12:29,257
+The next lines are header lines. Each header line has a field name, a colon, and a value.
+
+92
+00:12:29,707 --> 00:12:32,417
+The Host line gives the name of the server.
+
+93
+00:12:32,867 --> 00:12:36,088
+The User-Agent line gives the browser type.
+
+94
+00:12:36,538 --> 00:12:42,938
+The Accept lines say what the browser can use: the file types, the languages, and the encodings.
+
+95
+00:12:43,388 --> 00:12:46,972
+Connection: keep-alive asks for a persistent connection.
+
+96
+00:12:47,422 --> 00:12:53,715
+Each line ends with a carriage return and a line feed, written backslash r, backslash n.
+
+97
+00:12:54,165 --> 00:12:59,904
+A line with only a carriage return and a line feed marks the end of the header lines.
+
+98
+00:13:00,354 --> 00:13:09,399
+Slide 25 gives the general format. The request line has three fields. The first field is the method, for example GET.
+
+99
+00:13:09,849 --> 00:13:15,332
+The second field is the URL, for example slash index dot html.
+
+100
+00:13:15,782 --> 00:13:20,689
+The third field is the version, for example HTTP 1.1.
+
+101
+00:13:21,139 --> 00:13:23,955
+A space, s p, separates the fields.
+
+102
+00:13:24,405 --> 00:13:27,711
+A carriage return and a line feed end the line.
+
+103
+00:13:28,161 --> 00:13:36,481
+Then come the header lines. Each header line has a field name, a colon, a value, and a carriage return and line feed.
+
+104
+00:13:36,931 --> 00:13:42,435
+A blank line, with only a carriage return and a line feed, ends the header lines.
+
+105
+00:13:42,885 --> 00:13:51,099
+Last is the entity body. For a GET request, the body is usually empty. A POST request puts data in the body.
+
+106
+00:13:51,549 --> 00:13:58,482
+Slide 26 gives four methods. The first is POST. A web page often includes form input.
+
+107
+00:13:58,932 --> 00:14:04,927
+The user input goes from the client to the server in the entity body of the POST request.
+
+108
+00:14:05,377 --> 00:14:13,505
+GET can also send a small amount of data to the server. The data goes in the URL field, after a question mark.
+
+109
+00:14:13,955 --> 00:14:17,645
+In the example, the user data is monkeys and banana.
+
+110
+00:14:18,095 --> 00:14:25,797
+HEAD asks for the headers only. These are the headers that the server would return to a GET request for the same URL.
+
+111
+00:14:26,247 --> 00:14:30,151
+No object is sent: the response to HEAD has no body.
+
+112
+00:14:30,601 --> 00:14:32,990
+PUT uploads a new file to the server.
+
+113
+00:14:33,440 --> 00:14:39,115
+PUT completely replaces the file at the URL with the content of the entity body.
+
+114
+00:14:39,565 --> 00:14:45,965
+The figure shows the response message of slide 27. The first line is the status line.
+
+115
+00:14:46,415 --> 00:14:51,620
+The status line starts with the protocol version, HTTP 1.1.
+
+116
+00:14:52,070 --> 00:14:54,609
+Then comes the status code, 200.
+
+117
+00:14:55,059 --> 00:14:57,448
+Then comes the status phrase, OK.
+
+118
+00:14:57,898 --> 00:15:02,783
+Then come the header lines. Date is the time when the server sent the response.
+
+119
+00:15:03,233 --> 00:15:05,303
+Server names the server software.
+
+120
+00:15:05,753 --> 00:15:09,678
+Last-Modified is the time when the object last changed.
+
+121
+00:15:10,128 --> 00:15:16,848
+Content-Length gives the size of the object in bytes: 2651 bytes.
+
+122
+00:15:17,298 --> 00:15:21,117
+Content-Type says that the object is an HTML file.
+
+123
+00:15:21,567 --> 00:15:26,473
+After the blank line comes the data: the requested HTML file.
+
+124
+00:15:26,923 --> 00:15:37,291
+The ETag is a label that the server gives to an object. If the object changes, it gets a new label. This avoids redundant data transfer.
+
+125
+00:15:37,741 --> 00:15:48,429
+The status code is in the first line of the response message. Code 200, OK, means that the request succeeded. The object is later in the message.
+
+126
+00:15:48,879 --> 00:15:56,559
+301, moved permanently, means that the object moved. The new location is in the Location field.
+
+127
+00:15:57,009 --> 00:16:02,343
+400, bad request, means that the server did not understand the request.
+
+128
+00:16:02,793 --> 00:16:08,019
+404, not found, means that the document is not on this server.
+
+129
+00:16:08,469 --> 00:16:18,048
+505, HTTP version not supported, means that the server does not support the HTTP version of the request.
+
+130
+00:16:18,498 --> 00:16:25,111
+Problem set 2, problem 1. Five true or false statements. Pause the video and try them.
+
+131
+00:16:25,561 --> 00:16:32,217
+Part a. The page has some text and 3 images. That is 1 plus 3, which is 4 objects.
+
+132
+00:16:32,667 --> 00:16:41,243
+Each object needs its own request. So the client sends 4 requests and receives 4 responses. Part a is false.
+
+133
+00:16:41,693 --> 00:16:53,917
+Part b is true. Both pages come from the same server, w w w dot m i t dot e d u. So one persistent connection can carry both pages.
+
+134
+00:16:54,367 --> 00:17:01,557
+Part c is false. A non-persistent connection carries at most one object, so only one request.
+
+135
+00:17:02,007 --> 00:17:11,991
+Part d is false. The Date header is the time when the server sent the response. The Last-Modified header gives the time when the object changed.
+
+136
+00:17:12,441 --> 00:17:21,294
+Part e is false. For example, the response to a HEAD request has an empty body. These answers match the official solution.
+
+137
+00:17:21,744 --> 00:17:36,016
+Problem 2 gives a GET message that Wireshark captured. Find the URL, the HTTP version, the connection type, the IP address of the client, and the browser type. Pause the video and try it.
+
+138
+00:17:36,466 --> 00:17:42,823
+Part a. The Host field gives the server name: gaia dot c s dot umass dot e d u.
+
+139
+00:17:43,273 --> 00:17:50,228
+The request line gives the file: slash c s 453 slash index dot html.
+
+140
+00:17:50,678 --> 00:18:01,622
+Together they make the URL: gaia dot c s dot umass dot e d u, slash c s 453, slash index dot html.
+
+141
+00:18:02,072 --> 00:18:11,224
+Part b. The version is in the request line, just before the first carriage return and line feed. It is HTTP 1.1.
+
+142
+00:18:11,674 --> 00:18:17,989
+Part c. The Connection field says keep-alive. So the browser requests a persistent connection.
+
+143
+00:18:18,439 --> 00:18:29,788
+Part d. The IP address of the client is not in the HTTP message. It is in the IP datagram that carried the TCP segment with this request.
+
+144
+00:18:30,238 --> 00:18:37,598
+Part e. The User-Agent field gives the browser type: Mozilla 5.0, Netscape 7.2.
+
+145
+00:18:38,048 --> 00:18:45,536
+The server needs the browser type, because it can send different versions of the same object to different types of browsers.
+
+146
+00:18:45,986 --> 00:18:51,213
+Problem 3 gives the response to that GET message. Pause the video and try it.
+
+147
+00:18:51,663 --> 00:18:57,828
+Part a. The status code 200 and the phrase OK show that the server found the document.
+
+148
+00:18:58,278 --> 00:19:08,219
+The Date field gives the time of the reply: Tuesday, 7 March 2008, 12 39 and 45 seconds, G M T.
+
+149
+00:19:08,669 --> 00:19:17,885
+Part b. The Last-Modified field: Saturday, 10 December 2005, 18 27 46, G M T.
+
+150
+00:19:18,335 --> 00:19:27,637
+Part c. Content-Length is 3874. So the document has 3874 bytes.
+
+151
+00:19:28,087 --> 00:19:37,303
+Part d. The document starts after the blank line. Its first 5 bytes are: less-than sign, exclamation mark, d, o, c.
+
+152
+00:19:37,753 --> 00:19:43,171
+The Connection field says Keep-Alive. So the server agreed to a persistent connection.
+
+153
+00:19:43,621 --> 00:19:48,720
+Question bank questions 22 to 24. Pause the video and try them.
+
+154
+00:19:49,170 --> 00:19:58,898
+Question 22. Both messages are lines of ASCII text. A request starts with the request line: method, URL and version.
+
+155
+00:19:59,348 --> 00:20:04,276
+A response starts with the status line: version, status code and phrase.
+
+156
+00:20:04,726 --> 00:20:08,993
+Then both messages have header lines, a blank line, and the body.
+
+157
+00:20:09,443 --> 00:20:13,432
+Question 23. POST sends form input in the body.
+
+158
+00:20:13,882 --> 00:20:18,725
+GET sends a small amount of data in the URL, after a question mark.
+
+159
+00:20:19,175 --> 00:20:21,265
+HEAD asks only for the headers.
+
+160
+00:20:21,715 --> 00:20:25,641
+PUT uploads a file and replaces the file at the URL.
+
+161
+00:20:26,091 --> 00:20:32,576
+Question 24. A response has a status line, header lines, a blank line, and the data.
+
+162
+00:20:33,026 --> 00:20:40,045
+There are no methods in a response. Methods are only in requests. A response carries a status code.
+
+163
+00:20:40,495 --> 00:20:50,095
+Now the recap. One. One object takes 2 RTT plus F over T x. Draw the time bars: open, request, and file.
+
+164
+00:20:50,545 --> 00:21:04,966
+Two. For question 25, a new connection between the same end points must wait for the close, one more RTT. A connection to a new server, or a parallel connection with its own port, does not.
+
+165
+00:21:05,416 --> 00:21:15,251
+Three. Parallel connections share the link rate. On a slow link, they do not help one user. But they take a larger share of the link from other users.
+
+166
+00:21:15,701 --> 00:21:23,786
+Four. An HTTP message has a request line or a status line, header lines, a blank line, and a body.
+
+167
+00:21:24,236 --> 00:21:40,385
 Five. POST puts data in the body, GET puts it after a question mark, HEAD returns only headers, and PUT replaces a file. Know the five status codes. The next video covers DNS. That is the end of video 5 b.

@@ -3,213 +3,449 @@
 This is ECE 358, video 2 a. The topic is the network core, part 1.
 
 2
-00:00:07,383 --> 00:00:30,893
-After this video, you can explain forwarding and routing. You can draw store and forward timing. You can explain queueing and loss, circuit switching, F D M and T D M. At the end, we solve question bank questions 16 to 21, and 25. Video 2 b continues with the number of users and the structure of the Internet.
+00:00:07,383 --> 00:00:10,903
+After this video, you can explain forwarding and routing.
 
 3
-00:00:31,343 --> 00:00:39,919
-The network core is a mesh of interconnected routers. A mesh has many links, so more than one path can connect two hosts.
+00:00:11,353 --> 00:00:16,196
+You can draw store and forward timing, with L over R for each hop.
 
 4
-00:00:40,369 --> 00:00:46,363
-The core uses packet switching. The source host breaks the application message into packets.
+00:00:16,646 --> 00:00:18,630
+You can explain queueing and loss.
 
 5
-00:00:46,813 --> 00:00:58,632
-The network forwards each packet from one router to the next. It moves across the links on the path, one link at a time. Here, packet 1 goes from R1 to R2.
+00:00:19,080 --> 00:00:23,389
+And you can explain circuit switching, F D M and T D M.
 
 6
-00:00:59,082 --> 00:01:06,826
-Each packet goes along the path until it arrives at the destination. The destination then has the full message.
+00:00:23,839 --> 00:00:35,445
+At the end, we solve question bank questions 16 to 21, and 25. Video 2 b continues with the number of users and the structure of the Internet.
 
 7
-00:01:07,276 --> 00:01:24,193
-A router does two key functions. The first is forwarding. An IP packet has two parts: a header and data. The header holds the destination address. Each router has a forwarding table. This is the very simple table of slide 20.
+00:00:35,895 --> 00:00:39,820
+The network core is a mesh of interconnected routers.
 
 8
-00:01:24,643 --> 00:01:30,275
-A packet arrives on input link 4. Its header value is 0 1 1 1.
+00:00:40,270 --> 00:00:48,675
+A mesh has many links. So more than one path can connect two hosts. Here, path 1 is blue, and path 2 is orange.
 
 9
-00:01:30,725 --> 00:01:37,765
-The router finds the row with the value 0 1 1 1 in its table. That row gives output link 2.
+00:00:49,125 --> 00:00:55,120
+The core uses packet switching. The source host breaks the application message into packets.
 
 10
-00:01:38,215 --> 00:01:51,079
-The router moves the packet from input link 4 to output link 2. This is forwarding. It is a local action: one router, with its own table. Forwarding is also called switching.
+00:00:55,570 --> 00:01:04,679
+The network forwards each packet from one router to the next, one link at a time. Here, packet 1 goes from R1 to R2.
 
 11
-00:01:51,529 --> 00:02:01,663
-A second packet has the header value 1 0 0 1. The table gives output link 1. The router uses only the header, not the data.
+00:01:05,129 --> 00:01:14,729
+Each packet goes along the path until it arrives at the destination. The destination then has all 3 packets, so it has the full message.
 
 12
-00:02:02,113 --> 00:02:10,582
-The second function is routing. Routing is a global action. It determines the source to destination paths that packets take.
+00:01:15,179 --> 00:01:24,993
+This is packet switching. Hosts break messages into packets. The network forwards each packet from router to router, across the links of the path.
 
 13
-00:02:11,032 --> 00:02:23,576
-Routing algorithms, R A, create the forwarding tables. The slides also call them routing tables, or R Ts. So routing makes the tables, and forwarding uses them.
+00:01:25,443 --> 00:01:29,368
+A router does two key functions. The first is forwarding.
 
 14
-00:02:24,026 --> 00:02:33,263
-Remember two facts. A router continually updates its routing table. When a packet arrives, the router forwards it with the current table.
+00:01:29,818 --> 00:01:36,389
+An IP packet has two parts: a header and data. The header holds the destination address.
 
 15
-00:02:33,713 --> 00:02:49,052
-Slides 21 and 22 show the difference on a road map. Routing chooses the whole route across the country. Forwarding is the choice of one exit road at one junction. The driver makes that choice at every junction.
+00:01:36,839 --> 00:01:42,620
+Each router has a forwarding table. This is the very simple table of slide 20.
 
 16
-00:02:49,502 --> 00:02:55,817
-A source sends packets of L bits on a link of rate R bits per second. Here is packet 1.
+00:01:43,070 --> 00:01:48,702
+A packet arrives on input link 4. Its header value is 0 1 1 1.
 
 17
-00:02:56,267 --> 00:03:03,520
-The bits go onto the link one by one. Part of packet 1 is now in the router. The router cannot send it yet.
+00:01:49,152 --> 00:01:54,400
+The router finds the row with the header value 0 1 1 1 in its table.
 
 18
-00:03:03,970 --> 00:03:14,893
-When all L bits are in the router, the router sends the packet on the next link. This is store and forward. The router must have the entire packet before it transmits it.
+00:01:54,850 --> 00:01:56,877
+That row gives output link 2.
 
 19
-00:03:15,343 --> 00:03:41,263
-To push L bits into a link at R bits per second takes L over R seconds. This is the packet transmission delay. Slide 23 uses L equals 10 kilobits and R equals 100 Mbps. L over R is 10 to the power 4, divided by 10 to the power 8. That is 10 to the power minus 4 seconds, or 0.1 ms for one hop.
+00:01:57,327 --> 00:02:03,193
+The router moves the packet from input link 4 to output link 2. This is forwarding.
 
 20
-00:03:41,713 --> 00:03:58,822
-Now follow the three packets of slide 23 over two links. Distance goes across. Time goes down. Each transmission takes 0.1 ms. From 0 to 0.1 ms, the source transmits packet 1.
+00:02:03,643 --> 00:02:10,854
+Forwarding is a local action: one router uses its own table. Forwarding is also called switching.
 
 21
-00:03:59,272 --> 00:04:10,749
-At 0.1 ms, the router has all of packet 1. It sends packet 1 on link 2. At the same time, the source sends packet 2 on link 1.
+00:02:11,304 --> 00:02:16,061
+A second packet arrives. Its header value is 1 0 0 1.
 
 22
-00:04:11,199 --> 00:04:21,887
-From 0.2 to 0.3 ms, packet 2 crosses link 2 and packet 3 crosses link 1. Both links work at the same time.
+00:02:16,511 --> 00:02:24,447
+The row 1 0 0 1 of the table gives output link 1. So the router sends this packet on link 1.
 
 23
-00:04:22,337 --> 00:04:33,303
-From 0.3 to 0.4 ms, the router sends packet 3. The destination has all 3 packets at 0.4 ms.
+00:02:24,897 --> 00:02:28,759
+The router reads only the header of a packet, not the data.
 
 24
-00:04:33,753 --> 00:04:58,073
-The total is 3 times 0.1 for the first link, plus 0.1 for the last packet on the second link. That is 0.4 ms. If the source sent all 30 kilobits as one packet, each link would take 0.3 ms, so the total would be 0.6 ms. Small packets let the links work in parallel.
+00:02:29,209 --> 00:02:37,699
+The second function is routing. Routing is a global action. It determines the source to destination path that the packets take.
 
 25
-00:04:58,523 --> 00:05:09,296
-Hosts A and B send to the first router on links of 100 megabits per second. The output link of the router has only 1.5 megabits per second.
+00:02:38,149 --> 00:02:41,648
+A routing algorithm, R A, runs for the routers.
 
 26
-00:05:09,746 --> 00:05:20,733
-Packets from A and B arrive faster than the output link can send them. So they wait in a queue in the router. Queueing occurs when work arrives faster than it can be serviced.
+00:02:42,098 --> 00:02:54,130
+The routing algorithm creates the forwarding tables. The slides also call them routing tables, or R Ts. So routing makes the tables, and forwarding uses them.
 
 27
-00:05:21,183 --> 00:05:26,793
-While the arrival rate stays above 1.5 megabits per second, the queue grows.
+00:02:54,580 --> 00:02:59,892
+Remember two facts. First, a router continually updates its routing table.
 
 28
-00:05:27,243 --> 00:05:35,393
-The router memory, the buffer, has a fixed size. When the buffer is full, the router drops the next packet. That packet is lost.
+00:03:00,342 --> 00:03:04,993
+Second, when a packet arrives, the router forwards it with the current table.
 
 29
-00:05:35,843 --> 00:05:47,811
-This is the rule of slide 25. If the arrival rate exceeds the transmission rate for some period of time, packets queue. If the buffer fills up, packets are dropped.
+00:03:05,443 --> 00:03:15,704
+Slides 21 and 22 show the difference on a road map. Routing chooses the whole route across the country, from San Jose to Northampton.
 
 30
-00:05:48,261 --> 00:06:02,319
-Here is an example with numbers. They are not on the slides. For 2 seconds, A and B each send 1 megabit per second into the 1.5 megabit per second link. The buffer holds 0.6 megabits.
+00:03:16,154 --> 00:03:23,407
+Forwarding is the choice of one exit road at one junction. The driver makes that choice at every junction.
 
 31
-00:06:02,769 --> 00:06:22,460
-The arrival rate is 2 megabits per second. That is more than 1.5. So the queue grows at 2 minus 1.5, which is 0.5 megabits per second. The buffer is full after 0.6 divided by 0.5, which is 1.2 seconds.
+00:03:23,857 --> 00:03:28,209
+A source sends packet 1 to a router. The packet has L bits.
 
 32
-00:06:22,910 --> 00:06:35,347
-From 1.2 seconds to 2 seconds, the extra bits have no place. The router drops them. The loss is 0.5 times 0.8, which is 0.4 megabits.
+00:03:28,659 --> 00:03:31,689
+Each link has a rate of R bits per second.
 
 33
-00:06:35,797 --> 00:06:51,200
-At 2 seconds, the arrivals stop. The link empties the 0.6 megabits in 0.4 seconds. Check: 4 megabits arrived. 3.6 megabits were sent and 0.4 megabits were lost.
+00:03:32,139 --> 00:03:37,429
+The bits go onto the link one by one. Part of packet 1 is now in the router.
 
 34
-00:06:51,650 --> 00:07:01,250
-Circuit switching is the alternative to packet switching. In the slide diagram, each link has four circuits. A circuit is a separate channel.
+00:03:37,879 --> 00:03:40,141
+The router cannot send packet 1 yet.
 
 35
-00:07:01,700 --> 00:07:12,580
-Before the call sends data, it reserves one circuit on each link of its path. Here the call gets the second circuit in the top link and the first circuit in the right link.
+00:03:40,591 --> 00:03:45,455
+When all L bits are in the router, the router sends the packet on the next link.
 
 36
-00:07:13,030 --> 00:07:29,286
-End to end resources are allocated to and reserved for the call. Examples are buffer, link bandwidth, and processing power. The resources are dedicated: there is no sharing. So the call gets circuit-like, guaranteed performance.
+00:03:45,905 --> 00:03:51,473
+This is store and forward. The router must have the entire packet before it transmits it.
 
 37
-00:07:29,736 --> 00:07:39,592
-But when the call does not send, its circuits stay idle. No other call can use them. Traditional telephone networks commonly use circuit switching.
+00:03:51,923 --> 00:04:01,395
+To push L bits into a link at R bits per second takes L over R seconds. This is the packet transmission delay, d trans.
 
 38
-00:07:40,042 --> 00:07:54,869
-A link can carry several circuits in two ways. The first is frequency division multiplexing, F D M. The frequencies are divided into narrow bands. Each call gets its own band, for all of the time.
+00:04:01,845 --> 00:04:10,783
+Slide 23 uses L equals 10 kilobits. That is 10 times 10 to the power 3, or 10 to the power 4 bits.
 
 39
-00:07:55,319 --> 00:08:08,524
-The second is time division multiplexing, T D M. Time is divided into slots. Each call gets periodic slots. During its slot, the call uses the whole, wider band.
+00:04:11,233 --> 00:04:20,599
+R equals 100 Mbps. That is 100 times 10 to the power 6, or 10 to the power 8 bits per second.
 
 40
-00:08:08,974 --> 00:08:21,689
-So in F D M, each call transmits all the time, at the maximum rate of its narrow band. In T D M, each call transmits at the full rate, but only in its own slots.
+00:04:21,049 --> 00:04:29,561
+L over R is 10 to the power 4, divided by 10 to the power 8. That is 10 to the power minus 4 seconds.
 
 41
-00:08:22,139 --> 00:08:44,432
-For example, a link of 4 megabits per second carries 4 calls. With F D M, each call gets 1 megabit per second. With T D M, each call gets 4 megabits per second in 1 slot of 4. Both give 1 megabit per second on average. G S M mobile networks use a combination of both.
+00:04:30,011 --> 00:04:42,448
+10 to the power minus 4 seconds is 0.1 times 10 to the power minus 3 seconds, which is 0.1 ms. That is the transmission delay for one hop.
 
 42
-00:08:44,882 --> 00:08:53,437
-Now the questions. Question bank questions 16, 17 and 18 are about the router. Pause the video and try them.
+00:04:42,898 --> 00:04:50,834
+Now follow the three packets of slide 23 over two links: from the source, to the router, to the destination.
 
 43
-00:08:53,887 --> 00:09:14,089
-Question 16. The two functions are forwarding and routing. Forwarding, also called switching, is a local action. The router moves an arriving packet from its input link to the correct output link. Routing is a global action. It determines the source to destination paths of packets.
+00:04:51,284 --> 00:05:02,143
+Time goes down. Each transmission takes L over R, which is 0.1 ms. So each row of the diagram is 0.1 ms.
 
 44
-00:09:14,539 --> 00:09:28,577
-Question 17. The router uses a forwarding table, also called a routing table. Question 18. The routing algorithm determines the paths, and creates and continually updates the routing table.
+00:05:02,593 --> 00:05:08,523
+From 0 to 0.1 ms, the source transmits packet 1 on link 1.
 
 45
-00:09:29,027 --> 00:09:33,272
-Questions 19 to 21. Pause the video and try them.
+00:05:08,973 --> 00:05:16,141
+At 0.1 ms, the router has all of packet 1. It sends packet 1 on link 2.
 
 46
-00:09:33,722 --> 00:09:45,861
-Question 19, store and forward. The entire packet must arrive at the router before the router can transmit it on the next link. So each hop adds a delay of L over R.
+00:05:16,591 --> 00:05:20,282
+At the same time, the source sends packet 2 on link 1.
 
 47
-00:09:46,311 --> 00:09:59,089
-Question 20, packet switching. Hosts break messages into packets. Routers forward each packet from router to router. The packets share the links and buffers. Nothing is reserved.
+00:05:20,732 --> 00:05:31,420
+From 0.2 to 0.3 ms, packet 2 crosses link 2 and packet 3 crosses link 1. Both links work at the same time.
 
 48
-00:09:59,539 --> 00:10:12,190
-Question 21, circuit switching. End to end resources are reserved for the call before the data transfer. They are dedicated, with no sharing, so the performance is guaranteed.
+00:05:31,870 --> 00:05:38,697
+From 0.3 to 0.4 ms, the router sends packet 3 on link 2.
 
 49
-00:10:12,640 --> 00:10:15,904
-Question 25. Pause the video and try it.
+00:05:39,147 --> 00:05:43,605
+The destination has all 3 packets at 0.4 ms.
 
 50
-00:10:16,354 --> 00:10:41,122
-The two techniques are F D M and T D M. In F D M, the frequencies are divided into narrow bands. Each call gets its own band and transmits all the time at the rate of that band. In T D M, time is divided into slots. Each call gets periodic slots and transmits at the full rate of the wider band, but only in its slots.
+00:05:44,055 --> 00:05:52,162
+Count the total. The first link sends 3 packets: 3 times 0.1, which is 0.3 ms.
 
 51
-00:10:41,572 --> 00:10:53,241
-Here is the recap. One. Forwarding is local: the router moves a packet to the output link from its table. Routing is global: the routing algorithm builds the tables.
+00:05:52,612 --> 00:06:02,809
+Then the last packet needs 0.1 ms on the second link. 0.3 plus 0.1 is 0.4 ms.
 
 52
-00:10:53,691 --> 00:11:00,219
-Two. Store and forward. The router needs the whole packet first. Each hop adds L over R.
+00:06:03,259 --> 00:06:14,929
+Now the source sends all 30 kilobits as one packet. One transmission takes 30 kilobits over 100 Mbps, which is 0.3 ms.
 
 53
-00:11:00,669 --> 00:11:08,797
-Three. When the arrival rate is larger than R for some time, the queue grows. When the buffer is full, packets are lost.
+00:06:15,379 --> 00:06:26,835
+The router must store the whole packet first. Then it needs 0.3 ms more on link 2. 2 times 0.3 is 0.6 ms.
 
 54
-00:11:09,247 --> 00:11:21,962
+00:06:27,285 --> 00:06:38,954
+So the three small packets arrive at 0.4 ms, and the one big packet at 0.6 ms. Small packets let the links work in parallel.
+
+55
+00:06:39,404 --> 00:06:45,591
+Hosts A and B send to the first router on links of 100 Mbps each.
+
+56
+00:06:46,041 --> 00:06:50,691
+The output link of the router has only 1.5 Mbps.
+
+57
+00:06:51,141 --> 00:07:02,128
+Packets from A and B arrive faster than the output link can send them. So they wait in a queue in the router. Queueing occurs when work arrives faster than it can be serviced.
+
+58
+00:07:02,578 --> 00:07:08,189
+While the arrival rate stays above 1.5 Mbps, the queue grows.
+
+59
+00:07:08,639 --> 00:07:14,740
+The router memory, the buffer, has a fixed size. Here it has 8 places, and all 8 are full.
+
+60
+00:07:15,190 --> 00:07:20,097
+When the buffer is full, the router drops the next packet. That packet is lost.
+
+61
+00:07:20,547 --> 00:07:29,357
+This is the rule of slide 25. If the arrival rate exceeds the transmission rate for some period of time, packets queue.
+
+62
+00:07:29,807 --> 00:07:32,581
+If the buffer fills up, packets are dropped.
+
+63
+00:07:33,031 --> 00:07:40,967
+Here is an example with numbers. They are not on the slides. For 2 seconds, A and B each send 1 megabit per second.
+
+64
+00:07:41,417 --> 00:07:45,065
+The output link sends 1.5 megabits per second.
+
+65
+00:07:45,515 --> 00:07:48,139
+The buffer holds 0.6 megabits.
+
+66
+00:07:48,589 --> 00:07:55,010
+The arrival rate is 1 plus 1, which is 2 megabits per second. That is more than 1.5.
+
+67
+00:07:55,460 --> 00:08:01,689
+So the queue grows at 2 minus 1.5, which is 0.5 megabits per second.
+
+68
+00:08:02,139 --> 00:08:09,179
+The buffer is full after 0.6 divided by 0.5, which is 1.2 seconds.
+
+69
+00:08:09,629 --> 00:08:16,029
+From 1.2 seconds to 2 seconds, the extra bits have no place. The router drops them.
+
+70
+00:08:16,479 --> 00:08:27,658
+The loss lasts 2 minus 1.2, which is 0.8 seconds. The loss is 0.5 times 0.8, which is 0.4 megabits.
+
+71
+00:08:28,108 --> 00:08:42,252
+At 2 seconds, the arrivals stop. The link empties the 0.6 megabits at 1.5 megabits per second. 0.6 divided by 1.5 is 0.4 seconds.
+
+72
+00:08:42,702 --> 00:08:49,614
+Now check the numbers. 2 megabits per second arrived for 2 seconds. So 4 megabits arrived.
+
+73
+00:08:50,064 --> 00:08:57,275
+The link sent 1.5 megabits per second for 2.4 seconds. That is 3.6 megabits.
+
+74
+00:08:57,725 --> 00:09:06,109
+3.6 megabits sent plus 0.4 megabits lost is 4 megabits. So every arrived bit is counted.
+
+75
+00:09:06,559 --> 00:09:16,159
+Circuit switching is the alternative to packet switching. In the slide diagram, each link has four circuits. A circuit is a separate channel.
+
+76
+00:09:16,609 --> 00:09:25,526
+Before the call sends data, it reserves one circuit on each link of its path. In the top link, the call gets circuit 2 of 4.
+
+77
+00:09:25,976 --> 00:09:29,048
+In the right link, the call gets circuit 1 of 4.
+
+78
+00:09:29,498 --> 00:09:38,458
+End to end resources are allocated to and reserved for the call. Examples are buffer, link bandwidth, and processing power.
+
+79
+00:09:38,908 --> 00:09:45,905
+The resources are dedicated: there is no sharing. So the call gets circuit-like, guaranteed performance.
+
+80
+00:09:46,355 --> 00:09:52,009
+But when the call does not send, its circuits stay idle. No other call can use them.
+
+81
+00:09:52,459 --> 00:09:56,149
+Traditional telephone networks commonly use circuit switching.
+
+82
+00:09:56,599 --> 00:10:08,077
+A link can carry several circuits in two ways. The first is frequency division multiplexing, F D M. The frequencies are divided into narrow bands.
+
+83
+00:10:08,527 --> 00:10:14,372
+Each call gets its own band, for all of the time. Here, call 1 has the top band.
+
+84
+00:10:14,822 --> 00:10:21,393
+The second way is time division multiplexing, T D M. Time is divided into slots.
+
+85
+00:10:21,843 --> 00:10:30,675
+Each call gets periodic slots: call 1 gets every fourth slot. During its slot, the call uses the whole, wider band.
+
+86
+00:10:31,125 --> 00:10:38,122
+So in F D M, each call transmits all the time, at the rate of its narrow band: R over N.
+
+87
+00:10:38,572 --> 00:10:44,865
+In T D M, each call transmits at the full rate R, but only in 1 slot of N.
+
+88
+00:10:45,315 --> 00:10:51,779
+For example, a link of R equals 4 Mbps carries N equals 4 calls.
+
+89
+00:10:52,229 --> 00:11:00,421
+With F D M, each band gets R over N, which is 4 over 4, or 1 Mbps, all the time.
+
+90
+00:11:00,871 --> 00:11:12,455
+With T D M, a call sends at 4 Mbps, but only in 1 slot of 4. On average, 4 times one quarter is 1 Mbps.
+
+91
+00:11:12,905 --> 00:11:22,057
+Both give 1 Mbps on average. G S M mobile networks use a combination of F D M and T D M.
+
+92
+00:11:22,507 --> 00:11:31,062
+Now the questions. Question bank questions 16, 17 and 18 are about the router. Pause the video and try them.
+
+93
+00:11:31,512 --> 00:11:39,917
+Question 16 asks for the two main functions. The first is forwarding, also called switching. It is a local action.
+
+94
+00:11:40,367 --> 00:11:45,573
+Forwarding moves an arriving packet from its input link to the correct output link.
+
+95
+00:11:46,023 --> 00:11:54,108
+The second function is routing. Routing is a global action. It determines the source to destination paths of packets.
+
+96
+00:11:54,558 --> 00:12:00,553
+Question 17. The router uses a forwarding table, also called a routing table.
+
+97
+00:12:01,003 --> 00:12:08,811
+Question 18. The routing algorithm determines the paths. It creates and continually updates the routing table.
+
+98
+00:12:09,261 --> 00:12:13,506
+Questions 19 to 21. Pause the video and try them.
+
+99
+00:12:13,956 --> 00:12:22,681
+Question 19, store and forward. The entire packet must arrive at the router before the router can transmit it on the next link.
+
+100
+00:12:23,131 --> 00:12:27,185
+So each hop adds a transmission delay of L over R.
+
+101
+00:12:27,635 --> 00:12:36,253
+Question 20, packet switching. Hosts break messages into packets. Routers forward each packet from router to router.
+
+102
+00:12:36,703 --> 00:12:40,671
+The packets share the links and the buffers. Nothing is reserved.
+
+103
+00:12:41,121 --> 00:12:48,951
+Question 21, circuit switching. End to end resources are reserved for the call before the data transfer.
+
+104
+00:12:49,401 --> 00:12:54,819
+The resources are dedicated, with no sharing, so the performance is guaranteed.
+
+105
+00:12:55,269 --> 00:12:58,533
+Question 25. Pause the video and try it.
+
+106
+00:12:58,983 --> 00:13:07,453
+The two techniques are F D M and T D M. In F D M, the frequencies are divided into narrow bands.
+
+107
+00:13:07,903 --> 00:13:13,215
+Each call gets its own band. It transmits all the time, at the rate of that band.
+
+108
+00:13:13,665 --> 00:13:17,163
+In T D M, time is divided into slots.
+
+109
+00:13:17,613 --> 00:13:24,440
+Each call gets periodic slots. In its slots, it transmits at the full rate of the wider band.
+
+110
+00:13:24,890 --> 00:13:36,559
+Here is the recap. One. Forwarding is local: the router moves a packet to the output link from its table. Routing is global: the routing algorithm builds the tables.
+
+111
+00:13:37,009 --> 00:13:49,425
+Two. Store and forward. The router needs the whole packet first. Each hop adds L over R: 10 kilobits at 100 Mbps is 0.1 ms.
+
+112
+00:13:49,875 --> 00:13:58,003
+Three. When the arrival rate is larger than R for some time, the queue grows. When the buffer is full, packets are lost.
+
+113
+00:13:58,453 --> 00:14:11,168
 Four. Circuit switching reserves dedicated resources, with guaranteed performance. F D M uses bands. T D M uses slots. That is the end of video 2 a.

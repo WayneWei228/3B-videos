@@ -7,153 +7,313 @@ This is ECE 358, video 16 b. The topic is address aggregation, also called super
 After this video, you can split the block of an I S P into blocks for organizations. You can explain why hierarchical addressing makes routing tables small. And you can aggregate address blocks into summary addresses. The question bank and slide 63 ask this.
 
 3
-00:00:37,487 --> 00:01:00,527
-Before aggregation, slide 60 shows where a network gets its addresses. It gets a portion of the address space of its provider I S P. The I S P gets its block from ICANN. Here, the block of the I S P is 200 dot 23 dot 16 dot 0, slash 20. The 20 network bits are purple.
+00:00:37,487 --> 00:00:50,713
+Before aggregation, slide 60 shows where a network gets its addresses. It gets a portion of the address space of its provider I S P. The I S P gets its block from ICANN.
 
 4
-00:01:00,977 --> 00:01:11,814
-The host part has 32 minus 20, which is 12 bits. So the block has 2 to the power 12 addresses. That is 4096 addresses.
+00:00:51,163 --> 00:01:00,934
+Here, the block of the I S P is 200 dot 23 dot 16 dot 0, slash 20. The 20 network bits are purple.
 
 5
-00:01:12,264 --> 00:01:45,794
-The I S P splits its block into 8 blocks, one for each organization. 8 is 2 to the power 3. So 3 more bits, in orange, pick the block. Organization 0 gets 0 0 0. That is 200 dot 23 dot 16 dot 0, slash 23. Organization 1 gets 0 0 1, which is 200 dot 23 dot 18 dot 0. Organization 2 gets 200 dot 23 dot 20 dot 0.
+00:01:01,384 --> 00:01:05,459
+The host part has 32 minus 20, which is 12 bits.
 
 6
-00:01:46,244 --> 00:01:59,535
-The pattern continues to organization 7, with bits 1 1 1. That is 200 dot 23 dot 30 dot 0, slash 23. The third byte goes up by 2 each time.
+00:01:05,909 --> 00:01:12,010
+So the block has 2 to the power 12 addresses. That is 4096 addresses.
 
 7
-00:01:59,985 --> 00:02:14,961
-Each block has 2 to the power 12, divided by 8, which is 2 to the power 9, or 512 addresses. 9 host bits give a prefix of 32 minus 9, which is slash 23.
+00:01:12,460 --> 00:01:20,119
+The I S P splits its block into 8 blocks, one for each organization. 8 is 2 to the power 3.
 
 8
-00:02:15,411 --> 00:02:36,957
-Slide 61 shows why this allocation helps. Eight organizations connect through router R 1 of Fly-By-Night I S P. R 1 tells router R 2 in the Internet which addresses it can reach. Without aggregation, R 1 advertises 8 routes, one prefix for each organization.
+00:01:20,569 --> 00:01:25,710
+So 3 more bits, bits 21 to 23 in orange, pick the block.
 
 9
-00:02:37,407 --> 00:02:55,071
-With aggregation, R 1 advertises only 1 route: send me anything with addresses that begin with 200 dot 23 dot 16 dot 0, slash 20. The single slash 20 prefix covers all 8 slash 23 blocks.
+00:01:26,160 --> 00:01:35,781
+Organization 0 gets the bits 0 0 0. That is 200 dot 23 dot 16 dot 0, slash 23.
 
 10
-00:02:55,521 --> 00:03:09,900
-Where is the hierarchy? The slash 20 block of the I S P is the parent. The 8 slash 23 blocks of the organizations are its children. Routers outside the I S P see only the parent.
+00:01:36,231 --> 00:01:45,149
+Organization 1 gets 0 0 1, which is 200 dot 23 dot 18 dot 0, slash 23.
 
 11
-00:03:10,350 --> 00:03:21,550
-So hierarchical addressing allows efficient advertisement of routing information. Other routers keep fewer entries, and fewer advertisements cross the network.
+00:01:45,599 --> 00:01:54,345
+Organization 2 gets 0 1 0, which is 200 dot 23 dot 20 dot 0, slash 23.
 
 12
-00:03:22,000 --> 00:03:37,765
-Slide 62 shows address aggregation, also called supernetting. Router A has 4 entries: 192 dot 168 dot 0, dot 1, dot 2 and dot 3, each slash 24.
+00:01:54,795 --> 00:02:05,185
+The pattern continues to organization 7, with bits 1 1 1. That is 200 dot 23 dot 30 dot 0, slash 23.
 
 13
-00:03:38,215 --> 00:03:53,469
-Write the four addresses in binary. The first 22 bits are the same in all four. Only bits 23 and 24 change. They take all four values: 0 0, 0 1, 1 0 and 1 1.
+00:02:05,635 --> 00:02:15,811
+The third byte goes up by 2 each time: 16, 18, 20, and so on to 30. Bit 23 has the weight 2 in the third byte.
 
 14
-00:03:53,919 --> 00:04:07,209
-So the four blocks together form one block with a 22 bit prefix: 192 dot 168 dot 0 dot 0, slash 22. This is the summary address.
+00:02:16,261 --> 00:02:26,863
+Each block has 2 to the power 12 addresses, divided by 2 to the power 3. That is 2 to the power 9, or 512 addresses.
 
 15
-00:04:07,659 --> 00:04:35,051
-Router A advertises: I can reach 192 dot 168 dot 0 dot 0, slash 22. Router B keeps 1 entry instead of 4. Check the size: 4 blocks of 256 addresses is 1024, which is 2 to the power 10. A slash 22 prefix leaves 10 host bits. So the summary covers exactly the four blocks, and nothing else.
+00:02:27,313 --> 00:02:34,545
+So each block has 9 host bits. The prefix is 32 minus 9, which is slash 23.
 
 16
-00:04:35,501 --> 00:04:45,421
-Slide 63 does the same for the 8 organizations. In binary, the first 20 bits, in green, are the same in all 8 blocks.
+00:02:34,995 --> 00:02:43,678
+Slide 61 shows why this allocation helps. Eight organizations get their slash 23 blocks from the same I S P.
 
 17
-00:04:45,871 --> 00:04:53,359
-Bits 21 to 23, in orange, take all 8 values, from 0 0 0 to 1 1 1.
+00:02:44,128 --> 00:02:49,248
+They connect to the Internet through router R 1 of Fly-By-Night I S P.
 
 18
-00:04:53,809 --> 00:05:14,673
-So the summary address is 200 dot 23 dot 16 dot 0, slash 20. This is the block of the I S P. Check: 8 blocks of 512 addresses is 4096, which is 2 to the power 12. A slash 20 leaves 12 host bits. Exact.
+00:02:49,698 --> 00:02:54,733
+R 1 tells router R 2 in the Internet which addresses it can reach.
 
 19
-00:05:15,123 --> 00:05:39,870
-The method has three steps. One: write the blocks in binary. Two: find the common prefix. Three: check that the summary holds exactly the given blocks, and no other addresses. If it holds extra addresses, split the blocks into groups. Slide 63 says that a possible final exam question is: given a few address blocks, find their summary addresses.
+00:02:55,183 --> 00:03:03,140
+Without aggregation, R 1 advertises 8 routes, one slash 23 prefix for each organization.
 
 20
-00:05:40,320 --> 00:05:50,773
-Here is the question on slide 63. Take the 8 networks, but remove network 3. Compute the summary addresses. Pause the video and try it.
+00:03:03,590 --> 00:03:16,091
+With aggregation, R 1 advertises only 1 route: send me anything with addresses that begin with 200 dot 23 dot 16 dot 0, slash 20.
 
 21
-00:05:51,223 --> 00:06:12,621
-Draw the third byte as a number line from 16 to 31. Each slash 23 block covers 2 values. Organization 3 is 200 dot 23 dot 22 dot 0, so values 22 and 23 are missing. A summary must not cover them. So one slash 20 is not possible.
+00:03:16,541 --> 00:03:34,440
+The single slash 20 prefix covers all 8 slash 23 blocks. Each slash 23 has 512 addresses, and 8 times 512 is 4096, which is 2 to the power 12, the size of the slash 20.
 
 22
-00:06:13,071 --> 00:06:29,028
-Start at the left. Organizations 0 and 1 cover 16 to 19. That is 4 values, which starts at a multiple of 4. So it is one block: 200 dot 23 dot 16 dot 0, slash 22.
+00:03:34,890 --> 00:03:39,946
+Where is the hierarchy? The slash 20 block of the I S P is the parent.
 
 23
-00:06:29,478 --> 00:06:43,046
-Organization 2 covers 20 and 21. It cannot join 22 and 23. So it stays alone: 200 dot 23 dot 20 dot 0, slash 23.
+00:03:40,396 --> 00:03:44,833
+The 8 slash 23 blocks of the organizations are its children.
 
 24
-00:06:43,496 --> 00:06:58,643
-Organizations 4 to 7 cover 24 to 31. That is 8 values, which starts at a multiple of 8. So it is one block: 200 dot 23 dot 24 dot 0, slash 21.
+00:03:45,283 --> 00:03:49,870
+Routers outside the I S P, such as R 2, see only the parent.
 
 25
-00:06:59,093 --> 00:07:17,439
-So the answer is three summary addresses: slash 22, slash 23, and slash 21. Seven entries become three. Rule: a block of 2 to the power k values must start at a multiple of 2 to the power k. I checked this answer with Python.
+00:03:50,320 --> 00:04:01,520
+So hierarchical addressing allows efficient advertisement of routing information. Other routers keep fewer entries, and fewer advertisements cross the network.
 
 26
-00:07:17,889 --> 00:07:33,079
-Question 66: aggregate six destination networks. All six use interface 1. The question bank has no published answers, so this solution uses the method of the slides. Pause the video and try it.
+00:04:01,970 --> 00:04:08,861
+Slide 62 shows address aggregation, also called supernetting. Router A has 4 entries.
 
 27
-00:07:33,529 --> 00:07:41,017
-Only the third byte changes. Draw it as a number line from 0 to 7. Values 1 and 4 are missing.
+00:04:09,311 --> 00:04:19,017
+The entries are 192 dot 168 dot 0, dot 1, dot 2 and dot 3, each slash 24.
 
 28
-00:07:41,467 --> 00:07:53,051
-Value 0 cannot join 1, because 1 is missing. So 192 dot 168 dot 0 dot 0 slash 24 stays alone.
+00:04:19,467 --> 00:04:21,793
+Write the four addresses in binary.
 
 29
-00:07:53,501 --> 00:08:05,767
-Values 2 and 3 make a block of 2 that starts at a multiple of 2. So they become 192 dot 168 dot 2 dot 0, slash 23.
+00:04:22,243 --> 00:04:25,357
+The first 22 bits are the same in all four.
 
 30
-00:08:06,217 --> 00:08:27,999
-Values 5, 6 and 7 are 3 values. 3 is not a power of 2, so they cannot be one block. Value 5 stays alone, slash 24. Values 6 and 7 start at a multiple of 2, so they become 192 dot 168 dot 6 dot 0, slash 23.
+00:04:25,807 --> 00:04:35,023
+Only bits 23 and 24 change. They take all four values: 0 0, 0 1, 1 0 and 1 1.
 
 31
-00:08:28,449 --> 00:09:01,872
-Why not one entry, 192 dot 168 dot 0 dot 0 slash 21? That block covers values 0 to 7, so it also covers networks 1 and 4. A packet to 192 dot 168 dot 4 dot 9 would match it and go out on interface 1. But that network is not in the table. Slide 63 asks for summary addresses, plural, when one net is missing. So a summary must not add addresses.
+00:04:35,473 --> 00:04:48,721
+So the four blocks together form one block with a 22 bit prefix: 192 dot 168 dot 0 dot 0, slash 22. This is the summary address.
 
 32
-00:09:02,322 --> 00:09:15,271
-So the answer is four entries, all on interface 1: slash 24, slash 23, slash 24, slash 23. Six entries become four. I checked this with Python.
+00:04:49,171 --> 00:04:58,131
+Router A advertises: I can reach 192 dot 168 dot 0 dot 0, slash 22.
 
 33
-00:09:15,721 --> 00:09:27,988
-Question 67 has the same six networks. But now networks 5, 6 and 7 use interface 3. Compare it with question 66. Pause the video and try it.
+00:04:58,581 --> 00:05:01,355
+Router B keeps 1 entry instead of 4.
 
 34
-00:09:28,438 --> 00:09:42,987
-The first group is 0, 2 and 3, on interface 1. As before, 0 stays alone, and 2 and 3 become 192 dot 168 dot 2 dot 0, slash 23.
+00:05:01,805 --> 00:05:16,183
+Check the size. Each slash 24 has 2 to the power 8, which is 256 addresses. 4 blocks of 256 is 1024, which is 2 to the power 10.
 
 35
-00:09:43,437 --> 00:09:58,584
-The second group is 5, 6 and 7, on interface 3. As before, 5 stays alone, and 6 and 7 become 192 dot 168 dot 6 dot 0, slash 23.
+00:05:16,633 --> 00:05:25,935
+A slash 22 prefix leaves 32 minus 22, which is 10 host bits. That is also 2 to the power 10 addresses.
 
 36
-00:09:59,034 --> 00:10:17,125
-The difference: an aggregate entry has one interface. So you can only aggregate entries with the same interface. Here, the missing networks 1 and 4 already split the groups. So the blocks are the same as in question 66. Only the interfaces differ.
+00:05:26,385 --> 00:05:30,502
+So the summary covers exactly the four blocks, and nothing else.
 
 37
-00:10:17,575 --> 00:10:44,881
-The answer: 192 dot 168 dot 0 dot 0 slash 24 and 192 dot 168 dot 2 dot 0 slash 23 on interface 1. 192 dot 168 dot 5 dot 0 slash 24 and 192 dot 168 dot 6 dot 0 slash 23 on interface 3.
+00:05:30,952 --> 00:05:36,925
+Slide 63 does the same for the 8 organization blocks. Write them in binary.
 
 38
-00:10:45,331 --> 00:11:01,011
-To recap. An I S P block with prefix p, split into 2 to the power k blocks, gives blocks with prefix p plus k. Aggregation advertises one summary route instead of many. Routers keep fewer entries.
+00:05:37,375 --> 00:05:41,514
+The first 20 bits, in green, are the same in all 8 blocks.
 
 39
-00:11:01,461 --> 00:11:19,296
-To aggregate, write the blocks in binary, find the common prefix, and check that the summary holds exactly the given blocks. A block of 2 to the power k values starts at a multiple of 2 to the power k. Only entries with the same interface can merge.
+00:05:41,964 --> 00:05:49,452
+Bits 21 to 23, in orange, take all 8 values, from 0 0 0 to 1 1 1.
 
 40
-00:11:19,746 --> 00:11:24,759
+00:05:49,902 --> 00:05:59,118
+So the summary address is 200 dot 23 dot 16 dot 0, slash 20. This is the block of the I S P.
+
+41
+00:05:59,568 --> 00:06:13,861
+Check the size. Each slash 23 has 2 to the power 9, which is 512 addresses. 8 blocks of 512 is 4096, which is 2 to the power 12.
+
+42
+00:06:14,311 --> 00:06:23,634
+A slash 20 leaves 32 minus 20, which is 12 host bits. That is 2 to the power 12 addresses. The summary is exact.
+
+43
+00:06:24,084 --> 00:06:28,201
+The method has three steps. One: write the blocks in binary.
+
+44
+00:06:28,651 --> 00:06:30,699
+Two: find the common prefix.
+
+45
+00:06:31,149 --> 00:06:36,867
+Three: check that the summary holds exactly the given blocks, and no other addresses.
+
+46
+00:06:37,317 --> 00:06:51,098
+If the summary holds extra addresses, split the blocks into groups. Slide 63 says that a possible final exam question is: given a few address blocks, find their summary addresses.
+
+47
+00:06:51,548 --> 00:07:02,001
+Here is the question on slide 63. Take the 8 networks, but remove network 3. Compute the summary addresses. Pause the video and try it.
+
+48
+00:07:02,451 --> 00:07:08,147
+Only the third byte changes. Draw it as a number line from 16 to 31.
+
+49
+00:07:08,597 --> 00:07:18,581
+A slash 23 block leaves 1 host bit in the third byte. So it covers 2 values. Organization 0 covers 16 and 17.
+
+50
+00:07:19,031 --> 00:07:29,591
+Organization 3 is 200 dot 23 dot 22 dot 0, slash 23. So the values 22 and 23 are missing.
+
+51
+00:07:30,041 --> 00:07:34,841
+A summary must not cover them. So one slash 20 is not possible.
+
+52
+00:07:35,291 --> 00:07:40,603
+Start at the left. Organizations 0 and 1 cover 16 to 19.
+
+53
+00:07:41,053 --> 00:07:55,539
+That is 4 values, and 16 is a multiple of 4. 4 values need 2 host bits in the third byte. So it is one block: 200 dot 23 dot 16 dot 0, slash 22.
+
+54
+00:07:55,989 --> 00:08:09,535
+Organization 2 covers 20 and 21. It cannot join 22 and 23. So it stays alone: 200 dot 23 dot 20 dot 0, slash 23.
+
+55
+00:08:09,985 --> 00:08:28,140
+Organizations 4 to 7 cover 24 to 31. That is 8 values, and 24 is a multiple of 8. 8 values need 3 host bits. So it is one block: 200 dot 23 dot 24 dot 0, slash 21.
+
+56
+00:08:28,590 --> 00:08:37,721
+So the answer is three summary addresses: slash 22, slash 23, and slash 21. Seven entries become three.
+
+57
+00:08:38,171 --> 00:08:44,720
+The rule: a block of 2 to the power k values must start at a multiple of 2 to the power k.
+
+58
+00:08:45,170 --> 00:09:00,359
+Question 66: aggregate six destination networks. All six use interface 1. The question bank has no published answers, so this solution uses the method of the slides. Pause the video and try it.
+
+59
+00:09:00,809 --> 00:09:06,015
+Only the third byte changes. Draw it as a number line from 0 to 7.
+
+60
+00:09:06,465 --> 00:09:08,641
+The values 1 and 4 are missing.
+
+61
+00:09:09,091 --> 00:09:20,867
+Value 0 cannot join 1, because 1 is missing. So 192 dot 168 dot 0 dot 0, slash 24, stays alone.
+
+62
+00:09:21,317 --> 00:09:34,095
+Values 2 and 3 make a block of 2 that starts at 2, a multiple of 2. So they become 192 dot 168 dot 2 dot 0, slash 23.
+
+63
+00:09:34,545 --> 00:09:42,140
+Values 5, 6 and 7 are 3 values. 3 is not a power of 2, so they cannot form one block.
+
+64
+00:09:42,590 --> 00:09:50,803
+Value 5 stays alone: 192 dot 168 dot 5 dot 0, slash 24.
+
+65
+00:09:51,253 --> 00:10:02,773
+Values 6 and 7 start at 6, a multiple of 2. So they become 192 dot 168 dot 6 dot 0, slash 23.
+
+66
+00:10:03,223 --> 00:10:17,901
+Why not one entry, 192 dot 168 dot 0 dot 0 slash 21? That block covers 8 values, 0 to 7. So it also covers the networks 1 and 4.
+
+67
+00:10:18,351 --> 00:10:29,529
+A packet to 192 dot 168 dot 4 dot 9 would match it and go out on interface 1. But that network is not in the table.
+
+68
+00:10:29,979 --> 00:10:38,235
+Slide 63 asks for summary addresses, plural, when one net is missing. So a summary must not add addresses.
+
+69
+00:10:38,685 --> 00:10:49,800
+So the answer is four entries, all on interface 1: slash 24, slash 23, slash 24, slash 23. Six entries become four.
+
+70
+00:10:50,250 --> 00:11:02,517
+Question 67 has the same six networks. But now networks 5, 6 and 7 use interface 3. Compare it with question 66. Pause the video and try it.
+
+71
+00:11:02,967 --> 00:11:06,615
+The first group is 0, 2 and 3, on interface 1.
+
+72
+00:11:07,065 --> 00:11:19,609
+As before, 0 stays alone, and 2 and 3 become 192 dot 168 dot 2 dot 0, slash 23. Both go to interface 1.
+
+73
+00:11:20,059 --> 00:11:24,112
+The second group is 5, 6 and 7, on interface 3.
+
+74
+00:11:24,562 --> 00:11:37,383
+As before, 5 stays alone, and 6 and 7 become 192 dot 168 dot 6 dot 0, slash 23. Both go to interface 3.
+
+75
+00:11:37,833 --> 00:11:45,556
+The difference: an aggregate entry has one interface. So you can only aggregate entries with the same interface.
+
+76
+00:11:46,006 --> 00:11:55,819
+Here, the missing networks 1 and 4 already split the groups. So the blocks are the same as in question 66. Only the interfaces differ.
+
+77
+00:11:56,269 --> 00:12:23,576
+The answer: 192 dot 168 dot 0 dot 0 slash 24 and 192 dot 168 dot 2 dot 0 slash 23 on interface 1. 192 dot 168 dot 5 dot 0 slash 24 and 192 dot 168 dot 6 dot 0 slash 23 on interface 3.
+
+78
+00:12:24,026 --> 00:12:39,706
+To recap. An I S P block with prefix p, split into 2 to the power k blocks, gives blocks with prefix p plus k. Aggregation advertises one summary route instead of many. Routers keep fewer entries.
+
+79
+00:12:40,156 --> 00:12:57,991
+To aggregate, write the blocks in binary, find the common prefix, and check that the summary holds exactly the given blocks. A block of 2 to the power k values starts at a multiple of 2 to the power k. Only entries with the same interface can merge.
+
+80
+00:12:58,441 --> 00:13:03,475
 The next video covers NAT, autonomous systems, and the basics of routing.

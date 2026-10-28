@@ -3,201 +3,353 @@
 This is ECE 358, video 15b. The topic is DHCP, the protocol that gives a host its IP address.
 
 2
-00:00:11,031 --> 00:00:27,415
+00:00:11,031 --> 00:00:27,394
 After this video, you can explain the four DHCP messages, with their addresses and ports. You can name the four parameters that DHCP gives a client. Then we solve questions 48 to 56 of the question bank.
 
 3
-00:00:27,865 --> 00:00:35,887
-We now know how to split a block into subnets. But how does a device get its IP address? That is really two questions.
+00:00:27,844 --> 00:00:41,540
+We now know how to split a block into subnets. But how does a device get an IP address, for example 223.1.2.4/24? That is two questions.
 
 4
-00:00:36,337 --> 00:00:43,697
-The first question: how does a network get the network part of its addresses? We answer it at the end of this video.
+00:00:41,990 --> 00:00:52,017
+The first question: how does a network get the network part of its addresses? The ISP gives the block. We answer the rest at the end of this video.
 
 5
-00:00:44,147 --> 00:00:51,272
+00:00:52,467 --> 00:00:59,592
 The second question: how does a host get an IP address inside its network, that is, the host part?
 
 6
-00:00:51,722 --> 00:01:11,071
-There are two ways. A system administrator can hard-code the address in a configuration file. Or the host can use DHCP, the dynamic host configuration protocol. With DHCP, the host gets an address from a server when it connects. It is plug-and-play.
+00:01:00,042 --> 00:01:05,546
+One way: a system administrator hard-codes the address in a configuration file.
 
 7
-00:01:11,521 --> 00:01:29,825
-DHCP has this goal: a host gets its IP address from a server when it joins the network. Here, host A joins. The server gives it the address .4 from its pool, with a lease. The lease is a lifetime, for example 3600 seconds.
+00:01:05,996 --> 00:01:16,599
+The other way: DHCP, the dynamic host configuration protocol. The host gets an address from a server when it connects. It is plug-and-play.
 
 8
-00:01:30,275 --> 00:01:35,161
-Before the lease ends, the host can renew the lease. Then it keeps the same address.
+00:01:17,049 --> 00:01:33,582
+DHCP has this goal: a host gets its IP address from a network server when it joins the network. The server has a pool of addresses for the subnet 223.1.2.0/24.
 
 9
-00:01:35,611 --> 00:01:45,829
-When host A leaves, its lease ends. The address goes back to the pool. So addresses are reused: a host holds an address only while it is connected.
+00:01:34,032 --> 00:01:39,237
+Here, host A joins. The server gives it the address .4 from its pool.
 
 10
-00:01:46,279 --> 00:01:56,178
-Later, a mobile host B joins and gets the same address .4. So DHCP supports mobile users who join and leave the network.
+00:01:39,687 --> 00:01:46,578
+The address comes with a lease. A lease is a lifetime, for example 3600 seconds.
 
 11
-00:01:56,628 --> 00:02:05,375
-Here is the DHCP scenario of slide 42. It is the same network as before: one router and three subnets.
+00:01:47,028 --> 00:01:51,913
+Before the lease ends, the host can renew the lease. Then it keeps the same address.
 
 12
-00:02:05,825 --> 00:02:20,950
-The DHCP server has the address 223.1.2.5. Typically, the DHCP server is co-located in the router. Then it serves all subnets that connect to the router.
+00:01:52,363 --> 00:01:57,761
+When host A leaves, its lease ends. The address .4 goes back to the pool.
 
 13
-00:02:21,400 --> 00:02:34,989
-A new client arrives in the subnet 223.1.2.0/24. It has no IP address yet. It must get one from the DHCP server.
+00:01:58,211 --> 00:02:03,437
+So addresses are reused: a host holds an address only while it is connected.
 
 14
-00:02:35,439 --> 00:03:11,615
-DHCP uses four types of messages. First, the client broadcasts a DHCP discover message. It asks: is there a DHCP server out there? The source is 0.0.0.0, port 68, because the client has no address yet. The destination is the broadcast address 255.255.255.255, port 67. The transaction ID is 654.
+00:02:03,887 --> 00:02:08,943
+Later, a mobile host B joins, and it gets the same address .4.
 
 15
-00:03:12,065 --> 00:03:42,635
-Second, the server answers with a DHCP offer. It says: here is an IP address you can use. The field yiaddr, your IP address, holds the offered address, 223.1.2.4. The lifetime is 3600 seconds. The offer is also broadcast, to port 68, because the client cannot receive at an address it does not have yet. It uses the same transaction ID, 654.
+00:02:09,393 --> 00:02:14,449
+So DHCP supports mobile users who join and leave the network.
 
 16
-00:03:43,085 --> 00:03:58,445
-Third, the client sends a DHCP request: I would like to use this address. It is still a broadcast from 0.0.0.0. It has a new transaction ID, 655.
+00:02:14,899 --> 00:02:24,073
+Here is the DHCP scenario of slide 42. It is the network of slide 29: one router and three subnets.
 
 17
-00:03:58,895 --> 00:04:13,317
-Fourth, the server sends a DHCP ACK: you have got that IP address. After the ACK, the client uses 223.1.2.4 for 3600 seconds.
+00:02:24,523 --> 00:02:31,051
+The DHCP server has the address 223.1.2.5.
 
 18
-00:04:13,767 --> 00:04:28,892
-The discover and the offer are optional. RFC 2131 says that a client can skip them if it remembers a previous address and wants to use it again. The request and the ACK are always used.
+00:02:31,501 --> 00:02:39,458
+Typically, the DHCP server is co-located in the router. Then it serves all subnets that connect to the router.
 
 19
-00:04:29,342 --> 00:04:38,003
-Look at the discover message as one datagram. It has an IP header, a UDP header, and the DHCP message.
+00:02:39,908 --> 00:02:53,497
+A new client arrives in the subnet 223.1.2.0/24. It has no IP address yet. It must get one from the DHCP server.
 
 20
-00:04:38,453 --> 00:04:47,392
-In the IP header, the source address is 0.0.0.0. The client has no IP address yet.
+00:02:53,947 --> 00:03:06,342
+DHCP uses four types of messages. First, the client broadcasts a DHCP discover message. It asks: is there a DHCP server out there?
 
 21
-00:04:47,842 --> 00:05:05,186
-The destination address is 255.255.255.255, the broadcast address. The client does not know the address of the server, so it sends to all nodes on its subnet.
+00:03:06,792 --> 00:03:15,112
+The source address is 0.0.0.0, port 68, because the client has no address yet.
 
 22
-00:05:05,636 --> 00:05:16,516
-DHCP runs over UDP. The server listens on UDP port 67. The client uses UDP port 68.
+00:03:15,562 --> 00:03:27,615
+The destination is the broadcast address 255.255.255.255, port 67.
 
 23
-00:05:16,966 --> 00:05:35,654
-In the DHCP message, yiaddr is 0.0.0.0, and the transaction ID is 654. The server copies the transaction ID into its offer. So the client can match the offer to its discover.
+00:03:28,065 --> 00:03:31,521
+The transaction ID is 654.
 
 24
-00:05:36,104 --> 00:05:51,315
-DHCP can return more than the allocated address. The slide lists four key pieces of information. The first is the IP address of the client, here 223.1.2.4.
+00:03:31,971 --> 00:03:39,395
+Second, the server answers with a DHCP offer. It says: here is an IP address that you can use.
 
 25
-00:05:51,765 --> 00:06:03,327
-The second is the IP address of the first-hop router for the client. In this network, it is the router interface 223.1.2.9.
+00:03:39,845 --> 00:03:46,416
+The source is the server, 223.1.2.5, port 67.
 
 26
-00:06:03,777 --> 00:06:08,705
-The third is the name and the IP address of the local DNS server.
+00:03:46,866 --> 00:03:55,442
+The destination is again the broadcast address, port 68. The client cannot receive at an address that it does not have yet.
 
 27
-00:06:09,155 --> 00:06:29,763
-The fourth is the network mask. It shows which part of the address is the network part and which part is the host part. For the subnet 223.1.2.0/24, it is 255.255.255.0.
+00:03:55,892 --> 00:04:05,855
+The field yiaddr means your IP address. It holds the offered address, 223.1.2.4.
 
 28
-00:06:30,213 --> 00:06:47,643
-With its own IP address and the mask, the client can compute the broadcast address of its network. Keep the bits where the mask is 1, and set the host bits to 1. The result is 223.1.2.255.
+00:04:06,305 --> 00:04:10,657
+The lifetime of the address is 3600 seconds.
 
 29
-00:06:48,093 --> 00:07:06,951
-Here is the example of slides 46 and 47. A laptop connects to a network. It uses DHCP to get its IP address, the address of its first-hop router, and the address of the DNS server. It makes a DHCP request message.
+00:04:11,107 --> 00:04:19,789
+The offer uses the same transaction ID, 654. So the client can match the offer to its discover.
 
 30
-00:07:07,401 --> 00:07:17,940
-The DHCP request is encapsulated in UDP, then in IP, then in an Ethernet frame. This is the layering from chapter 1.
+00:04:20,239 --> 00:04:27,109
+Third, the client sends a DHCP request. It says: I would like to use this IP address.
 
 31
-00:07:18,390 --> 00:07:30,059
-The Ethernet frame is broadcast on the LAN. Its destination MAC address is all ones, F F F F F F F F F F F F. The router, which runs the DHCP server, receives it.
+00:04:27,559 --> 00:04:43,644
+It is still a broadcast, from 0.0.0.0, port 68, to 255.255.255.255, port 67.
 
 32
-00:07:30,509 --> 00:07:41,859
-The router demultiplexes the frame. Ethernet passes it up to IP, IP passes it up to UDP, and UDP passes it up to DHCP.
+00:04:44,094 --> 00:04:49,513
+It names the offered address, 223.1.2.4.
 
 33
-00:07:42,309 --> 00:08:06,053
-The DHCP server makes a DHCP ACK. It contains the client's IP address, the IP address of the first-hop router, and the name and IP address of the DNS server. The reply is encapsulated and sent to the client, and it goes up to DHCP in the client. Now the client knows all of these addresses.
+00:04:49,963 --> 00:04:54,101
+It has a new transaction ID, 655.
 
 34
-00:08:06,503 --> 00:08:18,897
-How does an ISP get a block of IP addresses? From ICANN, the Internet Corporation for Assigned Names and Numbers. ICANN also manages the DNS root zone.
+00:04:54,551 --> 00:05:00,610
+Fourth, the server sends a DHCP ACK. It says: you have got that IP address.
 
 35
-00:08:19,347 --> 00:08:29,225
-ICANN allocates IP addresses through 5 regional registries. The regional registries can then allocate addresses to local registries.
+00:05:01,060 --> 00:05:10,596
+After the ACK, the client uses 223.1.2.4 for the lifetime of 3600 seconds.
 
 36
-00:08:29,675 --> 00:08:45,995
-Are there enough 32-bit IP addresses? No. 32 bits give about 4.3 billion addresses. ICANN allocated the last chunk of IPv4 addresses to the regional registries in 2011.
+00:05:11,046 --> 00:05:26,150
+The discover and the offer can be skipped. RFC 2131 says that a client can skip them if it remembers a previous address and wants to use it again. The request and the ACK are always used.
 
 37
-00:08:46,445 --> 00:08:57,751
-NAT, the topic of a later video, helps with the exhaustion of the IPv4 address space. IPv6 has a 128-bit address space.
+00:05:26,600 --> 00:05:35,261
+Look at the discover message as one datagram. It has an IP header, a UDP header, and the DHCP message.
 
 38
-00:08:58,201 --> 00:09:11,300
-Now the DHCP questions. Question 48: at power on, a laptop wants an IP address. Which application layer protocol does it run? Pause the video and try it.
+00:05:35,711 --> 00:05:44,650
+In the IP header, the source address is 0.0.0.0. The client has no IP address yet.
 
 39
-00:09:11,750 --> 00:09:22,673
-The answer is DHCP. Question 49: name the four parameters that a DHCP client gets: three IP addresses and one mask.
+00:05:45,100 --> 00:06:02,444
+The destination address is 255.255.255.255, the broadcast address. The client does not know the address of the server, so it sends to all nodes on its subnet.
 
 40
-00:09:23,123 --> 00:09:39,699
-The client's own IP address, the IP address of the first-hop router, the IP address of the local DNS server, and the network mask. Questions 50 and 51: name the four message types, and the two port numbers.
+00:06:02,894 --> 00:06:09,785
+DHCP runs over UDP. The client sends from UDP port 68.
 
 41
-00:09:40,149 --> 00:09:52,650
-The four messages are discover, offer, request, and ACK. DHCP uses UDP. The server uses port 67, and the client uses port 68.
+00:06:10,235 --> 00:06:16,805
+The server listens on UDP port 67. So the destination port is 67.
 
 42
-00:09:53,100 --> 00:10:08,887
-Question 52: why does DHCP use UDP, rather than TCP? Question 53: which IP broadcast address does the client use to reach a DHCP server? Pause the video and try it.
+00:06:17,255 --> 00:06:24,551
+In the DHCP message, yiaddr is still 0.0.0.0.
 
 43
-00:10:09,337 --> 00:10:37,241
-TCP is connection-oriented. Before it sends data, it must set up a connection with a three-way handshake to a known IP address. A new DHCP client has no IP address, and it does not know the address of the server. UDP needs no connection. The client can send one UDP datagram to the broadcast address, and every node on the subnet, including the DHCP server, receives it.
+00:06:25,001 --> 00:06:36,095
+The transaction ID is 654. The server copies the transaction ID into its offer. So the client can match the offer to its discover.
 
 44
-00:10:37,691 --> 00:10:51,045
-For question 53, the client sends to the IP broadcast address 255.255.255.255.
+00:06:36,545 --> 00:06:51,755
+DHCP can return more than the allocated address. The slide lists four key pieces of information. The first is the IP address of the client, here 223.1.2.4.
 
 45
-00:10:51,495 --> 00:11:09,991
-Question 54: why does a dynamic address have a definite lease, for example one hour? Pause the video and try it. The answer: the lease allows addresses to be reused. A host holds an address only while it is connected. If it stays, it renews the lease.
+00:06:52,205 --> 00:07:03,768
+The second is the IP address of the first-hop router for the client. In this network, it is the router interface 223.1.2.9.
 
 46
-00:11:10,441 --> 00:11:32,969
-Question 55: the server offers an address. Why does the client not use it as the source of its request? Because the address is only an offer. More than one server can make an offer. The client may use an address only after the server confirms it with the ACK. So the source stays 0.0.0.0.
+00:07:04,218 --> 00:07:09,146
+The third is the name and the IP address of the local DNS server.
 
 47
-00:11:33,419 --> 00:11:59,147
-Question 56: the client knows the server address from the offer. Why does it broadcast the request? The client still has no address of its own. Also, the broadcast tells every DHCP server which offer the client takes. The other servers can then keep their offered addresses. These two reasons come from RFC 2131, which slide 43 cites.
+00:07:09,596 --> 00:07:28,497
+The fourth is the network mask. It shows which part of the address is the network part. For the subnet 223.1.2.0/24, the mask is 255.255.255.0.
 
 48
-00:11:59,597 --> 00:12:15,619
-Here is the recap. A host gets its IP address in one of two ways: a system administrator hard-codes it, or the host uses DHCP. DHCP gives an address with a lease, so addresses are reused.
+00:07:28,947 --> 00:07:38,739
+With its own IP address and the mask, the client can compute the broadcast address of its network. Write the address and the mask in binary.
 
 49
-00:12:16,069 --> 00:12:40,069
-DHCP uses four messages: discover, offer, request and ACK. They go over UDP, server port 67 and client port 68, from 0.0.0.0 to the broadcast address 255.255.255.255.
+00:07:39,189 --> 00:07:45,952
+Keep the bits where the mask is 1. They are the network part, 223.1.2.
 
 50
-00:12:40,519 --> 00:12:49,201
-DHCP gives the client its own IP address, its first-hop router, its DNS server and its network mask.
+00:07:46,402 --> 00:07:56,813
+Set the bits where the mask is 0 to 1. The result is 223.1.2.255, the broadcast address.
 
 51
-00:12:49,651 --> 00:13:05,737
+00:07:57,263 --> 00:08:11,172
+Here is the example of slides 46 and 47. A laptop connects to a network. It needs its IP address, the address of its first-hop router, and the address of its DNS server.
+
+52
+00:08:11,622 --> 00:08:14,971
+The laptop makes a DHCP request message.
+
+53
+00:08:15,421 --> 00:08:25,960
+The DHCP request is encapsulated in UDP, then in IP, then in an Ethernet frame. This is the layering from chapter 1.
+
+54
+00:08:26,410 --> 00:08:33,642
+The Ethernet frame is broadcast on the LAN. Its destination MAC address is all ones, F F F F F F F F F F F F.
+
+55
+00:08:34,092 --> 00:08:39,169
+The router runs the DHCP server. It receives the broadcast frame.
+
+56
+00:08:39,619 --> 00:08:50,926
+The router demultiplexes the frame. Ethernet passes it up to IP, IP passes it up to UDP, and UDP passes it up to DHCP.
+
+57
+00:08:51,376 --> 00:09:05,477
+The DHCP server makes a DHCP ACK. It contains the client's IP address, the IP address of the first-hop router, and the name and IP address of the DNS server.
+
+58
+00:09:05,927 --> 00:09:15,741
+The ACK is encapsulated and sent to the client, and it goes up to DHCP in the client. Now the client knows all of these addresses.
+
+59
+00:09:16,191 --> 00:09:24,809
+How does an ISP get a block of IP addresses? From ICANN, the Internet Corporation for Assigned Names and Numbers.
+
+60
+00:09:25,259 --> 00:09:35,201
+ICANN also manages the DNS root zone. This includes the delegation of the management of top-level domains, such as dot com.
+
+61
+00:09:35,651 --> 00:09:45,528
+ICANN allocates IP addresses through 5 regional registries. The regional registries can then allocate addresses to local registries.
+
+62
+00:09:45,978 --> 00:09:58,842
+Are there enough 32-bit IP addresses? 2 to the power 32 is about 4.3 times 10 to the power 9. That is about 4.3 billion addresses.
+
+63
+00:09:59,292 --> 00:10:08,295
+That is not enough. ICANN allocated the last chunk of IPv4 addresses to the regional registries in 2011.
+
+64
+00:10:08,745 --> 00:10:15,294
+NAT, the topic of a later video, helps with the exhaustion of the IPv4 address space.
+
+65
+00:10:15,744 --> 00:10:27,947
+IPv6 has a 128-bit address space. 2 to the power 128 is about 3.4 times 10 to the power 38 addresses.
+
+66
+00:10:28,397 --> 00:10:41,495
+Now the DHCP questions. Question 48: at power on, a laptop wants an IP address. Which application layer protocol does it run? Pause the video and try it.
+
+67
+00:10:41,945 --> 00:10:43,972
+The answer is DHCP.
+
+68
+00:10:44,422 --> 00:10:54,961
+Question 49: name the four parameters that a DHCP client gets: three IP addresses and one mask. Pause the video and try it.
+
+69
+00:10:55,411 --> 00:11:06,013
+The client's own IP address, the IP address of the first-hop router, the IP address of the local DNS server, and the network mask.
+
+70
+00:11:06,463 --> 00:11:17,941
+Questions 50 and 51: name the four message types. Name the two port numbers. Are they TCP or UDP ports? Pause the video and try it.
+
+71
+00:11:18,391 --> 00:11:22,295
+The four messages are discover, offer, request, and ACK.
+
+72
+00:11:22,745 --> 00:11:31,470
+DHCP uses UDP. The server uses port 67, and the client uses port 68.
+
+73
+00:11:31,920 --> 00:11:47,707
+Question 52: why does DHCP use UDP, rather than TCP? Question 53: which IP broadcast address does the client use to reach a DHCP server? Pause the video and try it.
+
+74
+00:11:48,157 --> 00:11:57,650
+TCP is connection-oriented. Before it sends data, it must set up a connection with a three-way handshake to a known IP address.
+
+75
+00:11:58,100 --> 00:12:04,820
+But a new DHCP client has no IP address, and it does not know the address of the server.
+
+76
+00:12:05,270 --> 00:12:17,686
+UDP needs no connection. The client can send one UDP datagram to the broadcast address. Every node on the subnet receives it, also the DHCP server.
+
+77
+00:12:18,136 --> 00:12:31,491
+For question 53, the client sends to the IP broadcast address 255.255.255.255.
+
+78
+00:12:31,941 --> 00:12:40,154
+Question 54: why does a dynamic address have a definite lease, for example one hour? Pause the video and try it.
+
+79
+00:12:40,604 --> 00:12:49,713
+The lease allows addresses to be reused. A host holds an address only while it is connected. If it stays, it renews the lease.
+
+80
+00:12:50,163 --> 00:13:00,510
+Question 55: the server offers an address. Why does the client not use it as the source address of its request? Pause the video and try it.
+
+81
+00:13:00,960 --> 00:13:15,744
+Because the address is only an offer. More than one server can make an offer. The client may use an address only after the server confirms it with the ACK. So the source stays 0.0.0.0.
+
+82
+00:13:16,194 --> 00:13:27,693
+Question 56: the client knows the server address from the offer. Why does it broadcast the request, and not send it only to that server? Pause the video and try it.
+
+83
+00:13:28,143 --> 00:13:36,292
+First, the client still has no address of its own. Its source address is still 0.0.0.0.
+
+84
+00:13:36,742 --> 00:13:45,873
+Second, the broadcast tells every DHCP server which offer the client takes. The other servers can then keep their offered addresses.
+
+85
+00:13:46,323 --> 00:13:53,235
+These two reasons come from RFC 2131, which slide 43 cites.
+
+86
+00:13:53,685 --> 00:14:09,706
+Here is the recap. A host gets its IP address in one of two ways: a system administrator hard-codes it, or the host uses DHCP. DHCP gives an address with a lease, so addresses are reused.
+
+87
+00:14:10,156 --> 00:14:34,156
+DHCP uses four messages: discover, offer, request and ACK. They go over UDP, server port 67 and client port 68, from 0.0.0.0 to the broadcast address 255.255.255.255.
+
+88
+00:14:34,606 --> 00:14:43,289
+DHCP gives the client its own IP address, its first-hop router, its DNS server and its network mask.
+
+89
+00:14:43,739 --> 00:14:59,824
 ISPs get their blocks from ICANN through five regional registries. IPv4 addresses ran out in 2011. NAT and IPv6 help. The next video covers forwarding and address aggregation.

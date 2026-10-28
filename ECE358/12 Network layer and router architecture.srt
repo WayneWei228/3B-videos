@@ -3,385 +3,833 @@
 This is ECE 358, video 12. We start Chapter 4, the network layer. The topic is the network layer and the architecture of a router.
 
 2
-00:00:11,949 --> 00:00:34,647
-After this video, you can explain forwarding and routing, and the data plane and the control plane. You can draw a router and explain its parts. You can calculate the desirable switching rate. And you can explain where queues form in a router, and when buffers overflow. At the end, we solve question bank network questions 1 to 21.
+00:00:11,949 --> 00:00:18,242
+After this video, you can explain forwarding and routing, and the data plane and the control plane.
 
 3
-00:00:35,097 --> 00:00:49,945
-The network layer moves segments from the sending host to the receiving host. The picture shows two hosts with all five layers, and two routers between them. A router has only three layers: network, link and physical.
+00:00:18,692 --> 00:00:21,636
+You can draw a router and explain its parts.
 
 4
-00:00:50,395 --> 00:01:06,075
-First, the sender. The network layer gets a segment from the transport layer. It puts the segment in a datagram. A datagram is an IP packet. It adds the network header, H n. Then it passes the datagram to the link layer.
+00:00:22,086 --> 00:00:26,353
+You can calculate the desirable switching rate, N times R.
 
 5
-00:01:06,525 --> 00:01:26,451
-Next, the routers. The network layer is in every Internet device that moves packets: in every host and every router. Each router reads the header fields of every datagram that passes through it. It moves the datagram from an input port to an output port, along the end-to-end path.
+00:00:26,803 --> 00:00:31,453
+You can explain where queues form in a router, and when buffers overflow.
 
 6
-00:01:26,901 --> 00:01:38,399
-Last, the receiver. Host B gets the datagram from its link layer. It takes the segment out of the datagram, and delivers the segment to the transport layer protocol.
+00:00:31,903 --> 00:00:36,767
+At the end, we solve question bank network questions 1 to 21.
 
 7
-00:01:38,849 --> 00:01:53,804
-The network layer on a router has two key functions. The first is forwarding. Forwarding moves a packet from the router's input link to the correct output link. Here a packet for destination D arrives on the input link.
+00:00:37,217 --> 00:00:48,183
+The network layer moves segments from the sending host to the receiving host. Host A is the sender, and host B is the receiver. Each host has all five layers.
 
 8
-00:01:54,254 --> 00:02:05,774
-The router finds D in its routing table. The table says output link 2. So the packet goes out on link 2. Forwarding is a local action inside one router.
+00:00:48,633 --> 00:00:56,569
+Between them are two routers, R1 and R2. A router has only three layers: network, link and physical.
 
 9
-00:02:06,224 --> 00:02:16,336
-The second function is routing. Routing finds the route that packets take from the source to the destination. The purple line is one route through the network.
+00:00:57,019 --> 00:01:02,693
+First, the sender. The network layer of host A gets a segment from the transport layer.
 
 10
-00:02:16,786 --> 00:02:30,119
-Routing algorithms build the routing table. Each entry maps a destination to an output link. So on a router, given the destination of an IP packet, the table gives the output link.
+00:01:03,143 --> 00:01:10,354
+It puts the segment in a datagram. A datagram is an IP packet. It adds the network header, H n.
 
 11
-00:02:30,569 --> 00:02:46,569
-Two notes from the slide. First, no router stores the full route. Second, each routing table knows only the next hop. Here R1 knows only that D is through R3. R3 knows only that D is through R4.
+00:01:10,804 --> 00:01:14,537
+Then host A passes the datagram down to its link layer.
 
 12
-00:02:47,019 --> 00:03:01,313
-The network layer has two planes. The data plane is a local function in each router. A datagram arrives on an input port. Its header has a destination address value, here 0 1 1 1.
+00:01:14,987 --> 00:01:23,073
+Next, the routers. The network layer is in every Internet device that moves packets: in every host and every router.
 
 13
-00:03:01,763 --> 00:03:16,547
-The data plane finds the output port for this datagram. The table says 0 1 1 1 goes to port 3. So the datagram leaves on port 3. This is forwarding. It uses only the local table.
+00:01:23,523 --> 00:01:28,429
+Each router reads the header fields of every datagram that passes through it.
 
 14
-00:03:16,997 --> 00:03:33,957
-The control plane is network-wide logic. It decides how a datagram is routed among the routers, on the end-to-end path from the source host to the destination host. In other words, the control plane decides how the routing tables are built.
+00:01:28,879 --> 00:01:34,661
+It moves the datagram from an input port to an output port, along the end-to-end path.
 
 15
-00:03:34,407 --> 00:03:51,367
-The two planes work together. The control plane puts a routing table into every router. The data plane then uses that table to forward each datagram. And the control plane messages between routers are themselves datagrams, sent by the data plane.
+00:01:35,111 --> 00:01:39,804
+Last, the receiver. Host B gets the datagram from its link layer.
 
 16
-00:03:51,817 --> 00:04:05,726
-There are two approaches for the control plane. In the per-router approach, each router has its own routing algorithm component. Here it is the purple box, R A. It writes the table of its own router.
+00:01:40,254 --> 00:01:46,569
+It takes the segment out of the datagram, and delivers the segment to the transport layer protocol.
 
 17
-00:04:06,176 --> 00:04:21,429
-The routing algorithm components in all routers interact with each other in the control plane. They exchange information, and each one computes its own table. This is the traditional approach. This course focuses on it.
+00:01:47,019 --> 00:01:52,117
+The network layer on a router has two key functions. The first is forwarding.
 
 18
-00:04:21,879 --> 00:04:34,743
-The second approach is software-defined networking, S D N. A remote controller runs on servers, outside the routers. Each router has only a small control agent, C A.
+00:01:52,567 --> 00:02:02,146
+Forwarding moves a packet from the router's input link to the correct output link. Here a packet for destination D arrives on the input link.
 
 19
-00:04:35,193 --> 00:04:42,383
-The remote controller computes the forwarding tables and installs them in the routers, through the control agents.
+00:02:02,596 --> 00:02:09,551
+The router looks up D in its routing table, R T. The entry for dest. D says output link 2.
 
 20
-00:04:42,833 --> 00:05:02,502
-This is the generic architecture of a router. On the left are the input ports. On the right are the output ports. These are physical ports, not T C P or U D P ports. In the middle is the high-speed switching fabric. It connects every input port to every output port.
+00:02:10,001 --> 00:02:16,443
+So the packet goes out on output link 2. Forwarding is a local action inside one router.
 
 21
-00:05:02,952 --> 00:05:15,688
-Above the dashed line is the routing processor. This is the control plane. It is software, and it works in a time frame of milliseconds. It gives the routing table to each input port.
+00:02:16,893 --> 00:02:23,763
+The second function is routing. Routing finds the route that packets take from the source to the destination.
 
 22
-00:05:16,138 --> 00:05:20,597
-Below the dashed line is the forwarding data plane. It is hardware.
+00:02:24,213 --> 00:02:30,378
+The purple line is one route: from the source through R1, R3 and R4 to D.
 
 23
-00:05:21,047 --> 00:05:36,961
-Now follow one datagram. It arrives at input port 1. Each port has three layers. L1 is the physical layer, L2 the link layer, and L3 the network layer. In L3 the port looks up the output port.
+00:02:30,828 --> 00:02:37,249
+Routing algorithms build the routing table. Each entry maps a destination to an output link.
 
 24
-00:05:37,411 --> 00:05:42,937
-The switching fabric moves the datagram from input port 1 to output port 3.
+00:02:37,699 --> 00:02:44,142
+So on a router, given the destination of an IP packet, the table gives the output link.
 
 25
-00:05:43,387 --> 00:05:53,157
-Output port 3 sends the datagram on its link. The data plane does all of this in a time frame of nanoseconds, for every datagram.
+00:02:44,592 --> 00:02:49,115
+Two notes from the slide. First, no router stores the full route.
 
 26
-00:05:53,607 --> 00:06:03,207
-Look inside one input port. The first box is line termination. This is the physical layer. It receives the bits, one by one.
+00:02:49,565 --> 00:02:53,042
+Second, each routing table knows only the next hop.
 
 27
-00:06:03,657 --> 00:06:09,759
-The second box is the link layer protocol, in receive mode. An example is Ethernet.
+00:02:53,492 --> 00:02:57,033
+Here R1 knows only that D is through R3.
 
 28
-00:06:10,209 --> 00:06:23,926
-The third box is lookup and forwarding. The port reads the destination address in the IP header. Then it looks up the output port in the forwarding table. The table is in the memory of the input port.
+00:02:57,483 --> 00:03:00,534
+R3 knows only that D is through R4.
 
 29
-00:06:24,376 --> 00:06:32,120
-The goal is to complete the input port processing at line speed. Line speed is the rate at which packets arrive.
+00:03:00,984 --> 00:03:03,907
+And R4 knows that D is on its own link.
 
 30
-00:06:32,570 --> 00:06:44,517
-If datagrams arrive faster than the port can forward them into the switch fabric, they wait. A queue forms in the input port. The orange line marks this input port queuing.
+00:03:04,357 --> 00:03:10,074
+The network layer has two planes. The data plane is a local function in each router.
 
 31
-00:06:44,967 --> 00:06:52,945
-Traditional routers use destination-based forwarding. They forward based only on the destination IP address.
+00:03:10,524 --> 00:03:18,524
+A datagram arrives on an input port. Its header has a destination address value, here 0 1 1 1.
 
 32
-00:06:53,395 --> 00:07:09,417
-The switching fabric moves each packet from its input link to the correct output link. This router has 5 input ports and 5 output ports. Each line rate R is 10 gigabits per second. Here only input 1 sends.
+00:03:18,974 --> 00:03:25,331
+The data plane looks up 0 1 1 1 in the local routing table. The entry says port 3.
 
 33
-00:07:09,867 --> 00:07:19,595
-But all 5 inputs can receive packets at the same time, each at 10 gigabits per second. To keep up, the fabric must move all of them.
+00:03:25,781 --> 00:03:29,707
+So the datagram leaves on port 3. This is forwarding.
 
 34
-00:07:20,045 --> 00:07:33,165
-So the fabric must move 5 times 10, which is 50 gigabits per second. The switching rate is the metric for a fabric. It is the rate at which packets move from the inputs to the outputs.
+00:03:30,157 --> 00:03:40,247
+In short, the data plane is local, per router. It forwards each datagram from an input port to an output port, from its destination address.
 
 35
-00:07:33,615 --> 00:07:42,831
-The switching rate is often given as a multiple of the line rate R. For N inputs, the desirable switching rate is N times R.
+00:03:40,697 --> 00:03:43,663
+The control plane is network-wide logic.
 
 36
-00:07:43,281 --> 00:07:59,110
-There are three major types of switching fabric: memory, bus, and interconnection network. The first is switching via memory. First-generation routers were traditional computers. The CPU controls the switching directly.
+00:03:44,113 --> 00:03:52,433
+It decides how a datagram is routed among the routers, on the end-to-end path from the source host to the destination host.
 
 37
-00:07:59,560 --> 00:08:07,752
-A packet arrives at the input port. It is copied over the system bus into the memory. That is the first bus crossing.
+00:03:52,883 --> 00:03:57,640
+In other words, the control plane decides how the routing tables are built.
 
 38
-00:08:08,202 --> 00:08:17,290
-Then the CPU finds the output port, and the packet is copied from the memory to the output port. That is the second bus crossing.
+00:03:58,090 --> 00:04:03,743
+The two planes work together. The control plane puts a routing table into every router.
 
 39
-00:08:17,740 --> 00:08:24,695
-So each datagram crosses the system bus 2 times. The speed is limited by the memory bandwidth.
+00:04:04,193 --> 00:04:08,823
+The data plane then uses that table to forward each datagram.
 
 40
-00:08:25,145 --> 00:08:31,203
-The second type is switching via a bus. The input ports and the output ports share one bus.
+00:04:09,273 --> 00:04:16,078
+And the control plane messages between routers are themselves datagrams, sent by the data plane.
 
 41
-00:08:31,653 --> 00:08:42,107
-A datagram goes from the memory of input port 1, over the bus, directly to the memory of output port 2. The CPU does not copy it.
+00:04:16,528 --> 00:04:21,947
+There are two approaches for the control plane. The first is the per-router approach.
 
 42
-00:08:42,557 --> 00:08:59,645
-But only one datagram can use the bus at a time. Inputs 2 and 3 also have datagrams. They must wait. This is bus contention: the input ports compete for access to the shared bus. So the switching speed is limited by the bus bandwidth.
+00:04:22,397 --> 00:04:30,013
+Each router has its own routing algorithm component, R A. It is the purple box above the data plane.
 
 43
-00:09:00,095 --> 00:09:13,385
-The third type is the modern one: an interconnection network. Examples are the crossbar and the Clos network. This is a 3 by 3 crossbar. Each input line crosses each output line.
+00:04:30,463 --> 00:04:33,556
+Each R A writes the table of its own router.
 
 44
-00:09:13,835 --> 00:09:33,142
-Input 1 sends to output 3, and input 2 sends to output 1. Each path uses different lines, so both datagrams cross at the same time. The switches support a parallel flow of bits. This is why this fabric gives better performance than memory or a bus.
+00:04:34,006 --> 00:04:44,822
+The routing algorithm components in all routers interact with each other in the control plane. They exchange information, and each one computes its own table.
 
 45
-00:09:33,592 --> 00:09:45,155
-But two datagrams to the same output cannot cross at the same time. Input 3 also wants output 3, so it waits. We use this fact on the next slide.
+00:04:45,272 --> 00:04:49,283
+This is the traditional approach. This course focuses on it.
 
 46
-00:09:45,605 --> 00:09:56,293
-A large switch can be built from stages of smaller switches. This is a multistage switch. Here an 8 by 8 switch is built from 2 by 2 switches.
+00:04:49,733 --> 00:04:53,679
+The second approach is software-defined networking, S D N.
 
 47
-00:09:56,743 --> 00:10:09,052
-To use the parallelism, the fabric cuts each datagram into fixed-length cells at the entry. It switches the cells through the fabric, and it puts the datagram together again at the exit.
+00:04:54,129 --> 00:04:58,097
+A remote controller runs on servers, outside the routers.
 
 48
-00:10:09,502 --> 00:10:21,790
-Now the queues. If the switch fabric is slower than all the input ports together, queues can form at the input ports. Each packet in the picture shows the number of its output port.
+00:04:58,547 --> 00:05:02,195
+Each router has only a small control agent, C A.
 
 49
-00:10:22,240 --> 00:10:38,389
-At time t, input 1 and input 3 both have a packet for output 1 at the front. This is output port contention. Only one of them can go. Input 1 sends. Input 3 waits. Input 2 sends to output 2.
+00:05:02,645 --> 00:05:10,133
+The remote controller computes the forwarding tables. It installs them in the routers, through the control agents.
 
 50
-00:10:38,839 --> 00:10:57,634
-Look at the packet for output 3, behind it in input 3. Output 3 is idle. But this packet cannot move, because the packet in front of it waits. This is head-of-the-line blocking, H O L blocking. The datagram at the front of the queue stops the others behind it.
+00:05:10,583 --> 00:05:15,789
+This is the generic architecture of a router. On the left are the input ports.
 
 51
-00:10:58,084 --> 00:11:14,724
-One packet time later, input 3 sends its packet to output 1. The packet for output 3 is now at the front. It lost one packet time, and output 3 was idle for no reason. It has experienced H O L blocking.
+00:05:16,239 --> 00:05:23,236
+On the right are the output ports. These are physical ports, not T C P or U D P ports.
 
 52
-00:11:15,174 --> 00:11:29,915
-High-performance routers avoid H O L blocking. An input port keeps a separate queue for each output. Then the packet for output 3 does not wait behind the packet for output 1. It can go at time t.
+00:05:23,686 --> 00:05:30,342
+In the middle is the high-speed switching fabric. It connects every input port to every output port.
 
 53
-00:11:30,365 --> 00:11:49,864
-This is a really important slide. An output port has a datagram buffer, the link layer protocol in send mode, and line termination. The fabric can deliver datagrams at up to N times R. But the output link sends at only R. So the output port needs a buffer.
+00:05:30,792 --> 00:05:35,869
+Above the dashed line is the routing processor. This is the control plane.
 
 54
-00:11:50,314 --> 00:12:03,861
-Suppose 3 inputs send to this output at the same time. In one packet time, 3 datagrams arrive and the link sends only 1. After one packet time, 2 datagrams wait in the buffer.
+00:05:36,319 --> 00:05:41,098
+The control plane is software. It works in a time frame of milliseconds.
 
 55
-00:12:04,311 --> 00:12:10,817
-After two packet times, 4 datagrams wait. The queue grows by 2 in each packet time.
+00:05:41,548 --> 00:05:44,428
+It gives the routing table to each input port.
 
 56
-00:12:11,267 --> 00:12:14,638
-After three packet times, 6 datagrams wait.
+00:05:44,878 --> 00:05:49,337
+Below the dashed line is the forwarding data plane. It is hardware.
 
 57
-00:12:15,088 --> 00:12:29,211
-After four packet times, the buffer is full. Now there is no free buffer for new datagrams. Arriving datagrams are lost. This is loss from output port buffer overflow, because of congestion.
+00:05:49,787 --> 00:05:53,947
+Now follow one datagram. It arrives at input port 1.
 
 58
-00:12:29,661 --> 00:12:37,831
-Two policies control the output buffer. The drop policy decides which datagrams to drop when no buffer is free.
+00:05:54,397 --> 00:05:58,429
+Each port has three layers. L1 is the physical layer.
 
 59
-00:12:38,281 --> 00:12:51,636
-The scheduling discipline chooses which of the queued datagrams to send next. With priority scheduling, some datagrams get better performance than others. This is related to network neutrality.
+00:05:58,879 --> 00:06:00,713
+L2 is the link layer.
 
 60
-00:12:52,086 --> 00:12:59,297
-Now the question bank. Questions 1 to 3 are short descriptive questions. Pause the video and try them.
+00:06:01,163 --> 00:06:06,475
+L3 is the network layer. In L3, the port looks up the output port.
 
 61
-00:12:59,747 --> 00:13:11,907
-Question 1. The network layer moves segments from host to host. The sender puts each segment in a datagram. The receiver takes the segment out and delivers it to the transport layer.
+00:06:06,925 --> 00:06:12,451
+The switching fabric moves the datagram from input port 1 to output port 3.
 
 62
-00:13:12,357 --> 00:13:21,274
-Question 2. Hosts and routers have a network layer. Links do not. A layer 2 switch has only the link and physical layers.
+00:06:12,901 --> 00:06:16,485
+Output port 3 sends the datagram on its link.
 
 63
-00:13:21,724 --> 00:13:35,975
-Question 3. The two functions are forwarding and routing. Forwarding moves a packet from an input link to the correct output link. Routing finds the route from source to destination, and builds the routing table.
+00:06:16,935 --> 00:06:22,609
+The data plane does all of this in a time frame of nanoseconds, for every datagram.
 
 64
-00:13:36,425 --> 00:13:41,566
-Questions 4 to 7 are about the two planes. Pause the video and try them.
+00:06:23,059 --> 00:06:32,638
+Look inside one input port. The first box is line termination. This is the physical layer. It receives the bits, one by one.
 
 65
-00:13:42,016 --> 00:13:57,803
-Question 4. The data plane is local, in each router. It forwards each datagram from an input port to an output port. The control plane is network-wide. It decides the end-to-end route, so it builds the routing tables.
+00:06:33,088 --> 00:06:39,189
+The second box is the link layer protocol, in receive mode. An example is Ethernet.
 
 66
-00:13:58,253 --> 00:14:15,639
-Question 5. Routing messages between routers are IP datagrams. The data plane forwards them like any other datagram. The slides do not state this directly. It follows because routers exchange routing information over the same links.
+00:06:39,639 --> 00:06:42,135
+The third box is lookup and forwarding.
 
 67
-00:14:16,089 --> 00:14:24,793
-Question 6. For each datagram, the data plane looks up the routing table. The control plane builds and installs that table.
+00:06:42,585 --> 00:06:50,031
+The port reads the destination address in the IP header. Then it looks up the output port in the forwarding table.
 
 68
-00:14:25,243 --> 00:14:41,179
-Question 7. In the per-router approach, a routing algorithm runs in every router, and the algorithms interact. In S D N, a remote controller computes the tables and installs them through a control agent in each router.
+00:06:50,481 --> 00:06:59,121
+The forwarding table is in the memory of the input port. Each input port has its own copy. This is decentralized switching.
 
 69
-00:14:41,629 --> 00:14:47,091
-Questions 8 to 11 are about the parts of a router. Pause the video and try them.
+00:06:59,571 --> 00:07:06,867
+Each entry is match plus action. The match is the destination address. The action is the output port.
 
 70
-00:14:47,541 --> 00:15:00,597
-Question 8. Draw input ports, the switching fabric, and output ports. This is the data plane, in hardware. Draw the routing processor above it. This is the control plane, in software.
+00:07:07,317 --> 00:07:15,061
+The goal is to complete the input port processing at line speed. Line speed is the rate at which packets arrive.
 
 71
-00:15:01,047 --> 00:15:13,591
-Question 9. An input port does line termination, then the link layer receive function, then the lookup of the output port at line speed. It also queues datagrams when needed.
+00:07:15,511 --> 00:07:24,044
+If datagrams arrive faster than the port can forward them into the switch fabric, they wait. A queue forms in the input port.
 
 72
-00:15:14,041 --> 00:15:25,859
-Question 10. The three fabrics are memory, bus, and interconnection network. Memory needs 2 bus crossings per datagram. A bus is shared, so the ports compete for it.
+00:07:24,494 --> 00:07:26,478
+This is input port queuing.
 
 73
-00:15:26,309 --> 00:15:37,275
-Question 11. An interconnection network is faster because of parallelism. Datagrams to different outputs cross at the same time, as fixed-length cells.
+00:07:26,928 --> 00:07:34,907
+Traditional routers use destination-based forwarding. They forward based only on the destination IP address.
 
 74
-00:15:37,725 --> 00:15:43,122
-Questions 12 to 14 are about the switching rate. Pause the video and try them.
+00:07:35,357 --> 00:07:40,711
+The switching fabric moves each packet from its input link to the correct output link.
 
 75
-00:15:43,572 --> 00:15:59,273
-Question 12. The metric is the switching rate. That is the rate at which packets move from the inputs to the outputs. Question 13. For N inputs with line rate R, the desirable switching rate is N times R.
+00:07:41,161 --> 00:07:45,065
+This router has 5 input ports and 5 output ports.
 
 76
-00:15:59,723 --> 00:16:17,131
-Question 14. Each bidirectional link gives one input link and one output link. So the router has 5 inputs and 5 outputs. N is 5, and R is 100 gigabits per second. All 5 inputs can receive at the same time.
+00:07:45,515 --> 00:07:49,014
+Each line rate R is 10 gigabits per second.
 
 77
-00:16:17,581 --> 00:16:32,621
-The desirable switching rate is N times R, which is 5 times 100. That is 500 gigabits per second. Do not count 10 links. The fabric moves each packet once, from one input to one output.
+00:07:49,464 --> 00:07:51,491
+Here only input 1 sends.
 
 78
-00:16:33,071 --> 00:16:56,175
-Question 15. The router has 5 input links and 5 output links at 100 gigabits per second. The desirable rate is 500, so the actual switching rate is 1000 gigabits per second. Explain how each type of buffer can overflow. The question lets us make assumptions. Pause the video and try it.
+00:07:51,941 --> 00:08:01,669
+But all 5 inputs can receive packets at the same time, each at 10 gigabits per second. To keep up, the fabric must move all of them.
 
 79
-00:16:56,625 --> 00:17:08,188
-Our assumption: the total fabric rate is 1000, but the fabric can deliver to one output port at most 2 times R, which is 200 gigabits per second.
+00:08:02,119 --> 00:08:08,732
+So the fabric must move 5 parts of 10. 5 times 10 is 50 gigabits per second.
 
 80
-00:17:08,638 --> 00:17:27,902
-Part a. Inputs 1 to 4 all receive traffic for output 5, each at 100 gigabits per second. So 400 gigabits per second want output 5. Only 200 can cross the fabric. The other 200 gigabits per second stay in the input buffers.
+00:08:09,182 --> 00:08:16,841
+This is the switching rate. It is the metric for a fabric: the rate at which packets move from the inputs to the outputs.
 
 81
-00:17:28,352 --> 00:17:40,448
-So the input buffers fill and then overflow. This is output port contention, and H O L blocking makes it worse: datagrams for other outputs wait behind them.
+00:08:17,291 --> 00:08:26,507
+The switching rate is often given as a multiple of the line rate R. For N inputs, the desirable switching rate is N times R.
 
 82
-00:17:40,898 --> 00:17:57,602
-Part b. Now only inputs 1 and 2 send to output 5. The fabric can deliver these 200 gigabits per second. But output link 5 sends only 100. So 100 gigabits per second stays in the output buffer.
+00:08:26,957 --> 00:08:32,802
+There are three major types of switching fabric: memory, bus, and interconnection network.
 
 83
-00:17:58,052 --> 00:18:06,500
-The output buffer fills and overflows. The cause is that the arrival rate at one output is more than its line rate R.
+00:08:33,252 --> 00:08:42,660
+The first is switching via memory. First-generation routers were traditional computers. The CPU controls the switching directly.
 
 84
-00:18:06,950 --> 00:18:12,987
-Questions 16 to 18 are about H O L blocking. Pause the video and try them.
+00:08:43,110 --> 00:08:50,790
+A packet arrives at the input port. It is copied over the system bus into the memory. That is bus crossing 1.
 
 85
-00:18:13,437 --> 00:18:19,304
-Question 16. H O L blocking occurs at the input port, in the input queue.
+00:08:51,240 --> 00:08:59,965
+Then the CPU finds the output port, and the packet is copied from the memory to the output port. That is bus crossing 2.
 
 86
-00:18:19,754 --> 00:18:35,370
-Question 17. The datagram at the head of an input queue waits, because its output port is busy with a datagram from another input. The datagrams behind it cannot move, even when their own output ports are idle.
+00:09:00,415 --> 00:09:03,978
+So each datagram crosses the system bus 2 times.
 
 87
-00:18:35,820 --> 00:18:46,849
-Question 18. Some output ports stay idle while packets wait for them. The queueing delay increases, and input buffers can overflow, so there is more loss.
+00:09:04,428 --> 00:09:07,351
+The speed is limited by the memory bandwidth.
 
 88
-00:18:47,299 --> 00:18:53,017
-Questions 19 and 21 are about output buffers. Pause the video and try them.
+00:09:07,801 --> 00:09:13,859
+The second type is switching via a bus. The input ports and the output ports share one bus.
 
 89
-00:18:53,467 --> 00:19:06,565
-Question 19. Datagrams can arrive from the fabric faster than the output link can send them. The buffer holds the datagrams that cannot be sent yet. Without it, they are lost at once.
+00:09:14,309 --> 00:09:22,139
+A datagram goes from the memory of input port 1, over the bus, directly to the memory of output port 2.
 
 90
-00:19:07,015 --> 00:19:22,823
-Question 21. The drop policy decides which datagrams to drop when no buffer is free. The scheduling discipline chooses which queued datagram to send next, for example by priority. We solve question 20 next.
+00:09:22,589 --> 00:09:24,743
+The CPU does not copy it.
 
 91
-00:19:23,273 --> 00:19:44,820
-Question 20. A router has 4 input and 4 output ports at 1 gigabit per second. The switching rate is 4 gigabits per second. Packets are 1500 bytes. Output port 2 has space for 50 packets. Find a scenario that overflows this buffer. Pause the video and try it.
+00:09:25,193 --> 00:09:32,831
+But only one datagram can use the bus at a time. Inputs 2 and 3 also have datagrams. They must wait.
 
 92
-00:19:45,270 --> 00:20:04,811
-Scenario: inputs 1, 3 and 4 all send a continuous stream of packets to output port 2. One packet time is L over R. That is 1500 times 8 bits, divided by 10 to the power 9 bits per second. This is 12 microseconds.
+00:09:33,281 --> 00:09:38,571
+This is bus contention: the input ports compete for access to the shared bus.
 
 93
-00:20:05,261 --> 00:20:19,405
-The 3 inputs send 3 gigabits per second into the fabric. This is less than its 4 gigabits per second, so the fabric is not the problem. All 3 packets reach output port 2 in each packet time.
+00:09:39,021 --> 00:09:42,435
+So the switching speed is limited by the bus bandwidth.
 
 94
-00:20:19,855 --> 00:20:32,634
-But output link 2 sends only 1 packet in each packet time. So the queue grows by 3 minus 1, which is 2 packets per packet time. The orange line shows the queue length.
+00:09:42,885 --> 00:09:50,181
+The third type is the modern one: an interconnection network. Examples are the crossbar and the Clos network.
 
 95
-00:20:33,084 --> 00:20:52,135
-The buffer holds 50 packets. 50 divided by 2 is 25 packet times. 25 times 12 microseconds is 300 microseconds. After 300 microseconds the buffer is full. Then 2 of every 3 arriving packets are lost.
+00:09:50,631 --> 00:09:56,113
+This is a 3 by 3 crossbar. Each input line crosses each output line.
 
 96
-00:20:52,585 --> 00:21:27,821
-Here is the recap. Forwarding is local: input link to output link. Routing finds the end-to-end route and builds the routing table. The data plane is per router and fast. The control plane is network-wide. A router has input ports, a switching fabric, output ports and a routing processor. The desirable switching rate is N times R. Input queues cause H O L blocking. Output queues form when traffic to one output is more than its line rate, and they cause delay and loss.
+00:09:56,563 --> 00:10:01,513
+Input 1 sends to output 3, and input 2 sends to output 1.
 
 97
-00:21:28,271 --> 00:21:33,733
+00:10:01,963 --> 00:10:12,885
+Each path uses different lines, so both datagrams cross at the same time. This is parallelism. So this fabric performs better than memory or a bus.
+
+98
+00:10:13,335 --> 00:10:24,898
+But two datagrams to the same output cannot cross at the same time. Input 3 also wants output 3, so it waits. We use this fact on the next slide.
+
+99
+00:10:25,348 --> 00:10:31,684
+A large switch can be built from stages of smaller switches. This is a multistage switch.
+
+100
+00:10:32,134 --> 00:10:42,630
+Here an 8 by 8 switch is built from 2 by 2 switches. The first stage has 4 switches with 2 inputs each: 4 times 2 is 8 inputs.
+
+101
+00:10:43,080 --> 00:10:49,160
+To use the parallelism, the fabric cuts each datagram into fixed-length cells at the entry.
+
+102
+00:10:49,610 --> 00:10:55,519
+It switches the cells through the fabric, and it puts the datagram together again at the exit.
+
+103
+00:10:55,969 --> 00:11:03,969
+Now the queues. If the switch fabric is slower than all the input ports together, queues can form at the input ports.
+
+104
+00:11:04,419 --> 00:11:15,235
+Each packet in the picture shows the number of its output port. Input 3 has a packet for output 1 at the front, and a packet for output 3 behind it.
+
+105
+00:11:15,685 --> 00:11:24,069
+At time t, input 1 and input 3 both have a packet for output 1 at the front. This is output port contention.
+
+106
+00:11:24,519 --> 00:11:29,170
+Only one of them can go. Input 1 sends. Input 3 waits.
+
+107
+00:11:29,620 --> 00:11:31,839
+Input 2 sends to output 2.
+
+108
+00:11:32,289 --> 00:11:37,366
+Now look at the packet for output 3, behind the front packet in input 3.
+
+109
+00:11:37,816 --> 00:11:43,981
+Output 3 is idle. But this packet cannot move, because the packet in front of it waits.
+
+110
+00:11:44,431 --> 00:11:52,559
+This is head-of-the-line blocking, H O L blocking. The datagram at the front of the queue stops the others behind it.
+
+111
+00:11:53,009 --> 00:11:57,788
+One packet time later, input 3 sends its packet to output 1.
+
+112
+00:11:58,238 --> 00:12:09,737
+The packet for output 3 is now at the front. It lost one packet time, and output 3 was idle for no reason. It has experienced H O L blocking.
+
+113
+00:12:10,187 --> 00:12:17,504
+High-performance routers avoid H O L blocking. An input port keeps a separate queue for each output.
+
+114
+00:12:17,954 --> 00:12:24,930
+Then the packet for output 3 does not wait behind the packet for output 1. It can go at time t.
+
+115
+00:12:25,380 --> 00:12:32,292
+This is a really important slide. Look at one output port. First, it has a datagram buffer.
+
+116
+00:12:32,742 --> 00:12:37,542
+Then come the link layer protocol, in send mode, and line termination.
+
+117
+00:12:37,992 --> 00:12:42,685
+The fabric can deliver datagrams to this port at up to N times R.
+
+118
+00:12:43,135 --> 00:12:48,149
+But the output link sends at only R. So the output port needs a buffer.
+
+119
+00:12:48,599 --> 00:12:58,156
+Suppose 3 inputs send to this output at the same time. In each packet time, 3 datagrams arrive, and the link sends only 1.
+
+120
+00:12:58,606 --> 00:13:04,195
+After one packet time, 3 minus 1, which is 2 datagrams, wait in the buffer.
+
+121
+00:13:04,645 --> 00:13:11,941
+After two packet times, 2 plus 2 is 4 datagrams. The queue grows by 2 in each packet time.
+
+122
+00:13:12,391 --> 00:13:16,637
+After three packet times, 4 plus 2 is 6 datagrams.
+
+123
+00:13:17,087 --> 00:13:23,636
+After four packet times, 6 plus 2 is 8. All 8 slots are used: the buffer is full.
+
+124
+00:13:24,086 --> 00:13:34,667
+Now there is no free buffer for new datagrams. Arriving datagrams are lost. This is loss from output port buffer overflow, because of congestion.
+
+125
+00:13:35,117 --> 00:13:43,288
+Two policies control the output buffer. The drop policy decides which datagrams to drop when no buffer is free.
+
+126
+00:13:43,738 --> 00:13:48,581
+The scheduling discipline chooses which of the queued datagrams to send next.
+
+127
+00:13:49,031 --> 00:13:57,116
+With priority scheduling, some datagrams get better performance than others. This is related to network neutrality.
+
+128
+00:13:57,566 --> 00:14:04,777
+Now the question bank. Questions 1 to 3 are short descriptive questions. Pause the video and try them.
+
+129
+00:14:05,227 --> 00:14:17,387
+Question 1. The network layer moves segments from host to host. The sender puts each segment in a datagram. The receiver takes the segment out and delivers it to the transport layer.
+
+130
+00:14:17,837 --> 00:14:21,527
+Question 2. Hosts and routers have a network layer.
+
+131
+00:14:21,977 --> 00:14:26,799
+Links do not. A layer 2 switch has only the link and physical layers.
+
+132
+00:14:27,249 --> 00:14:35,953
+Question 3. The two functions are forwarding and routing. Forwarding moves a packet from an input link to the correct output link.
+
+133
+00:14:36,403 --> 00:14:41,480
+Routing finds the route from source to destination, and builds the routing table.
+
+134
+00:14:41,930 --> 00:14:47,071
+Questions 4 to 7 are about the two planes. Pause the video and try them.
+
+135
+00:14:47,521 --> 00:14:56,161
+Question 4. The data plane is local, in each router. It forwards each datagram from an input port to an output port.
+
+136
+00:14:56,611 --> 00:15:03,395
+The control plane is network-wide. It decides the end-to-end route, so it builds the routing tables.
+
+137
+00:15:03,845 --> 00:15:12,827
+Question 5. Routing messages between routers are IP datagrams. The data plane forwards them like any other datagram.
+
+138
+00:15:13,277 --> 00:15:21,127
+The slides do not state this directly. It follows because routers exchange routing information over the same links.
+
+139
+00:15:21,577 --> 00:15:30,281
+Question 6. For each datagram, the data plane looks up the routing table. The control plane builds and installs that table.
+
+140
+00:15:30,731 --> 00:15:38,731
+Question 7. In the per-router approach, a routing algorithm runs in every router, and the algorithms interact.
+
+141
+00:15:39,181 --> 00:15:46,925
+In S D N, a remote controller computes the tables and installs them through a control agent in each router.
+
+142
+00:15:47,375 --> 00:15:52,709
+Questions 8 and 9 are about the parts of a router. Pause the video and try them.
+
+143
+00:15:53,159 --> 00:15:58,705
+Question 8. A router has input ports, a switching fabric, and output ports.
+
+144
+00:15:59,155 --> 00:16:04,339
+These parts form the data plane. It is hardware, and it works in nanoseconds.
+
+145
+00:16:04,789 --> 00:16:11,829
+Above them is the routing processor. It is the control plane. It is software, and it works in milliseconds.
+
+146
+00:16:12,279 --> 00:16:20,535
+Question 9. An input port has these functions. First, line termination: the physical layer receives the bits.
+
+147
+00:16:20,985 --> 00:16:25,700
+Second, the link layer protocol in receive mode, for example Ethernet.
+
+148
+00:16:26,150 --> 00:16:33,083
+Third, lookup and forwarding: the port finds the output port in the forwarding table, at line speed.
+
+149
+00:16:33,533 --> 00:16:39,123
+It also queues datagrams when they arrive faster than it can forward them into the fabric.
+
+150
+00:16:39,573 --> 00:16:45,333
+Questions 10 and 11 are about the switching fabrics. Pause the video and try them.
+
+151
+00:16:45,783 --> 00:16:55,959
+Question 10. The first fabric is memory. The CPU copies each datagram through the memory, so the datagram crosses the bus 2 times.
+
+152
+00:16:56,409 --> 00:17:02,937
+The second is a bus. All ports share one bus, so they compete for it. This is bus contention.
+
+153
+00:17:03,387 --> 00:17:09,040
+The third is an interconnection network, such as a crossbar or a multistage switch.
+
+154
+00:17:09,490 --> 00:17:19,175
+Question 11. An interconnection network performs better because of parallelism. Datagrams to different outputs cross at the same time.
+
+155
+00:17:19,625 --> 00:17:24,937
+To use this parallelism, the fabric cuts the datagrams into fixed-length cells.
+
+156
+00:17:25,387 --> 00:17:30,785
+Questions 12 to 14 are about the switching rate. Pause the video and try them.
+
+157
+00:17:31,235 --> 00:17:38,936
+Question 12. The metric is the switching rate. That is the rate at which packets move from the inputs to the outputs.
+
+158
+00:17:39,386 --> 00:17:46,789
+Question 13. For N inputs with line rate R, the desirable switching rate is N times R.
+
+159
+00:17:47,239 --> 00:17:56,625
+Question 14. Each bidirectional link gives one input link and one output link. Link 1 gives input 1 and output 1.
+
+160
+00:17:57,075 --> 00:18:01,534
+So the router has 5 inputs and 5 outputs. N is 5.
+
+161
+00:18:01,984 --> 00:18:06,037
+R is 100 gigabits per second, in each direction.
+
+162
+00:18:06,487 --> 00:18:09,389
+All 5 inputs can receive at the same time.
+
+163
+00:18:09,839 --> 00:18:18,393
+The desirable switching rate is N times R, which is 5 times 100. That is 500 gigabits per second.
+
+164
+00:18:18,843 --> 00:18:25,073
+Do not count 10 links. The fabric moves each packet once, from one input to one output.
+
+165
+00:18:25,523 --> 00:18:42,035
+Question 15. The router has 5 input links and 5 output links at 100 gigabits per second. Explain how each type of buffer can overflow. The question lets us make assumptions. Pause the video and try it.
+
+166
+00:18:42,485 --> 00:18:55,839
+First, the rates. The desirable rate is N times R: 5 times 100 is 500. The actual rate is 2 times 500, which is 1000 gigabits per second.
+
+167
+00:18:56,289 --> 00:19:07,063
+Our assumption: the fabric can deliver to one output port at most 2 times R. That is 2 times 100, which is 200 gigabits per second.
+
+168
+00:19:07,513 --> 00:19:15,385
+Part a. Inputs 1 to 4 all receive traffic for output 5, each at 100 gigabits per second.
+
+169
+00:19:15,835 --> 00:19:22,363
+So 4 times 100, which is 400 gigabits per second, want output 5.
+
+170
+00:19:22,813 --> 00:19:32,306
+Only 200 can cross the fabric to output 5. 400 minus 200 leaves 200 gigabits per second at the inputs.
+
+171
+00:19:32,756 --> 00:19:35,871
+So the input buffers fill and then overflow.
+
+172
+00:19:36,321 --> 00:19:44,790
+This is output port contention, and H O L blocking makes it worse: datagrams for other outputs wait behind them.
+
+173
+00:19:45,240 --> 00:19:53,795
+Part b. Now only inputs 1 and 2 send to output 5. 2 times 100 is 200 gigabits per second.
+
+174
+00:19:54,245 --> 00:20:01,839
+The fabric can deliver all 200 to output 5, because 200 is not more than the limit of 200.
+
+175
+00:20:02,289 --> 00:20:11,569
+But output link 5 sends only 100. 200 minus 100 leaves 100 gigabits per second in the output buffer.
+
+176
+00:20:12,019 --> 00:20:20,467
+The output buffer fills and overflows. The cause is that the arrival rate at one output is more than its line rate R.
+
+177
+00:20:20,917 --> 00:20:26,955
+Questions 16 to 18 are about H O L blocking. Pause the video and try them.
+
+178
+00:20:27,405 --> 00:20:33,271
+Question 16. H O L blocking occurs at the input port, in the input queue.
+
+179
+00:20:33,721 --> 00:20:43,087
+Question 17. The datagram at the head of an input queue waits, because its output port is busy with a datagram from another input.
+
+180
+00:20:43,537 --> 00:20:48,998
+The datagrams behind it cannot move, even when their own output ports are idle.
+
+181
+00:20:49,448 --> 00:20:54,504
+Question 18. Some output ports stay idle while packets wait for them.
+
+182
+00:20:54,954 --> 00:21:02,741
+So the throughput goes down, and the queueing delay increases. Input buffers can overflow, so there is more loss.
+
+183
+00:21:03,191 --> 00:21:08,908
+Questions 19 and 21 are about output buffers. Pause the video and try them.
+
+184
+00:21:09,358 --> 00:21:18,275
+Question 19. Datagrams can arrive from the fabric at up to N times R, faster than the output link can send them at R.
+
+185
+00:21:18,725 --> 00:21:24,741
+The buffer holds the datagrams that cannot be sent yet. Without it, they are lost at once.
+
+186
+00:21:25,191 --> 00:21:33,917
+Question 21. The first policy is the drop policy. It decides which datagrams to drop when no buffer is free.
+
+187
+00:21:34,367 --> 00:21:44,479
+The second is the scheduling discipline. It chooses which queued datagram to send next, for example by priority. We solve question 20 next.
+
+188
+00:21:44,929 --> 00:22:06,475
+Question 20. A router has 4 input and 4 output ports at 1 gigabit per second. The switching rate is 4 gigabits per second. Packets are 1500 bytes. Output port 2 has space for 50 packets. Find a scenario that overflows this buffer. Pause the video and try it.
+
+189
+00:22:06,925 --> 00:22:13,560
+Scenario: inputs 1, 3 and 4 all send a continuous stream of packets to output port 2.
+
+190
+00:22:14,010 --> 00:22:25,039
+First, one packet time. It is L over R. L is 1500 bytes. 1500 times 8 is 12,000 bits.
+
+191
+00:22:25,489 --> 00:22:30,993
+R is 1 gigabit per second, which is 10 to the power 9 bits per second.
+
+192
+00:22:31,443 --> 00:22:38,931
+12,000 divided by 10 to the power 9 is 12 microseconds. This is one packet time.
+
+193
+00:22:39,381 --> 00:22:45,184
+The 3 inputs send 3 times 1, which is 3 gigabits per second into the fabric.
+
+194
+00:22:45,634 --> 00:22:56,386
+This is less than the fabric rate of 4 gigabits per second, so the fabric is not the problem. All 3 packets reach output port 2 in each packet time.
+
+195
+00:22:56,836 --> 00:23:06,607
+But output link 2 sends only 1 packet in each packet time. So the queue grows by 3 minus 1, which is 2 packets per packet time.
+
+196
+00:23:07,057 --> 00:23:11,814
+The plot shows the queue at output 2. The buffer holds 50 packets.
+
+197
+00:23:12,264 --> 00:23:17,277
+The orange line is the queue length. It grows by 2 in each packet time.
+
+198
+00:23:17,727 --> 00:23:24,938
+50 divided by 2 is 25 packet times. At 25 the queue reaches the buffer size.
+
+199
+00:23:25,388 --> 00:23:34,476
+25 times 12 microseconds is 300 microseconds. After 300 microseconds the buffer is full.
+
+200
+00:23:34,926 --> 00:23:43,779
+Then, in each packet time, 3 packets arrive but only 1 slot becomes free. So 2 of every 3 arriving packets are lost.
+
+201
+00:23:44,229 --> 00:23:51,525
+Here is the recap. The network layer is in every host and every router. It puts segments in datagrams.
+
+202
+00:23:51,975 --> 00:23:59,719
+Forwarding is local: input link to output link. Routing finds the end-to-end route and builds the routing table.
+
+203
+00:24:00,169 --> 00:24:07,167
+The data plane is per router, in hardware, and fast. The control plane is network-wide, in software.
+
+204
+00:24:07,617 --> 00:24:13,611
+A router has input ports, a switching fabric, output ports and a routing processor.
+
+205
+00:24:14,061 --> 00:24:18,072
+The three fabrics are memory, bus, and interconnection network.
+
+206
+00:24:18,522 --> 00:24:21,594
+The desirable switching rate is N times R.
+
+207
+00:24:22,044 --> 00:24:24,775
+Input queues cause H O L blocking.
+
+208
+00:24:25,225 --> 00:24:32,094
+Output queues form when traffic to one output is more than its line rate. They cause delay and loss.
+
+209
+00:24:32,544 --> 00:24:38,005
 In the next video, we look at the IP datagram format and at fragmentation.

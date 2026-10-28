@@ -3,221 +3,313 @@
 This is ECE 358, video 25 b. We solve the second half of the handout: Selected Problems from Previous Midterm Exams.
 
 2
-00:00:11,671 --> 00:00:36,887
-Question 2 has five short parts: TCP and UDP, applications, port numbers, HTTP, and Go-Back-N. Question 5 is about errors and the Selective Repeat window. Question 6 is about TCP sequence and ACK numbers. The handout gives official answers for questions 2 and 6. For question 5, it refers to the lecture notes.
+00:00:11,671 --> 00:00:20,930
+Question 2 has five short parts: TCP and UDP, applications, port numbers, HTTP, and Go-Back-N.
 
 3
-00:00:37,337 --> 00:00:56,132
-Question 2, part a. What is the difference between the services of TCP and UDP? Pause the video and try it. TCP first. Before data transfer, TCP sets up a connection. The client and the server exchange three control messages.
+00:00:21,380 --> 00:00:25,689
+Question 5 is about errors and the Selective Repeat window.
 
 4
-00:00:56,582 --> 00:01:10,918
-TCP gives reliable, in-order delivery. The receiver sends ACKs. The sender retransmits a lost segment after a timeout. TCP also gives flow control and congestion control.
+00:00:26,139 --> 00:00:30,171
+Question 6 is about TCP sequence and ACK numbers.
 
 5
-00:01:11,368 --> 00:01:23,805
-UDP is connectionless. There is no setup and no ACK. It is a best-effort service. Segments can be lost or arrive out of order, and UDP does not retransmit them.
+00:00:30,621 --> 00:00:38,280
+The handout gives official answers for questions 2 and 6. For question 5, it refers to the lecture notes.
 
 6
-00:01:24,255 --> 00:01:45,717
-The official answer says the same. It also says that UDP has no error detection. But the slides show a checksum in the UDP header. It detects bit errors. UDP does not recover from them. So write: UDP detects bit errors with its checksum, but it does not correct or retransmit.
+00:00:38,730 --> 00:00:47,157
+Question 2, part a. What is the difference between the services of TCP and UDP? Pause the video and try it.
 
 7
-00:01:46,167 --> 00:02:13,196
-Part b. Choose TCP or UDP for four applications, and explain. Pause the video and try it. Slide 12 of chapter 2 gives the rule. Some applications need 100 percent reliable data. They use TCP, which retransmits lost data. Other applications need low delay and can tolerate some loss. They use UDP, because a retransmission arrives too late.
+00:00:47,607 --> 00:00:59,767
+TCP first. Before data transfer, TCP sets up a connection. The client and the server exchange three control messages: SYN, SYN ACK and ACK.
 
 8
-00:02:13,646 --> 00:02:20,281
-One. File transfer needs every byte. A lost byte changes the file. So use TCP.
+00:01:00,217 --> 00:01:10,350
+TCP gives reliable, in-order delivery. The receiver sends ACKs. When a segment is lost, the sender retransmits it after a timeout.
 
 9
-00:02:20,731 --> 00:02:38,139
-Two. A real-time streamed video needs low delay. There is no time to retransmit errors, and a small loss is acceptable. So use UDP. Slide 22 of chapter 3 lists streaming multimedia as a use of UDP.
+00:01:10,800 --> 00:01:15,280
+TCP also gives flow control and congestion control.
 
 10
-00:02:38,589 --> 00:02:49,533
-Three. Web browsing needs pages without errors, so that all content shows correctly. So use TCP. HTTP runs over TCP.
+00:01:15,730 --> 00:01:19,677
+UDP is connectionless. There is no setup and no ACK.
 
 11
-00:02:49,983 --> 00:03:02,079
-Four. A VoIP call has strict timing needs. A retransmission adds too much delay. So use UDP. These four answers match the official answers.
+00:01:20,127 --> 00:01:28,063
+It is a best-effort service. Segments can be lost or arrive out of order, and UDP does not retransmit them.
 
 12
-00:03:02,529 --> 00:03:17,185
-Part c. What are port numbers for? Pause the video and try it. One host runs many application processes. Each process has a socket, and each socket has a port number. Port numbers have 16 bits.
+00:01:28,513 --> 00:01:40,566
+The official answer says the same: TCP is connection-oriented and reliable, with flow control and congestion control. UDP is connectionless and best effort.
 
 13
-00:03:17,635 --> 00:03:26,531
-All segments for this host arrive through one network layer. The transport layer reads the destination port number in the segment header.
+00:01:41,016 --> 00:02:01,112
+The official answer also says that UDP has no error detection. But the slides show a checksum in the UDP header. It detects bit errors. UDP does not recover from them. So write: UDP detects bit errors with its checksum, but it does not correct or retransmit.
 
 14
-00:03:26,981 --> 00:03:39,695
-It gives the data to the socket with that port. Port 80 is the web server. This is demultiplexing. At the sender, the transport layer adds the port numbers. This is multiplexing.
+00:02:01,562 --> 00:02:09,285
+Part b. Choose TCP or UDP for four applications, and explain. Pause the video and try it.
 
 15
-00:03:40,145 --> 00:03:54,119
-So the official answer is: many higher-layer protocols share one TCP or UDP layer. The port number identifies the higher-layer protocol, or process, that the data is for.
+00:02:09,735 --> 00:02:21,084
+Slide 12 of chapter 2 gives the rule. Some applications need 100 percent reliable data. They use TCP, which retransmits lost data.
 
 16
-00:03:54,569 --> 00:04:17,801
-Part d. What is the difference between persistent and non-persistent HTTP? Pause the video and try it. Non-persistent HTTP first. The client opens a TCP connection, gets one object, and the connection closes. For the next object, it opens a new connection. Each object needs 2 RTTs.
+00:02:21,534 --> 00:02:30,537
+Other applications need low delay and can tolerate some loss. They use UDP, because a retransmission arrives too late.
 
 17
-00:04:18,251 --> 00:04:34,379
-Persistent HTTP leaves the connection open after the response. The client sends the next requests over the same connection. So it saves one RTT, and the OS overhead, for each object after the first.
+00:02:30,987 --> 00:02:37,621
+One. File transfer needs every byte. A lost byte changes the file. So use TCP.
 
 18
-00:04:34,829 --> 00:04:48,717
-So the official answer is: persistent HTTP uses one TCP connection for many objects. Non-persistent HTTP needs one TCP connection per object.
+00:02:38,071 --> 00:02:55,479
+Two. A real-time streamed video needs low delay. There is no time to retransmit errors, and a small loss is acceptable. So use UDP. Slide 22 of chapter 3 lists streaming multimedia as a use of UDP.
 
 19
-00:04:49,167 --> 00:05:24,147
-Part e. What is the difference between Go-Back-N and Selective Repeat? Pause the video and try it. Both senders can have up to N unACKed packets in the pipeline. Use the example of slide 34. The sender sends packets 0 to 7, and packets 4 and 6 are lost. In Go-Back-N, the receiver does not buffer out-of-order packets. It discards 5 and 7. For each packet, it ACKs the last in-order packet: 0, 1, 2, 3, then 3 and 3. These are cumulative ACKs.
+00:02:55,929 --> 00:03:06,873
+Three. Web browsing needs pages without errors, so that all content shows correctly. So use TCP. HTTP runs over TCP.
 
 20
-00:05:24,597 --> 00:05:36,139
-The Go-Back-N sender has one timer, for the oldest unACKed packet. When it expires, the sender retransmits all unACKed packets: 4, 5, 6 and 7.
+00:03:07,323 --> 00:03:19,419
+Four. A VoIP call has strict timing needs. A retransmission adds too much delay. So use UDP. These four answers match the official answers.
 
 21
-00:05:36,589 --> 00:05:48,621
-In Selective Repeat, the receiver ACKs each correctly received packet: 0, 1, 2, 3, 5 and 7. It buffers 5 and 7 for in-order delivery later.
+00:03:19,869 --> 00:03:23,880
+Part c. What are port numbers for? Pause the video and try it.
 
 22
-00:05:49,071 --> 00:06:02,255
-The Selective Repeat sender has one timer for each unACKed packet. When a timer expires, it retransmits only that packet: 4, and later 6. This matches the official answer.
+00:03:24,330 --> 00:03:38,645
+One host runs many application processes, for example a web server, an FTP server and RIP. Each process has a socket, and each socket has a port number. Port numbers have 16 bits.
 
 23
-00:06:02,705 --> 00:06:21,734
-Question 5. Nodes A and B use Selective Repeat over one link. K is the size of the sequence number space. W s and W r are the sender and receiver window sizes. The handout says: see the lecture notes for the answer. Pause the video and try it.
+00:03:39,095 --> 00:03:42,913
+All segments for this host arrive through one network layer.
 
 24
-00:06:22,184 --> 00:06:38,419
-Part a. Slide 26 of chapter 3 names four errors of an unreliable channel. Remember them as BOLD. B is bit errors: the channel can corrupt a packet. A checksum detects it, and the receiver discards the packet.
+00:03:43,363 --> 00:03:48,654
+The transport layer reads the destination port number in the segment header: 80.
 
 25
-00:06:38,869 --> 00:06:46,655
-O is out of order: packets can arrive in a different order. Sequence numbers let the receiver put them back in order.
+00:03:49,104 --> 00:04:00,603
+It gives the data to the socket with port 80, the web server. This is demultiplexing. At the sender, the transport layer adds the port numbers. This is multiplexing.
 
 26
-00:06:47,105 --> 00:06:54,401
-L is loss: a packet can disappear. A timer at the sender detects the loss, and the sender retransmits.
+00:04:01,053 --> 00:04:08,029
+So the official answer is: many higher-layer protocols share one TCP or UDP layer.
 
 27
-00:06:54,851 --> 00:07:07,054
-D is duplication: the same packet can arrive twice. Sequence numbers let the receiver find the copy. ACKs give the feedback from the receiver to the sender for all of this.
+00:04:08,479 --> 00:04:14,601
+The port number identifies the higher-layer protocol, or process, that the data is for.
 
 28
-00:07:07,504 --> 00:07:21,477
-Part b. Use the example of slide 48. The sequence numbers are 0, 1, 2 and 3, so K is 4. Both windows have size 3. The sender sends packets 0, 1 and 2.
+00:04:15,051 --> 00:04:22,774
+Part d. What is the difference between persistent and non-persistent HTTP? Pause the video and try it.
 
 29
-00:07:21,927 --> 00:07:34,621
-The receiver gets all three. It delivers them to the upper layer and sends ACKs. After each packet, its window moves. Now the receiver accepts the sequence numbers 3, 0 and 1.
+00:04:23,224 --> 00:04:40,248
+Non-persistent HTTP first. The client opens a TCP connection: one RTT. Then it sends GET and receives object 1: one more RTT. That is 2 RTTs. Then the connection closes.
 
 30
-00:07:35,071 --> 00:07:39,295
-But all three ACKs are lost. So the sender window does not move.
+00:04:40,698 --> 00:04:49,679
+For object 2, the client opens a new connection. Again 2 RTTs. So each object needs 2 RTTs.
 
 31
-00:07:39,745 --> 00:07:45,590
-The timer of packet 0 expires. The sender retransmits the old packet 0.
+00:04:50,129 --> 00:04:55,249
+Persistent HTTP leaves the connection open after the response.
 
 32
-00:07:46,040 --> 00:07:59,309
-Sequence number 0 is in the receiver window. So the receiver accepts the old copy as new data. It delivers the data of packet 0 twice. This is duplicate data at the upper layer.
+00:04:55,699 --> 00:05:11,486
+The client sends the next request over the same connection. Object 2 needs only 1 RTT. So persistent HTTP saves one RTT, and the OS overhead, for each object after the first.
 
 33
-00:07:59,759 --> 00:08:17,231
-Part c. Look at the worst case. The sender may still resend its oldest W s sequence numbers. If all ACKs are lost, the receiver already accepts the next W r numbers. With windows of 3, that is 6 numbers in a space of only 4.
+00:05:11,936 --> 00:05:25,824
+So the official answer is: persistent HTTP uses one TCP connection for many objects. Non-persistent HTTP needs one TCP connection per object.
 
 34
-00:08:17,681 --> 00:08:27,857
-So the numbers 0 and 1 are in both groups. A packet with sequence number 0 can be an old copy or new data. The receiver cannot tell.
+00:05:26,274 --> 00:05:46,114
+Part e. What is the difference between Go-Back-N and Selective Repeat? Pause the video and try it. Both senders can have up to N unACKed packets in the pipeline. Use the example of slide 34. The sender sends packets 0 to 7, and packets 4 and 6 are lost.
 
 35
-00:08:28,307 --> 00:08:39,742
-With windows of 2, the two groups use 4 numbers. Each number has one meaning. The old packet 0 is not in the receiver window, so the receiver does not accept it.
+00:05:46,564 --> 00:05:53,007
+In Go-Back-N, the receiver does not buffer out-of-order packets. It discards 5 and 7.
 
 36
-00:08:40,192 --> 00:08:59,797
-So the two groups must not overlap: W s plus W r must be at most K. Selective Repeat uses equal windows. Then W s must be at most K over 2. This is the rule of slide 48: the window size is at most half of the sequence number space.
+00:05:53,457 --> 00:06:01,755
+For each packet, it ACKs the last in-order packet: 0, 1, 2, 3, then 3 and 3. These are cumulative ACKs.
 
 37
-00:09:00,247 --> 00:09:09,122
-Question 6. Hosts A and B use a TCP connection. B has received all bytes from A up to byte 126.
+00:06:02,205 --> 00:06:13,747
+The Go-Back-N sender has one timer, for the oldest unACKed packet. When it expires, the sender retransmits all unACKed packets: 4, 5, 6 and 7.
 
 38
-00:09:09,572 --> 00:09:27,001
-A sends two segments back to back. Segment 1 has 80 bytes, and its sequence number is 127. Its source port is 302, and its destination port is 80. So it carries bytes 127 to 206.
+00:06:14,197 --> 00:06:26,229
+In Selective Repeat, the receiver ACKs each correctly received packet: 0, 1, 2, 3, 5 and 7. It buffers 5 and 7 for in-order delivery later.
 
 39
-00:09:27,451 --> 00:09:37,243
-Segment 2 has 40 bytes. B sends an ACK for every segment. Find the numbers in parts a, b and c. Pause the video and try it.
+00:06:26,679 --> 00:06:39,863
+The Selective Repeat sender has one timer for each unACKed packet. When a timer expires, it retransmits only that packet: 4, and later 6. This matches the official answer.
 
 40
-00:09:37,693 --> 00:09:53,907
-Part a. A TCP sequence number is the byte-stream number of the first byte in the segment. Segment 1 starts at byte 127 and carries 80 bytes. So it carries bytes 127 to 206.
+00:06:40,313 --> 00:06:59,342
+Question 5. Nodes A and B use Selective Repeat over one link. K is the size of the sequence number space. W s and W r are the sender and receiver window sizes. The handout says: see the lecture notes for the answer. Pause the video and try it.
 
 41
-00:09:54,357 --> 00:09:59,157
-Segment 1 has source port 302 and destination port 80.
+00:06:59,792 --> 00:07:16,027
+Part a. Slide 26 of chapter 3 names four errors of an unreliable channel. Remember them as BOLD. B is bit errors: the channel can corrupt a packet. A checksum detects it, and the receiver discards the packet.
 
 42
-00:09:59,607 --> 00:10:16,460
-So segment 2 starts at byte 127 plus 80, which is 207. It uses the same connection, so the ports do not change: source port 302, and destination port 80. This matches the official answer.
+00:07:16,477 --> 00:07:24,263
+O is out of order: packets can arrive in a different order. Sequence numbers let the receiver put them back in order.
 
 43
-00:10:16,910 --> 00:10:22,926
-Part b. Segment 1 arrives first. Now B has all bytes up to 206.
+00:07:24,713 --> 00:07:32,009
+L is loss: a packet can disappear. A timer at the sender detects the loss, and the sender retransmits.
 
 44
-00:10:23,376 --> 00:10:32,507
-A TCP ACK number is the sequence number of the next byte that the receiver expects. So the ACK number is 207.
+00:07:32,459 --> 00:07:44,662
+D is duplication: the same packet can arrive twice. Sequence numbers let the receiver find the copy. ACKs give the feedback from the receiver to the sender for all of this.
 
 45
-00:10:32,957 --> 00:10:43,794
-The ACK goes from B back to A, so the ports swap. The source port is 80, and the destination port is 302. This matches the official answer.
+00:07:45,112 --> 00:07:59,085
+Part b. Use the example of slide 48. The sequence numbers are 0, 1, 2 and 3, so K is 4. Both windows have size 3. The sender sends packets 0, 1 and 2.
 
 46
-00:10:44,244 --> 00:10:51,327
-Part c. Now segment 2 arrives first. It carries bytes 207 to 246.
+00:07:59,535 --> 00:08:03,845
+The receiver gets all three, and it delivers them to the upper layer.
 
 47
-00:10:51,777 --> 00:11:01,206
-Bytes 127 to 206 are still missing. This is a gap. In practice, TCP buffers the out-of-order bytes.
+00:08:04,295 --> 00:08:13,852
+After each packet, the receiver window moves by one. After packet 2, the receiver accepts the sequence numbers 3, 0 and 1.
 
 48
-00:11:01,656 --> 00:11:19,661
-When an out-of-order segment arrives, the receiver at once sends a duplicate ACK. It holds the sequence number of the next expected byte. So the ACK number is 127: B still waits for byte 127. This matches the official answer.
+00:08:14,302 --> 00:08:18,526
+But all three ACKs are lost. So the sender window does not move.
 
 49
-00:11:20,111 --> 00:11:33,295
-The question does not ask for more. But when segment 1 arrives later, it fills the gap. Then B sends a cumulative ACK, 247, for all bytes up to 246.
+00:08:18,976 --> 00:08:24,821
+The timer of packet 0 expires. The sender retransmits the old packet 0.
 
 50
-00:11:33,745 --> 00:11:50,812
-Here is the recap. One. TCP sets up a connection and gives reliable, in-order delivery, flow control and congestion control. UDP is connectionless and best effort. Its checksum detects bit errors, but it does not recover.
+00:08:25,271 --> 00:08:40,183
+Sequence number 0 is in the receiver window 3, 0, 1. So the receiver accepts the old copy as new data. It delivers the data of packet 0 twice. This is duplicate data at the upper layer.
 
 51
-00:11:51,262 --> 00:12:01,374
-Two. An application that needs every byte uses TCP. An application that needs low delay and tolerates loss uses UDP.
+00:08:40,633 --> 00:08:51,172
+Part c. Look at the worst case. The sender may still resend its oldest W s sequence numbers. With windows of 3, these are 0, 1 and 2.
 
 52
-00:12:01,824 --> 00:12:06,091
-Three. Port numbers identify the process that the data is for.
+00:08:51,622 --> 00:08:58,854
+If all ACKs are lost, the receiver already accepts the next W r numbers: 3, 0 and 1.
 
 53
-00:12:06,541 --> 00:12:17,933
-Four. Non-persistent HTTP uses one TCP connection per object. Persistent HTTP uses one connection for many objects.
+00:08:59,304 --> 00:09:13,960
+3 plus 3 is 6 numbers, in a space of only 4. So the numbers 0 and 1 are in both groups. A packet with sequence number 0 can be an old copy or new data. The receiver cannot tell.
 
 54
-00:12:18,383 --> 00:12:32,633
-Five. Go-Back-N uses cumulative ACKs and one timer, and resends all unACKed packets. Selective Repeat uses individual ACKs and a timer per packet, and resends only the lost packet.
+00:09:14,410 --> 00:09:29,493
+With windows of 2, the two groups use 2 plus 2, that is 4 numbers: 0, 1 and 2, 3. Each number has one meaning. The old packet 0 is not in the receiver window, so the receiver does not accept it.
 
 55
-00:12:33,083 --> 00:12:43,835
-Six. The four errors are bit errors, out of order, loss and duplicates. In Selective Repeat, the window is at most half of the sequence number space.
+00:09:29,943 --> 00:09:35,788
+So the two groups must not overlap: W s plus W r must be at most K.
 
 56
-00:12:44,285 --> 00:12:56,531
+00:09:36,238 --> 00:09:52,729
+Selective Repeat uses equal windows. Then 2 W s must be at most K, so W s must be at most K over 2. This is the rule of slide 48: the window size is at most half of the sequence number space.
+
+57
+00:09:53,179 --> 00:09:58,789
+In the example, K is 4, so the window can be at most 4 over 2, that is 2.
+
+58
+00:09:59,239 --> 00:10:08,114
+Question 6. Hosts A and B use a TCP connection. B has received all bytes from A up to byte 126.
+
+59
+00:10:08,564 --> 00:10:21,791
+A sends two segments back to back. Segment 1 has 80 bytes, and its sequence number is 127. Its source port is 302, and its destination port is 80.
+
+60
+00:10:22,241 --> 00:10:30,753
+So segment 1 carries bytes 127 to 127 plus 80 minus 1, that is 206.
+
+61
+00:10:31,203 --> 00:10:40,995
+Segment 2 has 40 bytes. B sends an ACK for every segment. Find the numbers in parts a, b and c. Pause the video and try it.
+
+62
+00:10:41,445 --> 00:10:57,658
+Part a. A TCP sequence number is the byte-stream number of the first byte in the segment. Segment 1 starts at byte 127 and carries 80 bytes. So it carries bytes 127 to 206.
+
+63
+00:10:58,108 --> 00:11:03,975
+The header of segment 1 has source port 302 and destination port 80.
+
+64
+00:11:04,425 --> 00:11:15,497
+Segment 2 starts right after segment 1, at byte 127 plus 80, which is 207. So its sequence number is 207.
+
+65
+00:11:15,947 --> 00:11:26,357
+It uses the same connection, so the ports do not change: source port 302, and destination port 80. This matches the official answer.
+
+66
+00:11:26,807 --> 00:11:37,453
+Part b. Segment 1 arrives first. It carries bytes 127 to 206. Now B has all bytes up to 206.
+
+67
+00:11:37,903 --> 00:11:49,209
+A TCP ACK number is the sequence number of the next byte that the receiver expects. That is 206 plus 1, so the ACK number is 207.
+
+68
+00:11:49,659 --> 00:12:00,497
+The ACK goes from B back to A, so the ports swap. The source port is 80, and the destination port is 302. This matches the official answer.
+
+69
+00:12:00,947 --> 00:12:15,816
+Part c. Now segment 2 arrives first. It starts at byte 207 and has 40 bytes. So it carries bytes 207 to 207 plus 40 minus 1, that is 246.
+
+70
+00:12:16,266 --> 00:12:25,695
+Bytes 127 to 206 are still missing. This is a gap. In practice, TCP buffers the out-of-order bytes.
+
+71
+00:12:26,145 --> 00:12:44,151
+When an out-of-order segment arrives, the receiver at once sends a duplicate ACK. It holds the sequence number of the next expected byte. So the ACK number is 127: B still waits for byte 127. This matches the official answer.
+
+72
+00:12:44,601 --> 00:12:57,571
+The question does not ask for more. But when segment 1 arrives later, it fills the gap. Then B sends a cumulative ACK, 246 plus 1, that is 247.
+
+73
+00:12:58,021 --> 00:13:15,088
+Here is the recap. One. TCP sets up a connection and gives reliable, in-order delivery, flow control and congestion control. UDP is connectionless and best effort. Its checksum detects bit errors, but it does not recover.
+
+74
+00:13:15,538 --> 00:13:25,650
+Two. An application that needs every byte uses TCP. An application that needs low delay and tolerates loss uses UDP.
+
+75
+00:13:26,100 --> 00:13:30,367
+Three. Port numbers identify the process that the data is for.
+
+76
+00:13:30,817 --> 00:13:42,209
+Four. Non-persistent HTTP uses one TCP connection per object. Persistent HTTP uses one connection for many objects.
+
+77
+00:13:42,659 --> 00:13:56,909
+Five. Go-Back-N uses cumulative ACKs and one timer, and resends all unACKed packets. Selective Repeat uses individual ACKs and a timer per packet, and resends only the lost packet.
+
+78
+00:13:57,359 --> 00:14:08,111
+Six. The four errors are bit errors, out of order, loss and duplicates. In Selective Repeat, the window is at most half of the sequence number space.
+
+79
+00:14:08,561 --> 00:14:20,807
 Seven. A TCP sequence number is the number of the first byte. The ACK number is the next byte expected, and the ACK swaps the ports. That is the end of video 25.

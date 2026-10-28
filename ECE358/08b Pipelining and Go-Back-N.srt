@@ -7,217 +7,441 @@ This is ECE 358, video 8 b. The topic is pipelining and Go-Back-N. It covers Cha
 After this video, you can explain why stop-and-wait has a low utilization. You can calculate the sender utilization with W packets in flight, as in problem set 3. And you can explain the Go-Back-N sender window, cumulative ACKs, and timeouts.
 
 3
-00:00:34,073 --> 00:00:45,807
-Here is the time diagram of slide 30. It is not to scale. The sender transmits the first bit at time 0. It transmits the last bit at time L over R.
+00:00:34,073 --> 00:00:42,180
+Here is the time diagram of slide 30. It is not to scale. The sender transmits the first bit at time 0.
 
 4
-00:00:46,257 --> 00:01:01,979
-The bits travel for the propagation delay. The first bit arrives after d prop. The last bit arrives at L over R plus d prop. Then the receiver sends the ACK. The slides take the ACK transmission time as zero.
+00:00:42,630 --> 00:00:45,894
+It transmits the last bit at time L over R.
 
 5
-00:01:02,429 --> 00:01:13,800
-The ACK travels back for another d prop. It arrives at the sender at RTT plus L over R. RTT is the round-trip time, 2 times d prop.
+00:00:46,344 --> 00:00:51,677
+The bits travel for the propagation delay. The first bit arrives after d prop.
 
 6
-00:01:14,250 --> 00:01:27,519
-Only then can the sender send the next packet. So in each cycle of RTT plus L over R, the sender is busy for only L over R. For the rest of the cycle, it is idle.
+00:00:52,127 --> 00:00:57,973
+The last bit arrives at L over R plus d prop. Then the receiver sends the ACK.
 
 7
-00:01:27,969 --> 00:01:35,201
-From the diagram, U sender equals L over R, divided by RTT plus L over R.
+00:00:58,423 --> 00:01:01,857
+The slides take the ACK transmission time as zero.
 
 8
-00:01:35,651 --> 00:01:59,587
-Put in the numbers. L over R is 0 point 008 ms. RTT is 2 times 15, which is 30 ms. So U sender is 0 point 008 divided by 30 point 008. That is 0 point 0 0 0 2 7, or 0 point 0 2 7 percent.
+00:01:02,307 --> 00:01:09,091
+The ACK travels back for another d prop. It arrives at the sender at L over R plus 2 d prop.
 
 9
-00:02:00,037 --> 00:02:15,248
-The bar shows one cycle to scale. The blue part, where the sender is busy, is too thin to see. It is 1 part in 3751 of the cycle. The sender waits for the ACK almost all the time.
+00:01:09,541 --> 00:01:17,776
+RTT is the round-trip time, 2 times d prop. So the ACK arrives at RTT plus L over R.
 
 10
-00:02:15,698 --> 00:02:40,466
-The throughput is the utilization times the link speed. 0 point 0 0 0 2 7 times 10 to the power 9 is 270 kilobits per second, over a 1 gigabit per second link. With the exact value of U, it is 266 point 6 kilobits per second. The protocol limits the performance of the link.
+00:01:18,226 --> 00:01:21,127
+Only then can the sender send the next packet.
 
 11
-00:02:40,916 --> 00:02:47,892
-The problem is the idle time. In stop-and-wait, only one packet is in flight. The sender waits.
+00:01:21,577 --> 00:01:28,532
+So in each cycle of RTT plus L over R, the sender is busy for only L over R.
 
 12
-00:02:48,342 --> 00:03:00,182
-The solution is pipelining. The sender allows multiple in-flight packets that are not yet acknowledged. The motivation is to increase the sender utilization and the throughput.
+00:01:28,982 --> 00:01:32,886
+For the rest of the cycle, the RTT, the sender is idle.
 
 13
-00:03:00,632 --> 00:03:09,656
-Pipelining needs two changes. First, the range of sequence numbers must increase. Each in-flight packet needs its own number.
+00:01:33,336 --> 00:01:40,568
+From the diagram, U sender equals L over R, divided by RTT plus L over R.
 
 14
-00:03:10,106 --> 00:03:19,301
-Second, the sender and the receiver need buffers. The sender keeps the unACKed packets. The receiver can keep out-of-order packets.
+00:01:41,018 --> 00:01:48,122
+The values come from slide 29. L over R is 0 point 008 ms.
 
 15
-00:03:19,751 --> 00:03:29,500
-Here is slide 33. The sender transmits 3 packets, one after the other. The last bit of packet 3 leaves at 3 L over R.
+00:01:48,572 --> 00:01:55,996
+RTT is 2 times d prop. That is 2 times 15 ms, which is 30 ms.
 
 16
-00:03:29,950 --> 00:03:36,158
-The packets arrive at the receiver one after the other. The receiver sends an ACK for each one.
+00:01:56,446 --> 00:02:08,350
+Put the values into the formula. U sender is 0 point 008 ms, divided by 30 ms plus 0 point 008 ms.
 
 17
-00:03:36,608 --> 00:03:43,605
-The first ACK arrives at the sender at RTT plus L over R. The sender can send the next packet.
+00:02:08,800 --> 00:02:18,976
+That is 0 point 008 divided by 30 point 008, which is about 0 point 0 0 0 2 7.
 
 18
-00:03:44,055 --> 00:03:56,237
-So in one cycle, the sender is busy for 3 L over R instead of 1 L over R. 3-packet pipelining increases the utilization by a factor of 3.
+00:02:19,426 --> 00:02:23,671
+As a percentage, it is 0 point 0 2 7 percent.
 
 19
-00:03:56,687 --> 00:04:31,454
-Put in the numbers of the slide. 3 times 0 point 008 is 0 point 024 ms. Divide by 30 point 008. U sender is 0 point 0 0 0 8 0. The slide writes 0 point 0 0 2 4 on top, which is a typo for 0 point 0 2 4. And it writes 0 point 0 0 0 8 1, which is 3 times the rounded value 0 point 0 0 0 2 7.
+00:02:24,121 --> 00:02:32,655
+The bar shows one cycle of 30 point 008 ms, to scale. The orange part is the wait for the ACK.
 
 20
-00:04:31,904 --> 00:04:43,744
-In general, with W packets in flight, U sender is W times L over R, divided by RTT plus L over R. It cannot be more than 1.
+00:02:33,105 --> 00:02:37,883
+The blue busy part, L over R, is too thin to see. Here it is zoomed.
 
 21
-00:04:44,194 --> 00:05:09,431
-If W is large enough, the packets fill the whole cycle. Then the sender is never idle, and U is 1. This needs W equal to RTT plus L over R, divided by L over R. In the slide example, that is 30 point 008 divided by 0 point 008, which is 3751 packets.
+00:02:38,333 --> 00:02:53,608
+30 point 008 divided by 0 point 008 is 3751. So the busy part is only 1 part in 3751 of the cycle.
 
 22
-00:05:09,881 --> 00:05:28,548
-There are two pipelined protocols, also called sliding window protocols. They differ in error handling. In both, the sender can have up to N unACKed packets in the pipeline. Here the sender sends packets 0 to 7. Packets 4 and 6 are lost.
+00:02:54,058 --> 00:02:57,983
+The throughput is the utilization times the link rate R.
 
 23
-00:05:28,998 --> 00:05:50,353
-In Go-Back-N, the receiver sends an ACK for each in-order packet. It gets 0, 1, 2, 3 and acks each one. Then 5 arrives, but 4 is missing. The receiver does not buffer out-of-sequence packets. It discards 5 and sends ack 3 again, for the last in-order packet. The same happens for 7.
+00:02:58,433 --> 00:03:11,959
+0 point 0 0 0 2 7 times 10 to the power 9 bits per second is 270 thousand bits per second. That is 270 kilobits per second.
 
 24
-00:05:50,803 --> 00:06:00,296
-The sender treats these ACKs as cumulative ACKs. Ack 3 means that all packets up to and including packet 3 are received correctly.
+00:03:12,409 --> 00:03:24,654
+With the exact value of U, it is 266 point 6 kilobits per second, over a 1 gigabit per second link. The protocol limits the performance of the link.
 
 25
-00:06:00,746 --> 00:06:12,842
-In Selective Repeat, the receiver sends an individual ACK for each packet: 0, 1, 2, 3, 5, 7. It buffers the out-of-sequence packets 5 and 7.
+00:03:25,104 --> 00:03:32,080
+The problem is the idle time. In stop-and-wait, only one packet is in flight. The sender waits.
 
 26
-00:06:13,292 --> 00:06:39,169
-The timers are also different. The Go-Back-N sender has one timer, for the oldest unACKed packet. If it expires, the sender retransmits all unACKed packets. The Selective Repeat sender has one timer for each unACKed packet. If a timer expires, it retransmits only that packet. The next video covers Selective Repeat in detail.
+00:03:32,530 --> 00:03:39,485
+The solution is pipelining. The sender allows multiple in-flight packets that are not yet acknowledged.
 
 27
-00:06:39,619 --> 00:06:52,185
-Now the Go-Back-N sender. Each packet header has a k-bit sequence number. For k equal to 5, there are 2 to the power 5, which is 32 numbers, from 0 to 31.
+00:03:39,935 --> 00:03:44,436
+The motivation is to increase the sender utilization and the throughput.
 
 28
-00:06:52,635 --> 00:07:10,491
-The sender sorts the sequence numbers into four groups. Green: already ACKed, here 0 to 7. Orange: sent, but the ACK is not received, here 8 to 14. Blue: usable, not sent yet, here 15 to 19. White: not usable.
+00:03:44,886 --> 00:03:53,931
+Pipelining needs two changes. First, the range of sequence numbers must increase. Each in-flight packet needs its own number.
 
 29
-00:07:10,941 --> 00:07:20,306
-The window is a range of up to N consecutive unACKed packets. Here N is 12. The window covers 8 to 19.
+00:03:54,381 --> 00:04:03,576
+Second, the sender and the receiver need buffers. The sender keeps the unACKed packets. The receiver can keep out-of-order packets.
 
 30
-00:07:20,756 --> 00:07:31,380
-Two pointers mark the window. send base points to the oldest unACKed packet, 8. next seq num points to the next number to send, 15.
+00:04:04,026 --> 00:04:09,423
+Here is slide 33. The sender transmits 3 packets, one after the other.
 
 31
-00:07:31,830 --> 00:07:41,131
-The timeout rule. On timeout of packet n, the sender retransmits packet n and all packets with higher sequence numbers in the window.
+00:04:09,873 --> 00:04:13,479
+The last bit of packet 3 leaves at 3 L over R.
 
 32
-00:07:41,581 --> 00:07:48,685
-Here is slide 36. The first row is the same window: send base 8, next seq num 15.
+00:04:13,929 --> 00:04:17,406
+The packets arrive at the receiver one after the other.
 
 33
-00:07:49,135 --> 00:08:05,050
-The sender receives ACKs for 3 packets: 8, 9 and 10. Now send base is 11. The window slides 3 places to the right. It covers 11 to 22. So 20, 21 and 22 become usable.
+00:04:17,856 --> 00:04:20,629
+The receiver sends an ACK for each packet.
 
 34
-00:08:05,500 --> 00:08:14,673
-Then the upper layer gives the sender 2 data packets. The sender sends them as 15 and 16. next seq num moves to 17.
+00:04:21,079 --> 00:04:28,247
+The first ACK arrives at the sender at RTT plus L over R. Then the sender can send the next packet.
 
 35
-00:08:15,123 --> 00:08:25,491
-Here is slide 37. send base is 11, and next seq num is 17. So packets 11 to 16 are sent but not ACKed.
+00:04:28,697 --> 00:04:32,964
+So in one cycle, the sender is busy for 3 L over R.
 
 36
-00:08:25,941 --> 00:08:37,056
-A timeout occurs. Go-Back-N goes back to send base and retransmits packets 11, 12, 13, 14, 15 and 16. That is 6 packets.
+00:04:33,414 --> 00:04:35,867
+It is idle for the rest of the cycle.
 
 37
-00:08:37,506 --> 00:08:44,397
-There is only one timer. It runs for the oldest unACKed packet, the packet at send base.
+00:04:36,317 --> 00:04:41,544
+3-packet pipelining increases the utilization by a factor of 3.
 
 38
-00:08:44,847 --> 00:08:50,265
-Questions 27, 28 and 29. Pause the video and try them.
+00:04:41,994 --> 00:04:53,578
+Here are the numbers of slide 33. With 3 packets in each cycle, U sender is 3 times L over R, divided by RTT plus L over R.
 
 39
-00:08:50,715 --> 00:08:59,014
-Question 27. In a pipelining protocol, the sender can have multiple in-flight packets that are not yet acknowledged.
+00:04:54,028 --> 00:05:01,281
+3 times 0 point 008 ms is 0 point 024 ms.
 
 40
-00:08:59,464 --> 00:09:10,323
-Question 28. The key advantage is higher sender utilization and throughput. With 3 packets per round trip, the utilization is 3 times larger.
+00:05:01,731 --> 00:05:08,857
+Divide by 30 point 008. U sender is 0 point 0 0 0 8 0.
 
 41
-00:09:10,773 --> 00:09:14,506
-Question 29. Go-Back-N and Selective Repeat.
+00:05:09,307 --> 00:05:17,392
+The slide writes 0 point 0 0 2 4 on top. That is a typo for 0 point 0 2 4.
 
 42
-00:09:14,956 --> 00:09:25,473
-Question 30 asks for a table. Pause the video and try it. In both protocols, the sender can have up to N unACKed packets in the pipeline.
+00:05:17,842 --> 00:05:28,551
+The slide also writes 0 point 0 0 0 8 1. That is 3 times the rounded value 0 point 0 0 0 2 7.
 
 43
-00:09:25,923 --> 00:09:39,043
-In Go-Back-N, the receiver ACKs each in-order packet and discards out-of-order packets. In Selective Repeat, the receiver ACKs each correctly received packet and buffers out-of-order packets.
+00:05:29,001 --> 00:05:38,708
+In general, with W packets in flight, U sender is W times L over R, divided by RTT plus L over R.
 
 44
-00:09:39,493 --> 00:09:54,341
-A Go-Back-N ACK is cumulative. A Selective Repeat ACK is individual. Go-Back-N has one timer, for the oldest unACKed packet. Selective Repeat has one timer per unACKed packet.
+00:05:39,158 --> 00:05:40,971
+U cannot be more than 1.
 
 45
-00:09:54,791 --> 00:10:04,178
-On a timeout, Go-Back-N resends all unACKed packets. Selective Repeat resends only the packet whose timer expired.
+00:05:41,421 --> 00:05:51,725
+The bar shows one cycle, not to scale. Each box is one L over R. With W equal to 3, the sender sends 3 packets and then waits.
 
 46
-00:10:04,628 --> 00:10:43,363
-Problem 1 b continues problem 1 from video 8 a. Data frames are 840 bytes, ACK frames are 40 bytes, and the propagation delay P is 8 ms each way. d is the frame transmission time. One cycle T is d plus 2 P plus a. At 1 gigabit per second, T is 16 point 0 0 7 ms. Pause the video and try it. With a window of W frames, the sender sends W frames per cycle T. So the efficiency is the minimum of W d over T, and 1.
+00:05:52,175 --> 00:05:59,450
+If W is large enough, the packets fill the whole cycle. Then the sender is never idle, and U is 1.
 
 47
-00:10:43,813 --> 00:11:03,696
-W equal to 10. W d over T is 10 times 6 point 7 2 microseconds, over 16 point 0 0 7 ms. That is 0 point 4 2 percent. The throughput is W over T, 625 frames per second.
+00:05:59,900 --> 00:06:17,948
+This needs W equal to RTT plus L over R, divided by L over R. In the slide example, that is 30 point 008 divided by 0 point 008, which is 3751 packets.
 
 48
-00:11:04,146 --> 00:11:14,898
-W equal to 100. The efficiency is 4 point 2 percent, and the throughput is about 6247 frames per second.
+00:06:18,398 --> 00:06:26,398
+There are two pipelined protocols, also called sliding window protocols. They differ in how they handle errors.
 
 49
-00:11:15,348 --> 00:11:25,588
-W equal to 1000. The efficiency is 42 percent, and the throughput is about 62 thousand 5 hundred frames per second.
+00:06:26,848 --> 00:06:31,584
+In both, the sender can have up to N unACKed packets in the pipeline.
 
 50
-00:11:26,038 --> 00:11:48,054
-W equal to 10 thousand. W d over T is 4 point 2, more than 1. So the efficiency is 100 percent. The link is full. The throughput is C over L, 10 to the power 9 over 6720, which is 148 thousand 8 hundred and 10 frames per second.
+00:06:32,034 --> 00:06:34,871
+Here the sender sends packets 0 to 7.
 
 51
-00:11:48,504 --> 00:12:12,269
-The ideal window just fills the cycle: W equals T over d. 16 point 0 0 7 ms over 6 point 7 2 microseconds is 2382 frames. The solution writes 2381, because it rounds T to 16 ms. Both give the same idea.
+00:06:35,321 --> 00:06:37,497
+Packets 4 and 6 are lost.
 
 52
-00:12:12,719 --> 00:12:25,711
-Here is the recap. One. U sender is L over R, divided by RTT plus L over R. It is very small when RTT is large compared with L over R.
+00:06:37,947 --> 00:06:45,926
+In Go-Back-N, the receiver sends an ACK for each in-order packet. It gets 0, 1, 2 and 3, and ACKs each one.
 
 53
-00:12:26,161 --> 00:12:40,092
-Two. Pipelining puts many unACKed packets in flight. It needs more sequence numbers and buffers. With W packets in flight, the utilization is W times larger, up to 1.
+00:06:46,376 --> 00:06:55,933
+Then 5 arrives, but 4 is missing. The receiver does not buffer out-of-sequence packets. It discards 5 and sends ack 3 again.
 
 54
-00:12:40,542 --> 00:12:50,995
-Three. In the problem set form, the efficiency with a window is the minimum of W d over T, and 1. The ideal window is T over d.
+00:06:56,383 --> 00:07:00,287
+The same happens for 7: discard, and ack 3 again.
 
 55
-00:12:51,445 --> 00:13:01,237
-Four. Go-Back-N uses cumulative ACKs, no receiver buffer, and one timer. A timeout resends the packet and all later sent packets.
+00:07:00,737 --> 00:07:09,527
+The sender treats these ACKs as cumulative ACKs. Ack 3 means that all packets up to and including packet 3 are received.
 
 56
-00:13:01,687 --> 00:13:14,850
+00:07:09,977 --> 00:07:19,513
+In Selective Repeat, the receiver sends an individual ACK for each packet that it receives: 0, 1, 2, 3, 5 and 7.
+
+57
+00:07:19,963 --> 00:07:23,184
+It buffers the out-of-sequence packets 5 and 7.
+
+58
+00:07:23,634 --> 00:07:36,690
+The timers are also different. The Go-Back-N sender has one timer, for the oldest unACKed packet. If it expires, the sender retransmits all unACKed packets.
+
+59
+00:07:37,140 --> 00:07:50,260
+The Selective Repeat sender has one timer for each unACKed packet. If a timer expires, it retransmits only that packet. The next video covers Selective Repeat in detail.
+
+60
+00:07:50,710 --> 00:07:55,659
+Now the Go-Back-N sender. Each packet header has a k-bit sequence number.
+
+61
+00:07:56,109 --> 00:08:03,981
+For k equal to 5, there are 2 to the power 5 numbers. That is 32 numbers, from 0 to 31.
+
+62
+00:08:04,431 --> 00:08:12,197
+The sender sorts the sequence numbers into four groups. Green means already ACKed: here 0 to 7.
+
+63
+00:08:12,647 --> 00:08:17,639
+Orange means sent, but the ACK is not received yet: here 8 to 14.
+
+64
+00:08:18,089 --> 00:08:22,185
+Blue means usable, not sent yet: here 15 to 19.
+
+65
+00:08:22,635 --> 00:08:25,835
+White means not usable: here 20 and higher.
+
+66
+00:08:26,285 --> 00:08:34,178
+The window is a range of up to N consecutive sequence numbers for unACKed packets. Here N is 12.
+
+67
+00:08:34,628 --> 00:08:40,516
+The window starts at 8. So it ends at 8 plus 12 minus 1, which is 19.
+
+68
+00:08:40,966 --> 00:08:47,281
+Two pointers mark the window. send base points to the oldest unACKed packet, 8.
+
+69
+00:08:47,731 --> 00:08:51,912
+next seq num points to the next sequence number to send, 15.
+
+70
+00:08:52,362 --> 00:09:01,621
+The timeout rule. On a timeout of packet n, the sender retransmits packet n and all packets with higher sequence numbers in the window.
+
+71
+00:09:02,071 --> 00:09:10,412
+Here is slide 36. The first row is the window from slide 35: send base 8, next seq num 15.
+
+72
+00:09:10,862 --> 00:09:16,345
+The sender receives ACKs for 3 packets: 8, 9 and 10. They turn green.
+
+73
+00:09:16,795 --> 00:09:20,848
+send base moves from 8 to 8 plus 3, which is 11.
+
+74
+00:09:21,298 --> 00:09:29,639
+The window slides 3 places to the right. It now covers 11 to 11 plus 12 minus 1, which is 22.
+
+75
+00:09:30,089 --> 00:09:33,609
+So 20, 21 and 22 become usable.
+
+76
+00:09:34,059 --> 00:09:40,502
+Then the upper layer gives the sender 2 data packets. The sender sends them as 15 and 16.
+
+77
+00:09:40,952 --> 00:09:45,773
+next seq num moves from 15 to 15 plus 2, which is 17.
+
+78
+00:09:46,223 --> 00:09:51,962
+Here is slide 37. send base is 11, and next seq num is 17.
+
+79
+00:09:52,412 --> 00:10:00,497
+So packets 11 to 16 are sent but not ACKed. That is 17 minus 11, which is 6 packets.
+
+80
+00:10:00,947 --> 00:10:10,867
+A timeout occurs. Go-Back-N goes back to send base. It retransmits packets 11, 12, 13, 14, 15 and 16.
+
+81
+00:10:11,317 --> 00:10:18,208
+There is only one timer. It runs for the oldest unACKed packet, the packet at send base.
+
+82
+00:10:18,658 --> 00:10:24,077
+Questions 27, 28 and 29. Pause the video and try them.
+
+83
+00:10:24,527 --> 00:10:32,825
+Question 27. In a pipelining protocol, the sender can have multiple in-flight packets that are not yet acknowledged.
+
+84
+00:10:33,275 --> 00:10:38,801
+Question 28. The key advantage is higher sender utilization and throughput.
+
+85
+00:10:39,251 --> 00:10:51,773
+With 3 packets per round trip, the utilization is 3 times larger: 0 point 0 0 0 8 0 instead of 0 point 0 0 0 2 7.
+
+86
+00:10:52,223 --> 00:10:55,957
+Question 29. Go-Back-N and Selective Repeat.
+
+87
+00:10:56,407 --> 00:11:00,439
+Question 30 asks for a table. Pause the video and try it.
+
+88
+00:11:00,889 --> 00:11:07,545
+Row 1. In both protocols, the sender can have up to N unACKed packets in the pipeline.
+
+89
+00:11:07,995 --> 00:11:16,827
+Row 2. The Go-Back-N receiver ACKs each in-order packet. The Selective Repeat receiver ACKs each correctly received packet.
+
+90
+00:11:17,277 --> 00:11:23,335
+Row 3. Go-Back-N discards out-of-order packets. Selective Repeat buffers them.
+
+91
+00:11:23,785 --> 00:11:30,143
+Row 4. A Go-Back-N ACK is cumulative. A Selective Repeat ACK is individual.
+
+92
+00:11:30,593 --> 00:11:40,705
+Row 5. Go-Back-N has one timer, for the oldest unACKed packet. Selective Repeat has one timer per unACKed packet.
+
+93
+00:11:41,155 --> 00:11:51,501
+Row 6. On a timeout, Go-Back-N resends all unACKed packets. Selective Repeat resends only the packet whose timer expired.
+
+94
+00:11:51,951 --> 00:12:06,949
+Problem 1 b continues problem 1. At 1 gigabit per second, d is 6 point 7 2 microseconds, and T is 16 point 0 0 7 ms. Pause the video and try it.
+
+95
+00:12:07,399 --> 00:12:18,791
+With a window of W frames, the sender sends W frames in each cycle T. So the efficiency is the minimum of W d over T, and 1.
+
+96
+00:12:19,241 --> 00:12:22,483
+The throughput is W over T frames per second.
+
+97
+00:12:22,933 --> 00:12:40,192
+W equal to 10. W d over T is 10 times 6 point 7 2 microseconds, divided by 16 thousand and 7 microseconds. That is 0 point 0 0 4 2, or 0 point 4 2 percent.
+
+98
+00:12:40,642 --> 00:12:50,370
+The throughput is 10 divided by 0 point 0 1 6 0 0 7 seconds, which is 625 frames per second.
+
+99
+00:12:50,820 --> 00:13:00,143
+W equal to 100. W d over T is 0 point 0 4 2, so the efficiency is 4 point 2 percent.
+
+100
+00:13:00,593 --> 00:13:11,473
+The throughput is 100 divided by 0 point 0 1 6 0 0 7 seconds, about 6247 frames per second.
+
+101
+00:13:11,923 --> 00:13:20,584
+W equal to 1000. W d over T is 0 point 4 2, so the efficiency is 42 percent.
+
+102
+00:13:21,034 --> 00:13:26,901
+The throughput is about 62 thousand 4 hundred and 73 frames per second.
+
+103
+00:13:27,351 --> 00:13:37,868
+W equal to 10 thousand. W d over T is 4 point 2, more than 1. So the efficiency is 1, which is 100 percent.
+
+104
+00:13:38,318 --> 00:13:51,993
+The link is full. The throughput is C over L: 10 to the power 9 divided by 6720, which is 148 thousand 8 hundred and 10 frames per second.
+
+105
+00:13:52,443 --> 00:13:57,243
+The ideal window just fills the cycle: W equals T over d.
+
+106
+00:13:57,693 --> 00:14:07,527
+16 thousand and 7 microseconds divided by 6 point 7 2 microseconds is 2382 frames.
+
+107
+00:14:07,977 --> 00:14:25,577
+The solution writes 2381, because it rounds T to 16 ms. 16 thousand microseconds divided by 6 point 7 2 microseconds is 2381. Both give the same idea.
+
+108
+00:14:26,027 --> 00:14:43,137
+Here is the recap. One. U sender is L over R, divided by RTT plus L over R. In the slide example, it is 0 point 0 2 7 percent, so the throughput is only 270 kilobits per second.
+
+109
+00:14:43,587 --> 00:14:57,517
+Two. Pipelining puts many unACKed packets in flight. It needs more sequence numbers and buffers. With W packets in flight, the utilization is W times larger, up to 1.
+
+110
+00:14:57,967 --> 00:15:08,421
+Three. In the problem set form, the efficiency with a window is the minimum of W d over T, and 1. The ideal window is T over d.
+
+111
+00:15:08,871 --> 00:15:18,663
+Four. Go-Back-N uses cumulative ACKs, no receiver buffer, and one timer. A timeout resends the packet and all later sent packets.
+
+112
+00:15:19,113 --> 00:15:32,275
 Five. The window has send base, next seq num, and size N. ACKs slide it to the right. The next video covers Selective Repeat and the window size. That is the end of video 8 b.

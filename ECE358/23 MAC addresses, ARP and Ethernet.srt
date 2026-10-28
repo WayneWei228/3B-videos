@@ -3,401 +3,757 @@
 This is ECE 358, video 23. The topic is link-layer addressing, ARP, and Ethernet. This is Chapter 6, slides 44 to 64.
 
 2
-00:00:13,015 --> 00:00:27,053
-After this video, you can explain MAC addresses, ARP, the addresses of a frame on each hop, and the Ethernet frame. You can also answer the question bank, Link Layer questions 45 to 55.
+00:00:13,015 --> 00:00:18,519
+After this video, you can explain MAC addresses, and why an interface needs one.
 
 3
-00:00:27,503 --> 00:00:41,135
-Recall the IP address from Chapter 4. It is a 32-bit network-layer address of an interface. This laptop has one interface, its network interface card, or NIC.
+00:00:18,969 --> 00:00:22,852
+You can show the ARP query and reply, and the ARP table.
 
 4
-00:00:41,585 --> 00:00:46,982
-The IP address forwards a datagram from host to host, across many networks.
+00:00:23,302 --> 00:00:27,910
+You can fill in the MAC and IP addresses of a frame on each hop.
 
 5
-00:00:47,432 --> 00:01:03,773
-The interface also has a MAC address. It is a link-layer address. Its job is local. It gets a frame from one interface to another interface in the same subnet. Other names are LAN address, physical address, and Ethernet address.
+00:00:28,360 --> 00:00:33,715
+You can explain every field of the Ethernet frame, and bus versus switched Ethernet.
 
 6
-00:01:04,223 --> 00:01:18,325
-Most LANs use a 48-bit MAC address. We write it in hexadecimal, as 6 pairs of digits. The example on the slide is 1A, 2F, BB, 76, 0 9, AD.
+00:00:34,165 --> 00:00:39,711
+And you can answer the question bank, Link Layer questions 45 to 55.
 
 7
-00:01:18,775 --> 00:01:31,681
-Each hex digit is 4 bits. For example, 1 is 0 0 0 1, and A is 1 0 1 0. 12 digits times 4 bits gives 48 bits, or 6 bytes.
+00:00:40,161 --> 00:00:45,580
+This laptop has one interface, its network interface card, or NIC.
 
 8
-00:01:32,131 --> 00:01:38,169
-The MAC address is burned into the ROM of the NIC. Sometimes, software can set it.
+00:00:46,030 --> 00:00:53,283
+Recall the IP address from Chapter 4. It is a 32-bit network-layer address of the interface.
 
 9
-00:01:38,619 --> 00:01:48,923
-Here is one LAN, wired or wireless. Four interfaces connect to it. Each interface has a unique 48-bit MAC address, shown in yellow.
+00:00:53,733 --> 00:00:59,131
+The IP address forwards a datagram from host to host, across many networks.
 
 10
-00:01:49,373 --> 00:02:01,490
-Each interface also has an IP address, shown in purple. All four are in subnet 137 dot 196 dot 7, slash 24.
+00:00:59,581 --> 00:01:05,170
+The interface also has a MAC address. It is a 48-bit link-layer address.
 
 11
-00:02:01,940 --> 00:02:08,831
-Now compare the MAC addresses. They have no common part. The MAC address does not depend on the subnet.
+00:01:05,620 --> 00:01:13,535
+Its job is local. It gets a frame from one interface to another physically-connected interface, in the same subnet.
 
 12
-00:02:09,281 --> 00:02:20,822
-Who gives out MAC addresses? The IEEE administers the MAC address space. A manufacturer buys a portion of the space. This makes every MAC address unique.
+00:01:13,985 --> 00:01:18,379
+Other names are LAN address, physical address, and Ethernet address.
 
 13
-00:02:21,272 --> 00:02:33,816
-The slide gives an analogy. A MAC address is like a Social Security Number. It stays the same. An IP address is like a postal address. It changes when the host moves.
+00:01:18,829 --> 00:01:29,987
+We write a MAC address in hexadecimal, as 6 pairs of digits. The example on the slide is 1A, 2F, BB, 76, 0 9, AD.
 
 14
-00:02:34,266 --> 00:02:50,117
-The MAC address space is flat. A MAC address has no structure that tells where the interface is. Here an interface is on LAN 1. Its IP address belongs to subnet 137 dot 196 dot 7.
+00:01:30,437 --> 00:01:38,351
+Each hex digit is 4 bits. For example, 1 is 0 0 0 1, and A is 1 0 1 0.
 
 15
-00:02:50,567 --> 00:03:01,169
-Move the interface to LAN 2. It keeps its MAC address, so the MAC address is portable. But the IP address must change, because it depends on the subnet.
+00:01:38,801 --> 00:01:46,929
+There are 12 hex digits. 12 times 4 bits gives 48 bits. 48 divided by 8 gives 6 bytes.
 
 16
-00:03:01,619 --> 00:03:10,665
-Here is why an interface needs a MAC address. A sends a frame on the LAN. On a shared LAN, every interface receives the frame.
+00:01:47,379 --> 00:01:53,417
+The MAC address is burned into the ROM of the NIC. Sometimes, software can set it.
 
 17
-00:03:11,115 --> 00:03:18,091
-Each adapter compares the destination MAC address with its own address. The NIC hardware does this.
+00:01:53,867 --> 00:02:00,267
+Here is one LAN, wired or wireless. Four interfaces, A, B, C and D, connect to it.
 
 18
-00:03:18,541 --> 00:03:28,717
-B's address matches, so B's adapter passes the data up to the network layer. C and D do not match, so their adapters discard the frame.
+00:02:00,717 --> 00:02:05,495
+Each interface has a unique 48-bit MAC address, shown in yellow.
 
 19
-00:03:29,167 --> 00:03:39,876
-So, before A can send, A must know the MAC address of the destination interface. A knows only the IP address. The next protocol solves this problem.
+00:02:05,945 --> 00:02:09,913
+Each interface also has an IP address, shown in purple.
 
 20
-00:03:40,326 --> 00:03:54,854
-A knows the IP address of the destination interface. A must find its MAC address. For example, A knows its first-hop router's IP address from DHCP, and needs the router's MAC address.
+00:02:10,363 --> 00:02:21,713
+All four IP addresses start with the same subnet part: 137 dot 196 dot 7. The subnet is slash 24.
 
 21
-00:03:55,304 --> 00:04:08,680
-The answer is ARP, the address resolution protocol. ARP maps an IP address to a MAC address. Each IP node on the LAN, host or router, runs ARP and has an ARP table.
+00:02:22,163 --> 00:02:29,053
+Now compare the MAC addresses. They have no common part. The MAC address does not depend on the subnet.
 
 22
-00:04:09,130 --> 00:04:19,050
-Each entry of the ARP table is a triple: IP address, MAC address, and TTL. The table holds mappings for some nodes on the LAN.
+00:02:29,503 --> 00:02:36,053
+Who gives out MAC addresses? The IEEE administers the 48-bit MAC address space.
 
 23
-00:04:19,500 --> 00:04:27,351
-TTL means time to live. After the TTL, the node forgets the mapping. Typically this is 20 minutes.
+00:02:36,503 --> 00:02:42,177
+A manufacturer buys a portion of the space. This makes every MAC address unique.
 
 24
-00:04:27,801 --> 00:04:40,430
-A wants to send a datagram to B. A knows B's IP address, 137 dot 196 dot 7 dot 14. But A's ARP table is empty.
+00:02:42,627 --> 00:02:49,497
+The slide gives an analogy. A MAC address is like a Social Security Number. It stays the same.
 
 25
-00:04:40,880 --> 00:04:53,659
-Step 1. A broadcasts an ARP query. The query holds B's IP address as the target IP. The frame's destination MAC address is the broadcast address, all F's.
+00:02:49,947 --> 00:02:55,152
+An IP address is like a postal address. It changes when the host moves.
 
 26
-00:04:54,109 --> 00:05:03,645
-All nodes receive the query. C and D do not reply, because the target IP is not theirs. B sees its own IP address.
+00:02:55,602 --> 00:03:02,023
+The MAC address space is flat. A MAC address has no structure that tells where the interface is.
 
 27
-00:05:04,095 --> 00:05:18,153
-Step 2. B replies to A with an ARP response. The response gives B's MAC address, 58 23 D7 FA 20 B0. B sends it only to A, not as a broadcast.
+00:03:02,473 --> 00:03:17,407
+Here the interface is on LAN 1. Its IP address, 137 dot 196 dot 7 dot 23, belongs to subnet 137 dot 196 dot 7.
 
 28
-00:05:18,603 --> 00:05:31,702
-Step 3. A receives B's reply and adds an entry for B to its ARP table. The TTL on the slide is 500. Now A can send the datagram to B's MAC address.
+00:03:17,857 --> 00:03:23,937
+Move the interface to LAN 2. It keeps its MAC address. So the MAC address is portable.
 
 29
-00:05:32,152 --> 00:05:39,085
-Now A sends a datagram to B, but B is on another subnet. The datagram goes through router R.
+00:03:24,387 --> 00:03:28,589
+But the IP address must change, because it depends on the subnet.
 
 30
-00:05:39,535 --> 00:05:47,002
-R has two interfaces, one on each subnet. So R has two IP addresses and two MAC addresses.
+00:03:29,039 --> 00:03:34,394
+Here is why an interface needs a MAC address. A sends a frame to B on the LAN.
 
 31
-00:05:47,452 --> 00:05:55,943
-We assume that A knows B's IP address, R's IP address from DHCP, and R's MAC address from ARP.
+00:03:34,844 --> 00:03:39,772
+On a shared LAN, every interface receives the frame: B, C and D.
 
 32
-00:05:56,393 --> 00:06:17,129
-Step 1. A creates an IP datagram. The source IP is A, 111 dot 111 dot 111 dot 111. The destination IP is B, 222 dot 222 dot 222 dot 222.
+00:03:40,222 --> 00:03:48,094
+Each adapter compares the destination MAC address of the frame with its own address. The NIC hardware does this.
 
 33
-00:06:17,579 --> 00:06:37,163
-Step 2. A creates a link-layer frame that holds the A-to-B datagram. The frame's destination MAC address is R's MAC address, E6 E9 00 17 BB 4B. It is not B's MAC address. The source MAC address is A's MAC address.
+00:03:48,544 --> 00:03:58,293
+B's address, 58 23 D7 FA 20 B0, matches. So B's adapter passes the data up to the network layer.
 
 34
-00:06:37,613 --> 00:06:43,394
-Step 3. A sends the frame on subnet 1. R's left interface receives it.
+00:03:58,743 --> 00:04:04,141
+The addresses of C and D do not match. So their adapters discard the frame.
 
 35
-00:06:43,844 --> 00:06:50,031
-Step 4. R removes the datagram from the frame and passes it up to the IP layer.
+00:04:04,591 --> 00:04:15,300
+So, before A can send, A must know the MAC address of the destination interface. A knows only the IP address. The next protocol solves this problem.
 
 36
-00:06:50,481 --> 00:07:13,926
-Step 1. R determines the outgoing interface. B is on subnet 222 dot 222 dot 222, so the datagram leaves through R's right interface, 222 dot 222 dot 222 dot 220. R passes the datagram to the link layer.
+00:04:15,750 --> 00:04:30,278
+A knows the IP address of the destination interface. A must find its MAC address. For example, A knows its first-hop router's IP address from DHCP, and needs the router's MAC address.
 
 37
-00:07:14,376 --> 00:07:40,232
-Step 2. R creates a new link-layer frame. The source MAC address is R's right interface, 1A 23 F9 CD 06 9B. The destination MAC address is B's MAC address, 49 BD D2 C7 56 2A. R gets it with ARP on subnet 2. The IP source and IP destination do not change.
+00:04:30,728 --> 00:04:37,747
+The answer is ARP, the address resolution protocol. ARP maps an IP address to a MAC address.
 
 38
-00:07:40,682 --> 00:07:44,309
-Step 3. R transmits the frame on subnet 2.
+00:04:38,197 --> 00:04:43,615
+Each IP node on the LAN, host or router, runs ARP and has an ARP table.
 
 39
-00:07:44,759 --> 00:07:50,796
-Step 4. B receives the frame, extracts the datagram, and passes it up to IP.
+00:04:44,065 --> 00:04:55,244
+Each entry of the ARP table is a triple. The first part is an IP address, here 137 dot 196 dot 7 dot 14.
 
 40
-00:07:51,246 --> 00:08:03,897
-Compare the two frames. The MAC source and MAC destination change on each hop. On hop 1, they are A and R's left interface. On hop 2, they are R's right interface and B.
+00:04:55,694 --> 00:04:59,427
+The second part is the MAC address of that IP address.
 
 41
-00:08:04,347 --> 00:08:11,024
-The IP source and IP destination stay the same from end to end. They are always A and B.
+00:04:59,877 --> 00:05:03,099
+The third part is the TTL, time to live.
 
 42
-00:08:11,474 --> 00:08:25,021
-So a MAC address works on one link. An IP address works from the source host to the destination host. For a destination on another subnet, the frame goes to the first-hop router's MAC address.
+00:05:03,549 --> 00:05:08,861
+After the TTL, the node forgets the mapping. Typically this is 20 minutes.
 
 43
-00:08:25,471 --> 00:08:37,439
-Ethernet is the dominant wired LAN technology. It was the first widely used LAN technology. It is simpler and cheap. One chip can support multiple speeds.
+00:05:09,311 --> 00:05:19,401
+A wants to send a datagram to B. A knows B's IP address, 137 dot 196 dot 7 dot 14.
 
 44
-00:08:37,889 --> 00:08:50,070
-Ethernet speeds went from 10 megabits per second to 400 gigabits per second. The axis uses a log scale, so each step to the right is about 10 times faster.
+00:05:19,851 --> 00:05:24,950
+But B's MAC address is not in A's ARP table. The table is empty.
 
 45
-00:08:50,520 --> 00:09:01,997
-Ethernet has two physical topologies. The first is the bus. It was popular until the mid 1990s. All nodes connect to one coaxial cable.
+00:05:25,400 --> 00:05:32,760
+Step 1. A broadcasts an ARP query. The query holds B's IP address as the target IP.
 
 46
-00:09:02,447 --> 00:09:15,631
-If A and D transmit at the same time, their frames collide. On a bus, all nodes are in the same collision domain. A collision domain is a set of interfaces whose frames can collide.
+00:05:33,210 --> 00:05:38,202
+The frame's destination MAC address is the broadcast address, all F's.
 
 47
-00:09:16,081 --> 00:09:25,575
-The second topology is switched. An active link-layer switch is in the center. Each spoke runs its own, separate Ethernet protocol.
+00:05:38,652 --> 00:05:44,049
+The query also holds A's own MAC address and IP address, as the source.
 
 48
-00:09:26,025 --> 00:09:33,769
-So A can send to A prime, and B can send to B prime, at the same time. The nodes do not collide with each other.
+00:05:44,499 --> 00:05:52,307
+All nodes on the LAN receive the query. C and D do not reply, because the target IP is not theirs.
 
 49
-00:09:34,219 --> 00:09:41,792
-A hub looked like a switch, but it behaved like a bus. So all nodes on a hub are in one collision domain.
+00:05:52,757 --> 00:05:55,083
+B sees its own IP address.
 
 50
-00:09:42,242 --> 00:09:52,034
-The sending interface encapsulates the IP datagram in an Ethernet frame. The datagram goes in the data field, also called the payload.
+00:05:55,533 --> 00:06:06,114
+Step 2. B replies to A with an ARP response. B sends it only to A, not as a broadcast. So the destination MAC is A's MAC address.
 
 51
-00:09:52,484 --> 00:10:13,049
-The frame starts with the preamble. It is 8 bytes. It synchronizes the clock rates of the receiver and the sender. It is 7 bytes of 1 0 1 0 1 0 1 0, then one byte of 1 0 1 0 1 0 1 1. The last two ones tell the receiver that the frame starts.
+00:06:06,564 --> 00:06:14,287
+The response gives B's MAC address, 58 23 D7 FA 20 B0, as the target MAC.
 
 52
-00:10:13,499 --> 00:10:19,985
-Next come the addresses. The destination MAC address and the source MAC address are 6 bytes each.
+00:06:14,737 --> 00:06:24,230
+Step 3. A receives B's reply. A adds an entry for B to its ARP table: B's IP address and B's MAC address.
 
 53
-00:10:20,435 --> 00:10:31,016
-The type field is 2 bytes. It tells which higher-layer protocol is in the payload. Mostly it is IP. The receiver uses it to demultiplex up.
+00:06:24,680 --> 00:06:31,293
+The TTL on the slide is 500. Now A can send the datagram to B's MAC address.
 
 54
-00:10:31,466 --> 00:10:45,994
-The frame ends with the CRC, 4 bytes. The receiver does a cyclic redundancy check. If it detects an error, it drops the frame. Video 21 showed how the CRC is calculated.
+00:06:31,743 --> 00:06:35,711
+Now A sends a datagram to B. B is on another subnet.
 
 55
-00:10:46,444 --> 00:10:49,751
-Here is what the receiving adapter does with a frame.
+00:06:36,161 --> 00:06:38,359
+The datagram goes through router R.
 
 56
-00:10:50,201 --> 00:10:59,609
-First it checks the destination address. If it is not the adapter's own address, and not the broadcast address, the adapter discards the frame.
+00:06:38,809 --> 00:06:42,243
+R has two interfaces, one on each subnet.
 
 57
-00:11:00,059 --> 00:11:16,144
-If the address matches, or it is a broadcast, for example an ARP query, the adapter checks the CRC. If the frame is good, the adapter passes the data to the network-layer protocol. The type field selects that protocol.
+00:06:42,693 --> 00:06:46,427
+So R has two IP addresses and two MAC addresses.
 
 58
-00:11:16,594 --> 00:11:24,082
-If the CRC detects an error, the frame is dropped. In no case does the receiver send an acknowledgement.
+00:06:46,877 --> 00:06:51,122
+We assume three facts. First, A knows B's IP address.
 
 59
-00:11:24,532 --> 00:11:31,935
-Ethernet is connectionless. There is no handshake between the sending NIC and the receiving NIC.
+00:06:51,572 --> 00:06:57,247
+Second, A knows the IP address of its first-hop router R, from DHCP.
 
 60
-00:11:32,385 --> 00:11:45,889
-Ethernet is unreliable. The receiving NIC does not send ACKs or NAKs to the sending NIC. Here frame 2 has a CRC error and is dropped. The sender never learns about it.
+00:06:57,697 --> 00:07:00,726
+Third, A knows R's MAC address, from ARP.
 
 61
-00:11:46,339 --> 00:11:59,011
-The data of a dropped frame is recovered only if the sending host uses a higher-layer reliable data transfer protocol, for example TCP. Otherwise, the data is lost.
+00:07:01,176 --> 00:07:12,739
+Step 1. A creates an IP datagram. The source IP is A, 111 dot 111 dot 111 dot 111.
 
 62
-00:11:59,461 --> 00:12:20,559
-Ethernet's MAC protocol is CSMA/CD with binary exponential backoff, from video 22. But switch ports are full-duplex by default, so CSMA/CD does not run there. If a switch port is configured as half-duplex, the host runs CSMA/CD.
+00:07:13,189 --> 00:07:22,255
+The destination IP is B, 222 dot 222 dot 222 dot 222.
 
 63
-00:12:21,009 --> 00:12:38,289
-There are many different Ethernet standards, called 802.3. They all use a common MAC protocol and the same frame format. They have different speeds: 2, 10, and 100 megabits per second, and 1, 10, and 40 gigabits per second.
+00:07:22,705 --> 00:07:37,788
+Step 2. A puts the datagram in a link-layer frame. The frame's destination MAC address is R's MAC address, E6 E9 00 17 BB 4B. It is not B's MAC address.
 
 64
-00:12:38,739 --> 00:12:51,049
-They also use different physical-layer media. Some use copper, that is, twisted pair. Others use fiber. The names, such as 100 BASE T X, name the speed and the medium.
+00:07:38,238 --> 00:07:45,705
+The source MAC address is A's MAC address, 74 29 9C E8 FF 55.
 
 65
-00:12:51,499 --> 00:12:55,701
-So the link layer stays the same, and the physical layer changes.
+00:07:46,155 --> 00:07:51,936
+Step 3. A sends the frame on subnet 1. R's left interface receives it.
 
 66
-00:12:56,151 --> 00:13:06,413
-Question 45 asks for the other names of a MAC address. Question 46 asks how MAC addresses are used. Pause the video and try them.
+00:07:52,386 --> 00:07:58,573
+Step 4. R removes the datagram from the frame and passes it up to the IP layer.
 
 67
-00:13:06,863 --> 00:13:16,676
-Answer to 45. From slide 45, a MAC address is also called a LAN address, a physical address, or an Ethernet address.
+00:07:59,023 --> 00:08:09,305
+Step 1. R determines the outgoing interface. B is on subnet 222 dot 222 dot 222.
 
 68
-00:13:17,126 --> 00:13:36,945
-Answer to 46. A MAC address is used locally. It gets a frame from one interface to another physically-connected interface in the same subnet. The sender puts the destination MAC address in the frame. The destination adapter passes the frame up. All other adapters discard it.
+00:08:09,755 --> 00:08:23,558
+So the datagram leaves through R's right interface, 222 dot 222 dot 222 dot 220. R passes the datagram to the link layer.
 
 69
-00:13:37,395 --> 00:13:52,968
-Question 47. Every host and router interface has an IP address. Why does it also need a MAC address? Question 48. How many bits is a MAC address, and what is the broadcast pattern? Pause the video and try it.
+00:08:24,008 --> 00:08:35,464
+Step 2. R creates a new link-layer frame. The source MAC address is R's right interface, 1A 23 F9 CD 06 9B.
 
 70
-00:13:53,418 --> 00:14:19,189
-Answer to 47. The IP address is for forwarding a datagram from host to host. It stays A to B on every hop. But on each link, the frame must name the next interface. The MAC address does this. The adapters filter frames in hardware, so other hosts do not process the frame. Also, the MAC address is fixed and portable, while the IP address changes with the subnet.
+00:08:35,914 --> 00:08:46,559
+The destination MAC address is B's MAC address, 49 BD D2 C7 56 2A. R gets it with ARP on subnet 2.
 
 71
-00:14:19,639 --> 00:14:30,497
-Answer to 48. A MAC address is 48 bits. The broadcast address has all 48 bits set to 1. In hexadecimal, that is all F's.
+00:08:47,009 --> 00:08:51,148
+The IP source and the IP destination do not change.
 
 72
-00:14:30,947 --> 00:14:44,195
-Question 49. What does flat mean for the MAC address space? Question 50. A subnet has 20 interfaces. Is there a constraint among their MAC addresses? Pause the video and try it.
+00:08:51,598 --> 00:08:55,225
+Step 3. R transmits the frame on subnet 2.
 
 73
-00:14:44,645 --> 00:15:06,448
-Answer to 49. Flat means a MAC address has no structure that depends on location. MAC addresses in one subnet have no relationship with each other. In contrast, all IP addresses in a subnet share the subnet part. Because the space is flat, an interface can move to another LAN and keep its MAC address.
+00:08:55,675 --> 00:09:01,712
+Step 4. B receives the frame, extracts the datagram, and passes it up to IP.
 
 74
-00:15:06,898 --> 00:15:15,197
-Answer to 50. The only constraint is that the 20 MAC addresses are all different. They do not need a common prefix.
+00:09:02,162 --> 00:09:08,690
+Compare the two frames. The MAC source is A on hop 1, and R's right interface on hop 2.
 
 75
-00:15:15,647 --> 00:15:28,447
-Question 51. Which protocol does a host run to learn the MAC address of its first-hop router? Question 52. What is stored in an ARP table? Pause the video and try it.
+00:09:09,140 --> 00:09:14,473
+The MAC destination is R's left interface on hop 1, and B on hop 2.
 
 76
-00:15:28,897 --> 00:15:41,227
-Answer to 51. The host runs ARP, the address resolution protocol. It knows the router's IP address from DHCP. ARP gives the router's MAC address.
+00:09:14,923 --> 00:09:19,211
+So the MAC source and the MAC destination change on each hop.
 
 77
-00:15:41,677 --> 00:15:56,803
-Answer to 52. Each entry of the ARP table is a triple: an IP address, the matching MAC address, and a TTL. The TTL is the time after which the mapping is forgotten, typically 20 minutes.
+00:09:19,661 --> 00:09:22,200
+The IP source is A on both hops.
 
 78
-00:15:57,253 --> 00:16:10,351
-Question 53. Describe ARP as a message sequence chart. Show the message types and their contents. We build it from slides 49 to 51. Pause the video and try it.
+00:09:22,650 --> 00:09:25,871
+The IP destination is B on both hops.
 
 79
-00:16:10,801 --> 00:16:26,225
-Message 1 is the ARP query. A broadcasts it, so the destination MAC is all F's. It holds A's MAC address, A's IP address, and the target IP address, which is B's. C and D do not reply.
+00:09:26,321 --> 00:09:29,756
+So the IP addresses stay the same from end to end.
 
 80
-00:16:26,675 --> 00:16:40,777
-Message 2 is the ARP reply. B sends it only to A, so the destination MAC is A's MAC address. It holds the target IP address and the target MAC address, which is B's MAC address.
+00:09:30,206 --> 00:09:37,011
+A MAC address works on one link. An IP address works from the source host to the destination host.
 
 81
-00:16:41,227 --> 00:16:49,291
-Then A adds B's entry to its ARP table, with a TTL. Now A sends the data frame to B's MAC address.
+00:09:37,461 --> 00:09:43,264
+For a destination on another subnet, the frame goes to the first-hop router's MAC address.
 
 82
-00:16:49,741 --> 00:17:01,602
-Question 54. Compare the bus topology with switched Ethernet. Let there be 10 interfaces, and let all switch ports be full-duplex. Pause the video and try it.
+00:09:43,714 --> 00:09:50,839
+Ethernet is the dominant wired LAN technology. It was the first widely used LAN technology.
 
 83
-00:17:02,052 --> 00:17:09,327
-Topology. A bus is linear: one cable. A switch is a star: each host has its own link to the switch.
+00:09:51,289 --> 00:09:53,039
+It is simpler and cheap.
 
 84
-00:17:09,777 --> 00:17:15,707
-Collision. On a bus, frames can collide. With a full-duplex switch, there are no collisions.
+00:09:53,489 --> 00:09:56,113
+One chip can support multiple speeds.
 
 85
-00:17:16,157 --> 00:17:27,464
-Number of collision domains. On a bus, all 10 interfaces are in one collision domain. With a switch, each port is its own collision domain, so there are 10.
+00:09:56,563 --> 00:10:02,088
+Ethernet speeds went from 10 megabits per second to 400 gigabits per second.
 
 86
-00:17:27,914 --> 00:17:35,551
-Can A to A prime and B to B prime succeed at the same time? On a bus, no. They collide. With a switch, yes.
+00:10:02,538 --> 00:10:13,567
+The axis uses a log scale. Most steps to the right are 10 times faster: 10 to 100 megabits, 100 megabits to 1 gigabit, and so on.
 
 87
-00:17:36,001 --> 00:17:45,367
-Hierarchical organization. A bus has none. Switches can connect to other switches in a hierarchy, as on slide 73.
+00:10:14,017 --> 00:10:21,996
+One step is only 4 times faster: 10 to 40 gigabits per second. So that step is shorter on the axis.
 
 88
-00:17:45,817 --> 00:17:52,110
-Store-and-forward. A bus only carries the signal. A switch stores and forwards frames.
+00:10:22,446 --> 00:10:33,923
+Ethernet has two physical topologies. The first is the bus. It was popular until the mid 1990s. All nodes connect to one coaxial cable.
 
 89
-00:17:52,560 --> 00:18:00,816
-Question 55. Explain each field of the Ethernet frame: its length and its purpose. Pause the video and try it.
+00:10:34,373 --> 00:10:38,384
+If A and D transmit at the same time, their frames collide.
 
 90
-00:18:01,266 --> 00:18:07,303
-The preamble is 8 bytes. It synchronizes the clock rates of the receiver and the sender.
+00:10:38,834 --> 00:10:42,418
+On a bus, all nodes are in the same collision domain.
 
 91
-00:18:07,753 --> 00:18:18,953
-The destination and source MAC addresses are 6 bytes each. The adapter keeps the frame only if the destination is its own address or the broadcast address.
+00:10:42,868 --> 00:10:47,711
+A collision domain is a set of interfaces whose frames can collide.
 
 92
-00:18:19,403 --> 00:18:27,937
-The type field is 2 bytes. It names the higher-layer protocol, mostly IP. The receiver uses it to demultiplex.
+00:10:48,161 --> 00:10:53,281
+The second topology is switched. An active link-layer switch is in the center.
 
 93
-00:18:28,387 --> 00:18:41,421
-The payload holds the IP datagram. The Chapter 6 slides do not give its length. Chapter 4 says an Ethernet MTU is typically 1500 bytes or less.
+00:10:53,731 --> 00:10:57,507
+Each spoke runs its own, separate Ethernet protocol.
 
 94
-00:18:41,871 --> 00:18:49,999
-The CRC is 4 bytes. The receiver uses it to detect errors. If it finds an error, it drops the frame.
+00:10:57,957 --> 00:11:05,701
+So A can send to A prime, and B can send to B prime, at the same time. The nodes do not collide with each other.
 
 95
-00:18:50,449 --> 00:19:16,711
-One more practice question, built on the slide 52 network. A sends one datagram to 111 dot 111 dot 111 dot 112, and one to 222 dot 222 dot 222 dot 221. What are the MAC destination and IP destination of each frame that A sends? Pause the video and try it.
+00:11:06,151 --> 00:11:13,724
+A hub looked like a switch, but it behaved like a bus. So all nodes on a hub are in one collision domain.
 
 96
-00:19:17,161 --> 00:19:43,443
-111 dot 111 dot 111 dot 112 is on A's own subnet. So A uses ARP to find that interface's MAC address, C C 49 DE D0 AB 7D, and sends the frame to it directly. The IP destination is 111 dot 111 dot 111 dot 112.
+00:11:14,174 --> 00:11:23,966
+The sending interface encapsulates the IP datagram in an Ethernet frame. The datagram goes in the data field, also called the payload.
 
 97
-00:19:43,893 --> 00:20:10,709
-222 dot 222 dot 222 dot 221 is on another subnet. So the frame goes to the first-hop router. The MAC destination is R's left interface, E6 E9 00 17 BB 4B. The IP destination is still 222 dot 222 dot 222 dot 221.
+00:11:24,416 --> 00:11:27,872
+The frame starts with the preamble. It is 8 bytes.
 
 98
-00:20:11,159 --> 00:20:27,223
-To recap. A MAC address is a 48-bit link-layer address. It is used locally, on one link. It is flat, unique, and portable. An IP address is a 32-bit network-layer address. It depends on the subnet.
+00:11:28,322 --> 00:11:48,290
+The preamble synchronizes the clock rates of the receiver and the sender. It is 7 bytes of 1 0 1 0 1 0 1 0, then one byte of 1 0 1 0 1 0 1 1. 7 times 8 bits, plus 8 bits, is 64 bits, or 8 bytes.
 
 99
-00:20:27,673 --> 00:20:41,647
-ARP maps an IP address to a MAC address. The query is a broadcast with the target IP. The reply is a unicast with the target MAC. The ARP table holds IP, MAC, and TTL.
+00:11:48,740 --> 00:11:52,260
+The last two ones tell the receiver that the frame starts.
 
 100
-00:20:42,097 --> 00:20:51,803
-To reach another subnet, the frame goes to the first-hop router. The MAC addresses change on each hop. The IP addresses do not change.
+00:11:52,710 --> 00:11:56,806
+Next comes the destination MAC address. It is 6 bytes.
 
 101
-00:20:52,253 --> 00:21:05,629
-The Ethernet frame has a preamble, two addresses, a type, the payload, and a CRC. Ethernet is connectionless and unreliable. The next video shows how switches forward these frames.
+00:11:57,256 --> 00:12:00,328
+Then the source MAC address, also 6 bytes.
+
+102
+00:12:00,778 --> 00:12:08,181
+The type field is 2 bytes. It tells which higher-layer protocol is in the payload. Mostly it is IP.
+
+103
+00:12:08,631 --> 00:12:12,385
+The receiver uses the type field to demultiplex up.
+
+104
+00:12:12,835 --> 00:12:19,619
+The frame ends with the CRC, 4 bytes. The receiver does a cyclic redundancy check.
+
+105
+00:12:20,069 --> 00:12:27,536
+If it detects an error, it drops the frame. Video 21 showed how the CRC is calculated.
+
+106
+00:12:27,986 --> 00:12:32,103
+Here is what the receiving adapter does with a frame that arrives.
+
+107
+00:12:32,553 --> 00:12:39,167
+First it checks the destination address: is it the adapter's own address, or the broadcast address?
+
+108
+00:12:39,617 --> 00:12:42,305
+If not, the adapter discards the frame.
+
+109
+00:12:42,755 --> 00:12:50,243
+If the address matches, or it is a broadcast, for example an ARP query, the adapter checks the CRC.
+
+110
+00:12:50,693 --> 00:12:59,034
+If the frame is good, the adapter passes the data to the network-layer protocol. The type field selects that protocol.
+
+111
+00:12:59,484 --> 00:13:03,409
+If the CRC detects an error, the frame is dropped.
+
+112
+00:13:03,859 --> 00:13:09,086
+In no case does the receiver send an acknowledgement, positive or negative.
+
+113
+00:13:09,536 --> 00:13:16,939
+Ethernet is connectionless. There is no handshake between the sending NIC and the receiving NIC.
+
+114
+00:13:17,389 --> 00:13:22,978
+Ethernet is unreliable. Here frame 2 has a CRC error and is dropped.
+
+115
+00:13:23,428 --> 00:13:31,385
+The receiving NIC does not send ACKs or NAKs to the sending NIC. So the sender never learns about the loss.
+
+116
+00:13:31,835 --> 00:13:44,507
+The data of a dropped frame is recovered only if the sending host uses a higher-layer reliable data transfer protocol, for example TCP. Otherwise, the data is lost.
+
+117
+00:13:44,957 --> 00:13:52,936
+Ethernet's MAC protocol is CSMA/CD with binary exponential backoff, from video 22.
+
+118
+00:13:53,386 --> 00:14:06,549
+But switch ports are full-duplex by default, so CSMA/CD does not run there. If a switch port is configured as half-duplex, the host runs CSMA/CD.
+
+119
+00:14:06,999 --> 00:14:16,193
+There are many different Ethernet standards, called 802.3. They all use a common MAC protocol and the same frame format.
+
+120
+00:14:16,643 --> 00:14:24,473
+They have different speeds: 2, 10, and 100 megabits per second, and 1, 10, and 40 gigabits per second.
+
+121
+00:14:24,923 --> 00:14:30,747
+They also use different physical-layer media. Some use copper, that is, twisted pair.
+
+122
+00:14:31,197 --> 00:14:32,647
+Others use fiber.
+
+123
+00:14:33,097 --> 00:14:37,833
+The names, such as 100 BASE T X, name the speed and the medium.
+
+124
+00:14:38,283 --> 00:14:42,486
+So the link layer stays the same, and the physical layer changes.
+
+125
+00:14:42,936 --> 00:14:53,005
+Question 45 asks for the other names of a MAC address. Question 46 asks how MAC addresses are used. Pause the video and try it.
+
+126
+00:14:53,455 --> 00:15:00,047
+Answer to 45. From slide 45, a MAC address is also called a LAN address.
+
+127
+00:15:00,497 --> 00:15:02,844
+It is also called a physical address.
+
+128
+00:15:03,294 --> 00:15:05,897
+And it is also called an Ethernet address.
+
+129
+00:15:06,347 --> 00:15:16,651
+Answer to 46. A MAC address is used locally. It gets a frame from one interface to another physically-connected interface in the same subnet.
+
+130
+00:15:17,101 --> 00:15:21,005
+The sender puts the destination MAC address in the frame.
+
+131
+00:15:21,455 --> 00:15:26,703
+The destination adapter passes the frame up. All other adapters discard it.
+
+132
+00:15:27,153 --> 00:15:42,726
+Question 47. Every host and router interface has an IP address. Why does it also need a MAC address? Question 48. How many bits is a MAC address, and what is the broadcast pattern? Pause the video and try it.
+
+133
+00:15:43,176 --> 00:15:51,987
+Answer to 47. The IP address is for forwarding a datagram from host to host. It stays A to B on every hop.
+
+134
+00:15:52,437 --> 00:15:57,834
+But on each link, the frame must name the next interface. The MAC address does this.
+
+135
+00:15:58,284 --> 00:16:03,660
+The adapters filter frames in hardware, so other hosts do not process the frame.
+
+136
+00:16:04,110 --> 00:16:09,913
+Also, the MAC address is fixed and portable, while the IP address changes with the subnet.
+
+137
+00:16:10,363 --> 00:16:17,104
+Answer to 48. A MAC address is 6 bytes. 6 times 8 bits gives 48 bits.
+
+138
+00:16:17,554 --> 00:16:21,245
+The broadcast address has all 48 bits set to 1.
+
+139
+00:16:21,695 --> 00:16:27,796
+Each byte of eight ones is F F in hexadecimal. So the broadcast address is all F's.
+
+140
+00:16:28,246 --> 00:16:41,494
+Question 49. What does flat mean for the MAC address space? Question 50. A subnet has 20 interfaces. Is there a constraint among their MAC addresses? Pause the video and try it.
+
+141
+00:16:41,944 --> 00:16:51,245
+Answer to 49. Flat means a MAC address has no structure that depends on location. Here are four interfaces of one subnet.
+
+142
+00:16:51,695 --> 00:16:55,407
+Their MAC addresses have no relationship with each other.
+
+143
+00:16:55,857 --> 00:17:04,540
+In contrast, all their IP addresses share the subnet part, 137 dot 196 dot 7.
+
+144
+00:17:04,990 --> 00:17:10,665
+Because the space is flat, an interface can move to another LAN and keep its MAC address.
+
+145
+00:17:11,115 --> 00:17:19,413
+Answer to 50. The only constraint is that the 20 MAC addresses are all different. They do not need a common prefix.
+
+146
+00:17:19,863 --> 00:17:32,663
+Question 51. Which protocol does a host run to learn the MAC address of its first-hop router? Question 52. What is stored in an ARP table? Pause the video and try it.
+
+147
+00:17:33,113 --> 00:17:45,679
+Answer to 51. The host runs ARP, the address resolution protocol. It knows the router's IP address from DHCP, and it asks for the matching MAC address.
+
+148
+00:17:46,129 --> 00:17:49,243
+The ARP reply gives the router's MAC address.
+
+149
+00:17:49,693 --> 00:17:58,525
+Answer to 52. Each entry of the ARP table is a triple: an IP address, the matching MAC address, and a TTL.
+
+150
+00:17:58,975 --> 00:18:04,607
+The TTL is the time after which the mapping is forgotten, typically 20 minutes.
+
+151
+00:18:05,057 --> 00:18:18,156
+Question 53. Describe ARP as a message sequence chart. Show the message types and their contents. We build it from slides 49 to 51. Pause the video and try it.
+
+152
+00:18:18,606 --> 00:18:23,705
+Message 1 is the ARP query. A broadcasts it to all nodes on the LAN.
+
+153
+00:18:24,155 --> 00:18:28,336
+Because it is a broadcast, the destination MAC is all F's.
+
+154
+00:18:28,786 --> 00:18:32,327
+The query holds A's MAC address as the source MAC.
+
+155
+00:18:32,777 --> 00:18:36,063
+It holds A's IP address as the source IP.
+
+156
+00:18:36,513 --> 00:18:41,035
+And it holds the target IP address, which is B's IP address.
+
+157
+00:18:41,485 --> 00:18:46,243
+C and D do not reply, because the target IP is not theirs.
+
+158
+00:18:46,693 --> 00:18:54,330
+Message 2 is the ARP reply. B sends it only to A, so the destination MAC is A's MAC address.
+
+159
+00:18:54,780 --> 00:18:56,999
+The source MAC is B's MAC address.
+
+160
+00:18:57,449 --> 00:19:04,915
+The reply holds the target IP address and the target MAC address. The target MAC is B's MAC address.
+
+161
+00:19:05,365 --> 00:19:09,589
+Then A adds B's entry to its ARP table, with a TTL.
+
+162
+00:19:10,039 --> 00:19:13,325
+Now A sends the data frame to B's MAC address.
+
+163
+00:19:13,775 --> 00:19:25,636
+Question 54. Compare the bus topology with switched Ethernet. Let there be 10 interfaces, and let all switch ports be full-duplex. Pause the video and try it.
+
+164
+00:19:26,086 --> 00:19:33,361
+Topology. A bus is linear: one cable. A switch is a star: each host has its own link to the switch.
+
+165
+00:19:33,811 --> 00:19:39,741
+Collision. On a bus, frames can collide. With a full-duplex switch, there are no collisions.
+
+166
+00:19:40,191 --> 00:19:46,442
+Number of collision domains. On a bus, all 10 interfaces are in one collision domain.
+
+167
+00:19:46,892 --> 00:19:54,380
+With a switch, each port is its own collision domain. There are 10 ports, so there are 10 collision domains.
+
+168
+00:19:54,830 --> 00:20:02,446
+Can A to A prime and B to B prime succeed at the same time? On a bus, no. They collide. With a switch, yes.
+
+169
+00:20:02,896 --> 00:20:12,261
+Hierarchical organization. A bus has none. Switches can connect to other switches in a hierarchy, as on slide 73.
+
+170
+00:20:12,711 --> 00:20:19,005
+Store-and-forward. A bus only carries the signal. A switch stores and forwards frames.
+
+171
+00:20:19,455 --> 00:20:27,711
+Question 55. Explain each field of the Ethernet frame: its length and its purpose. Pause the video and try it.
+
+172
+00:20:28,161 --> 00:20:43,457
+The preamble is 8 bytes: 7 bytes of 1 0 1 0 1 0 1 0, then 1 byte of 1 0 1 0 1 0 1 1. It synchronizes the clock rates of the receiver and the sender.
+
+173
+00:20:43,907 --> 00:20:53,912
+The destination MAC address is 6 bytes. The adapter keeps the frame only if the destination is its own address or the broadcast address.
+
+174
+00:20:54,362 --> 00:21:00,143
+The source MAC address is also 6 bytes. It is the address of the sending interface.
+
+175
+00:21:00,593 --> 00:21:09,127
+The type field is 2 bytes. It names the higher-layer protocol, mostly IP. The receiver uses it to demultiplex.
+
+176
+00:21:09,577 --> 00:21:22,611
+The payload holds the IP datagram. The Chapter 6 slides do not give its length. Chapter 4 says an Ethernet MTU is typically 1500 bytes or less.
+
+177
+00:21:23,061 --> 00:21:31,211
+The CRC is 4 bytes. The receiver uses it to detect errors. If it finds an error, it drops the frame.
+
+178
+00:21:31,661 --> 00:21:57,922
+One more practice question, built on the slide 52 network. A sends one datagram to 111 dot 111 dot 111 dot 112, and one to 222 dot 222 dot 222 dot 221. What are the MAC destination and IP destination of each frame that A sends? Pause the video and try it.
+
+179
+00:21:58,372 --> 00:22:15,673
+Compare the subnet parts. 111 dot 111 dot 111 dot 112 starts with 111 dot 111 dot 111, the same as A. So it is on A's own subnet.
+
+180
+00:22:16,123 --> 00:22:26,171
+So A uses ARP to find that interface's MAC address, C C 49 DE D0 AB 7D, and sends the frame to it directly.
+
+181
+00:22:26,621 --> 00:22:35,240
+The IP destination is 111 dot 111 dot 111 dot 112.
+
+182
+00:22:35,690 --> 00:22:52,309
+222 dot 222 dot 222 dot 221 starts with 222 dot 222 dot 222. This is not A's subnet. So it is on another subnet.
+
+183
+00:22:52,759 --> 00:23:03,361
+So the frame goes to the first-hop router. The MAC destination is R's left interface, E6 E9 00 17 BB 4B.
+
+184
+00:23:03,811 --> 00:23:13,283
+The IP destination is still 222 dot 222 dot 222 dot 221.
+
+185
+00:23:13,733 --> 00:23:26,171
+To recap. A MAC address is a 48-bit link-layer address. It is used locally, on one link. It is flat, unique, and portable. The broadcast address is all F's.
+
+186
+00:23:26,621 --> 00:23:32,573
+An IP address is a 32-bit network-layer address. It depends on the subnet.
+
+187
+00:23:33,023 --> 00:23:46,996
+ARP maps an IP address to a MAC address. The query is a broadcast with the target IP. The reply is a unicast with the target MAC. The ARP table holds IP, MAC, and TTL.
+
+188
+00:23:47,446 --> 00:23:57,153
+To reach another subnet, the frame goes to the first-hop router. The MAC addresses change on each hop. The IP addresses do not change.
+
+189
+00:23:57,603 --> 00:24:07,885
+The Ethernet frame has a preamble of 8 bytes, two addresses of 6 bytes, a type of 2 bytes, the payload, and a CRC of 4 bytes.
+
+190
+00:24:08,335 --> 00:24:19,407
+Ethernet is connectionless and unreliable. A bus is one collision domain; a switch has one per port. The next video shows how switches forward frames.

@@ -3,217 +3,313 @@
 This is ECE 358, video 14b. It continues video 14a on IPv4 addressing.
 
 2
-00:00:09,559 --> 00:00:24,706
-After this video, you can find the network ID and the broadcast address of any subnet. You can check masks, subnet IDs and binary addresses. Then we solve questions 29 to 45 of the question bank.
+00:00:09,559 --> 00:00:15,618
+After this video, you can find the network ID and the broadcast address of any subnet.
 
 3
-00:00:25,156 --> 00:00:45,593
-Here is the example from slide 37: the network 10.2.5.16/28. Slash 28 means 28 ones and 4 zeros. So the mask is 255.255.255.240.
+00:00:16,068 --> 00:00:20,292
+You can check masks, subnet IDs and binary addresses.
 
 4
-00:00:46,043 --> 00:01:01,873
-The first 28 bits are fixed. Only the last 4 bits change. The first address has all host bits 0. It is 10.2.5.16. This is the network ID. It is used together with the mask.
+00:00:20,742 --> 00:00:25,691
+Then we solve questions 29 to 45 of the question bank.
 
 5
-00:01:02,323 --> 00:01:17,363
-The next address, 10.2.5.17, is usually given to the router. By convention, the router gets the first address after the network ID. The next addresses, from 18, go to hosts.
+00:00:26,141 --> 00:00:38,301
+Here is the example from slide 37: the network 10.2.5.16/28. Slash 28 means 28 ones and 4 zeros.
 
 6
-00:01:17,813 --> 00:01:27,690
-The addresses continue up to 10.2.5.30. Its host bits are 1 1 1 0. This is the last address for a host.
+00:00:38,751 --> 00:00:47,477
+So the mask is 255.255.255.240.
 
 7
-00:01:28,140 --> 00:01:36,588
-The last address has all host bits 1. It is 10.2.5.31. This is the broadcast address.
+00:00:47,927 --> 00:00:56,673
+The first 28 bits are fixed. Only the last 32 minus 28, which is 4 bits, change. These are the host bits.
 
 8
-00:01:37,038 --> 00:01:49,966
-4 host bits give 16 addresses. Two of them, the network ID and the broadcast address, are not given to interfaces. So 14 addresses are left for the router and the hosts.
+00:00:57,123 --> 00:01:07,982
+The first address has all host bits 0. It is 10.2.5.16. This is the network ID. It is used together with the mask.
 
 9
-00:01:50,416 --> 00:02:04,219
-Here is the general method. Take any address in the subnet, for example 10.2.5.23 with slash 28. Keep the 28 prefix bits. Look at the 4 host bits.
+00:01:08,432 --> 00:01:19,995
+The next address, 10.2.5.17, is usually given to the router. By convention, the router gets the first address after the network ID.
 
 10
-00:02:04,669 --> 00:02:12,071
-Set all host bits to 0. The result is the network ID, 10.2.5.16.
+00:01:20,445 --> 00:01:25,650
+The next addresses, from 10.2.5.18, go to hosts.
 
 11
-00:02:12,521 --> 00:02:20,180
-Set all host bits to 1. The result is the broadcast address, 10.2.5.31.
+00:01:26,100 --> 00:01:35,977
+The addresses continue up to 10.2.5.30. Its host bits are 1 1 1 0. This is the last address for a host.
 
 12
-00:02:20,630 --> 00:02:36,651
-So the network ID has all host bits 0. The broadcast address has all host bits 1. With h host bits, the subnet has 2 to the power h addresses, and 2 to the power h minus 2 of them can go to interfaces.
+00:01:36,427 --> 00:01:44,875
+The last address has all host bits 1. It is 10.2.5.31. This is the broadcast address.
 
 13
-00:02:37,101 --> 00:02:53,656
-Here is the problem at the bottom of slide 37. Given the address 10.2.64.128 and a prefix length of 17, find the network ID and the broadcast address. Pause the video and try it.
+00:01:45,325 --> 00:01:49,869
+4 host bits give 2 to the power 4, which is 16 addresses.
 
 14
-00:02:54,106 --> 00:03:10,298
-17 is 8 plus 8 plus 1. So the prefix is the first two bytes and the first bit of the third byte. The third byte is 64, which is 0 1 0 0 0 0 0 0. Its first bit is 0.
+00:01:50,319 --> 00:02:02,415
+Two of them, the network ID and the broadcast address, are not given to interfaces. So 16 minus 2, which is 14 addresses, are left for the router and the hosts.
 
 15
-00:03:10,748 --> 00:03:26,044
-For the network ID, keep the 17 prefix bits and set the other 15 bits to 0. The third byte becomes 0, and the fourth byte becomes 0. The network ID is 10.2.0.0.
+00:02:02,865 --> 00:02:14,513
+Here is the general method. Take any address in the subnet, for example 10.2.5.23 with slash 28. Keep the 28 prefix bits.
 
 16
-00:03:26,494 --> 00:03:47,273
-For the broadcast address, set the 15 host bits to 1. The third byte becomes 0 1 1 1 1 1 1 1, which is 127. The fourth byte becomes 255. The broadcast address is 10.2.127.255.
+00:02:14,963 --> 00:02:16,777
+Look at the 4 host bits.
 
 17
-00:03:47,723 --> 00:04:12,085
-Check: 15 host bits give 2 to the power 15, which is 32,768 addresses. From 10.2.0.0 to 10.2.127.255 there are 128 times 256 addresses, which is also 32,768.
+00:02:17,227 --> 00:02:24,629
+Set all host bits to 0. The result is the network ID, 10.2.5.16.
 
 18
-00:04:12,535 --> 00:04:27,575
-Now we solve the question bank. The question bank has no published answers, so these answers come from the slides. Question 29: how many bits are in an IPv4 address? The answer is 32 bits.
+00:02:25,079 --> 00:02:32,738
+Set all host bits to 1. The result is the broadcast address, 10.2.5.31.
 
 19
-00:04:28,025 --> 00:04:38,393
-Question 30: a router has five physical interfaces. What is the minimum number of IP addresses assigned to it? Pause the video and try it.
+00:02:33,188 --> 00:02:36,367
+So the network ID has all host bits 0.
 
 20
-00:04:38,843 --> 00:04:49,254
-An IP address belongs to an interface. Each of the five interfaces needs its own address. So the router has at least 5 IP addresses.
+00:02:36,817 --> 00:02:39,782
+The broadcast address has all host bits 1.
 
 21
-00:04:49,704 --> 00:05:05,256
-Question 31: your laptop connects with an Ethernet link and with a WiFi link. How many IPv4 addresses does it get? By the same rule, it has two interfaces, so it gets two IPv4 addresses.
+00:02:40,232 --> 00:02:49,043
+With h host bits, the subnet has 2 to the power h addresses, and 2 to the power h minus 2 of them can go to interfaces.
 
 22
-00:05:05,706 --> 00:05:17,567
-Question 32 gives four binary strings. Find the valid IPv4 addresses and write them in dotted-decimal notation. Pause the video and try it.
+00:02:49,493 --> 00:03:06,047
+Here is the problem at the bottom of slide 37. Given the address 10.2.64.128 and a prefix length of 17, find the network ID and the broadcast address. Pause the video and try it.
 
 23
-00:05:18,017 --> 00:05:36,108
-A valid IPv4 address has exactly 32 bits. So count the bits in each string. Some printed strings have spaces. We read the spaces as gaps in the print, not as characters. This is an assumption, because the question bank has no answers.
+00:03:06,497 --> 00:03:13,772
+17 is 8 plus 8 plus 1. So the prefix is the first two bytes and the first bit of the third byte.
 
 24
-00:05:36,558 --> 00:05:58,979
-The first string has 32 bits. It is valid. Split it into bytes: 1 0 0 0 0 0 0 1 is 129. 0 1 1 0 0 0 0 1 is 97. The last two bytes are 0. So it is 129.97.0.0.
+00:03:14,222 --> 00:03:22,265
+The third byte is 64, which is 0 1 0 0 0 0 0 0. Its first bit is 0.
 
 25
-00:05:59,429 --> 00:06:21,616
-The second string also has 32 bits. Its first byte, 1 0 1 0 1 1 0 0, is 172. Its second byte, 0 0 0 1 0 0 0 0, is 16. The rest is 0. So it is 172.16.0.0.
+00:03:22,715 --> 00:03:31,845
+For the network ID, keep the 17 prefix bits and set the other 32 minus 17, which is 15 bits, to 0.
 
 26
-00:06:22,066 --> 00:06:32,583
-The third string has 33 bits, one too many. The fourth string has 31 bits, one too few. Neither is a valid IPv4 address.
+00:03:32,295 --> 00:03:41,127
+The third byte becomes 0, and the fourth byte becomes 0. The network ID is 10.2.0.0.
 
 27
-00:06:33,033 --> 00:06:42,271
-Question 33: what is a subnet? A subnet is a set of interfaces that can physically reach each other without passing through a router.
+00:03:41,577 --> 00:04:02,356
+For the broadcast address, set the 15 host bits to 1. The third byte becomes 0 1 1 1 1 1 1 1, which is 127. The fourth byte becomes 255. The broadcast address is 10.2.127.255.
 
 28
-00:06:42,721 --> 00:06:56,587
-Question 34: what are the subnet part and the host part? The subnet part is the high-order bits. They are the same for all interfaces in the subnet. The host part is the remaining low-order bits.
+00:04:02,806 --> 00:04:10,699
+Check: 15 host bits give 2 to the power 15, which is 32,768 addresses.
 
 29
-00:06:57,037 --> 00:07:10,883
-Questions 35 and 36. There are 27 bits in the subnet part. How many bits are in the host part? And how many addresses are in a slash 27 subnet? Pause the video and try it.
+00:04:11,149 --> 00:04:32,845
+From 10.2.0.0 to 10.2.127.255, the third byte takes 128 values and the fourth byte 256 values. 128 times 256 is also 32,768.
 
 30
-00:07:11,333 --> 00:07:23,343
-The address has 32 bits. 32 minus 27 leaves 5 bits for the host part. 5 host bits give 2 to the power 5, which is 32 addresses.
+00:04:33,295 --> 00:04:48,335
+Now we solve the question bank. The question bank has no published answers, so these answers come from the slides. Question 29: how many bits are in an IPv4 address? The answer is 32 bits.
 
 31
-00:07:23,793 --> 00:07:34,460
-Question 37: give one example each from class A, class B and class C, in dotted decimal and in binary. Pause the video and try it.
+00:04:48,785 --> 00:04:59,153
+Question 30: a router has five physical interfaces. What is the minimum number of IP addresses assigned to it? Pause the video and try it.
 
 32
-00:07:34,910 --> 00:07:53,875
-A class A address begins with 0. So the first byte is from 0 to 127. One example is 10.0.0.0. In binary, the first byte is 0 0 0 0 1 0 1 0. The prefix is 8 bits.
+00:04:59,603 --> 00:05:10,014
+An IP address belongs to an interface. Each of the five interfaces needs its own address. So the router has at least 5 IP addresses.
 
 33
-00:07:54,325 --> 00:08:14,656
-A class B address begins with 1 0. The first byte is from 128 to 191. One example is 129.97.0.0. The first byte is 1 0 0 0 0 0 0 1. The prefix is 16 bits.
+00:05:10,464 --> 00:05:19,872
+Question 31: your laptop connects with an Ethernet link and with a WiFi link. How many IPv4 addresses does it get?
 
 34
-00:08:15,106 --> 00:08:40,002
-A class C address begins with 1 1 0. The first byte is from 192 to 223. One example is 192.168.16.0. The first byte is 1 1 0 0 0 0 0 0. The prefix is 24 bits. Other examples are also correct, if the leading bits match.
+00:05:20,322 --> 00:05:26,018
+By the same rule, it has two interfaces, so it gets two IPv4 addresses.
 
 35
-00:08:40,452 --> 00:08:55,193
-Question 38: the main drawback of classful addressing is a fixed number of networks, with a fixed number of addresses in each. Question 39: the main feature of CIDR is that the subnet part can have any length.
+00:05:26,468 --> 00:05:38,329
+Question 32 gives four binary strings. Find the valid IPv4 addresses and write them in dotted-decimal notation. Pause the video and try it.
 
 36
-00:08:55,643 --> 00:09:02,726
-Question 40: what is the network mask for prefix length slash 23? Pause the video and try it.
+00:05:38,779 --> 00:05:56,870
+A valid IPv4 address has exactly 32 bits. So count the bits in each string. Some printed strings have spaces. We read the spaces as gaps in the print, not as characters. This is an assumption, because the question bank has no answers.
 
 37
-00:09:03,176 --> 00:09:22,632
-23 is 8 plus 8 plus 7. So the mask is 255, 255, then a byte with 7 ones, which is 254, then 0. The mask is 255.255.254.0.
+00:05:57,320 --> 00:06:24,541
+The first string has 32 bits. It is valid. Split it into bytes: 1 0 0 0 0 0 0 1 is 128 plus 1, which is 129. 0 1 1 0 0 0 0 1 is 64 plus 32 plus 1, which is 97. The last two bytes are 0. So it is 129.97.0.0.
 
 38
-00:09:23,082 --> 00:09:46,719
-Question 41: which of these masks are valid? 255.255.65.0, 255.255.128.0, and 255.255.254.0. Pause the video and try it.
+00:06:24,991 --> 00:06:51,018
+The second string also has 32 bits. Its first byte, 1 0 1 0 1 1 0 0, is 128 plus 32 plus 8 plus 4, which is 172. Its second byte, 0 0 0 1 0 0 0 0, is 16. The rest is 0. So it is 172.16.0.0.
 
 39
-00:09:47,169 --> 00:10:20,913
-Look at the third byte. 65 is 0 1 0 0 0 0 0 1. It starts with 0 and has 1s after it, so 255.255.65.0 is not valid. 128 is 1 0 0 0 0 0 0 0, which is one block of ones. It is valid, for slash 17. 254 is seven ones, then a zero. It is valid, for slash 23.
+00:06:51,468 --> 00:06:58,209
+The third string has 33 bits, one too many. It is not a valid IPv4 address.
 
 40
-00:10:21,363 --> 00:10:33,480
-Question 42: for the subnet 129.92.12.0/23, what is the broadcast address? Pause the video and try it.
+00:06:58,659 --> 00:07:03,694
+The fourth string has 31 bits, one too few. It is not valid either.
 
 41
-00:10:33,930 --> 00:10:47,498
-Slash 23 means 23 prefix bits. That is the first two bytes and 7 bits of the third byte. So the host part is the last bit of the third byte and all of the fourth byte: 9 bits.
+00:07:04,144 --> 00:07:13,381
+Question 33: what is a subnet? A subnet is a set of interfaces that can physically reach each other without passing through a router.
 
 42
-00:10:47,948 --> 00:11:10,156
-Set the 9 host bits to 1. The third byte, 12, is 0 0 0 0 1 1 0 0. With its last bit set to 1, it becomes 13. The fourth byte becomes 255. The broadcast address is 129.92.13.255.
+00:07:13,831 --> 00:07:27,698
+Question 34: what are the subnet part and the host part? The subnet part is the high-order bits. They are the same for all interfaces in the subnet. The host part is the remaining low-order bits.
 
 43
-00:11:10,606 --> 00:11:22,169
-Question 43: is 129.92.12.16/23 a valid subnet ID? Pause the video and try it.
+00:07:28,148 --> 00:07:41,993
+Questions 35 and 36. There are 27 bits in the subnet part. How many bits are in the host part? And how many addresses are in a slash 27 subnet? Pause the video and try it.
 
 44
-00:11:22,619 --> 00:11:45,360
-A subnet ID must have all host bits 0. Here the fourth byte is 16, which is 0 0 0 1 0 0 0 0. One host bit is 1. So it is not a valid subnet ID. It is a host address inside the subnet 129.92.12.0/23.
+00:07:42,443 --> 00:07:49,057
+The address has 32 bits. 32 minus 27 leaves 5 bits for the host part.
 
 45
-00:11:45,810 --> 00:11:57,778
-Question 44: name an application layer protocol that uses IP broadcast. The answer is DHCP. Slide 36 also names ARP.
+00:07:49,507 --> 00:07:54,371
+5 host bits give 2 to the power 5, which is 32 addresses.
 
 46
-00:11:58,228 --> 00:12:16,724
-Question 45: the subnet 10.1.6.16/28 has two router interfaces. Find the mask, the broadcast address, the addresses of the router interfaces, and the maximum number of hosts. Pause the video and try it.
+00:07:54,821 --> 00:08:05,487
+Question 37: give one example each from class A, class B and class C, in dotted decimal and in binary. Pause the video and try it.
 
 47
-00:12:17,174 --> 00:12:34,177
-Part a. Slash 28 means 28 ones. The mask is 255.255.255.240. 4 host bits give 16 addresses, from .16 to .31.
+00:08:05,937 --> 00:08:24,903
+A class A address begins with 0. So the first byte is from 0 to 127. One example is 10.0.0.0. In binary, the first byte is 0 0 0 0 1 0 1 0. The prefix is 8 bits.
 
 48
-00:12:34,627 --> 00:12:47,043
-Part b. The first address, .16, is the network ID. The last address, with all host bits 1, is the broadcast address: 10.1.6.31.
+00:08:25,353 --> 00:08:45,683
+A class B address begins with 1 0. The first byte is from 128 to 191. One example is 129.97.0.0. The first byte is 1 0 0 0 0 0 0 1. The prefix is 16 bits.
 
 49
-00:12:47,493 --> 00:13:02,597
-Part c. By convention, the router interfaces get the first addresses after the network ID. So the two router interfaces are 10.1.6.17 and 10.1.6.18.
+00:08:46,133 --> 00:09:11,029
+A class C address begins with 1 1 0. The first byte is from 192 to 223. One example is 192.168.16.0. The first byte is 1 1 0 0 0 0 0 0. The prefix is 24 bits. Other examples are also correct, if the leading bits match.
 
 50
-00:13:03,047 --> 00:13:16,828
-Part d. 16 addresses, minus the network ID and the broadcast address, minus the two router interfaces, leaves 12. So you can connect at most 12 hosts, from .19 to .30.
+00:09:11,479 --> 00:09:20,034
+Question 38: the main drawback of classful addressing is a fixed number of networks, with a fixed number of addresses in each.
 
 51
-00:13:17,278 --> 00:13:29,033
-Here is the recap. An IPv4 address has 32 bits. It identifies an interface, not a device. We write it as four bytes in dotted decimal.
+00:09:20,484 --> 00:09:26,287
+Question 39: the main feature of CIDR is that the subnet part can have any length.
 
 52
-00:13:29,483 --> 00:13:42,112
-A subnet is a set of interfaces that reach each other without a router. To find subnets, detach the interfaces. Each island is a subnet. Links between routers are subnets too.
+00:09:26,737 --> 00:09:33,819
+Question 40: what is the network mask for prefix length slash 23? Pause the video and try it.
 
 53
-00:13:42,562 --> 00:13:50,903
-With CIDR, the prefix length x can be any value. The address has x prefix bits and 32 minus x host bits.
+00:09:34,269 --> 00:09:42,568
+23 is 8 plus 8 plus 7. So the mask has 8 ones, 8 ones, then a byte with 7 ones, then 0.
 
 54
-00:13:51,353 --> 00:13:57,924
-The mask has x ones, then zeros. Each byte of a valid mask is one of nine values.
+00:09:43,018 --> 00:09:53,535
+A byte with 7 ones is 254. The mask is 255.255.254.0.
 
 55
-00:13:58,374 --> 00:14:13,115
-The network ID has all host bits 0. The broadcast address has all host bits 1. In the next video, we design subnets for a given block, and we see how a host gets its address with DHCP.
+00:09:53,985 --> 00:10:17,623
+Question 41: which of these masks are valid? 255.255.65.0, 255.255.128.0, and 255.255.254.0. Pause the video and try it.
+
+56
+00:10:18,073 --> 00:10:34,755
+Look at the third byte. 65 is 0 1 0 0 0 0 0 1. It starts with 0 and has 1s after it, so 255.255.65.0 is not valid.
+
+57
+00:10:35,205 --> 00:10:47,920
+128 is 1 0 0 0 0 0 0 0, which is one block of ones. It is valid, for slash 16 plus 1, which is slash 17.
+
+58
+00:10:48,370 --> 00:10:56,967
+254 is seven ones, then a zero. It is valid, for slash 16 plus 7, which is slash 23.
+
+59
+00:10:57,417 --> 00:11:09,556
+Question 42: for the subnet 129.92.12.0/23, what is the broadcast address? Pause the video and try it.
+
+60
+00:11:10,006 --> 00:11:19,841
+Slash 23 means 23 prefix bits. 23 is 8 plus 8 plus 7: the first two bytes and 7 bits of the third byte.
+
+61
+00:11:20,291 --> 00:11:28,675
+So the host part is the last bit of the third byte and all of the fourth byte: 32 minus 23, which is 9 bits.
+
+62
+00:11:29,125 --> 00:11:40,837
+Set the 9 host bits to 1. The third byte, 12, is 0 0 0 0 1 1 0 0. With its last bit set to 1, it becomes 13.
+
+63
+00:11:41,287 --> 00:11:51,591
+The fourth byte becomes 255. The broadcast address is 129.92.13.255.
+
+64
+00:11:52,041 --> 00:12:03,603
+Question 43: is 129.92.12.16/23 a valid subnet ID? Pause the video and try it.
+
+65
+00:12:04,053 --> 00:12:18,795
+A subnet ID must have all host bits 0. Here the fourth byte is 16, which is 0 0 0 1 0 0 0 0. One host bit is 1. So it is not a valid subnet ID.
+
+66
+00:12:19,245 --> 00:12:27,799
+It is a host address inside the subnet 129.92.12.0/23.
+
+67
+00:12:28,249 --> 00:12:40,217
+Question 44: name an application layer protocol that uses IP broadcast. The answer is DHCP. Slide 36 also names ARP.
+
+68
+00:12:40,667 --> 00:12:59,163
+Question 45: the subnet 10.1.6.16/28 has two router interfaces. Find the mask, the broadcast address, the addresses of the router interfaces, and the maximum number of hosts. Pause the video and try it.
+
+69
+00:12:59,613 --> 00:13:11,411
+Part a. Slash 28 means 28 ones. The mask is 255.255.255.240.
+
+70
+00:13:11,861 --> 00:13:20,522
+32 minus 28 is 4 host bits. 2 to the power 4 is 16 addresses, from .16 to .31.
+
+71
+00:13:20,972 --> 00:13:33,388
+Part b. The first address, .16, is the network ID. The last address, with all host bits 1, is the broadcast address: 10.1.6.31.
+
+72
+00:13:33,838 --> 00:13:48,942
+Part c. By convention, the router interfaces get the first addresses after the network ID. So the two router interfaces are 10.1.6.17 and 10.1.6.18.
+
+73
+00:13:49,392 --> 00:14:03,173
+Part d. 16 addresses, minus the network ID and the broadcast address, minus the two router interfaces, leaves 12. So you can connect at most 12 hosts, from .19 to .30.
+
+74
+00:14:03,623 --> 00:14:15,378
+Here is the recap. An IPv4 address has 32 bits. It identifies an interface, not a device. We write it as four bytes in dotted decimal.
+
+75
+00:14:15,828 --> 00:14:28,457
+A subnet is a set of interfaces that reach each other without a router. To find subnets, detach the interfaces. Each island is a subnet. Links between routers are subnets too.
+
+76
+00:14:28,907 --> 00:14:37,249
+With CIDR, the prefix length x can be any value. The address has x prefix bits and 32 minus x host bits.
+
+77
+00:14:37,699 --> 00:14:44,269
+The mask has x ones, then zeros. Each byte of a valid mask is one of nine values.
+
+78
+00:14:44,719 --> 00:14:51,098
+The network ID has all host bits 0. The broadcast address has all host bits 1.
+
+79
+00:14:51,548 --> 00:14:59,441
+In the next video, we design subnets for a given block, and we see how a host gets its address with DHCP.

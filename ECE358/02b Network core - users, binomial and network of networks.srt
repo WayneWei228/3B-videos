@@ -3,241 +3,513 @@
 This is ECE 358, video 2 b. The topic is the network core, part 2. Video 2 a explained forwarding, store and forward, queueing, and circuit switching.
 
 2
-00:00:13,271 --> 00:00:34,157
-After this video, you can count the users that a link supports with circuit and packet switching. You can compare the two methods. And you can describe the structure of the Internet. At the end, we solve question bank questions 22 to 24 and 26 to 31, and problems 2 and 4 of problem set 1.
+00:00:13,271 --> 00:00:19,266
+After this video, you can count the users that a link supports with circuit and packet switching.
 
 3
-00:00:34,607 --> 00:00:48,409
-Slide 28 compares the two methods with numbers. A 1 gigabit per second link is shared. Each user sends at 100 megabits per second when active, and is active 10 percent of the time.
+00:00:19,716 --> 00:00:21,657
+You can compare the two methods.
 
 4
-00:00:48,859 --> 00:01:03,537
-With circuit switching, each user reserves 100 megabits per second all the time. 1 gigabit divided by 100 megabits is 10. So only 10 users fit. User 11 gets no circuit.
+00:00:22,107 --> 00:00:26,609
+You can describe the structure of the Internet, as a network of networks.
 
 5
-00:01:03,987 --> 00:01:25,213
-With packet switching, nobody reserves anything. Suppose 35 users share the link. On average, 35 times 0.1, which is 3.5 users, are active. In this moment, 4 users are active. They need 400 megabits per second. The link has enough capacity.
+00:00:27,059 --> 00:00:31,027
+And you can solve problems 2 and 4 of problem set 1.
 
 6
-00:01:25,663 --> 00:01:41,087
-The link is overloaded only when more than 10 users are active at the same time. The slide says this probability is less than point 0 0 0 4. So packet switching supports many more than 10 users.
+00:00:31,477 --> 00:00:37,834
+We also solve question bank questions 22 to 24, and 26 to 31.
 
 7
-00:01:41,537 --> 00:02:06,775
-This slide is optional. The slide calls the calculation a homework problem. But problem set 1 uses the same method, so learn it. Each user is active with probability p. The users are independent. The probability that exactly n of M users are active is M choose n, times p to the power n, times 1 minus p to the power M minus n.
+00:00:38,284 --> 00:00:41,825
+Slide 28 compares the two methods with numbers.
 
 8
-00:02:07,225 --> 00:02:17,230
-Here M is 35 and p is 0.1. The bars show P of n. Most of the probability is near 3 or 4 active users.
+00:00:42,275 --> 00:00:45,198
+A link of 1 gigabit per second is shared.
 
 9
-00:02:17,680 --> 00:02:26,917
-Overload means more than 10 active users. Add P of n for n from 11 to 35. The bars are too small to see.
+00:00:45,648 --> 00:00:50,405
+Each user sends at 100 Mbps when it is active.
 
 10
-00:02:27,367 --> 00:02:45,245
-The sum is about 0.00042. So the link is overloaded only about 0.04 percent of the time. The slide gives the value as less than point 0 0 0 4. The exact sum is very close to it.
+00:00:50,855 --> 00:00:54,013
+Each user is active 10 percent of the time.
 
 11
-00:02:45,695 --> 00:02:56,468
-Is packet switching always better? Data is often bursty. Sometimes a user has data to send, but at other times not. Here are three bursty users.
+00:00:54,463 --> 00:01:04,468
+With circuit switching, each user reserves 100 Mbps all the time. User 1 gets the first 100 Mbps.
 
 12
-00:02:56,918 --> 00:03:14,881
-Packet switching is great for bursty data. All users share the buffer and the link capacity. It is also simpler. There is no call setup, so no extra messages go before the data. This link carries 2 users, and most of the time the load is 2 or less.
+00:01:04,918 --> 00:01:14,689
+1 gigabit per second is 1000 Mbps. 1000 divided by 100 is 10. So only 10 users fit.
 
 13
-00:03:15,331 --> 00:03:31,971
-But excessive congestion is possible. In this slot, all 3 users are active. Packets queue, and buffer overflow causes delay and loss. So packet switching needs protocols for reliable data transfer and congestion control.
+00:01:15,139 --> 00:01:17,443
+User 11 gets no circuit.
 
 14
-00:03:32,421 --> 00:03:41,167
-How can packet switching give circuit-like behavior? The slide says: it is complicated. The course studies some techniques later.
+00:01:17,893 --> 00:01:24,229
+With packet switching, nobody reserves anything. Suppose 35 users share the link.
 
 15
-00:03:41,617 --> 00:04:07,985
-Now the structure of the Internet. Hosts connect to the Internet through access Internet Service Providers, or access I S Ps. The access I S Ps must be interconnected, so that any two hosts, anywhere, can send packets to each other. Economics and national policies drive the result. The slides build the structure step by step. There are millions of access I S Ps. How do we connect them?
+00:01:24,679 --> 00:01:31,313
+On average, 35 times 0.1, which is 3.5 users, are active.
 
 16
-00:04:08,435 --> 00:04:27,422
-Option 1: connect each access I S P directly to each other access I S P. Each one needs a link to the other N minus 1. The number of links is N times N minus 1, divided by 2. For 8 access I S Ps, that is 28 links.
+00:01:31,763 --> 00:01:46,526
+At this moment, 4 users are active. They need 4 times 100, which is 400 Mbps. That is not more than 1000 Mbps, so the link has enough capacity.
 
 17
-00:04:27,872 --> 00:04:39,776
-For a million access I S Ps, it is about 5 times 10 to the power 11 links. The number grows as N squared. So the direct design does not scale.
+00:01:46,976 --> 00:01:59,285
+The link is overloaded only when more than 10 users are active at the same time. 11 users need 1100 Mbps, which is more than 1000.
 
 18
-00:04:40,226 --> 00:04:56,141
-Option 2: connect each access I S P to one global transit I S P. Each access I S P needs only one link. So the number of links is N. For 8 access I S Ps, that is 8 links, not 28.
+00:01:59,735 --> 00:02:05,069
+The slide says that this probability is less than point 0 0 0 4.
 
 19
-00:04:56,591 --> 00:05:06,063
-The access I S P is the customer. The global I S P is the provider. The customer and the provider have an economic agreement.
+00:02:05,519 --> 00:02:09,060
+So packet switching supports many more than 10 users.
 
 20
-00:05:06,513 --> 00:05:22,705
-If one global I S P is a viable business, there will be competitors. Here are I S P A, B and C. Each one has its own access networks. But a host of I S P A cannot reach a host of I S P B yet.
+00:02:09,510 --> 00:02:19,067
+This slide is optional. The slide calls the calculation a homework problem. But problem set 1 uses the same method, so learn it.
 
 21
-00:05:23,155 --> 00:05:34,483
-The competitors want to be connected. One way is an Internet exchange point, I X P. An I X P is a place where many I S Ps connect to each other.
+00:02:19,517 --> 00:02:24,851
+Each user is active with probability p. The users are independent.
 
 22
-00:05:34,933 --> 00:05:41,205
-The second way is a peering link. A peering link is a direct link between two I S Ps.
+00:02:25,301 --> 00:02:30,463
+P of n is the probability that exactly n of the M users are active.
 
 23
-00:05:41,655 --> 00:05:51,255
-Next, regional networks may arise. A regional I S P connects the access networks of one region to a larger I S P.
+00:02:30,913 --> 00:02:34,967
+M choose n counts the ways to choose the n active users.
 
 24
-00:05:51,705 --> 00:06:07,449
-Last, content provider networks, for example Google, Microsoft and Akamai, may run their own network. It brings services and content close to the end users. It links directly to I X Ps and access networks.
+00:02:35,417 --> 00:02:40,302
+p to the power n is the probability that those n users are active.
 
 25
-00:06:07,899 --> 00:06:30,619
-Here is the result. At the center is a small number of well-connected, large networks. The first kind is the tier-1 commercial I S P. Examples are Level 3, Sprint, AT and T, N T T, Orange and Tata Communications. They have national and international coverage. Tier-1 I S Ps connect to each other.
+00:02:40,752 --> 00:02:48,560
+1 minus p, to the power M minus n, is the probability that the other M minus n users are idle.
 
 26
-00:06:31,069 --> 00:06:34,866
-Below them are the I X Ps. Many networks meet there.
+00:02:49,010 --> 00:02:52,189
+Here M is 35 and p is 0.1.
 
 27
-00:06:35,316 --> 00:06:42,676
-Next are the regional I S Ps. At the bottom are the access I S Ps, which connect the hosts.
+00:02:52,639 --> 00:03:02,687
+The bars show P of n. Most of the probability is near 3 or 4 active users: about 0.22 and 0.20.
 
 28
-00:06:43,126 --> 00:06:59,275
-The second kind of network at the center is the content provider network, for example Google or Facebook. It is a private network that connects its data centers to the Internet. It often bypasses the tier-1 and the regional I S Ps.
+00:03:03,137 --> 00:03:12,737
+Overload means more than 10 active users. So add P of n for n from 11 to 35. These bars are too small to see.
 
 29
-00:06:59,725 --> 00:07:13,571
-Slide 39 shows a real tier-1 network: Tata Communications. Its backbone links connect many continents. This is the national and international coverage of a tier-1 I S P.
+00:03:13,187 --> 00:03:16,707
+The sum is 0.000424.
 
 30
-00:07:14,021 --> 00:07:28,613
-The backbone has more than 1500 gigabits per second of capacity. That is 1.5 times 10 to the power 12 bits per second. It carries more than 750 petabits each month.
+00:03:17,157 --> 00:03:28,527
+That is about 0.04 percent of the time. The exact sum is a little more than point 0 0 0 4, so the slide gives a rounded value.
 
 31
-00:07:29,063 --> 00:07:33,457
-Questions 22 to 24. Pause the video and try them.
+00:03:28,977 --> 00:03:43,377
+Is packet switching always better? Data is often bursty: sometimes a user has data to send, and at other times it has none. Here are three bursty users. A blue slot means that the user sends.
 
 32
-00:07:33,907 --> 00:07:42,462
-Question 22. Circuit switching reserves buffer, link bandwidth, and processing power on the network elements of the path.
+00:03:43,827 --> 00:03:53,427
+Packet switching is great for bursty data. All users share the buffer and the link capacity. The bottom row shows the load on the shared link.
 
 33
-00:07:42,912 --> 00:08:10,859
-Question 23. Circuit switching needs a call setup. Packet switching needs no call setup. Circuit switching reserves dedicated resources. Packet switching shares them. Circuit switching gives guaranteed performance. Packet switching can have delay and loss from congestion. And circuit switching supports a fixed number of users, 10 on the 1 gigabit link. Packet switching supports a variable number, many more than 10.
+00:03:53,877 --> 00:04:00,171
+It is also simpler. There is no call setup, so no extra messages go before the data.
 
 34
-00:08:11,309 --> 00:08:22,679
-Question 24. The present-day Internet behaves like a packet switched network. Hosts break messages into packets, and routers forward them with no call setup.
+00:04:00,621 --> 00:04:06,253
+This link carries 2 users. In 19 of the 20 slots, the load is 2 or less.
 
 35
-00:08:23,129 --> 00:08:27,417
-Questions 26 to 28. Pause the video and try them.
+00:04:06,703 --> 00:04:12,783
+But excessive congestion is possible. In slot 15, all 3 users are active.
 
 36
-00:08:27,867 --> 00:08:37,937
-Question 26. An I S P is a provider of a service: Internet access. Hosts connect to the Internet through access I S Ps.
+00:04:13,233 --> 00:04:17,435
+Then packets queue, and buffer overflow causes delay and loss.
 
 37
-00:08:38,387 --> 00:09:01,640
-Question 27. A tier-1 I S P is a large commercial I S P at the center of the Internet. It is well connected and has national and international coverage. From the slide list: A T and T in North America, Orange in Europe, and N T T or Tata Communications in Asia. The slide does not give the home regions.
+00:04:17,885 --> 00:04:24,136
+So packet switching needs protocols for reliable data transfer and for congestion control.
 
 38
-00:09:02,090 --> 00:09:23,487
-Question 28. An I X P is an Internet exchange point: a place where many I S Ps connect to each other and exchange packets. The slides do not list its hardware. This part is optional: in the textbook, an I X P has high speed switches that connect the routers of the I S Ps.
+00:04:24,586 --> 00:04:34,997
+The slide also asks how packet switching can give circuit-like behavior. Its answer is: it is complicated. The course studies some techniques later.
 
 39
-00:09:23,937 --> 00:09:28,332
-Questions 29 to 31. Pause the video and try them.
+00:04:35,447 --> 00:04:44,449
+Now the structure of the Internet. Hosts connect to the Internet through access Internet Service Providers, or access I S Ps.
 
 40
-00:09:28,782 --> 00:09:45,763
-Question 29. Large content providers want to bring services and content close to the end users. At one I X P, they reach many I S Ps. So their traffic often bypasses the tier-1 and regional I S Ps.
+00:04:44,899 --> 00:04:56,569
+The access I S Ps must be interconnected, so that any two hosts, anywhere, can send packets to each other. Economics and national policies drive the result.
 
 41
-00:09:46,213 --> 00:10:00,400
-Question 30. A regional I S P connects the access networks of one region to larger I S Ps. It is the provider of the access networks and the customer of a larger I S P.
+00:04:57,019 --> 00:05:05,360
+The slides build the structure step by step. There are millions of access I S Ps. Here we draw N equal to 8.
 
 42
-00:10:00,850 --> 00:10:27,175
-Question 31 asks for two regional I S Ps in the Waterloo region. The slides do not name any, so this video does not answer that part. For the second part, use the slide definitions. A university network is an institutional access network, from slide 12. It connects its own hosts. So by the slides, it is an access network, not a regional I S P.
+00:05:05,810 --> 00:05:11,741
+Option 1: connect each access I S P directly to each other access I S P.
 
 43
-00:10:27,625 --> 00:10:44,009
-Problem 2 of problem set 1. Users share a 2 Mbps link. Each user needs 300 kbps when it transmits, but it transmits only 12 percent of the time. Pause the video and try parts a to c.
+00:05:12,191 --> 00:05:18,825
+Each one needs a link to each of the other N minus 1. For one I S P, that is 7 links.
 
 44
-00:10:44,459 --> 00:11:04,171
-Part a. With circuit switching, each user reserves 300 kbps. 2000 divided by 300 is 6.67. Round down: 6 users. A seventh user would need 2100 kbps, which is more than 2000.
+00:05:19,275 --> 00:05:32,438
+N I S Ps times N minus 1 links counts each link twice, once from each end. So divide by 2. The number of links is N times N minus 1, divided by 2.
 
 45
-00:11:04,621 --> 00:11:12,024
-Part b. A user transmits 12 percent of the time. So the probability is p equals 0.12.
+00:05:32,888 --> 00:05:41,997
+For 8 access I S Ps, that is 8 times 7, divided by 2, which is 28 links. You can count them in the picture.
 
 46
-00:11:12,474 --> 00:11:30,714
-Part c. The users are independent. So the probability that exactly n of M users transmit is binomial. M choose n, times p to the power n, times q to the power M minus n, where q is 1 minus p, or 0.88.
+00:05:42,447 --> 00:05:55,674
+For a million access I S Ps, it is 10 to the power 6, times 10 to the power 6 minus 1, divided by 2. That is about 5 times 10 to the power 11 links.
 
 47
-00:11:31,164 --> 00:11:34,300
-Parts d to f. Pause the video and try them.
+00:05:56,124 --> 00:06:00,839
+The number grows as N squared. So the direct design does not scale.
 
 48
-00:11:34,750 --> 00:11:56,937
-Part d. M is not given, so the answer is a formula in M. Use the complement. First find the probability that 6 or fewer users transmit: the sum of the binomial terms for k from 0 to 6. Then subtract it from 1. The solution also gives the direct form: the sum for k from 7 to M.
+00:06:01,289 --> 00:06:06,857
+Option 2: connect each access I S P to one global transit I S P.
 
 49
-00:11:57,387 --> 00:12:19,488
-Part e. With M equal to 10, add four terms. P of 7 is 2.93 times 10 to the power minus 5. P of 8 is 1.5 times 10 to the power minus 6. P of 9 and P of 10 are much smaller. The sum is about 3.08 times 10 to the power minus 5.
+00:06:07,307 --> 00:06:12,405
+Each access I S P needs only one link. So the number of links is N.
 
 50
-00:12:19,938 --> 00:12:34,999
-Part f. The solution gives no number. It only says that the probability of 7 or more users is very small. So more than 6 users can share the link with statistical multiplexing, without much extra delay.
+00:06:12,855 --> 00:06:17,271
+For 8 access I S Ps, that is 8 links, not 28.
 
 51
-00:12:35,449 --> 00:12:59,663
-This table is an added illustration, not part of the solution. It uses the formula of part d. For 20 users, the overload probability is about 0.0067. For 40 users, it is about 0.2, which is too large. A reasonable M is the largest M whose overload probability you accept.
+00:06:17,721 --> 00:06:22,927
+The access I S P is the customer. The global I S P is the provider.
 
 52
-00:13:00,113 --> 00:13:14,833
-Problem 4 of problem set 1. Users share a 2 Mbps link. Each user transmits at 1 Mbps, but only 20 percent of the time. Pause the video and try parts a and b.
+00:06:23,377 --> 00:06:26,961
+The customer and the provider have an economic agreement.
 
 53
-00:13:15,283 --> 00:13:24,307
-Part a. Each user reserves 1 Mbps. 2 divided by 1 is 2. So circuit switching supports 2 users.
+00:06:27,411 --> 00:06:38,205
+If one global I S P is a viable business, there will be competitors. Here are I S P A, B and C. Each one has its own access networks.
 
 54
-00:13:24,757 --> 00:13:44,533
-Part b. If two or fewer users transmit, they need at most 2 Mbps. That is not more than the link rate, so there is essentially no queueing delay. If three users transmit, they need 3 Mbps. That is more than 2 Mbps. So packets queue before the link.
+00:06:38,655 --> 00:06:46,762
+But a host of I S P A cannot reach a host of I S P B yet. There is no link between the I S Ps.
 
 55
-00:13:44,983 --> 00:13:48,161
-Parts c and d. Pause the video and try them.
+00:06:47,212 --> 00:06:58,540
+The competitors want to be connected. One way is an Internet exchange point, I X P. An I X P is a place where many I S Ps connect to each other.
 
 56
-00:13:48,611 --> 00:13:54,649
-Part c. A user transmits 20 percent of the time. So the probability is 0.2.
+00:06:58,990 --> 00:07:05,262
+The second way is a peering link. A peering link is a direct link between two I S Ps.
 
 57
-00:13:55,099 --> 00:14:20,293
-Part d. The three users are independent. So the probability that all three transmit is 0.2 times 0.2 times 0.2, which is 0.008. The queue grows only when all three transmit. So the queue grows during 0.008 of the time, which is 0.8 percent. This matches the solution.
+00:07:05,712 --> 00:07:15,312
+Next, regional networks may arise. A regional I S P connects the access networks of one region to a larger I S P.
 
 58
-00:14:20,743 --> 00:14:27,719
-Here is the recap. One. For circuit switching, divide the link rate by the user rate and round down.
+00:07:15,762 --> 00:07:23,421
+Last, content provider networks, for example Google, Microsoft and Akamai, may run their own network.
 
 59
-00:14:28,169 --> 00:14:40,137
-Two. For packet switching, use the binomial probability. The overload probability is the probability of more than k active users. Often the complement is easier.
+00:07:23,871 --> 00:07:33,492
+The content provider network brings services and content close to the end users. It links directly to I X Ps and to access networks.
 
 60
-00:14:40,587 --> 00:14:54,305
-Three. Packet switching shares resources and needs no call setup, but congestion causes delay and loss. Circuit switching needs a setup and reserves resources, with guaranteed performance.
+00:07:33,942 --> 00:07:39,787
+Here is the result. At the center is a small number of well-connected, large networks.
 
 61
-00:14:54,755 --> 00:15:14,787
-Four. A full mesh of access I S Ps does not scale. So the Internet uses transit I S Ps, I X Ps, peering links, regional I S Ps and content provider networks, with tier-1 I S Ps at the center. That is the end of video 2 b.
+00:07:40,237 --> 00:07:51,096
+The first kind is the tier-1 commercial I S P. Examples are Level 3, Sprint, A T and T, N T T, Orange and Tata Communications.
+
+62
+00:07:51,546 --> 00:07:57,669
+Tier-1 I S Ps have national and international coverage. They connect to each other.
+
+63
+00:07:58,119 --> 00:08:01,916
+Below them are the I X Ps. Many networks meet there.
+
+64
+00:08:02,366 --> 00:08:04,755
+Next are the regional I S Ps.
+
+65
+00:08:05,205 --> 00:08:09,621
+At the bottom are the access I S Ps, which connect the hosts.
+
+66
+00:08:10,071 --> 00:08:16,919
+The second kind of network at the center is the content provider network, for example Google or Facebook.
+
+67
+00:08:17,369 --> 00:08:26,628
+It is a private network that connects its data centers to the Internet. It often bypasses the tier-1 and the regional I S Ps.
+
+68
+00:08:27,078 --> 00:08:32,155
+Slide 39 shows a real tier-1 network: Tata Communications.
+
+69
+00:08:32,605 --> 00:08:40,733
+Its backbone links connect many continents. This is the national and international coverage of a tier-1 I S P.
+
+70
+00:08:41,183 --> 00:08:46,517
+The backbone has more than 1500 gigabits per second of capacity.
+
+71
+00:08:46,967 --> 00:09:02,028
+1 gigabit is 10 to the power 9 bits. So 1500 gigabits per second is 1500 times 10 to the power 9, or 1.5 times 10 to the power 12 bits per second.
+
+72
+00:09:02,478 --> 00:09:06,403
+It carries more than 750 petabits each month.
+
+73
+00:09:06,853 --> 00:09:11,248
+Questions 22 to 24. Pause the video and try them.
+
+74
+00:09:11,698 --> 00:09:20,253
+Question 22. Circuit switching reserves buffer, link bandwidth, and processing power on the network elements of the path.
+
+75
+00:09:20,703 --> 00:09:31,732
+Question 23 compares the two methods. First, call setup. Circuit switching needs a call setup before the data. Packet switching needs no call setup.
+
+76
+00:09:32,182 --> 00:09:38,390
+Resources. Circuit switching reserves dedicated resources. Packet switching shares them.
+
+77
+00:09:38,840 --> 00:09:46,755
+Performance. Circuit switching gives guaranteed performance. Packet switching can have delay and loss from congestion.
+
+78
+00:09:47,205 --> 00:10:01,925
+Number of users. Circuit switching supports a fixed number of users: 10 on the 1 gigabit link of slide 28. Packet switching supports a variable number, many more than 10: for example 35.
+
+79
+00:10:02,375 --> 00:10:13,745
+Question 24. The present-day Internet behaves like a packet switched network. Hosts break messages into packets, and routers forward them with no call setup.
+
+80
+00:10:14,195 --> 00:10:18,483
+Questions 26 to 28. Pause the video and try them.
+
+81
+00:10:18,933 --> 00:10:29,003
+Question 26. An I S P is a provider of a service: Internet access. Hosts connect to the Internet through access I S Ps.
+
+82
+00:10:29,453 --> 00:10:41,719
+Question 27. A tier-1 I S P is a large commercial I S P at the center of the Internet. It is well connected and has national and international coverage.
+
+83
+00:10:42,169 --> 00:10:54,009
+From the slide list: A T and T in North America, Orange in Europe, and N T T or Tata Communications in Asia. The slide does not give the home regions.
+
+84
+00:10:54,459 --> 00:11:04,614
+Question 28. An I X P is an Internet exchange point: a place where many I S Ps connect to each other and exchange packets.
+
+85
+00:11:05,064 --> 00:11:17,459
+The slides do not list the hardware of an I X P. This part is optional: in the textbook, an I X P has high speed switches that connect the routers of the I S Ps.
+
+86
+00:11:17,909 --> 00:11:22,303
+Questions 29 to 31. Pause the video and try them.
+
+87
+00:11:22,753 --> 00:11:39,735
+Question 29. Large content providers want to bring services and content close to the end users. At one I X P, they reach many I S Ps. So their traffic often bypasses the tier-1 and regional I S Ps.
+
+88
+00:11:40,185 --> 00:11:54,371
+Question 30. A regional I S P connects the access networks of one region to larger I S Ps. It is the provider of the access networks and the customer of a larger I S P.
+
+89
+00:11:54,821 --> 00:12:05,787
+Question 31 asks for two regional I S Ps in the Waterloo region. The slides do not name any, so this video does not answer that part.
+
+90
+00:12:06,237 --> 00:12:22,642
+For the second part, use the slide definitions. A university network is an institutional access network, from slide 12. It connects its own hosts. So by the slides, it is an access network, not a regional I S P.
+
+91
+00:12:23,092 --> 00:12:39,476
+Problem 2 of problem set 1. Users share a 2 Mbps link. Each user needs 300 kbps when it transmits, but it transmits only 12 percent of the time. Pause the video and try parts a to c.
+
+92
+00:12:39,926 --> 00:12:46,155
+Part a. With circuit switching, each user reserves 300 kbps of the link.
+
+93
+00:12:46,605 --> 00:12:54,072
+First write the link rate in kilobits per second. 2 Mbps is 2000 kbps.
+
+94
+00:12:54,522 --> 00:13:07,109
+2000 divided by 300 is 6.67. The bar shows 6 full circuits of 300 kbps, and 200 kbps left over.
+
+95
+00:13:07,559 --> 00:13:19,121
+Round down: 6 users. A seventh user would need 7 times 300, which is 2100 kbps. That is more than 2000.
+
+96
+00:13:19,571 --> 00:13:26,974
+Part b. A user transmits 12 percent of the time. So the probability is p equals 0.12.
+
+97
+00:13:27,424 --> 00:13:33,781
+Part c. The users are independent. So the number of users that transmit is binomial.
+
+98
+00:13:34,231 --> 00:13:44,322
+The probability that exactly n of M users transmit is M choose n, times p to the power n, times q to the power M minus n.
+
+99
+00:13:44,772 --> 00:13:50,404
+Here q is 1 minus p. 1 minus 0.12 is 0.88.
+
+100
+00:13:50,854 --> 00:13:53,990
+Parts d to f. Pause the video and try them.
+
+101
+00:13:54,440 --> 00:13:58,963
+Part d. M is not given, so the answer is a formula in M.
+
+102
+00:13:59,413 --> 00:14:11,658
+Use the complement. First find the probability that 6 or fewer users transmit: the sum of the binomial terms for k from 0 to 6. Then subtract it from 1.
+
+103
+00:14:12,108 --> 00:14:17,249
+The solution also gives the direct form: the sum for k from 7 to M.
+
+104
+00:14:17,699 --> 00:14:25,017
+Part e. With M equal to 10, add four terms: P of 7, P of 8, P of 9, and P of 10.
+
+105
+00:14:25,467 --> 00:14:48,848
+P of 7 is 10 choose 7, times 0.12 to the power 7, times 0.88 to the power 3. That is 120, times 3.583 times 10 to the power minus 7, times 0.6815. The result is 2.930 times 10 to the power minus 5.
+
+106
+00:14:49,298 --> 00:14:55,506
+In the same way, P of 8 is 1.498 times 10 to the power minus 6.
+
+107
+00:14:55,956 --> 00:15:06,793
+P of 9 and P of 10 are much smaller: 4.54 times 10 to the power minus 8, and 6.2 times 10 to the power minus 10.
+
+108
+00:15:07,243 --> 00:15:12,193
+The sum is about 3.08 times 10 to the power minus 5.
+
+109
+00:15:12,643 --> 00:15:20,536
+Part f. The solution gives no number. It only says that the probability of 7 or more users is very small.
+
+110
+00:15:20,986 --> 00:15:26,895
+So more than 6 users can share the link with packet switching, without much extra delay.
+
+111
+00:15:27,345 --> 00:15:38,055
+This chart is an added illustration, not part of the solution. It uses the formula of part d for M equal to 10, 20, 30 and 40.
+
+112
+00:15:38,505 --> 00:15:44,435
+For 20 users, the overload probability is about 0.0067.
+
+113
+00:15:44,885 --> 00:15:49,323
+For 40 users, it is about 0.2, which is too large.
+
+114
+00:15:49,773 --> 00:15:55,234
+A reasonable M is the largest M whose overload probability you accept.
+
+115
+00:15:55,684 --> 00:16:10,404
+Problem 4 of problem set 1. Users share a 2 Mbps link. Each user transmits at 1 Mbps, but only 20 percent of the time. Pause the video and try parts a and b.
+
+116
+00:16:10,854 --> 00:16:21,414
+Part a. With circuit switching, each user reserves 1 Mbps. 2 divided by 1 is 2. So circuit switching supports 2 users.
+
+117
+00:16:21,864 --> 00:16:29,501
+Part b. If two or fewer users transmit, they need at most 2 times 1, which is 2 Mbps.
+
+118
+00:16:29,951 --> 00:16:34,709
+That is not more than the link rate. So there is essentially no queueing delay.
+
+119
+00:16:35,159 --> 00:16:42,391
+If three users transmit, they need 3 Mbps. That is more than 2 Mbps.
+
+120
+00:16:42,841 --> 00:16:44,910
+So packets queue before the link.
+
+121
+00:16:45,360 --> 00:16:48,539
+Parts c and d. Pause the video and try them.
+
+122
+00:16:48,989 --> 00:16:55,005
+Part c. A user transmits 20 percent of the time. So the probability is 0.2.
+
+123
+00:16:55,455 --> 00:17:06,847
+Part d. The three users are independent. So multiply: 0.2 times 0.2 times 0.2 is 0.008.
+
+124
+00:17:07,297 --> 00:17:15,019
+The queue grows only when all three transmit, because 3 Mbps is more than 2 Mbps.
+
+125
+00:17:15,469 --> 00:17:24,387
+So the queue grows during 0.008 of the time, which is 0.8 percent. This matches the solution.
+
+126
+00:17:24,837 --> 00:17:31,813
+Here is the recap. One. For circuit switching, divide the link rate by the user rate and round down.
+
+127
+00:17:32,263 --> 00:17:44,231
+Two. For packet switching, use the binomial probability. The overload probability is the probability of more than k active users. Often the complement is easier.
+
+128
+00:17:44,681 --> 00:17:58,398
+Three. Packet switching shares resources and needs no call setup, but congestion causes delay and loss. Circuit switching needs a setup and reserves resources, with guaranteed performance.
+
+129
+00:17:58,848 --> 00:18:21,888
+Four. A full mesh of access I S Ps needs N times N minus 1, over 2 links, so it does not scale. So the Internet uses transit I S Ps, I X Ps, peering links, regional I S Ps and content provider networks, with tier-1 I S Ps at the center. That is the end of video 2 b.

@@ -7,445 +7,1021 @@ This is ECE 358, video 24, the last video: switches, datacenter networks, and a 
 You will fill a switch table frame by frame, trace frames through several switches, compare switches and routers, describe datacenter networks, and list every protocol in one web request, in order.
 
 3
-00:00:29,039 --> 00:00:35,225
-A layer 2 switch is a link-layer device. It stores the Ethernet frames that arrive.
+00:00:29,039 --> 00:00:36,185
+A layer 2 switch, or L2 switch, is a link-layer device. It connects hosts with Ethernet links.
 
 4
-00:00:35,675 --> 00:00:50,694
-It examines the destination MAC address of each frame. Then it forwards the frame selectively, on one or more outgoing links. On a half-duplex port, it uses CSMA/CD to access the link.
+00:00:36,635 --> 00:00:40,774
+The switch stores each Ethernet frame that arrives, in a buffer.
 
 5
-00:00:51,144 --> 00:01:00,317
-A switch is transparent. The hosts do not know that the switch is there. A host addresses frames to the other host, not to the switch.
+00:00:41,224 --> 00:00:47,859
+It examines the destination MAC address. This address is in the link-layer header of the frame.
 
 6
-00:01:00,767 --> 00:01:06,207
-A switch is plug-and-play and self-learning. Switches do not need to be configured.
+00:00:48,309 --> 00:00:54,858
+Then it forwards the frame selectively, on one or more outgoing links. Here it uses one link.
 
 7
-00:01:06,657 --> 00:01:20,353
-Here is a switch with six interfaces, numbered 1 to 6. Each host has a dedicated, direct connection to the switch. Ethernet runs on each link in full duplex, so there are no collisions.
+00:00:55,308 --> 00:01:01,004
+On a half-duplex port, the switch uses CSMA/CD to access the link.
 
 8
-00:01:20,803 --> 00:01:27,267
-So A can send to A prime, and B can send to B prime, at the same time. There is no collision.
+00:01:01,454 --> 00:01:10,627
+A switch is transparent. The hosts do not know that the switch is there. A host addresses frames to the other host, not to the switch.
 
 9
-00:01:27,717 --> 00:01:30,789
-Each switch port is its own collision domain.
+00:01:11,077 --> 00:01:16,517
+A switch is plug-and-play and self-learning. Switches do not need to be configured.
 
 10
-00:01:31,239 --> 00:01:42,503
-But A to A prime and C to A prime cannot happen at the same time. Both frames must leave on port 4. So the switch buffers one frame until port 4 is free.
+00:01:16,967 --> 00:01:20,935
+Here is a switch with six interfaces, numbered 1 to 6.
 
 11
-00:01:42,953 --> 00:01:49,780
-How does the switch know that A prime is reachable through interface 4, and B prime through interface 5?
+00:01:21,385 --> 00:01:24,905
+Each host has a dedicated, direct link to the switch.
 
 12
-00:01:50,230 --> 00:02:02,177
-Each switch has a switch table. Each entry has three parts: the MAC address of a host, the interface that reaches the host, and a TTL. It looks like a routing table.
+00:01:25,355 --> 00:01:30,262
+Ethernet runs on each link in full duplex. So there are no collisions.
 
 13
-00:02:02,627 --> 00:02:09,005
-How does the switch create these entries? It needs no routing protocol. The switch learns them.
+00:01:30,712 --> 00:01:37,176
+So A can send to A prime, and B can send to B prime, at the same time. There is no collision.
 
 14
-00:02:09,455 --> 00:02:15,045
-The switch table is empty. A frame from A to A prime arrives on interface 1.
+00:01:37,626 --> 00:01:40,698
+Each switch port is its own collision domain.
 
 15
-00:02:15,495 --> 00:02:22,791
-When a frame arrives, the switch learns the location of the sender. A is on the incoming link, interface 1.
+00:01:41,148 --> 00:01:45,607
+But A to A prime, and C to A prime, cannot happen at the same time.
 
 16
-00:02:23,241 --> 00:02:34,611
-The switch records this sender and location pair in its table: A, interface 1, with a TTL of 60. When the TTL ends, the entry is removed.
+00:01:46,057 --> 00:01:48,446
+Both frames must leave on port 4.
 
 17
-00:02:35,061 --> 00:02:43,787
-Here is the full algorithm. When a frame arrives: step 1, record the incoming port and the MAC address of the sending host.
+00:01:48,896 --> 00:01:52,608
+So the switch buffers one frame until port 4 is free.
 
 18
-00:02:44,237 --> 00:02:48,909
-Step 2. Index the switch table with the destination MAC address.
+00:01:53,058 --> 00:01:59,885
+How does the switch know that A prime is reachable through interface 4, and B prime through interface 5?
 
 19
-00:02:49,359 --> 00:02:53,113
-Step 3. Check if there is an entry for the destination.
+00:02:00,335 --> 00:02:05,177
+Each switch has a switch table. Each entry maps an address to an interface.
 
 20
-00:02:53,563 --> 00:03:05,915
-If there is an entry, check if the destination is on the same port that the frame came from. If yes, drop the frame. If no, forward the frame on the interface in the entry.
+00:02:05,627 --> 00:02:12,027
+An entry has three parts. Part 1 is the MAC address of a host, for example A prime.
 
 21
-00:03:06,365 --> 00:03:13,832
-If there is no entry, flood. That is, forward the frame on all interfaces except the arriving interface.
+00:02:12,477 --> 00:02:18,408
+Part 2 is the interface that reaches the host. A prime is reached through interface 4.
 
 22
-00:03:14,282 --> 00:03:27,338
-Slide 72. The table is empty. Frame 1 goes from A to A prime. The location of A prime is unknown, so the switch floods the frame on ports 2, 3, 4, 5, and 6.
+00:02:18,858 --> 00:02:26,538
+Part 3 is a TTL, a time to live, here 60. When the TTL ends, the switch removes the entry.
 
 23
-00:03:27,788 --> 00:03:32,695
-The switch learns that A is on interface 1, and adds A, 1, 60.
+00:02:26,988 --> 00:02:29,740
+The switch table looks like a routing table.
 
 24
-00:03:33,145 --> 00:03:43,982
-Frame 2 is the reply, from A prime to A. The location of A is known: interface 1. So the switch sends the frame on just one link, interface 1.
+00:02:30,190 --> 00:02:36,249
+The slide asks: how are the entries created? Is there something like a routing protocol?
 
 25
-00:03:44,432 --> 00:03:50,811
-The switch also learns that A prime is on interface 4. Other hosts did not see frame 2.
+00:02:36,699 --> 00:02:43,867
+No. The switch needs no routing protocol. It learns the entries itself. The next slide shows how.
 
 26
-00:03:51,261 --> 00:04:05,810
-A layer 2 switch has a finite number of ports. Common sizes are 8, 16, 24, and 48 ports. For hundreds of hosts, you connect switches together. Here four switches connect nine hosts.
+00:02:44,317 --> 00:02:46,770
+The switch table is empty at first.
 
 27
-00:04:06,260 --> 00:04:16,735
-A sends to G. How does S1 know that it must forward the frame to S4, and S4 to S3? Self-learning, exactly as with one switch.
+00:02:47,220 --> 00:02:53,620
+A frame arrives from A. Its source address is A. Its destination address is A prime.
 
 28
-00:04:17,185 --> 00:04:30,070
-Note the many-to-1 mapping. In S1, the hosts D, E, F, G, H, and I are all reached through the same port, the link to S4. So many MAC addresses map to the same port.
+00:02:54,070 --> 00:02:56,545
+The frame arrives on interface 1.
 
 29
-00:04:30,520 --> 00:04:37,987
-Slide 74. C sends a frame to I, and then I responds to C. All four tables start empty.
+00:02:56,995 --> 00:03:00,109
+The sender of the frame is A, its source address.
 
 30
-00:04:38,437 --> 00:04:47,247
-Frame 1, C to I. S1 learns C on C's link. I is unknown, so S1 floods: to A, to B, and to S4.
+00:03:00,559 --> 00:03:06,170
+So the switch learns where the sender A is: on the incoming interface, interface 1.
 
 31
-00:04:47,697 --> 00:04:52,305
-S4 learns C through S1, and floods to S2 and S3.
+00:03:06,620 --> 00:03:12,145
+The switch records this sender and location pair in its table: A, interface 1.
 
 32
-00:04:52,755 --> 00:05:03,443
-S2 and S3 learn C through S4, and both flood. I receives the frame. D, E, F, G, and H also receive it and discard it.
+00:03:12,595 --> 00:03:19,891
+The entry also gets a TTL of 60. When the TTL ends, the switch removes the entry.
 
 33
-00:05:03,893 --> 00:05:13,728
-Frame 2, I to C. S3 learns I on I's link. C is in S3's table, through S4, so S3 forwards only to S4.
+00:03:20,341 --> 00:03:29,067
+Here is the full algorithm. When a frame arrives: step 1, record the incoming port and the MAC address of the sending host.
 
 34
-00:05:14,178 --> 00:05:27,490
-S4 learns I through S3. It forwards only to S1. S1 learns I through S4, and forwards only to C. S2 does not see frame 2, so S2 does not learn I.
+00:03:29,517 --> 00:03:34,189
+Step 2. Index the switch table with the destination MAC address.
 
 35
-00:05:27,940 --> 00:05:42,831
-Slide 75 shows a small institutional network: a switch hierarchy inside one IP subnet. The mail server and the web server connect to the top switch. The hosts connect to the lower switches.
+00:03:34,639 --> 00:03:38,372
+Step 3. Check if there is an entry for the destination.
 
 36
-00:05:43,281 --> 00:05:53,926
-A router connects the subnet to the external network. Inside the subnet, switches forward frames. To leave the subnet, a datagram goes to the router.
+00:03:38,822 --> 00:03:44,859
+If there is an entry, check if the destination is on the same port that the frame came from.
 
 37
-00:05:54,376 --> 00:06:02,035
-Switches and routers are both store-and-forward devices. Here a datagram goes through a switch, then a router.
+00:03:45,309 --> 00:03:48,851
+If yes, drop the frame. The frame does not loop back.
 
 38
-00:06:02,485 --> 00:06:19,850
-A router is a network-layer device. It examines network-layer headers. A switch is a link-layer device. It examines only link-layer headers. So the datagram goes up to the network layer in the router, but only to the link layer in the switch.
+00:03:49,301 --> 00:03:52,778
+If no, forward the frame on the interface in the entry.
 
 39
-00:06:20,300 --> 00:06:32,887
-Both have forwarding tables. A router computes its routing table with routing algorithms and IP addresses. A switch learns its table with flooding and learning, and MAC addresses.
+00:03:53,228 --> 00:04:00,695
+If there is no entry, flood. That is, forward the frame on all interfaces except the arriving interface.
 
 40
-00:06:33,337 --> 00:06:44,451
-Datacenter networks connect tens to hundreds of thousands of hosts. The hosts are closely coupled and close together. Examples are Amazon, YouTube, and Google.
+00:04:01,145 --> 00:04:06,947
+Slide 72. The switch table is empty. Frame 1 goes from A to A prime.
 
 41
-00:06:44,901 --> 00:06:58,768
-There are three challenges. Many applications each serve massive numbers of clients. Communication must be reliable. And the load must be balanced, to avoid processing, networking, and data bottlenecks.
+00:04:07,397 --> 00:04:13,115
+The switch learns that A is on interface 1. It adds the entry A, 1, 60.
 
 42
-00:06:59,218 --> 00:07:05,554
-From the bottom up: server racks. Each rack holds 20 to 40 server blades, the hosts.
+00:04:13,565 --> 00:04:17,661
+A prime is not in the table. So the switch floods the frame.
 
 43
-00:07:06,004 --> 00:07:15,284
-Each rack has one top of rack switch, or TOR switch. It connects to the blades at 40 to 100 gigabits per second.
+00:04:18,111 --> 00:04:25,620
+Flooding sends the frame on ports 2, 3, 4, 5, and 6: all ports except port 1, where it arrived.
 
 44
-00:07:15,734 --> 00:07:20,555
-Tier-2 switches each connect to about 16 TOR switches below.
+00:04:26,070 --> 00:04:29,163
+Frame 2 is the reply, from A prime to A.
 
 45
-00:07:21,005 --> 00:07:25,592
-Tier-1 switches each connect to about 16 tier-2 switches below.
+00:04:29,613 --> 00:04:35,821
+The switch learns that A prime is on interface 4. It adds the entry A prime, 4, 60.
 
 46
-00:07:26,042 --> 00:07:34,661
-At the top, border routers connect the datacenter to the outside. Slide 80 shows the Facebook F16 topology.
+00:04:36,271 --> 00:04:42,778
+A is in the table, at interface 1. So the switch sends frame 2 on interface 1 only.
 
 47
-00:07:35,111 --> 00:07:45,095
-This is a smaller version of slide 81. Each tier-2 switch connects to every tier-1 switch, and each rack connects to two tier-2 switches.
+00:04:43,228 --> 00:04:47,239
+So B, C, B prime, and C prime do not see frame 2.
 
 48
-00:07:45,545 --> 00:07:52,947
-So there are multiple routing paths between two racks. Here is one path from rack 1 to rack 6, in red.
+00:04:47,689 --> 00:04:56,201
+A layer 2 switch has a finite number of ports. Common sizes are 8, 16, 24, and 48 ports.
 
 49
-00:07:53,397 --> 00:08:03,232
-Here is a second path, in blue. It uses different switches, so the two paths are disjoint. Multiple paths increase throughput and reliability.
+00:04:56,651 --> 00:05:03,968
+For hundreds of hosts, you connect switches together. Here four switches, S1 to S4, connect nine hosts.
 
 50
-00:08:03,682 --> 00:08:09,997
-A load balancer does application-layer routing. It receives the external client requests.
+00:05:04,418 --> 00:05:06,679
+Host A sends a frame to host G.
 
 51
-00:08:10,447 --> 00:08:14,265
-It directs the workload to servers inside the datacenter.
+00:05:07,129 --> 00:05:10,329
+S1 must know that G is reached through S4.
 
 52
-00:08:14,715 --> 00:08:21,691
-It returns the results to the external client. So the client does not see the inside of the datacenter.
+00:05:10,779 --> 00:05:17,158
+S4 must know that G is reached through S3. Then S3 delivers the frame to G.
 
 53
-00:08:22,141 --> 00:08:32,445
-At the link layer: RoCE, remote DMA over converged Ethernet. Data moves between the memories of two servers, without their CPUs.
+00:05:17,608 --> 00:05:22,088
+The switches learn this by self-learning, exactly as with one switch.
 
 54
-00:08:32,895 --> 00:08:49,983
-At the transport layer: explicit congestion notification, ECN, is used in congestion control, for example DCTCP and DCQCN. There are also tests with hop-by-hop, backpressure, congestion control.
+00:05:22,538 --> 00:05:33,631
+Look at the S1 table after frames from D, E, F, G, H, and I. All six hosts are reached through the same interface: the interface to S4.
 
 55
-00:08:50,433 --> 00:08:56,321
-For routing and management, SDN is widely used inside and among datacenters.
+00:05:34,081 --> 00:05:39,543
+So many MAC addresses map to the same interface. This is a many-to-1 mapping.
 
 56
-00:08:56,771 --> 00:09:09,635
-Related services and data are placed as close as possible, for example in the same rack or a nearby rack. This minimizes the traffic through the tier-2 and tier-1 switches.
+00:05:39,993 --> 00:05:47,843
+Slide 74. C sends a frame to I. Then I responds to C. All four switch tables start empty.
 
 57
-00:09:10,085 --> 00:09:25,083
-Now we put it all together: every protocol in one simple scenario, on the network of slide 93. There is a school network, the Comcast network with a DNS server, and Google's network with the web server.
+00:05:48,293 --> 00:05:53,264
+Frame 1, C to I. S1 learns the sender C: interface to C.
 
 58
-00:09:25,533 --> 00:09:29,117
-A student attaches a laptop to the campus network.
+00:05:53,714 --> 00:05:59,986
+I is not in the S1 table. So S1 floods the frame: to A, B, and S4.
 
 59
-00:09:29,567 --> 00:09:34,601
-Then the student requests the web page www.google.com.
+00:06:00,436 --> 00:06:04,212
+S4 learns the sender C: interface to S1.
 
 60
-00:09:35,051 --> 00:09:49,729
-Slide 86 shows everything in one picture. On the laptop, the DHCP client runs on UDP port 68. The web browser runs HTTP on TCP, from a free port.
+00:06:04,662 --> 00:06:10,827
+I is not in the S4 table. So S4 floods the frame: to S2, and S3.
 
 61
-00:09:50,179 --> 00:10:09,955
-On the servers: the DHCP server runs on UDP port 67. The DNS server runs on UDP port 53. The web server runs HTTP on TCP port 80. Under each, there are IP, the link layer, and the physical layer.
+00:06:11,277 --> 00:06:14,968
+S2 learns the sender C: interface to S4.
 
 62
-00:10:10,405 --> 00:10:23,738
-Between them are switches that learn, the first-hop router, and ARP. Routing works inside each autonomous system with OSPF or RIP, and between autonomous systems with BGP.
+00:06:15,418 --> 00:06:20,922
+I is not in the S2 table. So S2 floods the frame: to D, E, and F.
 
 63
-00:10:24,188 --> 00:10:39,484
-Step 1. The laptop needs its own IP address. It also needs the IP address of the first-hop router, the address of the DNS server, and the network mask. It gets all of them with DHCP.
+00:06:21,372 --> 00:06:25,148
+S3 learns the sender C: interface to S4.
 
 64
-00:10:39,934 --> 00:10:58,174
-The DHCP request is encapsulated in UDP, then in IP, then in an Ethernet frame. The DHCP client uses UDP port 68 and an IP broadcast. The frame's destination MAC is the broadcast address.
+00:06:25,598 --> 00:06:31,614
+I is not in the S3 table. So S3 floods the frame: to G, H, and I.
 
 65
-00:10:58,624 --> 00:11:17,013
-The switch floods the broadcast frame, and it learns where the laptop is. The router runs the DHCP server and receives the frame. It demultiplexes: Ethernet to IP, IP to UDP, UDP to DHCP, on port 67.
+00:06:32,064 --> 00:06:33,813
+I receives frame 1.
 
 66
-00:11:17,463 --> 00:11:31,543
-The DHCP ACK holds the client's IP address, the first-hop router's IP address, and the DNS server's name and IP address. The switch forwards it to the laptop, as it learned.
+00:06:34,263 --> 00:06:42,711
+Hosts A, B, D, E, F, G, and H also receive frame 1. Their adapters discard it, because it is for I.
 
 67
-00:11:31,993 --> 00:11:38,159
-Now the client has an IP address, and knows the DNS server and its first-hop router.
+00:06:43,161 --> 00:06:48,239
+Frame 2, I to C. S3 learns the sender I: interface to I.
 
 68
-00:11:38,609 --> 00:11:54,246
-Step 2. The laptop needs the IP address of www.google.com, so it uses DNS. To send the DNS frame to the router, the laptop needs the MAC address of the router interface.
+00:06:48,689 --> 00:06:56,006
+C is in the S3 table: interface to S4. So S3 forwards the frame only to S4.
 
 69
-00:11:54,696 --> 00:12:01,096
-So the laptop runs ARP. The ARP query is broadcast on the LAN. The router receives it.
+00:06:56,456 --> 00:07:00,381
+S4 learns the sender I: interface to S3.
 
 70
-00:12:01,546 --> 00:12:11,957
-The router replies with an ARP reply that gives the MAC address of its interface. Now the laptop can send the frame that holds the DNS query.
+00:07:00,831 --> 00:07:08,170
+C is in the S4 table: interface to S1. So S4 forwards the frame only to S1.
 
 71
-00:12:12,407 --> 00:12:31,415
-Step 3. The laptop sends the DNS query to the DNS application at UDP port 53 on the DNS server. It knows the server's IP address from DHCP. The LAN switch forwards the frame from the laptop to the first-hop router.
+00:07:08,620 --> 00:07:12,439
+S1 learns the sender I: interface to S4.
 
 72
-00:12:31,865 --> 00:12:43,683
-The datagram goes through the Comcast network to the DNS server. The routers use tables that RIP, OSPF, IS-IS, and BGP created.
+00:07:12,889 --> 00:07:19,587
+C is in the S1 table: interface to C. So S1 forwards the frame only to C.
 
 73
-00:12:44,133 --> 00:12:57,083
-At the DNS server, the datagram is demultiplexed to DNS. The DNS server replies to the client with the IP address of www.google.com.
+00:07:20,037 --> 00:07:23,259
+C receives frame 2. No other host sees it.
 
 74
-00:12:57,533 --> 00:13:10,589
-Step 4. To send the HTTP request, the browser first asks TCP to open a connection, from its IP address and port to the web server's IP address, port 80.
+00:07:23,709 --> 00:07:28,039
+S2 does not see frame 2. So S2 does not learn I.
 
 75
-00:13:11,039 --> 00:13:18,740
-TCP sends a SYN segment, step 1 of the three-way handshake, routed between domains to the web server.
+00:07:28,489 --> 00:07:35,380
+Slide 75 shows a small institutional network. The whole network is one IP subnet.
 
 76
-00:13:19,190 --> 00:13:29,089
-The web server responds with a SYN plus ACK segment, step 2. The laptop answers with an ACK. The TCP connection is now established.
+00:07:35,830 --> 00:07:41,889
+Inside the subnet, switches form a hierarchy: one top switch and three lower switches.
 
 77
-00:13:29,539 --> 00:13:46,371
-Step 5. The browser sends the HTTP request into the TCP socket. It asks for index.htm. The IP datagram with the HTTP request is routed to www.google.com.
+00:07:42,339 --> 00:07:46,029
+The mail server and the web server connect to the top switch.
 
 78
-00:13:46,821 --> 00:14:02,799
-The web server puts the file in an HTTP reply, and asks TCP to send it. TCP puts it in a segment, and the network layer sends an IP packet to the laptop, routed back through the autonomous systems.
+00:07:46,479 --> 00:07:48,677
+The hosts connect to the lower switches.
 
 79
-00:14:03,249 --> 00:14:07,345
-The browser receives the response and displays the web page.
+00:07:49,127 --> 00:07:52,327
+A router connects the subnet to the external network.
 
 80
-00:14:07,795 --> 00:14:17,609
-Question bank. Question 56: what is the purpose of a switch table? Question 57: what is its structure? Pause the video and try it.
+00:07:52,777 --> 00:07:59,518
+Inside the subnet, switches forward the frames. To leave the subnet, a datagram goes to the router.
 
 81
-00:14:18,059 --> 00:14:28,555
-Answer to 56. The switch table tells the switch on which interface to forward each frame. So the switch forwards selectively, instead of everywhere.
+00:07:59,968 --> 00:08:05,344
+Here a datagram goes from a host, through a switch and then a router, to another host.
 
 82
-00:14:29,005 --> 00:14:40,951
-Answer to 57. Each entry has the MAC address of a host, the interface that reaches the host, and a TTL. When the TTL ends, the entry is removed.
+00:08:05,794 --> 00:08:09,677
+Switches and routers are both store-and-forward devices.
 
 83
-00:14:41,401 --> 00:14:51,961
-Question 58: how does a switch construct its table? Question 59: which mapping best describes a switch table? Pause the video and try it.
+00:08:10,127 --> 00:08:16,953
+A switch is a link-layer device. It examines only the link-layer headers, with the MAC addresses.
 
 84
-00:14:52,411 --> 00:15:02,737
-Answer to 58. By self-learning. It records the sender's MAC address and the incoming interface of each frame. It needs no configuration.
+00:08:17,403 --> 00:08:24,614
+A router is a network-layer device. It examines the network-layer headers, with the IP addresses.
 
 85
-00:15:03,187 --> 00:15:18,568
-Answer to 59. Many-to-1. Each MAC address maps to one interface, but many MAC addresses can map to the same interface. In S1, the six hosts behind S4 all map to the port toward S4.
+00:08:25,064 --> 00:08:31,485
+So the datagram goes up to the network layer in the router, but only up to the link layer in the switch.
 
 86
-00:15:19,018 --> 00:15:26,890
-Question 60 gives the algorithm of slide 71 with gaps. Fill in the gaps. Pause the video and try it.
+00:08:31,935 --> 00:08:37,077
+Both have forwarding tables. A switch builds its table by flooding and learning.
 
 87
-00:15:27,340 --> 00:15:44,065
-When a frame is received at the switch. Step 1: record the incoming link and the MAC address of the sending host. Step 2: index the switch table with the destination MAC address. Step 3: if an entry is found for the destination.
+00:08:37,527 --> 00:08:41,132
+A router computes its table with routing algorithms.
 
 88
-00:15:44,515 --> 00:15:55,630
-Then, if the destination is on the port the frame came from, drop the frame. Else, forward the frame on the interface in the entry. If no entry is found, flood.
+00:08:41,582 --> 00:08:47,065
+A switch table holds MAC addresses. A router table holds IP addresses.
 
 89
-00:15:56,080 --> 00:16:06,469
-Question 61: what is flooding? Question 62: an L2 switch floods in two situations. What are they? Pause the video and try it.
+00:08:47,515 --> 00:08:55,088
+Datacenter networks connect tens to hundreds of thousands of hosts. The hosts are closely coupled and close together.
 
 90
-00:16:06,919 --> 00:16:15,410
-Answer to 61. Flooding means the switch forwards the frame on all interfaces except the interface where it arrived.
+00:08:55,538 --> 00:08:58,781
+Example 1: e-business, such as Amazon.
 
 91
-00:16:15,860 --> 00:16:27,060
-Answer to 62. Situation 1: the destination MAC address is not in the switch table. This is the first frame to A prime on slide 72.
+00:08:59,231 --> 00:09:04,927
+Example 2: content servers, such as YouTube, Akamai, Apple, and Microsoft.
 
 92
-00:16:27,510 --> 00:16:43,659
-Situation 2: the destination is the broadcast address, for example an ARP query or a DHCP request. No frame has the broadcast address as its source, so step 3 never finds an entry, and the switch floods.
+00:09:05,377 --> 00:09:09,814
+Example 3: search engines and data mining, such as Google.
 
 93
-00:16:44,109 --> 00:17:03,352
-Question 63. You must connect 1000 hosts. Each L2 switch has 48 ports. How many switches do you need? Show a layout that minimizes the delay to an external server. There is no published answer, so we use the slides. Pause the video and try it.
+00:09:10,264 --> 00:09:12,995
+Datacenter networks have three challenges.
 
 94
-00:17:03,802 --> 00:17:30,831
-Count ports. n switches have 48 n ports, for 1000 hosts and 1 router port. Each link between two switches uses 2 ports, and a tree of n switches has n minus 1 such links. So 48 n must be at least 1001 plus 2 times n minus 1. That gives 46 n at least 999, so n is at least 21.7. So you need at least 22 switches.
+00:09:13,445 --> 00:09:19,034
+Challenge 1: many applications, and each one serves massive numbers of clients.
 
 95
-00:17:31,281 --> 00:17:43,676
-Layout: one root switch connects to the router, and 21 access switches connect to the root. Each access switch uses 1 port for the uplink and 47 ports for hosts.
+00:09:19,484 --> 00:09:24,177
+Challenge 2: reliability. The communication must be fail-safe.
 
 96
-00:17:44,126 --> 00:18:00,873
-21 times 47 is 987 hosts. The root uses 21 ports for the access switches and 1 for the router. 26 ports are free, and 13 more hosts go on the root. So all 1000 hosts fit.
+00:09:24,627 --> 00:09:30,601
+Challenge 3: balance the load, to avoid processing, networking, and data bottlenecks.
 
 97
-00:18:01,323 --> 00:18:10,133
-For delay: every frame reaches the router through at most 2 store-and-forward switches. A chain of switches would add many hops.
+00:09:31,051 --> 00:09:38,496
+From the bottom up: server racks. Each rack holds 20 to 40 server blades. The blades are the hosts.
 
 98
-00:18:10,583 --> 00:18:27,501
-Question 64 uses the network of slide 73. All four switch tables start empty. C sends a frame to I, then F sends a frame to C. Part a: show the four switch tables at the end. Pause the video and try it.
+00:09:38,946 --> 00:09:48,226
+Each rack has one top of rack switch, or TOR switch. It connects to the blades at 40 to 100 gigabits per second.
 
 99
-00:18:27,951 --> 00:18:43,183
-Frame 1, C to I, is as on slide 74. S1 learns C on C's link. S4 learns C through S1. S2 and S3 learn C through S4. Nobody knows I, so every switch floods.
+00:09:48,676 --> 00:09:55,332
+Each tier-2 switch connects to about 16 TOR switches below it. The drawing shows 4.
 
 100
-00:18:43,633 --> 00:19:01,851
-Frame 2, F to C. S2 learns F on F's link. S2 knows C, through S4, so it forwards only to S4. S4 learns F through S2 and forwards only to S1. S1 learns F through S4 and forwards only to C.
+00:09:55,782 --> 00:10:00,454
+Each tier-1 switch connects to about 16 tier-2 switches below it.
 
 101
-00:19:02,301 --> 00:19:15,677
-So S1, S2, and S4 have two entries each: C and F. S3 has only C, because frame 2 never reaches S3. Note that no switch learns I. I never sends a frame.
+00:10:00,904 --> 00:10:05,085
+At the top, border routers connect the datacenter to the outside.
 
 102
-00:19:16,127 --> 00:19:24,725
-Part b: how many frames actually reach the hardware interfaces of hosts A, D, and G? Pause the video and try it.
+00:10:05,535 --> 00:10:11,573
+Slide 80 shows a real example, the Facebook F16 datacenter topology.
 
 103
-00:19:25,175 --> 00:19:33,495
-Frame 1, C to I, is flooded by every switch. So it reaches A through S1, D through S2, and G through S3.
+00:10:12,023 --> 00:10:20,001
+This is a smaller version of slide 81, with 4 tier-1 switches, 4 tier-2 switches, and 8 racks.
 
 104
-00:19:33,945 --> 00:19:42,691
-Frame 2, F to C, is forwarded only on the path S2, S4, S1, to C. It does not reach A, D, or G.
+00:10:20,451 --> 00:10:23,971
+Each tier-2 switch connects to every tier-1 switch.
 
 105
-00:19:43,141 --> 00:19:49,392
-So exactly one frame reaches each of A, D, and G, and their adapters discard it.
+00:10:24,421 --> 00:10:27,109
+Each rack connects to two tier-2 switches.
 
 106
-00:19:49,842 --> 00:19:54,855
-Three synthesis questions that use this video. Pause the video and try them.
+00:10:27,559 --> 00:10:34,109
+So there are many paths between two racks. Here is one path from rack 1 to rack 6, in red.
 
 107
-00:19:55,305 --> 00:20:08,255
-Question 1. A network-layer protocol is present on hosts and routers, not on links or L2 switches. Slide 76 shows that a switch goes up only to the link layer.
+00:10:34,559 --> 00:10:36,671
+Here is a second path, in blue.
 
 108
-00:20:08,705 --> 00:20:18,113
-Question 2. DHCP uses UDP. The client uses port 68 and the server uses port 67.
+00:10:37,121 --> 00:10:41,515
+The two paths use different switches. So the two paths are disjoint.
 
 109
-00:20:18,563 --> 00:20:38,531
-Question 3. The order is: DHCP, for its own IP address, the router, and the DNS server. Then ARP, for the router's MAC address. Then DNS, for the IP address of www.google.com. Then the TCP handshake, then HTTP.
+00:10:41,965 --> 00:10:45,784
+Multiple paths increase the throughput and the reliability.
 
 110
-00:20:38,981 --> 00:20:54,917
-To recap. A switch is a transparent, plug-and-play, store-and-forward link-layer device. It learns from the sender of each frame. It forwards to a known destination, and floods for an unknown or broadcast destination.
+00:10:46,234 --> 00:10:49,498
+A load balancer does application-layer routing.
 
 111
-00:20:55,367 --> 00:21:03,047
-A router uses IP addresses and routing algorithms. A switch uses MAC addresses and self-learning.
+00:10:49,948 --> 00:10:52,977
+It receives the requests of the external clients.
 
 112
-00:21:03,497 --> 00:21:11,539
-A datacenter connects racks through top of rack, tier-2, and tier-1 switches, with many paths and a load balancer.
+00:10:53,427 --> 00:10:57,246
+It directs the workload to servers inside the datacenter.
 
 113
-00:21:11,989 --> 00:21:25,451
+00:10:57,696 --> 00:11:00,619
+It returns the results to the external client.
+
+114
+00:11:01,069 --> 00:11:04,610
+So the client does not see the inside of the datacenter.
+
+115
+00:11:05,060 --> 00:11:16,025
+At the link layer: RoCE, remote DMA over converged Ethernet. Data moves directly between the memories of two servers, without their CPUs.
+
+116
+00:11:16,475 --> 00:11:33,969
+At the transport layer: explicit congestion notification, ECN, is used in congestion control, for example in DCTCP and DCQCN. There are also tests with hop-by-hop, or backpressure, congestion control.
+
+117
+00:11:34,419 --> 00:11:40,264
+For routing and management, SDN is widely used within and among datacenters.
+
+118
+00:11:40,714 --> 00:11:48,394
+Related services and data are placed as close as possible, for example in the same rack or a nearby rack.
+
+119
+00:11:48,844 --> 00:11:53,281
+This minimizes the traffic through the tier-2 and tier-1 switches.
+
+120
+00:11:53,731 --> 00:12:02,670
+Now we put it all together. One simple scenario uses the protocols of every layer. The network is from slide 93.
+
+121
+00:12:03,120 --> 00:12:05,296
+On the left is the school network.
+
+122
+00:12:05,746 --> 00:12:08,818
+The Comcast network holds the DNS server.
+
+123
+00:12:09,268 --> 00:12:11,743
+Google's network holds the web server.
+
+124
+00:12:12,193 --> 00:12:15,627
+A student attaches a laptop to the school network.
+
+125
+00:12:16,077 --> 00:12:21,944
+Then the student requests the web page www.google.com.
+
+126
+00:12:22,394 --> 00:12:32,015
+Slide 86 shows the whole course in one picture. On the laptop, the DHCP client runs on UDP port 68.
+
+127
+00:12:32,465 --> 00:12:37,287
+The web browser runs HTTP on TCP, from a free port.
+
+128
+00:12:37,737 --> 00:12:43,646
+On the servers: the DHCP server runs on UDP port 67.
+
+129
+00:12:44,096 --> 00:12:48,213
+The DNS server runs on UDP port 53.
+
+130
+00:12:48,663 --> 00:12:52,653
+The web server runs HTTP on TCP port 80.
+
+131
+00:12:53,103 --> 00:12:59,737
+Under each application are IP at the network layer, then the link layer, then the physical layer.
+
+132
+00:13:00,187 --> 00:13:04,497
+Between them are switches that learn, the first-hop router, and ARP.
+
+133
+00:13:04,947 --> 00:13:13,501
+Routing works inside each autonomous system with OSPF or RIP, and between autonomous systems with BGP.
+
+134
+00:13:13,951 --> 00:13:29,269
+Step 1. The arriving laptop needs its own IP address, the IP address of the first-hop router, the IP address of the DNS server, and the network mask. It gets all of them with DHCP.
+
+135
+00:13:29,719 --> 00:13:38,039
+The DHCP request is put in a UDP segment, then in an IP datagram, then in an Ethernet frame.
+
+136
+00:13:38,489 --> 00:13:47,001
+The DHCP client uses UDP port 68. The DHCP server uses port 67.
+
+137
+00:13:47,451 --> 00:13:50,907
+The IP destination is the broadcast address.
+
+138
+00:13:51,357 --> 00:13:55,815
+The frame's destination MAC address is the broadcast address too.
+
+139
+00:13:56,265 --> 00:13:59,060
+The switch floods the broadcast frame on the LAN.
+
+140
+00:13:59,510 --> 00:14:03,649
+At the same time, the switch learns the interface of the laptop.
+
+141
+00:14:04,099 --> 00:14:08,600
+The router runs the DHCP server. It receives the frame.
+
+142
+00:14:09,050 --> 00:14:19,354
+The router demultiplexes the frame: Ethernet to IP, IP to UDP, and UDP to DHCP, at port 67.
+
+143
+00:14:19,804 --> 00:14:33,735
+The DHCP server replies with a DHCP ACK. The ACK holds the client's IP address, the first-hop router's IP address, and the DNS server's name and IP address.
+
+144
+00:14:34,185 --> 00:14:40,414
+The switch forwards the ACK only to the laptop. It learned the laptop's interface from the request.
+
+145
+00:14:40,864 --> 00:14:47,840
+Now the laptop has its IP address. It also knows its first-hop router and the DNS server.
+
+146
+00:14:48,290 --> 00:14:57,463
+Step 2. The laptop needs the IP address of www.google.com. So it uses DNS.
+
+147
+00:14:57,913 --> 00:15:04,868
+The laptop puts the DNS query in UDP, then in IP, then in an Ethernet frame.
+
+148
+00:15:05,318 --> 00:15:11,291
+To send this frame to the router, the laptop needs the MAC address of the router interface.
+
+149
+00:15:11,741 --> 00:15:16,328
+So the laptop runs ARP. It broadcasts an ARP query on the LAN.
+
+150
+00:15:16,778 --> 00:15:18,954
+The router receives the ARP query.
+
+151
+00:15:19,404 --> 00:15:25,953
+The router replies with an ARP reply. The reply gives the MAC address of the router interface.
+
+152
+00:15:26,403 --> 00:15:30,627
+Now the laptop can send the frame that holds the DNS query.
+
+153
+00:15:31,077 --> 00:15:38,608
+Step 3. The laptop sends the DNS query to UDP port 53 on the DNS server.
+
+154
+00:15:39,058 --> 00:15:45,415
+The laptop knows the IP address of the DNS server from DHCP, in step 1.
+
+155
+00:15:45,865 --> 00:15:50,580
+The LAN switch forwards the frame from the laptop to the first-hop router.
+
+156
+00:15:51,030 --> 00:15:56,918
+The datagram goes from the school network into the Comcast network, to the DNS server.
+
+157
+00:15:57,368 --> 00:16:04,685
+The routers forward it with tables that RIP, OSPF, IS-IS, or BGP created.
+
+158
+00:16:05,135 --> 00:16:10,085
+At the DNS server, the datagram is demultiplexed to DNS.
+
+159
+00:16:10,535 --> 00:16:25,788
+The DNS server replies to the client with the IP address of www.google.com: 64 dot 233 dot 169 dot 105.
+
+160
+00:16:26,238 --> 00:16:33,705
+Step 4. Before it sends the HTTP request, the browser asks TCP to open a connection.
+
+161
+00:16:34,155 --> 00:16:40,896
+The connection goes from the laptop's IP address and port, to the web server's IP address, port 80.
+
+162
+00:16:41,346 --> 00:16:46,466
+TCP sends a SYN segment. This is step 1 of the three-way handshake.
+
+163
+00:16:46,916 --> 00:16:53,423
+The SYN is routed between domains: from the school network, through Comcast, into Google's network.
+
+164
+00:16:53,873 --> 00:16:58,587
+The web server responds with a SYN plus ACK segment. This is step 2.
+
+165
+00:16:59,037 --> 00:17:02,472
+The laptop answers with an ACK. This is step 3.
+
+166
+00:17:02,922 --> 00:17:05,845
+Now the TCP connection is established.
+
+167
+00:17:06,295 --> 00:17:15,255
+Step 5. The browser sends the HTTP request into the TCP socket. It asks for index.htm.
+
+168
+00:17:15,705 --> 00:17:23,427
+The IP datagram with the HTTP request is routed to www.google.com.
+
+169
+00:17:23,877 --> 00:17:32,539
+The web server puts the file index.htm in an HTTP reply. It asks TCP to send the reply.
+
+170
+00:17:32,989 --> 00:17:39,559
+TCP puts the reply in a segment. The network layer puts the segment in an IP packet.
+
+171
+00:17:40,009 --> 00:17:45,044
+The IP packet is routed back through the autonomous systems to the laptop.
+
+172
+00:17:45,494 --> 00:17:49,441
+The browser receives the reply and displays the web page.
+
+173
+00:17:49,891 --> 00:17:59,725
+Question bank. Question 56: what is the purpose of a switch table? Question 57: what is its structure? Pause the video and try it.
+
+174
+00:18:00,175 --> 00:18:06,746
+Answer to 56. The switch table tells the switch on which interface to forward each frame.
+
+175
+00:18:07,196 --> 00:18:15,495
+So the switch forwards a frame only on the interface of the entry. A frame to A prime leaves only on interface 4.
+
+176
+00:18:15,945 --> 00:18:23,027
+If the destination is on the interface where the frame arrived, the switch drops the frame. This is filtering.
+
+177
+00:18:23,477 --> 00:18:30,048
+Answer to 57. Each entry has three parts. Part 1 is the MAC address of a host.
+
+178
+00:18:30,498 --> 00:18:33,613
+Part 2 is the interface that reaches the host.
+
+179
+00:18:34,063 --> 00:18:39,951
+Part 3 is a TTL. When the TTL ends, the switch removes the entry.
+
+180
+00:18:40,401 --> 00:18:44,475
+So each entry is: MAC address, interface, TTL.
+
+181
+00:18:44,925 --> 00:18:55,485
+Question 58: how does a switch construct its table? Question 59: which mapping best describes a switch table? Pause the video and try it.
+
+182
+00:18:55,935 --> 00:19:05,407
+Answer to 58. By self-learning. Example: a frame from D arrives at S1, on the interface of S1 to S4.
+
+183
+00:19:05,857 --> 00:19:09,207
+S1 records the MAC address of the sender: D.
+
+184
+00:19:09,657 --> 00:19:14,862
+S1 also records the incoming interface: the interface to S4.
+
+185
+00:19:15,312 --> 00:19:19,600
+The switch needs no configuration and no routing protocol.
+
+186
+00:19:20,050 --> 00:19:27,751
+Answer to 59. After frames from E, F, G, H, and I, the S1 table has six entries.
+
+187
+00:19:28,201 --> 00:19:33,044
+All six entries map to the same interface: the interface to S4.
+
+188
+00:19:33,494 --> 00:19:42,497
+Each MAC address maps to only one interface, but many MAC addresses map to the same interface. So the mapping is many-to-1.
+
+189
+00:19:42,947 --> 00:19:50,819
+Question 60 gives the algorithm of slide 71 with gaps. Fill in the gaps. Pause the video and try it.
+
+190
+00:19:51,269 --> 00:19:54,298
+Gap 1: when a frame is received at the switch.
+
+191
+00:19:54,748 --> 00:19:59,676
+Gap 2: record the incoming link and the MAC address of the sending host.
+
+192
+00:20:00,126 --> 00:20:04,542
+Gap 3: index the switch table with the destination MAC address.
+
+193
+00:20:04,992 --> 00:20:08,427
+Gap 4: if an entry is found for the destination,
+
+194
+00:20:08,877 --> 00:20:15,426
+Gap 5: then, if the destination is on the port that the frame came from, drop the frame.
+
+195
+00:20:15,876 --> 00:20:20,441
+Gap 6: else, forward the frame on the interface in the entry.
+
+196
+00:20:20,891 --> 00:20:28,145
+Gap 7: if no entry is found, flood: forward on all interfaces except the arriving interface.
+
+197
+00:20:28,595 --> 00:20:38,984
+Question 61: what is flooding? Question 62: an L2 switch floods in two situations. What are they? Pause the video and try it.
+
+198
+00:20:39,434 --> 00:20:48,650
+Answer to 61. Flooding means: the switch forwards the frame on all interfaces, except the interface where the frame arrived.
+
+199
+00:20:49,100 --> 00:20:56,375
+Here the frame arrived on interface 1. So it goes out on interfaces 2, 3, 4, 5, and 6.
+
+200
+00:20:56,825 --> 00:21:08,643
+Answer to 62. Situation 1: the destination MAC address is not in the switch table. An example is the first frame to A prime on slide 72.
+
+201
+00:21:09,093 --> 00:21:17,669
+Situation 2: the destination is the broadcast address, for example in an ARP query or a DHCP request.
+
+202
+00:21:18,119 --> 00:21:28,466
+No frame has the broadcast address as its source. So the broadcast address is never in the table, step 3 finds no entry, and the switch floods.
+
+203
+00:21:28,916 --> 00:21:48,159
+Question 63. You must connect 1000 hosts. Each L2 switch has 48 ports. How many switches do you need? Show a layout that minimizes the delay to an external server. There is no published answer, so we use the slides. Pause the video and try it.
+
+204
+00:21:48,609 --> 00:21:54,795
+Count the ports. Each switch has 48 ports. So n switches have 48 n ports.
+
+205
+00:21:55,245 --> 00:21:57,464
+The hosts need 1000 ports.
+
+206
+00:21:57,914 --> 00:22:01,242
+The router to the external server needs 1 port.
+
+207
+00:22:01,692 --> 00:22:13,639
+The switches connect in a tree. A tree of n switches has n minus 1 links. Each link uses 2 ports, one at each end. With 4 switches: 3 links, so 6 ports.
+
+208
+00:22:14,089 --> 00:22:19,657
+So 48 n must be at least 1000, plus 1, plus 2 n minus 2.
+
+209
+00:22:20,107 --> 00:22:31,435
+Take 2 n from both sides: 46 n. Take 2 from 1001: 999. So 46 n is at least 999.
+
+210
+00:22:31,885 --> 00:22:40,994
+999 divided by 46 is 21.7. n is a whole number, so n is at least 22.
+
+211
+00:22:41,444 --> 00:22:52,751
+Check with 21 switches. They have 21 times 48, which is 1008 ports. But 1041 ports are needed. 33 ports are missing.
+
+212
+00:22:53,201 --> 00:23:04,230
+With 22 switches: 22 times 48 is 1056 ports. 1043 ports are needed. So 13 ports are spare.
+
+213
+00:23:04,680 --> 00:23:10,888
+Now the layout, with 22 switches. The delay to the external server must be small.
+
+214
+00:23:11,338 --> 00:23:13,685
+One root switch connects to the router.
+
+215
+00:23:14,135 --> 00:23:21,687
+21 access switches connect to the root. 1 root plus 21 access switches is 22 switches.
+
+216
+00:23:22,137 --> 00:23:30,627
+Each access switch uses 1 port for its uplink to the root. 48 minus 1 leaves 47 ports for hosts.
+
+217
+00:23:31,077 --> 00:23:37,243
+21 access switches times 47 hosts is 987 hosts.
+
+218
+00:23:37,693 --> 00:23:48,167
+The root uses 21 ports for the access switches and 1 port for the router. 48 minus 21 minus 1 leaves 26 free ports.
+
+219
+00:23:48,617 --> 00:24:03,316
+1000 minus 987 is 13. So 13 hosts go on the root switch, and all 1000 hosts fit. 26 minus 13 leaves 13 spare ports, as in the port count.
+
+220
+00:24:03,766 --> 00:24:10,337
+For the delay: a frame from any host reaches the router through at most 2 store-and-forward switches.
+
+221
+00:24:10,787 --> 00:24:16,291
+A chain of switches would put many switches on the path, and each switch adds a delay.
+
+222
+00:24:16,741 --> 00:24:33,807
+Question 64 uses the network of slide 73. All four switch tables start empty. C sends a frame to I. Then F sends a frame to C. Part a: show the four switch tables at the end. Pause the video and try it.
+
+223
+00:24:34,257 --> 00:24:43,303
+Frame 1, C to I, is the same as on slide 74. Every switch learns the sender C, on the interface toward C.
+
+224
+00:24:43,753 --> 00:24:47,699
+No switch knows I. So every switch floods frame 1.
+
+225
+00:24:48,149 --> 00:24:53,333
+Frame 2, F to C. S2 learns the sender F: interface to F.
+
+226
+00:24:53,783 --> 00:25:00,887
+C is in the S2 table: interface to S4. So S2 forwards the frame only to S4.
+
+227
+00:25:01,337 --> 00:25:05,177
+S4 learns the sender F: interface to S2.
+
+228
+00:25:05,627 --> 00:25:12,966
+C is in the S4 table: interface to S1. So S4 forwards the frame only to S1.
+
+229
+00:25:13,416 --> 00:25:17,384
+S1 learns the sender F: interface to S4.
+
+230
+00:25:17,834 --> 00:25:24,533
+C is in the S1 table: interface to C. So S1 forwards the frame only to C.
+
+231
+00:25:24,983 --> 00:25:29,249
+So S1, S2, and S4 have two entries each: C and F.
+
+232
+00:25:29,699 --> 00:25:34,094
+S3 has only C, because frame 2 never reaches S3.
+
+233
+00:25:34,544 --> 00:25:38,192
+No switch learns I, because I never sends a frame.
+
+234
+00:25:38,642 --> 00:25:47,239
+Part b: how many frames actually reach the hardware interfaces of hosts A, D, and G? Pause the video and try it.
+
+235
+00:25:47,689 --> 00:25:53,108
+Frame 1, C to I. No switch knows I, so every switch floods frame 1.
+
+236
+00:25:53,558 --> 00:25:56,481
+So frame 1 reaches A, through S1.
+
+237
+00:25:56,931 --> 00:25:59,064
+It reaches D, through S2.
+
+238
+00:25:59,514 --> 00:26:02,010
+And it reaches G, through S3.
+
+239
+00:26:02,460 --> 00:26:11,335
+Frame 2, F to C. Every switch on the way knows C. So frame 2 goes only on the path S2, S4, S1, to C.
+
+240
+00:26:11,785 --> 00:26:14,921
+So frame 2 does not reach A, D, or G.
+
+241
+00:26:15,371 --> 00:26:23,520
+In total, exactly one frame reaches each of A, D, and G. Their adapters discard it, because it is for I.
+
+242
+00:26:23,970 --> 00:26:28,983
+Three synthesis questions that use this video. Pause the video and try them.
+
+243
+00:26:29,433 --> 00:26:34,681
+Question 1. A network-layer protocol is present on hosts and routers.
+
+244
+00:26:35,131 --> 00:26:43,942
+It is not present on links or on L2 switches. Slide 76 shows that a switch goes up only to the link layer.
+
+245
+00:26:44,392 --> 00:26:48,211
+Question 2. DHCP uses UDP.
+
+246
+00:26:48,661 --> 00:26:52,031
+The DHCP client uses port 68.
+
+247
+00:26:52,481 --> 00:26:56,065
+The DHCP server uses port 67.
+
+248
+00:26:56,515 --> 00:27:05,027
+Question 3. First, DHCP: the laptop gets its own IP address, the router, and the DNS server.
+
+249
+00:27:05,477 --> 00:27:07,888
+Then ARP, for the router's MAC address.
+
+250
+00:27:08,338 --> 00:27:14,845
+Then DNS, for the IP address of www.google.com.
+
+251
+00:27:15,295 --> 00:27:18,943
+Then the TCP handshake: SYN, SYN ack, ACK.
+
+252
+00:27:19,393 --> 00:27:22,763
+Then HTTP: the request and the reply.
+
+253
+00:27:23,213 --> 00:27:32,472
+To recap. A switch is a transparent, plug-and-play, store-and-forward link-layer device. Each port is its own collision domain.
+
+254
+00:27:32,922 --> 00:27:47,173
+The switch table maps MAC addresses to interfaces, many-to-1. The switch learns from the sender of each frame. It forwards to a known destination, and floods for an unknown or broadcast destination.
+
+255
+00:27:47,623 --> 00:27:55,303
+A router uses IP addresses and routing algorithms. A switch uses MAC addresses and self-learning.
+
+256
+00:27:55,753 --> 00:28:03,795
+A datacenter connects racks through top of rack, tier-2, and tier-1 switches, with many paths and a load balancer.
+
+257
+00:28:04,245 --> 00:28:17,707
 And one web request uses DHCP, ARP, DNS, TCP, and HTTP, in that order. This completes ECE 358. Good luck on the exam.

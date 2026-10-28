@@ -3,349 +3,633 @@
 This is ECE 358, video 13. The topic is the IP datagram and fragmentation. It covers slides 22 to 27 of Chapter 4.
 
 2
-00:00:13,250 --> 00:00:41,709
-After this video, you can name every field of the IPv4 header, with its size and its use. You can explain the MTU, fragmentation and reassembly. You can fragment a datagram and give the length, I D, flags and offset of each fragment. And you can check if a proposed fragmentation is valid. These are question bank questions 22 to 28. Question 21, about output buffers, is solved in video 12.
+00:00:13,250 --> 00:00:20,226
+After this video, you can name every field of the IPv4 header, with its size and its use.
 
 3
-00:00:42,159 --> 00:00:51,673
-Slide 22 shows the network layer of a host or a router. Transport is above it. The link layer and the physical layer are below it.
+00:00:20,676 --> 00:00:24,879
+You can explain the MTU, fragmentation and reassembly.
 
 4
-00:00:52,123 --> 00:01:06,459
-The network layer has three parts. The first part is path selection. Routing protocols, such as OSPF and BGP, run the routing algorithms. They build the forwarding table, R T.
+00:00:25,329 --> 00:00:31,729
+You can fragment a datagram and give the length, I D, flags and offset of each fragment.
 
 5
-00:01:06,909 --> 00:01:21,395
-The second part is the IP protocol. IP defines the datagram format, the addressing, and the rules for packet handling. IP uses the forwarding table to send each datagram to an output link.
+00:00:32,179 --> 00:00:45,341
+And you can check if a proposed fragmentation is valid. These are question bank questions 22 to 28. Question 21, about output buffers, is solved in video 12.
 
 6
-00:01:21,845 --> 00:01:38,954
-The third part is the ICMP protocol. ICMP reports errors, for example network unreachable. It also lets routers send signals, for example routing advice. This video is about the IP datagram format.
+00:00:45,791 --> 00:00:50,037
+Slide 22 shows the network layer of a host or a router.
 
 7
-00:01:39,404 --> 00:01:55,959
-Slide 23 shows the IPv4 datagram format. Each row is 32 bits, that is 4 bytes. The first row has the version, the header length, the type of service, and the total length of the datagram in bytes.
+00:00:50,487 --> 00:00:55,820
+The transport layer is above it. The link layer and the physical layer are below it.
 
 8
-00:01:56,409 --> 00:02:04,579
-The second row is for fragmentation. It has a 16-bit identifier, 3 flag bits, and the fragment offset.
+00:00:56,270 --> 00:01:07,555
+The network layer has three parts. The first part is path selection. Routing protocols, such as OSPF and BGP, run the routing algorithms.
 
 9
-00:02:05,029 --> 00:02:10,405
-The third row has the TTL, the upper layer protocol, and the header checksum.
+00:01:08,005 --> 00:01:10,523
+They build the forwarding table, R T.
 
 10
-00:02:10,855 --> 00:02:18,706
-Rows 4 and 5 hold the 32-bit source IP address and the 32-bit destination IP address.
+00:01:10,973 --> 00:01:20,018
+The second part is the IP protocol. IP defines the datagram format, the addressing, and the rules for packet handling.
 
 11
-00:02:19,156 --> 00:02:25,471
-Then come the options, if any. Examples are a timestamp, or a record of the route taken.
+00:01:20,468 --> 00:01:25,844
+IP uses the forwarding table to send each datagram to an output link.
 
 12
-00:02:25,921 --> 00:02:33,921
-After the header comes the payload. It has a variable length. Usually it is a TCP or a UDP segment.
+00:01:26,294 --> 00:01:34,678
+The third part is the ICMP protocol. ICMP reports errors, for example network unreachable.
 
 13
-00:02:34,371 --> 00:02:50,136
-Without options, the header has 5 rows of 4 bytes. So the minimum header is 20 bytes. The maximum length of a whole datagram is 64 K bytes. A typical datagram is 1500 bytes or less.
+00:01:35,128 --> 00:01:40,931
+ICMP also lets routers send signals, for example routing advice.
 
 14
-00:02:50,586 --> 00:03:02,319
-Slide 24 explains the fields one by one. The version field has 4 bits. For IPv4, the value is 4, that is 0 1 0 0.
+00:01:41,381 --> 00:01:44,602
+This video is about the IP datagram format.
 
 15
-00:03:02,769 --> 00:03:13,799
-The header length field also has 4 bits. Its unit is 4 bytes, not 1 byte. A 20-byte header is written as 5, that is 0 1 0 1.
+00:01:45,052 --> 00:01:57,383
+Slide 23 shows the IPv4 datagram format. Each row is 32 bits. 32 divided by 8 is 4, so each row is 4 bytes.
 
 16
-00:03:14,249 --> 00:03:20,627
-Here is why. 5 units of 4 bytes give 20 bytes. This is the header without options.
+00:01:57,833 --> 00:02:05,107
+The first row has the version, the header length, the type of service, and the total length of the datagram in bytes.
 
 17
-00:03:21,077 --> 00:03:33,856
-The largest 4-bit value is 15. So the largest header is 15 times 4, which is 60 bytes. The fixed part is 20 bytes, so the options can use at most 40 bytes.
+00:02:05,557 --> 00:02:13,728
+The second row is for fragmentation. It has a 16-bit identifier, 3 flag bits, and the fragment offset.
 
 18
-00:03:34,306 --> 00:03:51,074
-The type of service field has 8 bits. The slides call it D S C P, differentiated services code point. It has a 6-bit D S C P part and a 2-bit E C N part. E C N is explicit congestion notification.
+00:02:14,178 --> 00:02:19,554
+The third row has the TTL, the upper layer protocol, and the header checksum.
 
 19
-00:03:51,524 --> 00:04:01,679
-D S C P tells the type of data carried. D S C P 46 means high priority. D S C P 0 means low priority.
+00:02:20,004 --> 00:02:27,855
+Rows 4 and 5 hold the 32-bit source IP address and the 32-bit destination IP address.
 
 20
-00:04:02,129 --> 00:04:09,126
-The length field has 16 bits. It gives the length of the whole datagram in bytes: header plus payload.
+00:02:28,305 --> 00:02:34,619
+Then come the options, if any. Examples are a timestamp, or a record of the route taken.
 
 21
-00:04:09,576 --> 00:04:26,109
-The largest 16-bit value is 2 to the power 16, minus 1. That is 65,535 bytes, the 64 K maximum. To find the payload size, subtract the header length from the length.
+00:02:35,069 --> 00:02:43,069
+After the header comes the payload. It has a variable length. Usually it is a TCP or a UDP segment.
 
 22
-00:04:26,559 --> 00:04:41,322
-The second row is for fragmentation. A long IP packet can be cut into smaller packets. All those small packets carry the same 16-bit identifier. So the destination knows that they belong together.
+00:02:43,519 --> 00:02:52,266
+Without options, the header has 5 rows of 4 bytes. 5 times 4 is 20, so the minimum header is 20 bytes.
 
 23
-00:04:41,772 --> 00:04:58,540
-There are 3 flag bits. The first bit is not used. The second bit is don't fragment. The third bit is more fragments to follow. M F equal to 1 means more fragments follow. M F equal to 0 means this is the last fragment.
+00:02:52,716 --> 00:02:57,175
+The maximum length of a whole datagram is 64 K bytes.
 
 24
-00:04:58,990 --> 00:05:19,043
-The fragment offset has 13 bits. Multiply it by 8. The result is the position of the first byte of this fragment in the original data. For example, an offset of 185 means byte 185 times 8, that is byte 1480.
+00:02:57,625 --> 00:03:02,041
+A typical datagram is 1500 bytes or less.
 
 25
-00:05:19,493 --> 00:05:32,869
-Slide 25 starts with TTL, time to live. TTL is the maximum number of remaining hops. Here, host A sends a datagram to B with TTL equal to 2.
+00:03:02,491 --> 00:03:17,808
+Slide 24 explains the fields one by one. The version field has 4 bits. For IPv4, the value is 4. In binary that is 0 1 0 0: the bit with place value 4 is 1.
 
 26
-00:05:33,319 --> 00:05:41,319
-Router R1 subtracts 1. The TTL becomes 1. R1 forwards the datagram to R2.
+00:03:18,258 --> 00:03:24,210
+The header length field also has 4 bits. Its unit is 4 bytes, not 1 byte.
 
 27
-00:05:41,769 --> 00:05:54,292
-Router R2 subtracts 1 again. The TTL becomes 0. When the TTL is 0, the router discards the datagram. The datagram never gets to B.
+00:03:24,660 --> 00:03:34,345
+So a 20-byte header is written as 20 divided by 4, which is 5. In binary that is 0 1 0 1: 4 plus 1.
 
 28
-00:05:54,742 --> 00:06:04,257
-So the TTL limits the number of hops of a datagram. The field has 8 bits, so its largest value is 255.
+00:03:34,795 --> 00:03:43,265
+Here is the picture. 5 units of 4 bytes give 5 times 4, which is 20 bytes. This is the header without options.
 
 29
-00:06:04,707 --> 00:06:12,237
-The upper layer field tells the destination which protocol gets the payload. The value 6 means TCP.
+00:03:43,715 --> 00:03:55,576
+The largest 4-bit value is 1 1 1 1: 8 plus 4 plus 2 plus 1, which is 15. So the largest header is 15 times 4, which is 60 bytes.
 
 30
-00:06:12,687 --> 00:06:21,263
-The value 17 means UDP. So the network layer at the destination uses this field to deliver the payload.
+00:03:56,026 --> 00:04:03,237
+The fixed part is 20 bytes, so the options can use at most 60 minus 20, which is 40 bytes.
 
 31
-00:06:21,713 --> 00:06:30,908
-The header checksum detects bit errors in the packet header. Errors in the data are ignored by IP. The transport layer checks the data.
+00:04:03,687 --> 00:04:11,772
+The type of service field has 8 bits. The slides call it D S C P, differentiated services code point.
 
 32
-00:06:31,358 --> 00:06:44,457
-The source IP address is the 32-bit address of the node that originally created the packet. The destination IP address is the 32-bit address of the destination node.
+00:04:12,222 --> 00:04:14,761
+It has a 6-bit D S C P part.
 
 33
-00:06:44,907 --> 00:06:58,731
-Slide 23 also shows the overhead. A TCP segment inside an IP datagram carries two headers. The TCP header is 20 bytes. The IP header is 20 bytes.
+00:04:15,211 --> 00:04:24,149
+And it has a 2-bit E C N part. E C N is explicit congestion notification. 6 plus 2 is 8 bits.
 
 34
-00:06:59,181 --> 00:07:05,879
-So the overhead is 20 plus 20, which is 40 bytes, plus the application layer overhead.
+00:04:24,599 --> 00:04:31,255
+D S C P tells the type of data carried. D S C P 46 means high priority.
 
 35
-00:07:06,329 --> 00:07:19,023
-For example, a 1500-byte datagram can carry at most 1500 minus 40, that is 1460 bytes of application data.
+00:04:31,705 --> 00:04:34,863
+D S C P 0 means low priority.
 
 36
-00:07:19,473 --> 00:07:47,057
-Slide 26. Every network link has an MTU, a maximum transfer unit. It is the largest possible link-level frame. Different link types have different MTUs. Here, the link from R1 to R2 has an MTU of 4000 bytes. The link from R2 to R3 has an MTU of 1500 bytes. A 4000-byte datagram travels from A towards B.
+00:04:35,313 --> 00:04:42,310
+The length field has 16 bits. It gives the length of the whole datagram in bytes: header plus payload.
 
 37
-00:07:47,507 --> 00:08:01,971
-The 4000-byte datagram does not fit on the 1500-byte link. So R2 divides it. This is fragmentation. One large datagram goes in. Three smaller datagrams come out.
+00:04:42,760 --> 00:04:59,571
+The largest 16-bit value is 2 to the power 16, minus 1. That is 65,535 bytes, the 64 K maximum. 64 K is 64 times 1024.
 
 38
-00:08:02,421 --> 00:08:10,186
-The fragments are reassembled only at the destination, host B. The routers on the path do not reassemble them.
+00:05:00,021 --> 00:05:04,159
+To find the payload size, subtract the header length from the length.
 
 39
-00:08:10,636 --> 00:08:22,583
-Each fragment is a full datagram with its own header. The I D, the three flags, and the offset in the header let the destination identify and order the related fragments.
+00:05:04,609 --> 00:05:10,860
+The second row is for fragmentation. A long IP packet can be cut into smaller packets.
 
 40
-00:08:23,033 --> 00:08:36,025
-Why does the offset count in units of 8 bytes? The length field has 16 bits. So a datagram can have byte positions from 0 up to 65,535.
+00:05:11,310 --> 00:05:20,163
+All those small packets carry the same 16-bit identifier, here x. So the destination knows that they belong together.
 
 41
-00:08:36,475 --> 00:08:57,893
-But the offset field has only 13 bits. That gives 2 to the power 13, which is 8192 values. To reach every part of the datagram, each value counts one block of 8 bytes. 8192 times 8 is 65,536.
+00:05:20,613 --> 00:05:24,304
+There are 3 flag bits. The first bit is not used.
 
 42
-00:08:58,343 --> 00:09:10,439
-The result is the rule on slide 27. Offset divided by 8 must be a whole number. So every fragment except the last must carry a multiple of 8 data bytes.
+00:05:24,754 --> 00:05:27,314
+The second bit is don't fragment, D F.
 
 43
-00:09:10,889 --> 00:09:32,009
-Slide 27 gives an example. A 4000-byte datagram has a 20-byte header and 3980 bytes of data. The MTU is 1500 bytes. The original row shows length 4000, I D x, flags 0 0 0, offset 0.
+00:05:27,764 --> 00:05:31,092
+The third bit is more fragments to follow, M F.
 
 44
-00:09:32,459 --> 00:09:57,163
-Each fragment has its own 20-byte header. So a fragment can carry at most 1500 minus 20, that is 1480 data bytes. Fragment 1 carries bytes 0 to 1479. Its length is 1500. Its offset is 0. More fragments follow, so the flags are 0 0 1.
+00:05:31,542 --> 00:05:39,265
+M F equal to 1 means more fragments follow. M F equal to 0 means this is the last fragment.
 
 45
-00:09:57,613 --> 00:10:17,176
-Fragment 2 carries bytes 1480 to 2959. Its length is 1500. Its offset is 1480 divided by 8, which is 185. The flags are 0 0 1 again.
+00:05:39,715 --> 00:05:49,784
+The fragment offset has 13 bits. Multiply it by 8. The result is the position of the first byte of this fragment in the original data.
 
 46
-00:10:17,626 --> 00:10:43,354
-Fragment 3 carries the rest: bytes 2960 to 3979, that is 1020 bytes. Its length is 1020 plus 20, which is 1040. Its offset is 2960 divided by 8, which is 370. It is the last fragment, so the flags are 0 0 0.
+00:05:50,234 --> 00:06:00,133
+For example, an offset of 185 means byte 185 times 8, which is byte 1480.
 
 47
-00:10:43,804 --> 00:11:07,441
-Check: 1480 is a multiple of 8, so the offsets are whole numbers. All fragments have the same I D. M F is 1 in every fragment except the last. And the data adds up: 1480 plus 1480 plus 1020 is 3980.
+00:06:00,583 --> 00:06:08,689
+Slide 25 starts with TTL, time to live. TTL is the maximum number of remaining hops.
 
 48
-00:11:07,891 --> 00:11:18,153
-Here is the method for every fragmentation question. Step 1. Find the data size D. It is the datagram length minus the 20-byte header.
+00:06:09,139 --> 00:06:13,641
+Here, host A sends a datagram to B with TTL equal to 2.
 
 49
-00:11:18,603 --> 00:11:32,875
-Step 2. Find the maximum data per fragment. It is the MTU minus 20. Then round it down to a multiple of 8. Each fragment except the last must carry a multiple of 8 bytes.
+00:06:14,091 --> 00:06:18,229
+Router R1 subtracts 1. 2 minus 1 is 1.
 
 50
-00:11:33,325 --> 00:11:41,453
-Step 3. Cut the data into pieces of this maximum size. The last piece takes the rest. It can be any size.
+00:06:18,679 --> 00:06:23,906
+R1 forwards the datagram to R2 with TTL equal to 1.
 
 51
-00:11:41,903 --> 00:11:50,287
-Step 4. For each fragment, the length is its data plus 20. The offset is its first data byte divided by 8.
+00:06:24,356 --> 00:06:33,913
+Router R2 subtracts 1 again. 1 minus 1 is 0. When the TTL is 0, the router discards the datagram.
 
 52
-00:11:50,737 --> 00:12:04,091
-Step 5. All fragments keep the same I D. The flags are 0 0 1, more fragments, in every fragment except the last. The last fragment has flags 0 0 0.
+00:06:34,363 --> 00:06:36,689
+The datagram never gets to B.
 
 53
-00:12:04,541 --> 00:12:12,051
-Now look at the destination. Host B keeps a buffer for each I D. The fragments can arrive in any order.
+00:06:37,139 --> 00:06:49,853
+So the TTL limits the number of hops of a datagram. The field has 8 bits, so its largest value is 2 to the power 8, minus 1, which is 255.
 
 54
-00:12:12,501 --> 00:12:38,186
-Here the last fragment arrives first. Its offset is 370, so its data goes at byte 370 times 8, that is byte 2960. M F is 0, so it is the last fragment. Now B knows the total data size: 2960 plus 1020, which is 3980 bytes.
+00:06:50,303 --> 00:06:55,317
+The upper layer field tells the destination which protocol gets the payload.
 
 55
-00:12:38,636 --> 00:12:45,655
-Next, the fragment with offset 0 arrives. Its 1480 bytes go at the start.
+00:06:55,767 --> 00:06:57,964
+The value 6 means TCP.
 
 56
-00:12:46,105 --> 00:12:54,489
-Then the fragment with offset 185 arrives. Its data goes at byte 1480.
+00:06:58,414 --> 00:07:00,974
+The value 17 means UDP.
 
 57
-00:12:54,939 --> 00:13:08,016
-Now there are no gaps from byte 0 to byte 3979. The datagram is complete. IP gives the payload to the upper layer protocol, for example TCP.
+00:07:01,424 --> 00:07:06,693
+So the network layer at the destination uses this field to deliver the payload.
 
 58
-00:13:08,466 --> 00:13:21,266
-Question bank, network layer, question 22. Briefly explain the functions of routing, namely OSPF, of IP, and of ICMP. Pause the video and try it.
+00:07:07,143 --> 00:07:10,727
+The header checksum detects bit errors in the packet header.
 
 59
-00:13:21,716 --> 00:13:32,191
-Use slide 22. OSPF is a routing protocol. It does path selection. It runs a routing algorithm and builds the forwarding table.
+00:07:11,177 --> 00:07:15,999
+IP ignores errors in the data. The transport layer checks the data.
 
 60
-00:13:32,641 --> 00:13:44,097
-IP defines the datagram format, the addressing, and the packet handling conventions. Each router uses the forwarding table to forward IP datagrams.
+00:07:16,449 --> 00:07:23,297
+The source IP address is the 32-bit address of the node that originally created the packet.
 
 61
-00:13:44,547 --> 00:13:54,147
-ICMP reports errors, for example network unreachable. It also carries router signaling, for example routing advice.
+00:07:23,747 --> 00:07:29,485
+The destination IP address is the 32-bit address of the destination node.
 
 62
-00:13:54,597 --> 00:14:09,978
-Question 23 asks for a table of the IPv4 header. For each field, give its size and its use. Then give the maximum payload with a minimal header and with a maximal header. Pause the video and try it.
+00:07:29,935 --> 00:07:38,319
+Slide 23 also shows the overhead. A TCP segment inside an IP datagram carries two headers.
 
 63
-00:14:10,428 --> 00:14:28,284
-Read the sizes from the 32-bit rows. Version is 4 bits: the IP version, 4 for IPv4. Header length is 4 bits. It counts 4-byte units, so 5 means 20 bytes and the maximum, 15, means 60 bytes.
+00:07:38,769 --> 00:07:41,180
+The TCP header is 20 bytes.
 
 64
-00:14:28,734 --> 00:14:47,635
-Type of service is 8 bits: a 6-bit D S C P that gives the type of data and the priority, and a 2-bit E C N. These two fields and the length fill row 1. So length is 32 minus 16, that is 16 bits. It is the datagram length in bytes.
+00:07:41,630 --> 00:07:43,742
+The IP header is 20 bytes.
 
 65
-00:14:48,085 --> 00:14:59,904
-Row 2: the identifier is 16 bits, the same in all fragments of one datagram. The flags are 3 bits: not used, don't fragment, and more fragments.
+00:07:44,192 --> 00:07:50,891
+So the overhead is 20 plus 20, which is 40 bytes, plus the application layer overhead.
 
 66
-00:15:00,354 --> 00:15:02,210
-Now the rest of the table.
+00:07:51,341 --> 00:08:04,034
+For example, a 1500-byte datagram can carry at most 1500 minus 40, which is 1460 bytes of application data.
 
 67
-00:15:02,660 --> 00:15:23,588
-The fragment offset is 13 bits, because 16 plus 3 plus 13 is 32. Offset times 8 is the first data byte of the fragment. TTL is 8 bits. It is the maximum number of remaining hops. Each router subtracts 1, and at 0 the router discards the packet.
+00:08:04,484 --> 00:08:17,241
+Slide 26. Every network link has an MTU, a maximum transfer unit. It is the largest possible link-level frame. Different link types have different MTUs.
 
 68
-00:15:24,038 --> 00:15:38,459
-Upper layer is 8 bits. It names the protocol that gets the payload: 6 for TCP, 17 for UDP. The header checksum is 16 bits. It detects bit errors in the header only.
+00:08:17,691 --> 00:08:23,366
+Here, the link from R1 to R2 has an MTU of 4000 bytes.
 
 69
-00:15:38,909 --> 00:15:50,984
-The source and destination IP addresses are 32 bits each. The source is the node that originally created the packet. The destination is the destination node.
+00:08:23,816 --> 00:08:30,003
+The link from R2 to R3 has an MTU of 1500 bytes.
 
 70
-00:15:51,434 --> 00:16:03,039
-Options are variable. The header can be up to 60 bytes, so options take 0 to 40 bytes. Two examples are a timestamp and a record of the route taken.
+00:08:30,453 --> 00:08:34,421
+A 4000-byte datagram travels from A towards B.
 
 71
-00:16:03,489 --> 00:16:24,972
-The payload. The length field allows at most 65,535 bytes. With a minimal 20-byte header, the payload is at most 65,515 bytes. With a maximal 60-byte header, it is at most 65,475 bytes.
+00:08:34,871 --> 00:08:47,436
+4000 bytes is more than 1500, so the datagram does not fit on the 1500-byte link. So R2 divides it. This is fragmentation.
 
 72
-00:16:25,422 --> 00:16:41,166
-Questions 24, 25 and 26. Explain the MTU. Say if the transport layer has a similar concept. And say why it is useful that IP can fragment a long packet. Pause the video and try it.
+00:08:47,886 --> 00:08:52,345
+One large datagram goes in. Three smaller datagrams come out.
 
 73
-00:16:41,616 --> 00:17:03,483
-Question 24. The MTU, maximum transfer unit, is the size limit of a link: the largest possible link-level frame. So it is the largest IP datagram that one frame on that link can carry. Different link types have different MTUs. A typical value is 1500 bytes.
+00:08:52,795 --> 00:08:57,061
+The fragments are reassembled only at the destination, host B.
 
 74
-00:17:03,933 --> 00:17:18,695
-Question 25. Yes. In the transport layer, TCP has the MSS, the maximum segment size. It is the largest amount of data in one segment. This is from the Chapter 3 slides.
+00:08:57,511 --> 00:09:01,842
+The routers on the path, such as R3, do not reassemble them.
 
 75
-00:17:19,145 --> 00:17:36,169
-Question 26. A path can have links with different MTUs. With fragmentation, one large datagram can still cross a link with a smaller MTU. The router cuts it into datagrams that fit. The destination reassembles them.
+00:09:02,292 --> 00:09:06,793
+Each fragment is a full datagram with its own header, the purple part.
 
 76
-00:17:36,619 --> 00:18:12,773
-Question 27. Router R1 receives a datagram with a 20-byte header, length 6020, I D 2700, flags 0 0 0 and offset 0. The MTU of the output links is 1550 bytes. Fragment it, and give the length, I D, flags, offset and payload of each fragment. The question says a maximal number of packets. We read it as: make each fragment as large as the MTU allows. Pause the video and try it.
+00:09:07,243 --> 00:09:15,670
+The I D, the three flags, and the offset in the header let the destination identify and order the related fragments.
 
 77
-00:18:13,223 --> 00:18:19,175
-Step 1. The data is 6020 minus 20, that is 6000 bytes.
+00:09:16,120 --> 00:09:29,112
+Why does the offset count in units of 8 bytes? The length field has 16 bits. So a datagram can have byte positions from 0 up to 65,535.
 
 78
-00:18:19,625 --> 00:18:46,953
-Step 2. The maximum data per fragment is 1550 minus 20, which is 1530. But 1530 divided by 8 is 191 point 2 5. That is not a whole number. So round down to a multiple of 8: 1528 bytes. Do not use 1530. That is the trap in this question.
+00:09:29,562 --> 00:09:38,757
+But the offset field has only 13 bits. That gives 2 to the power 13, which is 8192 values.
 
 79
-00:18:47,403 --> 00:19:06,689
-Step 3. Cut 6000 bytes into pieces of 1528. Three full pieces use 4584 bytes. The last piece gets 6000 minus 4584, that is 1416 bytes.
+00:09:39,207 --> 00:09:50,236
+To reach every part of the datagram, each offset value counts one block of 8 bytes. Offset 1 is byte 8, offset 2 is byte 16, and so on.
 
 80
-00:19:07,139 --> 00:19:48,519
-Step 4. The lengths are 1548, 1548, 1548 and 1436. The I D stays 2700 in all four. The offsets are 0, 1528 divided by 8 which is 191, then 382, then 573. The flags are 0 0 1 for the first three and 0 0 0 for the last. Check: every length is at most 1550, and the payloads add up to 6000.
+00:09:50,686 --> 00:10:04,041
+8192 blocks times 8 bytes is 65,536 bytes. That covers bytes 0 to 65,535.
 
 81
-00:19:48,969 --> 00:20:10,303
-Question 28. A datagram has a 20-byte header and 3000 bytes of payload. The MTU is 1500. Can it be cut into three fragments with 1420, 1420 and 160 bytes of payload? Pause the video and try it.
+00:10:04,491 --> 00:10:14,005
+The result is the rule on slide 27. Offset times 8 is the first byte, so a fragment can only start at a multiple of 8.
 
 82
-00:20:10,753 --> 00:20:34,774
-Check the offsets. The first fragment starts at byte 0, offset 0. The second fragment starts at byte 1420. Its offset would be 1420 divided by 8, which is 177 point 5. The 13-bit offset field cannot hold this. It counts whole 8-byte units only.
+00:10:14,455 --> 00:10:19,789
+So every fragment except the last must carry a multiple of 8 data bytes.
 
 83
-00:20:35,224 --> 00:20:54,851
-So the answer is no. Each fragment is 1440 bytes or less, so the MTU is not the problem. The sizes add up to 3000. But the data in every fragment except the last must be a multiple of 8, and 1420 is not.
+00:10:20,239 --> 00:10:35,193
+Slide 27 gives an example. A datagram has length 4000, I D x, flags 0 0 0 and offset 0. The MTU of the output link is 1500 bytes.
 
 84
-00:20:55,301 --> 00:21:08,805
-A valid choice with three fragments is 1480, 1480 and 40 bytes. The offsets are 0, 185 and 370.
+00:10:35,643 --> 00:10:47,953
+The header is 20 bytes. So the data is 4000 minus 20, which is 3980 bytes: bytes 0 to 3979.
 
 85
-00:21:09,255 --> 00:21:33,639
-To recap. The IPv4 header is at least 20 bytes and at most 60 bytes. The header length field counts 4-byte units. The length field has 16 bits, so a datagram is at most 65,535 bytes. The identifier has 16 bits, the flags 3 bits, and the offset 13 bits, in units of 8 bytes.
+00:10:48,403 --> 00:11:06,493
+Each fragment has its own 20-byte header. So a fragment can carry at most 1500 minus 20, which is 1480 data bytes. 1480 divided by 8 is 185, a whole number.
 
 86
-00:21:34,089 --> 00:21:48,126
-Each router subtracts 1 from the TTL, and discards the datagram at 0. The upper layer field is 6 for TCP and 17 for UDP. The checksum covers only the header.
+00:11:06,943 --> 00:11:18,890
+Fragment 1 carries bytes 0 to 1479. Its length is 1480 plus 20, which is 1500.
 
 87
-00:21:48,576 --> 00:22:12,213
-Each link has an MTU. Routers fragment a datagram that is too large, and only the destination reassembles it. To fragment: take the MTU minus 20, round down to a multiple of 8, cut the data, and compute each offset as the first byte divided by 8. M F is 1 in every fragment except the last.
+00:11:19,340 --> 00:11:27,553
+Its offset is 0 divided by 8, which is 0. More fragments follow, so the flags are 0 0 1.
 
 88
-00:22:12,663 --> 00:22:16,866
+00:11:28,003 --> 00:11:42,019
+Fragment 2 carries bytes 1480 to 2959. Its length is again 1480 plus 20, which is 1500.
+
+89
+00:11:42,469 --> 00:11:52,432
+Its offset is 1480 divided by 8, which is 185. The flags are 0 0 1 again.
+
+90
+00:11:52,882 --> 00:12:13,682
+Fragment 3 carries the rest: 3980 minus 2960, which is 1020 bytes, bytes 2960 to 3979. Its length is 1020 plus 20, which is 1040.
+
+91
+00:12:14,132 --> 00:12:25,759
+Its offset is 2960 divided by 8, which is 370. It is the last fragment, so the flags are 0 0 0.
+
+92
+00:12:26,209 --> 00:12:42,081
+Check: 1480 plus 1480 plus 1020 is 3980. All fragments have the same I D. M F is 1 in every fragment except the last.
+
+93
+00:12:42,531 --> 00:12:52,792
+Here is the method for every fragmentation question. Step 1. Find the data size D. It is the datagram length minus the 20-byte header.
+
+94
+00:12:53,242 --> 00:13:07,514
+Step 2. Find the maximum data per fragment. It is the MTU minus 20. Then round it down to a multiple of 8. Each fragment except the last must carry a multiple of 8 bytes.
+
+95
+00:13:07,964 --> 00:13:16,092
+Step 3. Cut the data into pieces of this maximum size. The last piece takes the rest. It can be any size.
+
+96
+00:13:16,542 --> 00:13:24,926
+Step 4. For each fragment, the length is its data plus 20. The offset is its first data byte divided by 8.
+
+97
+00:13:25,376 --> 00:13:38,731
+Step 5. All fragments keep the same I D. The flags are 0 0 1, more fragments, in every fragment except the last. The last fragment has flags 0 0 0.
+
+98
+00:13:39,181 --> 00:13:46,690
+Now look at the destination. Host B keeps a buffer for each I D. The fragments can arrive in any order.
+
+99
+00:13:47,140 --> 00:13:59,599
+Here the last fragment arrives first. Its offset is 370, so its data starts at byte 370 times 8, which is 2960.
+
+100
+00:14:00,049 --> 00:14:13,702
+M F is 0, so it is the last fragment. Now B knows the total data size: 2960 plus 1020, which is 3980 bytes.
+
+101
+00:14:14,152 --> 00:14:23,773
+Next, the fragment with offset 0 arrives. 0 times 8 is 0, so its 1480 bytes go at the start.
+
+102
+00:14:24,223 --> 00:14:37,429
+Then the fragment with offset 185 arrives. 185 times 8 is 1480, so its data goes at byte 1480.
+
+103
+00:14:37,879 --> 00:14:45,516
+Now there are no gaps from byte 0 to byte 3979. The datagram is complete.
+
+104
+00:14:45,966 --> 00:14:51,939
+IP gives the payload to the protocol in the upper layer field, for example TCP.
+
+105
+00:14:52,389 --> 00:15:05,189
+Question bank, network layer, question 22. Briefly explain the functions of routing, namely OSPF, of IP, and of ICMP. Pause the video and try it.
+
+106
+00:15:05,639 --> 00:15:11,847
+Use slide 22. OSPF is a routing protocol. It does path selection.
+
+107
+00:15:12,297 --> 00:15:16,351
+It runs a routing algorithm and builds the forwarding table.
+
+108
+00:15:16,801 --> 00:15:23,051
+IP defines the datagram format, the addressing, and the packet handling conventions.
+
+109
+00:15:23,501 --> 00:15:28,387
+Each router uses the forwarding table to forward IP datagrams.
+
+110
+00:15:28,837 --> 00:15:33,637
+ICMP reports errors, for example network unreachable.
+
+111
+00:15:34,087 --> 00:15:38,332
+It also carries router signaling, for example routing advice.
+
+112
+00:15:38,782 --> 00:15:54,163
+Question 23 asks for a table of the IPv4 header. For each field, give its size and its use. Then give the maximum payload with a minimal header and with a maximal header. Pause the video and try it.
+
+113
+00:15:54,613 --> 00:16:03,147
+Read the sizes from the 32-bit rows. Version is 4 bits: the IP version, 4 for IPv4.
+
+114
+00:16:03,597 --> 00:16:14,413
+Header length is 4 bits. It counts 4-byte units, so 5 means 5 times 4, which is 20 bytes. The maximum, 15, means 60 bytes.
+
+115
+00:16:14,863 --> 00:16:23,396
+Type of service is 8 bits: a 6-bit D S C P that gives the type of data and the priority, and a 2-bit E C N.
+
+116
+00:16:23,846 --> 00:16:35,537
+These three fields and the length fill row 1. So length is 32 minus 4 minus 4 minus 8, which is 16 bits. It is the datagram length in bytes.
+
+117
+00:16:35,987 --> 00:16:42,472
+Row 2: the identifier is 16 bits, the same in all fragments of one datagram.
+
+118
+00:16:42,922 --> 00:16:47,786
+The flags are 3 bits: not used, don't fragment, and more fragments.
+
+119
+00:16:48,236 --> 00:16:50,092
+Now the rest of the table.
+
+120
+00:16:50,542 --> 00:17:02,254
+The fragment offset fills the rest of row 2: 32 minus 16 minus 3, which is 13 bits. Offset times 8 is the first data byte of the fragment.
+
+121
+00:17:02,704 --> 00:17:13,371
+TTL is 8 bits. It is the maximum number of remaining hops. Each router subtracts 1, and at 0 the router discards the packet.
+
+122
+00:17:13,821 --> 00:17:22,461
+Upper layer is 8 bits. It names the protocol that gets the payload: 6 for TCP, 17 for UDP.
+
+123
+00:17:22,911 --> 00:17:28,201
+The header checksum is 16 bits. It detects bit errors in the header only.
+
+124
+00:17:28,651 --> 00:17:35,265
+The source IP address is 32 bits. It is the node that originally created the packet.
+
+125
+00:17:35,715 --> 00:17:41,283
+The destination IP address is 32 bits. It is the destination node.
+
+126
+00:17:41,733 --> 00:17:55,322
+Options are variable. The header can be up to 60 bytes, so options take 0 to 60 minus 20, which is 40 bytes. Two examples are a timestamp and a record of the route taken.
+
+127
+00:17:55,772 --> 00:18:14,588
+The payload. The length field allows at most 65,535 bytes. With a minimal 20-byte header, the payload is at most 65,535 minus 20, which is 65,515 bytes.
+
+128
+00:18:15,038 --> 00:18:26,921
+With a maximal 60-byte header, it is at most 65,535 minus 60, which is 65,475 bytes.
+
+129
+00:18:27,371 --> 00:18:43,115
+Questions 24, 25 and 26. Explain the MTU. Say if the transport layer has a similar concept. And say why it is useful that IP can fragment a long packet. Pause the video and try it.
+
+130
+00:18:43,565 --> 00:18:53,314
+Question 24. The MTU, maximum transfer unit, is the size limit of a link: the largest possible link-level frame.
+
+131
+00:18:53,764 --> 00:18:58,777
+So it is the largest IP datagram that one frame on that link can carry.
+
+132
+00:18:59,227 --> 00:19:07,419
+Different link types have different MTUs. A typical value is 1500 bytes, on an Ethernet link.
+
+133
+00:19:07,869 --> 00:19:22,632
+Question 25. Yes. In the transport layer, TCP has the MSS, the maximum segment size. It is the largest amount of data in one segment. This is from the Chapter 3 slides.
+
+134
+00:19:23,082 --> 00:19:37,631
+Question 26. A path can have links with different MTUs. With fragmentation, one large datagram can still cross a link with a smaller MTU. The router cuts it into datagrams that fit.
+
+135
+00:19:38,081 --> 00:19:45,655
+The source does not need to know the smallest MTU on the path. The destination reassembles the fragments.
+
+136
+00:19:46,105 --> 00:20:22,259
+Question 27. Router R1 receives a datagram with a 20-byte header, length 6020, I D 2700, flags 0 0 0 and offset 0. The MTU of the output links is 1550 bytes. Fragment it, and give the length, I D, flags, offset and payload of each fragment. The question says a maximal number of packets. We read it as: make each fragment as large as the MTU allows. Pause the video and try it.
+
+137
+00:20:22,709 --> 00:20:28,725
+Step 1. The data is 6020 minus 20, which is 6000 bytes.
+
+138
+00:20:29,175 --> 00:20:38,540
+Step 2. The maximum data per fragment is 1550 minus 20, which is 1530.
+
+139
+00:20:38,990 --> 00:21:00,942
+But 1530 divided by 8 is 191 point 2 5. That is not a whole number. So round down to a multiple of 8: 191 times 8 is 1528 bytes. Do not use 1530. That is the trap in this question.
+
+140
+00:21:01,392 --> 00:21:24,176
+Step 3. Cut 6000 bytes into pieces of 1528. Three full pieces use 3 times 1528, which is 4584 bytes. The last piece gets 6000 minus 4584, which is 1416 bytes.
+
+141
+00:21:24,626 --> 00:21:42,098
+Step 4. The lengths are 1528 plus 20, which is 1548, three times. The last length is 1416 plus 20, which is 1436.
+
+142
+00:21:42,548 --> 00:21:46,793
+The I D stays 2700 in all four fragments.
+
+143
+00:21:47,243 --> 00:22:10,027
+The offsets are 0 divided by 8, which is 0. Then 1528 divided by 8, which is 191. Then 3056 divided by 8, which is 382. Then 4584 divided by 8, which is 573.
+
+144
+00:22:10,477 --> 00:22:16,984
+The flags are 0 0 1 for the first three fragments, and 0 0 0 for the last.
+
+145
+00:22:17,434 --> 00:22:24,410
+Check: every length is at most 1550, and the payloads add up to 6000.
+
+146
+00:22:24,860 --> 00:22:46,193
+Question 28. A datagram has a 20-byte header and 3000 bytes of payload. The MTU is 1500. Can it be cut into three fragments with 1420, 1420 and 160 bytes of payload? Pause the video and try it.
+
+147
+00:22:46,643 --> 00:22:52,339
+Check the offsets. The first fragment starts at byte 0, so its offset is 0.
+
+148
+00:22:52,789 --> 00:23:05,461
+The second fragment starts at byte 1420. Its offset would be 1420 divided by 8, which is 177 point 5.
+
+149
+00:23:05,911 --> 00:23:11,757
+The 13-bit offset field cannot hold this. It counts whole 8-byte units only.
+
+150
+00:23:12,207 --> 00:23:25,625
+The MTU is not the problem. Each fragment is 1420 plus 20, which is 1440 bytes, and that is at most 1500.
+
+151
+00:23:26,075 --> 00:23:35,953
+The sizes also add up: 1420 plus 1420 plus 160 is 3000.
+
+152
+00:23:36,403 --> 00:23:45,939
+But the data in every fragment except the last must be a multiple of 8, and 1420 is not. So the answer is no.
+
+153
+00:23:46,389 --> 00:24:11,626
+A valid choice with three fragments is 1480, 1480 and 3000 minus 2960, which is 40 bytes. The offsets are 0, 1480 divided by 8 which is 185, and 2960 divided by 8 which is 370.
+
+154
+00:24:12,076 --> 00:24:29,548
+To recap. The IPv4 header is at least 20 bytes and at most 60 bytes. The header length field counts 4-byte units. The length field has 16 bits, so a datagram is at most 65,535 bytes.
+
+155
+00:24:29,998 --> 00:24:37,657
+The identifier has 16 bits, the flags 3 bits, and the offset 13 bits, in units of 8 bytes.
+
+156
+00:24:38,107 --> 00:24:52,208
+Each router subtracts 1 from the TTL, and discards the datagram at 0. The upper layer field is 6 for TCP and 17 for UDP. The checksum covers only the header.
+
+157
+00:24:52,658 --> 00:25:01,063
+Each link has an MTU. Routers fragment a datagram that is too large, and only the destination reassembles it.
+
+158
+00:25:01,513 --> 00:25:16,105
+To fragment: take the MTU minus 20, round down to a multiple of 8, and cut the data. Each offset is the first byte divided by 8. M F is 1 in every fragment except the last.
+
+159
+00:25:16,555 --> 00:25:20,758
 The next video is about IPv4 addressing and subnets.

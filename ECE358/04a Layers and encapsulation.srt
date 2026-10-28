@@ -3,317 +3,537 @@
 This is ECE 358, video 4 a. The topics are protocol layers and encapsulation, with question bank questions 44 to 51.
 
 2
-00:00:12,717 --> 00:00:34,349
-After this video, you can name the 5 Internet layers, with their jobs and protocols. You can explain encapsulation. You can calculate the header overhead of a frame. And you can answer questions 44 to 51. Video 4 b then solves the long question bank problem about a path of four routers.
+00:00:12,717 --> 00:00:18,669
+After this video, you can name the 5 Internet layers, with their jobs and protocols.
 
 3
-00:00:34,799 --> 00:00:43,993
-Chapter 1 showed many parts of a network. There are hosts, routers, and links. The picture shows a small network with all of these parts.
+00:00:19,119 --> 00:00:24,260
+You can explain encapsulation: message, segment, datagram and frame.
 
 4
-00:00:44,443 --> 00:00:56,753
-The slide lists the pieces. Hosts, routers, links of various media, applications, protocols, and hardware and software. A real network has millions of these pieces.
+00:00:24,710 --> 00:00:27,889
+You can calculate the header overhead of a frame.
 
 5
-00:00:57,203 --> 00:01:06,013
-So the slide asks a question. How can we organize the structure of the network? And how can we organize our discussion of networks?
+00:00:28,339 --> 00:00:31,965
+And you can answer questions 44 to 51.
 
 6
-00:01:06,463 --> 00:01:11,967
-The answer is layers. The slides explain layers with an example from air travel.
+00:00:32,415 --> 00:00:38,730
+Video 4 b then solves the long question bank problem about a path of four routers.
 
 7
-00:01:12,417 --> 00:01:25,943
-Think of a trip by airplane. At the departure airport, you do a series of steps. You purchase a ticket. You check your baggage. You go through the gate. The airplane takes off. Then airplane routing starts.
+00:00:39,180 --> 00:00:44,257
+Chapter 1 showed many parts of a network. The picture shows a small network.
 
 8
-00:01:26,393 --> 00:01:29,913
-Between the two airports, the airplane follows its route.
+00:00:44,707 --> 00:00:50,553
+The slide lists the pieces of a network. First, hosts. Here are three hosts and a server.
 
 9
-00:01:30,363 --> 00:01:42,245
-At the arrival airport, the steps occur in the opposite order. Airplane routing, runway landing, gates unload, baggage claim. Last, you can complain about the ticket.
+00:00:51,003 --> 00:00:53,157
+Routers. Here are four routers.
 
 10
-00:01:42,695 --> 00:01:52,295
-The full system gives one end-to-end service. It moves a person plus baggage. It is a series of steps, and it involves many services.
+00:00:53,607 --> 00:00:57,981
+Links of various media. The links connect the hosts and the routers.
 
 11
-00:01:52,745 --> 00:02:09,812
-Now put the matching steps in one row. Ticket purchase and ticket complaint form the ticketing service. Baggage check and baggage claim form the baggage service. Then come the gate service, the runway service, and the routing service. Each row is one layer.
+00:00:58,431 --> 00:01:05,449
+Applications, protocols, and hardware and software. A real network has millions of these pieces.
 
 12
-00:02:10,262 --> 00:02:22,998
-Look at the baggage layer. It has its own internal actions. For example, the airline puts a tag on the bag, and reads the tag at arrival. The passenger does not see these actions.
+00:01:05,899 --> 00:01:14,710
+So the slide asks a question. How can we organize the structure of the network? And how can we organize our discussion of networks?
 
 13
-00:02:23,448 --> 00:02:35,821
-The baggage layer relies on the layer below. The gate service loads the bag into the airplane, and unloads it. The baggage layer does not need to know how the runway or the routing work.
+00:01:15,160 --> 00:01:20,664
+The answer is layers. The slides explain layers with an example from air travel.
 
 14
-00:02:36,271 --> 00:02:47,813
-This gives the definition of a layer. Each layer implements a service. It uses its own internal-layer actions. And it relies on the services of the layer below.
+00:01:21,114 --> 00:01:27,706
+Think of a trip by airplane. At the departure airport, you do a series of steps, from top to bottom.
 
 15
-00:02:48,263 --> 00:03:05,180
-Why do we use layers? First, layering gives an explicit structure. It identifies the pieces of the system and their relationships. Each layer gives a service to the layer above. The layered reference model is also a common base for discussion.
+00:01:28,156 --> 00:01:30,055
+First, you purchase a ticket.
 
 16
-00:03:05,630 --> 00:03:25,342
-Second, layering is modularization. It supports 3 key attributes of large distributed systems. The first attribute is seamless evolution. For example, IPv6 can replace IPv4 in the network layer. The other layers do not change.
+00:01:30,505 --> 00:01:31,955
+You check your baggage.
 
 17
-00:03:25,792 --> 00:03:35,243
-The second attribute is ease of scalability. For example, a new tier 1 network can join the Internet. It uses the same layers.
+00:01:32,405 --> 00:01:35,392
+You go through the gate, and the airplane is loaded.
 
 18
-00:03:35,693 --> 00:03:49,815
-The third attribute is easy maintenance and updating. For example, you can remove old links and switches and add new ones. This changes the physical layer, but the transport layer needs no change.
+00:01:35,842 --> 00:01:38,082
+The airplane takes off from the runway.
 
 19
-00:03:50,265 --> 00:04:00,761
-The rule: a change inside one layer is transparent to the rest of the system. This is true when the service of that layer to the layer above stays the same.
+00:01:38,532 --> 00:01:40,516
+Then airplane routing starts.
 
 20
-00:04:01,211 --> 00:04:21,926
-The Internet has 5 layers. The top layer is the application layer. It supports network applications. Examples are HTTP, I MAP, S M T P and DNS. The picture shows host A, a router R, and host B. The application on A talks to the application on B.
+00:01:40,966 --> 00:01:44,486
+Between the two airports, the airplane follows its route.
 
 21
-00:04:22,376 --> 00:04:37,224
-Below it is the transport layer. It transfers data from one process to another process. Examples are TCP and UDP. Its reach is process to process, from a program on A to a program on B.
+00:01:44,936 --> 00:01:54,067
+At the arrival airport, the same kinds of steps occur in the opposite order, from the bottom up: from the runway landing, back to the ticket.
 
 22
-00:04:37,674 --> 00:04:53,717
-Next is the network layer. It routes datagrams, also called IP packets, from the source machine to the destination machine. Examples are IP and the routing protocols. Its reach is host to host, through the routers.
+00:01:54,517 --> 00:02:04,117
+The full system gives one end-to-end service. It moves a person plus baggage. It is a series of steps, and it involves many services.
 
 23
-00:04:54,167 --> 00:05:09,356
-Next is the link layer. It transfers data between neighboring network elements, such as hosts and switches. Examples are Ethernet, 802.11 WiFi, and PPP. Its reach is one link only.
+00:02:04,567 --> 00:02:11,137
+Now put the matching steps in one row. Ticket purchase and ticket complaint form the ticketing service.
 
 24
-00:05:09,806 --> 00:05:19,193
-The bottom layer is the physical layer. It puts the bits on the wire. From bottom to top, each layer extends the reach of the layer below it.
+00:02:11,587 --> 00:02:15,129
+Baggage check and baggage claim form the baggage service.
 
 25
-00:05:19,643 --> 00:05:33,083
-Now follow data down the layers of the source host. The application layer exchanges messages. We call the message M. To send it, the application uses the service of the transport layer.
+00:02:15,579 --> 00:02:19,056
+Gates load and gates unload form the gate service.
 
 26
-00:05:33,533 --> 00:05:58,045
-The transport layer encapsulates M. It puts the transport-layer header, H t, in front of M. The result is a segment. H t carries the control information of the transport layer. Examples are the sequence number, the ACK, and an error checking code. The transport protocol uses H t to give its service, for example reliable data transfer.
+00:02:19,506 --> 00:02:23,367
+Runway takeoff and runway landing form the runway service.
 
 27
-00:05:58,495 --> 00:06:18,761
-The network layer encapsulates the segment. It puts the network-layer header, H n, in front. The result is a datagram, also called an IP packet. H n carries the source IP address, the destination IP address, an error checking code, and the time to live, TTL.
+00:02:23,817 --> 00:02:29,428
+Airplane routing at both ends forms the routing service. Each row is one layer.
 
 28
-00:06:19,211 --> 00:06:32,801
-The link layer encapsulates the datagram. It puts the link-layer header, H l, in front. The result is a frame. The link layer moves the frame to the neighboring device, with the physical layer.
+00:02:29,878 --> 00:02:42,614
+Look at the baggage layer. It has its own internal actions. For example, the airline puts a tag on the bag, and reads the tag at arrival. The passenger does not see these actions.
 
 29
-00:06:33,251 --> 00:06:47,907
-This is the principle of encapsulation. Each layer takes the unit from the layer above. It puts its own header in front. Then it gives the result to the layer below. The layer does not change the unit from above.
+00:02:43,064 --> 00:02:50,275
+The baggage layer relies on the layer below. The gate service loads the bag into the airplane, and unloads it.
 
 30
-00:06:48,357 --> 00:06:59,727
-Here is the complete picture. At the source, the data goes down the stack. Each layer adds a header. The names of the units are message, segment, datagram, and frame.
+00:02:50,725 --> 00:02:55,503
+The baggage layer does not need to know how the runway or the routing work.
 
 31
-00:07:00,177 --> 00:07:03,996
-The physical layer sends the bits of the frame over the medium.
+00:02:55,953 --> 00:03:07,495
+This gives the definition of a layer. Each layer implements a service. It uses its own internal-layer actions. And it relies on the services of the layer below.
 
 32
-00:07:04,446 --> 00:07:17,161
-At the destination, the data goes up the stack. Each layer reads its own header and removes it. Then it gives the rest to the layer above. The application gets the original message M.
+00:03:07,945 --> 00:03:16,926
+Why do we use layers? First, layering gives an explicit structure. It identifies the pieces of the system and their relationships.
 
 33
-00:07:17,611 --> 00:07:45,067
-Take a message of 100 bytes as an example. Use the header sizes of slide 63: 20 bytes for TCP, 20 bytes for IP, and 14 bytes for Ethernet. The segment is 120 bytes. The datagram is 140 bytes. The frame is 154 bytes. At the destination, the sizes go back down: 140, 120, and 100 bytes.
+00:03:17,376 --> 00:03:24,907
+Each layer gives a service to the layer above. The layered reference model is also a common base for discussion.
 
 34
-00:07:45,517 --> 00:07:58,637
-Each header is for the same layer on the other side. The headers go on in the order transport, network, link. So the destination removes them in the opposite order: link, network, transport.
+00:03:25,357 --> 00:03:42,637
+Second, layering is modularization. It supports 3 key attributes of large distributed systems. The first attribute is seamless evolution. For example, IPv6 can replace IPv4 in the network layer.
 
 35
-00:07:59,087 --> 00:08:07,279
-Slide 62 adds the devices between the two hosts. The source host makes the frame. It has all 5 layers.
+00:03:43,087 --> 00:03:44,985
+The other layers do not change.
 
 36
-00:08:07,729 --> 00:08:26,097
-First the frame reaches a link-layer switch. A switch has only two layers: link and physical. It reads only the link header, H l. Then it sends the frame on the next link. The switch is transparent to the source host and to the router. They do not know that it is there.
+00:03:45,435 --> 00:03:54,865
+The second attribute is ease of scalability. For example, a new tier 1 network can join the Internet. It uses the same layers.
 
 37
-00:08:26,547 --> 00:08:45,597
-Next the frame reaches a router. A router has three layers: network, link, and physical. It removes H l and reads H n, for example the destination IP address. It selects the next link. Then it puts a new H l in front of the datagram, and sends the frame.
+00:03:55,315 --> 00:04:06,472
+The third attribute is easy maintenance and updating. For example, you can remove old links and switches and add new ones. This changes the physical layer.
 
 38
-00:08:46,047 --> 00:08:54,239
-At the destination host, the data goes up all 5 layers. Each layer removes its header. The application gets M.
+00:04:06,922 --> 00:04:09,397
+But the transport layer needs no change.
 
 39
-00:08:54,689 --> 00:09:07,852
-So a host uses 5 layers. A router uses 3 layers and reads the network header. A switch uses 2 layers and reads the link header. No router or switch reads H t or M.
+00:04:09,847 --> 00:04:20,343
+The rule: a change inside one layer is transparent to the rest of the system. This is true when the service of that layer to the layer above stays the same.
 
 40
-00:09:08,302 --> 00:09:22,510
-Slide 63 gives the advantages of encapsulation. First, the layers are modular. Each layer touches only its own header. So a change in one layer does not need a change in another layer.
+00:04:20,793 --> 00:04:26,894
+The Internet has 5 layers. The picture shows host A, a router R, and host B.
 
 41
-00:09:22,960 --> 00:09:35,333
-Second, encapsulation protects the data of the upper layers. A layer can put an error checking code in its header. The receiving layer uses it to find bit errors in the data from above.
+00:04:27,344 --> 00:04:38,139
+The top layer is the application layer. It supports network applications. Examples are HTTP, I MAP, S M T P and DNS.
 
 42
-00:09:35,783 --> 00:09:54,941
-The disadvantage is overhead. Every header must also be transmitted, but it does not carry application data. The slide gives the header lengths. The TCP header is 20 bytes or more. The IP header is 20 bytes or more. The Ethernet header is 14 bytes or more.
+00:04:38,589 --> 00:04:42,066
+The application on A talks to the application on B.
 
 43
-00:09:55,391 --> 00:10:09,001
-Draw the 154-byte frame of our example to scale. The three headers use 14 plus 20 plus 20, which is 54 bytes. The message uses the other 100 bytes.
+00:04:42,516 --> 00:04:51,732
+Below it is the transport layer. It transfers data from one process to another process. Examples are TCP and UDP.
 
 44
-00:10:09,451 --> 00:10:23,958
-The overhead fraction is the header bytes divided by the frame bytes. Here, 54 divided by 154 is 35.1 percent. So more than one third of this frame is overhead.
+00:04:52,182 --> 00:04:57,195
+Its reach is process to process, from a program on A to a program on B.
 
 45
-00:10:24,408 --> 00:10:46,659
-Here is the method to calculate the encapsulation overhead. Add the header lengths: 20 plus 20 plus 14 is 54 bytes per frame. Then divide by the frame length, which is the message length plus 54. The orange curve shows this fraction for message sizes up to 1500 bytes.
+00:04:57,645 --> 00:05:10,360
+Next is the network layer. It routes datagrams, also called IP packets, from the source machine to the destination machine. Examples are IP and the routing protocols.
 
 46
-00:10:47,109 --> 00:10:55,151
-A 100-byte message gives 54 divided by 154. That is 35.1 percent.
+00:05:10,810 --> 00:05:13,775
+Its reach is host to host, through the routers.
 
 47
-00:10:55,601 --> 00:11:11,836
-A 946-byte message fills a 1000-byte frame. Its overhead is 54 divided by 1000, which is only 5.4 percent. We meet this frame again in the long question of video 4 b.
+00:05:14,225 --> 00:05:27,239
+Next is the link layer. It transfers data between neighboring network elements, such as hosts and switches. Examples are Ethernet, 802.11 WiFi, and PPP.
 
 48
-00:11:12,286 --> 00:11:24,553
-The header cost is fixed for each frame. Small messages pay the same 54 bytes. So the overhead fraction is high for small messages, and low for large messages.
+00:05:27,689 --> 00:05:29,779
+Its reach is one link only.
 
 49
-00:11:25,003 --> 00:11:39,296
-Now the question bank. Questions 44 and 47 ask how many layers the Internet model has, and for one example protocol in each layer, from link to application. Pause the video and try it.
+00:05:30,229 --> 00:05:34,539
+The bottom layer is the physical layer. It puts the bits on the wire.
 
 50
-00:11:39,746 --> 00:11:47,767
-Count the layers on slide 57. Application, transport, network, link, and physical. There are 5 layers.
+00:05:34,989 --> 00:05:39,639
+From bottom to top, each layer extends the reach of the layer below it.
 
 51
-00:11:48,217 --> 00:11:55,940
-Application layer: HTTP. Other examples are I MAP, S M T P and DNS.
+00:05:40,089 --> 00:05:53,529
+Now follow data down the layers of the source host. The application layer exchanges messages. We call the message M. To send it, the application uses the service of the transport layer.
 
 52
-00:11:56,390 --> 00:12:00,955
-Transport layer: TCP. Another example is UDP.
+00:05:53,979 --> 00:06:02,726
+The transport layer encapsulates M. It puts the transport-layer header, H t, in front of M. The result is a segment.
 
 53
-00:12:01,405 --> 00:12:06,419
-Network layer: IP. The routing protocols are also in this layer.
+00:06:03,176 --> 00:06:19,667
+H t carries the control information of the transport layer. Examples are the sequence number, the ACK, and an error checking code. The transport protocol uses H t to give its service, for example reliable data transfer.
 
 54
-00:12:06,869 --> 00:12:25,279
-Link layer: Ethernet. Other examples are 802.11 WiFi and PPP. The physical layer puts the bits on the wire. For the answer, one protocol per layer is enough. For example HTTP, TCP, IP, and Ethernet.
+00:06:20,117 --> 00:06:31,274
+The network layer encapsulates the segment. It puts the network-layer header, H n, in front. The result is a datagram, also called an IP packet.
 
 55
-00:12:25,729 --> 00:12:32,663
-Question 45. Why is the Internet software organized as layers? Pause the video and try it.
+00:06:31,724 --> 00:06:40,983
+H n carries the source IP address, the destination IP address, an error checking code, and the time to live, TTL.
 
 56
-00:12:33,113 --> 00:12:46,147
-Use slide 56. First reason: layering gives an explicit structure. It identifies the pieces of the system and their relationships. It also gives a reference model for discussion.
+00:06:41,433 --> 00:06:49,667
+The link layer encapsulates the datagram. It puts the link-layer header, H l, in front. The result is a frame.
 
 57
-00:12:46,597 --> 00:13:05,691
-Second reason: layering is modularization. It supports seamless evolution, such as IPv4 to IPv6. It supports ease of scalability, such as a new tier 1 network. And it supports easy maintenance, such as new links and switches.
+00:06:50,117 --> 00:06:59,227
+H l carries the control information of the link layer. The link layer moves the frame to the neighboring device, with the physical layer.
 
 58
-00:13:06,141 --> 00:13:18,407
-So a good answer says this. Layering gives an explicit structure, and it supports evolution, scalability, and maintenance. A change in one layer is transparent to the other layers.
+00:06:59,677 --> 00:07:14,333
+This is the principle of encapsulation. Each layer takes the unit from the layer above. It puts its own header in front. Then it gives the result to the layer below. The layer does not change the unit from above.
 
 59
-00:13:18,857 --> 00:13:24,511
-Question 46. Explain the function of each layer. Pause the video and try it.
+00:07:14,783 --> 00:07:21,268
+Here is the complete picture. At the source, the data goes down the stack. Each layer adds a header.
 
 60
-00:13:24,961 --> 00:13:32,513
-Use slide 57. Application: it supports network applications, for example HTTP.
+00:07:21,718 --> 00:07:25,835
+The names of the units are message, segment, datagram, and frame.
 
 61
-00:13:32,963 --> 00:13:39,683
-Transport: it transfers data from one process to another process, for example TCP.
+00:07:26,285 --> 00:07:30,104
+The physical layer sends the bits of the frame over the medium.
 
 62
-00:13:40,133 --> 00:13:47,343
-Network: it routes datagrams from the source machine to the destination machine. The protocol is IP.
+00:07:30,554 --> 00:07:43,269
+At the destination, the data goes up the stack. Each layer reads its own header and removes it. Then it gives the rest to the layer above. The application gets the original message M.
 
 63
-00:13:47,793 --> 00:13:56,284
-Link: it transfers data between neighboring network elements, for example Ethernet. Physical: it puts the bits on the wire.
+00:07:43,719 --> 00:07:47,111
+Take a message of 100 bytes as an example.
 
 64
-00:13:56,734 --> 00:14:05,609
-Questions 48 and 49. Explain the principle of encapsulation, and give its advantages. Pause the video and try it.
+00:07:47,561 --> 00:07:58,931
+Use the header sizes of slide 63. The TCP header is 20 bytes. So the segment is 100 plus 20, which is 120 bytes.
 
 65
-00:14:06,059 --> 00:14:21,888
-The principle: each layer takes the unit from the layer above. It puts its own header in front. Then it gives the result to the layer below. The picture shows the network layer: it puts H n in front of the segment and makes a datagram.
+00:07:59,381 --> 00:08:07,595
+The IP header is 20 bytes. So the datagram is 120 plus 20, which is 140 bytes.
 
 66
-00:14:22,338 --> 00:14:31,810
-The header carries the control information of that layer. The same layer at the receiver reads the header, removes it, and passes the rest up.
+00:08:08,045 --> 00:08:16,642
+The Ethernet header is 14 bytes. So the frame is 140 plus 14, which is 154 bytes.
 
 67
-00:14:32,260 --> 00:14:47,748
-The advantages are on slide 63. First, the layers are modular, so a change in one layer needs no change in another layer. Second, the layer-specific error checking codes protect the data of the upper layers.
+00:08:17,092 --> 00:08:25,924
+At the destination, the sizes go back down in the same column: 140, 120, and 100 bytes.
 
 68
-00:14:48,198 --> 00:14:59,291
-Questions 50 and 51. How is the encapsulation overhead calculated? And what are the key words for the unit of each layer? Pause the video and try it.
+00:08:26,374 --> 00:08:39,494
+Each header is for the same layer on the other side. The headers go on in the order transport, network, link. So the destination removes them in the opposite order: link, network, transport.
 
 69
-00:14:59,741 --> 00:15:14,760
-For question 50, add the header lengths of all layers. With the minimum sizes, that is 20 plus 20 plus 14, which is 54 bytes. The overhead fraction is the header bytes divided by the frame length.
+00:08:39,944 --> 00:08:48,136
+Slide 62 adds the devices between the two hosts. The source host makes the frame. It has all 5 layers.
 
 70
-00:15:15,210 --> 00:15:20,885
-If the frame length is fixed, the message bytes are the frame length minus the header bytes.
+00:08:48,586 --> 00:08:54,922
+First the frame reaches a link-layer switch. A switch has only two layers: link and physical.
 
 71
-00:15:21,335 --> 00:15:28,076
-For question 51, use slide 61. The application layer exchanges messages.
+00:08:55,372 --> 00:09:01,025
+The switch reads only the link header, H l. Then it sends the frame on the next link.
 
 72
-00:15:28,526 --> 00:15:31,129
-The transport layer exchanges segments.
+00:09:01,475 --> 00:09:07,385
+The switch is transparent to the source host and to the router. They do not know that it is there.
 
 73
-00:15:31,579 --> 00:15:36,357
-The network layer exchanges datagrams, also called IP packets.
+00:09:07,835 --> 00:09:13,979
+Next the frame reaches a router. A router has three layers: network, link, and physical.
 
 74
-00:15:36,807 --> 00:15:43,869
-And the link layer exchanges frames. Each unit is the unit of the layer above, plus one more header.
+00:09:14,429 --> 00:09:22,621
+The router removes H l and reads H n, for example the destination IP address. It selects the next link.
 
 75
-00:15:44,319 --> 00:15:53,727
-Here is the recap. One. A layer implements a service with its own internal actions, and relies on the service of the layer below.
+00:09:23,071 --> 00:09:27,849
+Then it puts a new H l in front of the datagram, and sends the frame.
 
 76
-00:15:54,177 --> 00:16:04,865
-Two. Layering gives an explicit structure. It supports evolution, scalability, and maintenance. A change in one layer is transparent to the other layers.
+00:09:28,299 --> 00:09:36,491
+At the destination host, the data goes up all 5 layers. Each layer removes its header. The application gets M.
 
 77
-00:16:05,315 --> 00:16:14,893
-Three. The Internet has 5 layers. Application, transport, network, link, and physical. Know one protocol and the reach of each layer.
+00:09:36,941 --> 00:09:39,032
+So a host uses 5 layers.
 
 78
-00:16:15,343 --> 00:16:27,034
-Four. In encapsulation, each layer adds its own header. The units are message, segment, datagram, and frame. The receiver removes the headers in the opposite order.
+00:09:39,482 --> 00:09:43,215
+A router uses 3 layers and reads the network header.
 
 79
-00:16:27,484 --> 00:16:33,265
-Five. A host uses 5 layers. A router uses 3, and a switch uses 2.
+00:09:43,665 --> 00:09:50,364
+A switch uses 2 layers and reads the link header. No router or switch reads H t or M.
 
 80
-00:16:33,715 --> 00:16:48,649
+00:09:50,814 --> 00:10:05,022
+Slide 63 gives the advantages of encapsulation. First, the layers are modular. Each layer touches only its own header. So a change in one layer does not need a change in another layer.
+
+81
+00:10:05,472 --> 00:10:17,845
+Second, encapsulation protects the data of the upper layers. A layer can put an error checking code in its header. The receiving layer uses it to find bit errors in the data from above.
+
+82
+00:10:18,295 --> 00:10:25,890
+The disadvantage is overhead. Every header must also be transmitted, but it does not carry application data.
+
+83
+00:10:26,340 --> 00:10:37,817
+The slide gives the header lengths. The TCP header is 20 bytes or more. The IP header is 20 bytes or more. The Ethernet header is 14 bytes or more.
+
+84
+00:10:38,267 --> 00:10:45,542
+Draw the 154-byte frame of our example to scale. The message uses 100 bytes.
+
+85
+00:10:45,992 --> 00:10:51,347
+The three headers use 14 plus 20 plus 20, which is 54 bytes.
+
+86
+00:10:51,797 --> 00:11:06,303
+The overhead fraction is the header bytes divided by the frame bytes. Here, 54 divided by 154 is 35.1 percent. So more than one third of this frame is overhead.
+
+87
+00:11:06,753 --> 00:11:17,271
+Here is the method to calculate the encapsulation overhead. Add the header lengths: 20 plus 20 plus 14 is 54 bytes per frame.
+
+88
+00:11:17,721 --> 00:11:22,670
+Then divide by the frame length, which is the message length plus 54.
+
+89
+00:11:23,120 --> 00:11:29,435
+The orange curve shows this fraction for message sizes up to 1500 bytes.
+
+90
+00:11:29,885 --> 00:11:37,927
+A 100-byte message gives 54 divided by 154. That is 35.1 percent.
+
+91
+00:11:38,377 --> 00:11:58,324
+A 946-byte message fills a 1000-byte frame: 946 plus 54 is 1000. Its overhead is 54 divided by 1000, which is only 5.4 percent. We meet this frame again in the long question of video 4 b.
+
+92
+00:11:58,774 --> 00:12:11,041
+The header cost is fixed for each frame. Small messages pay the same 54 bytes. So the overhead fraction is high for small messages, and low for large messages.
+
+93
+00:12:11,491 --> 00:12:25,784
+Now the question bank. Questions 44 and 47 ask how many layers the Internet model has, and for one example protocol in each layer, from link to application. Pause the video and try it.
+
+94
+00:12:26,234 --> 00:12:34,255
+Count the layers on slide 57. Application, transport, network, link, and physical. There are 5 layers.
+
+95
+00:12:34,705 --> 00:12:42,428
+Application layer: HTTP. Other examples are I MAP, S M T P and DNS.
+
+96
+00:12:42,878 --> 00:12:47,443
+Transport layer: TCP. Another example is UDP.
+
+97
+00:12:47,893 --> 00:12:52,907
+Network layer: IP. The routing protocols are also in this layer.
+
+98
+00:12:53,357 --> 00:12:59,949
+Link layer: Ethernet. Other examples are 802.11 WiFi and PPP.
+
+99
+00:13:00,399 --> 00:13:03,087
+The physical layer puts the bits on the wire.
+
+100
+00:13:03,537 --> 00:13:11,814
+For the answer, one protocol per layer is enough. For example HTTP, TCP, IP, and Ethernet.
+
+101
+00:13:12,264 --> 00:13:19,197
+Question 45. Why is the Internet software organized as layers? Pause the video and try it.
+
+102
+00:13:19,647 --> 00:13:32,682
+Use slide 56. First reason: layering gives an explicit structure. It identifies the pieces of the system and their relationships. It also gives a reference model for discussion.
+
+103
+00:13:33,132 --> 00:13:36,417
+Second reason: layering is modularization.
+
+104
+00:13:36,867 --> 00:13:42,734
+It supports seamless evolution, such as IPv4 to IPv6.
+
+105
+00:13:43,184 --> 00:13:47,621
+It supports ease of scalability, such as a new tier 1 network.
+
+106
+00:13:48,071 --> 00:13:52,231
+And it supports easy maintenance, such as new links and switches.
+
+107
+00:13:52,681 --> 00:14:04,948
+So a good answer says this. Layering gives an explicit structure, and it supports evolution, scalability, and maintenance. A change in one layer is transparent to the other layers.
+
+108
+00:14:05,398 --> 00:14:11,051
+Question 46. Explain the function of each layer. Pause the video and try it.
+
+109
+00:14:11,501 --> 00:14:19,053
+Use slide 57. Application: it supports network applications, for example HTTP.
+
+110
+00:14:19,503 --> 00:14:26,223
+Transport: it transfers data from one process to another process, for example TCP.
+
+111
+00:14:26,673 --> 00:14:33,884
+Network: it routes datagrams from the source machine to the destination machine. The protocol is IP.
+
+112
+00:14:34,334 --> 00:14:40,030
+Link: it transfers data between neighboring network elements, for example Ethernet.
+
+113
+00:14:40,480 --> 00:14:42,955
+Physical: it puts the bits on the wire.
+
+114
+00:14:43,405 --> 00:14:52,301
+Questions 48 and 49. Explain the principle of encapsulation, and give its advantages. Pause the video and try it.
+
+115
+00:14:52,751 --> 00:14:56,633
+The principle: each layer takes the unit from the layer above.
+
+116
+00:14:57,083 --> 00:14:59,217
+It puts its own header in front.
+
+117
+00:14:59,667 --> 00:15:08,648
+Then it gives the result to the layer below. The picture shows the network layer: it puts H n in front of the segment and makes a datagram.
+
+118
+00:15:09,098 --> 00:15:18,570
+The header carries the control information of that layer. The same layer at the receiver reads the header, removes it, and passes the rest up.
+
+119
+00:15:19,020 --> 00:15:28,599
+The advantages are on slide 63. First, the layers are modular, so a change in one layer needs no change in another layer.
+
+120
+00:15:29,049 --> 00:15:34,446
+Second, the layer-specific error checking codes protect the data of the upper layers.
+
+121
+00:15:34,896 --> 00:15:45,989
+Questions 50 and 51. How is the encapsulation overhead calculated? And what are the key words for the unit of each layer? Pause the video and try it.
+
+122
+00:15:46,439 --> 00:15:56,423
+For question 50, add the header lengths of all layers. With the minimum sizes, that is 20 plus 20 plus 14, which is 54 bytes.
+
+123
+00:15:56,873 --> 00:16:01,417
+The overhead fraction is the header bytes divided by the frame length.
+
+124
+00:16:01,867 --> 00:16:07,542
+If the frame length is fixed, the message bytes are the frame length minus the header bytes.
+
+125
+00:16:07,992 --> 00:16:14,733
+For question 51, use slide 61. The application layer exchanges messages.
+
+126
+00:16:15,183 --> 00:16:17,786
+The transport layer exchanges segments.
+
+127
+00:16:18,236 --> 00:16:23,015
+The network layer exchanges datagrams, also called IP packets.
+
+128
+00:16:23,465 --> 00:16:25,939
+And the link layer exchanges frames.
+
+129
+00:16:26,389 --> 00:16:30,656
+Each unit is the unit of the layer above, plus one more header.
+
+130
+00:16:31,106 --> 00:16:40,514
+Here is the recap. One. A layer implements a service with its own internal actions, and relies on the service of the layer below.
+
+131
+00:16:40,964 --> 00:16:51,652
+Two. Layering gives an explicit structure. It supports evolution, scalability, and maintenance. A change in one layer is transparent to the other layers.
+
+132
+00:16:52,102 --> 00:17:01,681
+Three. The Internet has 5 layers. Application, transport, network, link, and physical. Know one protocol and the reach of each layer.
+
+133
+00:17:02,131 --> 00:17:13,821
+Four. In encapsulation, each layer adds its own header. The units are message, segment, datagram, and frame. The receiver removes the headers in the opposite order.
+
+134
+00:17:14,271 --> 00:17:20,053
+Five. A host uses 5 layers. A router uses 3, and a switch uses 2.
+
+135
+00:17:20,503 --> 00:17:35,436
 Six. The overhead is the sum of the headers, 54 bytes with the minimum sizes. Divide by the frame length to get the overhead fraction. The next video, 4 b, solves the long Chapter 1 question.

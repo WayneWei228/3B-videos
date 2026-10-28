@@ -7,277 +7,553 @@ This is ECE 358, video 16 a. The topic is packet forwarding and longest prefix m
 After this video, you can read a routing table. You can test if a destination address matches a table entry. And you can choose the output interface with longest prefix matching. The question bank asks all of these.
 
 3
-00:00:29,679 --> 00:00:44,825
-Packet forwarding is the relaying of packets from one physical interface to another, by routers on the Internet. Here, packet P arrives at router B. Router B has three interfaces, numbered 1, 2 and 3.
+00:00:29,679 --> 00:00:40,345
+Packet forwarding is the relaying of packets from one physical interface to another, by routers on the Internet. Here, packet P arrives at router B.
 
 4
-00:00:45,275 --> 00:00:58,011
-How does router B choose the next hop for P? The answer is a function of two inputs. The first input is the destination address in P. The second input is the routing table in B.
+00:00:40,795 --> 00:00:44,806
+Router B has three interfaces, numbered 1, 2 and 3.
 
 5
-00:00:58,461 --> 00:01:08,488
-The router reads the destination IP address from the header of P. Here, the destination is 73 dot 2 dot 5 dot 9.
+00:00:45,256 --> 00:00:51,443
+How does router B choose the next hop for P? The next hop is a function f of two inputs.
 
 6
-00:01:08,938 --> 00:01:20,287
-The router looks up this address in its routing table. The table says: send it on interface 1, to the next router, I P 1. So P leaves on interface 1.
+00:00:51,893 --> 00:00:55,754
+The first input is the destination address in packet P.
 
 7
-00:01:20,737 --> 00:01:29,996
-This method is called table-driven routing. The routing table decides the output interface. The next slides explain the function f.
+00:00:56,204 --> 00:01:02,241
+The second input is the routing table in the router. Here, it is the routing table of B.
 
 8
-00:01:30,446 --> 00:01:42,073
-Slide 50 also names another forwarding technique: source routing. Here, the source host finds the complete path. It puts the path in the header, in the option field.
+00:01:02,691 --> 00:01:13,230
+The router reads only the destination IP address from the header of P. Here, the destination is 73 dot 2 dot 5 dot 9.
 
 9
-00:01:42,523 --> 00:01:49,776
-The source sends the packet to the first router of the path, R 1. R 1 reads the path in the packet.
+00:01:13,680 --> 00:01:26,544
+The router looks up this address in its routing table. The address starts with 73 dot 2. So it matches the first row, 73 dot 2 dot 0 dot 0, slash 16.
 
 10
-00:01:50,226 --> 00:01:57,565
-R 1 sends the packet to the next router of the path. Each router does the same, until the packet arrives.
+00:01:26,994 --> 00:01:34,951
+This row gives interface 1 and the next router I P 1. So P leaves on interface 1, to I P 1.
 
 11
-00:01:58,015 --> 00:02:05,161
-In this course, routers use table-driven routing. Source routing is only an example of another technique.
+00:01:35,401 --> 00:01:44,660
+This method is called table-driven routing. The routing table decides the output interface. The next slides explain the function f.
 
 12
-00:02:05,611 --> 00:02:25,323
-Slide 51 shows the simple structure of a routing table, for router B. Each row has five columns. The destination address and the mask give a destination network. The next hop is the next router. The interface is the output port of B. The metric is the cost of the route.
+00:01:45,110 --> 00:01:53,217
+Slide 50 also names another forwarding technique: source routing. Here, the source host finds the complete path.
 
 13
-00:02:25,773 --> 00:02:51,949
-Row 1: destination 73 dot 2 dot 0 dot 0, mask 255 dot 255 dot 0 dot 0. That is the network 73 dot 2 dot 0 dot 0, slash 16. The next hop is router I P 1, on interface 1. B learns this entry by running routing protocols. The star marks it as learned.
+00:01:53,667 --> 00:02:01,731
+The source puts the path in the header of the packet, in the option field. Here, the path is R 1, R 2, R 3.
 
 14
-00:02:52,399 --> 00:03:12,623
-Row 2: the network 129 dot 97 dot 8 dot 0, slash 24, on interface 3. The next hop is connected. This means that the network is directly attached to B. B delivers the packet to the host directly. The administrator configures this entry.
+00:02:02,181 --> 00:02:06,511
+The source sends the packet to the first router of the path, R 1.
 
 15
-00:03:13,073 --> 00:03:33,553
-Row 3 is the default entry: address 0 dot 0 dot 0 dot 0 with mask 0 dot 0 dot 0 dot 0. The next hop is I P 2, on interface 2. This mask has no 1 bits, so this entry matches every address. The administrator configures it.
+00:02:06,961 --> 00:02:09,415
+R 1 reads the path in the packet.
 
 16
-00:03:34,003 --> 00:03:54,889
-Here are three example packets at router B. These addresses are my examples. They are not on the slide. First, a packet to 73 dot 2 dot 5 dot 9. Its first 16 bits are 73 dot 2. So it matches row 1, and it leaves on interface 1, to I P 1.
+00:02:09,865 --> 00:02:14,131
+R 1 sends the packet to the next router of the path, R 2.
 
 17
-00:03:55,339 --> 00:04:12,619
-Second, a packet to 129 dot 97 dot 8 dot 20. Its first 24 bits are 129 dot 97 dot 8. So it matches the connected row. B sends it on interface 3, directly to the host.
+00:02:14,581 --> 00:02:19,957
+R 2 and R 3 do the same, until the packet arrives at the destination.
 
 18
-00:04:13,069 --> 00:04:24,631
-Third, a packet to 8 dot 8 dot 8 dot 8. It matches neither network. It matches only the default entry. So it leaves on interface 2, to I P 2.
+00:02:20,407 --> 00:02:27,554
+In this course, routers use table-driven routing. Source routing is only an example of another technique.
 
 19
-00:04:25,081 --> 00:04:35,599
-So a packet to a connected network goes directly to the host. Every other packet goes to a next-hop router. Next, we look at the exact matching test.
+00:02:28,004 --> 00:02:35,663
+Slide 51 shows the simple structure of a routing table, for router B. Each row has five columns.
 
 20
-00:04:36,049 --> 00:05:10,965
-How does the router test if a destination address matches one entry? Slide 53 gives the condition. Take the entry address x dot y dot z dot w and its mask a dot b dot c dot d. The mask has n one bits, so the entry is x dot y dot z dot w slash n. Here, the entry is 73 dot 2 dot 0 dot 0, with mask 255 dot 255 dot 0 dot 0. So n is 16.
+00:02:36,113 --> 00:02:40,315
+The destination address and the mask give a destination network.
 
 21
-00:05:11,415 --> 00:05:22,423
-Take the destination address from the packet. Call it I P 1. Here, I P 1 is 73 dot 2 dot 5 dot 9. Use the same mask.
+00:02:40,765 --> 00:02:43,005
+The next hop is the next router.
 
 22
-00:05:22,873 --> 00:05:42,159
-Do a bitwise AND with the mask on both sides. A mask byte of 255 keeps the byte. A mask byte of 0 makes it 0. The entry gives 73 dot 2 dot 0 dot 0. I P 1 also gives 73 dot 2 dot 0 dot 0.
+00:02:43,455 --> 00:02:46,079
+The interface is the output port of B.
 
 23
-00:05:42,609 --> 00:05:48,518
-The two results are equal. So the matching is successful. The packet can use this entry.
+00:02:46,529 --> 00:02:48,769
+The metric is the cost of the route.
 
 24
-00:05:48,968 --> 00:06:05,075
-Now try I P 1 equal to 73 dot 3 dot 5 dot 9. The AND gives 73 dot 3 dot 0 dot 0. This is not equal to 73 dot 2 dot 0 dot 0. So there is no match.
+00:02:49,219 --> 00:03:01,038
+Row 1: the destination is 73 dot 2 dot 0 dot 0, and the mask is 255 dot 255 dot 0 dot 0.
 
 25
-00:06:05,525 --> 00:06:18,794
-In words: the test asks if I P 1 is in the pool of addresses that x dot y dot z dot w slash n denotes. It compares the n most significant bits of both addresses.
+00:03:01,488 --> 00:03:15,312
+Each 255 is 8 one bits. So the mask has 8 plus 8, which is 16 one bits. Row 1 is the network 73 dot 2 dot 0 dot 0, slash 16.
 
 26
-00:06:19,244 --> 00:06:39,745
-Why does the routing table store the prefix length as a mask, in the format of an IP address? A slash 24 prefix becomes 24 one bits, then 8 zero bits. In dotted form, that is 255 dot 255 dot 255 dot 0.
+00:03:15,762 --> 00:03:19,687
+The next hop is router I P 1, on interface 1.
 
 27
-00:06:40,195 --> 00:07:00,163
-To test an address, the router does one AND with the mask. Here, I P 1 is 129 dot 97 dot 8 dot 20. The AND keeps the first 24 bits and clears the last 8 bits. The result is 129 dot 97 dot 8 dot 0.
+00:03:20,137 --> 00:03:25,663
+B learns this entry by running routing protocols. The star marks it as learned.
 
 28
-00:07:00,613 --> 00:07:19,067
-The mask is two consecutive blocks of ones and zeros. So one AND operation gives the network part of any address. The slide says that this helps an efficient implementation of the matching condition. This is the answer to question bank question 65.
+00:03:26,113 --> 00:03:38,742
+Row 2 is the network 129 dot 97 dot 8 dot 0. Its mask has 24 one bits, so it is slash 24. It is on interface 3.
 
 29
-00:07:19,517 --> 00:07:36,669
-Slide 54 gives the full matching and forwarding algorithm. The inputs are I P 1, the destination address from the packet header, and R T, the routing table. First, the router tests I P 1 against every entry of the table.
+00:03:39,192 --> 00:03:47,683
+The next hop is connected. This means that the network is directly attached to B. B delivers the packet to the host directly.
 
 30
-00:07:37,119 --> 00:07:51,263
-If one or more entries match, the router finds the matching entry with the longest prefix. It forwards the packet on the interface of that entry. The longest prefix takes the packet closer to the destination network.
+00:03:48,133 --> 00:03:50,714
+The administrator configures this entry.
 
 31
-00:07:51,713 --> 00:08:05,174
-If no entry matches, the router checks for a default entry, 0 dot 0 dot 0 dot 0 slash 0. If it exists, the router forwards the packet on the default interface.
+00:03:51,164 --> 00:04:00,273
+Row 3 is the default entry, 0 dot 0 dot 0 dot 0. The next hop is I P 2, on interface 2.
 
 32
-00:08:05,624 --> 00:08:21,773
-If there is no match and no default entry, the router cannot forward the packet. It sends an error message to the source of the packet. This is an I C M P message. I C M P is the Internet Control Message Protocol.
+00:04:00,723 --> 00:04:11,049
+The mask is 0 dot 0 dot 0 dot 0. It has no 1 bits, so the prefix is slash 0. This entry matches every address.
 
 33
-00:08:22,223 --> 00:08:59,444
-Now the main rule. Slide 55 gives a table in binary. A star is a bit that can be anything. Entry 0 fixes the first 21 bits, so it is slash 21. Entry 1 fixes 24 bits, slash 24. Entry 2 fixes 21 bits, slash 21. Entry 3 is the default. The rule: use the longest prefix that matches the destination. The first destination is 200 dot 23 dot 22 dot 161. Pause the video and try it.
+00:04:11,499 --> 00:04:14,528
+The administrator configures the default entry.
 
 34
-00:08:59,894 --> 00:09:17,046
-Entry 0: compare the first 21 bits. The third byte of the destination is 0 0 0 1 0 1 1 0. Its first 5 bits are 0 0 0 1 0, the same as the entry. So entry 0 matches.
+00:04:14,978 --> 00:04:27,373
+Here are three example packets at router B. These addresses are my examples. They are not on the slide. First, a packet to 73 dot 2 dot 5 dot 9.
 
 35
-00:09:17,496 --> 00:09:32,195
-Entry 1: compare the first 24 bits. The third byte must be 0 0 0 1 1 0 0 0, which is 24. The destination has 22. So entry 1 does not match.
+00:04:27,823 --> 00:04:41,199
+Its first 16 bits are 73 dot 2. The entry 73 dot 2 dot 0 dot 0, slash 16, needs exactly these 16 bits. So it matches this entry.
 
 36
-00:09:32,645 --> 00:09:44,698
-Entry 2: the third byte must start with 0 0 0 1 1. The destination starts with 0 0 0 1 0. The fifth bit differs. No match.
+00:04:41,649 --> 00:04:45,297
+So the packet leaves on interface 1, to I P 1.
 
 37
-00:09:45,148 --> 00:09:51,633
-The default entry matches every address. But it has prefix length 0, the shortest possible.
+00:04:45,747 --> 00:04:51,016
+Second, a packet to 129 dot 97 dot 8 dot 20.
 
 38
-00:09:52,083 --> 00:10:02,067
-Only entry 0 and the default match. Entry 0 has the longer prefix, 21 bits. So the packet goes out on interface 0.
+00:04:51,466 --> 00:05:04,970
+Its first 24 bits are 129 dot 97 dot 8. So it matches the connected entry, 129 dot 97 dot 8 dot 0, slash 24.
 
 39
-00:10:02,517 --> 00:10:10,987
-The second destination is 200 dot 23 dot 24 dot 170. Pause the video and try it.
+00:05:05,420 --> 00:05:09,047
+B sends it on interface 3, directly to the host.
 
 40
-00:10:11,437 --> 00:10:25,495
-Entry 0: the third byte must start with 0 0 0 1 0. The destination third byte is 0 0 0 1 1 0 0 0. The fifth bit differs. No match.
+00:05:09,497 --> 00:05:12,761
+Third, a packet to 8 dot 8 dot 8 dot 8.
 
 41
-00:10:25,945 --> 00:10:36,953
-Entry 1: the first 24 bits must be 200 dot 23 dot 24. The destination has exactly these bits. Entry 1 matches.
+00:05:13,211 --> 00:05:24,176
+It does not start with 73 dot 2, and it does not start with 129 dot 97 dot 8. So it matches only the default entry.
 
 42
-00:10:37,403 --> 00:10:48,134
-Entry 2: the third byte must start with 0 0 0 1 1. It does. So entry 2 also matches. Slide 57 shows this match.
+00:05:24,626 --> 00:05:27,719
+So it leaves on interface 2, to I P 2.
 
 43
-00:10:48,584 --> 00:10:51,571
-The default also matches, with length 0.
+00:05:28,169 --> 00:05:38,687
+So a packet to a connected network goes directly to the host. Every other packet goes to a next-hop router. Next, we look at the exact matching test.
 
 44
-00:10:52,021 --> 00:11:16,597
-Three entries match. Entry 1 has 24 bits, entry 2 has 21 bits, the default has 0. The longest is entry 1, as slide 58 shows. So the packet goes out on interface 1. Entry 1 is a smaller, more specific network inside the range of entry 2. The longer prefix takes the packet closer to the destination network.
+00:05:39,137 --> 00:05:46,518
+How does the router test if a destination address matches one entry? Slide 53 gives the condition.
 
 45
-00:11:17,047 --> 00:11:35,777
-Practice with the same table. These two addresses are my examples, not from the slide. The first address is 200 dot 23 dot 31 dot 5. The third byte, 31, is 0 0 0 1 1 1 1 1. Pause the video and try it.
+00:05:46,968 --> 00:05:57,421
+Take the entry address from the routing table, x dot y dot z dot w. Here, the entry is 73 dot 2 dot 0 dot 0.
 
 46
-00:11:36,227 --> 00:11:42,777
-Entry 0 needs the third byte to start with 0 0 0 1 0. No match.
+00:05:57,871 --> 00:06:08,901
+Take the mask of the entry, a dot b dot c dot d. Here, the mask is 255 dot 255 dot 0 dot 0.
 
 47
-00:11:43,227 --> 00:11:49,840
-Entry 1 needs the third byte equal to 24. The address has 31. No match.
+00:06:09,351 --> 00:06:21,489
+The mask has n one bits. Here, 8 plus 8 is 16 one bits, so n is 16. The entry is 73 dot 2 dot 0 dot 0, slash 16.
 
 48
-00:11:50,290 --> 00:12:00,466
-Entry 2 needs the third byte to start with 0 0 0 1 1. 31 starts with 0 0 0 1 1. Match.
+00:06:21,939 --> 00:06:31,198
+Take the destination address from the packet. Call it I P 1. Here, I P 1 is 73 dot 2 dot 5 dot 9.
 
 49
-00:12:00,916 --> 00:12:02,473
-The default matches too.
+00:06:31,648 --> 00:06:34,229
+Use the same mask for I P 1.
 
 50
-00:12:02,923 --> 00:12:12,950
-Entry 2, slash 21, is the longest match. So the answer is interface 2. Entry 2 covers third bytes 24 to 31.
+00:06:34,679 --> 00:06:41,250
+Do a bitwise AND with the mask on both sides. A mask byte of 255 keeps the byte.
 
 51
-00:12:13,400 --> 00:12:25,325
-The second address is 200 dot 23 dot 40 dot 1. The third byte, 40, is 0 0 1 0 1 0 0 0. Pause and try it.
+00:06:41,700 --> 00:06:44,473
+A mask byte of 0 makes the byte 0.
 
 52
-00:12:25,775 --> 00:12:32,197
-Entry 0: the third bit of the third byte is 1, but the entry needs 0. No match.
+00:06:44,923 --> 00:06:48,977
+The entry gives 73 dot 2 dot 0 dot 0.
 
 53
-00:12:32,647 --> 00:12:35,996
-Entry 1: 40 is not 24. No match.
+00:06:49,427 --> 00:06:54,312
+I P 1 also gives 73 dot 2 dot 0 dot 0.
 
 54
-00:12:36,446 --> 00:12:39,945
-Entry 2: the same third bit differs. No match.
+00:06:54,762 --> 00:07:00,671
+The two results are equal. So the matching is successful. The packet can use this entry.
 
 55
-00:12:40,395 --> 00:12:42,315
-Only the default matches.
+00:07:01,121 --> 00:07:11,681
+Now try I P 1 equal to 73 dot 3 dot 5 dot 9. The AND with the mask gives 73 dot 3 dot 0 dot 0.
 
 56
-00:12:42,765 --> 00:12:53,559
-So the packet goes out on interface 3, the default interface. Without the default entry, the router would drop it and send an I C M P error message.
+00:07:12,131 --> 00:07:21,454
+73 dot 3 dot 0 dot 0 is not equal to 73 dot 2 dot 0 dot 0. So there is no match.
 
 57
-00:12:54,009 --> 00:13:07,471
-Now the question bank questions on forwarding. Questions 57 and 58: what is table-driven routing, and what two pieces of information does a router use? Pause the video and try it.
+00:07:21,904 --> 00:07:35,173
+In words: the test asks if I P 1 is in the pool of addresses that x dot y dot z dot w slash n denotes. It compares the n most significant bits of both addresses.
 
 58
-00:13:07,921 --> 00:13:21,617
-Table-driven routing means that the router finds the next hop by a lookup in its routing table. The two pieces of information are the destination IP address in the packet, and the routing table in the router.
+00:07:35,623 --> 00:07:46,695
+Question bank question 65: why does the routing table store the prefix length as a mask, in the format of an IP address? Pause the video and try it.
 
 59
-00:13:22,067 --> 00:13:29,896
-Questions 59 and 61: show the template of a routing table, and explain its structure. Pause and try it.
+00:07:47,145 --> 00:07:50,921
+A slash 24 prefix becomes 24 one bits.
 
 60
-00:13:30,346 --> 00:13:50,677
-Each row has five fields. The destination address and the mask together give a destination network, x dot y dot z dot w slash n. The next hop is the next router, or connected for a network attached to the router. The interface is the output port. The metric is the cost.
+00:07:51,371 --> 00:07:53,313
+Then 8 zero bits follow.
 
 61
-00:13:51,127 --> 00:13:56,951
-Question 60: explain configured, learned and default entries. Pause and try it.
+00:07:53,763 --> 00:08:09,400
+In dotted form, that is 255 dot 255 dot 255 dot 0. Eight one bits are 128 plus 64 and so on, plus 1, which is 255.
 
 62
-00:13:57,401 --> 00:14:16,601
-A configured entry is typed in by the administrator, for example a network connected to the router. A learned entry comes from routing protocols. A default entry is 0 dot 0 dot 0 dot 0 slash 0. It is configured, and it matches every address.
+00:08:09,850 --> 00:08:19,834
+To test an address, the router does one AND with the mask. Here, I P 1 is 129 dot 97 dot 8 dot 20.
 
 63
-00:14:17,051 --> 00:14:22,512
-Question 62 has three parts on prefix matching. Pause the video and try it.
+00:08:20,284 --> 00:08:23,825
+The AND keeps the first 24 bits of I P 1.
 
 64
-00:14:22,962 --> 00:14:40,711
-Part a. An entry x dot y dot z dot w slash n matches I P 1 if the AND with the mask gives the same result for both. That is, the n most significant bits are equal. Then I P 1 is in the pool of addresses of that entry.
+00:08:24,275 --> 00:08:26,473
+The AND clears the last 8 bits.
 
 65
-00:14:41,161 --> 00:14:48,052
-Part b. Longest prefix matching: among all entries that match, take the one with the largest n.
+00:08:26,923 --> 00:08:34,432
+The result is 129 dot 97 dot 8 dot 0, the network part of I P 1.
 
 66
-00:14:48,502 --> 00:15:01,643
-Part c. The largest n is the most specific network. It takes the packet closest to the destination network. The router forwards the packet on the interface of that entry, to its next hop.
+00:08:34,882 --> 00:08:43,415
+The mask is one block of ones, then one block of zeros. So one AND operation gives the network part of any address.
 
 67
-00:15:02,093 --> 00:15:11,117
-Questions 63 and 64: what happens if no entry matches, and why is a default entry useful? Pause and try it.
+00:08:43,865 --> 00:08:52,527
+The slide says that this helps an efficient implementation of the matching condition. This is the answer to question 65.
 
 68
-00:15:11,567 --> 00:15:37,893
-If no entry matches and there is no default entry, the router drops the packet and sends an I C M P error message to the source. A default entry sends every unknown destination to one next hop, for example the router of the I S P. So the table stays small, and packets to unknown networks are not dropped. The last two reasons are my reasoning from slide 54.
+00:08:52,977 --> 00:09:03,003
+Slide 54 gives the full matching and forwarding algorithm. The first input is I P 1, the destination address from the packet header.
 
 69
-00:15:38,343 --> 00:15:56,305
-To recap. The next hop is a function of the destination address and the routing table. Each row has a destination, a mask, a next hop, an interface and a metric. Entries are learned from routing protocols, or configured: connected networks and the default.
+00:09:03,453 --> 00:09:06,568
+The second input is R T, the routing table.
 
 70
-00:15:56,755 --> 00:16:11,987
-An entry matches if the AND with its mask gives the same result for the entry and the destination. The longest matching prefix wins. With no match and no default, the router drops the packet and sends an I C M P error.
+00:09:07,018 --> 00:09:12,266
+First, the router tests I P 1 against every entry of the routing table.
 
 71
-00:16:12,437 --> 00:16:16,427
+00:09:12,716 --> 00:09:18,775
+If one or more entries match, the router chooses the matching entry with the longest prefix.
+
+72
+00:09:19,225 --> 00:09:27,438
+It forwards the packet on the interface of that entry. The longest prefix takes the packet closer to the destination network.
+
+73
+00:09:27,888 --> 00:09:36,229
+If no entry matches, the router checks for a default entry, 0 dot 0 dot 0 dot 0 slash 0.
+
+74
+00:09:36,679 --> 00:09:42,141
+If the default entry exists, the router forwards the packet on the default interface.
+
+75
+00:09:42,591 --> 00:09:49,481
+If there is no match and no default entry, the router cannot forward the packet. It drops the packet.
+
+76
+00:09:49,931 --> 00:10:00,427
+It sends an error message to the source of the packet. This is an I C M P message. I C M P is the Internet Control Message Protocol.
+
+77
+00:10:00,877 --> 00:10:08,771
+Now the main rule. Slide 55 gives a routing table in binary. A star is a bit that can be anything.
+
+78
+00:10:09,221 --> 00:10:14,234
+Entry 0 fixes the first 21 bits. So it is slash 21.
+
+79
+00:10:14,684 --> 00:10:19,740
+Entry 1 fixes the first 24 bits. So it is slash 24.
+
+80
+00:10:20,190 --> 00:10:25,118
+Entry 2 also fixes 21 bits. So it is slash 21.
+
+81
+00:10:25,568 --> 00:10:29,429
+Entry 3 is the default. Its prefix length is 0.
+
+82
+00:10:29,879 --> 00:10:35,426
+The rule: use the longest prefix in the table that matches the destination address.
+
+83
+00:10:35,876 --> 00:10:44,431
+The first destination is 200 dot 23 dot 22 dot 161. Pause the video and try it.
+
+84
+00:10:44,881 --> 00:10:55,825
+Entry 0: compare the first 21 bits. Bits 1 to 16 are 200 dot 23. They are the same in every entry and in the destination.
+
+85
+00:10:56,275 --> 00:11:08,499
+Bits 17 to 21 are the first 5 bits of the third byte. The third byte of the destination is 22, which is 0 0 0 1 0 1 1 0.
+
+86
+00:11:08,949 --> 00:11:18,847
+Its first 5 bits are 0 0 0 1 0. Entry 0 has 0 0 0 1 0 too. So entry 0 matches.
+
+87
+00:11:19,297 --> 00:11:33,612
+Entry 1: compare the first 24 bits. Its third byte is 0 0 0 1 1 0 0 0, which is 24. The destination has 22. So entry 1 does not match.
+
+88
+00:11:34,062 --> 00:11:46,457
+Entry 2: its third byte must start with 0 0 0 1 1. The destination starts with 0 0 0 1 0. Bit 21 differs. No match.
+
+89
+00:11:46,907 --> 00:11:53,392
+The default entry matches every address. But its prefix length is 0, the shortest possible.
+
+90
+00:11:53,842 --> 00:12:00,605
+Only entry 0 and the default match. Entry 0 has the longer prefix, 21 bits.
+
+91
+00:12:01,055 --> 00:12:03,807
+So the packet goes out on interface 0.
+
+92
+00:12:04,257 --> 00:12:14,262
+The second destination is 200 dot 23 dot 24 dot 170. Use the same table. Pause the video and try it.
+
+93
+00:12:14,712 --> 00:12:21,859
+The third byte of the destination is 24, which is 0 0 0 1 1 0 0 0.
+
+94
+00:12:22,309 --> 00:12:34,362
+Entry 0: its third byte must start with 0 0 0 1 0. The destination has 0 0 0 1 1. Bit 21 differs. No match.
+
+95
+00:12:34,812 --> 00:12:45,820
+Entry 1: the first 24 bits must be 200 dot 23 dot 24. The destination has exactly these bits. Entry 1 matches.
+
+96
+00:12:46,270 --> 00:12:57,769
+Entry 2: bits 17 to 21 must be 0 0 0 1 1. They are. So entry 2 also matches. Slide 57 shows this match.
+
+97
+00:12:58,219 --> 00:13:01,205
+The default also matches, with length 0.
+
+98
+00:13:01,655 --> 00:13:09,975
+Three entries match. Entry 1 has 24 bits, entry 2 has 21 bits, and the default has 0 bits.
+
+99
+00:13:10,425 --> 00:13:17,295
+The longest is entry 1, as slide 58 shows. So the packet goes out on interface 1.
+
+100
+00:13:17,745 --> 00:13:31,675
+Entry 1 is a smaller, more specific network inside the range of entry 2. Entry 1 covers only the third byte 24. Entry 2 covers the third bytes 24 to 31.
+
+101
+00:13:32,125 --> 00:13:36,456
+The longer prefix takes the packet closer to the destination network.
+
+102
+00:13:36,906 --> 00:13:50,367
+Practice with the same table. These two addresses are my examples, not from the slide. The first address is 200 dot 23 dot 31 dot 5. Pause the video and try it.
+
+103
+00:13:50,817 --> 00:13:56,343
+The third byte is 31, which is 0 0 0 1 1 1 1 1.
+
+104
+00:13:56,793 --> 00:14:06,201
+Entry 0 needs the third byte to start with 0 0 0 1 0. Bit 21 of the address is 1. No match.
+
+105
+00:14:06,651 --> 00:14:13,264
+Entry 1 needs the third byte equal to 24. The address has 31. No match.
+
+106
+00:14:13,714 --> 00:14:23,890
+Entry 2 needs the third byte to start with 0 0 0 1 1. 31 starts with 0 0 0 1 1. Match.
+
+107
+00:14:24,340 --> 00:14:25,897
+The default matches too.
+
+108
+00:14:26,347 --> 00:14:32,214
+Entry 2, slash 21, is the longest match. So the answer is interface 2.
+
+109
+00:14:32,664 --> 00:14:38,872
+Entry 2 covers the third bytes 24 to 31, and 31 is in this range.
+
+110
+00:14:39,322 --> 00:14:45,871
+The second address is 200 dot 23 dot 40 dot 1. Pause the video and try it.
+
+111
+00:14:46,321 --> 00:14:51,633
+The third byte, 40, is 0 0 1 0 1 0 0 0.
+
+112
+00:14:52,083 --> 00:14:58,675
+Entry 0: bit 19 of the address is 1, but entry 0 needs 0. No match.
+
+113
+00:14:59,125 --> 00:15:03,627
+Entry 1: the third byte 40 is not 24. No match.
+
+114
+00:15:04,077 --> 00:15:07,789
+Entry 2: the same bit 19 differs. No match.
+
+115
+00:15:08,239 --> 00:15:10,436
+Only the default entry matches.
+
+116
+00:15:10,886 --> 00:15:15,153
+So the packet goes out on interface 3, the default interface.
+
+117
+00:15:15,603 --> 00:15:22,835
+Without the default entry, the router would drop the packet and send an I C M P error message to the source.
+
+118
+00:15:23,285 --> 00:15:36,746
+Now the question bank questions on forwarding. Questions 57 and 58: what is table-driven routing, and what two pieces of information does a router use? Pause the video and try it.
+
+119
+00:15:37,196 --> 00:15:44,684
+Table-driven routing means that the router finds the next hop and the interface by a lookup in its routing table.
+
+120
+00:15:45,134 --> 00:15:50,553
+The first piece of information is the destination IP address in the packet.
+
+121
+00:15:51,003 --> 00:15:55,099
+The second piece of information is the routing table in the router.
+
+122
+00:15:55,549 --> 00:16:03,357
+Questions 59 and 61: show the template of a routing table, and explain its structure. Pause and try it.
+
+123
+00:16:03,807 --> 00:16:14,388
+Each row has five fields. The destination address and the mask together give a destination network, x dot y dot z dot w slash n.
+
+124
+00:16:14,838 --> 00:16:20,001
+The next hop is the next router, or connected for a network attached to the router.
+
+125
+00:16:20,451 --> 00:16:22,797
+The interface is the output port.
+
+126
+00:16:23,247 --> 00:16:25,487
+The metric is the cost of the route.
+
+127
+00:16:25,937 --> 00:16:31,761
+Question 60: explain configured, learned and default entries. Pause and try it.
+
+128
+00:16:32,211 --> 00:16:39,017
+A configured entry is typed in by the administrator, for example a network connected to the router.
+
+129
+00:16:39,467 --> 00:16:42,517
+A learned entry comes from routing protocols.
+
+130
+00:16:42,967 --> 00:16:51,671
+A default entry is 0 dot 0 dot 0 dot 0 slash 0. It is configured, and it matches every address.
+
+131
+00:16:52,121 --> 00:16:57,583
+Question 62 has three parts on prefix matching. Pause the video and try it.
+
+132
+00:16:58,033 --> 00:17:15,782
+Part a. An entry x dot y dot z dot w slash n matches I P 1 if the AND with the mask gives the same result for both. That is, the n most significant bits are equal. Then I P 1 is in the pool of addresses of that entry.
+
+133
+00:17:16,232 --> 00:17:23,101
+Part b. Longest prefix matching: among all entries that match, take the one with the largest n.
+
+134
+00:17:23,551 --> 00:17:40,597
+Part c. The largest n is the most specific network, here the slash 24 inside the slash 21. It takes the packet closest to the destination network. The router forwards the packet on the interface of that entry, to its next hop.
+
+135
+00:17:41,047 --> 00:17:50,071
+Questions 63 and 64: what happens if no entry matches, and why is a default entry useful? Pause and try it.
+
+136
+00:17:50,521 --> 00:17:59,715
+If no entry matches and there is no default entry, the router drops the packet and sends an I C M P error message to the source.
+
+137
+00:18:00,165 --> 00:18:17,509
+A default entry sends every unknown destination to one next hop, for example the router of the I S P. So the table stays small, and packets to unknown networks are not dropped. These two reasons are my reasoning from slide 54.
+
+138
+00:18:17,959 --> 00:18:35,922
+To recap. The next hop is a function of the destination address and the routing table. Each row has a destination, a mask, a next hop, an interface and a metric. Entries are learned from routing protocols, or configured: connected networks and the default.
+
+139
+00:18:36,372 --> 00:18:51,604
+An entry matches if the AND with its mask gives the same result for the entry and the destination. The longest matching prefix wins. With no match and no default, the router drops the packet and sends an I C M P error.
+
+140
+00:18:52,054 --> 00:18:56,043
 The next video, 16 b, covers address aggregation.

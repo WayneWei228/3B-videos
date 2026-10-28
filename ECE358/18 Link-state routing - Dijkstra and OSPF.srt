@@ -7,357 +7,649 @@ This is ECE 358, video 18. The topic is link-state routing: Dijkstra's algorithm
 After this video, you can run Dijkstra's algorithm and fill its table step by step. You can draw the least-cost-path tree and the forwarding table. You can explain link state, OSPF, flooding and link costs. And you can solve question 85 of the question bank.
 
 3
-00:00:29,081 --> 00:00:43,460
-Routing finds good paths through a network of routers. We use the graph model of slide 79. Each node is a router. Each edge is a link. The number on an edge is the link cost, c x y.
+00:00:29,081 --> 00:00:39,556
+Routing finds good paths through a network of routers. We use the graph model of slide 79. Each node is a router. Here u is one node.
 
 4
-00:00:43,910 --> 00:00:58,118
-A path is a sequence of links from a source to a destination. The cost of a path is the sum of its link costs. For example, the path u, x, y, z costs 1 plus 1 plus 2, which is 4.
+00:00:40,006 --> 00:00:43,931
+Each edge is a link. Here is the link between u and x.
 
 5
-00:00:58,568 --> 00:01:06,845
-Another path from u to z goes through w. It costs 5 plus 5, which is 10. So the first path is better.
+00:00:44,381 --> 00:00:50,376
+The number on an edge is the link cost, c x y. For example, c u x is 1.
 
 6
-00:01:07,295 --> 00:01:22,527
-A good path is a least-cost path. The routing algorithm in u must find the least-cost path from u to every other node. These paths give the forwarding table of u. The green links show the answer that we will compute.
+00:00:50,826 --> 00:00:58,335
+A path is a sequence of links from a source to a destination. The cost of a path is the sum of its link costs.
 
 7
-00:01:22,977 --> 00:01:40,044
-Slide 82 describes Dijkstra's link-state algorithm. It is centralized. Every node knows the whole topology and every link cost. The purple chips show that each router holds the same map. A link state broadcast gives them this map.
+00:00:58,785 --> 00:01:04,652
+For example, the path u, x, y, z costs 1 plus 1 plus 2, which is 4.
 
 8
-00:01:40,494 --> 00:01:49,027
-Because all nodes have the same map, each node can run the algorithm alone. No node waits for the results of other nodes.
+00:01:05,102 --> 00:01:11,118
+Another path from u to z goes through w. It costs 5 plus 5, which is 10.
 
 9
-00:01:49,477 --> 00:02:01,275
-The algorithm computes the least-cost paths from one node, the source, to all other nodes. Here the source is u. The result gives the forwarding table of that source node.
+00:01:11,568 --> 00:01:15,152
+4 is less than 10. So the first path is better.
 
 10
-00:02:01,725 --> 00:02:14,098
-The algorithm is iterative. After k iterations, it knows the least-cost path to k destinations. In the picture, three nodes are done. They are in the set N prime.
+00:01:15,602 --> 00:01:24,029
+A good path is a least-cost path. The routing algorithm in u must find the least-cost path from u to every other node.
 
 11
-00:02:14,548 --> 00:02:36,585
-Here is the notation. c x y is the direct link cost from x to y. It is infinity when x and y are not neighbors. D of v is the current estimate of the least cost from the source to v. p of v is the node before v on that path. N prime is the set of nodes whose least cost is definitely known.
+00:01:24,479 --> 00:01:30,623
+These paths give the forwarding table of u. The green links show the answer that we will compute.
 
 12
-00:02:37,035 --> 00:02:57,409
-Slide 83 gives the algorithm. Lines 1 to 6 are the initialization. N prime holds only the source u. For each neighbor v of u, D of v is the direct cost c u v. For every other node, D of v is infinity. This first estimate may not be the minimum cost.
+00:01:31,073 --> 00:01:40,801
+Slide 82 describes Dijkstra's link-state algorithm. It is centralized. Every node knows the whole topology and every link cost.
 
 13
-00:02:57,859 --> 00:03:08,099
-Then the loop starts. Line 9 finds the node w that is not in N prime and has the smallest D. Here it is x, with D equal to 1.
+00:01:41,251 --> 00:01:47,928
+The purple chips show that each router holds the same map. A link state broadcast gives them this map.
 
 14
-00:03:08,549 --> 00:03:21,605
-Line 10 adds w to N prime. The cost of x is now final. No other path to x can be cheaper, because every other path already costs at least 1 before its next link.
+00:01:48,378 --> 00:01:53,413
+Because all nodes have the same map, each node can run the algorithm alone.
 
 15
-00:03:22,055 --> 00:03:39,399
-Lines 11 and 12 update the neighbors of w that are not in N prime. For each such v, D of v becomes the minimum of the old D of v, and D of w plus c w v. The purple links show the neighbors that x checks.
+00:01:53,863 --> 00:02:04,828
+The algorithm computes the least-cost paths from one node, the source, to all other nodes. Here the source is u. The result gives the forwarding table of u.
 
 16
-00:03:39,849 --> 00:03:52,606
-Line 15 repeats the loop until all nodes are in N prime. Each pass adds one node. So for n nodes, the loop runs n minus 1 times after the initialization.
+00:02:05,278 --> 00:02:12,681
+The algorithm is iterative. After k iterations, it knows the least-cost paths to k destinations.
 
 17
-00:03:53,056 --> 00:04:03,467
-Here is the update rule of line 12 in a small picture. At the start, u knows only the direct link to w. So D of w is 5.
+00:02:13,131 --> 00:02:18,912
+In the picture, 3 iterations are done. N prime holds u, x, y and w.
 
 18
-00:04:03,917 --> 00:04:09,015
-Then x joins N prime. Its cost, D of x, is 1, and it is final.
+00:02:19,362 --> 00:02:31,821
+Here is the notation. c x y is the direct link cost from x to y. It is infinity when x and y are not neighbors. In the picture, c w v is 3.
 
 19
-00:04:09,465 --> 00:04:17,935
-Now a path through x is possible. Its cost is D of x plus c x w. That is 1 plus 3, which is 4.
+00:02:32,271 --> 00:02:39,844
+D of v is the current estimate of the least cost from the source to v. In the picture, D of w is 3.
 
 20
-00:04:18,385 --> 00:04:34,726
-The minimum of 5 and 4 is 4. So D of w becomes 4, and the predecessor p of w becomes x. Change D and p only when the new cost is strictly smaller. If the costs are equal, keep the old entry.
+00:02:40,294 --> 00:02:47,547
+p of v is the node before v on that path, the predecessor. In the picture, p of w is y.
 
 21
-00:04:35,176 --> 00:04:55,784
-Now the example of slide 84. The source is u. Step 0 is the initialization. The neighbors of u are v, w and x. So D of v is 2, D of w is 5, and D of x is 1, all with predecessor u. y and z are not neighbors, so their D is infinity.
+00:02:47,997 --> 00:02:52,563
+N prime is the set of nodes whose least cost is definitely known.
 
 22
-00:04:56,234 --> 00:05:06,879
-Step 1. The smallest D outside N prime is 1, for node x. So x joins N prime. The green circle in row 0 marks this choice.
+00:02:53,013 --> 00:03:01,375
+Slide 83 gives the algorithm. Lines 1 and 2 start the initialization. N prime holds only the source u.
 
 23
-00:05:07,329 --> 00:05:31,223
-Now update the neighbors of x that are not in N prime: v, w and y. For v: 1 plus 2 is 3. That is not smaller than 2, so v keeps 2 comma u. For w: 1 plus 3 is 4, smaller than 5. So w becomes 4 comma x. For y: 1 plus 1 is 2, smaller than infinity. So y becomes 2 comma x.
+00:03:01,825 --> 00:03:12,428
+Lines 3 to 5: for each neighbor v of u, D of v is the direct cost c u v. Here v gets 2, w gets 5, and x gets 1.
 
 24
-00:05:31,673 --> 00:05:43,769
-Step 2. Now v and y both have D equal to 2. This is a tie. The slide picks y. Ties can be broken in any order. The final costs do not change.
+00:03:12,878 --> 00:03:21,582
+Line 6: for every other node, D of v is infinity. Here y and z. This first estimate may not be the minimum cost.
 
 25
-00:05:44,219 --> 00:06:00,261
-y joins N prime. Update its neighbors w and z. For w: 2 plus 1 is 3, smaller than 4. So w becomes 3 comma y. For z: 2 plus 2 is 4. So z becomes 4 comma y.
+00:03:22,032 --> 00:03:32,272
+Then the loop starts. Line 9 finds the node w that is not in N prime and has the smallest D. Here it is x, with D equal to 1.
 
 26
-00:06:00,711 --> 00:06:14,429
-Step 3. The smallest D is 2, for v. v joins N prime. Its only neighbor outside N prime is w. 2 plus 3 is 5, not smaller than 3. So nothing changes.
+00:03:32,722 --> 00:03:39,954
+Line 10 adds w to N prime. Here x joins N prime. The cost of x is now final.
 
 27
-00:06:14,879 --> 00:06:28,447
-Step 4. The smallest D is 3, for w. w joins N prime. Its neighbor z gives 3 plus 5, which is 8. That is not smaller than 4. So z keeps 4 comma y.
+00:03:40,404 --> 00:03:50,751
+No other path to x can be cheaper. Every other path starts with the link to v or to w. These links already cost 2 and 5, more than 1.
 
 28
-00:06:28,897 --> 00:06:45,451
-Step 5. z joins N prime with cost 4. All nodes are in N prime, so the algorithm stops. The final costs are: v 2, w 3, x 1, y 2, and z 4. The green links are the predecessors.
+00:03:51,201 --> 00:04:02,187
+Lines 11 and 12 update the neighbors of w that are not in N prime. The purple links show the neighbors that x checks: v, w and y.
 
 29
-00:06:45,901 --> 00:07:01,411
-Now build the least-cost-path tree. Trace the predecessors back from each node. For z: p of z is y, p of y is x, and p of x is u. So the path from u to z is u, x, y, z, with cost 4.
+00:04:02,637 --> 00:04:10,531
+For each such v, D of v becomes the minimum of the old D of v, and D of w plus c w v.
 
 30
-00:07:01,861 --> 00:07:07,407
-Do this for every node. The green links are the links from each node to its predecessor.
+00:04:10,981 --> 00:04:17,295
+Line 15 repeats the loop until all nodes are in N prime. Each pass adds one node.
 
 31
-00:07:07,857 --> 00:07:15,260
-Remove all other links. The result is the least-cost-path tree from u. It has 5 links for 6 nodes.
+00:04:17,745 --> 00:04:25,745
+There are 6 nodes, and u is in N prime from the start. So the loop runs 6 minus 1, which is 5 times.
 
 32
-00:07:15,710 --> 00:07:26,739
-Now the forwarding table of u. It needs only the first link of each path. For v, the path is u to v directly. So the outgoing link is u v.
+00:04:26,195 --> 00:04:36,606
+Here is the update rule of line 12 in a small picture. At the start, u knows only the direct link to w. So D of w is 5.
 
 33
-00:07:27,189 --> 00:07:35,808
-Every other destination, x, y, w and z, is in the subtree below x. So all of them use the link u x.
+00:04:37,056 --> 00:04:42,155
+Then x joins N prime. Its cost, D of x, is 1, and it is final.
 
 34
-00:07:36,258 --> 00:07:46,797
-One small error on slide 85: the table lists destination x twice. The last row is for z. It also uses the link u x.
+00:04:42,605 --> 00:04:51,074
+Now a path through x is possible. Its cost is D of x plus c x w. That is 1 plus 3, which is 4.
 
 35
-00:07:47,247 --> 00:08:05,956
-Here is a second example, from slides 86 and 92. The source is again u. Pause the video and try the table first. Step 0: the neighbors of u are v with cost 7, w with cost 3, and x with cost 5. y and z are infinity.
+00:04:51,524 --> 00:04:59,801
+The minimum of 5 and 4 is 4. So D of w becomes 4, and the predecessor p of w becomes x.
 
 36
-00:08:06,406 --> 00:08:28,614
-Step 1. The smallest D is 3, for w. w joins N prime. Update its neighbors. v: 3 plus 3 is 6, smaller than 7, so 6 comma w. y: 3 plus 8 is 11, so 11 comma w. x: 3 plus 4 is 7, not smaller than 5, so x keeps 5 comma u.
+00:05:00,251 --> 00:05:07,825
+Change D and p only when the new cost is strictly smaller. If the costs are equal, keep the old entry.
 
 37
-00:08:29,064 --> 00:08:45,256
-Step 2. The smallest D is 5, for x. x joins N prime. Update y: 5 plus 7 is 12, not smaller than 11. Update z: 5 plus 9 is 14, so z becomes 14 comma x.
+00:05:08,275 --> 00:05:15,123
+Now the example of slide 84. The source is u. Pause the video and try the table first.
 
 38
-00:08:45,706 --> 00:08:57,973
-Step 3. The smallest D is 6, for v. v joins N prime. Update y: 6 plus 4 is 10, smaller than 11. So y becomes 10 comma v.
+00:05:15,573 --> 00:05:20,693
+Step 0 is the initialization. N prime holds only the source, u.
 
 39
-00:08:58,423 --> 00:09:10,711
-Step 4. The smallest D is 10, for y. y joins N prime. Update z: 10 plus 2 is 12, smaller than 14. So z becomes 12 comma y.
+00:05:21,143 --> 00:05:28,247
+v is a neighbor of u. D of v is the link cost c u v, which is 2. The predecessor is u.
 
 40
-00:09:11,161 --> 00:09:23,214
-Step 5. z joins N prime with cost 12, and the algorithm stops. The final costs are: v 6, w 3, x 5, y 10, and z 12.
+00:05:28,697 --> 00:05:36,910
+w is a neighbor of u. D of w is the link cost c u w, which is 5. The predecessor is u.
 
 41
-00:09:23,664 --> 00:09:32,965
-Trace the predecessors to get the tree. p of v is w, p of y is v, p of z is y, and p of w and x is u.
+00:05:37,360 --> 00:05:44,763
+x is a neighbor of u. D of x is the link cost c u x, which is 1. The predecessor is u.
 
 42
-00:09:33,415 --> 00:09:38,877
-Remove the other links. This is the red tree of slide 92, here in green.
+00:05:45,213 --> 00:05:49,415
+y and z are not neighbors of u. So their D is infinity.
 
 43
-00:09:39,327 --> 00:09:53,193
-The routing table of u needs the first hop of each path. For z, the path is u, w, v, y, z. So the outgoing link is u w. The same is true for v, y and w.
+00:05:49,865 --> 00:05:59,721
+Step 1. The smallest D outside N prime is 1, for x. x joins N prime. The other values are copied to the new row.
 
 44
-00:09:53,643 --> 00:10:04,502
-Only x is reached by the link u x. Slide 93 shows the same table: x uses u x, and all other destinations use u w.
+00:06:00,171 --> 00:06:09,729
+Update v. D of x plus c x v is 1 plus 2, which is 3. That is not smaller than 2. So v keeps 2 comma u.
 
 45
-00:10:04,952 --> 00:10:14,829
-Slide 92 also says: run Dijkstra's algorithm on all other nodes. Each router computes its own tree and its own routing table.
+00:06:10,179 --> 00:06:20,739
+Update w. D of x plus c x w is 1 plus 3, which is 4. That is smaller than 5. So w becomes 4 comma x.
 
 46
-00:10:15,279 --> 00:10:41,263
-OSPF means Open Shortest Path First. It is the link-state protocol for routing inside one autonomous system. Slide 122 says that it is widely used. In step 1, each router floods OSPF advertisements, also called L S advertisements. So every router learns the complete topology of the network inside the A S.
+00:06:21,189 --> 00:06:30,981
+Update y. D of x plus c x y is 1 plus 1, which is 2. That is smaller than infinity. So y becomes 2 comma x.
 
 47
-00:10:41,713 --> 00:10:52,636
-In step 2, each router, for example u, runs Dijkstra's algorithm on this topology. It finds the shortest paths from itself to all other nodes.
+00:06:31,431 --> 00:06:51,825
+Step 2. The smallest D outside N prime is 2, for y. v and y both have D equal to 2. This is a tie. The slide picks y. Ties can be broken in any order; the final costs do not change. y joins N prime. The other values are copied to the new row.
 
 48
-00:10:53,086 --> 00:11:01,534
-In step 3, each router finds the next hop for each destination from those paths. These next hops fill its routing table.
+00:06:52,275 --> 00:07:02,750
+Update w. D of y plus c y w is 2 plus 1, which is 3. That is smaller than 4. So w becomes 3 comma y.
 
 49
-00:11:01,984 --> 00:11:12,523
-The link state of a router is the list of its own links and their costs. All routers build the same map from these lists. So their shortest paths agree with each other.
+00:07:03,200 --> 00:07:13,163
+Update z. D of y plus c y z is 2 plus 2, which is 4. That is smaller than infinity. So z becomes 4 comma y.
 
 50
-00:11:12,973 --> 00:11:22,167
-Slide 88 lists three types of links in OSPF. The first is a point-to-point link. It connects two routers directly.
+00:07:13,613 --> 00:07:23,426
+Step 3. The smallest D outside N prime is 2, for v. v joins N prime. The other values are copied to the new row.
 
 51
-00:11:22,617 --> 00:11:34,287
-The second is a transient link, also called a broadcast link. It is a LAN that connects two or more routers. Traffic can enter the LAN through one router and leave through another.
+00:07:23,876 --> 00:07:34,628
+Update w. D of v plus c v w is 2 plus 3, which is 5. That is not smaller than 3. So w keeps 3 comma y.
 
 52
-00:11:34,737 --> 00:11:43,163
-The third is a stub link. It is a LAN with only one router. Traffic to or from this LAN always goes through that one router.
+00:07:35,078 --> 00:07:45,190
+Step 4. The smallest D outside N prime is 3, for w. w joins N prime. The other values are copied to the new row.
 
 53
-00:11:43,613 --> 00:11:52,787
-A router includes all of these links in its L S advertisement. So the other routers learn which destinations are connected in the A S.
+00:07:45,640 --> 00:07:56,264
+Update z. D of w plus c w z is 3 plus 5, which is 8. That is not smaller than 4. So z keeps 4 comma y.
 
 54
-00:11:53,237 --> 00:12:06,485
-Slide 89 shows the link state of each router in a five-router network. The link state of A lists its own links. A to B with cost 5, A to C with cost 2, and A to D with cost 3.
+00:07:56,714 --> 00:08:03,135
+Step 5. The smallest D outside N prime is 4, for z. z joins N prime.
 
 55
-00:12:06,935 --> 00:12:13,313
-The link state of B: B to A cost 5, B to C cost 4, and B to E cost 3.
+00:08:03,585 --> 00:08:14,615
+All nodes are in N prime, so the algorithm stops. The circled values are the final costs: v 2, w 3, x 1, y 2, z 4.
 
 56
-00:12:13,763 --> 00:12:19,737
-The link state of C: C to A cost 2, C to B cost 4, and C to E cost 4.
+00:08:15,065 --> 00:08:23,086
+Now build the least-cost-path tree. Trace the predecessors back from each node. Start with z: p of z is y.
 
 57
-00:12:20,187 --> 00:12:24,816
-D has only one link. Its link state is D to A with cost 3.
+00:08:23,536 --> 00:08:25,008
+p of y is x.
 
 58
-00:12:25,266 --> 00:12:30,066
-The link state of E: E to B cost 3, and E to C cost 4.
+00:08:25,458 --> 00:08:27,335
+p of x is u, the source.
 
 59
-00:12:30,516 --> 00:12:44,063
-Each router collects the link states of all routers. Together, the five lists give the full map. Each link appears twice, once from each end. With this map, each router runs Dijkstra's algorithm.
+00:08:27,785 --> 00:08:36,447
+So the path from u to z is u, x, y, z. Its cost is 1 plus 1 plus 2, which is 4. That is D of z.
 
 60
-00:12:44,513 --> 00:12:55,329
-Slide 90 shows how one link state reaches every router. This is called flooding. Router D creates its advertisement. It holds D, A, 3.
+00:08:36,897 --> 00:08:41,974
+Do this for every node. The green links join each node to its predecessor.
 
 61
-00:12:55,779 --> 00:13:02,008
-D sends the advertisement on all of its links. D has only one link, so A receives it.
+00:08:42,424 --> 00:08:53,752
+Remove all other links. The result is the least-cost-path tree from u. It has 6 nodes and 5 links: one link to the predecessor of each node except u.
 
 62
-00:13:02,458 --> 00:13:07,151
-A sends a copy on all of its other links. So B and C receive it.
+00:08:54,202 --> 00:09:04,570
+Now the forwarding table of u. It holds only the first link of each path. For v, the path is u, v. So the outgoing link is u v.
 
 63
-00:13:07,601 --> 00:13:21,916
-B and C send copies on their other links, so E receives it. B and C also send copies to each other. A router that already has this advertisement does not send it again. So the flooding stops.
+00:09:05,020 --> 00:09:13,639
+Every other destination, x, y, w and z, is in the subtree below x. So all of them use the link u x.
 
 64
-00:13:22,366 --> 00:13:30,046
-The link state of every other node is flooded in the same way. At the end, every router has the same complete map.
+00:09:14,089 --> 00:09:24,627
+One small error on slide 85: the table lists destination x twice. The last row is for z. It also uses the link u x.
 
 65
-00:13:30,496 --> 00:13:48,309
-What is the cost of a link? Slide 91 gives the Cisco default. The cost is inversely proportional to the link speed. Cost equals 100 Mbps divided by the link speed. A 1 Mbps link has cost 100.
+00:09:25,077 --> 00:09:34,080
+Here is a second example, from slides 86 and 92. The source is again u. Pause the video and try the table first.
 
 66
-00:13:48,759 --> 00:13:51,639
-A 10 Mbps link has cost 10.
+00:09:34,530 --> 00:09:39,650
+Step 0 is the initialization. N prime holds only the source, u.
 
 67
-00:13:52,089 --> 00:14:00,751
-A 100 Mbps link has cost 1. So faster links get smaller costs, and Dijkstra's algorithm prefers them.
+00:09:40,100 --> 00:09:47,460
+v is a neighbor of u. D of v is the link cost c u v, which is 7. The predecessor is u.
 
 68
-00:14:01,201 --> 00:14:16,006
-For a 1 Gbps link, 100 divided by 1000 is point 1. The slide gives cost 1, so the cost does not go below 1. Routers can also be configured with other cost methods.
+00:09:47,910 --> 00:09:56,145
+w is a neighbor of u. D of w is the link cost c u w, which is 3. The predecessor is u.
 
 69
-00:14:16,456 --> 00:14:29,619
-Now the question bank. Questions 81 to 84 are short descriptive questions. Question 81: what is the main function of OSPF? Pause the video and try it.
+00:09:56,595 --> 00:10:04,040
+x is a neighbor of u. D of x is the link cost c u x, which is 5. The predecessor is u.
 
 70
-00:14:30,069 --> 00:14:43,871
-OSPF does routing inside one A S. Each router learns the topology by flooding. It runs Dijkstra's algorithm. Then it fills its routing table with the next hop to each destination.
+00:10:04,490 --> 00:10:08,693
+y and z are not neighbors of u. So their D is infinity.
 
 71
-00:14:44,321 --> 00:15:00,001
-Question 82: what cost metrics can OSPF use? The operator sets the link cost. The default on the slide is 100 Mbps divided by the link speed. Other methods can be configured.
+00:10:09,143 --> 00:10:19,276
+Step 1. The smallest D outside N prime is 3, for w. w joins N prime. The other values are copied to the new row.
 
 72
-00:15:00,451 --> 00:15:15,555
-Question 83: explain the link state of a router. It is the list of the router's own links and their costs. For example, the link state of A is A B 5, A C 2, and A D 3. It is flooded to all routers.
+00:10:19,726 --> 00:10:30,478
+Update v. D of w plus c w v is 3 plus 3, which is 6. That is smaller than 7. So v becomes 6 comma w.
 
 73
-00:15:16,005 --> 00:15:24,176
-Question 84: which graph algorithm does OSPF use? It uses Dijkstra's shortest-path algorithm.
+00:10:30,928 --> 00:10:41,616
+Update x. D of w plus c w x is 3 plus 4, which is 7. That is not smaller than 5. So x keeps 5 comma u.
 
 74
-00:15:24,626 --> 00:15:35,186
-Question 85 of the question bank. Run Dijkstra's algorithm to find the shortest-path tree rooted at node z. Then build the routing table on z.
+00:10:42,066 --> 00:10:53,735
+Update y. D of w plus c w y is 3 plus 8, which is 11. That is smaller than infinity. So y becomes 11 comma w.
 
 75
-00:15:35,636 --> 00:15:42,335
-This is the same graph as slide 84, but now the source is z. Pause the video and try it.
+00:10:54,185 --> 00:11:04,084
+Step 2. The smallest D outside N prime is 5, for x. x joins N prime. The other values are copied to the new row.
 
 76
-00:15:42,785 --> 00:15:51,105
-Step 0. The neighbors of z are w with cost 5, and y with cost 2. u, v and x are infinity.
+00:11:04,534 --> 00:11:15,627
+Update y. D of x plus c x y is 5 plus 7, which is 12. That is not smaller than 11. So y keeps 11 comma w.
 
 77
-00:15:51,555 --> 00:16:08,984
-Step 1. The smallest D is 2, for y. y joins N prime. Update its neighbors. w: 2 plus 1 is 3, smaller than 5. So w becomes 3 comma y. x: 2 plus 1 is 3. So x becomes 3 comma y.
+00:11:16,077 --> 00:11:26,851
+Update z. D of x plus c x z is 5 plus 9, which is 14. That is smaller than infinity. So z becomes 14 comma x.
 
 78
-00:16:09,434 --> 00:16:32,303
-Step 2. w and x both have cost 3. This is a tie. We take w first. The other order gives the same final result. w joins N prime. u: 3 plus 5 is 8, so 8 comma w. v: 3 plus 3 is 6, so 6 comma w. x: 3 plus 3 is 6, not smaller than 3.
+00:11:27,301 --> 00:11:37,029
+Step 3. The smallest D outside N prime is 6, for v. v joins N prime. The other values are copied to the new row.
 
 79
-00:16:32,753 --> 00:16:48,860
-Step 3. x joins N prime with cost 3. u: 3 plus 1 is 4, smaller than 8. So u becomes 4 comma x. v: 3 plus 2 is 5, smaller than 6. So v becomes 5 comma x.
+00:11:37,479 --> 00:11:47,484
+Update y. D of v plus c v y is 6 plus 4, which is 10. That is smaller than 11. So y becomes 10 comma v.
 
 80
-00:16:49,310 --> 00:16:58,995
-Step 4. The smallest D is 4, for u. u joins N prime. v: 4 plus 2 is 6, not smaller than 5. No change.
+00:11:47,934 --> 00:11:57,662
+Step 4. The smallest D outside N prime is 10, for y. y joins N prime. The other values are copied to the new row.
 
 81
-00:16:59,445 --> 00:17:10,048
-Step 5. v joins N prime with cost 5. The final costs from z are: u 4, v 5, w 3, x 3, and y 2.
+00:11:58,112 --> 00:12:08,309
+Update z. D of y plus c y z is 10 plus 2, which is 12. That is smaller than 14. So z becomes 12 comma y.
 
 82
-00:17:10,498 --> 00:17:19,458
-Trace the predecessors. p of u is x, p of v is x, p of x is y, p of w is y, and p of y is z.
+00:12:08,759 --> 00:12:15,415
+Step 5. The smallest D outside N prime is 12, for z. z joins N prime.
 
 83
-00:17:19,908 --> 00:17:25,796
-Remove the other links. This is the shortest-path tree rooted at z. It has 5 links.
+00:12:15,865 --> 00:12:27,108
+All nodes are in N prime, so the algorithm stops. The circled values are the final costs: v 6, w 3, x 5, y 10, z 12.
 
 84
-00:17:26,246 --> 00:17:35,867
-The routing table on z. Every path in the tree starts with the link z y. So every destination uses the outgoing link z y.
+00:12:27,558 --> 00:12:41,233
+Read the predecessors from the table: p of v is w, p of w is u, p of x is u, p of y is v, and p of z is y. The green links join each node to its predecessor.
 
 85
-00:17:36,317 --> 00:17:48,349
-Check the surprising row. z has a direct link to w with cost 5. But the path z, y, w costs only 3. So w also uses z y.
+00:12:41,683 --> 00:12:49,149
+Remove the other links. This is the tree of slide 92. The slide draws it in red; here it is green.
 
 86
-00:17:48,799 --> 00:18:15,402
-Here is the method for an exam question. One: write row 0 from the direct links of the source. Two: pick the smallest D that is not in N prime, and circle it. Three: update only the neighbors of the new node that are not in N prime. Change D and p only when the new cost is strictly smaller. Four: trace the predecessors to get the tree, and take the first link of each path for the table.
+00:12:49,599 --> 00:13:02,143
+The routing table of u needs the first hop of each path. For z, the path is u, w, v, y, z. Its cost is 3 plus 3 plus 4 plus 2, which is 12.
 
 87
-00:18:15,852 --> 00:18:35,969
-Common errors: writing the predecessor as the next hop. In slide 84, p of z is y, but the next hop from u is x. Other errors: updating a node already in N prime, changing p when the costs are equal, and forgetting that a two-hop path can be cheaper than a direct link.
+00:13:02,593 --> 00:13:05,729
+So the outgoing link for z is u w.
 
 88
-00:18:36,419 --> 00:18:43,801
-To check your answer, add the link costs along each tree path. The sum must equal the final D of that node.
+00:13:06,179 --> 00:13:13,027
+v, w and y are also below w in the tree. They also use the link u w.
 
 89
-00:18:44,251 --> 00:19:01,211
-Here is the recap. In link-state routing, every router knows the full topology and all link costs, from flooded advertisements. Dijkstra's algorithm adds one node to N prime in each step, and updates D of v with the minimum rule.
+00:13:13,477 --> 00:13:19,216
+Only x is reached by the link u x. Slide 93 shows the same table.
 
 90
-00:19:01,661 --> 00:19:16,999
-Trace the predecessors to get the tree. The forwarding table holds the first link of each path. OSPF uses this method inside an A S: flood, run Dijkstra, find the next hop, and fill the routing table.
+00:13:19,666 --> 00:13:29,543
+Slide 92 also says: run Dijkstra's algorithm on all other nodes. Each router computes its own tree and its own routing table.
 
 91
-00:19:17,449 --> 00:19:28,116
+00:13:29,993 --> 00:13:44,223
+OSPF means Open Shortest Path First. It is the link-state protocol for routing inside one autonomous system, an A S. Slide 122 says that it is widely used.
+
+92
+00:13:44,673 --> 00:13:58,198
+In step 1, each router floods OSPF advertisements, also called L S advertisements. So every router learns the complete topology of the network inside the A S.
+
+93
+00:13:58,648 --> 00:14:09,571
+In step 2, each router, for example u, runs Dijkstra's algorithm on this topology. It finds the shortest paths from itself to all other nodes.
+
+94
+00:14:10,021 --> 00:14:18,469
+In step 3, each router finds the next hop for each destination from those paths. These next hops fill its routing table.
+
+95
+00:14:18,919 --> 00:14:23,228
+The link state of a router is the list of its own links and their costs.
+
+96
+00:14:23,678 --> 00:14:29,417
+All routers build the same map from these lists. So their shortest paths agree with each other.
+
+97
+00:14:29,867 --> 00:14:39,061
+Slide 88 lists three types of links in OSPF. The first is a point-to-point link. It connects two routers directly.
+
+98
+00:14:39,511 --> 00:14:51,181
+The second is a transient link, also called a broadcast link. It is a LAN that connects two or more routers. Traffic can enter the LAN through one router and leave through another.
+
+99
+00:14:51,631 --> 00:15:00,057
+The third is a stub link. It is a LAN with only one router. Traffic to or from this LAN always goes through that one router.
+
+100
+00:15:00,507 --> 00:15:09,681
+A router includes all of these links in its L S advertisement. So the other routers learn which destinations are connected in the A S.
+
+101
+00:15:10,131 --> 00:15:23,507
+Slide 89 shows the link state of each router in a five-router network. The link state of A lists its own links: A to B with cost 5, A to C with cost 2, and A to D with cost 3.
+
+102
+00:15:23,957 --> 00:15:30,335
+The link state of B: B to A cost 5, B to C cost 4, and B to E cost 3.
+
+103
+00:15:30,785 --> 00:15:36,759
+The link state of C: C to A cost 2, C to B cost 4, and C to E cost 4.
+
+104
+00:15:37,209 --> 00:15:41,838
+D has only one link. Its link state is D to A with cost 3.
+
+105
+00:15:42,288 --> 00:15:47,088
+The link state of E: E to B cost 3, and E to C cost 4.
+
+106
+00:15:47,538 --> 00:15:53,831
+Each router collects the link states of all routers. Together, the five lists give the full map.
+
+107
+00:15:54,281 --> 00:16:05,460
+The lists hold 3 plus 3 plus 3 plus 1 plus 2, which is 12 entries. The network has 6 links. So each link appears twice, once from each end.
+
+108
+00:16:05,910 --> 00:16:09,537
+With this map, each router runs Dijkstra's algorithm.
+
+109
+00:16:09,987 --> 00:16:20,803
+Slide 90 shows how one link state reaches every router. This is called flooding. Router D creates its advertisement. It holds D, A, 3.
+
+110
+00:16:21,253 --> 00:16:27,482
+D sends the advertisement on all of its links. D has only one link, so A receives it.
+
+111
+00:16:27,932 --> 00:16:32,625
+A sends a copy on all of its other links. So B and C receive it.
+
+112
+00:16:33,075 --> 00:16:37,193
+B and C send copies on their other links, so E receives it.
+
+113
+00:16:37,643 --> 00:16:47,307
+B and C also send copies to each other. A router that already has this advertisement does not send it again. So the flooding stops.
+
+114
+00:16:47,757 --> 00:16:55,458
+The link state of every other node is flooded in the same way. At the end, every router has the same complete map.
+
+115
+00:16:55,908 --> 00:17:10,116
+What is the cost of a link? Slide 91 gives the Cisco default. The cost is inversely proportional to the link speed. Cost equals 100 Mbps divided by the link speed.
+
+116
+00:17:10,566 --> 00:17:16,774
+A 1 Mbps link has cost 100 divided by 1, which is 100.
+
+117
+00:17:17,224 --> 00:17:22,941
+A 10 Mbps link has cost 100 divided by 10, which is 10.
+
+118
+00:17:23,391 --> 00:17:35,423
+A 100 Mbps link has cost 100 divided by 100, which is 1. So faster links get smaller costs, and Dijkstra's algorithm prefers them.
+
+119
+00:17:35,873 --> 00:17:49,313
+1 Gbps is 1000 Mbps. 100 divided by 1000 is 0 point 1. But the slide gives cost 1 for a 1 Gbps link.
+
+120
+00:17:49,763 --> 00:17:53,390
+Routers can also be configured with other cost methods.
+
+121
+00:17:53,840 --> 00:18:07,003
+Now the question bank. Questions 81 to 84 are short descriptive questions. Question 81: what is the main function of OSPF? Pause the video and try it.
+
+122
+00:18:07,453 --> 00:18:21,277
+OSPF does routing inside one A S. Each router learns the topology by flooding. It runs Dijkstra's algorithm. Then it fills its routing table with the next hop to each destination.
+
+123
+00:18:21,727 --> 00:18:37,407
+Question 82: what cost metrics can OSPF use? The operator sets the link cost. The default on the slide is 100 Mbps divided by the link speed. Other methods can be configured.
+
+124
+00:18:37,857 --> 00:18:52,961
+Question 83: explain the link state of a router. It is the list of the router's own links and their costs. For example, the link state of A is A B 5, A C 2, and A D 3. It is flooded to all routers.
+
+125
+00:18:53,411 --> 00:19:01,581
+Question 84: which graph algorithm does OSPF use? It uses Dijkstra's shortest-path algorithm.
+
+126
+00:19:02,031 --> 00:19:12,591
+Question 85 of the question bank. Run Dijkstra's algorithm to find the shortest-path tree rooted at node z. Then build the routing table on z.
+
+127
+00:19:13,041 --> 00:19:19,740
+This is the same graph as slide 84, but now the source is z. Pause the video and try it.
+
+128
+00:19:20,190 --> 00:19:25,203
+Step 0 is the initialization. N prime holds only the source, z.
+
+129
+00:19:25,653 --> 00:19:34,101
+w is a neighbor of z. D of w is the link cost c z w, which is 5. The predecessor is z.
+
+130
+00:19:34,551 --> 00:19:42,018
+y is a neighbor of z. D of y is the link cost c z y, which is 2. The predecessor is z.
+
+131
+00:19:42,468 --> 00:19:46,991
+u, v and x are not neighbors of z. So their D is infinity.
+
+132
+00:19:47,441 --> 00:19:57,019
+Step 1. The smallest D outside N prime is 2, for y. y joins N prime. The other values are copied to the new row.
+
+133
+00:19:57,469 --> 00:20:08,029
+Update w. D of y plus c y w is 2 plus 1, which is 3. That is smaller than 5. So w becomes 3 comma y.
+
+134
+00:20:08,479 --> 00:20:18,442
+Update x. D of y plus c y x is 2 plus 1, which is 3. That is smaller than infinity. So x becomes 3 comma y.
+
+135
+00:20:18,892 --> 00:20:39,223
+Step 2. The smallest D outside N prime is 3, for w. w and x both have D equal to 3. This is a tie. We take w first, by name. The other order gives the same final result. w joins N prime. The other values are copied to the new row.
+
+136
+00:20:39,673 --> 00:20:50,617
+Update u. D of w plus c w u is 3 plus 5, which is 8. That is smaller than infinity. So u becomes 8 comma w.
+
+137
+00:20:51,067 --> 00:21:02,053
+Update v. D of w plus c w v is 3 plus 3, which is 6. That is smaller than infinity. So v becomes 6 comma w.
+
+138
+00:21:02,503 --> 00:21:13,191
+Update x. D of w plus c w x is 3 plus 3, which is 6. That is not smaller than 3. So x keeps 3 comma y.
+
+139
+00:21:13,641 --> 00:21:23,604
+Step 3. The smallest D outside N prime is 3, for x. x joins N prime. The other values are copied to the new row.
+
+140
+00:21:24,054 --> 00:21:33,590
+Update u. D of x plus c x u is 3 plus 1, which is 4. That is smaller than 8. So u becomes 4 comma x.
+
+141
+00:21:34,040 --> 00:21:43,747
+Update v. D of x plus c x v is 3 plus 2, which is 5. That is smaller than 6. So v becomes 5 comma x.
+
+142
+00:21:44,197 --> 00:21:53,733
+Step 4. The smallest D outside N prime is 4, for u. u joins N prime. The other values are copied to the new row.
+
+143
+00:21:54,183 --> 00:22:03,783
+Update v. D of u plus c u v is 4 plus 2, which is 6. That is not smaller than 5. So v keeps 5 comma x.
+
+144
+00:22:04,233 --> 00:22:10,633
+Step 5. The smallest D outside N prime is 5, for v. v joins N prime.
+
+145
+00:22:11,083 --> 00:22:22,155
+All nodes are in N prime, so the algorithm stops. The circled values are the final costs: u 4, v 5, w 3, x 3, y 2.
+
+146
+00:22:22,605 --> 00:22:32,162
+Trace the predecessors from the table: p of u is x, p of v is x, p of w is y, p of x is y, and p of y is z.
+
+147
+00:22:32,612 --> 00:22:39,545
+Remove the other links. This is the shortest-path tree rooted at z. It has 6 nodes and 5 links.
+
+148
+00:22:39,995 --> 00:22:49,617
+The routing table on z. Every path in the tree starts with the link z y. So every destination uses the outgoing link z y.
+
+149
+00:22:50,067 --> 00:22:55,187
+Check the surprising row. z has a direct link to w with cost 5.
+
+150
+00:22:55,637 --> 00:23:04,469
+But the path z, y, w costs 2 plus 1, which is 3. 3 is less than 5, so w also uses z y.
+
+151
+00:23:04,919 --> 00:23:14,135
+Here is the method for an exam question. One: write row 0 from the direct links of the source. Write infinity for the other nodes.
+
+152
+00:23:14,585 --> 00:23:20,729
+Two: pick the smallest D that is not in N prime, and circle it. Ties can go in any order.
+
+153
+00:23:21,179 --> 00:23:30,416
+Three: update only the neighbors of the new node that are not in N prime. Change D and p only when the new cost is strictly smaller.
+
+154
+00:23:30,866 --> 00:23:36,903
+Four: trace the predecessors to get the tree. Take the first link of each path for the table.
+
+155
+00:23:37,353 --> 00:23:47,060
+Common errors. First: writing the predecessor as the next hop. In slide 84, p of z is y, but the next hop from u is x.
+
+156
+00:23:47,510 --> 00:23:51,009
+Second: updating a node that is already in N prime.
+
+157
+00:23:51,459 --> 00:23:54,317
+Third: changing p when the costs are equal.
+
+158
+00:23:54,767 --> 00:24:02,405
+Fourth: forgetting that a two-hop path can be cheaper than a direct link, as z to w in question 85.
+
+159
+00:24:02,855 --> 00:24:18,151
+To check your answer, add the link costs along each tree path. The sum must equal the final D of that node. For example, u, x, y, z costs 1 plus 1 plus 2, which is 4, the final D of z.
+
+160
+00:24:18,601 --> 00:24:27,859
+Here is the recap. In link-state routing, every router knows the full topology and all link costs, from flooded advertisements.
+
+161
+00:24:28,309 --> 00:24:35,563
+Dijkstra's algorithm adds one node to N prime in each step. It updates D of v with the minimum rule.
+
+162
+00:24:36,013 --> 00:24:42,114
+Trace the predecessors to get the tree. The forwarding table holds the first link of each path.
+
+163
+00:24:42,564 --> 00:24:54,809
+OSPF uses this method inside an A S: flood, run Dijkstra, find the next hop, and fill the routing table. Its links are point-to-point, transient, or stub.
+
+164
+00:24:55,259 --> 00:25:05,926
 The default link cost is 100 Mbps divided by the link speed. The next video covers the other routing method, distance vector.

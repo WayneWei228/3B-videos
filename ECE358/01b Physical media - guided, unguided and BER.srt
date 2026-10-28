@@ -3,173 +3,241 @@
 This is ECE 358, video 1 b. The topic is the physical media of a link. Video 1 a covered the parts of the Internet, access networks, and the transmission delay L over R.
 
 2
-00:00:15,277 --> 00:00:32,002
-After this video, you can classify media as guided or unguided. You can compare media by rate and bit error rate. You can calculate the number of bit errors. And you can answer questions 4 to 6 and 10 to 15 of the question bank.
+00:00:15,277 --> 00:00:20,226
+After this video, you can classify media as guided or unguided.
 
 3
-00:00:32,452 --> 00:00:42,884
-Now the physical media of a link. A bit propagates from a transmitter to a receiver. The physical link is what lies between the transmitter and the receiver.
+00:00:20,676 --> 00:00:23,897
+You can compare media by rate and bit error rate.
 
 4
-00:00:43,334 --> 00:00:55,174
-Physical media have two groups. In guided media, the signal propagates in a solid medium. The guided media are copper twisted pair, coaxial cable, and fiber.
+00:00:24,347 --> 00:00:27,099
+You can calculate the number of bit errors.
 
 5
-00:00:55,624 --> 00:01:01,064
-In unguided media, the signal propagates freely. Radio is the example.
+00:00:27,549 --> 00:00:32,797
+And you can answer questions 4 to 6 and 10 to 15 of the question bank.
 
 6
-00:01:01,514 --> 00:01:19,519
-The first guided medium is twisted pair. One twisted pair is two insulated copper wires. Category 5 cable carries 100 megabits per second and 1 gigabit per second Ethernet. Category 6 carries 10 gigabits per second Ethernet.
+00:00:33,247 --> 00:00:43,679
+Now the physical media of a link. A bit propagates from a transmitter to a receiver. The physical link is what lies between the transmitter and the receiver.
 
 7
-00:01:19,969 --> 00:01:38,401
-Slide 16 gives two more guided media. Coaxial cable has two concentric copper conductors: one wire inside a copper tube. It is bidirectional. It is broadband: it carries many frequency channels, with hundreds of megabits per second per channel.
+00:00:44,129 --> 00:00:46,049
+Physical media have two groups.
 
 8
-00:01:38,851 --> 00:01:54,873
-Fiber optic cable is a glass fiber that carries light pulses. Each pulse is one bit. Fiber gives high-speed point-to-point transmission, tens to hundreds of gigabits per second. It is immune to electromagnetic noise.
+00:00:46,499 --> 00:00:50,617
+In guided media, the signal propagates in a solid medium.
 
 9
-00:01:55,323 --> 00:02:07,077
-A bit error occurs when a received bit is flipped. A 1 becomes 0, or a 0 becomes 1. Here, the fourth bit was sent as 1, but it was received as 0.
+00:00:51,067 --> 00:00:55,867
+The guided media are copper twisted pair, coaxial cable, and fiber.
 
 10
-00:02:07,527 --> 00:02:19,879
-The bit error rate, BER, is the total number of bit errors at the receiver, divided by the total number of bits transmitted. It is bits over bits, so it has no unit.
+00:00:56,317 --> 00:01:01,757
+In unguided media, the signal propagates freely. Radio is the example.
 
 11
-00:02:20,329 --> 00:02:40,148
-The slide compares the BER of three media. Wireless is about 10 to the power minus 7. Copper is about 10 to the power minus 10. Fiber is about 10 to the power minus 12. Fiber has the lowest BER. So fiber repeaters can be spaced far apart.
+00:01:02,207 --> 00:01:20,212
+The first guided medium is twisted pair. One twisted pair is two insulated copper wires. Category 5 cable carries 100 megabits per second and 1 gigabit per second Ethernet. Category 6 carries 10 gigabits per second Ethernet.
 
 12
-00:02:40,598 --> 00:02:55,169
-Here is an example of the BER. A link carries 10 to the power 12 bits. Find the number of bit errors on each medium. Multiply the BER by the number of bits. Pause the video and try it.
+00:01:20,662 --> 00:01:39,094
+Slide 16 gives two more guided media. Coaxial cable has two concentric copper conductors: one wire inside a copper tube. It is bidirectional. It is broadband: it carries many frequency channels, with hundreds of megabits per second per channel.
 
 13
-00:02:55,619 --> 00:03:01,741
-For fiber, 10 to the power minus 12, times 10 to the power 12, is 1 bit error.
+00:01:39,544 --> 00:01:55,565
+Fiber optic cable is a glass fiber that carries light pulses. Each pulse is one bit. Fiber gives high-speed point-to-point transmission, tens to hundreds of gigabits per second. It is immune to electromagnetic noise.
 
 14
-00:03:02,191 --> 00:03:09,018
-For copper, 10 to the power minus 10, times 10 to the power 12, is 100 bit errors.
+00:01:56,015 --> 00:02:07,770
+A bit error occurs when a received bit is flipped. A 1 becomes 0, or a 0 becomes 1. Here, the fourth bit was sent as 1, but it was received as 0.
 
 15
-00:03:09,468 --> 00:03:23,335
-For wireless, 10 to the power minus 7, times 10 to the power 12, is 100 thousand bit errors. For the same data, wireless has 100 thousand times more errors than fiber.
+00:02:08,220 --> 00:02:20,572
+The bit error rate, BER, is the total number of bit errors at the receiver, divided by the total number of bits transmitted. It is bits over bits, so it has no unit.
 
 16
-00:03:23,785 --> 00:03:40,915
-Wireless radio is the unguided medium. The signal is carried in bands of the electromagnetic spectrum, for example 900 megahertz, or 2.4 gigahertz. There is no physical wire. So radio supports mobility.
+00:02:21,022 --> 00:02:35,017
+The slide compares the BER of three media. Wireless is about 10 to the power minus 7. Copper is about 10 to the power minus 10. Fiber is about 10 to the power minus 12.
 
 17
-00:03:41,365 --> 00:03:54,293
-Radio is broadcast: all receivers in range get the signal. It is also half-duplex. A radio can transmit or receive at a given time, but not both at the same time.
+00:02:35,467 --> 00:02:40,992
+Fiber has the lowest BER. So fiber repeaters can be spaced far apart.
 
 18
-00:03:54,743 --> 00:04:05,794
-The propagation environment affects the signal. The signal can reflect from a surface. An object can obstruct it. And other signals cause interference and noise.
+00:02:41,442 --> 00:02:56,013
+Here is an example of the BER. A link carries 10 to the power 12 bits. Find the number of bit errors on each medium. Multiply the BER by the number of bits. Pause the video and try it.
 
 19
-00:04:06,244 --> 00:04:13,007
-These effects cause bit errors. This is why wireless has the largest BER of the three media.
+00:02:56,463 --> 00:03:03,951
+For fiber, 10 to the power minus 12, times 10 to the power 12, is 10 to the 0: 1 bit error.
 
 20
-00:04:13,457 --> 00:04:36,923
-Slide 17 lists five radio link types. Wireless LAN, or WiFi, gives tens to hundreds of megabits per second over tens of meters. Wide-area links, for example 4G cellular, give tens of megabits per second over about 10 kilometers. Bluetooth replaces cables. It covers short distances at limited rates.
+00:03:04,401 --> 00:03:12,507
+For copper, 10 to the power minus 10, times 10 to the power 12, is 10 to the 2: 100 bit errors.
 
 21
-00:04:37,373 --> 00:04:52,093
-Terrestrial microwave is point-to-point, with 45 megabits per second channels. Satellite gives up to 45 megabits per second per channel, with an end-to-end delay of 270 milliseconds.
+00:03:12,957 --> 00:03:21,981
+For wireless, 10 to the power minus 7, times 10 to the power 12, is 10 to the 5: 100 thousand bit errors.
 
 22
-00:04:52,543 --> 00:05:12,319
-Compare the satellite delay with L over R. A 12000-bit packet at 45 megabits per second takes about 267 microseconds. The 270 millisecond delay is about 1000 times longer. Video 3 explains this delay.
+00:03:22,431 --> 00:03:33,119
+Divide wireless by fiber: 10 to the 5, divided by 1. For the same data, wireless has 100 thousand times more errors than fiber.
 
 23
-00:05:12,769 --> 00:05:21,196
-Question 4. What does an access network do for your computer, and what are its hardware elements? Pause the video and try it.
+00:03:33,569 --> 00:03:45,644
+Wireless radio is the unguided medium. The signal is carried in bands of the electromagnetic spectrum, for example 900 megahertz, or 2.4 gigahertz.
 
 24
-00:05:21,646 --> 00:05:36,814
-The access network connects your computer to the edge router, and so to the Internet. Slide 10 calls it the front portion of the network. Its elements are links, switches, and routers. The links can be wired or wireless.
+00:03:46,094 --> 00:03:50,083
+There is no physical wire. So radio supports mobility.
 
 25
-00:05:37,264 --> 00:06:03,141
-Question 5. What is a packet, and what are its two main parts? A packet is a structured sequence of bits that the network carries as one unit. The two parts are the header and the data. Slide 20 writes an IP packet as header, data. A data packet carries a part of an application message. A control packet carries a protocol message, for example a TCP connection request.
+00:03:50,533 --> 00:04:03,461
+Radio is broadcast: all receivers in range get the signal. It is also half-duplex. A radio can transmit or receive at a given time, but not both at the same time.
 
 26
-00:06:03,591 --> 00:06:22,301
-Question 6. What are the two main attributes of a transmission medium? The slides compare media by two measures: the transmission rate, also called the bandwidth, and the bit error rate. The question bank gives no answer. This answer comes from slides 15 and 16.
+00:04:03,911 --> 00:04:14,962
+The propagation environment affects the signal. The signal can reflect from a surface. An object can obstruct it. And other signals cause interference and noise.
 
 27
-00:06:22,751 --> 00:06:30,409
-Questions 10 and 11. Name three guided media, and one unguided medium. Pause the video and try it.
+00:04:15,412 --> 00:04:22,175
+These effects cause bit errors. This is why wireless has the largest BER of the three media.
 
 28
-00:06:30,859 --> 00:06:40,886
-From slide 15, the guided media are twisted pair copper, coaxial cable, and fiber optic cable. The unguided medium is radio.
+00:04:22,625 --> 00:04:33,057
+Slide 17 lists five radio link types. Wireless LAN, or WiFi, gives tens to hundreds of megabits per second over tens of meters.
 
 29
-00:06:41,336 --> 00:06:53,069
-Question 12. Two submarines communicate wirelessly under water. Does the water act like a guided medium or an unguided medium? Pause the video and try it.
+00:04:33,507 --> 00:04:41,293
+Wide-area links, for example 4G cellular, give tens of megabits per second over about 10 kilometers.
 
 30
-00:06:53,519 --> 00:07:11,823
-Use the definitions of slide 15. In guided media, the signal propagates in a solid medium, along the cable. In unguided media, the signal propagates freely. Under water, the signal spreads in all directions. Nothing holds it on a fixed path.
+00:04:41,743 --> 00:04:46,757
+Bluetooth replaces cables. It covers short distances at limited rates.
 
 31
-00:07:12,273 --> 00:07:15,132
-So the water acts like an unguided medium.
+00:04:47,207 --> 00:04:52,988
+Terrestrial microwave is point-to-point, with 45 megabits per second channels.
 
 32
-00:07:15,582 --> 00:07:37,790
-Question 13. Compare twisted pair copper with optical fibre on two performance metrics. Pause the video and try it. Metric one is the transmission rate. Twisted pair gives 100 megabits per second to 10 gigabits per second, from Cat 5 and Cat 6. Fiber gives tens to hundreds of gigabits per second.
+00:04:53,438 --> 00:05:01,737
+Satellite gives up to 45 megabits per second per channel, with an end-to-end delay of 270 milliseconds.
 
 33
-00:07:38,240 --> 00:07:50,976
-Metric two is the bit error rate. Copper is about 10 to the power minus 10. Fiber is about 10 to the power minus 12. So fiber has 100 times fewer bit errors.
+00:05:02,187 --> 00:05:18,933
+Compare the satellite delay with L over R. A 12000-bit packet at 45 times 10 to the 6 bits per second takes 2.67 times 10 to the minus 4 seconds: about 267 microseconds.
 
 34
-00:07:51,426 --> 00:08:01,453
-Fiber is better on both metrics. It has a higher rate and a lower BER, because light in glass is immune to electromagnetic noise.
+00:05:19,383 --> 00:05:32,823
+Divide 270 milliseconds by 267 microseconds. The delay is about 1000 times longer than L over R. Video 3 explains this delay.
 
 35
-00:08:01,903 --> 00:08:08,921
-Question 14. What is the main advantage of a wireless radio link? Pause the video and try it.
+00:05:33,273 --> 00:05:41,700
+Question 4. What does an access network do for your computer, and what are its hardware elements? Pause the video and try it.
 
 36
-00:08:09,371 --> 00:08:16,582
-A radio link has no physical wire. So it supports mobility. The host can move and keep its connection.
+00:05:42,150 --> 00:05:57,318
+The access network connects your computer to the edge router, and so to the Internet. Slide 10 calls it the front portion of the network. Its elements are links, switches, and routers. The links can be wired or wireless.
 
 37
-00:08:17,032 --> 00:08:24,499
-Question 15. What are the two main disadvantages of wireless radio links? Pause the video and try it.
+00:05:57,768 --> 00:06:03,912
+Question 5. What is a packet, and what are its two main parts? Pause the video and try it.
 
 38
-00:08:24,949 --> 00:08:33,866
-Disadvantage one: radio is broadcast and half-duplex. A radio can transmit or receive at one time, but not both.
+00:06:04,362 --> 00:06:26,655
+A packet is a structured sequence of bits that the network carries as one unit. The two parts are the header and the data. Slide 20 writes an IP packet as header, data. A data packet carries a part of an application message. A control packet carries a protocol message, for example a TCP connection request.
 
 39
-00:08:34,316 --> 00:08:49,548
-Disadvantage two: the propagation environment. Reflection, obstruction by objects, and interference and noise change the signal. So wireless has the largest bit error rate, about 10 to the power minus 7.
+00:06:27,105 --> 00:06:33,761
+Question 6. What are the two main attributes of a transmission medium? Pause the video and try it.
 
 40
-00:08:49,998 --> 00:08:57,123
-Here is the recap. One. Guided media are twisted pair, coax, and fiber. Radio is unguided.
+00:06:34,211 --> 00:06:47,758
+The slides compare media by two measures: the transmission rate, also called the bandwidth, and the bit error rate. The question bank gives no answer. This answer comes from slides 15 and 16.
 
 41
-00:08:57,573 --> 00:09:06,384
-Two. The bit error rate is the number of bit errors divided by the number of bits transmitted. Fiber has the lowest BER.
+00:06:48,208 --> 00:06:55,867
+Questions 10 and 11. Name three guided media, and one unguided medium. Pause the video and try it.
 
 42
-00:09:06,834 --> 00:09:12,402
-Three. The number of bit errors is the BER times the number of bits transmitted.
+00:06:56,317 --> 00:07:03,762
+From slide 15, the guided media are twisted pair copper, coaxial cable, and fiber optic cable.
 
 43
-00:09:12,852 --> 00:09:16,628
-Four. Fiber has the highest rate and the lowest BER.
+00:07:04,212 --> 00:07:06,452
+The unguided medium is radio.
 
 44
-00:09:17,078 --> 00:09:30,539
+00:07:06,902 --> 00:07:18,635
+Question 12. Two submarines communicate wirelessly under water. Does the water act like a guided medium or an unguided medium? Pause the video and try it.
+
+45
+00:07:19,085 --> 00:07:37,389
+Use the definitions of slide 15. In guided media, the signal propagates in a solid medium, along the cable. In unguided media, the signal propagates freely. Under water, the signal spreads in all directions. Nothing holds it on a fixed path.
+
+46
+00:07:37,839 --> 00:07:40,698
+So the water acts like an unguided medium.
+
+47
+00:07:41,148 --> 00:07:49,553
+Question 13. Compare twisted pair copper with optical fibre on two performance metrics. Pause the video and try it.
+
+48
+00:07:50,003 --> 00:08:03,934
+Metric one is the transmission rate. Twisted pair gives 100 megabits per second to 10 gigabits per second, from Cat 5 and Cat 6. Fiber gives tens to hundreds of gigabits per second.
+
+49
+00:08:04,384 --> 00:08:13,451
+Metric two is the bit error rate. Copper is about 10 to the power minus 10. Fiber is about 10 to the power minus 12.
+
+50
+00:08:13,901 --> 00:08:23,586
+Divide: 10 to the minus 10, over 10 to the minus 12, is 10 to the 2. So fiber has 100 times fewer bit errors.
+
+51
+00:08:24,036 --> 00:08:34,063
+Fiber is better on both metrics. It has a higher rate and a lower BER, because light in glass is immune to electromagnetic noise.
+
+52
+00:08:34,513 --> 00:08:41,531
+Question 14. What is the main advantage of a wireless radio link? Pause the video and try it.
+
+53
+00:08:41,981 --> 00:08:49,192
+A radio link has no physical wire. So it supports mobility. The host can move and keep its connection.
+
+54
+00:08:49,642 --> 00:08:57,109
+Question 15. What are the two main disadvantages of wireless radio links? Pause the video and try it.
+
+55
+00:08:57,559 --> 00:09:06,476
+Disadvantage one: radio is broadcast and half-duplex. A radio can transmit or receive at one time, but not both.
+
+56
+00:09:06,926 --> 00:09:22,158
+Disadvantage two: the propagation environment. Reflection, obstruction by objects, and interference and noise change the signal. So wireless has the largest bit error rate, about 10 to the power minus 7.
+
+57
+00:09:22,608 --> 00:09:29,733
+Here is the recap. One. Guided media are twisted pair, coax, and fiber. Radio is unguided.
+
+58
+00:09:30,183 --> 00:09:38,994
+Two. The bit error rate is the number of bit errors divided by the number of bits transmitted. Fiber has the lowest BER.
+
+59
+00:09:39,444 --> 00:09:45,012
+Three. The number of bit errors is the BER times the number of bits transmitted.
+
+60
+00:09:45,462 --> 00:09:49,238
+Four. Fiber has the highest rate and the lowest BER.
+
+61
+00:09:49,688 --> 00:10:03,149
 Five. Radio gives mobility, but it is half-duplex and has the most bit errors. The next video covers the network core: packet switching and circuit switching. That is the end of video 1.
