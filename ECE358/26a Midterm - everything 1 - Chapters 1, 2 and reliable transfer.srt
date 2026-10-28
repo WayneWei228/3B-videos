@@ -1,0 +1,1435 @@
+1
+00:00:00,000 --> 00:00:15,189
+Videos 26 a and 26 b have everything for the E C E 358 midterm: Chapters 1, 2 and 3 of the lecture notes, without TCP congestion control. This is part 1.
+
+2
+00:00:15,639 --> 00:00:28,439
+Each slide has a picture, the rule, the formula, and the common mistake, in lecture order. Part 2 ends with the past midterm questions, a formula sheet, and the mistakes to avoid.
+
+3
+00:00:28,889 --> 00:00:37,871
+The midterm covers Chapters 1 to 3, without TCP congestion control. This scope comes from the instructor's announcement.
+
+4
+00:00:38,321 --> 00:00:46,193
+Chapter 1, the introduction: edge and core, switching, delays, throughput, and layers. Problem Set 1 practices it.
+
+5
+00:00:46,643 --> 00:00:53,469
+Chapter 2, the application layer: HTTP and DNS. Problem Set 2 practices it.
+
+6
+00:00:53,919 --> 00:01:05,226
+Chapter 3, the transport layer: UDP, reliable transfer, Go-Back-N, Selective Repeat, and TCP. Congestion control is not on this midterm.
+
+7
+00:01:05,676 --> 00:01:14,849
+The exam has 5 multi-part questions. Question 1 has 20 multiple choice parts, worth 0 point 5 marks each.
+
+8
+00:01:15,299 --> 00:01:19,011
+Question 2 has 10 parts, all from the question bank.
+
+9
+00:01:19,461 --> 00:01:23,856
+Question 3 has many calculations, mainly from Chapter 1.
+
+10
+00:01:24,306 --> 00:01:29,597
+Question 4 is about ARQ protocols: concepts and calculations.
+
+11
+00:01:30,047 --> 00:01:34,697
+Question 5 is about TCP, without congestion control.
+
+12
+00:01:35,147 --> 00:01:49,398
+Not examined: probability, TCP congestion control, and header layouts. After the three chapters, part 2 shows the past midterm question types, a formula sheet, and the common mistakes.
+
+13
+00:01:49,848 --> 00:01:57,571
+Hosts, also called end systems, run the applications. Clients and servers are hosts at the network edge.
+
+14
+00:01:58,021 --> 00:02:09,029
+An access network connects a host to its first router, the edge router. Examples: home WiFi, institutional Ethernet, and 4G or 5G.
+
+15
+00:02:09,479 --> 00:02:14,300
+The network core is a mesh of routers. It connects the access networks.
+
+16
+00:02:14,750 --> 00:02:21,897
+A protocol defines the format and the order of the messages, and the actions on transmission and receipt.
+
+17
+00:02:22,347 --> 00:02:29,899
+The common mistake is to put the access network in the core. It is the first link, from the host to the edge router.
+
+18
+00:02:30,349 --> 00:02:37,559
+A host breaks a message into packets of L bits. It sends each packet into the link one bit at a time.
+
+19
+00:02:38,009 --> 00:02:46,692
+The transmission delay is the time to push all L bits into the link: d trans equals L over R. R is the link rate.
+
+20
+00:02:47,142 --> 00:02:55,206
+Slide example: L is 1500 bytes, times 8, which is 12 000 bits.
+
+21
+00:02:55,656 --> 00:03:02,397
+R is 100 Mbps, which is 100 times 10 to the 6 bits per second.
+
+22
+00:03:02,847 --> 00:03:13,258
+L over R is 1 point 2 times 10 to the minus 4 seconds, or 0 point 1 2 ms. That is when the last bit leaves.
+
+23
+00:03:13,708 --> 00:03:22,263
+The common mistake is the units. Bytes times 8 give bits. Kilo, mega and giga are 10 to the 3, 6 and 9.
+
+24
+00:03:22,713 --> 00:03:30,713
+A physical link lies between a transmitter and a receiver. In guided media, the signal moves in a solid medium.
+
+25
+00:03:31,163 --> 00:03:42,939
+Twisted pair is two copper wires. Category 5 carries 100 Mbps and 1 Gbps; Category 6 carries 10 Gbps.
+
+26
+00:03:43,389 --> 00:03:48,402
+Coaxial cable has two concentric conductors and carries many channels.
+
+27
+00:03:48,852 --> 00:03:55,167
+Fiber carries light pulses, one pulse per bit, at tens to hundreds of Gbps.
+
+28
+00:03:55,617 --> 00:04:06,369
+In unguided media, the signal moves freely as radio: WiFi, 4G cellular, and satellite with 270 ms of delay.
+
+29
+00:04:06,819 --> 00:04:14,371
+The bit error rate, BER, is the number of flipped bits at the receiver, divided by the number of bits sent.
+
+30
+00:04:14,821 --> 00:04:23,247
+Typical BER: wireless 10 to the minus 7, copper 10 to the minus 10, fiber 10 to the minus 12.
+
+31
+00:04:23,697 --> 00:04:30,609
+Example: 10 to the 12 bits give 1 error over fiber, and 10 to the 5 errors over wireless.
+
+32
+00:04:31,059 --> 00:04:40,681
+The common mistake: 10 to the minus 7 is not the smaller number. It is 10 to the 5 times larger. Wireless has the most errors.
+
+33
+00:04:41,131 --> 00:04:45,653
+Each router in the network core does two jobs: forwarding and routing.
+
+34
+00:04:46,103 --> 00:04:52,845
+Forwarding is a local action. The router looks up the header value of a packet in its forwarding table.
+
+35
+00:04:53,295 --> 00:05:02,319
+A packet with header 0 1 1 1 arrives. The table maps 0 1 1 1 to link 2, so the packet leaves on link 2.
+
+36
+00:05:02,769 --> 00:05:09,745
+Routing is a global action. A routing algorithm finds the paths and creates the forwarding tables.
+
+37
+00:05:10,195 --> 00:05:17,213
+The common mistake is to mix them up. Forwarding is inside one router. Routing is for the whole network.
+
+38
+00:05:17,663 --> 00:05:26,709
+Store and forward: a router must receive the whole packet before it sends it on. In slot 1, packet 1 crosses link 1.
+
+39
+00:05:27,159 --> 00:05:38,444
+One slot is L over R. With L equal to 10 kilobits and R equal to 100 Mbps, L over R is 0 point 1 ms.
+
+40
+00:05:38,894 --> 00:05:46,510
+In slot 2, packet 1 crosses link 2. So one packet over N links takes N times L over R.
+
+41
+00:05:46,960 --> 00:05:52,592
+Packets 2 and 3 follow, one slot apart. Both links send at the same time.
+
+42
+00:05:53,042 --> 00:06:00,850
+The last packet arrives at the end of slot 4. P packets over N links take N plus P minus 1 slots.
+
+43
+00:06:01,300 --> 00:06:07,913
+Here that is 4 slots, times 0 point 1 ms: 0 point 4 ms.
+
+44
+00:06:08,363 --> 00:06:16,043
+The common mistake is P times N slots, which is 6. The links overlap in time, so the answer is 4.
+
+45
+00:06:16,493 --> 00:06:25,432
+A and B send at 100 Mb/s each, but the output link to E has only 1 point 5 Mb/s.
+
+46
+00:06:25,882 --> 00:06:31,941
+Packets arrive faster than the link sends them. They wait in the queue, also called the buffer.
+
+47
+00:06:32,391 --> 00:06:37,873
+The buffer is finite. A packet that arrives at a full buffer is dropped, or lost.
+
+48
+00:06:38,323 --> 00:06:45,214
+The previous node or the source may send it again, or nobody does. That depends on the protocol.
+
+49
+00:06:45,664 --> 00:06:52,149
+The common mistake: a bigger buffer does not stop the loss while the arrival rate stays above R.
+
+50
+00:06:52,599 --> 00:07:00,834
+Circuit switching reserves resources for each call. Here each link has 4 circuits, and the call uses one on each link.
+
+51
+00:07:01,284 --> 00:07:08,111
+The circuit is not shared. Performance is guaranteed, but the circuit is idle when the call is silent.
+
+52
+00:07:08,561 --> 00:07:16,070
+FDM, frequency division multiplexing, gives each call its own frequency band, all the time.
+
+53
+00:07:16,520 --> 00:07:25,053
+TDM, time division multiplexing, gives each call periodic time slots, with the whole band in its slots.
+
+54
+00:07:25,503 --> 00:07:34,079
+The common mistake: in TDM a call sends at the full band rate only in its own slots, here 1 slot in 4.
+
+55
+00:07:34,529 --> 00:07:45,431
+Slide 28: a 1 Gb/s link. Each user sends at 100 Mb/s when active, and is active 10 percent of the time.
+
+56
+00:07:45,881 --> 00:07:56,654
+Circuit switching reserves 100 Mb/s per user: 1 Gb/s divided by 100 Mb/s is 10 users.
+
+57
+00:07:57,104 --> 00:08:04,293
+Packet switching shares the link among 35 users. Each user is idle 90 percent of the time.
+
+58
+00:08:04,743 --> 00:08:17,031
+At one moment, for example, 4 users are active. 4 times 100 Mb/s is 400 Mb/s, which fits in 1 Gb/s.
+
+59
+00:08:17,481 --> 00:08:30,345
+There is a problem only when more than 10 users are active at once, and the slide shows that this is rare. So packet switching serves 35 users, and circuit switching only 10.
+
+60
+00:08:30,795 --> 00:08:35,851
+The probability calculation behind this is not examined on this midterm.
+
+61
+00:08:36,301 --> 00:08:43,789
+The common mistake: packet switching does not always win. Too much traffic gives overflow, delay, and loss.
+
+62
+00:08:44,239 --> 00:08:49,807
+The Internet is a network of networks. Hosts connect through access ISPs.
+
+63
+00:08:50,257 --> 00:09:00,412
+Access ISPs connect to regional ISPs, and those connect to tier-1 ISPs with national and international coverage.
+
+64
+00:09:00,862 --> 00:09:06,921
+At an IXP, an Internet exchange point, many ISPs connect to each other.
+
+65
+00:09:07,371 --> 00:09:15,883
+Content providers such as Google run private networks that connect their data centers, often around the tier-1 ISPs.
+
+66
+00:09:16,333 --> 00:09:22,370
+The common mistake is to call an IXP an ISP. It is only a meeting point.
+
+67
+00:09:22,820 --> 00:09:30,777
+At each node, a packet meets four delays. d nodal is d proc plus d queue plus d trans plus d prop.
+
+68
+00:09:31,227 --> 00:09:35,451
+d proc: the router checks bit errors and chooses the output link.
+
+69
+00:09:35,901 --> 00:09:40,552
+d queue: the wait in the output buffer. It depends on the congestion.
+
+70
+00:09:41,002 --> 00:09:45,887
+d trans is L over R: the time to push all bits onto the link.
+
+71
+00:09:46,337 --> 00:09:55,063
+d prop is d over s: the time for one bit to cross the link. s is about 2 times 10 to the 8 meters per second.
+
+72
+00:09:55,513 --> 00:10:07,587
+Example: 12 000 bits at 10 Mbps. d trans is 12 000 over 10 to the 7: 1 point 2 ms.
+
+73
+00:10:08,037 --> 00:10:18,000
+A 500 km link: d prop is 5 times 10 to the 5, over 2 times 10 to the 8: 2 point 5 ms.
+
+74
+00:10:18,450 --> 00:10:26,023
+The common mistake: d trans does not depend on the distance, and d prop does not depend on L or R.
+
+75
+00:10:26,473 --> 00:10:35,433
+a is the packet arrival rate. L times a bits arrive per second, and R bits leave. Traffic intensity is L a over R.
+
+76
+00:10:35,883 --> 00:10:40,705
+Near 0, the average queueing delay is small. Near 1, it is large.
+
+77
+00:10:41,155 --> 00:10:46,232
+Above 1, more work arrives than the link can serve. The delay is infinite.
+
+78
+00:10:46,682 --> 00:10:57,839
+Example: L a is 1000 times 800, which is 800 000 bits per second. Over 10 to the 6, that is 0 point 8.
+
+79
+00:10:58,289 --> 00:11:09,575
+Problem Set 1, Problem 5: 4 packets arrive at once. Packet 1 waits 0, packet 2 waits L over R, packet 4 waits 3 L over R.
+
+80
+00:11:10,025 --> 00:11:19,326
+The average is 6 over 4, which is 1 point 5 L over R. In general: N minus 1, times L, over 2 R.
+
+81
+00:11:19,776 --> 00:11:24,832
+The common mistake is to compare a with R. Multiply a by L first.
+
+82
+00:11:25,282 --> 00:11:29,549
+Throughput is the rate at which the receiver gets bits from the sender.
+
+83
+00:11:29,999 --> 00:11:37,273
+With links in a row, the slowest link is the bottleneck. The throughput is the min of R s and R c.
+
+84
+00:11:37,723 --> 00:11:46,491
+Example: the min of 2 and 1 Mbps is 1 Mbps. An 8 megabit file takes 8 seconds.
+
+85
+00:11:46,941 --> 00:11:57,032
+Slide 51: 10 connections share a backbone link of rate R. Each gets R over 10, here 0 point 5 Mbps.
+
+86
+00:11:57,482 --> 00:12:07,722
+So the throughput is the min of R s, R c and R over 10: 0 point 5 Mbps. The file takes 16 seconds.
+
+87
+00:12:08,172 --> 00:12:14,785
+The common mistake is to add or average the rates. The throughput is the smallest rate on the path.
+
+88
+00:12:15,235 --> 00:12:21,849
+Problem Set 1, Problem 6: R times d prop is the number of bits in the link at one time.
+
+89
+00:12:22,299 --> 00:12:31,685
+1000 km is 10 to the 6 meters. d prop is 10 to the 6 over 2 times 10 to the 8: 5 ms.
+
+90
+00:12:32,135 --> 00:12:39,325
+R times d prop is 10 to the 6 times 5 times 10 to the minus 3: 5000 bits.
+
+91
+00:12:39,775 --> 00:12:46,644
+One bit is 10 to the 6 meters over 5000: 200 meters, which is s over R.
+
+92
+00:12:47,094 --> 00:12:54,667
+The common mistake: a file smaller than R d prop can not fill the link. Then the file size is the limit.
+
+93
+00:12:55,117 --> 00:13:02,520
+Each layer gives a service to the layer above, and uses the layer below. The Internet stack has five layers.
+
+94
+00:13:02,970 --> 00:13:10,287
+Application: network applications, such as HTTP, IMAP, SMTP and DNS.
+
+95
+00:13:10,737 --> 00:13:16,305
+Transport: process to process data transfer, with TCP or UDP.
+
+96
+00:13:16,755 --> 00:13:22,985
+Network: routes datagrams from source to destination, with IP and routing protocols.
+
+97
+00:13:23,435 --> 00:13:28,469
+Link: transfer between neighbors, such as Ethernet, WiFi and PPP.
+
+98
+00:13:28,919 --> 00:13:30,989
+Physical: the bits on the wire.
+
+99
+00:13:31,439 --> 00:13:38,671
+Layers make the system modular. A change in the physical layer needs no change in the transport layer.
+
+100
+00:13:39,121 --> 00:13:47,142
+The common mistake is five layers everywhere. A router has network, link and physical. A switch has link and physical.
+
+101
+00:13:47,592 --> 00:13:52,563
+Encapsulation. At the source, the application creates a message, M.
+
+102
+00:13:53,013 --> 00:13:56,639
+Transport adds H t. The unit is a segment.
+
+103
+00:13:57,089 --> 00:14:01,953
+Network adds H n. The unit is a datagram, or IP packet.
+
+104
+00:14:02,403 --> 00:14:07,929
+Link adds H l. The unit is a frame, and the physical layer sends its bits.
+
+105
+00:14:08,379 --> 00:14:13,307
+At the destination, each layer removes its own header, in reverse order.
+
+106
+00:14:13,757 --> 00:14:24,679
+Headers are overhead: Ethernet 14, IP 20 and TCP 20 bytes. A 100 byte message gives a 154 byte frame.
+
+107
+00:14:25,129 --> 00:14:35,071
+That is 54 over 154, about 35 percent. A 1000 byte message gives only 5 point 1 percent.
+
+108
+00:14:35,521 --> 00:14:41,558
+The common mistake is to count only the link header. A frame holds all the headers and M.
+
+109
+00:14:42,008 --> 00:14:50,541
+Chapter 2: the application layer. Two protocols for the midterm: HTTP for the web, and DNS for names.
+
+110
+00:14:50,991 --> 00:14:56,154
+First, the principles: app architectures, and what an app needs from transport.
+
+111
+00:14:56,604 --> 00:15:01,831
+Client-server: the server is always on and has a permanent IP address.
+
+112
+00:15:02,281 --> 00:15:06,867
+Clients connect from time to time. Their IP addresses can change.
+
+113
+00:15:07,317 --> 00:15:13,312
+Clients do not talk directly to each other. HTTP and FTP work this way.
+
+114
+00:15:13,762 --> 00:15:20,418
+Peer-to-peer: no always-on server. Peers ask other peers for service, and serve them in return.
+
+115
+00:15:20,868 --> 00:15:31,364
+Our own example: 4 peers, a file of 100 megabytes. Each peer gets 100 over 4, so 25 megabytes, from the source.
+
+116
+00:15:31,814 --> 00:15:41,841
+It gets the other 3 pieces, 3 times 25, so 75 megabytes, from the peers. New peers add capacity: self-scalability.
+
+117
+00:15:42,291 --> 00:15:49,928
+Mistake: peer-to-peer has no server process. Wrong. Each peer runs a client process and a server process.
+
+118
+00:15:50,378 --> 00:15:56,949
+A process is a program running in a host. Processes in different hosts exchange messages.
+
+119
+00:15:57,399 --> 00:16:00,364
+The client process starts the communication.
+
+120
+00:16:00,814 --> 00:16:03,609
+The server process waits to be contacted.
+
+121
+00:16:04,059 --> 00:16:09,947
+A process sends and receives messages through its socket, the door to the transport layer.
+
+122
+00:16:10,397 --> 00:16:18,183
+The host has a unique IP address: 129.97.56.100.
+
+123
+00:16:18,633 --> 00:16:25,396
+The IP address is not enough. Many processes run on one host, for example a mail server.
+
+124
+00:16:25,846 --> 00:16:34,465
+So the identifier is the IP address plus the port number. Web server: port 80. Mail server: port 25.
+
+125
+00:16:34,915 --> 00:16:41,805
+Mistake: the IP address alone identifies a process. Wrong. It identifies the host only.
+
+126
+00:16:42,255 --> 00:16:52,239
+An app needs four things from transport. First, data integrity: file transfer and the web need 100 percent reliable transfer.
+
+127
+00:16:52,689 --> 00:16:55,633
+Audio can lose some data and still work.
+
+128
+00:16:56,083 --> 00:17:02,761
+Second, throughput. Multimedia needs a minimum throughput. Elastic apps use whatever they get.
+
+129
+00:17:03,211 --> 00:17:08,501
+Third, timing. Internet telephony and interactive games need a low delay.
+
+130
+00:17:08,951 --> 00:17:12,599
+Fourth, security: encryption and data integrity.
+
+131
+00:17:13,049 --> 00:17:21,711
+The Internet gives two services. TCP: connection-oriented and reliable. UDP: unreliable datagrams.
+
+132
+00:17:22,161 --> 00:17:27,174
+File transfer and the web need reliable data, so they use TCP.
+
+133
+00:17:27,624 --> 00:17:33,683
+Internet telephony needs a low delay and can lose some data, so it uses UDP.
+
+134
+00:17:34,133 --> 00:17:41,279
+Mistake: file transfer over UDP. A lost part of the file stays lost. Use TCP.
+
+135
+00:17:41,729 --> 00:17:50,775
+A web page is a base HTML file plus referenced objects. 1 base file plus 3 images is 4 objects.
+
+136
+00:17:51,225 --> 00:17:59,417
+Each object has a URL. First comes the host name, www.someschool.edu.
+
+137
+00:17:59,867 --> 00:18:04,368
+Then comes the path name, /someDept/pic.gif.
+
+138
+00:18:04,818 --> 00:18:12,583
+HTTP is the protocol of the web. The browser is the client. The web server sends the objects.
+
+139
+00:18:13,033 --> 00:18:20,884
+HTTP uses TCP. The client opens a TCP connection to server port 80.
+
+140
+00:18:21,334 --> 00:18:27,307
+HTTP is stateless: the server keeps no information about past requests.
+
+141
+00:18:27,757 --> 00:18:35,331
+Mistake: one request for the whole page. Wrong. One request per object: 4 requests, 4 responses.
+
+142
+00:18:35,781 --> 00:18:42,842
+Non-persistent HTTP: open a TCP connection, send at most one object, close it.
+
+143
+00:18:43,292 --> 00:18:48,241
+4 objects from one server need 4 connections, one after the other.
+
+144
+00:18:48,691 --> 00:18:55,262
+Open takes 3 messages, close takes 2. 4 times 5 is 20 control messages.
+
+145
+00:18:55,712 --> 00:19:02,325
+Persistent HTTP: one TCP connection carries many objects, then it closes.
+
+146
+00:19:02,775 --> 00:19:08,407
+That is only 3 plus 2, so 5 control messages, for all 4 objects.
+
+147
+00:19:08,857 --> 00:19:18,521
+Slide example: a base file and 10 jpeg images is 11 objects. Non-persistent: 11 connections. Persistent: 1.
+
+148
+00:19:18,971 --> 00:19:25,158
+Mistake: one connection for objects on two servers. Each server needs its own connection.
+
+149
+00:19:25,608 --> 00:19:31,709
+RTT, the round trip time: a small packet goes from client to server and back.
+
+150
+00:19:32,159 --> 00:19:38,239
+Response time: from the start of the TCP connection until the whole object is in.
+
+151
+00:19:38,689 --> 00:19:42,167
+One RTT opens the TCP connection.
+
+152
+00:19:42,617 --> 00:19:48,163
+One more RTT sends the request and brings back the first bits of the file.
+
+153
+00:19:48,613 --> 00:19:53,776
+Then the file transmission time: the file size over the rate, L over R.
+
+154
+00:19:54,226 --> 00:20:00,583
+So the non-persistent response time is 2 RTT plus the file transmission time.
+
+155
+00:20:01,033 --> 00:20:09,759
+Our own example: RTT 40 ms, a file of 1 megabit, a rate of 100 Mbps.
+
+156
+00:20:10,209 --> 00:20:17,953
+L over R: 10 to the 6, over 10 to the 8, is 0.01 seconds, so 10 ms.
+
+157
+00:20:18,403 --> 00:20:23,288
+Response time: 2 times 40, plus 10, is 90 ms.
+
+158
+00:20:23,738 --> 00:20:31,695
+Mistake: forget the RTT that opens the connection. 40 plus 10 is 50 ms, which is wrong.
+
+159
+00:20:32,145 --> 00:20:40,764
+A page: a base file and N equals 3 objects, on one server. In the drawing, FTT is half an RTT.
+
+160
+00:20:41,214 --> 00:20:48,019
+Non-persistent: the base file needs 2 RTT plus its file transmission time, FTT.
+
+161
+00:20:48,469 --> 00:21:01,099
+Each object repeats this. 4 times, 2 RTT plus FTT, is 8 RTT plus 4 FTT: 8 plus 2, so 10 RTT in the drawing.
+
+162
+00:21:01,549 --> 00:21:06,242
+Persistent: the base file still needs 2 RTT plus FTT.
+
+163
+00:21:06,692 --> 00:21:13,903
+The connection stays open. The 3 requests go out together: one more RTT, then the 3 files.
+
+164
+00:21:14,353 --> 00:21:22,417
+Total: 3 RTT plus 4 FTT. In the drawing, 3 plus 2 is 5 RTT, half of 10.
+
+165
+00:21:22,867 --> 00:21:29,309
+Mistake: parallel connections at the full rate. N connections share the link: R over N each.
+
+166
+00:21:29,759 --> 00:21:36,671
+HTTP has request and response messages. Both are ASCII text that people can read.
+
+167
+00:21:37,121 --> 00:21:42,007
+The request line: the method, the URL, and the HTTP version.
+
+168
+00:21:42,457 --> 00:21:46,489
+Header lines follow. Host gives the host name of the server.
+
+169
+00:21:46,939 --> 00:21:50,523
+Connection: keep-alive asks for a persistent connection.
+
+170
+00:21:50,973 --> 00:21:55,133
+A carriage return and a line feed alone end the header lines.
+
+171
+00:21:55,583 --> 00:22:01,705
+GET asks for an object. Small user data goes in the URL, after a question mark.
+
+172
+00:22:02,155 --> 00:22:06,401
+POST sends user input, such as a form, in the entity body.
+
+173
+00:22:06,851 --> 00:22:09,112
+HEAD asks only for the header lines.
+
+174
+00:22:09,562 --> 00:22:13,530
+PUT uploads a file and replaces the file at that URL.
+
+175
+00:22:13,980 --> 00:22:21,191
+Mistake: looking for the client's IP address in the request. It is not in the HTTP message.
+
+176
+00:22:21,641 --> 00:22:27,017
+The response starts with the status line: the version, the status code, and the phrase.
+
+177
+00:22:27,467 --> 00:22:29,877
+Date: when the server sent the response.
+
+178
+00:22:30,327 --> 00:22:33,826
+Last-Modified: when the object last changed.
+
+179
+00:22:34,276 --> 00:22:41,444
+Content-Length: the size of the data after the empty line, 2651 bytes.
+
+180
+00:22:41,894 --> 00:22:47,057
+200, OK: the request succeeded. The object is in this message.
+
+181
+00:22:47,507 --> 00:22:53,011
+301, Moved Permanently: the new location is in the Location line.
+
+182
+00:22:53,461 --> 00:22:58,303
+400, Bad Request: the server did not understand the request.
+
+183
+00:22:58,753 --> 00:23:03,169
+404, Not Found: the document is not on this server.
+
+184
+00:23:03,619 --> 00:23:08,889
+505: the server does not support this HTTP version.
+
+185
+00:23:09,339 --> 00:23:14,821
+Mistake: Date is the last change of the object. Wrong. That is Last-Modified.
+
+186
+00:23:15,271 --> 00:23:22,525
+People use names, such as ece.uwaterloo.ca. Machines use IP addresses.
+
+187
+00:23:22,975 --> 00:23:32,767
+DNS maps a name to an IP address. It is an application layer protocol. Queries go to UDP port 53.
+
+188
+00:23:33,217 --> 00:23:42,454
+Host aliasing: www.uwaterloo.ca is an alias of the canonical name uwaterloo.ca.
+
+189
+00:23:42,904 --> 00:23:48,728
+Mail server aliasing: the mail of a domain goes to a mail server with another name.
+
+190
+00:23:49,178 --> 00:23:54,042
+Load distribution: one name maps to many replicated web servers.
+
+191
+00:23:54,492 --> 00:24:03,281
+Mistake: DNS is not HTTP. Queries go to UDP port 53, not to TCP port 80.
+
+192
+00:24:03,731 --> 00:24:08,617
+Why not one central DNS server? It is a single point of failure.
+
+193
+00:24:09,067 --> 00:24:16,064
+Traffic volume: the DNS servers of Comcast alone get 600 billion queries a day.
+
+194
+00:24:16,514 --> 00:24:25,154
+That is 600 billion over 86400 seconds: about 6.94 million queries per second.
+
+195
+00:24:25,604 --> 00:24:29,465
+It is also far from most hosts, and hard to maintain.
+
+196
+00:24:29,915 --> 00:24:36,273
+So a central DNS does not scale. DNS is distributed and hierarchical.
+
+197
+00:24:36,723 --> 00:24:43,805
+At the top: 13 logical root servers, A to M. Each one is a cluster of physical servers.
+
+198
+00:24:44,255 --> 00:24:52,575
+Then the top-level domain servers: .com, .org, .edu, and country domains such as .ca.
+
+199
+00:24:53,025 --> 00:24:59,340
+Authoritative servers belong to organizations. They give the final answer for their own hosts.
+
+200
+00:24:59,790 --> 00:25:06,446
+A host sends its query to its local DNS server. It is not strictly in the hierarchy.
+
+201
+00:25:06,896 --> 00:25:15,792
+Example: www.amazon.com. First, a root server gives the address of a .com server.
+
+202
+00:25:16,242 --> 00:25:21,575
+Next, the .com server gives the address of the amazon.com server.
+
+203
+00:25:22,025 --> 00:25:26,228
+Last, the amazon.com server gives the IP address.
+
+204
+00:25:26,678 --> 00:25:34,166
+Mistake: the root knows the final IP address. It does not. It refers you to a TLD server.
+
+205
+00:25:34,616 --> 00:25:47,587
+A host at ece.uwaterloo.ca wants the IP address of gaia.cs.umass.edu. It sends a recursive query to its local server.
+
+206
+00:25:48,037 --> 00:25:57,295
+Iterated query: each server replies with the next server to ask. The root says: ask the .edu TLD server.
+
+207
+00:25:57,745 --> 00:26:03,015
+The local server then asks the TLD server, and then the authoritative server.
+
+208
+00:26:03,465 --> 00:26:10,185
+It returns the IP address to the host: 8 messages, 4 queries and 4 replies.
+
+209
+00:26:10,635 --> 00:26:18,208
+Recursive query: each contacted server asks the next one itself. The burden is on the contacted server.
+
+210
+00:26:18,658 --> 00:26:26,765
+Also 8 messages, but the root handles 4, not 2. Too much load at the top, so it is not done in practice.
+
+211
+00:26:27,215 --> 00:26:33,465
+Mistake: count only the queries. Each query has a reply: 8 messages, not 4.
+
+212
+00:26:33,915 --> 00:26:40,849
+Name servers cache each mapping that they learn. The top line gives our own example RTTs.
+
+213
+00:26:41,299 --> 00:26:49,192
+Empty cache: ask all three. 2 plus 40 plus 30 plus 50 is 122 ms.
+
+214
+00:26:49,642 --> 00:26:56,639
+TLD servers cached: skip the root. 2 plus 30 plus 50 is 82 ms.
+
+215
+00:26:57,089 --> 00:27:06,007
+Each cache entry has a time to live, the TTL: 3600 seconds in the example. Then it is removed.
+
+216
+00:27:06,457 --> 00:27:19,299
+The IP address changes at 1200 seconds. The cache stays stale for 3600 minus 1200, so 2400 seconds.
+
+217
+00:27:19,749 --> 00:27:26,085
+Mistake: a cached answer is always right. It can be out of date. DNS is best-effort.
+
+218
+00:27:26,535 --> 00:27:34,578
+Click a link. The address is not cached, so DNS visits n servers: RTT 1 to RTT n.
+
+219
+00:27:35,028 --> 00:27:43,647
+Then HTTP: one RTT 0 opens TCP, and one RTT 0 brings the small object.
+
+220
+00:27:44,097 --> 00:27:50,326
+Total: RTT 1, and so on up to RTT n, plus 2 RTT 0.
+
+221
+00:27:50,776 --> 00:27:57,219
+Our own example: 10, 30 and 20 ms. DNS takes 60 ms.
+
+222
+00:27:57,669 --> 00:28:07,439
+RTT 0 is 50 ms. 2 times 50 is 100 ms. The total is 160 ms.
+
+223
+00:28:07,889 --> 00:28:18,449
+Mistake: skip the DNS time, or use one RTT 0. DNS comes first, and HTTP needs 2 RTT 0.
+
+224
+00:28:18,899 --> 00:28:24,105
+DNS stores resource records: name, TTL, type and value.
+
+225
+00:28:24,555 --> 00:28:29,397
+Type A: the name is a host name, and the value is its IP address.
+
+226
+00:28:29,847 --> 00:28:36,631
+Type NS: the name is a domain, and the value is the host name of its authoritative server.
+
+227
+00:28:37,081 --> 00:28:42,905
+Type CNAME: the name is an alias, and the value is the canonical, real name.
+
+228
+00:28:43,355 --> 00:28:47,174
+Type MX: the value is the name of the mail server.
+
+229
+00:28:47,624 --> 00:28:54,024
+Queries and replies share one format. The header has 6 fields of 2 bytes: 12 bytes.
+
+230
+00:28:54,474 --> 00:29:02,197
+A new company: the registrar puts an NS record and an A record into the .com TLD server.
+
+231
+00:29:02,647 --> 00:29:10,199
+Mistake: an NS value is an IP address. Wrong. It is a host name. The A record gives the address.
+
+232
+00:29:10,649 --> 00:29:17,859
+This section is the first half of Chapter 3, the transport layer, slides 1 to 50. Here is its map.
+
+233
+00:29:18,309 --> 00:29:23,109
+TCP, from slide 51, comes in video 26 b.
+
+234
+00:29:23,559 --> 00:29:30,109
+The transport layer gives logical communication between application processes on different hosts.
+
+235
+00:29:30,559 --> 00:29:36,319
+Transport protocols run only in the end systems: here, host A and host B.
+
+236
+00:29:36,769 --> 00:29:42,678
+The router has only the network, link and physical layers. It has no transport layer.
+
+237
+00:29:43,128 --> 00:29:48,312
+The sender gets a message from the application. It breaks the message into segments.
+
+238
+00:29:48,762 --> 00:29:56,293
+It puts a transport header, H t, on each segment. Then it passes the segments to the network layer, I P.
+
+239
+00:29:56,743 --> 00:30:02,865
+The receiver puts the segments back into the message, and passes it up to the process through a socket.
+
+240
+00:30:03,315 --> 00:30:12,361
+A common mistake is to think that routers read port numbers. A router has no transport layer, so it does not read the segment header.
+
+241
+00:30:12,811 --> 00:30:20,384
+The Internet has two transport protocols, TCP and UDP. The table compares their services.
+
+242
+00:30:20,834 --> 00:30:30,199
+TCP gives reliable, in-order delivery. UDP is unreliable: segments can be lost or arrive out of order.
+
+243
+00:30:30,649 --> 00:30:36,025
+TCP has congestion control and flow control. UDP has neither.
+
+244
+00:30:36,475 --> 00:30:42,385
+TCP sets up a connection first, with a handshake. UDP is connectionless.
+
+245
+00:30:42,835 --> 00:30:47,379
+Neither protocol gives a delay guarantee or a bandwidth guarantee.
+
+246
+00:30:47,829 --> 00:30:58,965
+TCP carries H T T P and F T P. UDP carries streaming multimedia, D N S, S N M P, and H T T P 3.
+
+247
+00:30:59,415 --> 00:31:06,647
+Files and web pages must not lose data: TCP. Real-time voice and video: UDP.
+
+248
+00:31:07,097 --> 00:31:16,355
+A common mistake is to say that UDP guarantees a small delay. UDP has no setup delay, but it guarantees nothing.
+
+249
+00:31:16,805 --> 00:31:24,507
+Multiplexing: the sender takes data from many sockets. It adds a header with a source port and a destination port.
+
+250
+00:31:24,957 --> 00:31:32,423
+A port number has 16 bits, so it is a number from 0 to 65535.
+
+251
+00:31:32,873 --> 00:31:41,556
+The receiver uses the header to pick the socket. In UDP, two clients send to port 6428.
+
+252
+00:31:42,006 --> 00:31:49,622
+UDP looks only at the destination I P address and port. So both segments go to the same socket.
+
+253
+00:31:50,072 --> 00:31:59,437
+TCP identifies a socket by the 4-tuple: the source I P address and port, and the destination I P address and port.
+
+254
+00:31:59,887 --> 00:32:09,978
+Three segments go to server B, port 80. Each has its own 4-tuple, so each goes to its own socket: P 4, P 5, and P 6.
+
+255
+00:32:10,428 --> 00:32:23,292
+A common mistake is to demultiplex TCP by port only. A and C both use source port 9157. Only the source I P address tells them apart.
+
+256
+00:32:23,742 --> 00:32:29,865
+The UDP header has four fields: source port, destination port, length, and checksum.
+
+257
+00:32:30,315 --> 00:32:36,757
+Each field has 16 bits. 4 times 16 is 64 bits, which is 8 bytes.
+
+258
+00:32:37,207 --> 00:32:41,922
+The length field gives the length of the whole segment in bytes, header included.
+
+259
+00:32:42,372 --> 00:32:51,012
+Example: 120 bytes of data give a length of 8 plus 120, which is 128 bytes.
+
+260
+00:32:51,462 --> 00:33:02,406
+The length field has 16 bits, so its largest value is 2 to the 16, minus 1. That is 65535 bytes.
+
+261
+00:33:02,856 --> 00:33:13,523
+So one segment carries at most 65535 minus 8, which is 65527 data bytes.
+
+262
+00:33:13,973 --> 00:33:17,322
+The checksum field detects flipped bits in the segment.
+
+263
+00:33:17,772 --> 00:33:24,556
+UDP has no setup delay, no connection state, a small header, and no congestion control.
+
+264
+00:33:25,006 --> 00:33:31,513
+A common mistake is to say that the length counts only the data. It counts the 8 header bytes too.
+
+265
+00:33:31,963 --> 00:33:37,445
+The sender treats the segment as a sequence of 16 bit words. Here are two words.
+
+266
+00:33:37,895 --> 00:33:43,741
+First, add the words. The sum has 17 bits: a carry comes out of the top bit.
+
+267
+00:33:44,191 --> 00:33:49,524
+Add the carry back to the lowest bit. This wraparound gives the one's complement sum.
+
+268
+00:33:49,974 --> 00:33:56,203
+Then invert every bit. The result is the checksum, and the sender puts it in the checksum field.
+
+269
+00:33:56,653 --> 00:34:03,459
+The receiver adds the words and the checksum, with the same wraparound. With no error, every bit is 1.
+
+270
+00:34:03,909 --> 00:34:10,863
+If any bit is 0, the receiver detects an error. All ones means only that no error was detected.
+
+271
+00:34:11,313 --> 00:34:16,263
+A common mistake is to drop the carry. Always add it back to the lowest bit.
+
+272
+00:34:16,713 --> 00:34:26,441
+An unreliable channel can corrupt bits, deliver packets out of order, lose them, or duplicate them. The mnemonic is B O L D.
+
+273
+00:34:26,891 --> 00:34:32,245
+Reliable transfer needs feedback from the receiver: the acknowledgement, or ACK.
+
+274
+00:34:32,695 --> 00:34:36,770
+Sequence numbers solve out-of-order and duplicate packets.
+
+275
+00:34:37,220 --> 00:34:43,471
+Timers solve lost packets. If no ACK comes before the timeout, the sender retransmits.
+
+276
+00:34:43,921 --> 00:34:50,662
+Error detection codes, such as the checksum, detect bit errors. The receiver discards that packet.
+
+277
+00:34:51,112 --> 00:34:58,173
+Protocols that retransmit like this are called A R Q protocols: automatic repeat request.
+
+278
+00:34:58,623 --> 00:35:06,986
+A common mistake is to forget the timer. A lost packet causes no reply, so without a timer the sender waits for ever.
+
+279
+00:35:07,436 --> 00:35:14,540
+Stop-and-wait: send one packet, start a timer, and wait for the ACK. Here the sender sends packet 0.
+
+280
+00:35:14,990 --> 00:35:21,710
+Packet 0 arrives, and the receiver sends ack 0. The sender gets it, and sends packet 1.
+
+281
+00:35:22,160 --> 00:35:25,381
+Packet 1 is lost. The receiver sends nothing.
+
+282
+00:35:25,831 --> 00:35:30,375
+The timer expires. The sender resends one packet: packet 1.
+
+283
+00:35:30,825 --> 00:35:35,839
+Packet 1 arrives, and the receiver sends ack 1. But ack 1 is lost.
+
+284
+00:35:36,289 --> 00:35:40,470
+The timer expires again, and the sender resends packet 1.
+
+285
+00:35:40,920 --> 00:35:48,408
+The receiver sees sequence number 1 again: a duplicate. It discards the packet, but it sends ack 1 again.
+
+286
+00:35:48,858 --> 00:35:58,757
+The sequence numbers go 0, 1, 0, 1. One bit is enough, so stop-and-wait is also called the alternating bit protocol.
+
+287
+00:35:59,207 --> 00:36:09,447
+A timeout that comes too early also makes duplicates. A duplicate packet at the receiver, or a duplicate ACK at the sender, is discarded.
+
+288
+00:36:09,897 --> 00:36:19,177
+A common mistake is a silent receiver. The receiver must ACK the duplicate again. If not, the sender times out again and again.
+
+289
+00:36:19,627 --> 00:36:25,877
+U sender, the sender utilization, is the fraction of time that the sender is busy sending.
+
+290
+00:36:26,327 --> 00:36:32,791
+At t equals 0, the sender starts to send the packet. All L bits take L over R.
+
+291
+00:36:33,241 --> 00:36:38,660
+The bits travel to the receiver. When the last bit arrives, the receiver sends the ACK.
+
+292
+00:36:39,110 --> 00:36:48,091
+The ACK arrives one R T T later, at t equals R T T plus L over R. Only then can the sender send again.
+
+293
+00:36:48,541 --> 00:36:54,216
+So U sender is L over R, divided by R T T plus L over R.
+
+294
+00:36:54,666 --> 00:37:07,061
+Slide example: L over R is 8000 bits over 10 to the 9 bits per second. That is 8 microseconds, or 0 point 0 0 8 milliseconds.
+
+295
+00:37:07,511 --> 00:37:13,121
+The R T T is 2 times d prop: 2 times 15 is 30 milliseconds.
+
+296
+00:37:13,571 --> 00:37:22,723
+U sender is 0 point 0 0 8 over 30 point 0 0 8: about 0 point 0 2 7 percent.
+
+297
+00:37:23,173 --> 00:37:30,341
+Drawn to scale, the busy part of one cycle is a thin line. The sender waits almost all the time.
+
+298
+00:37:30,791 --> 00:37:35,911
+Throughput is U times R: about 270 kilobits per second.
+
+299
+00:37:36,361 --> 00:37:44,937
+A common mistake is to use d prop in place of the R T T. The R T T is there and back: 2 times d prop.
+
+300
+00:37:45,387 --> 00:37:52,299
+Pipelining: the sender has several packets in flight that are not yet ACKed. We use our own example.
+
+301
+00:37:52,749 --> 00:38:03,139
+L over R is 1000 bits over 500 thousand bits per second: 0 point 0 0 2 seconds, or 2 milliseconds.
+
+302
+00:38:03,589 --> 00:38:10,394
+One cycle is R T T plus L over R: 14 plus 2 is 16 milliseconds.
+
+303
+00:38:10,844 --> 00:38:18,823
+The bar shows one cycle, from 0 to 16 milliseconds. Each slot is one packet time: 2 milliseconds.
+
+304
+00:38:19,273 --> 00:38:27,806
+Stop-and-wait has a window of 1: one packet per cycle. U is 2 over 16, which is 0 point 1 2 5.
+
+305
+00:38:28,256 --> 00:38:41,269
+With a window W of 4, the sender sends 4 packets per cycle. U is W times L over R, over the cycle: 4 times 2 over 16 is 0 point 5.
+
+306
+00:38:41,719 --> 00:38:50,914
+Throughput is U times R: 0 point 5 times 500 kilobits per second is 250 kilobits per second.
+
+307
+00:38:51,364 --> 00:38:56,783
+A window of 8 fills the whole cycle. U is 1, or 100 percent.
+
+308
+00:38:57,233 --> 00:39:06,449
+This is the ideal window size: R T T plus L over R, divided by L over R. 16 over 2 is 8.
+
+309
+00:39:06,899 --> 00:39:15,496
+A window of 10 gives 20 over 16, which is 1 point 2 5. But U is the minimum with 1, so U is 1.
+
+310
+00:39:15,946 --> 00:39:22,367
+Pipelining needs a larger range of sequence numbers, and buffers at the sender and the receiver.
+
+311
+00:39:22,817 --> 00:39:28,599
+A common mistake is a utilization above 1. Always take the minimum with 1.
+
+312
+00:39:29,049 --> 00:39:34,787
+Go-Back-N and Selective Repeat both allow up to N unACKed packets in the pipeline.
+
+313
+00:39:35,237 --> 00:39:41,573
+Slide example: the sender sends packets 0 to 7, and packets 4 and 6 are lost.
+
+314
+00:39:42,023 --> 00:39:47,015
+The Go-Back-N receiver ACKs each in-order packet: ack 0 to ack 3.
+
+315
+00:39:47,465 --> 00:39:53,439
+Packets 5 and 7 are out of order. Go-Back-N discards them, and sends ack 3 again.
+
+316
+00:39:53,889 --> 00:40:00,118
+These ACKs are cumulative: ack 3 means that all packets up to and including 3 arrived.
+
+317
+00:40:00,568 --> 00:40:07,459
+The Selective Repeat receiver ACKs each correct packet: ack 0, 1, 2, 3, 5, and 7.
+
+318
+00:40:07,909 --> 00:40:12,047
+It buffers packets 5 and 7, for delivery in order later.
+
+319
+00:40:12,497 --> 00:40:19,345
+Go-Back-N has one timer, for the oldest unACKed packet. A timeout resends all unACKed packets.
+
+320
+00:40:19,795 --> 00:40:25,918
+Selective Repeat has one timer per unACKed packet. A timeout resends only that packet.
+
+321
+00:40:26,368 --> 00:40:35,115
+A common mistake is to think that the Go-Back-N receiver keeps packet 5. It discards it, so packet 5 must come again.
+
+322
+00:40:35,565 --> 00:40:43,181
+The Go-Back-N sender keeps a window of up to N consecutive sequence numbers. In our example, N is 4.
+
+323
+00:40:43,631 --> 00:40:48,879
+Green numbers are ACKed. send base points to the oldest unACKed number: 2.
+
+324
+00:40:49,329 --> 00:40:53,553
+Orange numbers 2, 3, and 4 are sent, but not yet ACKed.
+
+325
+00:40:54,003 --> 00:40:58,909
+Blue 5 is in the window, but not yet sent. next seq num points to it.
+
+326
+00:40:59,359 --> 00:41:08,789
+ACK 3 arrives. It is cumulative, so 2 and 3 are both ACKed. The window moves to 4 to 7, and the sender sends 5 and 6.
+
+327
+00:41:09,239 --> 00:41:19,393
+Then the timer of packet 4, the oldest unACKed packet, expires. The sender resends 4 and all higher sent packets: 4, 5, and 6.
+
+328
+00:41:19,843 --> 00:41:29,827
+A k bit sequence number field gives the numbers 0 to 2 to the k, minus 1. For k equal to 5, that is 0 to 31.
+
+329
+00:41:30,277 --> 00:41:37,851
+A common mistake is to resend only the lost packet. Go-Back-N resends every unACKed packet in the window.
+
+330
+00:41:38,301 --> 00:41:48,391
+Selective Repeat, from slide 47. The window size N is 4. The sender sends packets 0 to 3, and packet 2 is lost.
+
+331
+00:41:48,841 --> 00:41:56,031
+Packets 0 and 1 arrive in order. The receiver delivers them, and sends ack 0 and ack 1.
+
+332
+00:41:56,481 --> 00:42:02,369
+Each of these ACKs moves the sender window by one, so the sender sends packets 4 and 5.
+
+333
+00:42:02,819 --> 00:42:09,411
+Packets 3, 4, and 5 arrive after the gap. The receiver buffers them, and ACKs each one.
+
+334
+00:42:09,861 --> 00:42:17,413
+The sender marks 3, 4, and 5 as ACKed. But send base stays at 2, because packet 2 is not ACKed.
+
+335
+00:42:17,863 --> 00:42:25,436
+Each packet has its own timer. The timer of packet 2 expires, and the sender resends only packet 2.
+
+336
+00:42:25,886 --> 00:42:33,075
+Packet 2 fills the gap. The receiver delivers 2, 3, 4, and 5 in order, and sends ack 2.
+
+337
+00:42:33,525 --> 00:42:41,419
+When ack 2 arrives, send base jumps from 2 to 6, the next unACKed number. The window is now 6 to 9.
+
+338
+00:42:41,869 --> 00:42:47,607
+So a window moves only when its base is ACKed at the sender, or received at the receiver.
+
+339
+00:42:48,057 --> 00:42:56,420
+A common mistake is to read Selective Repeat ACKs as cumulative. Ack 5 means only that packet 5 arrived.
+
+340
+00:42:56,870 --> 00:43:06,193
+Sequence numbers repeat. With 2 bits, they are 0, 1, 2, 3, then 0 again. The slide uses a window size of 3.
+
+341
+00:43:06,643 --> 00:43:14,813
+The sender sends packets 0, 1, and 2, and all three arrive. The receiver window moves on to 3, 0, 1.
+
+342
+00:43:15,263 --> 00:43:21,023
+Case a: the three ACKs arrive, so the sender window also moves to 3, 0, 1.
+
+343
+00:43:21,473 --> 00:43:29,836
+The sender sends a new packet 3, which is lost, and a new packet 0. The receiver accepts the new 0. This is correct.
+
+344
+00:43:30,286 --> 00:43:35,875
+Case b: all three ACKs are lost. The sender window stays at 0, 1, 2.
+
+345
+00:43:36,325 --> 00:43:41,915
+The timer of packet 0 expires, and the sender resends the old packet 0.
+
+346
+00:43:42,365 --> 00:43:50,343
+The receiver window is the same as in case a. The old 0 falls in it, so the receiver accepts it as new data.
+
+347
+00:43:50,793 --> 00:43:58,004
+So the data of the first packet 0 is delivered twice. The receiver cannot tell case a from case b.
+
+348
+00:43:58,454 --> 00:44:05,622
+A common mistake is to check only case a. A window of 3 works there, but it fails in case b.
+
+349
+00:44:06,072 --> 00:44:10,189
+The fix on the slide: make the window size 2, half of 4.
+
+350
+00:44:10,639 --> 00:44:17,445
+Again packets 0 and 1 arrive, and both ACKs are lost. The receiver window moves to 2, 3.
+
+351
+00:44:17,895 --> 00:44:28,817
+The sender resends the old packet 0. Now 0 is outside the receiver window, so it is a duplicate. The receiver ACKs it again and discards it.
+
+352
+00:44:29,267 --> 00:44:38,931
+The rule: the window size must be at most half of the sequence number space. In the past midterm, W s is at most K over 2.
+
+353
+00:44:39,381 --> 00:44:48,725
+With a k bit field, the space has 2 to the k numbers. So W is at most 2 to the k, over 2: 2 to the k minus 1.
+
+354
+00:44:49,175 --> 00:44:54,850
+An 8 bit field gives 2 to the 8, which is 256 sequence numbers.
+
+355
+00:44:55,300 --> 00:45:02,404
+2048 is 2 to the 11, so 2048 sequence numbers need 11 bits.
+
+356
+00:45:02,854 --> 00:45:13,222
+4096 sequence numbers allow a Selective Repeat window of at most 4096 over 2, which is 2048.
+
+357
+00:45:13,672 --> 00:45:22,717
+A common mistake is to use k in place of 2 to the k. With 8 bits, W is at most 128, not 4.
+
+358
+00:45:23,167 --> 00:45:30,357
+That is the end of part 1: Chapter 1, Chapter 2, and reliable transfer up to Selective Repeat.
+
+359
+00:45:30,807 --> 00:45:43,009
+Video 26 b has TCP, then the exam questions, the formula sheets, and the common mistakes. TCP congestion control is not on this midterm.
