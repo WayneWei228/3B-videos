@@ -3,633 +3,593 @@
 This is part 2 of the E C E 358 midterm review. Part 1, video 26 a, covered Chapter 1, Chapter 2, and reliable transfer up to Selective Repeat.
 
 2
-00:00:14,338 --> 00:00:29,442
-Part 2 starts with TCP. The instructor says that TCP congestion control is not on this midterm, so it is not here. Then come the exam questions, the formula sheets, and the mistakes to avoid.
+00:00:14,338 --> 00:00:27,650
+Part 2 starts with TCP. The instructor says that TCP congestion control is not on this midterm, so it is not here. Then come the exam questions, and the formula sheets.
 
 3
-00:00:29,892 --> 00:00:45,700
+00:00:28,100 --> 00:00:43,908
 This part is TCP, the second half of Chapter 3. Slide 52: TCP is point-to-point, with one sender and one receiver. It gives a reliable, in-order byte stream in both directions: full duplex.
 
 4
-00:00:46,150 --> 00:00:53,147
+00:00:44,358 --> 00:00:51,355
 TCP uses cumulative ACKs and pipelining. It is connection-oriented, with flow control.
 
 5
-00:00:53,597 --> 00:00:59,784
+00:00:51,805 --> 00:00:57,992
 Slide 53 shows the segment. Each header row is 32 bits, or 4 bytes.
 
 6
-00:01:00,234 --> 00:01:05,759
+00:00:58,442 --> 00:01:03,967
 The first row holds the source and destination port numbers. They select the socket.
 
 7
-00:01:06,209 --> 00:01:10,689
+00:01:04,417 --> 00:01:08,897
 The sequence number is the number of the first data byte in the segment.
 
 8
-00:01:11,139 --> 00:01:17,539
+00:01:09,347 --> 00:01:15,747
 The acknowledgement number is the next byte that the receiver expects. The A bit says that it is valid.
 
 9
-00:01:17,989 --> 00:01:25,371
+00:01:16,197 --> 00:01:23,579
 head len counts rows of 4 bytes. With no options it is 5, and 5 times 4 is 20 bytes.
 
 10
-00:01:25,821 --> 00:01:31,623
+00:01:24,029 --> 00:01:29,831
 The R, S and F bits are reset, SYN and FIN. They open and close connections.
 
 11
-00:01:32,073 --> 00:01:36,191
+00:01:30,281 --> 00:01:34,399
 The receive window field carries rwnd, for flow control.
 
 12
-00:01:36,641 --> 00:01:41,099
-A common mistake: the sequence number counts bytes, not segments.
+00:01:34,849 --> 00:01:40,481
+The key fact: the sequence number counts bytes. Each data byte has its own number.
 
 13
-00:01:41,549 --> 00:01:52,856
-For the midterm, you do not need to memorize the header layout. Know what each field means: SYN, ACK, FIN, the sequence number, the ACK number, and the receive window.
+00:01:40,931 --> 00:01:52,344
+For the midterm, know what each field means: SYN, ACK, FIN, the sequence number, the ACK number, and the receive window. The exact header layout is not required.
 
 14
-00:01:53,306 --> 00:01:57,658
+00:01:52,794 --> 00:01:57,146
 Here a segment has sequence number 92 and 8 data bytes.
 
 15
-00:01:58,108 --> 00:02:05,447
+00:01:57,596 --> 00:02:04,935
 n is the number of data bytes. The last byte is 92 plus 8 minus 1, which is 99.
 
 16
-00:02:05,897 --> 00:02:13,086
+00:02:05,385 --> 00:02:12,574
 The receiver now expects byte 100. So the ACK number is 92 plus 8, which is 100.
 
 17
-00:02:13,536 --> 00:02:21,899
+00:02:13,024 --> 00:02:21,387
 The next segments start at 100 and at 120. Their ACKs are 120 and 135.
 
 18
-00:02:22,349 --> 00:02:29,517
+00:02:21,837 --> 00:02:29,005
 ACK 135 confirms every byte up to 134. This is a cumulative ACK.
 
 19
-00:02:29,967 --> 00:02:39,481
+00:02:29,455 --> 00:02:38,969
 Now suppose that segment 100 is lost. Segment 120 arrives, and bytes 100 to 119 are a gap.
 
 20
-00:02:39,931 --> 00:02:47,185
+00:02:39,419 --> 00:02:46,673
 The receiver still expects byte 100. So it sends ACK 100 again. This is a duplicate ACK.
 
 21
-00:02:47,635 --> 00:02:56,936
-A common mistake is to ACK the last byte received. After bytes 92 to 99, the ACK is 100, not 99.
+00:02:47,123 --> 00:02:54,739
+The key fact: the ACK is the next expected byte. After bytes 92 to 99, the ACK is 100.
 
 22
-00:02:57,386 --> 00:03:07,242
+00:02:55,189 --> 00:03:05,045
 Slide 56. Host A types one character, C, and host B echoes it. A's next byte is 42. B's next byte is 79.
 
 23
-00:03:07,692 --> 00:03:15,308
+00:03:05,495 --> 00:03:13,111
 A sends sequence number 42 with the C. Its ACK, 79, is the next byte that A expects from B.
 
 24
-00:03:15,758 --> 00:03:23,779
+00:03:13,561 --> 00:03:21,582
 B echoes the C with its own sequence number, 79. Its ACK is 42 plus 1, which is 43.
 
 25
-00:03:24,229 --> 00:03:31,248
+00:03:22,032 --> 00:03:29,051
 A acknowledges the echo: sequence number 43, and ACK 79 plus 1, which is 80.
 
 26
-00:03:31,698 --> 00:03:41,575
+00:03:29,501 --> 00:03:39,378
 Each direction has its own sequence numbers. One segment can carry data and an ACK. A reply also swaps the source and destination ports.
 
 27
-00:03:42,025 --> 00:03:49,983
-A common mistake: B's sequence number is 79, its own byte. It is not 43, the ACK that it got.
+00:03:39,828 --> 00:03:49,449
+The key fact: B's sequence number is 79, its own next byte. B's ACK, 43, is the next byte that B expects from A.
 
 28
-00:03:50,433 --> 00:04:03,958
+00:03:49,899 --> 00:04:03,425
 Slide 57, the TCP sender. Event 1: data from the application. TCP makes segments 92 and 100 and starts the timer. Segment 100 is lost.
 
 29
-00:04:04,408 --> 00:04:13,347
+00:04:03,875 --> 00:04:12,813
 TCP has one retransmission timer per connection, for the oldest unACKed segment. It expires after TimeOutInterval.
 
 30
-00:04:13,797 --> 00:04:24,762
+00:04:13,263 --> 00:04:24,229
 Event 2: an ACK for new data. ACK 100 arrives, so SendBase becomes 100. Segment 100 is still unACKed, so the timer starts again.
 
 31
-00:04:25,212 --> 00:04:33,191
+00:04:24,679 --> 00:04:32,657
 Event 3: a timeout. A resends only the segment that caused it, Seq 100, and restarts the timer.
 
 32
-00:04:33,641 --> 00:04:45,033
-A common mistake: TCP has one timer, not one per segment as in Selective Repeat. And it resends one segment, not the window as in Go-Back-N.
+00:04:33,107 --> 00:04:46,313
+Compare with chapter 3a. TCP has one timer, and a timeout resends one segment. Selective Repeat has one timer per segment. Go-Back-N resends all unACKed segments.
 
 33
-00:04:45,483 --> 00:04:55,445
+00:04:46,763 --> 00:04:56,725
 Slide 58, the ACK rules of the receiver. Delayed ACKs give fewer small packets. Immediate ACKs give a fast reaction to lost segments.
 
 34
-00:04:55,895 --> 00:05:06,925
+00:04:57,175 --> 00:05:08,205
 Rule 1: an in-order segment, and all earlier data is ACKed. Delay the ACK up to 500 ms. If no segment comes, send ACK 100.
 
 35
-00:05:07,375 --> 00:05:18,020
+00:05:08,655 --> 00:05:19,300
 Rule 2: an in-order segment while one ACK is pending. Immediately send one cumulative ACK: 100 plus 20, which is 120.
 
 36
-00:05:18,470 --> 00:05:27,665
+00:05:19,750 --> 00:05:28,945
 Rule 3: an out-of-order segment, so there is a gap. Immediately send a duplicate ACK 120, the next expected byte.
 
 37
-00:05:28,115 --> 00:05:38,205
+00:05:29,395 --> 00:05:39,485
 Rule 4: a segment fills the gap at its lower end. Immediately send ACK 135 plus 10, which is 145.
 
 38
-00:05:38,655 --> 00:05:46,079
-A common mistake: only rule 1 waits. And the delay must stay short, or the sender's timer expires.
+00:05:39,935 --> 00:05:50,367
+The key fact: only rule 1 waits. Rules 2, 3 and 4 send the ACK at once. The delay stays short, so the sender's timer does not expire.
 
 39
-00:05:46,529 --> 00:05:54,615
+00:05:50,817 --> 00:05:58,903
 Slides 59 and 60. Case a, lost ACK. A sends Seq 92, and the ACK 100 is lost.
 
 40
-00:05:55,065 --> 00:06:03,662
+00:05:59,353 --> 00:06:07,950
 The timer expires, and A resends Seq 92. B sends ACK 100 again. SendBase becomes 100.
 
 41
-00:06:04,112 --> 00:06:15,355
+00:06:08,400 --> 00:06:19,643
 Case b, premature timeout. A sends Seq 92 and Seq 100. The ACKs are slow, the timer expires, and A resends Seq 92.
 
 42
-00:06:15,805 --> 00:06:27,858
+00:06:20,093 --> 00:06:32,146
 ACK 100 and ACK 120 arrive, so SendBase is 120. The copy of 92 reaches B, and B sends ACK 120 again.
 
 43
-00:06:28,308 --> 00:06:34,815
+00:06:32,596 --> 00:06:39,103
 Case c. A sends Seq 92 and Seq 100. The ACK 100 is lost.
 
 44
-00:06:35,265 --> 00:06:45,761
+00:06:39,553 --> 00:06:50,049
 ACK 120 arrives before the timeout. So SendBase is 120, there is no resend, and A sends Seq 120.
 
 45
-00:06:46,211 --> 00:06:55,299
+00:06:50,499 --> 00:06:59,587
 The rule: a cumulative ACK confirms all earlier bytes. So ACK 120 also covers the lost ACK 100.
 
 46
-00:06:55,749 --> 00:07:04,005
-A common mistake: the resend in case b is not an error. B drops the copy and repeats ACK 120.
+00:07:00,037 --> 00:07:07,013
+In case b, B drops the extra copy of segment 92 and repeats ACK 120.
 
 47
-00:07:04,455 --> 00:07:15,633
+00:07:07,463 --> 00:07:18,641
 Slide 61, fast retransmit. A sign of a loss lets the sender act before the timeout. Here A sends five segments, and segment 100 is lost.
 
 48
-00:07:16,083 --> 00:07:23,593
+00:07:19,091 --> 00:07:26,601
 Segment 92 arrives. B sends ACK 100, the first ACK 100. It is not a duplicate.
 
 49
-00:07:24,043 --> 00:07:35,563
+00:07:27,051 --> 00:07:38,571
 Segments 120, 135 and 145 arrive after the gap. Each one gives ACK 100 again: 3 duplicate ACKs.
 
 50
-00:07:36,013 --> 00:07:44,994
+00:07:39,021 --> 00:07:48,002
 After 3 duplicate ACKs, A resends the unACKed segment with the smallest sequence number, 100. The timer still runs.
 
 51
-00:07:45,444 --> 00:07:57,007
+00:07:48,452 --> 00:08:00,015
 Segment 100 fills the gap. Now B has all bytes before 150, so it sends ACK 145 plus 5, which is 150.
 
 52
-00:07:57,457 --> 00:08:06,033
-A common mistake is to count the first ACK 100 as a duplicate. You need 3 duplicates, so 4 ACKs in total.
+00:08:00,465 --> 00:08:08,187
+Count the ACKs: the first ACK 100, then 3 duplicate ACKs 100. That is 4 ACKs for the same data.
 
 53
-00:08:06,483 --> 00:08:15,869
+00:08:08,637 --> 00:08:18,024
 Slides 63 to 68, flow control. The application can read slowly. Then a fast sender overflows the receive buffer.
 
 54
-00:08:16,319 --> 00:08:22,549
+00:08:18,474 --> 00:08:24,703
 RcvBuffer is the buffer size. The typical default is 4096 bytes.
 
 55
-00:08:22,999 --> 00:08:27,457
+00:08:25,153 --> 00:08:29,612
 Here 1500 bytes are buffered for the application.
 
 56
-00:08:27,907 --> 00:08:37,657
+00:08:30,062 --> 00:08:39,811
 The free space is rwnd: 4096 minus 1500, which is 2596 bytes.
 
 57
-00:08:38,107 --> 00:08:42,651
+00:08:40,261 --> 00:08:44,805
 The receiver puts rwnd in the receive window field of each segment.
 
 58
-00:08:43,101 --> 00:08:50,162
+00:08:45,255 --> 00:08:52,317
 The sender keeps its in-flight, unACKed data at or below rwnd. So the buffer cannot overflow.
 
 59
-00:08:50,612 --> 00:09:01,577
-A common mistake: rwnd is the free space, 2596 bytes. It is not the buffer size, 4096 bytes.
+00:08:52,767 --> 00:09:01,919
+The key fact: rwnd is the free space, 2596 bytes of the 4096-byte buffer.
 
 60
-00:09:02,027 --> 00:09:12,929
+00:09:02,369 --> 00:09:13,270
 Slides 69 to 71, the 3-way handshake. It uses the SYN flag, the initial sequence number ISN, the ACK, and the receive window.
 
 61
-00:09:13,379 --> 00:09:20,419
+00:09:13,720 --> 00:09:20,760
 The client sends a SYN with a random ISN, 8000. Its RWND is not defined yet.
 
 62
-00:09:20,869 --> 00:09:33,669
+00:09:21,210 --> 00:09:34,010
 The server sends SYN plus ACK with its own ISN, 15000. The ACK is 8000 plus 1, which is 8001. RWND 5000 is its buffer.
 
 63
-00:09:34,119 --> 00:09:48,391
+00:09:34,460 --> 00:09:48,732
 The client sends an ACK: Seq 8001, ACK 15000 plus 1, which is 15001, and RWND 10000. The client's data starts at byte 8001.
 
 64
-00:09:48,841 --> 00:09:56,627
+00:09:49,182 --> 00:09:56,969
 The ISN is random, so data from an old connection between the same end points is not accepted in a new one.
 
 65
-00:09:57,077 --> 00:10:05,696
-A common mistake: the SYN uses one sequence number. So the ACK is ISN plus 1, although the SYN has no data.
+00:09:57,419 --> 00:10:05,568
+The key fact: the SYN uses one sequence number. So the ACK is ISN plus 1, although the SYN has no data.
 
 66
-00:10:06,146 --> 00:10:15,149
+00:10:06,018 --> 00:10:15,021
 Slide 72. Each side closes its own direction. The client sends FIN bit 1: it has no more data to send.
 
 67
-00:10:15,599 --> 00:10:19,780
+00:10:15,471 --> 00:10:19,652
 The server ACKs the FIN. It can still send data to the client.
 
 68
-00:10:20,230 --> 00:10:27,931
+00:10:20,102 --> 00:10:27,803
 When the server has no more data, it sends its own FIN. It can also put this FIN in the same segment as the ACK.
 
 69
-00:10:28,381 --> 00:10:35,891
+00:10:28,253 --> 00:10:35,763
 The client ACKs the server's FIN. Both directions are closed. Simultaneous FINs are also handled.
 
 70
-00:10:36,341 --> 00:10:40,437
-A common mistake: one FIN closes only one direction.
+00:10:36,213 --> 00:10:43,253
+The key fact: one FIN closes one direction. A full close has a FIN and an ACK in each direction.
 
 71
-00:10:40,887 --> 00:10:50,935
+00:10:43,703 --> 00:10:53,751
 Now the exam. The instructor gave its structure: five questions, each with many parts. A dot marks the chapters that each question uses.
 
 72
-00:10:51,385 --> 00:10:59,662
+00:10:54,201 --> 00:11:02,478
 Question 1: twenty multiple-choice parts, half a mark each. Some need a calculation. It covers all three chapters.
 
 73
-00:11:00,112 --> 00:11:07,600
+00:11:02,928 --> 00:11:10,416
 Question 2: ten parts, all from the question bank. The full videos 1 to 10 solve the bank questions.
 
 74
-00:11:08,050 --> 00:11:15,709
+00:11:10,866 --> 00:11:18,525
 Question 3: many calculations, mainly from Chapter 1. Videos 1 to 4 and 26 a teach them.
 
 75
-00:11:16,159 --> 00:11:24,329
+00:11:18,975 --> 00:11:27,145
 Question 4: ARQ protocols, with concepts and calculations. Videos 8 and 9, and 26 a.
 
 76
-00:11:24,779 --> 00:11:31,265
+00:11:27,595 --> 00:11:34,081
 Question 5: TCP, without congestion control. Video 10, and 26 b.
 
 77
-00:11:31,715 --> 00:11:44,408
+00:11:34,531 --> 00:11:47,224
 Out of scope: TCP congestion control, and probability. You need not memorize header layouts, but know what each field means, for example SYN, ACK, and the sequence number.
 
 78
-00:11:44,858 --> 00:11:53,391
-Next: one new practice example for each question. Then the lists of metrics and parameters, the common mistakes and a recap.
+00:11:47,674 --> 00:11:54,671
+Next: one new practice example for each question. Then the lists of metrics and parameters, and a recap.
 
 79
-00:11:53,841 --> 00:12:04,380
+00:11:55,121 --> 00:12:05,660
 Practice for questions 1 and 2, short answers. TCP or UDP for four new applications? Give the reason. Pause the video and try it.
 
 80
-00:12:04,830 --> 00:12:10,931
+00:12:06,110 --> 00:12:12,211
 First ask: must every byte arrive? Then use TCP. It ACKs and retransmits.
 
 81
-00:12:11,381 --> 00:12:18,165
+00:12:12,661 --> 00:12:19,445
 If not, ask: does the application need low delay, and can it lose some data? Then use UDP.
 
 82
-00:12:18,615 --> 00:12:27,661
+00:12:19,895 --> 00:12:28,941
 One. A DNS query uses UDP, port 53. It is one short query and one reply, with no connection setup.
 
 83
-00:12:28,111 --> 00:12:34,937
+00:12:29,391 --> 00:12:36,217
 Two. An interactive game needs low delay. A retransmission comes too late. So, UDP.
 
 84
-00:12:35,387 --> 00:12:41,489
+00:12:36,667 --> 00:12:42,769
 Three. A web transaction needs 100 percent reliable data. So, TCP.
 
 85
-00:12:41,939 --> 00:12:47,101
+00:12:43,219 --> 00:12:48,381
 Four. Audio tolerates some loss and needs its rate. So, UDP.
 
 86
-00:12:47,551 --> 00:12:58,047
+00:12:48,831 --> 00:12:59,327
 Answer in three parts: the protocol, the need, and the service that meets it. For ports, HTTP and Go-Back-N, see video 25 b.
 
 87
-00:12:58,497 --> 00:13:11,297
+00:12:59,777 --> 00:13:12,577
 Practice for exam question 3, Chapter 1 calculations. 2 megabits cross 2 links of 1 megabit per second, through a store-and-forward switch. Pause the video and try it.
 
 88
-00:13:11,747 --> 00:13:18,915
+00:13:13,027 --> 00:13:20,195
 Part a. L over R: 2 times 10 to the 6, over 10 to the 6. That is 2 seconds on link 1.
 
 89
-00:13:19,365 --> 00:13:28,027
+00:13:20,645 --> 00:13:29,307
 The switch sends only after the whole message arrives. Link 2 runs from 2 to 4 seconds. The total is 4 seconds.
 
 90
-00:13:28,477 --> 00:13:37,906
+00:13:29,757 --> 00:13:39,186
 Part b. One packet: 10 to the 4 over 10 to the 6, so 10 milliseconds per link. Packet 1 arrives at 20 milliseconds.
 
 91
-00:13:38,356 --> 00:13:50,921
+00:13:39,636 --> 00:13:52,201
 Then both links work in parallel: one packet every 10 milliseconds. The last one arrives at 20 plus 199 times 10, which is 2010 milliseconds.
 
 92
-00:13:51,371 --> 00:14:04,513
+00:13:52,651 --> 00:14:05,793
 The rule: links plus packets minus 1, so 201 times 10. 2.01 seconds is about half of 4. With the 3 links of the handout, it was about one third.
 
 93
-00:14:04,963 --> 00:14:18,339
+00:14:06,243 --> 00:14:19,619
 More practice for exam question 3. A sends 500 kilobytes to B in packets of 1 kilobyte. The links run at 1, 2 and 2 megabits per second. Pause the video and try it.
 
 94
-00:14:18,789 --> 00:14:23,503
+00:14:20,069 --> 00:14:24,783
 One packet: 1000 bytes times 8, so 8000 bits.
 
 95
-00:14:23,953 --> 00:14:29,649
+00:14:25,233 --> 00:14:30,929
 Link 1 needs 8 milliseconds per packet. Links 2 and 3 need 4 milliseconds.
 
 96
-00:14:30,099 --> 00:14:37,054
+00:14:31,379 --> 00:14:38,334
 Packet 1 crosses the links one after the other: 8 plus 4 plus 4, so 16 milliseconds.
 
 97
-00:14:37,504 --> 00:14:45,909
+00:14:38,784 --> 00:14:47,189
 Links 2 and 3 are faster, so they wait for link 1. B gets one packet every 8 milliseconds, and no queue forms.
 
 98
-00:14:46,359 --> 00:14:56,215
+00:14:47,639 --> 00:14:57,495
 There are 500 packets. The last one arrives at 16 plus 499 times 8, which is 4008 milliseconds.
 
 99
-00:14:56,665 --> 00:15:06,585
+00:14:57,945 --> 00:15:07,865
 The throughput: 4 times 10 to the 6 bits over 4.008 seconds, about 998 kilobits per second.
 
 100
-00:15:07,035 --> 00:15:18,001
+00:15:08,315 --> 00:15:19,281
 The bottleneck estimate uses the slowest link, 1 megabit per second. 4 times 10 to the 6 bits take 4 seconds, only 8 milliseconds less.
 
 101
-00:15:18,451 --> 00:15:35,944
+00:15:19,731 --> 00:15:37,224
 Practice for exam question 4, ARQ calculations. Frames go from A through B to C. Link A B uses a window, and link B C uses stop-and-wait. Find the smallest rate of B C that does not flood B. Pause the video and try it.
 
 102
-00:15:36,394 --> 00:15:46,101
+00:15:37,674 --> 00:15:47,381
 Link A B. The propagation delay is 300 kilometers over 2 times 10 to the 8 meters per second: 1.5 milliseconds.
 
 103
-00:15:46,551 --> 00:15:52,588
+00:15:47,831 --> 00:15:53,868
 The transmission delay is 2000 bits over 2 megabits per second: 1 millisecond.
 
 104
-00:15:53,038 --> 00:15:59,566
+00:15:54,318 --> 00:16:00,846
 The ACK of frame 1 is back after 1 plus 2 times 1.5, which is 4 milliseconds.
 
 105
-00:16:00,016 --> 00:16:09,616
+00:16:01,296 --> 00:16:10,896
 In these 4 milliseconds, A sends 3 frames and is busy for 3. The utilization is 3 over 4, which is 0.75.
 
 106
-00:16:10,066 --> 00:16:21,607
+00:16:11,346 --> 00:16:22,887
 So B receives 0.75 times 2 megabits per second. That is 1.5 megabits per second, or 750 frames per second.
 
 107
-00:16:22,057 --> 00:16:33,897
+00:16:23,337 --> 00:16:35,177
 Link B C. Its propagation delay is 0.25 milliseconds. One stop-and-wait cycle is the transmission delay plus 0.5 milliseconds.
 
 108
-00:16:34,347 --> 00:16:43,755
+00:16:35,627 --> 00:16:45,035
 B is not flooded when its output is at least its input. So 1 over T B C must be at least 750 frames per second.
 
 109
-00:16:44,205 --> 00:16:54,680
+00:16:45,485 --> 00:16:55,960
 So one cycle may last 4 thirds of a millisecond. Take away 0.5. The transmission delay is at most 5 sixths of a millisecond.
 
 110
-00:16:55,130 --> 00:17:02,490
+00:16:56,410 --> 00:17:03,770
 So the rate is at least 2000 bits over 5 sixths of a millisecond: 2.4 megabits per second.
 
 111
-00:17:02,940 --> 00:17:14,865
+00:17:04,220 --> 00:17:16,145
 Part b. A window of 5 gives 5 over 4, which is 1.25. The utilization stops at 1, so B receives 1000 frames per second.
 
 112
-00:17:15,315 --> 00:17:26,174
+00:17:16,595 --> 00:17:27,454
 Now a cycle may last 1 millisecond. The transmission delay is at most 0.5 milliseconds. So the rate is at least 4 megabits per second.
 
 113
-00:17:26,624 --> 00:17:44,565
+00:17:27,904 --> 00:17:45,845
 Even a very fast link B C sends at most 1 over 0.5 milliseconds, which is 2000 frames per second. That is more than 1000, so a rate exists. In the handout, the limit was 500, so B was always flooded.
 
 114
-00:17:45,015 --> 00:17:56,343
+00:17:46,295 --> 00:17:57,623
 More practice for exam question 4: Selective Repeat with a 3-bit sequence number field, and two windows of equal size W. Pause the video and try it.
 
 115
-00:17:56,793 --> 00:18:03,065
+00:17:58,073 --> 00:18:04,345
 Part a. 3 bits give 2 to the 3, which is 8 numbers: 0 to 7. So K is 8.
 
 116
-00:18:03,515 --> 00:18:10,491
-Part b. Take W equal to 5. The sender sends 0 to 4, and it may have to resend them.
+00:18:04,795 --> 00:18:13,329
+Part b. The sender may resend the W numbers of its window. Take W equal to 4: the numbers 0 to 3.
 
 117
-00:18:10,941 --> 00:18:17,085
-The receiver gets all five. Its window moves on to 5, 6, 7, 0 and 1.
+00:18:13,779 --> 00:18:19,304
+After it gets them, the receiver accepts the next W numbers: 4 to 7.
 
 118
-00:18:17,535 --> 00:18:23,551
-All five ACKs are lost. After the timeout, the sender resends the old packet 0.
+00:18:19,754 --> 00:18:27,583
+Each number must have one meaning. So no number may be in both groups: W s plus W r is at most K.
 
 119
-00:18:24,001 --> 00:18:30,401
-0 is in the receiver window. So the old copy is accepted as new data: a duplicate.
+00:18:28,033 --> 00:18:39,724
+Part c. 2 W is at most 8, so W is at most 4, half of K. With W equal to 4, 4 plus 4 is 8: no number is in both groups.
 
 120
-00:18:30,851 --> 00:18:41,945
-Part c. No number may be in both groups, so W s plus W r is at most K. 2 W is at most 8, so W is at most 4.
-
-121
-00:18:42,395 --> 00:18:51,589
-Check W equal to 4. The sender may resend 0 to 3, and the receiver accepts 4 to 7. No number is in both.
-
-122
-00:18:52,039 --> 00:19:13,309
+00:18:40,174 --> 00:19:01,443
 Practice for exam question 5, TCP. B has all bytes up to 499. A sends segments of 100, 60 and 200 bytes. Segment 1 has sequence number 500. A uses port 4021, and B uses port 80. Pause the video and try it.
 
-123
-00:19:13,759 --> 00:19:20,713
+121
+00:19:01,893 --> 00:19:08,848
 A sequence number is the first byte. Segment 1 carries bytes 500 to 599.
 
-124
-00:19:21,163 --> 00:19:26,027
+122
+00:19:09,298 --> 00:19:14,162
 Segment 2 starts at 500 plus 100, which is 600.
 
-125
-00:19:26,477 --> 00:19:34,968
+123
+00:19:14,612 --> 00:19:23,103
 Segment 3 starts at 600 plus 60, which is 660. It ends at byte 859.
 
-126
-00:19:35,418 --> 00:19:43,077
+124
+00:19:23,553 --> 00:19:31,211
 Part b. An ACK number is the next byte expected: 600, 660 and 860.
 
-127
-00:19:43,527 --> 00:19:50,439
+125
+00:19:31,661 --> 00:19:38,573
 The ACKs go from B to A, so the ports swap: source 80, destination 4021.
 
-128
-00:19:50,889 --> 00:19:54,238
+126
+00:19:39,023 --> 00:19:42,373
 Part c. Segment 1 arrives: ACK 600.
 
-129
-00:19:54,688 --> 00:19:56,309
+127
+00:19:42,823 --> 00:19:44,444
 Segment 2 is lost.
 
-130
-00:19:56,759 --> 00:20:05,527
+128
+00:19:44,894 --> 00:19:53,662
 Segment 3 arrives out of order. B buffers it and sends a duplicate ACK 600. It still waits for byte 600.
 
-131
-00:20:05,977 --> 00:20:13,657
+129
+00:19:54,112 --> 00:20:01,792
 The timer of segment 2 expires, and A resends it. The gap is filled: a cumulative ACK 860.
 
-132
-00:20:14,107 --> 00:20:19,099
-One duplicate ACK does not start a fast retransmit. That needs 3.
+130
+00:20:02,242 --> 00:20:09,943
+Fast retransmit needs 3 duplicate ACKs. Here B sent only one, so the timeout resends segment 2.
 
-133
-00:20:19,549 --> 00:20:34,141
+131
+00:20:10,393 --> 00:20:24,985
 Now the lists that the instructor asked for. First, every metric and how to compute it. Chapter 1. The nodal delay is the sum of four delays. d trans is L over R, and d prop is d over s.
 
-134
-00:20:34,591 --> 00:20:41,845
+132
+00:20:25,435 --> 00:20:32,689
 The traffic intensity is L a over R. Near 1, the queues get long. Above 1, they grow without limit.
 
-135
-00:20:42,295 --> 00:20:51,596
+133
+00:20:33,139 --> 00:20:42,440
 End to end, store-and-forward: links plus packets minus 1, times L over R. The throughput is the rate of the slowest link.
 
-136
-00:20:52,046 --> 00:20:58,979
+134
+00:20:42,890 --> 00:20:49,823
 Circuit switching: the link rate over the rate of one user. The bit error rate: bit errors over bits sent.
 
-137
-00:20:59,429 --> 00:21:16,645
+135
+00:20:50,273 --> 00:21:07,489
 Chapter 2 and 3 metrics. The RTT is the time for a small packet to go there and back. On one link with short ACKs, it is 2 d prop. Non-persistent HTTP needs 2 RTTs plus F over T x per object.
 
-138
-00:21:17,095 --> 00:21:28,082
+136
+00:21:07,939 --> 00:21:18,926
 With a base file and N objects, non-persistent HTTP repeats this for every file. Persistent HTTP opens the connection once.
 
-139
-00:21:28,532 --> 00:21:33,353
+137
+00:21:19,376 --> 00:21:24,197
 A DNS lookup adds one RTT for each DNS server.
 
-140
-00:21:33,803 --> 00:21:45,153
+138
+00:21:24,647 --> 00:21:35,997
 The utilization of stop-and-wait is L over R, over RTT plus L over R. A window of W multiplies it by W, up to 1.
 
-141
-00:21:45,603 --> 00:21:55,203
+139
+00:21:36,447 --> 00:21:46,047
 The throughput is U times R. Divide by L for frames per second. The average throughput of a file is its size over the total time.
 
-142
-00:21:55,653 --> 00:22:09,221
+140
+00:21:46,497 --> 00:22:00,065
 Now the parameters. The ideal window is RTT plus L over R, over L over R. In Selective Repeat, W is at most K over 2, with K equal to 2 to the k.
 
-143
-00:22:09,671 --> 00:22:21,468
+141
+00:22:00,515 --> 00:22:12,312
 Go-Back-N uses cumulative ACKs and one timer. Selective Repeat ACKs and times each packet. The checksum, the sequence numbers and the timer fix the four errors.
 
-144
-00:22:21,918 --> 00:22:33,907
+142
+00:22:12,762 --> 00:22:24,751
 TCP. The sequence number is the first data byte. The ACK number is the next byte expected. A gap gives a duplicate ACK, and three of them start a fast retransmit.
 
-145
-00:22:34,357 --> 00:22:45,600
+143
+00:22:25,201 --> 00:22:36,444
 Know what each header field means, not the layout. Ports pick the process. SYN and FIN open and close. R wind is the free buffer space, for flow control.
 
-146
-00:22:46,050 --> 00:22:54,711
-Last, the common mistakes. Rates are in bits: 1000 bytes are 8000 bits, so 8 milliseconds, not 1.
-
-147
-00:22:55,161 --> 00:23:01,497
-Store-and-forward links work in parallel: 2010 milliseconds, not 4000.
-
-148
-00:23:01,947 --> 00:23:07,387
-The ACK needs a second propagation delay: 4 milliseconds, not 2.5.
-
-149
-00:23:07,837 --> 00:23:12,232
-The utilization stops at 1: 1.25 becomes 1.
-
-150
-00:23:12,682 --> 00:23:18,783
-K counts numbers, not bits. 3 bits give 8 numbers, so W is at most 4.
-
-151
-00:23:19,233 --> 00:23:26,508
-The ACK number is the next byte expected: 600, not 599. And the ports swap.
-
-152
-00:23:26,958 --> 00:23:31,971
-A missing segment repeats the ACK: 600, not 860.
-
-153
-00:23:32,421 --> 00:23:42,448
-Non-persistent HTTP needs 2 RTTs per object, not 1. Do not forget the RTT that opens TCP.
-
-154
-00:23:42,898 --> 00:23:48,957
+144
+00:22:36,894 --> 00:22:42,953
 Recap. For multiple choice and the question bank, give the protocol, the need and the service.
 
-155
-00:23:49,407 --> 00:23:58,409
+145
+00:22:43,403 --> 00:22:52,405
 For Chapter 1 calculations, draw a row per link. After packet 1, one packet arrives per packet time of the slowest link.
 
-156
-00:23:58,859 --> 00:24:10,123
+146
+00:22:52,855 --> 00:23:04,119
 For ARQ, the input is U times R, with U at most 1. The output must be at least the input. In Selective Repeat, W is at most K over 2.
 
-157
-00:24:10,573 --> 00:24:15,672
+147
+00:23:04,569 --> 00:23:09,668
 For TCP: the first byte, the next byte expected, and the ports swap.
 
-158
-00:24:16,122 --> 00:24:24,037
+148
+00:23:10,118 --> 00:23:18,033
 The instructor's advice: redo every slide example on paper, solve the question bank, and review the tutorials.
 
-159
-00:24:24,487 --> 00:24:31,889
-Use the lists of metrics and parameters, and check the mistakes. That is the end of the midterm video. Good luck.
+149
+00:23:18,483 --> 00:23:24,691
+Use the lists of metrics and parameters. That is the end of the midterm video. Good luck.
