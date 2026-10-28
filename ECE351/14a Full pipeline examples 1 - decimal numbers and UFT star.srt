@@ -43,273 +43,549 @@ d dot also matches. The digit before the dot is enough.
 Many digits on both sides also match.
 
 12
-00:01:35,318 --> 00:01:40,374
+00:01:35,318 --> 00:01:40,417
 A dot alone does not match. The regex needs a digit next to the dot.
 
 13
-00:01:40,824 --> 00:01:46,883
+00:01:40,867 --> 00:01:46,925
 Digits with no dot do not match. Every string in the language has exactly one dot.
 
 14
-00:01:47,333 --> 00:01:53,242
+00:01:47,375 --> 00:01:53,285
 Two dots do not match either. A python check with the regex gave all seven answers.
 
 15
-00:01:53,692 --> 00:02:03,143
+00:01:53,735 --> 00:02:03,185
 Translation is syntax directed. So first draw the parse tree of the regex. Then apply one template per node, from the bottom up.
 
 16
-00:02:03,593 --> 00:02:09,673
+00:02:03,635 --> 00:02:09,715
 The leaves are the letters. Each letter becomes a constant machine: two states and one edge.
 
 17
-00:02:10,123 --> 00:02:17,952
+00:02:10,165 --> 00:02:17,995
 There are two repetition nodes, one for each d star. Each one adds two new states and four epsilon edges.
 
 18
-00:02:18,402 --> 00:02:27,127
+00:02:18,445 --> 00:02:27,170
 There is one alternation node, for dot d or d dot. It adds a new entry and a new exit, with four epsilon edges.
 
 19
-00:02:27,577 --> 00:02:39,993
+00:02:27,620 --> 00:02:40,036
 The concatenation nodes join the exit of one machine to the entry of the next one. The slides allow two forms: merge the two states, or join them with an epsilon edge.
 
 20
-00:02:40,443 --> 00:02:44,859
+00:02:40,486 --> 00:02:44,902
 Here is the N F A from the course notes. It has 14 states.
 
 21
-00:02:45,309 --> 00:02:54,973
+00:02:45,352 --> 00:02:55,016
 The constant machines are in blue. d, then dot d, then d dot, then d. In dot d and d dot, two constants are already joined.
 
 22
-00:02:55,423 --> 00:03:09,290
-The two repetition templates are in purple. States 1 and 4 go around the first d. States 11 and 14 go around the last d. Each has four epsilon edges: in, out, skip, and back.
+00:02:55,466 --> 00:03:03,615
+The first repetition template is in orange. States 1 and 4 go around the first d, with four epsilon edges.
 
 23
-00:03:09,740 --> 00:03:20,961
-The alternation template is in orange. From 4, two epsilon edges go into the two branches. From 7 and 10, two epsilon edges go to 11.
+00:03:04,065 --> 00:03:11,959
+The second repetition template: states 11 and 14 go around the last d, again with four epsilon edges.
 
 24
-00:03:21,411 --> 00:03:38,137
-State 1 is the start, and 14 is the only accepting state. The notes merge states at each concatenation. So state 4 is the exit of the first d star and also the entry of the alternation. Every part matches a template.
+00:03:12,409 --> 00:03:19,065
+Now the alternation template. From state 4, two epsilon edges go into the two branches.
 
 25
-00:03:38,587 --> 00:03:47,525
-Step 2, the subset construction. The start state A is the epsilon closure of the N F A start state. Begin with state 1.
+00:03:19,515 --> 00:03:26,427
+From states 7 and 10, two epsilon edges go to state 11, the exit of the alternation.
 
 26
-00:03:47,975 --> 00:03:51,111
-From 1, the epsilon edges reach 2 and 4.
+00:03:26,877 --> 00:03:28,882
+State 1 is the start state.
 
 27
-00:03:51,561 --> 00:04:01,737
-From 4, the epsilon edges reach 5 and 8. States 2, 5 and 8 have no epsilon edges. So A is 1, 2, 4, 5, 8.
+00:03:29,332 --> 00:03:32,361
+State 14 is the only accepting state.
 
 28
-00:04:02,187 --> 00:04:09,889
-A does not contain 14, so A does not accept. That is correct: the empty string is not a decimal number.
+00:03:32,811 --> 00:03:44,865
+The notes merge states at each concatenation. So state 4 is the exit of the first d star and also the entry of the alternation. Every part matches a template.
 
 29
-00:04:10,339 --> 00:04:12,451
-Now take A and the letter d.
+00:03:45,315 --> 00:03:54,253
+Step 2, the subset construction. The start state A is the epsilon closure of the N F A start state. Begin with state 1.
 
 30
-00:04:12,901 --> 00:04:17,743
-Two states in A have a d edge. 2 goes to 3, and 8 goes to 9.
+00:03:54,703 --> 00:03:57,839
+From 1, the epsilon edges reach 2 and 4.
 
 31
-00:04:18,193 --> 00:04:34,492
-Then close under epsilon edges. From 3 we reach 2 and 4, and from 4 we reach 5 and 8. The set is 2, 3, 4, 5, 8, 9. It is new, so call it B. It has no 14, so B does not accept.
+00:03:58,289 --> 00:04:01,511
+From 4, the epsilon edges reach 5 and 8.
 
 32
-00:04:34,942 --> 00:04:39,422
-Now A and the dot. Only state 5 has a dot edge, to 6.
+00:04:01,961 --> 00:04:07,102
+States 2, 5 and 8 have no epsilon edges. So the closure stops here.
 
 33
-00:04:39,872 --> 00:04:50,688
-State 6 has no epsilon edges, so the set is just 6. Call it C. Take the letter edges first, and then the epsilon closure. Not the other way round.
+00:04:07,552 --> 00:04:10,624
+So A is the set 1, 2, 4, 5, 8.
 
 34
-00:04:51,138 --> 00:04:55,021
-Next, B: the set 2, 3, 4, 5, 8, 9.
+00:04:11,074 --> 00:04:18,775
+A does not contain 14, so A does not accept. That is correct: the empty string is not a decimal number.
 
 35
-00:04:55,471 --> 00:05:08,633
-B on d. Again 2 goes to 3 and 8 goes to 9. The closure is the same set B. So B on d goes back to B: a self loop. This is the loop for the digits before the dot.
+00:04:19,225 --> 00:04:23,961
+Now take A and the letter d. A is the set 1, 2, 4, 5, 8.
 
 36
-00:05:09,083 --> 00:05:14,950
-B on dot. Two states have a dot edge. 5 goes to 6, and 9 goes to 10.
+00:04:24,411 --> 00:04:29,254
+Two states in A have a d edge. 2 goes to 3, and 8 goes to 9.
 
 37
-00:05:15,400 --> 00:05:30,355
-Close: from 10 we reach 11, then 12 and 14. The set is 6, 10, 11, 12, 14. Call it D. It contains 14, so D accepts. For example, the string d dot ends in D.
+00:04:29,704 --> 00:04:34,056
+Then follow the epsilon edges. From 3 we reach 2 and 4.
 
 38
-00:05:30,805 --> 00:05:42,431
-C is the set with only state 6. On dot, state 6 has no edge. The result is the empty set. Call it X, the error state. On d, 6 goes to 7.
+00:04:34,506 --> 00:04:36,639
+From 4 we reach 5 and 8.
 
 39
-00:05:42,881 --> 00:05:54,017
-Close: 7 reaches 11, then 12 and 14. The set is 7, 11, 12, 14. Call it E. It accepts. The string dot d ends here.
+00:04:37,089 --> 00:04:42,039
+The set is 2, 3, 4, 5, 8, 9. It is new, so call it B.
 
 40
-00:05:54,467 --> 00:06:06,755
-D is the set 6, 10, 11, 12, 14. On dot, no state in D has a dot edge, so D goes to X. After the decimal point, a second dot is an error.
+00:04:42,489 --> 00:04:46,243
+B does not contain 14, so B does not accept.
 
 41
-00:06:07,205 --> 00:06:24,037
-D on d. 6 goes to 7, and 12 goes to 13. Close: 7 reaches 11, 12 and 14. 13 reaches 12 and 14. The set is 7, 11, 12, 13, 14. Call it F. It accepts.
+00:04:46,693 --> 00:04:52,133
+Take the letter edges first, and then the epsilon closure. Not the other way round.
 
 42
-00:06:24,487 --> 00:06:38,461
-E is 7, 11, 12, 14. On d, only 12 moves, to 13. Close: 13 reaches 12 and 14. The set is 12, 13, 14. Call it G. It accepts.
+00:04:52,583 --> 00:04:54,354
+Now take A and the dot.
 
 43
-00:06:38,911 --> 00:06:47,508
-F on d. Again only 12 moves, to 13. The result is G again. State 13 in F has no d edge.
+00:04:54,804 --> 00:04:58,580
+Only state 5 has a dot edge. It goes to 6.
 
 44
-00:06:47,958 --> 00:06:57,942
-G on d. 12 goes to 13, and the closure is G. So G has a self loop on d. This is the loop for the digits after the dot.
+00:04:59,030 --> 00:05:05,515
+State 6 has no epsilon edges. So the set is just 6. It is new, so call it C.
 
 45
-00:06:58,392 --> 00:07:08,461
-On dot, E, F and G all go to X, and X goes to X on every letter. No new sets appear. The D F A has 8 states, with X.
+00:05:05,965 --> 00:05:09,677
+C does not contain 14, so C does not accept.
 
 46
-00:07:08,911 --> 00:07:14,863
-Here is the full table. Eight sets. Each row says where the letter d and the dot go.
+00:05:10,127 --> 00:05:14,010
+Next, B: the set 2, 3, 4, 5, 8, 9.
 
 47
-00:07:15,313 --> 00:07:22,140
-Check 2. Every row has one entry for d and one for dot. So the result is a D F A.
+00:05:14,460 --> 00:05:18,727
+B on d. Again 2 goes to 3, and 8 goes to 9.
 
 48
-00:07:22,590 --> 00:07:28,563
-D, E, F and G accept, because each one contains N F A state 14.
+00:05:19,177 --> 00:05:24,147
+Close as before. 3 reaches 2 and 4, and 4 reaches 5 and 8.
 
 49
-00:07:29,013 --> 00:07:39,019
-X is the empty set, the error state. The notes draw this D F A without X. We keep X, because minimization needs a total D F A.
+00:05:24,597 --> 00:05:31,509
+The result is B again. So B on d is a self loop. This loop reads the digits before the dot.
 
 50
-00:07:39,469 --> 00:07:50,967
-Here is the D F A. B loops on the digits before the dot. G loops on the digits after it. Every red dot arrow goes into X, the error state in the middle.
+00:05:31,959 --> 00:05:37,826
+B on dot. Two states have a dot edge. 5 goes to 6, and 9 goes to 10.
 
 51
-00:07:51,417 --> 00:07:55,833
-Run d d dot d. A, B, B, D, F. F accepts.
+00:05:38,276 --> 00:05:40,111
+Close: 10 reaches 11.
 
 52
-00:07:56,283 --> 00:08:02,257
-Run two dots. A, C, then X. X never leaves X, so the string is rejected.
+00:05:40,561 --> 00:05:42,801
+11 reaches 12 and 14.
 
 53
-00:08:02,707 --> 00:08:19,709
-Step 3, minimization. The D F A is total, because it has X. It is trim, because the subset construction builds only reachable sets. Begin with three bubbles. D E F G accept. A B C do not. X is the error state.
+00:05:43,251 --> 00:05:48,328
+The set is 6, 10, 11, 12, 14. It is new, so call it D.
 
 54
-00:08:20,159 --> 00:08:32,426
-Now write a row for each state. For each letter, write the bubble of the target state, not the state itself. For example, A on d goes to B, and B is in bubble A B C.
+00:05:48,778 --> 00:05:54,986
+D contains 14, so D accepts. For example, the string d dot ends in D.
 
 55
-00:08:32,876 --> 00:08:49,943
-Look inside each bubble. A, B and C have different rows. On d, C goes to D E F G, but A and B stay in A B C. On dot, B goes to D E F G, but A goes to A B C. These are ambiguous transitions.
+00:05:55,436 --> 00:05:57,655
+C is the set with only state 6.
 
 56
-00:08:50,393 --> 00:09:02,937
-So A B C splits into A, B and C. Inside D E F G, every row is the same: d goes to D E F G, and dot goes to X. So it stays together.
+00:05:58,105 --> 00:06:05,294
+C on dot. State 6 has no dot edge. The result is the empty set. Call it X, the error state.
 
 57
-00:09:03,387 --> 00:09:06,821
-Round 2. Write the rows again with the new bubbles.
+00:06:05,744 --> 00:06:08,709
+C on d. State 6 goes to 7.
 
 58
-00:09:07,271 --> 00:09:17,746
-D, E, F and G all go to D E F G on d, and to X on dot. The other bubbles have one state each. Nothing splits, so we stop.
+00:06:09,159 --> 00:06:11,186
+Close: 7 reaches 11.
 
 59
-00:09:18,196 --> 00:09:30,591
-The course notes do the same work one ambiguous transition at a time. First they split C away on d. Then they split A from B on dot. The order does not change the answer.
+00:06:11,636 --> 00:06:13,876
+11 reaches 12 and 14.
 
 60
-00:09:31,041 --> 00:09:35,734
-The 8 states became 5. Without the error state, that is 4 states.
+00:06:14,326 --> 00:06:19,062
+The set is 7, 11, 12, 14. It is new, so call it E.
 
 61
-00:09:36,184 --> 00:09:50,093
-Here is the minimal D F A. A is the start. B reads the digits before the dot. C means: a dot with no digit yet. D E F G accepts and reads the digits after the dot.
+00:06:19,512 --> 00:06:24,803
+E contains 14, so E accepts. The string dot d ends in E.
 
 62
-00:09:50,543 --> 00:10:00,399
-Test 1. d dot d goes A, B, D E F G, D E F G. It ends in an accepting state. The regex also matches.
+00:06:25,253 --> 00:06:29,135
+D is the set 6, 10, 11, 12, 14.
 
 63
-00:10:00,849 --> 00:10:06,631
-Test 2. dot d goes A, C, D E F G. Accept. The regex matches.
+00:06:29,585 --> 00:06:38,481
+D on dot. No state in D has a dot edge. So D goes to X. After the decimal point, a second dot is an error.
 
 64
-00:10:07,081 --> 00:10:12,798
-Test 3. Two dots go A, C, X. Reject. The regex does not match.
+00:06:38,931 --> 00:06:43,283
+D on d. 6 goes to 7, and 12 goes to 13.
 
 65
-00:10:13,248 --> 00:10:20,181
-Test 4. d dot d dot reaches D E F G, then X on the second dot. Reject.
+00:06:43,733 --> 00:06:45,760
+Close: 7 reaches 11.
 
 66
-00:10:20,631 --> 00:10:30,189
-A python check ran the N F A, the D F A, the minimal D F A and the regex on every string up to length 8. They all agree.
+00:06:46,210 --> 00:06:48,471
+13 reaches 12 and 14.
 
 67
-00:10:30,639 --> 00:10:55,535
-The second example is from a past midterm. The W language is extended to three values: U for unknown, F and T. The regex is U or F or T, star. Here is the N F A from the notes. It uses a three-way alternation inside the repetition. The long dashed edges are epsilon edges: 8 back to 1, and 1 forward to 8.
+00:06:48,921 --> 00:06:54,383
+The set is 7, 11, 12, 13, 14. It is new, so call it F.
 
 68
-00:10:55,985 --> 00:11:06,843
-Pause the video and try it. Then continue. The start state A is the closure of 1: 1, 2, 3, 4, 8. It contains 8, so A accepts.
+00:06:54,833 --> 00:06:57,734
+F contains 14, so F accepts.
 
 69
-00:11:07,293 --> 00:11:19,197
-A on U. Only 2 moves, to 5. Close: 5 reaches 8, 8 reaches 1, and 1 reaches 2, 3, 4. So B is 1, 2, 3, 4, 5, 8.
+00:06:58,184 --> 00:07:01,448
+E is the set 7, 11, 12, 14.
 
 70
-00:11:19,647 --> 00:11:33,258
-F and T work the same way, through 6 and through 7. They give C and D. From every state, U goes to B, F to C, and T to D. Every set contains 8, so all four states accept.
+00:07:01,898 --> 00:07:06,805
+E on d. Only state 12 has a d edge. It goes to 13.
 
 71
-00:11:33,708 --> 00:11:39,212
-Now minimize. All four states accept. So the first bubble holds all of them.
+00:07:07,255 --> 00:07:09,943
+Close: 13 reaches 12 and 14.
 
 72
-00:11:39,662 --> 00:11:48,473
-Is the D F A total? Yes. Every state has an arrow on U, F and T. So there is no error state, and no third bubble.
+00:07:10,393 --> 00:07:14,787
+The set is 12, 13, 14. It is new, so call it G.
 
 73
-00:11:48,923 --> 00:11:55,621
-Every arrow goes into the same bubble. Nothing can split. So the minimal D F A has one state.
+00:07:15,237 --> 00:07:18,160
+G contains 14, so G accepts.
 
 74
-00:11:56,071 --> 00:12:11,282
-That one state accepts and loops on U, F and T. This is the posted solution. It accepts every string over the three letters, and the empty string too. A python check agrees with the regex up to length 6.
+00:07:18,610 --> 00:07:23,325
+E on dot. No state in E has a dot edge, so E goes to X.
 
 75
-00:12:11,732 --> 00:12:17,172
-To summarize. Step 1: draw the parse tree, and apply one template per node.
+00:07:23,775 --> 00:07:27,871
+F is the set 7, 11, 12, 13, 14.
 
 76
-00:12:17,622 --> 00:12:29,462
-Step 2: the start state is the epsilon closure of the N F A start. For each set and letter, take the letter edges, then the closure. The empty set is the error state.
+00:07:28,321 --> 00:07:35,233
+F on d. Again only 12 has a d edge, to 13. State 13 has no d edge.
 
 77
-00:12:29,912 --> 00:12:42,925
-Step 3: start with bubbles for the accepting states, the other states, and the error state. Write the target bubble for each letter, and split a bubble when its rows differ. Repeat until nothing splits.
+00:07:35,683 --> 00:07:40,440
+Close: 13 reaches 12 and 14. The result is G again.
 
 78
-00:12:43,375 --> 00:12:47,386
-At the end, test strings on every machine and on the regex.
+00:07:40,890 --> 00:07:51,023
+G on d. 12 goes to 13 again, and the closure is G again. So G has a self loop. This loop reads the digits after the dot.
 
 79
-00:12:47,836 --> 00:13:00,636
+00:07:51,473 --> 00:07:56,273
+On dot, F and G go to X. No state in them has a dot edge.
+
+80
+00:07:56,723 --> 00:08:01,075
+X is the empty set. On every letter, X goes back to X.
+
+81
+00:08:01,525 --> 00:08:07,392
+No new sets appear, so the construction stops. The D F A has 8 states, with X.
+
+82
+00:08:07,842 --> 00:08:11,810
+Here is the full table. It has eight rows, one for each set.
+
+83
+00:08:12,260 --> 00:08:19,556
+Check 2. Every row has one entry for d and one entry for dot. So the result is a D F A.
+
+84
+00:08:20,006 --> 00:08:25,979
+D, E, F and G accept, because each one contains N F A state 14.
+
+85
+00:08:26,429 --> 00:08:28,989
+X is the empty set, the error state.
+
+86
+00:08:29,439 --> 00:08:36,501
+The notes draw this D F A without X. We keep X, because minimization needs a total D F A.
+
+87
+00:08:36,951 --> 00:08:41,431
+Here is the D F A, drawn from the table. A is the start state.
+
+88
+00:08:41,881 --> 00:08:46,019
+B loops on d. This loop reads the digits before the dot.
+
+89
+00:08:46,469 --> 00:08:50,736
+G loops on d. This loop reads the digits after the dot.
+
+90
+00:08:51,186 --> 00:08:55,495
+Every red dot arrow goes into X, the error state in the middle.
+
+91
+00:08:55,945 --> 00:09:00,361
+Run d d dot d. A, B, B, D, F. F accepts.
+
+92
+00:09:00,811 --> 00:09:06,785
+Run two dots. A, C, then X. X never leaves X, so the string is rejected.
+
+93
+00:09:07,235 --> 00:09:17,219
+Step 3, minimization. Here is the D F A as a table. It must be total and trim. It is total, because X catches every missing arrow.
+
+94
+00:09:17,669 --> 00:09:22,767
+It is trim, because the subset construction builds only the sets that A reaches.
+
+95
+00:09:23,217 --> 00:09:29,724
+Begin with three bubbles. The first bubble holds the accepting states: D, E, F and G.
+
+96
+00:09:30,174 --> 00:09:33,886
+The second bubble holds the other states: A, B and C.
+
+97
+00:09:34,336 --> 00:09:37,216
+The third bubble holds X, the error state.
+
+98
+00:09:37,666 --> 00:09:44,066
+Now write a row for each state. For each letter, write the target state and the bubble of the target.
+
+99
+00:09:44,516 --> 00:09:49,103
+For example, A on d goes to B, and B is in bubble A B C.
+
+100
+00:09:49,553 --> 00:09:56,401
+Look inside each bubble. In bubble A B C, the rows differ. The orange cells differ from row A.
+
+101
+00:09:56,851 --> 00:10:01,757
+On d, A and B go to bubble A B C, but C goes to D E F G.
+
+102
+00:10:02,207 --> 00:10:10,719
+On dot, A goes to A B C, B goes to D E F G, and C goes to X. These are ambiguous transitions.
+
+103
+00:10:11,169 --> 00:10:14,433
+So bubble A B C splits into A, B and C.
+
+104
+00:10:14,883 --> 00:10:25,059
+Inside D E F G, every row is the same: d goes to D E F G, and dot goes to X. So D E F G stays together.
+
+105
+00:10:25,509 --> 00:10:28,944
+Round 2. Write the rows again with the new bubbles.
+
+106
+00:10:29,394 --> 00:10:34,813
+D, E, F and G all go to D E F G on d, and to X on dot.
+
+107
+00:10:35,263 --> 00:10:39,999
+The other bubbles have one state each. A bubble with one state cannot split.
+
+108
+00:10:40,449 --> 00:10:43,542
+No transition is ambiguous, so we stop.
+
+109
+00:10:43,992 --> 00:10:51,587
+The course notes do the same work one ambiguous transition at a time. First they split C away, on d.
+
+110
+00:10:52,037 --> 00:10:56,709
+Then they split A from B, on dot. The order does not change the answer.
+
+111
+00:10:57,159 --> 00:11:01,852
+The 8 states became 5. Without the error state, that is 4 states.
+
+112
+00:11:02,302 --> 00:11:06,057
+Here is the minimal D F A. A is the start state.
+
+113
+00:11:06,507 --> 00:11:08,917
+B reads the digits before the dot.
+
+114
+00:11:09,367 --> 00:11:12,034
+C means: a dot with no digit yet.
+
+115
+00:11:12,484 --> 00:11:16,815
+D E F G accepts. It reads the digits after the dot.
+
+116
+00:11:17,265 --> 00:11:27,121
+Test 1. d dot d goes A, B, D E F G, D E F G. It ends in an accepting state. The regex also matches.
+
+117
+00:11:27,571 --> 00:11:33,352
+Test 2. dot d goes A, C, D E F G. Accept. The regex matches.
+
+118
+00:11:33,802 --> 00:11:39,519
+Test 3. Two dots go A, C, X. Reject. The regex does not match.
+
+119
+00:11:39,969 --> 00:11:48,225
+Test 4. d dot d dot goes A, B, D E F G, D E F G, then X on the second dot. Reject.
+
+120
+00:11:48,675 --> 00:11:58,233
+A python check ran the N F A, the D F A, the minimal D F A and the regex on every string up to length 8. They all agree.
+
+121
+00:11:58,683 --> 00:12:07,579
+The second example is from a past midterm. The W language is extended to three values: U for unknown, F and T.
+
+122
+00:12:08,029 --> 00:12:10,653
+The regex is U or F or T, star.
+
+123
+00:12:11,103 --> 00:12:18,185
+Here is the N F A from the course notes. In the middle, a three-way alternation reads U, F or T.
+
+124
+00:12:18,635 --> 00:12:25,355
+Around it is the repetition template. The long dashed epsilon edge from 8 back to 1 repeats.
+
+125
+00:12:25,805 --> 00:12:31,309
+The long dashed epsilon edge from 1 to 8 skips. Then the string can be empty.
+
+126
+00:12:31,759 --> 00:12:37,733
+Pause the video and try it. Build the D F A with the subset construction. Then continue.
+
+127
+00:12:38,183 --> 00:12:44,305
+Here is the subset construction. The start state A is the epsilon closure of state 1.
+
+128
+00:12:44,755 --> 00:12:48,809
+From 1, the epsilon edges reach 2, 3, 4 and 8.
+
+129
+00:12:49,259 --> 00:12:57,536
+From 8, the long epsilon edge goes back to 1, but 1 is already in the set. So A is 1, 2, 3, 4, 8.
+
+130
+00:12:57,986 --> 00:13:00,205
+A contains 8, so A accepts.
+
+131
+00:13:00,655 --> 00:13:05,113
+A on U. Only state 2 has a U edge. It goes to 5.
+
+132
+00:13:05,563 --> 00:13:07,291
+Close: 5 reaches 8.
+
+133
+00:13:07,741 --> 00:13:09,192
+8 reaches 1.
+
+134
+00:13:09,642 --> 00:13:16,618
+1 reaches 2, 3 and 4. So B is 1, 2, 3, 4, 5, 8. A on U goes to B.
+
+135
+00:13:17,068 --> 00:13:22,188
+F and T work the same way, through 6 and through 7. They give C and D.
+
+136
+00:13:22,638 --> 00:13:30,425
+Each set contains 2, 3 and 4. So from every state, U goes to B, F goes to C, and T goes to D.
+
+137
+00:13:30,875 --> 00:13:34,608
+Every set contains 8, so all four states accept.
+
+138
+00:13:35,058 --> 00:13:40,562
+Now minimize. All four states accept. So the first bubble holds all of them.
+
+139
+00:13:41,012 --> 00:13:49,673
+The D F A is total: every state has an arrow on U, on F and on T. So there is no error state, and no third bubble.
+
+140
+00:13:50,123 --> 00:13:57,377
+Each cell shows the bubble of the target. Every target is in bubble A B C D. So nothing can split.
+
+141
+00:13:57,827 --> 00:14:01,603
+So the minimal D F A has one state, A B C D.
+
+142
+00:14:02,053 --> 00:14:12,911
+That one state accepts and loops on U, F and T. It accepts every string over the three letters, and the empty string too. This is the posted solution.
+
+143
+00:14:13,361 --> 00:14:17,073
+A python check agrees with the regex up to length 6.
+
+144
+00:14:17,523 --> 00:14:22,963
+To summarize. Step 1: draw the parse tree, and apply one template per node.
+
+145
+00:14:23,413 --> 00:14:35,253
+Step 2: the start state is the epsilon closure of the N F A start. For each set and letter, take the letter edges, then the closure. The empty set is the error state.
+
+146
+00:14:35,703 --> 00:14:48,717
+Step 3: start with bubbles for the accepting states, the other states, and the error state. Write the target bubble for each letter, and split a bubble when its rows differ. Repeat until nothing splits.
+
+147
+00:14:49,167 --> 00:14:53,177
+At the end, test strings on every machine and on the regex.
+
+148
+00:14:53,627 --> 00:15:06,427
 The decimal numbers went from 14 to 8 to 5 states. U or F or T, star, went from 8 to 4 to 1. The next video does two more examples, with larger alphabets.

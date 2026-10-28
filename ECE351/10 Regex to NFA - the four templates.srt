@@ -7,389 +7,757 @@ This video shows how to translate a regular expression into an N F A. We use fou
 First we learn the templates. Then we build the N F A for a or a b star, step by step, as the slides do. At the end we solve three questions from the question bank.
 
 3
-00:00:22,041 --> 00:00:30,340
-We want a program that recognizes the strings of a regular expression. The plan is a small compiler with three steps.
+00:00:22,041 --> 00:00:32,985
+We want a program that recognizes the strings of a regular expression. The plan is a small compiler. It goes from a regex to a minimal D F A.
 
 4
-00:00:30,790 --> 00:00:41,201
+00:00:33,435 --> 00:00:43,846
 Step 1 translates the regex into an N F A. It uses one template for each construct of the regex. This is the topic of this video.
 
 5
-00:00:41,651 --> 00:00:50,781
-Step 2 converts the N F A into a D F A, with the subset construction. Step 3 makes the D F A as small as possible.
+00:00:44,296 --> 00:00:49,651
+Step 2 converts the N F A into a D F A, with the subset construction.
 
 6
-00:00:51,231 --> 00:01:01,706
-Each layer is easy to prove correct. Together they are a reference implementation. It is not the fastest method, but it is fast enough most of the time.
+00:00:50,101 --> 00:00:53,279
+Step 3 makes the D F A as small as possible.
 
 7
-00:01:02,156 --> 00:01:22,081
-The method is syntax-directed translation. The grammar of the input language guides the translation. Almost every translation in this course is of this kind. Step 0: define a translation for each grammar production. This translation does not depend on a particular input.
+00:00:53,729 --> 00:01:04,204
+Each layer is easy to prove correct. Together they are a reference implementation. It is not the fastest method, but it is fast enough most of the time.
 
 8
-00:01:22,531 --> 00:01:30,041
-Step 1: parse the input. Here the input is the regex a or a b star. The result is a parse tree.
+00:01:04,654 --> 00:01:24,579
+The method is syntax-directed translation. The grammar of the input language guides the translation. Almost every translation in this course is of this kind. Step 0: define a translation for each grammar production. This translation does not depend on a particular input.
 
 9
-00:01:30,491 --> 00:01:44,293
-Step 2: apply the translations to the parse tree. Start at the bottom and work up. Each node gets a machine, built from the machines of its children. The numbers show how many states each machine has.
+00:01:25,029 --> 00:01:32,624
+Step 1: parse the input. Here the input is the regex a or a b star. The result is this parse tree.
 
 10
-00:01:44,743 --> 00:01:51,207
-Step 3: the result is the translation of the root. Here it is an N F A with 10 states.
+00:01:33,074 --> 00:01:47,367
+Step 2: apply the translations to the parse tree. Start at the bottom and work up. Each node gets a machine, built from the machines of its children. Each constant at the bottom gets a machine with 2 states.
 
 11
-00:01:51,657 --> 00:02:07,401
-Regular expressions have four constructs, plus the empty string. A constant is one thing. Concatenation is one thing after another. Alternation is one thing or another. Repetition is one thing, zero or more times.
+00:01:47,817 --> 00:01:53,428
+The star node adds 2 new states around its child. 2 plus 2 is 4 states.
 
 12
-00:02:07,851 --> 00:02:12,950
-The question mark and the plus are syntactic sugar. They are not new constructs.
+00:01:53,878 --> 00:02:00,854
+The concatenation node joins its two children. It adds no states. 2 plus 4 is 6 states.
 
 13
-00:02:13,400 --> 00:02:27,011
-x question mark is x or epsilon. x plus is x x star. Rewrite them before you build the machine. In x x star, x appears two times. Each copy gets its own states.
+00:02:01,304 --> 00:02:07,619
+The alternation node at the root adds 2 new states. 2 plus 6 plus 2 is 10 states.
 
 14
-00:02:27,461 --> 00:02:37,125
-We need one translation per construct. The translations produce N F As, because we use epsilon edges as glue between the parts.
+00:02:08,069 --> 00:02:14,533
+Step 3: the result is the translation of the root. Here it is an N F A with 10 states.
 
 15
-00:02:37,575 --> 00:02:49,073
-Template 1 is for a constant. It is just an edge between two states, labelled with the constant. State 1 is the entry. State 2 is the exit, and it accepts.
+00:02:14,983 --> 00:02:21,063
+Regular expressions have four constructs, plus the empty string. The empty string is nothing.
 
 16
-00:02:49,523 --> 00:02:56,798
-The empty string uses the same shape. The edge is an epsilon edge. The course notes draw it this way.
+00:02:21,513 --> 00:02:23,390
+A constant is one thing.
 
 17
-00:02:57,248 --> 00:03:15,637
-This is the invariant. Every machine that the templates build has exactly one entry state and one exit state. The exit is the accepting state. Because of this, we can plug any machine into any template as one unit. We draw such a machine as a box M.
+00:02:23,840 --> 00:02:26,763
+Concatenation is one thing after another.
 
 18
-00:03:16,087 --> 00:03:26,050
-Template 2 is concatenation, x y. Mx is the machine for x, and My is the machine for y. Either one may be more than a constant.
+00:02:27,213 --> 00:02:29,687
+Alternation is one thing or another.
 
 19
-00:03:26,500 --> 00:03:42,543
-Join the two machines end to end. An epsilon edge goes from the exit of Mx to the entry of My. The entry of the new machine is the entry of Mx. The exit is the exit of My. State 2 no longer accepts.
+00:02:30,137 --> 00:02:33,529
+Repetition is one thing, zero or more times.
 
 20
-00:03:42,993 --> 00:03:55,259
-Here it is for two constants, x then y. State 2 goes to state 3 on epsilon. This video uses the epsilon edge, as the slides do in the worked example.
+00:02:33,979 --> 00:02:39,078
+The question mark and the plus are syntactic sugar. They are not new constructs.
 
 21
-00:03:55,709 --> 00:04:08,189
-You can also merge the two states. The exit of Mx becomes the entry of My. The slides say this is the same thing. Both machines accept exactly the string x y.
+00:02:39,528 --> 00:02:42,621
+x question mark is x or epsilon.
 
 22
-00:04:08,639 --> 00:04:14,378
-Template 3 is alternation, x or y. Put the two machines side by side.
+00:02:43,071 --> 00:02:53,290
+x plus is x x star. Rewrite them before you build the machine. In x x star, x appears two times. Each copy gets its own states.
 
 23
-00:04:14,828 --> 00:04:21,655
-Add two new states. New 1 is the entry of the whole machine. New 2 is the exit, and it accepts.
+00:02:53,740 --> 00:03:03,404
+We need one translation per construct. The translations produce N F As, because we use epsilon edges as glue between the parts.
 
 24
-00:04:22,105 --> 00:04:28,910
-From new 1, two epsilon edges go to the entries of Mx and My. The oracle picks the branch.
+00:03:03,854 --> 00:03:11,171
+Template 1 is for a constant. It is one edge between two states. The label of the edge is the constant.
 
 25
-00:04:29,360 --> 00:04:41,584
-From the exits of Mx and My, two epsilon edges go to new 2. So the template adds 2 new states and 4 new epsilon edges. The old exits no longer accept.
+00:03:11,621 --> 00:03:13,371
+State 1 is the entry.
 
 26
-00:04:42,034 --> 00:04:52,530
-Here it is for two constants. State 5 is new 1, and state 6 is new 2. A string is accepted if it goes through the x branch or the y branch.
+00:03:13,821 --> 00:03:16,423
+State 2 is the exit, and it accepts.
 
 27
-00:04:52,980 --> 00:04:58,441
-Template 4 is repetition, x star. It puts a loop around the machine M.
+00:03:16,873 --> 00:03:23,380
+The empty string uses the same shape, with an epsilon edge. The course notes draw it this way.
 
 28
-00:04:58,891 --> 00:05:10,454
-Add two new states, new 1 and new 2. An epsilon edge goes from new 1 into M, and one from the exit of M to new 2. This path runs M one time.
+00:03:23,830 --> 00:03:34,198
+This is the invariant. Every machine that the templates build has exactly one entry state and one exit state. The exit is the accepting state.
 
 29
-00:05:10,904 --> 00:05:18,371
-A third epsilon edge goes from new 1 directly to new 2. It skips M. This gives zero copies.
+00:03:34,648 --> 00:03:42,136
+Because of this, we can plug any machine into any template as one unit. We draw such a machine as a box M.
 
 30
-00:05:18,821 --> 00:05:31,770
-A fourth epsilon edge goes from the exit of M back to its entry. It runs M again. So again 2 new states and 4 new epsilon edges: skip it, run it, run it again.
+00:03:42,586 --> 00:03:50,074
+Template 2 is concatenation, x y. M x is the machine for x. It may be more than a constant.
 
 31
-00:05:32,220 --> 00:05:38,833
-Here it is for the constant x. The empty string takes the skip edge, from 3 directly to 4.
+00:03:50,524 --> 00:03:52,913
+M y is the machine for y.
 
 32
-00:05:39,283 --> 00:05:48,051
-The string x x goes 3, 1, 2, then back to 1, then 2 again, then 4. Each trip around the loop reads one more x.
+00:03:53,363 --> 00:04:02,857
+Join the two machines end to end. An epsilon edge goes from the exit of M x, state 2, to the entry of M y, state 3.
 
 33
-00:05:48,501 --> 00:05:53,792
-Now the exercise from the slides. Build the N F A for a or a b star.
+00:04:03,307 --> 00:04:07,509
+The entry of the new machine is the entry of M x, state 1.
 
 34
-00:05:54,242 --> 00:06:06,637
-First, parse the regex. The star binds tightest. Then concatenation, then alternation. So the tree is: alternation of a, and the concatenation of a with b star.
+00:04:07,959 --> 00:04:12,354
+The exit of the new machine is the exit of M y, state 4.
 
 35
-00:06:07,087 --> 00:06:27,716
-Build from the bottom up. The three constants come first, from left to right. They get states 1 to 6. Then each operator node gets its template, from the bottom up. The repetition adds 7 and 8. The concatenation adds an epsilon edge from 4 to 7. The alternation adds 9 and 10.
+00:04:12,804 --> 00:04:14,873
+State 2 no longer accepts.
 
 36
-00:06:28,166 --> 00:06:33,798
-Do not think about whether the result is right. Only match each piece against its template.
+00:04:15,323 --> 00:04:27,590
+Here it is for two constants, x then y. State 2 goes to state 3 on epsilon. This video uses the epsilon edge, as the slides do in the worked example.
 
 37
-00:06:34,248 --> 00:06:38,216
-Start with the atoms. The first a gets states 1 and 2.
+00:04:28,040 --> 00:04:37,021
+You can also merge the two states. The exit of M x becomes the entry of M y. The slides say this is the same thing.
 
 38
-00:06:38,666 --> 00:06:45,877
-The second a gets states 3 and 4. The b gets states 5 and 6. These are three constant machines.
+00:04:37,471 --> 00:04:40,821
+Both machines accept exactly the string x y.
 
 39
-00:06:46,327 --> 00:06:52,513
-Each one has one entry and one exit. So each one can go into a template as a unit.
+00:04:41,271 --> 00:04:47,009
+Template 3 is alternation, x or y. Put the two machines side by side.
 
 40
-00:06:52,963 --> 00:07:01,155
-Next, the lowest operator: the repetition b star. It uses template 4 around the b machine, states 5 and 6.
+00:04:47,459 --> 00:04:49,678
+Add a new entry state, new 1.
 
 41
-00:07:01,605 --> 00:07:08,560
-Add the new states 7 and 8. Epsilon edges go from 7 into 5, and from 6 out to 8.
+00:04:50,128 --> 00:04:53,264
+Add a new exit state, new 2. It accepts.
 
 42
-00:07:09,010 --> 00:07:19,549
-Add the skip edge from 7 to 8, below, and the loop back edge from 6 to 5, above. Now the machine for b star has entry 7 and exit 8.
+00:04:53,714 --> 00:05:00,967
+From new 1, two epsilon edges go to the entries of M x and M y. The oracle picks the branch.
 
 43
-00:07:19,999 --> 00:07:26,356
-Next, the concatenation a b star. It joins the second a machine and the b star machine.
+00:05:01,417 --> 00:05:06,836
+From the exits of M x and M y, two epsilon edges go to new 2.
 
 44
-00:07:26,806 --> 00:07:39,393
-Template 2: an epsilon edge glues the exit of the a machine, state 4, to the entry of b star, state 7. The machine for a b star has entry 3 and exit 8.
+00:05:07,286 --> 00:05:11,595
+So the template adds 2 new states and 4 new epsilon edges.
 
 45
-00:07:39,843 --> 00:07:43,491
-Last, the root: the alternation of a and a b star.
+00:05:12,045 --> 00:05:15,629
+Here it is for two constants. State 5 is new 1.
 
 46
-00:07:43,941 --> 00:07:52,815
-Template 3 adds a new entry, state 9. Two epsilon edges go to the entries of the two branches, states 1 and 3.
+00:05:16,079 --> 00:05:17,829
+State 6 is new 2.
 
 47
-00:07:53,265 --> 00:08:07,921
-It also adds a new accepting state, 10. Epsilon edges go to it from both exits, 2 and 8. This is the N F A for a or a b star. Ten states, start state 9, accepting state 10.
+00:05:18,279 --> 00:05:22,353
+The string x goes through the upper branch: 5, 1, 2, 6.
 
 48
-00:08:08,371 --> 00:08:22,707
-The machine is ugly to execute. It has epsilon moves and choices everywhere. But it is easy to check. Each piece matches a template, so it is correct by construction. A wrong arrow is easy to see.
+00:05:22,803 --> 00:05:30,163
+The string y goes through the lower branch: 5, 3, 4, 6. So the machine accepts x and y.
 
 49
-00:08:23,157 --> 00:08:35,403
-Test it anyway. The string a b b has a path to 10: 9, 3, 4, 7, 5, 6, back to 5, 6, 8, 10. So the N F A accepts a b b.
+00:05:30,613 --> 00:05:36,075
+Template 4 is repetition, x star. It puts a loop around the machine M.
 
 50
-00:08:35,853 --> 00:08:46,306
-The string b a has no path. From 9, the epsilon edges reach only 1 and 3, and neither has a b edge. So the N F A rejects b a.
+00:05:36,525 --> 00:05:39,149
+Add two new states, new 1 and new 2.
 
 51
-00:08:46,756 --> 00:08:54,991
-To run this machine, a program must follow every choice. The next video removes the choices with the subset construction.
+00:05:39,599 --> 00:05:48,260
+An epsilon edge goes from new 1 into M, and one goes from the exit of M to new 2. This path runs M one time.
 
 52
-00:08:55,441 --> 00:09:10,438
-One more fact from the slides. a or a b star is the same language as a b star, because a is in a b star. It is hard to argue this directly. The pipeline finds it: the minimal D F A has 2 states.
+00:05:48,710 --> 00:05:56,177
+A third epsilon edge goes from new 1 directly to new 2. It skips M. This gives zero copies.
 
 53
-00:09:10,888 --> 00:09:27,037
-The templates give a quick check. Each constant, and each epsilon, adds 2 states and 1 edge. Concatenation adds 1 epsilon edge and no states. Alternation and repetition each add 2 states and 4 epsilon edges.
+00:05:56,627 --> 00:06:02,664
+A fourth epsilon edge goes from the exit of M back to its entry. It runs M again.
 
 54
-00:09:27,487 --> 00:09:34,549
-For a or a b star: 3 constants, 1 concatenation, 1 alternation and 1 repetition.
+00:06:03,114 --> 00:06:09,173
+So again 2 new states and 4 new epsilon edges: skip it, run it, run it again.
 
 55
-00:09:34,999 --> 00:09:47,756
-So there are 2 times 5, which is 10 states, and 3 plus 1 plus 4 plus 4, which is 12 edges. That matches the drawing. Use this count to check your drawing on the exam.
+00:06:09,623 --> 00:06:16,236
+Here it is for the constant x. The empty string takes the skip edge, from 3 directly to 4.
 
 56
-00:09:48,206 --> 00:10:09,497
-Now the question bank. Question 4.3.1. Draw an N F A for R question mark, which matches zero or one copy of R. Then draw one for R plus, which matches one or more copies of R. The bank gives no figure, so this is our solution. Hint: use the rewrite rules from the slides.
+00:06:16,686 --> 00:06:19,395
+The string x goes 3, 1, 2, 4.
 
 57
-00:10:09,947 --> 00:10:11,589
-Pause the video and try it.
+00:06:19,845 --> 00:06:28,613
+The string x x goes 3, 1, 2, then back to 1, then 2 again, then 4. Each trip around the loop reads one more x.
 
 58
-00:10:12,039 --> 00:10:20,743
-Part a. Rewrite R question mark as R or epsilon. The box is the machine for R, with entry 1 and exit 2.
+00:06:29,063 --> 00:06:34,354
+Now the exercise from the slides. Build the N F A for a or a b star.
 
 59
-00:10:21,193 --> 00:10:27,572
-Epsilon is a constant. Its machine is two states with an epsilon edge, 3 to 4.
+00:06:34,804 --> 00:06:41,332
+First, parse the regex. The star binds tightest. Then concatenation, then alternation.
 
 60
-00:10:28,022 --> 00:10:45,302
-Now apply template 3, alternation. New state 5 is the entry, with epsilon edges to 1 and 3. New state 6 is the exit, with epsilon edges from 2 and 4. The lower path reads nothing, so it gives zero copies of R.
+00:06:41,782 --> 00:06:47,073
+So the tree is: alternation of a, and the concatenation of a with b star.
 
 61
-00:10:45,752 --> 00:11:00,877
-Check with R equal to a. The machine has 6 states and 6 edges, as the count says. It accepts the empty string and a, and nothing else. With R equal to a b, it accepts the empty string and a b only.
+00:06:47,523 --> 00:06:54,285
+Build from the bottom up. The three constants come first, from left to right. They get states 1 to 6.
 
 62
-00:11:01,327 --> 00:11:04,655
-Part b. Rewrite R plus as R R star.
+00:06:54,735 --> 00:07:02,095
+Then each operator node gets its template, from the bottom up. The repetition adds the new states 7 and 8.
 
 63
-00:11:05,105 --> 00:11:09,820
-The first R is a plain copy of the machine for R, states 1 and 2.
+00:07:02,545 --> 00:07:06,855
+The concatenation adds an epsilon edge from 4 to 7.
 
 64
-00:11:10,270 --> 00:11:21,427
-The second R is a new copy, states 3 and 4. Put template 4 around it: new states 5 and 6, the skip edge above, and the back edge from 4 to 3.
+00:07:07,305 --> 00:07:10,569
+The alternation adds the new states 9 and 10.
 
 65
-00:11:21,877 --> 00:11:41,141
-Template 2 joins them: an epsilon edge from 2 to 5. A string must go through the first copy, so it has at least one copy of R. Check with R equal to a: 6 states and 7 edges. It accepts a, a a, a a a, and so on, but not the empty string.
+00:07:11,019 --> 00:07:16,651
+Do not think about whether the result is right. Only match each piece against its template.
 
 66
-00:11:41,591 --> 00:11:52,706
-Question 4.3.2. Draw an N F A for a or b, star, then a, then a or b, cubed. The bank gives no figure, so this is our solution.
+00:07:17,101 --> 00:07:21,069
+Start with the atoms. The first a gets states 1 and 2.
 
 67
-00:11:53,156 --> 00:11:54,799
-Pause the video and try it.
+00:07:21,519 --> 00:07:23,780
+The second a gets states 3 and 4.
 
 68
-00:11:55,249 --> 00:12:07,771
-The power 3 is not a new construct. It means three copies: a or b, a or b, a or b. So the regex is a chain of five parts, joined by concatenation.
+00:07:24,230 --> 00:07:28,710
+The b gets states 5 and 6. These are three constant machines.
 
 69
-00:12:08,221 --> 00:12:19,101
-Count first. There are 9 constants, 4 alternations and 1 repetition. So the template N F A has 2 times 14, which is 28 states.
+00:07:29,160 --> 00:07:34,131
+Each machine has one entry, with a start arrow: states 1, 3 and 5.
 
 70
-00:12:19,551 --> 00:12:29,706
-Build it part by part. First the inner a or b. The constants a and b get states 1 to 4. The alternation adds 19 and 20.
+00:07:34,581 --> 00:07:43,199
+Each machine has one exit, and it accepts: states 2, 4 and 6. So each machine can go into a template as a unit.
 
 71
-00:12:30,156 --> 00:12:40,695
-Then the repetition around it adds 21 and 22, with the skip edge above and the back edge from 20 to 19. State 21 is the start.
+00:07:43,649 --> 00:07:51,841
+Next, the lowest operator: the repetition b star. It uses template 4 around the b machine, states 5 and 6.
 
 72
-00:12:41,145 --> 00:12:48,035
-Then the constant a, states 5 and 6. An epsilon edge from 22 to 5 glues it on.
+00:07:52,291 --> 00:07:57,753
+Add the new states 7 and 8. Now 7 is the entry and 8 is the exit.
 
 73
-00:12:48,485 --> 00:12:59,600
-Then the first copy of a or b, states 7 to 10, with the new states 23 and 24. An epsilon edge from 6 to 23 glues it on.
+00:07:58,203 --> 00:08:01,445
+An epsilon edge goes from 7 into 5.
 
 74
-00:13:00,050 --> 00:13:16,562
-The second and third copies work the same way. State 28 is the only accepting state. That is 28 states, as the count said. A python check ran this machine on every string up to length 9. It agrees with the regex.
+00:08:01,895 --> 00:08:04,882
+An epsilon edge goes from 6 out to 8.
 
 75
-00:13:17,012 --> 00:13:32,137
-The question asks for any N F A. The templates always give a correct one. A smaller N F A is also correct, if you check it. Here state 0 loops on a and b. Then an a, then exactly three more letters.
+00:08:05,332 --> 00:08:08,127
+The skip edge goes from 7 to 8, below.
 
 76
-00:13:32,587 --> 00:13:44,875
-Run the string b a a b a. State 0 reads b and stays. On the first a, the path goes to 1. Then a, b, a take it to 2, 3 and 4. State 4 accepts.
+00:08:08,577 --> 00:08:11,457
+The back edge goes from 6 to 5, above.
 
 77
-00:13:45,325 --> 00:13:55,672
-From state 0, the letter a has two edges, to 0 and to 1. This is the nondeterminism. The oracle guesses the a that is fourth from the end.
+00:08:11,907 --> 00:08:20,995
+Now the machine for b star has entry 7 and exit 8. Template 4 added 2 new states and 4 new epsilon edges.
 
 78
-00:13:56,122 --> 00:14:14,469
-This machine has 5 states. A python check compared it with the regex and with the 28 state machine, on every string up to length 11. If you draw a small machine by hand, test it like this. The templates need no test, because each piece matches a template.
+00:08:21,445 --> 00:08:30,767
+Next, the concatenation a b star. It joins the second a machine, states 3 and 4, and the b star machine, states 5 to 8.
 
 79
-00:14:14,919 --> 00:14:23,943
-Question 4.3.3. Construct an N F A for this regex. The bank gives no figure, so this is our solution.
+00:08:31,217 --> 00:08:39,345
+Template 2: an epsilon edge glues the exit of the a machine, state 4, to the entry of b star, state 7.
 
 80
-00:14:24,393 --> 00:14:26,035
-Pause the video and try it.
+00:08:39,795 --> 00:08:43,635
+The machine for a b star has entry 3 and exit 8.
 
 81
-00:14:26,485 --> 00:14:46,133
-A large regex is easier if you give names to its parts. Call a or b, b, b star the part X. Call a a star the part Z. Call a or b, a, b the part Y. Then the regex is X star or Z, followed by Y star. This is the top of the parse tree.
+00:08:44,085 --> 00:08:47,733
+Last, the root: the alternation of a and a b star.
 
 82
-00:14:46,583 --> 00:14:54,925
-Build the part X first. a or b uses the alternation template: constants 1 to 4, and new states 9 and 10.
+00:08:48,183 --> 00:08:51,042
+Template 3 adds a new entry, state 9.
 
 83
-00:14:55,375 --> 00:15:01,860
-Then the constant b, states 5 and 6. An epsilon edge from 10 to 5 joins it.
+00:08:51,492 --> 00:08:57,380
+Two epsilon edges go from 9 to the entries of the two branches, states 1 and 3.
 
 84
-00:15:02,310 --> 00:15:13,873
-Then b star: the constant b, states 7 and 8, inside template 4 with new states 11 and 12. An epsilon edge from 6 to 11 joins it.
+00:08:57,830 --> 00:09:00,646
+It also adds a new accepting state, 10.
 
 85
-00:15:14,323 --> 00:15:22,024
-The part X has 12 states. The numbers here are local to this part. In the whole machine, the states get other numbers.
+00:09:01,096 --> 00:09:05,021
+Epsilon edges go to 10 from both exits, 2 and 8.
 
 86
-00:15:22,474 --> 00:15:31,562
-Now put the parts together, from the bottom of the tree up. Template 4 around X gives X star. Two new states, so 14 states.
+00:09:05,471 --> 00:09:12,127
+This is the N F A for a or a b star. Ten states, start state 9, accepting state 10.
 
 87
-00:15:32,012 --> 00:15:41,484
-Z is a a star. It is built like X and has 6 states. The alternation of X star and Z adds a new entry and a new exit.
+00:09:12,577 --> 00:09:22,305
+The machine is ugly to execute. It has epsilon moves and choices everywhere. For example, state 9 has two epsilon edges out.
 
 88
-00:15:41,934 --> 00:16:00,601
-Y is a or b, a, b, with 10 states. Template 4 around Y gives Y star, with 12 states. Last, an epsilon edge glues the exit of the alternation to the entry of Y star. The exit of Y star is the only accepting state.
+00:09:22,755 --> 00:09:36,729
+But it is easy to check. Each piece matches a template, so it is correct by construction. For example, states 7, 5, 6 and 8 are template 4 around b. A wrong arrow is easy to see.
 
 89
-00:16:01,051 --> 00:16:22,427
-The total is 14 plus 6 plus 2 plus 12, which is 34 states. The count rule gives the same: 2 times 10 constants, 3 alternations and 4 repetitions. A python build of the templates also gives 34 states, and it matches the regex on every string up to length 8.
+00:09:37,179 --> 00:09:49,445
+Test it anyway. The string a b b has a path to 10: 9, 3, 4, 7, 5, 6, back to 5, 6, 8, 10. So the N F A accepts a b b.
 
 90
-00:16:22,877 --> 00:16:34,141
-Thirty four states is a lot to draw in an exam. Here is a smaller N F A, our solution, made by hand. State 1 is the start. State 6 accepts.
+00:09:49,895 --> 00:10:00,349
+The string b a has no path. From 9, the epsilon edges reach only 1 and 3, and neither has a b edge. So the N F A rejects b a.
 
 91
-00:16:34,591 --> 00:16:47,455
-The cycle 2, 3, 4 is X star. From 2, a or b goes to 3, then b goes to 4, and 4 loops on b. The epsilon edge from 4 back to 2 starts the next X.
+00:10:00,799 --> 00:10:09,033
+To run this machine, a program must follow every choice. The next video removes the choices with the subset construction.
 
 92
-00:16:47,905 --> 00:16:58,358
-The a edge from 1 to 5, and the a loop on 5, make a a star. No edge goes into state 1. So after an X, the machine cannot continue with Z.
+00:10:09,483 --> 00:10:25,313
+One more fact from the slides. a or a b star is the same language as a b star, because a is in a b star. It is hard to argue this directly. The pipeline finds it: it ends with this 2 state machine for a b star.
 
 93
-00:16:58,808 --> 00:17:09,048
-The cycle 6, 7, 8 is Y star: a or b, then a, then b, back to 6. State 6 accepts, so zero copies of Y are allowed.
+00:10:25,763 --> 00:10:38,904
+The templates give a quick check. Each constant, and each epsilon, adds 2 states and 1 edge. In a or a b star, the three constants give states 1 to 6 and the edges a, a and b.
 
 94
-00:17:09,498 --> 00:17:21,039
-This machine has 8 states. A python check compared it with the regex and with the 34 state template machine, on every string up to length 11. They agree.
+00:10:39,354 --> 00:10:45,989
+Concatenation adds 1 epsilon edge and no states. Here it is the edge from 4 to 7.
 
 95
-00:17:21,489 --> 00:17:32,945
-To summarize. Regex to N F A is a syntax-directed translation. Parse the regex, then apply one template per node of the tree, from the bottom up.
+00:10:46,439 --> 00:10:54,225
+Alternation adds 2 states and 4 epsilon edges. Here they are states 9 and 10, with their 4 edges.
 
 96
-00:17:33,395 --> 00:17:40,329
-Rewrite the sugar first. x question mark is x or epsilon. x plus is x x star.
+00:10:54,675 --> 00:11:02,718
+Repetition also adds 2 states and 4 epsilon edges. Here they are states 7 and 8, with their 4 edges.
 
 97
-00:17:40,779 --> 00:17:48,779
-A constant is two states with one edge. Every machine has one entry and one exit, so the machines plug together.
+00:11:03,168 --> 00:11:10,571
+So a or a b star has 3 constants, 1 concatenation, 1 alternation and 1 repetition.
 
 98
-00:17:49,229 --> 00:17:59,938
-Concatenation adds one epsilon edge, or merges two states. Alternation and repetition each add 2 new states and 4 new epsilon edges.
+00:11:11,021 --> 00:11:20,343
+The states: 2 times the sum of 3 constants, 1 alternation and 1 repetition. That is 2 times 5, which is 10 states.
 
 99
-00:18:00,388 --> 00:18:16,196
+00:11:20,793 --> 00:11:28,985
+The edges: 3 plus 1 plus 4 plus 4, which is 12 edges. The drawing has 10 states and 12 edges.
+
+100
+00:11:29,435 --> 00:11:37,819
+On the exam, use this count to check your drawing. With merged concatenation, subtract 1 state per concatenation.
+
+101
+00:11:38,269 --> 00:11:48,531
+Now the question bank. Question 4.3.1. Draw an N F A for R question mark, which matches zero or one copy of R.
+
+102
+00:11:48,981 --> 00:11:53,781
+Then draw one for R plus, which matches one or more copies of R.
+
+103
+00:11:54,231 --> 00:12:00,737
+The bank gives no figure, so this is our solution. Hint: use the rewrite rules from the slides.
+
+104
+00:12:01,187 --> 00:12:02,830
+Pause the video and try it.
+
+105
+00:12:03,280 --> 00:12:07,184
+Part a. Rewrite R question mark as R or epsilon.
+
+106
+00:12:07,634 --> 00:12:13,586
+The box is the machine for R. Its entry is state 1, and its exit is state 2.
+
+107
+00:12:14,036 --> 00:12:20,415
+Epsilon is a constant. Its machine is two states with an epsilon edge, 3 to 4.
+
+108
+00:12:20,865 --> 00:12:28,630
+Now apply template 3, alternation. New state 5 is the entry, with epsilon edges to 1 and 3.
+
+109
+00:12:29,080 --> 00:12:33,752
+New state 6 is the exit, with epsilon edges from 2 and 4.
+
+110
+00:12:34,202 --> 00:12:40,389
+The lower path, 5, 3, 4, 6, reads nothing. So it gives zero copies of R.
+
+111
+00:12:40,839 --> 00:12:48,689
+Check with R equal to a. Put the edge 1, a, 2 into the box. The machine has 6 states and 6 edges.
+
+112
+00:12:49,139 --> 00:12:58,505
+It accepts the empty string on the path 5, 3, 4, 6. It accepts a on the path 5, 1, 2, 6. It accepts nothing else.
+
+113
+00:12:58,955 --> 00:13:06,549
+With R equal to a b, it accepts the empty string and a b only. A python check tested both cases.
+
+114
+00:13:06,999 --> 00:13:12,290
+Part b. Rewrite R plus as R R star. It has two copies of R.
+
+115
+00:13:12,740 --> 00:13:17,455
+The first R is a plain copy of the machine for R, states 1 and 2.
+
+116
+00:13:17,905 --> 00:13:21,297
+The second R is a new copy, states 3 and 4.
+
+117
+00:13:21,747 --> 00:13:26,120
+Put template 4 around the copy. Add the new states 5 and 6.
+
+118
+00:13:26,570 --> 00:13:31,093
+Add the epsilon edges from 5 to 3, and from 4 to 6.
+
+119
+00:13:31,543 --> 00:13:34,380
+Add the skip edge from 5 to 6, above.
+
+120
+00:13:34,830 --> 00:13:37,027
+Add the back edge from 4 to 3.
+
+121
+00:13:37,477 --> 00:13:42,469
+Template 2 joins the two parts: an epsilon edge from 2 to 5.
+
+122
+00:13:42,919 --> 00:13:49,149
+A string must go through the first copy, from 1 to 2. So it has at least one copy of R.
+
+123
+00:13:49,599 --> 00:13:54,484
+Check with R equal to a. The machine has 6 states and 7 edges.
+
+124
+00:13:54,934 --> 00:13:58,027
+The string a takes the path 1, 2, 5, 6.
+
+125
+00:13:58,477 --> 00:14:02,595
+The string a a takes the path 1, 2, 5, 3, 4, 6.
+
+126
+00:14:03,045 --> 00:14:13,839
+The empty string has no path, because state 1 has only the a edge. A python check tested R equal to a and R equal to a b. Both are correct.
+
+127
+00:14:14,289 --> 00:14:25,404
+Question 4.3.2. Draw an N F A for a or b, star, then a, then a or b, cubed. The bank gives no figure, so this is our solution.
+
+128
+00:14:25,854 --> 00:14:27,497
+Pause the video and try it.
+
+129
+00:14:27,947 --> 00:14:34,667
+The power 3 is not a new construct. It means three copies: a or b, a or b, a or b.
+
+130
+00:14:35,117 --> 00:14:39,938
+So the regex is a chain of five parts, joined by concatenation.
+
+131
+00:14:40,388 --> 00:14:50,799
+Count first, part by part. a or b, star, has 2 constants, 1 alternation and 1 repetition. That is 2 times 4, which is 8 states.
+
+132
+00:14:51,249 --> 00:14:53,190
+The constant a has 2 states.
+
+133
+00:14:53,640 --> 00:15:00,637
+Each a or b has 2 constants and 1 alternation. That is 2 times 3, which is 6 states.
+
+134
+00:15:01,087 --> 00:15:13,589
+The total is 8 plus 2 plus 6 plus 6 plus 6, which is 28 states. It is also 2 times the sum of 9 constants, 4 alternations and 1 repetition.
+
+135
+00:15:14,039 --> 00:15:20,951
+Build it part by part. First the inner a or b. The constants a and b get states 1 to 4.
+
+136
+00:15:21,401 --> 00:15:27,097
+The alternation adds the new states 19 and 20, with four epsilon edges.
+
+137
+00:15:27,547 --> 00:15:37,915
+The repetition around it adds 21 and 22, with the skip edge above and the back edge from 20 to 19. State 21 is the start.
+
+138
+00:15:38,365 --> 00:15:45,255
+Then the constant a, states 5 and 6. An epsilon edge from 22 to 5 glues it on.
+
+139
+00:15:45,705 --> 00:15:56,735
+Then the first copy of a or b: states 7 to 10, and the new states 23 and 24. An epsilon edge from 6 to 23 glues it on.
+
+140
+00:15:57,185 --> 00:16:08,086
+The second copy works the same way: states 11 to 14, and 25 and 26. An epsilon edge from 24 to 25 glues it on.
+
+141
+00:16:08,536 --> 00:16:18,349
+The third copy: states 15 to 18, and 27 and 28. An epsilon edge from 26 to 27 glues it on.
+
+142
+00:16:18,799 --> 00:16:32,026
+State 28 is the only accepting state. That is 28 states, as the count said. A python check ran this machine on every string up to length 9. It agrees with the regex.
+
+143
+00:16:32,476 --> 00:16:41,585
+The question asks for any N F A. The templates always give a correct one. A smaller N F A is also correct, if you check it.
+
+144
+00:16:42,035 --> 00:16:44,297
+Here state 0 loops on a and b.
+
+145
+00:16:44,747 --> 00:16:47,157
+Then an a edge goes from 0 to 1.
+
+146
+00:16:47,607 --> 00:16:53,431
+Then exactly three more letters take the machine from 1 to 4. State 4 accepts.
+
+147
+00:16:53,881 --> 00:16:59,129
+Run the string b a a b a. State 0 reads b and stays in 0.
+
+148
+00:16:59,579 --> 00:17:02,054
+On the first a, the path goes to 1.
+
+149
+00:17:02,504 --> 00:17:04,360
+The next a takes it to 2.
+
+150
+00:17:04,810 --> 00:17:06,666
+The b takes it to 3.
+
+151
+00:17:07,116 --> 00:17:10,679
+The last a takes it to 4. State 4 accepts.
+
+152
+00:17:11,129 --> 00:17:21,475
+From state 0, the letter a has two edges, to 0 and to 1. This is the nondeterminism. The oracle guesses the a that is fourth from the end.
+
+153
+00:17:21,925 --> 00:17:40,272
+This machine has 5 states. A python check compared it with the regex and with the 28 state machine, on every string up to length 11. If you draw a small machine by hand, test it like this. The templates need no test, because each piece matches a template.
+
+154
+00:17:40,722 --> 00:17:49,746
+Question 4.3.3. Construct an N F A for this regex. The bank gives no figure, so this is our solution.
+
+155
+00:17:50,196 --> 00:17:51,839
+Pause the video and try it.
+
+156
+00:17:52,289 --> 00:17:59,862
+A large regex is easier if you give names to its parts. Call a or b, b, b star the part X.
+
+157
+00:18:00,312 --> 00:18:02,296
+Call a a star the part Z.
+
+158
+00:18:02,746 --> 00:18:05,477
+Call a or b, a, b the part Y.
+
+159
+00:18:05,927 --> 00:18:12,732
+Then the regex is X star or Z, followed by Y star. This is the top of the parse tree.
+
+160
+00:18:13,182 --> 00:18:20,478
+Build the part X first. a or b uses the alternation template. The constants get states 1 to 4.
+
+161
+00:18:20,928 --> 00:18:24,192
+The alternation adds the new states 9 and 10.
+
+162
+00:18:24,642 --> 00:18:31,127
+Then the constant b, states 5 and 6. An epsilon edge from 10 to 5 joins it.
+
+163
+00:18:31,577 --> 00:18:35,353
+Then b star. The constant b gets states 7 and 8.
+
+164
+00:18:35,803 --> 00:18:42,971
+Template 4 adds the new states 11 and 12. An epsilon edge from 6 to 11 joins it.
+
+165
+00:18:43,421 --> 00:18:56,797
+The part X has 12 states: 2 times the sum of 4 constants, 1 alternation and 1 repetition. The numbers here are local to this part. In the whole machine, the states get other numbers.
+
+166
+00:18:57,247 --> 00:19:02,986
+Now put the parts together, from the bottom of the tree up. The part X has 12 states.
+
+167
+00:19:03,436 --> 00:19:10,604
+Template 4 around X gives X star. It adds 2 new states. 12 plus 2 is 14 states.
+
+168
+00:19:11,054 --> 00:19:18,329
+Z is a a star: 2 constants and 1 repetition. So Z has 2 times 3, which is 6 states.
+
+169
+00:19:18,779 --> 00:19:24,944
+The alternation of X star and Z adds a new entry and a new exit: 2 more states.
+
+170
+00:19:25,394 --> 00:19:34,141
+Y is a or b, a, b: 4 constants and 1 alternation. So Y has 2 times 5, which is 10 states.
+
+171
+00:19:34,591 --> 00:19:39,753
+Template 4 around Y gives Y star. 10 plus 2 is 12 states.
+
+172
+00:19:40,203 --> 00:19:46,326
+Next, an epsilon edge glues the exit of the alternation to the entry of Y star.
+
+173
+00:19:46,776 --> 00:19:50,232
+The exit of Y star is the only accepting state.
+
+174
+00:19:50,682 --> 00:20:04,783
+The total is 14 plus 6 plus 2 plus 12, which is 34 states. The count rule gives the same: 2 times the sum of 10 constants, 3 alternations and 4 repetitions.
+
+175
+00:20:05,233 --> 00:20:13,319
+A python build of the templates also gives 34 states. It matches the regex on every string up to length 8.
+
+176
+00:20:13,769 --> 00:20:23,219
+Thirty four states is a lot to draw in an exam. Here is a smaller N F A, our solution, made by hand. State 1 is the start.
+
+177
+00:20:23,669 --> 00:20:26,400
+State 6 is the only accepting state.
+
+178
+00:20:26,850 --> 00:20:32,141
+The cycle 2, 3, 4 is X star. From 2, a or b goes to 3.
+
+179
+00:20:32,591 --> 00:20:37,177
+Then b goes to 4, and 4 loops on b. That is b, b star.
+
+180
+00:20:37,627 --> 00:20:41,638
+The epsilon edge from 4 back to 2 starts the next X.
+
+181
+00:20:42,088 --> 00:20:50,771
+The epsilon edges from 1 to 2, and from 2 to 6, enter and leave X star. So zero copies of X are allowed.
+
+182
+00:20:51,221 --> 00:20:59,263
+The a edge from 1 to 5, and the a loop on 5, make a a star. The epsilon edge from 5 to 6 leaves Z.
+
+183
+00:20:59,713 --> 00:21:05,559
+No edge goes into state 1. So after an X, the machine cannot continue with Z.
+
+184
+00:21:06,009 --> 00:21:11,619
+The cycle 6, 7, 8 is Y star: a or b, then a, then b, back to 6.
+
+185
+00:21:12,069 --> 00:21:16,123
+State 6 accepts, so zero copies of Y are allowed.
+
+186
+00:21:16,573 --> 00:21:28,114
+This machine has 8 states. A python check compared it with the regex and with the 34 state template machine, on every string up to length 11. They agree.
+
+187
+00:21:28,564 --> 00:21:40,020
+To summarize. Regex to N F A is a syntax-directed translation. Parse the regex, then apply one template per node of the tree, from the bottom up.
+
+188
+00:21:40,470 --> 00:21:47,403
+Rewrite the sugar first. x question mark is x or epsilon. x plus is x x star.
+
+189
+00:21:47,853 --> 00:21:55,853
+A constant is two states with one edge. Every machine has one entry and one exit, so the machines plug together.
+
+190
+00:21:56,303 --> 00:22:07,013
+Concatenation adds one epsilon edge, or merges two states. Alternation and repetition each add 2 new states and 4 new epsilon edges.
+
+191
+00:22:07,463 --> 00:22:23,271
 Check your work. Count 2 states for each constant, each alternation and each repetition. If you draw a smaller machine by hand, test it against the regex. Next video: N F A to D F A, the subset construction.

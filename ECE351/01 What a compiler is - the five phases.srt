@@ -19,405 +19,661 @@ First, formal language theory. For example, regular languages and context-free l
 Second, the stages of a modern compiler. Lexical analysis, grammars and parsing. Type checking. Static analysis. Code optimization. Code generation. Memory management and runtime support.
 
 6
-00:00:53,855 --> 00:00:58,591
-The theory tells you what is possible. The stages tell you how to build it.
+00:00:53,855 --> 00:00:56,309
+The theory tells you what is possible.
 
 7
-00:00:59,041 --> 00:01:07,041
-A programming language is a precise mathematical construct that lets you program a computer. It has two aspects.
+00:00:56,759 --> 00:00:59,020
+The stages tell you how to build it.
 
 8
-00:01:07,491 --> 00:01:17,177
-The first aspect is syntax. Syntax is the set of language constructs, for example if-else and while. It is the form of the program.
+00:00:59,470 --> 00:01:07,491
+A programming language is a precise mathematical construct that lets you program a computer. It has two aspects.
 
 9
-00:01:17,627 --> 00:01:35,205
-The second aspect is semantics: what the constructs mean. Here, if x is greater than 0, y becomes 1. Else y becomes 2. Semantics assumes a model of computation, for example Turing machines or mathematical functions.
+00:01:07,941 --> 00:01:17,605
+The first aspect is syntax. Syntax is the set of language constructs, for example if-else and while. It is the form of the program.
 
 10
-00:01:35,655 --> 00:01:41,927
-There are three styles to define semantics: denotational, operational and axiomatic.
+00:01:18,055 --> 00:01:27,591
+The second aspect is semantics: what the constructs mean. Here, if x is greater than 0, y becomes 1. Else y becomes 2.
 
 11
-00:01:42,377 --> 00:01:55,135
-Languages fall into two large groups. In a declarative language, you specify what to compute. The run-time and the compiler find out how. Examples are SQL and Matlab.
+00:01:28,041 --> 00:01:35,615
+Semantics assumes a model of computation, for example Turing machines or mathematical functions.
 
 12
-00:01:55,585 --> 00:02:02,987
-Pure functional languages, such as Haskell, and logic-based languages, such as Prolog, are declarative.
+00:01:36,065 --> 00:01:42,337
+There are three styles to define semantics: denotational, operational and axiomatic.
 
 13
-00:02:03,437 --> 00:02:13,144
-In an imperative language, you specify both what to compute and how to compute it. Examples are C, C plus plus, Java and Python.
+00:01:42,787 --> 00:01:49,635
+Languages fall into two large groups. In a declarative language, you specify what to compute.
 
 14
-00:02:13,594 --> 00:02:22,767
-Most languages are declarative, imperative or mixed. You can add features such as object orientation to any of these groups.
+00:01:50,085 --> 00:01:52,858
+The run-time and the compiler find out how.
 
 15
-00:02:23,217 --> 00:02:41,671
-Programming language design is not easy. A language must do many things. It must let programmers make efficient code. It must help them build secure and correct programs. It must discourage bad practices, be easy to use, and automate routine tasks.
+00:01:53,308 --> 00:01:55,868
+Examples are SQL and Matlab.
 
 16
-00:02:42,121 --> 00:02:55,177
-These goals pull against each other. The course notes use the example of automatic array bounds checking. It costs the compiler engineer time and thought. The compiler runs a little longer.
+00:01:56,318 --> 00:02:03,721
+Pure functional languages, such as Haskell, and logic-based languages, such as Prolog, are declarative.
 
 17
-00:02:55,627 --> 00:03:02,667
-The executable program is a bit slower and a bit bigger, because it must remember the size of every array.
+00:02:04,171 --> 00:02:09,653
+In an imperative language, you specify both what to compute and how to compute it.
 
 18
-00:03:03,117 --> 00:03:05,378
-But the programmer saves time and thought.
+00:02:10,103 --> 00:02:13,751
+Examples are C, C plus plus, Java and Python.
 
 19
-00:03:05,828 --> 00:03:15,172
-And the end user is safe from buffer overflow attacks. Every language feature is a trade-off like this. This is a theme of the course.
+00:02:14,201 --> 00:02:23,375
+Most languages are declarative, imperative or mixed. You can add features such as object orientation to any of these groups.
 
 20
-00:03:15,622 --> 00:03:21,147
-How is a language implemented? There are two major strategies, and a mix of the two.
+00:02:23,825 --> 00:02:42,278
+Programming language design is not easy. A language must do many things. It must let programmers make efficient code. It must help them build secure and correct programs. It must discourage bad practices, be easy to use, and automate routine tasks.
 
 21
-00:03:21,597 --> 00:03:39,048
-An interpreter runs the program as is, with little or no preprocessing. It takes the program and the input, and it gives the output. An interpreter is a virtual machine. JavaScript, TypeScript, Python and Java bytecode are mostly interpreted.
+00:02:42,728 --> 00:02:49,469
+These goals pull against each other. The course notes use the example of automatic array bounds checking.
 
 22
-00:03:39,498 --> 00:03:55,327
-A compiler does extensive preprocessing and offline optimization first. It makes an executable. Later, the executable runs on the input. Batch compilation systems such as gcc and clang dominate.
+00:02:49,919 --> 00:02:52,821
+It costs the compiler engineer time and thought.
 
 23
-00:03:55,777 --> 00:04:08,215
-The mixed strategy is just-in-time compilation, or JIT. Some environments, such as Lisp, give both: an interpreter for development and a compiler for production.
+00:02:53,271 --> 00:02:55,511
+The compiler runs a little longer.
 
 24
-00:04:08,665 --> 00:04:23,193
-What is a compiler? A compiler is a program that translates a program, usually in a high-level language, into a lower-level language. Here is the small program x equals 2 plus 3, from the course notes.
+00:02:55,961 --> 00:03:02,617
+The executable program is a bit slower and a bit bigger, because it must store the size of every array.
 
 25
-00:04:23,643 --> 00:04:38,619
-First the compiler parses the string into a tree. This is the abstract syntax tree, or AST. The root is the assignment. Its left child is x. Its right child is the plus, with 2 and 3 below it.
+00:03:03,067 --> 00:03:05,328
+But the programmer saves time and thought.
 
 26
-00:04:39,069 --> 00:04:44,146
-Then code generation turns the tree into assembly code. Four instructions.
+00:03:05,778 --> 00:03:09,426
+And the end user is safe from buffer overflow attacks.
 
 27
-00:04:44,596 --> 00:04:47,561
-Run them. Move 2 into register e a x.
+00:03:09,876 --> 00:03:18,580
+Every language feature is a trade-off like this. It has costs for some people and gains for others. This is a theme of the course.
 
 28
-00:04:48,011 --> 00:04:50,614
-Move 3 into register e b x.
+00:03:19,030 --> 00:03:24,555
+How is a language implemented? There are two major strategies, and a mix of the two.
 
 29
-00:04:51,064 --> 00:04:55,331
-Add e b x to e a x. Now e a x holds 5.
+00:03:25,005 --> 00:03:30,211
+An interpreter runs the program as is, with little or no preprocessing.
 
 30
-00:04:55,781 --> 00:05:12,101
-Push e a x. The stack holds 5, which is 2 plus 3. The output program must do the same thing as the input program. On the way, the compiler also checks the program for errors, optimizes it, and links it to code libraries.
+00:03:30,661 --> 00:03:34,501
+It takes the program and the input, and it gives the output.
 
 31
-00:05:12,551 --> 00:05:19,207
-Some history. In 1954, IBM developed the 704 computer.
+00:03:34,951 --> 00:03:37,575
+An interpreter is a virtual machine.
 
 32
-00:05:19,657 --> 00:05:26,505
-There was a problem. Software costs were higher than hardware costs. All programming was done in assembly.
+00:03:38,025 --> 00:03:43,465
+JavaScript, TypeScript, Python and Java bytecode are mostly interpreted.
 
 33
-00:05:26,955 --> 00:05:46,283
-John Backus had an idea: translate high-level code to assembly. Many people thought that this was impossible, and it had failed in other projects. The FORTRAN I project ran from 1954 to 1957. FORTRAN means formula translation.
+00:03:43,915 --> 00:03:50,976
+A compiler does extensive preprocessing and offline optimization first. It makes an executable.
 
 34
-00:05:46,733 --> 00:05:52,215
-By 1958, more than 50 percent of all software was in FORTRAN.
+00:03:51,426 --> 00:03:55,735
+Later, the executable runs on the input, and it gives the output.
 
 35
-00:05:52,665 --> 00:06:07,001
-Development time was halved, and execution efficiency was only 20 percent lower. FORTRAN I was the first compiler. It led to a lot of theoretical work, and modern compilers still keep its outline.
+00:03:56,185 --> 00:04:00,879
+Batch compilation systems such as gcc and clang dominate.
 
 36
-00:06:07,451 --> 00:06:14,513
-A compiler is a linear pipeline. Each phase makes the data for the next phase. There are five phases.
+00:04:01,329 --> 00:04:05,873
+The mixed strategy is just-in-time compilation, or JIT.
 
 37
-00:06:14,963 --> 00:06:23,069
-Phase 1 is lexical analysis. The lexical analyzer reads the input program and makes a stream of tokens.
+00:04:06,323 --> 00:04:13,299
+Some environments, such as Lisp, give both: an interpreter for development and a compiler for production.
 
 38
-00:06:23,519 --> 00:06:30,773
-Phase 2 is parsing. The parser reads the tokens and builds the abstract syntax tree, the AST.
+00:04:13,749 --> 00:04:23,114
+What is a compiler? A compiler is a program that translates a program, usually in a high-level language, into a lower-level language.
 
 39
-00:06:31,223 --> 00:06:40,204
-Phase 3 is semantic analysis, for example type checking. It produces an intermediate representation, or IR.
+00:04:23,564 --> 00:04:28,407
+Here is the small program x equals 2 plus 3, from the course notes.
 
 40
-00:06:40,654 --> 00:06:46,862
-Phase 4 is optimization. It changes the IR, here into three-address format.
+00:04:28,857 --> 00:04:35,833
+First the compiler parses the string into a tree. This is the abstract syntax tree, or AST.
 
 41
-00:06:47,312 --> 00:06:51,792
-Phase 5 is code generation. It writes the output program.
+00:04:36,283 --> 00:04:38,373
+The root of the tree is the assignment.
 
 42
-00:06:52,242 --> 00:07:03,207
-We can understand the first three phases by comparison with the way people understand a natural language, such as English. We now go through the phases one by one.
+00:04:38,823 --> 00:04:40,637
+Its left child is x.
 
 43
-00:07:03,657 --> 00:07:11,231
-Phase 1. When you read, the first step is to recognize words. A word is the smallest unit above letters.
+00:04:41,087 --> 00:04:44,863
+Its right child is the plus, with 2 and 3 below it.
 
 44
-00:07:11,681 --> 00:07:14,753
-This is a sentence has four words and a period.
+00:04:45,313 --> 00:04:50,390
+Then code generation turns the tree into assembly code. Four instructions.
 
 45
-00:07:15,203 --> 00:07:29,091
-The lexical analyzer does the same with program text. It divides the text into words, called tokens. Here is the line: if x equals equals y then z equals 1, else z equals 2.
+00:04:50,840 --> 00:04:53,805
+Run them. Move 2 into register e a x.
 
 46
-00:07:29,541 --> 00:07:49,573
-Each token has a unit, shown by colour. Keywords: if, then, else. Variables: x, y and z twice. Operators: the equals equals and two equals signs. Constants: 1 and 2. Punctuation: two semicolons. The spaces are white space. White space is also a unit.
+00:04:54,255 --> 00:04:56,837
+Move 3 into register e b x.
 
 47
-00:07:50,023 --> 00:07:58,876
-So the lexer finds 14 tokens and 11 white space characters. Video 2 shows exactly how the lexer finds them.
+00:04:57,287 --> 00:05:01,553
+Add e b x to e a x. Now e a x holds 5.
 
 48
-00:07:59,326 --> 00:08:10,483
-Phase 2. When the words are known, the next step is to understand the structure of the sentence. Parsing is diagramming sentences, and the diagram is a tree.
+00:05:02,003 --> 00:05:06,099
+Push e a x. The stack holds 5, which is 2 plus 3.
 
 49
-00:08:10,933 --> 00:08:20,960
-Here is the sentence: This line is a long sentence. First, each word gets its category. Article, noun, verb, article, adjective, noun.
+00:05:06,549 --> 00:05:15,915
+So the compiler turns a string into a tree, and the tree into another string. The output program must do the same thing as the input program.
 
 50
-00:08:21,410 --> 00:08:27,106
-Then the words are grouped. This line is the subject. A long sentence is the object.
+00:05:16,365 --> 00:05:23,810
+On the way, the compiler also checks the program for errors, optimizes it, and links it to code libraries.
 
 51
-00:08:27,556 --> 00:08:32,783
-Subject, verb and object together make the sentence. That is the root of the tree.
+00:05:24,260 --> 00:05:30,916
+Some history. In 1954, IBM developed the 704 computer.
 
 52
-00:08:33,233 --> 00:08:44,411
-Parsing a program is similar. Take the same line: if x equals equals y then z equals 1, else z equals 2. The leaves of the tree are tokens.
+00:05:31,366 --> 00:05:38,214
+There was a problem. Software costs were higher than hardware costs. All programming was done in assembly.
 
 53
-00:08:44,861 --> 00:08:53,032
-x equals equals y is a relation. z equals 1 is an assignment. z equals 2 is another assignment.
+00:05:38,664 --> 00:05:46,408
+John Backus had an idea: translate high-level code to assembly. Many people thought that this was impossible.
 
 54
-00:08:53,482 --> 00:09:00,394
-The relation is the predicate. The first assignment is the then statement. The second is the else statement.
+00:05:46,858 --> 00:05:56,245
+The FORTRAN I project ran from 1954 to 1957. FORTRAN means formula translation.
 
 55
-00:09:00,844 --> 00:09:15,500
-All three together make one if-then-else statement, the root. Only 7 of the 14 tokens are leaves. The keywords, the equals signs and the semicolons are not leaves. They tell the parser the shape of the tree.
+00:05:56,695 --> 00:06:02,177
+By 1958, more than 50 percent of all software was in FORTRAN.
 
 56
-00:09:15,950 --> 00:09:24,803
-Phase 3. When the structure is known, we try to understand the meaning. Take the sentence: I saw a man on a hill with a telescope.
+00:06:02,627 --> 00:06:07,065
+FORTRAN I was the first compiler. Development time was halved.
 
 57
-00:09:25,253 --> 00:09:32,763
-It looks simple. But it has several meanings. Reading 1: there is a man on a hill, and I watch him with my telescope.
+00:06:07,515 --> 00:06:11,525
+And execution efficiency was only 20 percent lower.
 
 58
-00:09:33,213 --> 00:09:37,266
-Reading 2: there is a man on a hill, and he has a telescope.
+00:06:11,975 --> 00:06:18,013
+FORTRAN I led to a lot of theoretical work, and modern compilers still keep its outline.
 
 59
-00:09:37,716 --> 00:09:42,495
-Reading 3: the man is on a hill, and the hill has a telescope on it.
+00:06:18,463 --> 00:06:26,996
+A compiler is a linear pipeline. Each phase makes the data for the next phase. There are five phases, numbered 1 to 5.
 
 60
-00:09:42,945 --> 00:09:51,094
-Reading 4: I am on a hill, and I saw a man with my telescope. The word saw also has more than one meaning.
+00:06:27,446 --> 00:06:35,553
+Phase 1 is lexical analysis. The lexical analyzer reads the input program and makes a stream of tokens.
 
 61
-00:09:51,544 --> 00:10:00,760
-Understanding the meaning of programs automatically is too hard. So compilers do a limited analysis to catch inconsistencies.
+00:06:36,003 --> 00:06:43,256
+Phase 2 is parsing. The parser reads the tokens and builds the abstract syntax tree, the AST.
 
 62
-00:10:01,210 --> 00:10:12,197
-English has another problem. Jack said Jack left his assignment at home. How many Jacks are there? Is Jack talking about himself? Which one left the assignment?
+00:06:43,706 --> 00:06:52,687
+Phase 3 is semantic analysis, for example type checking. It produces an intermediate representation, or IR.
 
 63
-00:10:12,647 --> 00:10:29,137
-Programming languages define strict rules to avoid this kind of ambiguity. These are variable binding rules, or scoping rules. In this C plus plus code, there are two variables called Jack. The second one is in an inner scope.
+00:06:53,137 --> 00:06:59,345
+Phase 4 is optimization. It changes the IR, here into three-address format.
 
 64
-00:10:29,587 --> 00:10:39,443
-The output statement is in the inner scope. The rule says: use the nearest definition. So it uses the inner Jack. The outer Jack is hidden.
+00:06:59,795 --> 00:07:04,275
+Phase 5 is code generation. It writes the output program.
 
 65
-00:10:39,893 --> 00:10:44,117
-The program prints 4. We compiled and ran this code to check it.
+00:07:04,725 --> 00:07:15,691
+We can understand the first three phases by comparison with the way people understand a natural language, such as English. We now go through the phases one by one.
 
 66
-00:10:44,567 --> 00:10:54,935
-Compilers perform many semantic checks besides variable binding. One of them is type checking. Take the sentence: Jack left her homework at home.
+00:07:16,141 --> 00:07:23,714
+Phase 1. When you read, the first step is to recognize words. A word is the smallest unit above letters.
 
 67
-00:10:55,385 --> 00:11:02,319
-There is a type mismatch between her and Jack. We know they are different people. Presumably Jack is male.
+00:07:24,164 --> 00:07:27,236
+This is a sentence has four words and a period.
 
 68
-00:11:02,769 --> 00:11:17,382
-In a program, Jack is declared as an int. Then the program assigns a string to it. The types do not match. The C plus plus compiler reports an error and rejects the program. We checked this with the compiler.
+00:07:27,686 --> 00:07:41,574
+The lexical analyzer does the same with program text. It divides the text into words, called tokens. Here is the line: if x equals equals y then z equals 1, else z equals 2.
 
 69
-00:11:17,832 --> 00:11:32,339
-Phase 4 is optimization. English has no strong counterpart. It is like editing. The compiler changes the program automatically, so that it runs faster, or uses less memory or less power.
+00:07:42,024 --> 00:07:48,339
+Each token has a unit, shown by colour. The keywords are if, then and else: 3 keywords.
 
 70
-00:11:32,789 --> 00:11:40,383
-Here is a small function. The slide example: x equals y times 0 is the same as x equals 0.
+00:07:48,789 --> 00:07:53,247
+The variables are x, y, and z two times: 4 variables.
 
 71
-00:11:40,833 --> 00:11:50,156
-So the test x equals equals 1 is never true. The code inside it never executes. That is dead code, and the compiler removes it.
+00:07:53,697 --> 00:07:59,137
+The operators are the equals equals and the two equals signs: 3 operators.
 
 72
-00:11:50,606 --> 00:11:59,267
-The result returns 2 directly. We compiled this function with optimization on. The output has no test and returns 2.
+00:07:59,587 --> 00:08:01,443
+The constants are 1 and 2.
 
 73
-00:11:59,717 --> 00:12:11,579
-There are other optimizations: register allocation, cache-aware optimizations, and special-purpose instructions, for example for graphics or the fast Fourier transform.
+00:08:01,893 --> 00:08:04,731
+The punctuation is the two semicolons.
 
 74
-00:12:12,029 --> 00:12:23,037
-Can a correct optimization introduce a security problem? The answer is yes. Optimizations preserve defined behaviour, not the intent of the programmer.
+00:08:05,181 --> 00:08:11,965
+The spaces between the tokens are white space. There are 11 of them. White space is also a unit.
 
 75
-00:12:23,487 --> 00:12:30,121
-This function reads star p first. If p is NULL, that read is undefined behaviour in C.
+00:08:12,415 --> 00:08:22,697
+So the lexer finds 3 plus 4 plus 3 plus 2 plus 2, which is 14 tokens. Video 2 shows exactly how the lexer finds them.
 
 76
-00:12:30,571 --> 00:12:41,558
-Undefined behaviour gives the optimizer surprising freedom. It may assume that undefined behaviour never happens. So it assumes that p is not NULL.
+00:08:23,147 --> 00:08:34,305
+Phase 2. When the words are known, the next step is to understand the structure of the sentence. Parsing is diagramming sentences, and the diagram is a tree.
 
 77
-00:12:42,008 --> 00:12:58,200
-Then the NULL test can never be true, and the optimizer removes it. We checked this. Clang with optimization level 2 removes the test. With optimization off, the test stays. The programmer wanted a safety check, and it is gone.
+00:08:34,755 --> 00:08:44,803
+Here is the sentence: This line is a long sentence. First, each word gets its category: article, noun, verb, article, adjective, noun.
 
 78
-00:12:58,650 --> 00:13:04,325
-Phase 5 is code generation. It translates the program into another language.
+00:08:45,253 --> 00:08:48,645
+Then the words are grouped. This line is the subject.
 
 79
-00:13:04,775 --> 00:13:09,788
-It usually produces assembly code, for a special-purpose instruction set.
+00:08:49,095 --> 00:08:51,228
+A long sentence is the object.
 
 80
-00:13:10,238 --> 00:13:16,595
-A good compiler is retargetable: the same compiler can generate code for different hardware.
+00:08:51,678 --> 00:08:56,905
+Subject, verb and object together make the sentence. That is the root of the tree.
 
 81
-00:13:17,045 --> 00:13:25,515
-A compiler does a series of translations between intermediate forms. The first is the source. The last is assembly.
+00:08:57,355 --> 00:09:08,747
+Parsing a program is similar. Take the same line: if x equals equals y then z equals 1, else z equals 2. Its 14 tokens are at the top.
 
 82
-00:13:25,965 --> 00:13:42,989
-All the forms between them are intermediate languages, internal to the compiler. Sometimes there is only one, called the IR. The intermediate languages are ordered by level of abstraction. The source is highest and assembly is lowest.
+00:09:09,197 --> 00:09:14,466
+The leaves of the tree are tokens: x, equals equals, y, z, 1, z and 2.
 
 83
-00:13:43,439 --> 00:13:46,788
-Higher levels keep the high-level meaning of the program.
+00:09:14,916 --> 00:09:17,561
+x equals equals y is a relation.
 
 84
-00:13:47,238 --> 00:13:59,334
-Lower levels expose features that higher levels hide, such as registers and memory layout. This enables new optimizations. But lower levels hide the high-level meaning.
+00:09:18,011 --> 00:09:20,358
+z equals 1 is an assignment.
 
 85
-00:13:59,784 --> 00:14:12,883
-To design an IR that exposes the hardware and also keeps the structure is very hard. The slides show MLIR, a compiler framework with multiple levels of IR.
+00:09:20,808 --> 00:09:23,560
+z equals 2 is another assignment.
 
 86
-00:14:13,333 --> 00:14:27,199
-The overall structure of almost every compiler follows this outline. But the proportions have changed since FORTRAN. In early compilers, lexing and parsing were the most complex and expensive parts.
+00:09:24,010 --> 00:09:26,079
+The relation is the predicate.
 
 87
-00:14:27,649 --> 00:14:38,679
-Today, optimization dominates all the other phases. Lexing and parsing are cheap. The bar widths only show this idea. They are not measured values.
+00:09:26,529 --> 00:09:29,175
+The first assignment is the then statement.
 
 88
-00:14:39,129 --> 00:14:44,590
-Lexing and parsing are cheap today because the theory in this course made them routine.
+00:09:29,625 --> 00:09:32,227
+The second assignment is the else statement.
 
 89
-00:14:45,040 --> 00:14:50,416
-What is the core of a compiler? It depends on the language and on the application.
+00:09:32,677 --> 00:09:36,261
+All three together make one if-then-else statement, the root.
 
 90
-00:14:50,866 --> 00:15:05,010
-For C, C plus plus and other low-level imperative languages, the core is optimization and program analysis: alias analysis, global and link-time optimization, and bug detection.
+00:09:36,711 --> 00:09:39,890
+Only 7 of the 14 tokens are leaves.
 
 91
-00:15:05,460 --> 00:15:17,492
-For Java, JavaScript and other interpreted languages, the core is just-in-time compilation, garbage collection, polymorphism and efficient object orientation.
+00:09:40,340 --> 00:09:49,919
+The other 7 tokens are the keywords, the equals signs and the semicolons. They are not leaves. They tell the parser the shape of the tree.
 
 92
-00:15:17,942 --> 00:15:25,387
-For TensorFlow and other machine learning languages, the core is the IR, scheduling and parallelization.
+00:09:50,369 --> 00:09:59,222
+Phase 3. When the structure is known, we try to understand the meaning. Take the sentence: I saw a man on a hill with a telescope.
 
 93
-00:15:25,837 --> 00:15:37,357
-ECE 351 compiles a hardware description language. Its core is parsing, optimization, code generation and object-oriented design.
+00:09:59,672 --> 00:10:07,181
+It looks simple. But it has several meanings. Reading 1: there is a man on a hill, and I watch him with my telescope.
 
 94
-00:15:37,807 --> 00:15:46,063
-The course notes show the stages of a typical C compiler. The boxes are the kinds of data. The arrows are the stages.
+00:10:07,631 --> 00:10:11,685
+Reading 2: there is a man on a hill, and he has a telescope.
 
 95
-00:15:46,513 --> 00:16:03,431
-ECE 351 focuses on the stages in orange. Lexing chunks the input into a list of tokens, and usually removes white space. Parsing builds the AST from the tokens. Code generation makes the output.
+00:10:12,135 --> 00:10:16,913
+Reading 3: the man is on a hill, and the hill has a telescope on it.
 
 96
-00:16:03,881 --> 00:16:14,249
-Optimization changes the intermediate language into a better intermediate language. That is also an ECE 351 focus.
+00:10:17,363 --> 00:10:21,993
+Reading 4: I am on a hill, and I saw a man with my telescope.
 
 97
-00:16:14,699 --> 00:16:31,936
-Now an exercise. Divide this line into tokens: while x not equals 0 do x equals x minus 1, semicolon. Give the unit of each token: keyword, variable, operator, constant or punctuation. Then count them.
+00:10:22,443 --> 00:10:27,712
+The word saw also has more than one meaning: I see, or I cut with a saw.
 
 98
-00:16:32,386 --> 00:16:34,029
-Pause the video and try it.
+00:10:28,162 --> 00:10:37,378
+Understanding the meaning of programs automatically is too hard. So compilers do a limited analysis to catch inconsistencies.
 
 99
-00:16:34,479 --> 00:16:45,593
-Read from left to right. while is a keyword. x is a variable. Not equals is one operator. It is two characters, but one token. 0 is a constant.
+00:10:37,828 --> 00:10:48,815
+English has another problem. Jack said Jack left his assignment at home. How many Jacks are there? Is Jack talking about himself? Which one left the assignment?
 
 100
-00:16:46,043 --> 00:16:51,270
-do is a keyword. Then x, equals, x, minus, 1, and the semicolon.
+00:10:49,265 --> 00:10:58,630
+Programming languages define strict rules to avoid this kind of ambiguity. These are variable binding rules, or scoping rules.
 
 101
-00:16:51,720 --> 00:17:05,565
-In total: 2 keywords, 3 variables, 3 operators, 2 constants and 1 punctuation mark. That is 11 tokens. The 9 spaces are white space. The lexer usually removes them.
+00:10:59,080 --> 00:11:03,155
+In this C plus plus code, there are two variables called Jack.
 
 102
-00:17:06,015 --> 00:17:12,458
-To summarize. A language has syntax and semantics. Every design choice is a trade-off.
+00:11:03,605 --> 00:11:07,637
+The second Jack is in an inner scope, shown by the purple box.
 
 103
-00:17:12,908 --> 00:17:21,057
-Interpreters run programs as is. Compilers translate them first. Just-in-time compilation mixes both.
+00:11:08,087 --> 00:11:11,329
+The output statement is also in the inner scope.
 
 104
-00:17:21,507 --> 00:17:30,147
-A compiler has five phases: lexical analysis, parsing, semantic analysis, optimization and code generation.
+00:11:11,779 --> 00:11:19,225
+The rule says: use the nearest definition. So the output uses the inner Jack. The outer Jack is hidden.
 
 105
-00:17:30,597 --> 00:17:38,341
-Between the phases flow tokens, the AST, the IR, three-address format, and finally the output program.
+00:11:19,675 --> 00:11:23,899
+The program prints 4. We compiled and ran this code to check it.
 
 106
-00:17:38,791 --> 00:17:59,698
-Optimizations preserve defined behaviour, not intent. Today optimization dominates, and lexing and parsing are cheap. Many open problems remain, for example parallel code generation, power optimization and better type systems. Next video: lexical analysis in detail.
+00:11:24,349 --> 00:11:30,919
+Compilers perform many semantic checks besides variable binding. One of them is type checking.
+
+107
+00:11:31,369 --> 00:11:34,655
+Take the sentence: Jack left her homework at home.
+
+108
+00:11:35,105 --> 00:11:42,038
+There is a type mismatch between her and Jack. We know they are different people. Presumably Jack is male.
+
+109
+00:11:42,488 --> 00:11:45,453
+In a program, Jack is declared as an int.
+
+110
+00:11:45,903 --> 00:11:50,085
+Then the program assigns a string to it. The types do not match.
+
+111
+00:11:50,535 --> 00:11:57,383
+The C plus plus compiler reports an error and rejects the program. We checked this with the compiler.
+
+112
+00:11:57,833 --> 00:12:12,339
+Phase 4 is optimization. English has no strong counterpart. It is like editing. The compiler changes the program automatically, so that it runs faster, or uses less memory or less power.
+
+113
+00:12:12,789 --> 00:12:14,560
+Here is a small function.
+
+114
+00:12:15,010 --> 00:12:20,791
+The slide example: x equals y times 0 is the same as x equals 0.
+
+115
+00:12:21,241 --> 00:12:25,700
+x is 0, so the test x equals equals 1 is never true.
+
+116
+00:12:26,150 --> 00:12:32,251
+The code inside the test never executes. That is dead code, and the compiler removes it.
+
+117
+00:12:32,701 --> 00:12:34,728
+The result returns 2 directly.
+
+118
+00:12:35,178 --> 00:12:42,410
+We compiled this function with clang, with optimization on. The output has no test and returns 2.
+
+119
+00:12:42,860 --> 00:12:54,721
+There are other optimizations: register allocation, cache-aware optimizations, and special-purpose instructions, for example for graphics or the fast Fourier transform.
+
+120
+00:12:55,171 --> 00:13:00,483
+Can a correct optimization introduce a security problem? The answer is yes.
+
+121
+00:13:00,933 --> 00:13:07,568
+This function reads star p first. If p is NULL, that read is undefined behaviour in C.
+
+122
+00:13:08,018 --> 00:13:19,047
+Undefined behaviour gives the optimizer surprising freedom. It may assume that undefined behaviour never happens. So it assumes that p is not NULL.
+
+123
+00:13:19,497 --> 00:13:23,871
+Then the NULL test can never be true, and the optimizer removes it.
+
+124
+00:13:24,321 --> 00:13:32,022
+We checked this. Clang with optimization level 2 removes the test. With optimization off, the test stays.
+
+125
+00:13:32,472 --> 00:13:41,773
+Optimizations preserve defined behaviour, not the intent of the programmer. The programmer wanted a safety check, and it is gone.
+
+126
+00:13:42,223 --> 00:13:47,898
+Phase 5 is code generation. It translates the program into another language.
+
+127
+00:13:48,348 --> 00:13:53,361
+It usually produces assembly code, for a special-purpose instruction set.
+
+128
+00:13:53,811 --> 00:14:00,169
+A good compiler is retargetable: the same compiler can generate code for different hardware.
+
+129
+00:14:00,619 --> 00:14:07,531
+A compiler does a series of translations between intermediate forms. The first form is the source.
+
+130
+00:14:07,981 --> 00:14:09,965
+The last form is assembly.
+
+131
+00:14:10,415 --> 00:14:19,716
+All the forms between them are intermediate languages, internal to the compiler. Sometimes there is only one, called the IR.
+
+132
+00:14:20,166 --> 00:14:27,291
+The forms are ordered by level of abstraction. The source is the highest level, and assembly is the lowest.
+
+133
+00:14:27,741 --> 00:14:33,224
+Higher levels keep the high-level meaning of the program, for example loops and types.
+
+134
+00:14:33,674 --> 00:14:42,805
+Lower levels expose features that higher levels hide, such as registers and memory layout. This enables new optimizations.
+
+135
+00:14:43,255 --> 00:14:45,964
+But lower levels hide the high-level meaning.
+
+136
+00:14:46,414 --> 00:14:59,513
+To design an IR that exposes the hardware and also keeps the structure is very hard. The slides show MLIR, a compiler framework with multiple levels of IR.
+
+137
+00:14:59,963 --> 00:15:13,829
+The overall structure of almost every compiler follows this outline. But the proportions have changed since FORTRAN. In early compilers, lexing and parsing were the most complex and expensive parts.
+
+138
+00:15:14,279 --> 00:15:17,991
+Today, optimization dominates all the other phases.
+
+139
+00:15:18,441 --> 00:15:20,425
+Lexing and parsing are cheap.
+
+140
+00:15:20,875 --> 00:15:25,206
+The bar widths only show this idea. They are not measured values.
+
+141
+00:15:25,656 --> 00:15:31,117
+Lexing and parsing are cheap today because the theory in this course made them routine.
+
+142
+00:15:31,567 --> 00:15:36,943
+What is the core of a compiler? It depends on the language and on the application.
+
+143
+00:15:37,393 --> 00:15:51,537
+For C, C plus plus and other low-level imperative languages, the core is optimization and program analysis: alias analysis, global and link-time optimization, and bug detection.
+
+144
+00:15:51,987 --> 00:16:04,019
+For Java, JavaScript and other interpreted languages, the core is just-in-time compilation, garbage collection, polymorphism and efficient object orientation.
+
+145
+00:16:04,469 --> 00:16:11,915
+For TensorFlow and other machine learning languages, the core is the IR, scheduling and parallelization.
+
+146
+00:16:12,365 --> 00:16:23,885
+ECE 351 compiles a hardware description language. Its core is parsing, optimization, code generation and object-oriented design.
+
+147
+00:16:24,335 --> 00:16:30,799
+The course notes show the stages of a typical C compiler. The boxes are the kinds of data.
+
+148
+00:16:31,249 --> 00:16:33,105
+The arrows are the stages.
+
+149
+00:16:33,555 --> 00:16:38,867
+ECE 351 focuses on the three stages in orange.
+
+150
+00:16:39,317 --> 00:16:44,949
+Lexing chunks the input into a list of tokens, and usually removes white space.
+
+151
+00:16:45,399 --> 00:16:48,065
+Parsing builds the AST from the tokens.
+
+152
+00:16:48,515 --> 00:16:50,691
+Code generation makes the output.
+
+153
+00:16:51,141 --> 00:17:01,509
+Optimization changes the intermediate language into a better intermediate language. That is also an ECE 351 focus.
+
+154
+00:17:01,959 --> 00:17:19,197
+Now an exercise. Divide this line into tokens: while x not equals 0 do x equals x minus 1, semicolon. Give the unit of each token: keyword, variable, operator, constant or punctuation. Then count them.
+
+155
+00:17:19,647 --> 00:17:21,289
+Pause the video and try it.
+
+156
+00:17:21,739 --> 00:17:24,662
+Read from left to right. while is a keyword.
+
+157
+00:17:25,112 --> 00:17:26,669
+x is a variable.
+
+158
+00:17:27,119 --> 00:17:31,770
+Not equals is one operator. It is two characters, but one token.
+
+159
+00:17:32,220 --> 00:17:33,948
+0 is a constant.
+
+160
+00:17:34,398 --> 00:17:35,827
+do is a keyword.
+
+161
+00:17:36,277 --> 00:17:42,315
+Then x equals x minus 1: variable, operator, variable, operator, constant.
+
+162
+00:17:42,765 --> 00:17:44,941
+The semicolon is punctuation.
+
+163
+00:17:45,391 --> 00:17:57,785
+In total: 2 keywords, 3 variables, 3 operators, 2 constants and 1 punctuation mark. 2 plus 3 plus 3 plus 2 plus 1 is 11 tokens.
+
+164
+00:17:58,235 --> 00:18:02,801
+The 9 spaces are white space. The lexer usually removes them.
+
+165
+00:18:03,251 --> 00:18:09,693
+To summarize. A language has syntax and semantics. Every design choice is a trade-off.
+
+166
+00:18:10,143 --> 00:18:18,293
+Interpreters run programs as is. Compilers translate them first. Just-in-time compilation mixes both.
+
+167
+00:18:18,743 --> 00:18:27,383
+A compiler has five phases: lexical analysis, parsing, semantic analysis, optimization and code generation.
+
+168
+00:18:27,833 --> 00:18:35,577
+Between the phases flow tokens, the AST, the IR, three-address format, and finally the output program.
+
+169
+00:18:36,027 --> 00:18:45,051
+Optimizations preserve defined behaviour, not intent. Today optimization dominates, and lexing and parsing are cheap.
+
+170
+00:18:45,501 --> 00:18:57,255
+Many open problems remain, for example parallel code generation, power optimization and better type systems. Next video: lexical analysis in detail.

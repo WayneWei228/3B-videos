@@ -23,481 +23,713 @@ Second: what kind of machine can solve it? We meet four machines: F S M, P D A, 
 Third: what style of language do we write the solution in? These styles are called programming paradigms.
 
 7
-00:00:49,932 --> 00:01:04,460
-Big-O notation gives the asymptotic complexity of an algorithm. Usually it counts time steps, and sometimes memory. Let n be the size of the input. A linear algorithm takes about n steps.
+00:00:49,932 --> 00:01:01,516
+Big-O notation gives the asymptotic complexity of an algorithm. Usually it counts time steps, and sometimes memory. The vertical axis shows the steps.
 
 8
-00:01:04,910 --> 00:01:09,155
-n log n grows a little faster. Quick sort is an example.
+00:01:01,966 --> 00:01:06,574
+Let n be the size of the input. It is on the horizontal axis.
 
 9
-00:01:09,605 --> 00:01:13,723
-n squared grows faster again. Bubble sort is an example.
+00:01:07,024 --> 00:01:09,861
+A linear algorithm takes about n steps.
 
 10
-00:01:14,173 --> 00:01:19,314
-2 to the n is exponential. It leaves the chart before n reaches 9.
+00:01:10,311 --> 00:01:14,514
+n log n grows a little faster. Quick sort is an example.
 
 11
-00:01:19,764 --> 00:01:30,175
-At n equals 20, n squared is 400 steps. 2 to the n is more than one million steps. Each extra input item doubles the work.
+00:01:14,964 --> 00:01:19,081
+n squared grows faster again. Bubble sort is an example.
 
 12
-00:01:30,625 --> 00:01:43,510
-This table from the notes lists the common classes. The first six are polynomial: constant, log, linear, n log n, quadratic and cubic. Together they form the class P TIME.
+00:01:19,531 --> 00:01:29,345
+2 to the n is exponential. It leaves the chart before n reaches 9: 2 to the 9 is 512, more than 400.
 
 13
-00:01:43,960 --> 00:01:56,461
-Below them: N P complete problems, such as sat. The naive way to solve sat takes 2 to the n steps. That is exponential. The bounded halting problem is in EXPTIME.
+00:01:29,795 --> 00:01:34,595
+Now take n equals 20. A linear algorithm takes 20 steps.
 
 14
-00:01:56,911 --> 00:02:05,466
-At the bottom: undecidable problems. The halting problem is the famous example. No algorithm solves it, at any speed.
+00:01:35,045 --> 00:01:43,791
+Log 20 is about 4.32. So n log n is about 20 times 4.32, or 86 steps.
 
 15
-00:02:05,916 --> 00:02:16,327
-In ECE 351 the important line is between polynomial and exponential. All polynomial problems count as easy.
+00:01:44,241 --> 00:01:48,231
+n squared is 20 times 20, or 400 steps.
 
 16
-00:02:16,777 --> 00:02:25,353
-In big-O notation, only the dominant term matters. Take f of n equals 7 n squared plus n plus 100.
+00:01:48,681 --> 00:01:56,510
+2 to the 20 is 1,048,576 steps. That is more than one million.
 
 17
-00:02:25,803 --> 00:02:31,755
-At n equals 10, the 7 n squared term is already 86 percent of the total.
+00:01:56,960 --> 00:02:09,568
+Each extra input item doubles the work. At n equals 21, 2 to the n is 2 times 2 to the 20: 2,097,152 steps.
 
 18
-00:02:32,205 --> 00:02:36,429
-At n equals 100, it is 99.7 percent.
+00:02:10,018 --> 00:02:20,365
+This table from the notes lists the common classes. The first six rows are polynomial: constant, log, linear, n log n, quadratic and cubic.
 
 19
-00:02:36,879 --> 00:02:41,167
-At n equals 1000, the other terms are almost nothing.
+00:02:20,815 --> 00:02:23,119
+Together they form the class P TIME.
 
 20
-00:02:41,617 --> 00:02:54,267
-So we drop the small terms and the constant factor 7. The answer is O of n squared. The notes give the same rule: O of n squared plus n is written O of n squared.
+00:02:23,569 --> 00:02:27,323
+Below them are the N P complete problems, such as sat.
 
 21
-00:02:54,717 --> 00:03:09,480
-The standard N P complete problem is boolean satisfiability, or sat. You get a boolean formula. Find values for the variables that make the formula true. Here the formula is x and y and z.
+00:02:27,773 --> 00:02:32,744
+The naive way to solve sat takes 2 to the n steps. That is exponential.
 
 22
-00:03:09,930 --> 00:03:16,842
-The brute force method lists the truth table and looks for a row that is true. Rows 1 to 4 give 0.
+00:02:33,194 --> 00:02:36,117
+The bounded halting problem is in EXPTIME.
 
 23
-00:03:17,292 --> 00:03:19,831
-Rows 5 to 7 also give 0.
+00:02:36,567 --> 00:02:45,655
+At the bottom are the undecidable problems. The halting problem is the famous example. No algorithm solves it, at any speed.
 
 24
-00:03:20,281 --> 00:03:24,590
-The last row, 1, 1, 1, gives 1. This is the solution.
+00:02:46,105 --> 00:02:56,515
+In ECE 351 the important line is between polynomial and exponential. All polynomial problems count as easy.
 
 25
-00:03:25,040 --> 00:03:38,267
-Three variables give 2 to the 3, or 8 rows. Each new variable doubles the table. 30 variables give more than one billion rows. So brute force takes exponential time.
+00:02:56,965 --> 00:03:05,541
+In big-O notation, only the dominant term matters. Take f of n equals 7 n squared plus n plus 100.
 
 26
-00:03:38,717 --> 00:04:01,842
-N P stands for non-deterministic polynomial time. The notes give four views of it. View a: if someone gives us a solution, we can verify it in polynomial time. For the guess 1, 1, 1, we substitute the values, and 1 and 1 and 1 is 1. A defining feature of N P complete problems is this fast check.
+00:03:05,991 --> 00:03:15,186
+At n equals 10, 7 n squared is 700. n plus 100 is 110. The total is 810.
 
 27
-00:04:02,292 --> 00:04:15,113
-View b: a magic, non-deterministic machine always guesses the right next step. It picks x, then y, then z. It finds a solution in a polynomial number of guesses.
+00:03:15,636 --> 00:03:23,615
+So the 7 n squared term is 700 out of 810. That is already 86 percent of the total.
 
 28
-00:04:15,563 --> 00:04:26,123
-View c: a computer with an exponential number of cores. Each core tries a different path. With 8 cores, all 8 rows are checked at the same time.
+00:03:24,065 --> 00:03:33,537
+At n equals 100, 7 n squared is 70,000 out of 70,200. That is 99.7 percent.
 
 29
-00:04:26,573 --> 00:04:36,749
-View d: a normal single-core deterministic computer. It checks the rows one after the other. In the worst case this takes exponential time.
+00:03:33,987 --> 00:03:47,043
+At n equals 1000, 7 n squared is 7 million out of 7,001,100. That is 99.98 percent. The other terms are almost nothing.
 
 30
-00:04:37,199 --> 00:04:40,207
-Sat is the canonical N P complete problem.
+00:03:47,493 --> 00:03:50,757
+So we drop the small terms, n and 100.
 
 31
-00:04:40,657 --> 00:04:56,359
-Other common examples are travelling salesman, scheduling, knapsack or bin packing, and graph colouring. All of them can be used to encode sat. Such a reduction is the standard way to prove that a problem is N P complete.
+00:03:51,207 --> 00:03:55,964
+And we drop the constant factor 7. The answer is O of n squared.
 
 32
-00:04:56,809 --> 00:05:08,222
-When you meet a new problem, ask if it is similar to a known N P complete problem. For example, register allocation in a compiler is similar to graph colouring.
+00:03:56,414 --> 00:04:01,833
+The notes give the same rule: O of n squared plus n is written O of n squared.
 
 33
-00:05:08,672 --> 00:05:13,408
-The course uses two of them: register allocation and circuit equivalence.
+00:04:02,283 --> 00:04:12,693
+The standard N P complete problem is boolean satisfiability, or sat. You get a boolean formula. Here the formula is x and y and z.
 
 34
-00:05:13,858 --> 00:05:24,951
-Here is a small example of the link. Each circle is a variable. An edge joins two variables that are live at the same time, so they cannot share a register.
+00:04:13,143 --> 00:04:19,053
+The variables are true or false, written 1 and 0. The operators are and, or, and not.
 
 35
-00:05:25,401 --> 00:05:37,455
-With 3 registers, give each variable a colour, one colour per register. No edge joins two circles of the same colour, so this works. a and d can share register 1.
+00:04:19,503 --> 00:04:29,764
+Find values for the variables that make the formula true. The brute force method lists the truth table: every row of values for x, y and z.
 
 36
-00:05:37,905 --> 00:05:55,057
-With 2 registers, a, b and c form a triangle. They need three different colours. A brute force search tries all 2 to the 4, or 16, colourings and none works. So one variable, here c, must go to memory. This is called a spill.
+00:04:30,214 --> 00:04:34,481
+It checks the rows one by one. Rows 1 to 4 give 0.
 
 37
-00:05:55,507 --> 00:06:10,355
-Compilers contain several hard, N P complete problems. The notes give three ways to handle one. Way a: use a polynomial time approximation algorithm. This is the most common way in practice.
+00:04:34,931 --> 00:04:37,469
+Rows 5 to 7 also give 0.
 
 38
-00:06:10,805 --> 00:06:21,343
-Way b: implement an N P complete algorithm yourself. The notes say this is never done in compilers, and almost never done anywhere else.
+00:04:37,919 --> 00:04:42,229
+The last row, 1, 1, 1, gives 1. This is the solution.
 
 39
-00:06:21,793 --> 00:06:31,521
-Way c: translate the problem into a boolean formula and ask a sat solver for the answer. The notes recommend this way for your career.
+00:04:42,679 --> 00:04:46,135
+Three variables give 2 to the 3, or 8 rows.
 
 40
-00:06:31,971 --> 00:06:40,910
-On the exam, you solve small N P complete problems on paper. The course does not study approximation algorithms.
+00:04:46,585 --> 00:04:54,265
+Each new variable doubles the table. 10 variables give 2 to the 10, or 1024 rows.
 
 41
-00:06:41,360 --> 00:06:57,915
-Some problems cannot be solved on a computer at all. They are called undecidable. The standard example is the halting problem. Given a program P and an input i, prove that P halts on i. That is, P does not get stuck in a loop.
+00:04:54,715 --> 00:05:01,691
+20 variables give 1,048,576 rows, about one million.
 
 42
-00:06:58,365 --> 00:07:06,642
-For many programs this is easy. A program with no loops and no recursion, like hello world, halts on every input.
+00:05:02,141 --> 00:05:08,477
+30 variables give more than one billion rows. So brute force takes exponential time.
 
 43
-00:07:07,092 --> 00:07:19,615
-With a loop, the answer can depend on the input. This loop is our own example. With x equal to 5, it halts. With x equal to 4, x never equals 1, so it runs forever.
+00:05:08,927 --> 00:05:21,364
+N P stands for non-deterministic polynomial time. The notes give four views of it. View a: if someone gives us a solution, we can verify it in polynomial time.
 
 44
-00:07:20,065 --> 00:07:36,257
-In the 1930s, Alan Turing found a program and an input for which a proof of halting is impossible. One such case is enough. So the problem is undecidable in general. No program answers it for all P and i.
+00:05:21,814 --> 00:05:27,211
+For the guess 1, 1, 1, we substitute the values: 1 and 1 and 1 is 1.
 
 45
-00:07:36,707 --> 00:07:47,651
-A corollary of the halting problem: for two programs P and Q in a Turing complete language, we cannot decide, in general, if P and Q are equivalent.
+00:05:27,661 --> 00:05:32,312
+A defining feature of N P complete problems is this fast check.
 
 46
-00:07:48,101 --> 00:07:56,613
-This matters for compilers. You add a new optimization. How do you know the optimized program is equivalent to the original?
+00:05:32,762 --> 00:05:40,143
+The tree shows every choice for x, y and z. Each of the 8 leaves is one row of the truth table.
 
 47
-00:07:57,063 --> 00:08:08,412
-In practice, compiler engineers run the compiled programs P prime and Q prime on the same input i. They check that the outputs p and q are the same.
+00:05:40,593 --> 00:05:52,177
+View b: a magic, non-deterministic machine always guesses the right next step. It picks x equals 1, then y equals 1, then z equals 1.
 
 48
-00:08:08,862 --> 00:08:15,987
-This is weaker than a proof. There might be an input x that we did not test, on which the outputs differ.
+00:05:52,627 --> 00:05:59,390
+It finds a solution in a polynomial number of guesses. Here: 3 guesses for 3 variables.
 
 49
-00:08:16,437 --> 00:08:21,109
-Now the course definitions. Polynomial time algorithms are easy.
+00:05:59,840 --> 00:06:06,091
+View c: a computer with an exponential number of cores. Each core tries a different path.
 
 50
-00:08:21,559 --> 00:08:27,383
-Exponential time algorithms are hard. N P complete problems are in this group.
+00:06:06,541 --> 00:06:11,810
+With 2 to the 3, or 8 cores, all 8 rows are checked at the same time.
 
 51
-00:08:27,833 --> 00:08:30,543
-Undecidable problems are impossible.
+00:06:12,260 --> 00:06:19,023
+View d: a normal single-core deterministic computer. It checks the rows one after the other.
 
 52
-00:08:30,993 --> 00:08:45,009
-This classification is about how many steps the computer must run. It is not about how much work the engineer does to write the code. Quick sort is tricky to implement, but it runs quickly. So here it is easy.
+00:06:19,473 --> 00:06:24,763
+In the worst case it checks all 2 to the n rows. That is exponential time.
 
 53
-00:08:45,459 --> 00:09:02,739
-The notes describe four theoretical machines. A finite state machine has no storage beyond its current state. It consumes one input token per step, so it always runs in linear time. F S Ms recognize regular languages.
+00:06:25,213 --> 00:06:28,221
+Sat is the canonical N P complete problem.
 
 54
-00:09:03,189 --> 00:09:15,135
-A push-down automaton is an F S M plus an infinite stack. P D As recognize context-free languages, and they always run in polynomial time.
+00:06:28,671 --> 00:06:35,754
+Other common examples are travelling salesman, scheduling, knapsack or bin packing, and graph colouring.
 
 55
-00:09:15,585 --> 00:09:25,847
-A linear-bounded automaton is an F S M plus a finite tape. The physical computers we use every day are, strictly, L B As.
+00:06:36,204 --> 00:06:44,055
+All of them can be used to encode sat. Such a reduction is the standard way to prove that a problem is N P complete.
 
 56
-00:09:26,297 --> 00:09:36,857
-A Turing machine is an F S M plus an infinite tape. We usually think of our computers as Turing machines, but technically they are L B As.
+00:06:44,505 --> 00:06:55,939
+When you meet a new problem, ask if it is similar to a known N P complete problem. For example, register allocation in a compiler is similar to graph colouring.
 
 57
-00:09:37,307 --> 00:09:43,259
-In all four, the controller has a finite number of states. The power grows with the storage.
+00:06:56,389 --> 00:07:03,195
+The course uses two of them: register allocation, by graph colouring, and circuit equivalence, by sat.
 
 58
-00:09:43,709 --> 00:10:02,141
-Does non-determinism make a machine more powerful? It depends on the machine. For finite state machines, no. D F As and N F As have the same power and both run in linear time. An N F A might have exponentially fewer states than the D F A.
+00:07:03,645 --> 00:07:10,215
+Here is our own small example of the link. Each circle is a variable: a, b, c and d.
 
 59
-00:10:02,591 --> 00:10:12,127
-For push-down automata, yes. Some context-free grammars need a non-deterministic P D A. The course does not use this fact.
+00:07:10,665 --> 00:07:16,852
+An edge joins two variables that are live at the same time. They cannot share a register.
 
 60
-00:10:12,577 --> 00:10:21,003
-For Turing machines, non-determinism gives speed but not power. The set of problems that can be computed is the same.
+00:07:17,302 --> 00:07:22,337
+With 3 registers, give each variable a colour, one colour per register.
 
 61
-00:10:21,453 --> 00:10:29,283
-But the non-deterministic machine computes some problems exponentially faster. These are the N P complete problems.
+00:07:22,787 --> 00:07:26,712
+No edge joins two circles of the same colour, so this works.
 
 62
-00:10:29,733 --> 00:10:38,138
-One basic difference between a Turing machine and a real computer is the storage. A Turing machine has an infinite tape.
+00:07:27,162 --> 00:07:31,727
+a and d have no edge between them. So they can share register 1.
 
 63
-00:10:38,588 --> 00:10:46,353
-A real computer has finite memory. Inside the processor there is only a small, fixed number of registers.
+00:07:32,177 --> 00:07:38,151
+With 2 registers, a, b and c form a triangle. They need three different colours.
 
 64
-00:10:46,803 --> 00:10:58,387
-This shows up in compilers as the register allocation problem. If the variables do not fit in the registers, some variables spill into main memory, which is much slower.
+00:07:38,601 --> 00:07:49,886
+A brute force search tries all 2 to the 4, or 16, colourings. In each one, two of a, b and c get the same colour, as the red lines show. So none works.
 
 65
-00:10:58,837 --> 00:11:13,344
-A programming language is Turing complete if it can describe any computation that a Turing machine can do. Roughly, it needs conditionals, loops or recursion, and a potentially unlimited number of variables.
+00:07:50,336 --> 00:07:54,944
+So one variable, here c, must go to memory. This is called a spill.
 
 66
-00:11:13,794 --> 00:11:27,725
-Almost every programming language is Turing complete. Java and C are. TeX, the document language under LaTeX, is Turing complete. So is PostScript, a page language for printers.
+00:07:55,394 --> 00:08:02,455
+Compilers contain several hard, N P complete problems. The notes give three ways to handle one.
 
 67
-00:11:28,175 --> 00:11:44,772
-HTML and SQL are not Turing complete. For that reason some people do not call them programming languages. PDF is also not Turing complete. The notes do not list the features of SQL, so that cell is empty.
+00:08:02,905 --> 00:08:10,201
+Way a: use a polynomial time approximation algorithm. This is the most common way in practice.
 
 68
-00:11:45,222 --> 00:11:52,859
-A Turing complete language can loop forever. So a PostScript file can make a printer get stuck in an infinite loop.
+00:08:10,651 --> 00:08:21,190
+Way b: implement an N P complete algorithm yourself. The notes say this is never done in compilers, and almost never done anywhere else.
 
 69
-00:11:53,309 --> 00:12:07,091
-Programming languages come in styles, called paradigms. Imperative languages have two features. First, re-assignment: the value of a variable can change. Here x gets the value 7.
+00:08:21,640 --> 00:08:31,389
+Way c: translate the problem into a boolean formula and ask a sat solver for the answer. The notes recommend this way for your career.
 
 70
-00:12:07,541 --> 00:12:14,175
-Second, sequential composition: statements execute one after the other. This line prints 7.
+00:08:31,839 --> 00:08:40,778
+On the exam, you solve small N P complete problems on paper. The course does not study approximation algorithms.
 
 71
-00:12:14,625 --> 00:12:18,572
-Now x is re-assigned. Its value changes to 2.
+00:08:41,228 --> 00:08:50,039
+Some problems cannot be solved on a computer at all. They are called undecidable. The standard example is the halting problem.
 
 72
-00:12:19,022 --> 00:12:23,630
-The second print gives 2. The same name has two values at two times.
+00:08:50,489 --> 00:08:58,019
+Given a program P and an input i, prove that P halts on i. That is, P does not get stuck in a loop.
 
 73
-00:12:24,080 --> 00:12:39,248
-Re-assignment is convenient, but it makes programs harder to reason about. The keyword final prevents it, so the program is easier to reason about. The theoretical model for imperative languages is the Turing machine.
+00:08:58,469 --> 00:09:06,747
+For many programs this is easy. A program with no loops and no recursion, like hello world, halts on every input.
 
 74
-00:12:39,698 --> 00:12:55,442
-Functional languages have three features. First, immutable data: variables cannot be re-assigned. Second, anonymous functions, written with lambda. This one takes x and y, and returns true if x is less than y.
+00:09:07,197 --> 00:09:16,135
+With a loop, the answer can depend on the input. This loop is our own example: while x is not 1, x becomes x minus 2.
 
 75
-00:12:55,892 --> 00:13:05,193
-Third, higher-order functions. A higher-order function takes a function as an argument. The sort function takes a list and a comparator.
+00:09:16,585 --> 00:09:23,092
+With x equal to 5, x goes 5, 3, 1. Then the loop stops, so the program halts.
 
 76
-00:13:05,643 --> 00:13:12,534
-Give sort the comparator x less than y. The result is in ascending order: 1, 2, 5, 8.
+00:09:23,542 --> 00:09:32,033
+With x equal to 4, x goes 4, 2, 0, minus 2, and so on. x never equals 1, so it runs forever.
 
 77
-00:13:12,984 --> 00:13:23,075
-Give the same sort the comparator x greater than y. Now the order is descending: 8, 5, 2, 1. The input list does not change.
+00:09:32,483 --> 00:09:40,525
+In the 1930s, Alan Turing found a program and an input for which a proof of halting is impossible.
 
 78
-00:13:23,525 --> 00:13:31,525
-The theoretical model for functional languages is the lambda calculus. It has the same power as Turing machines.
+00:09:40,975 --> 00:09:49,018
+One such case is enough. So the problem is undecidable in general. No program answers it for all P and i.
 
 79
-00:13:31,975 --> 00:13:39,953
-This table from the notes sums up the paradigms. Imperative languages have assignment and sequential composition.
+00:09:49,468 --> 00:10:00,412
+A corollary of the halting problem: for two programs P and Q in a Turing complete language, we cannot decide, in general, if P and Q are equivalent.
 
 80
-00:13:40,403 --> 00:13:47,785
-Object-oriented languages have objects. They might have classes, inheritance and dynamic dispatch.
+00:10:00,862 --> 00:10:09,374
+This matters for compilers. You add a new optimization. How do you know the optimized program is equivalent to the original?
 
 81
-00:13:48,235 --> 00:13:54,955
-Functional languages have higher-order functions and lambdas, and data are immutable by default.
+00:10:09,824 --> 00:10:17,632
+In practice, compiler engineers run the compiled programs P prime and Q prime on the same input i.
 
 82
-00:13:55,405 --> 00:14:11,149
-Logic languages, such as Prolog and SQL, have logical equations and an engine that evaluates them. The 01a slides call functional and logic languages declarative: you say what to compute, not how.
+00:10:18,082 --> 00:10:21,218
+They check that the outputs p and q are the same.
 
 83
-00:14:11,599 --> 00:14:26,020
-Many modern languages mix these styles. In the labs we use Java, an imperative object-oriented language, in a functional style. We limit re-assignment with final and use some higher-order functions.
+00:10:21,668 --> 00:10:28,793
+This is weaker than a proof. There might be an input x that we did not test, on which the outputs differ.
 
 84
-00:14:26,470 --> 00:14:34,534
-Now the short answer questions in questions-pre 12.1. Here are the first five. Pause the video and try them. 
+00:10:29,243 --> 00:10:33,915
+Now the course definitions. Polynomial time algorithms are easy.
 
 85
-00:14:34,984 --> 00:14:51,816
-12.1.1. A Turing machine has an infinite tape, and a real computer has finite memory. In a compiler this is the register allocation problem. Variables that do not fit in the registers spill into slower main memory.
+00:10:34,365 --> 00:10:40,189
+Exponential time algorithms are hard. N P complete problems are in this group.
 
 86
-00:14:52,266 --> 00:15:05,151
-12.1.2. Any four of: sat, travelling salesman, knapsack, graph colouring, register allocation, Hamiltonian path, clique, vertex cover, or subgraph isomorphism.
+00:10:40,639 --> 00:10:43,349
+Undecidable problems are impossible.
 
 87
-00:15:05,601 --> 00:15:09,335
-12.1.3. Linear time is O of n.
+00:10:43,799 --> 00:10:48,257
+This classification is about how many steps the computer must run.
 
 88
-00:15:09,785 --> 00:15:13,454
-12.1.4. O of 1 is constant time.
+00:10:48,707 --> 00:10:58,179
+It is not about how much work the engineer does to write the code. Quick sort is tricky to implement, but it runs quickly. So here it is easy.
 
 89
-00:15:13,904 --> 00:15:21,861
-12.1.5. The halting problem. It shows the limits of what compilers can understand about programs.
+00:10:58,629 --> 00:11:06,309
+The notes describe four theoretical machines. A finite state machine has no storage beyond its current state.
 
 90
-00:15:22,311 --> 00:15:26,173
-Here are the next five questions. Pause the video and try them. 
+00:11:06,759 --> 00:11:15,805
+It consumes one input token per step, so it always runs in linear time. F S Ms recognize regular languages.
 
 91
-00:15:26,623 --> 00:15:41,705
-12.1.6. Use a polynomial approximation. Translate the problem for a sat solver. Or write a custom solution by hand. The notes add that the custom solution is never done in compilers.
+00:11:16,255 --> 00:11:20,948
+A push-down automaton is an F S M plus an infinite stack.
 
 92
-00:15:42,155 --> 00:15:48,705
-12.1.7. Yes. Non-deterministic push-down automata are more powerful.
+00:11:21,398 --> 00:11:27,819
+P D As recognize context-free languages, and they always run in polynomial time.
 
 93
-00:15:49,155 --> 00:15:55,896
-12.1.8. No. Non-determinism gives a Turing machine speed, but not power.
+00:11:28,269 --> 00:11:33,048
+A linear-bounded automaton is an F S M plus a finite tape.
 
 94
-00:15:56,346 --> 00:16:03,791
-12.1.9. Keep the dominant term and drop the constant. The answer is O of n squared.
+00:11:33,498 --> 00:11:38,085
+The physical computers we use every day are, strictly, L B As.
 
 95
-00:16:04,241 --> 00:16:10,001
-12.1.11. Conditionals, and repetition by loops or recursion.
+00:11:38,535 --> 00:11:42,631
+A Turing machine is an F S M plus an infinite tape.
 
 96
-00:16:10,451 --> 00:16:13,886
-The next three questions. Pause the video and try them. 
+00:11:43,081 --> 00:11:52,297
+We usually think of our computers as Turing machines, but technically they are L B As. The Turing machine is a model for theory.
 
 97
-00:16:14,336 --> 00:16:31,851
-12.1.10. questions-pre has no posted solution, so this is our solution. Draw two overlapping circles, A and B. Shade the part of A that is outside B. That region is A minus B: the elements in A that are not in B.
+00:11:52,747 --> 00:11:58,699
+In all four, the controller has a finite number of states. The power grows with the storage.
 
 98
-00:16:32,301 --> 00:16:36,631
-12.1.12. HTML or PDF.
+00:11:59,149 --> 00:12:12,653
+Does non-determinism make a machine more powerful? It depends on the machine. For finite state machines, no. D F As and N F As have the same power, and both run in linear time.
 
 99
-00:16:37,081 --> 00:16:46,489
-12.1.13. The printer can get stuck in an infinite loop. This cannot happen with a language that is not Turing complete.
+00:12:13,103 --> 00:12:17,881
+But an N F A might have exponentially fewer states than the D F A.
 
 100
-00:16:46,939 --> 00:16:50,417
-The next six questions. Pause the video and try them. 
+00:12:18,331 --> 00:12:27,867
+For push-down automata, yes. Some context-free grammars need a non-deterministic P D A. The course does not use this fact.
 
 101
-00:16:50,867 --> 00:17:04,840
-12.1.14. The halting problem is to prove that a program halts. The posted solution says: on all possible inputs. The notes say: for a program P and one input i.
+00:12:28,317 --> 00:12:36,936
+For Turing machines, non-determinism gives speed, but not power. The set of problems that can be computed is the same.
 
 102
-00:17:05,290 --> 00:17:15,978
-12.1.15. Alan Turing. Gödel invented the technique that Turing used, but Gödel's proof was about logic, not computation.
+00:12:37,386 --> 00:12:45,215
+But the non-deterministic machine computes some problems exponentially faster. These are the N P complete problems.
 
 103
-00:17:16,428 --> 00:17:25,324
-12.1.16. Easy means polynomial time complexity, for example O of n or O of n squared.
+00:12:45,665 --> 00:12:54,071
+One basic difference between a Turing machine and a real computer is the storage. A Turing machine has an infinite tape.
 
 104
-00:17:25,774 --> 00:17:34,691
-12.1.17. Hard means N P complete: exponential time complexity, such as O of 2 to the n.
+00:12:54,521 --> 00:12:57,059
+A real computer has finite memory.
 
 105
-00:17:35,141 --> 00:17:42,245
-12.1.18. Impossible means undecidable: a Turing machine cannot compute it.
+00:12:57,509 --> 00:13:02,309
+Inside the processor there is only a small, fixed number of registers.
 
 106
-00:17:42,695 --> 00:17:53,682
-12.1.19. No. These terms are not about the effort of the programmer. They measure the number of steps the machine must take to solve the problem.
+00:13:02,759 --> 00:13:13,255
+This shows up in compilers as the register allocation problem. Here three variables, a, b and c, need registers, but there are only two.
 
 107
-00:17:54,132 --> 00:17:58,932
-The last six questions of 12.1. Pause the video and try them. 
+00:13:13,705 --> 00:13:20,703
+If the variables do not fit in the registers, some variables spill into main memory, which is much slower.
 
 108
-00:17:59,382 --> 00:18:04,993
-12.1.20. N P stands for non-deterministic polynomial.
+00:13:21,153 --> 00:13:28,299
+A programming language is Turing complete if it can describe any computation that a Turing machine can do.
 
 109
-00:18:05,443 --> 00:18:10,264
-12.1.21. Exponential time, O of 2 to the n.
+00:13:28,749 --> 00:13:35,747
+Roughly, it needs conditionals, loops or recursion, and a potentially unlimited number of variables.
 
 110
-00:18:10,714 --> 00:18:17,647
-12.1.22. Use a known polynomial heuristic, that is, an approximation.
+00:13:36,197 --> 00:13:41,338
+Almost every programming language is Turing complete. Java and C are.
 
 111
-00:18:18,097 --> 00:18:24,988
-12.1.23. Translate the problem to a boolean formula and use a sat solver.
+00:13:41,788 --> 00:13:46,076
+TeX, the document language under LaTeX, is Turing complete.
 
 112
-00:18:25,438 --> 00:18:34,355
-12.1.24. Write an exhaustive search algorithm by hand. This works, but it is never done in compilers.
+00:13:46,526 --> 00:13:50,003
+So is PostScript, a page language for printers.
 
 113
-00:18:34,805 --> 00:18:47,883
-12.1.25. Given a boolean formula, find values for the variables that make the formula true. That is, find a row in the truth table that evaluates to true.
+00:13:50,453 --> 00:13:53,269
+HTML is not Turing complete.
 
 114
-00:18:48,333 --> 00:18:53,730
-Now questions-pre 12.2, about automata. Pause the video and try them.
+00:13:53,719 --> 00:14:07,522
+SQL is not Turing complete either. For that reason some people do not call HTML and SQL programming languages. The notes do not list the features of SQL, so those cells are empty.
 
 115
-00:18:54,180 --> 00:19:15,641
-12.2.1. First, a D F A cannot have edges labelled epsilon, and an N F A can. Second, in a D F A all edges that leave a state have different labels. An N F A can have several edges with the same label, like the two a edges here. Both machines accept a, and a b.
+00:14:07,972 --> 00:14:10,937
+PDF is also not Turing complete.
 
 116
-00:19:16,091 --> 00:19:22,363
-12.2.2. A finite automaton, also called a finite state machine.
+00:14:11,387 --> 00:14:19,025
+A Turing complete language can loop forever. So a PostScript file can make a printer get stuck in an infinite loop.
 
 117
-00:19:22,813 --> 00:19:29,981
-12.2.3. Linear time, O of n. The machine consumes one input token per step.
+00:14:19,475 --> 00:14:29,459
+Programming languages come in styles, called paradigms. Imperative languages have two features: re-assignment and sequential composition.
 
 118
-00:19:30,431 --> 00:19:33,930
-The last three questions. Pause the video and try them.
+00:14:29,909 --> 00:14:35,669
+Re-assignment: the value of a variable can change. Here x gets the value 7.
 
 119
-00:19:34,380 --> 00:19:45,729
-12.2.4. No. Every N F A can be converted to a D F A, by the subset construction, and every D F A already is an N F A.
+00:14:36,119 --> 00:14:42,177
+Sequential composition: statements execute one after the other. This line prints 7.
 
 120
-00:19:46,179 --> 00:20:09,262
-12.2.5. No. Notes section 3.11 shows that the two notations convert to each other. An ECE 327 machine has internal variables. The ECE 351 machine puts them into the state labels. So S1 becomes S1 x 0 and S1 x 1.
+00:14:42,627 --> 00:14:46,553
+Now x is re-assigned. Its value changes to 2.
 
 121
-00:20:09,712 --> 00:20:20,699
-12.2.6. Yes. The ECE 327 notation is higher level. It is convenient for people, but it adds no power.
+00:14:47,003 --> 00:14:51,611
+The second print gives 2. The same name has two values at two times.
 
 122
-00:20:21,149 --> 00:20:30,919
-To summarize. Big-O keeps only the dominant term. Polynomial is easy, exponential is hard, and undecidable is impossible.
+00:14:52,061 --> 00:15:02,109
+Re-assignment is convenient, but it makes programs harder to reason about. The keyword final prevents it, so the program is easier to reason about.
 
 123
-00:20:31,369 --> 00:20:44,489
-For an N P problem, a solution can be checked in polynomial time. Sat is the canonical N P complete problem. Handle a hard problem with an approximation or a sat solver.
+00:15:02,559 --> 00:15:07,295
+The theoretical model for imperative languages is the Turing machine.
 
 124
-00:20:44,939 --> 00:20:54,347
-Turing showed that the halting problem is undecidable. So program equivalence is undecidable, and compilers test outputs instead.
+00:15:07,745 --> 00:15:14,977
+Functional languages have three features. First, immutable data: variables cannot be re-assigned.
 
 125
-00:20:54,797 --> 00:21:02,179
-The four machines gain power with storage. Non-determinism adds power only to the push-down automaton.
+00:15:15,427 --> 00:15:23,597
+Second, anonymous functions, written with lambda. This one takes x and y, and returns true if x is less than y.
 
 126
-00:21:02,629 --> 00:21:15,407
+00:15:24,047 --> 00:15:29,829
+Third, higher-order functions. A higher-order function takes a function as an argument.
+
+127
+00:15:30,279 --> 00:15:33,372
+The sort function takes a list and a comparator.
+
+128
+00:15:33,822 --> 00:15:40,713
+Give sort the comparator x less than y. The result is in ascending order: 1, 2, 5, 8.
+
+129
+00:15:41,163 --> 00:15:48,587
+Give the same sort the comparator x greater than y. Now the order is descending: 8, 5, 2, 1.
+
+130
+00:15:49,037 --> 00:15:53,495
+The input list does not change. It is still 5, 2, 8, 1.
+
+131
+00:15:53,945 --> 00:16:01,945
+The theoretical model for functional languages is the lambda calculus. It has the same power as Turing machines.
+
+132
+00:16:02,395 --> 00:16:10,374
+This table from the notes sums up the paradigms. Imperative languages have assignment and sequential composition.
+
+133
+00:16:10,824 --> 00:16:18,205
+Object-oriented languages have objects. They might have classes, inheritance and dynamic dispatch.
+
+134
+00:16:18,655 --> 00:16:25,375
+Functional languages have higher-order functions and lambdas, and data are immutable by default.
+
+135
+00:16:25,825 --> 00:16:33,143
+Logic languages, such as Prolog and SQL, have logical equations and an engine that evaluates them.
+
+136
+00:16:33,593 --> 00:16:41,763
+The 01a slides call functional and logic languages declarative: you say what to compute, not how.
+
+137
+00:16:42,213 --> 00:16:56,635
+Many modern languages mix these styles. In the labs we use Java, an imperative object-oriented language, in a functional style. We limit re-assignment with final and use some higher-order functions.
+
+138
+00:16:57,085 --> 00:17:05,149
+Now the short answer questions in questions-pre 12.1. Here are the first five. Pause the video and try them. 
+
+139
+00:17:05,599 --> 00:17:22,431
+12.1.1. A Turing machine has an infinite tape, and a real computer has finite memory. In a compiler this is the register allocation problem. Variables that do not fit in the registers spill into slower main memory.
+
+140
+00:17:22,881 --> 00:17:35,766
+12.1.2. Any four of: sat, travelling salesman, knapsack, graph colouring, register allocation, Hamiltonian path, clique, vertex cover, or subgraph isomorphism.
+
+141
+00:17:36,216 --> 00:17:39,949
+12.1.3. Linear time is O of n.
+
+142
+00:17:40,399 --> 00:17:44,069
+12.1.4. O of 1 is constant time.
+
+143
+00:17:44,519 --> 00:17:52,476
+12.1.5. The halting problem. It shows the limits of what compilers can understand about programs.
+
+144
+00:17:52,926 --> 00:17:56,787
+Here are the next five questions. Pause the video and try them. 
+
+145
+00:17:57,237 --> 00:18:12,341
+12.1.6. Use a polynomial approximation. Translate the problem for a sat solver. Or write a custom solution by hand. The notes add that the custom solution is never done in compilers.
+
+146
+00:18:12,791 --> 00:18:19,341
+12.1.7. Yes. Non-deterministic push-down automata are more powerful.
+
+147
+00:18:19,791 --> 00:18:26,532
+12.1.8. No. Non-determinism gives a Turing machine speed, but not power.
+
+148
+00:18:26,982 --> 00:18:36,411
+12.1.9. Keep the dominant term, 7 n squared, and drop the constant 7. The answer is O of n squared.
+
+149
+00:18:36,861 --> 00:18:42,621
+12.1.11. Conditionals, and repetition by loops or recursion.
+
+150
+00:18:43,071 --> 00:18:46,506
+The next three questions. Pause the video and try them. 
+
+151
+00:18:46,956 --> 00:19:04,471
+12.1.10. questions-pre has no posted solution, so this is our solution. Draw two overlapping circles, A and B. Shade the part of A that is outside B. That region is A minus B: the elements in A that are not in B.
+
+152
+00:19:04,921 --> 00:19:09,251
+12.1.12. HTML or PDF.
+
+153
+00:19:09,701 --> 00:19:19,109
+12.1.13. The printer can get stuck in an infinite loop. This cannot happen with a language that is not Turing complete.
+
+154
+00:19:19,559 --> 00:19:23,037
+The next six questions. Pause the video and try them. 
+
+155
+00:19:23,487 --> 00:19:37,460
+12.1.14. The halting problem is to prove that a program halts. The posted solution says: on all possible inputs. The notes say: for a program P and one input i.
+
+156
+00:19:37,910 --> 00:19:48,598
+12.1.15. Alan Turing. Gödel invented the technique that Turing used, but Gödel's proof was about logic, not computation.
+
+157
+00:19:49,048 --> 00:19:57,944
+12.1.16. Easy means polynomial time complexity, for example O of n or O of n squared.
+
+158
+00:19:58,394 --> 00:20:07,311
+12.1.17. Hard means N P complete: exponential time complexity, such as O of 2 to the n.
+
+159
+00:20:07,761 --> 00:20:14,865
+12.1.18. Impossible means undecidable: a Turing machine cannot compute it.
+
+160
+00:20:15,315 --> 00:20:26,302
+12.1.19. No. These terms are not about the effort of the programmer. They measure the number of steps the machine must take to solve the problem.
+
+161
+00:20:26,752 --> 00:20:31,552
+The last six questions of 12.1. Pause the video and try them. 
+
+162
+00:20:32,002 --> 00:20:37,613
+12.1.20. N P stands for non-deterministic polynomial.
+
+163
+00:20:38,063 --> 00:20:42,884
+12.1.21. Exponential time, O of 2 to the n.
+
+164
+00:20:43,334 --> 00:20:50,267
+12.1.22. Use a known polynomial heuristic, that is, an approximation.
+
+165
+00:20:50,717 --> 00:20:57,608
+12.1.23. Translate the problem to a boolean formula and use a sat solver.
+
+166
+00:20:58,058 --> 00:21:06,975
+12.1.24. Write an exhaustive search algorithm by hand. This works, but it is never done in compilers.
+
+167
+00:21:07,425 --> 00:21:20,503
+12.1.25. Given a boolean formula, find values for the variables that make the formula true. That is, find a row in the truth table that evaluates to true.
+
+168
+00:21:20,953 --> 00:21:26,350
+Now questions-pre 12.2, about automata. Pause the video and try them.
+
+169
+00:21:26,800 --> 00:21:37,125
+12.2.1. First, a D F A cannot have edges labelled epsilon. An N F A can, like the edge from 0 to 1 here.
+
+170
+00:21:37,575 --> 00:21:49,607
+Second, in a D F A all edges that leave a state have different labels. An N F A can have several edges with the same label, like the two a edges that leave state 1.
+
+171
+00:21:50,057 --> 00:21:52,553
+Both machines accept a, and a b.
+
+172
+00:21:53,003 --> 00:21:59,275
+12.2.2. A finite automaton, also called a finite state machine.
+
+173
+00:21:59,725 --> 00:22:06,296
+12.2.3. Linear time, O of n. The machine takes one step per input letter.
+
+174
+00:22:06,746 --> 00:22:10,245
+The last three questions. Pause the video and try them.
+
+175
+00:22:10,695 --> 00:22:22,193
+12.2.4. No. Every N F A can be converted to a D F A, by the subset construction. And every D F A already is an N F A.
+
+176
+00:22:22,643 --> 00:22:30,387
+12.2.5. No. Notes section 3.11 shows that the two notations convert to each other.
+
+177
+00:22:30,837 --> 00:22:37,621
+An ECE 327 machine has internal variables, like x on these edges.
+
+178
+00:22:38,071 --> 00:22:48,226
+The ECE 351 machine puts them into the state labels. So S1 becomes S1 x 0 and S1 x 1.
+
+179
+00:22:48,676 --> 00:22:59,684
+12.2.6. Yes. The ECE 327 notation is higher level. It is convenient for people, but it adds no power.
+
+180
+00:23:00,134 --> 00:23:09,905
+To summarize. Big-O keeps only the dominant term. Polynomial is easy, exponential is hard, and undecidable is impossible.
+
+181
+00:23:10,355 --> 00:23:23,475
+For an N P problem, a solution can be checked in polynomial time. Sat is the canonical N P complete problem. Handle a hard problem with an approximation or a sat solver.
+
+182
+00:23:23,925 --> 00:23:33,333
+Turing showed that the halting problem is undecidable. So program equivalence is undecidable, and compilers test outputs instead.
+
+183
+00:23:33,783 --> 00:23:45,132
+The four machines gain power with storage. Non-determinism adds power to the push-down automaton, but not to the finite state machine or the Turing machine.
+
+184
+00:23:45,582 --> 00:23:58,361
 Imperative languages have re-assignment and sequential composition. Functional languages have immutable data, lambdas and higher-order functions. Next video: D F As.

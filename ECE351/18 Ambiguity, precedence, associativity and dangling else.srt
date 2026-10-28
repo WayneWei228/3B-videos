@@ -7,453 +7,705 @@ This video is about ambiguous grammars. A grammar is ambiguous when one input st
 We see why one tree matters. Then we remove ambiguity with precedence and associativity. Then the dangling else problem. At the end we solve exercises from the course notes and the short questions in questions-pre 12.3. The week 5 slides are not available yet, so this video uses the course notes, chapter 4.
 
 3
-00:00:31,535 --> 00:00:43,865
-A parser reads an input string and uses the grammar to build a parse tree. Here the grammar has E goes to E plus E, or an integer. The input is 1 plus 2 plus 3.
+00:00:31,535 --> 00:00:36,804
+A parser reads an input string. It uses the grammar to build a parse tree.
 
 4
-00:00:44,315 --> 00:00:48,390
-One parse tree groups 1 plus 2 first, and then adds 3.
+00:00:37,254 --> 00:00:42,587
+Here the grammar is: S goes to E, and E goes to E plus E, or to an integer.
 
 5
-00:00:48,840 --> 00:00:56,797
-But the same grammar also allows a second tree. It groups 2 plus 3 first. So which tree does the parser give?
+00:00:43,037 --> 00:00:45,853
+The input string is 1 plus 2 plus 3.
 
 6
-00:00:57,247 --> 00:01:05,439
-The later phases of the compiler use the tree. If one string has two trees, the string can mean two different programs.
+00:00:46,303 --> 00:00:50,655
+One parse tree groups 1 plus 2 first. Then it adds 3.
 
 7
-00:01:05,889 --> 00:01:18,732
-Here is the definition from the course notes. A grammar is ambiguous if there is a legal input string with two different derivations. Two different derivations give two different parse trees.
+00:00:51,105 --> 00:00:56,631
+But the same grammar also allows a second tree. It groups 2 plus 3 first.
 
 8
-00:01:19,182 --> 00:01:23,065
-The test: take one input string, and do two derivations.
+00:00:57,081 --> 00:01:00,899
+So which tree does the parser give? The grammar does not say.
 
 9
-00:01:23,515 --> 00:01:31,109
-If both derivations accept, and they are different, the grammar is ambiguous. One example string is a proof.
+00:01:01,349 --> 00:01:09,541
+The later phases of the compiler use the tree. If one string has two trees, the string can mean two different programs.
 
 10
-00:01:31,559 --> 00:01:42,247
-The hard part is to find that string. In theory this is undecidable. There are grammars for which no program can compute an ambiguity-revealing string.
+00:01:09,991 --> 00:01:21,490
+Here is the definition from the course notes. A grammar is ambiguous if there is a legal input string with two different derivations, that is, two different parse trees.
 
 11
-00:01:42,697 --> 00:01:51,700
-In practice, a little intuition is enough, for every grammar in this course. Look first at binary operators and at optional parts.
+00:01:21,940 --> 00:01:24,244
+The test: take one input string.
 
 12
-00:01:52,150 --> 00:02:02,881
-Here is the grammar from the notes. S goes to E. E goes to E plus E, or to an integer. Is it ambiguous? Try the string 1 plus 2 plus 3.
+00:01:24,694 --> 00:01:29,003
+Do two derivations of it. Each derivation gives a parse tree.
 
 13
-00:02:03,331 --> 00:02:08,472
-Tree 1. Expand the top E as E plus E. The right E becomes 3.
+00:01:29,453 --> 00:01:37,069
+If both derivations accept, and they are different, the grammar is ambiguous. One example string is a proof.
 
 14
-00:02:08,922 --> 00:02:17,839
-The left E is again E plus E, and it becomes 1 plus 2. So tree 1 groups the string as 1 plus 2, then plus 3.
+00:01:37,519 --> 00:01:48,207
+The hard part is to find that string. In theory this is undecidable. There are grammars for which no program can compute an ambiguity-revealing string.
 
 15
-00:02:18,289 --> 00:02:24,519
-Tree 2. Expand the top E as E plus E again. This time the left E becomes 1.
+00:01:48,657 --> 00:01:57,660
+In practice, a little intuition is enough, for every grammar in this course. Look first at binary operators and at optional parts.
 
 16
-00:02:24,969 --> 00:02:33,182
-The right E is E plus E, and it becomes 2 plus 3. So tree 2 groups the string as 1 plus, 2 plus 3.
+00:01:58,110 --> 00:02:04,275
+Here is the grammar from the notes. S goes to E. E goes to E plus E, or to an integer.
 
 17
-00:02:33,632 --> 00:02:49,269
-Both trees accept the same string, and they are different. So the grammar is ambiguous. Both trees give 6, because addition is associative. The grammar does not say if plus is left associative or right associative.
+00:02:04,725 --> 00:02:09,141
+Is it ambiguous? Try the input string 1 plus 2 plus 3.
 
 18
-00:02:49,719 --> 00:02:57,101
-Both trees gave the right sum. So why do engineers remove the ambiguity? The notes give two reasons.
+00:02:09,591 --> 00:02:13,495
+Tree 1. Expand the top E with E goes to E plus E.
 
 19
-00:02:57,551 --> 00:03:12,335
-Reason 1 is cost. An ambiguous context free grammar is not L L one. Its parser needs a nondeterministic pushdown automaton. An L L one grammar needs only a deterministic one.
+00:02:13,945 --> 00:02:15,673
+The right E becomes 3.
 
 20
-00:03:12,785 --> 00:03:18,417
-The algorithm is more complex: the Earley algorithm instead of recursive descent.
+00:02:16,123 --> 00:02:20,283
+The left E is again E plus E, and it becomes 1 plus 2.
 
 21
-00:03:18,867 --> 00:03:23,091
-And it takes more time. Order n cubed instead of order n.
+00:02:20,733 --> 00:02:24,915
+So tree 1 groups the string as 1 plus 2, then plus 3.
 
 22
-00:03:23,541 --> 00:03:36,618
-Reason 2 is testing. With one acceptable output, testing is easier. Associativity and precedence are the usual sources of ambiguity, and we can design them out of the grammar.
+00:02:25,365 --> 00:02:29,695
+Tree 2. Expand the top E with E goes to E plus E again.
 
 23
-00:03:37,068 --> 00:03:45,623
-Add multiplication. E goes to E plus E, E times E, or an integer. Take the string 1 plus 2 times 3.
+00:02:30,145 --> 00:02:32,471
+This time the left E becomes 1.
 
 24
-00:03:46,073 --> 00:03:51,897
-Tree 1 puts plus lower in the tree. It groups 1 plus 2 first, then times 3.
+00:02:32,921 --> 00:02:36,739
+The right E is E plus E, and it becomes 2 plus 3.
 
 25
-00:03:52,347 --> 00:03:57,211
-Tree 2 puts times lower in the tree. It groups 2 times 3 first.
+00:02:37,189 --> 00:02:41,136
+So tree 2 groups the string as 1 plus, 2 plus 3.
 
 26
-00:03:57,661 --> 00:04:07,069
-Tree 1 gives 9. Tree 2 gives 7. Only 7 is arithmetically correct. The operator lower in the tree is done first.
+00:02:41,586 --> 00:02:46,045
+One string has two different trees. So the grammar is ambiguous.
 
 27
-00:04:07,519 --> 00:04:16,521
-So now the ambiguity changes the result. The grammar must say that times comes before plus. This is operator precedence.
+00:02:46,495 --> 00:02:50,527
+Tree 1: 1 plus 2 is 3, and 3 plus 3 is 6.
 
 28
-00:04:16,971 --> 00:04:29,473
-In school we learn the order of operations, BEDMAS. A grammar must build this in. The notes give four rules. Rule a. Each level of precedence gets its own nonterminal.
+00:02:50,977 --> 00:02:55,073
+Tree 2: 2 plus 3 is 5, and 1 plus 5 is 6.
 
 29
-00:04:29,923 --> 00:04:36,429
-Rule b. The lowest level of precedence is the top level production. Here that is E, for plus.
+00:02:55,523 --> 00:03:05,229
+Both values are 6, because addition is associative. But the grammar does not say if plus is left associative or right associative.
 
 30
-00:04:36,879 --> 00:04:43,471
-Rule c. Each production uses the next higher level. E uses F, the level for times.
+00:03:05,679 --> 00:03:15,450
+Why do engineers remove ambiguity? The notes give two reasons. The table compares an ambiguous grammar with an L L one grammar.
 
 31
-00:04:43,921 --> 00:04:48,487
-Rule d. The highest level includes the operands, the integers.
+00:03:15,900 --> 00:03:30,684
+Reason 1 is cost. An ambiguous context free grammar is not L L one. Its parser needs a nondeterministic pushdown automaton. An L L one grammar needs only a deterministic one.
 
 32
-00:04:48,937 --> 00:04:58,217
-The result: low precedence operators are near the root of the tree. High precedence operators are near the leaves, so they are done first.
+00:03:31,134 --> 00:03:36,766
+The algorithm is more complex: the Earley algorithm instead of recursive descent.
 
 33
-00:04:58,667 --> 00:05:08,928
-Now apply the rules to E plus E, E times E. Rule a. We have two operators, so two levels. Call them E for plus, and F for times.
+00:03:37,216 --> 00:03:41,333
+And it takes more time: order n cubed instead of order n.
 
 34
-00:05:09,378 --> 00:05:16,205
-Rule d. F is the highest level, so F includes the operands. Add F goes to an integer.
+00:03:41,783 --> 00:03:51,063
+Reason 2 is testing. For an ambiguous grammar, more than one tree is a correct output. With one correct tree, testing is easier.
 
 35
-00:05:16,655 --> 00:05:22,244
-Rule b. E is the lowest level, so it stays at the top. Keep S goes to E.
+00:03:51,513 --> 00:04:03,588
+An ambiguous grammar is never L L one, and never a peg. Associativity and precedence are the usual sources of ambiguity, and we can design them out of the grammar.
 
 36
-00:05:22,694 --> 00:05:30,587
-Rule c. Connect the levels. E goes to F. Now an E can become an F, but an F can never become a plus.
+00:04:04,038 --> 00:04:09,371
+Add multiplication. E goes to E plus E, E times E, or an integer.
 
 37
-00:05:31,037 --> 00:05:41,576
-A python check generated all strings up to length 7. The new grammar accepts exactly the same strings as the old one. Only the trees are different.
+00:04:09,821 --> 00:04:12,317
+Take the string 1 plus 2 times 3.
 
 38
-00:05:42,026 --> 00:05:46,335
-Parse 1 plus 2 times 3 with the new grammar. S goes to E.
+00:04:12,767 --> 00:04:18,591
+Tree 1 puts plus lower in the tree. It groups 1 plus 2 first, then times 3.
 
 39
-00:05:46,785 --> 00:05:52,012
-The plus must come from E goes to E plus E. Only the E level has a plus.
+00:04:19,041 --> 00:04:23,905
+Tree 2 puts times lower in the tree. It groups 2 times 3 first.
 
 40
-00:05:52,462 --> 00:05:59,587
-Each side becomes an F. The right F is F times F. The times sits under F, near the leaves.
+00:04:24,355 --> 00:04:29,411
+Tree 1: 1 plus 2 is 3, and 3 times 3 is 9. That is wrong.
 
 41
-00:06:00,037 --> 00:06:08,464
-So the only tree is 1 plus, 2 times 3, which is 7. A python check found exactly one tree for this string.
+00:04:29,861 --> 00:04:38,416
+Tree 2: 2 times 3 is 6, and 1 plus 6 is 7. That is correct. The operator lower in the tree is done first.
 
 42
-00:06:08,914 --> 00:06:19,666
-Is the new grammar unambiguous now? No. Try 4 plus 5 plus 6. The production E goes to E plus E still has an E on both sides.
+00:04:38,866 --> 00:04:47,869
+So now the ambiguity changes the result. The grammar must say that times comes before plus. This is operator precedence.
 
 43
-00:06:20,116 --> 00:06:25,364
-One tree groups 4 plus 5 first. The other groups 5 plus 6 first.
+00:04:48,319 --> 00:05:00,969
+A grammar must build in the order of operations. The notes give four rules. Rule a. Each level of precedence gets its own nonterminal: E for plus, and F for times.
 
 44
-00:06:25,814 --> 00:06:33,089
-Both give 15. Addition and multiplication are associative, so arithmetically this does not matter.
+00:05:01,419 --> 00:05:07,926
+Rule b. The lowest level of precedence is the top level production. Here that is E, for plus.
 
 45
-00:06:33,539 --> 00:06:43,288
-Precedence fixes the order between different operators. It does not fix the order when the same operator appears twice. That is associativity.
+00:05:08,376 --> 00:05:14,947
+Rule c. Each production uses the next higher level. E uses F, the level for times.
 
 46
-00:06:43,738 --> 00:06:49,541
-Change the operators to minus and divide. For these, associativity matters.
+00:05:15,397 --> 00:05:19,962
+Rule d. The highest level includes the operands, the integers.
 
 47
-00:06:49,991 --> 00:06:57,863
-Parse 8 minus 6 minus 2. One tree groups 6 minus 2 first. This is the right associative parse.
+00:05:20,412 --> 00:05:29,692
+The result: low precedence operators are near the root of the tree. High precedence operators are near the leaves, so they are done first.
 
 48
-00:06:58,313 --> 00:07:03,774
-The other tree groups 8 minus 6 first. This is the left associative parse.
+00:05:30,142 --> 00:05:41,342
+Now apply the rules to the old grammar, E plus E, E times E. Rule a. We have two operators, so two levels. Call them E for plus, and F for times.
 
 49
-00:07:04,224 --> 00:07:11,840
-The right associative tree gives 4. That is wrong. The left associative tree gives 0. That is correct.
+00:05:41,792 --> 00:05:48,619
+Rule d. F is the highest level, so F includes the operands. Add F goes to an integer.
 
 50
-00:07:12,290 --> 00:07:26,178
-Subtraction is left associative. x minus y minus z means x minus y, then minus z. The problem is E goes to E minus E. E can grow on either side of the minus.
+00:05:49,069 --> 00:05:54,658
+Rule b. E is the lowest level, so it stays at the top. Keep S goes to E.
 
 51
-00:07:26,628 --> 00:07:48,217
-The fix. Change E goes to E minus E into E goes to E minus F. The rule is left recursive: E appears only on the left of the minus. Division is also left associative, so F goes to F divided by an integer. Here is the leftmost derivation of 8 minus 6 minus 2.
+00:05:55,108 --> 00:06:03,001
+Rule c. Connect the levels. E goes to F. Now an E can become an F, but an F can never become a plus.
 
 52
-00:07:48,667 --> 00:07:50,033
-S becomes E.
+00:06:03,451 --> 00:06:13,990
+A python check generated all strings up to length 7. The new grammar accepts exactly the same strings as the old one. Only the trees are different.
 
 53
-00:07:50,483 --> 00:07:55,176
-E becomes E minus F. The orange symbol is the one we expand.
+00:06:14,440 --> 00:06:17,619
+Parse 1 plus 2 times 3 with the new grammar.
 
 54
-00:07:55,626 --> 00:08:01,450
-Expand the left E again: E minus F. Now we have E minus F minus F.
+00:06:18,069 --> 00:06:19,797
+Start with S goes to E.
 
 55
-00:08:01,900 --> 00:08:06,508
-The last E becomes F, because the only other choice adds a minus.
+00:06:20,247 --> 00:06:25,473
+The plus must come from E goes to E plus E. Only the E level has a plus.
 
 56
-00:08:06,958 --> 00:08:11,758
-The first F becomes 8. We always expand the leftmost nonterminal.
+00:06:25,923 --> 00:06:29,251
+Each side becomes an F, with E goes to F.
 
 57
-00:08:12,208 --> 00:08:13,936
-The second F becomes 6.
+00:06:29,701 --> 00:06:33,349
+The left F becomes 1, with F goes to an integer.
 
 58
-00:08:14,386 --> 00:08:25,757
-The last F becomes 2. The tree leans to the left. 8 minus 6 is done first, then minus 2. The value is 0, and a check found exactly one tree.
+00:06:33,799 --> 00:06:38,834
+The right F is F times F. The times sits under F, near the leaves.
 
 59
-00:08:26,207 --> 00:08:34,847
-Exponentiation is the opposite. It is right associative. x to the y to the z means x to the power y to the z.
+00:06:39,284 --> 00:06:41,545
+The two lower F's become 2 and 3.
 
 60
-00:08:35,297 --> 00:08:54,177
-So the rule is right recursive: E goes to F, caret, E. Only the right side can grow. For 2 caret 3 caret 2, the tree leans right. 3 squared is done first, and the value is 2 to the 9, which is 512. The other grouping would give 64.
+00:06:41,995 --> 00:06:53,195
+So the only tree is 1 plus, 2 times 3. 2 times 3 is 6, and 1 plus 6 is 7. A python check found exactly one tree for this string.
 
 61
-00:08:54,627 --> 00:09:03,992
-The pattern: a left associative operator needs a left recursive rule. A right associative operator needs a right recursive rule.
+00:06:53,645 --> 00:06:58,979
+Is the new grammar unambiguous now? No. Try 4 plus 5 plus 6.
 
 62
-00:09:04,442 --> 00:09:14,917
-Now a problem. Left associativity needs left recursion. But an L L one grammar cannot have left recursion. Video 19 shows why.
+00:06:59,429 --> 00:07:04,847
+The production E goes to E plus E still has an E on both sides of the plus.
 
 63
-00:09:15,367 --> 00:09:34,481
-We can remove the left recursion with a tail rule: E goes to F T, and T goes to minus F T, or epsilon. This grammar is L L one. But look at the tree. Now the tree leans to the right. Removing the left recursion also changed the associativity.
+00:07:05,297 --> 00:07:07,921
+One tree groups 4 plus 5 first.
 
 64
-00:09:34,931 --> 00:09:51,913
-The notes say there is no simple solution in B N F. But in E B N F we can use repetition: an Expr is a Term, followed by zero or more minus Term. The grammar gives a flat list. It does not fix the associativity.
+00:07:08,371 --> 00:07:11,017
+The other tree groups 5 plus 6 first.
 
 65
-00:09:52,363 --> 00:10:07,979
-Then the parser implementation combines the list from the left. 8 minus 6 is 2, and 2 minus 2 is 0. This E B N F grammar is weakly equivalent: it accepts the same strings, but it builds different trees.
+00:07:11,467 --> 00:07:16,117
+Tree 1: 4 plus 5 is 9, and 9 plus 6 is 15.
 
 66
-00:10:08,429 --> 00:10:25,581
-Now a classic ambiguity: the dangling else. This line gives the enrollment rules for E C E 351. If the department is E C E, if the term is 3 A, enroll is yes. Else, enroll needs an override.
+00:07:16,567 --> 00:07:25,826
+Tree 2: 5 plus 6 is 11, and 4 plus 11 is 15. Addition is associative, so here the value is the same.
 
 67
-00:10:26,031 --> 00:10:35,396
-Here is the typical grammar for an optional else. A conditional is if, expression, statement. Or if, expression, statement, else, statement.
+00:07:26,276 --> 00:07:36,004
+Precedence fixes the order between different operators. It does not fix the order when the same operator appears twice. That is associativity.
 
 68
-00:10:35,846 --> 00:10:45,638
-Third year E C E students can enroll. But who needs an override? It depends on which if owns the else, the inner if or the outer if.
+00:07:36,454 --> 00:07:42,641
+Change the operators to minus and divide. For these, the grouping changes the value.
 
 69
-00:10:46,088 --> 00:10:55,453
-This problem comes from Algol 60. Algol 60 gave us the B N F notation, and C is an industrial descendant of it.
+00:07:43,091 --> 00:07:45,437
+Parse 8 minus 6 minus 2.
 
 70
-00:10:55,903 --> 00:11:00,853
-Here are the two parse trees. The leaves read the same line from left to right.
+00:07:45,887 --> 00:07:51,071
+One tree groups 6 minus 2 first. This is the right associative parse.
 
 71
-00:11:01,303 --> 00:11:06,103
-In tree 1, the inner conditional has the else. The outer if has no else.
+00:07:51,521 --> 00:07:56,983
+The other tree groups 8 minus 6 first. This is the left associative parse.
 
 72
-00:11:06,553 --> 00:11:15,193
-In tree 2, the outer conditional has the else, and the inner if has none. Both trees accept. So the grammar is ambiguous.
+00:07:57,433 --> 00:08:04,046
+Right associative tree: 6 minus 2 is 4, and 8 minus 4 is 4. That is wrong.
 
 73
-00:11:15,643 --> 00:11:27,717
-The two trees are two different programs. With the else on the inner if, E C E students in a different term use an override. Students outside E C E get nothing.
+00:08:04,496 --> 00:08:10,960
+Left associative tree: 8 minus 6 is 2, and 2 minus 2 is 0. That is correct.
 
 74
-00:11:28,167 --> 00:11:41,138
-With the else on the outer if, students from outside E C E use an override. E C E students in other terms get nothing. The same text gives two different enrollment rules.
+00:08:11,410 --> 00:08:18,898
+Subtraction is left associative. x minus y minus z means x minus y, then minus z.
 
 75
-00:11:41,588 --> 00:11:50,292
-In practice there are four ways to resolve the dangling else. One: every if needs an end if. V H D L does this.
+00:08:19,348 --> 00:08:25,001
+The problem is E goes to E minus E. E can grow on either side of the minus.
 
 76
-00:11:50,742 --> 00:11:53,899
-Two: every if needs an else. Haskell does this.
+00:08:25,451 --> 00:08:36,673
+The fix. Change E goes to E minus E into E goes to E minus F. Now E appears only on the left of the minus. The rule is left recursive.
 
 77
-00:11:54,349 --> 00:11:57,869
-Three: put indentation into the grammar. Python does this.
+00:08:37,123 --> 00:08:42,904
+Division is also left associative. So F goes to F divided by an integer.
 
 78
-00:11:58,319 --> 00:12:06,746
-Four: add a note to the language specification. C and Java do this. The note says that the else goes with the inner if.
+00:08:43,354 --> 00:08:48,666
+Here is the leftmost derivation of 8 minus 6 minus 2. Start with S.
 
 79
-00:12:07,196 --> 00:12:16,177
-Exercise 4.6.1 from the notes. Which of the four approaches change the grammar, so that the ambiguity is gone?
+00:08:49,116 --> 00:08:51,676
+S becomes E, with S goes to E.
 
 80
-00:12:16,627 --> 00:12:18,270
-Pause the video and try it.
+00:08:52,126 --> 00:08:57,289
+E becomes E minus F. The orange symbol is the next one we expand.
 
 81
-00:12:18,720 --> 00:12:33,504
-The answer is the first three. End if, a required else, and indentation all change the grammar. The note in the specification leaves the grammar ambiguous. The parser writer must deal with this case specially.
+00:08:57,739 --> 00:09:03,563
+Expand the left E again: E minus F. Now we have E minus F minus F.
 
 82
-00:12:33,954 --> 00:12:45,623
-Exercise 4.6.2. For the approaches that remove the ambiguity, write the new grammar. The notes do not give a solution yet, so this is our solution.
+00:09:04,013 --> 00:09:08,471
+The left E becomes F, because the only other choice adds a minus.
 
 83
-00:12:46,073 --> 00:12:47,716
-Pause the video and try it.
+00:09:08,921 --> 00:09:13,721
+The first F becomes 8. We always expand the leftmost nonterminal.
 
 84
-00:12:48,166 --> 00:13:04,294
-With end if, each conditional closes with end if. Now the programmer must write where the inner if ends. If end if comes after the else, the else is inside the inner if. If the end if comes first, the else belongs to the outer if.
+00:09:14,171 --> 00:09:15,899
+The second F becomes 6.
 
 85
-00:13:04,744 --> 00:13:11,443
-With a required else, there is only one form. Every if has its own else, so no else is left over.
+00:09:16,349 --> 00:09:18,227
+The last F becomes 2.
 
 86
-00:13:11,893 --> 00:13:29,237
-A python check counted the parse trees of every string up to 8 symbols. Both new grammars give at most one tree. The old grammar gives two trees for some strings. Indentation needs special tokens from the lexer, so we do not write that grammar here.
+00:09:18,677 --> 00:09:29,130
+The tree leans to the left. 8 minus 6 is done first: 8 minus 6 is 2, and 2 minus 2 is 0. A check found exactly one tree.
 
 87
-00:13:29,687 --> 00:13:50,636
-Now exercises 4.11.6 and 4.11.7 from the notes. The grammar is E goes to E plus E, E times E, or int. First, give an input string with two parse trees. Second, refactor the grammar for normal precedence, and make it right associative.
+00:09:29,580 --> 00:09:38,561
+Exponentiation is the opposite. It is right associative. x to the y to the z means x to the power, y to the z.
 
 88
-00:13:51,086 --> 00:13:52,729
-Pause the video and try it.
+00:09:39,011 --> 00:09:45,305
+So the rule is right recursive: E goes to F, caret, E. Only the right side can grow.
 
 89
-00:13:53,179 --> 00:14:01,115
-Part 6. The string 1 plus 2 times 3 has two trees, as we saw. 1 plus 2 plus 3 also works.
+00:09:45,755 --> 00:09:53,371
+For 2 caret 3 caret 2, the tree leans right. 3 caret 2 is lower in the tree, so it is done first.
 
 90
-00:14:01,565 --> 00:14:17,010
-Part 7. Our solution follows the notes. E goes to F plus E, or F. F goes to int times F, or int. Plus is at the low level, and times is at the high level. Both rules are right recursive.
+00:09:53,821 --> 00:09:59,069
+3 to the power 2 is 9, and 2 to the power 9 is 512.
 
 91
-00:14:17,460 --> 00:14:22,089
-1 plus 2 times 3 has one tree: 1 plus, 2 times 3.
+00:09:59,519 --> 00:10:08,031
+The other grouping gives 2 to the power 3, which is 8, and 8 to the power 2, which is 64. That is not this tree.
 
 92
-00:14:22,539 --> 00:14:29,643
-1 plus 2 plus 3 also has one tree. It leans right, so the grammar is right associative.
+00:10:08,481 --> 00:10:17,825
+The pattern: a left associative operator needs a left recursive rule. A right associative operator needs a right recursive rule.
 
 93
-00:14:30,093 --> 00:14:44,408
-The notes also show a wrong first try: E goes to E plus E or F, and F goes to F times F or int. The precedence is correct, but it is not right associative, and it is still ambiguous.
+00:10:18,275 --> 00:10:28,749
+Now a problem. Left associativity needs left recursion. But an L L one grammar cannot have left recursion. Video 19 shows why.
 
 94
-00:14:44,858 --> 00:15:02,863
-A python check found at most one tree for every string up to length 7, and the same language as the original grammar. This grammar is not L L one, because of common prefixes. That is OK here. Video 19 shows an L L one version.
+00:10:29,199 --> 00:10:39,973
+We can remove the left recursion with a tail rule: E goes to F T, and T goes to minus F T, or epsilon. This grammar is L L one.
 
 95
-00:15:03,313 --> 00:15:24,113
-Exercise 4.11.4 from the notes. A to E are binary operators. Each has a different precedence, and none is associative. The input 3 C 4 B 1 A 2 D 6 B 7 E 5 gives this tree. List the operators from highest to lowest precedence.
+00:10:40,423 --> 00:10:50,364
+But look at the tree for 8 minus 6 minus 2. Now the tree leans to the right. Removing the left recursion also changed the associativity.
 
 96
-00:15:24,563 --> 00:15:26,206
-Pause the video and try it.
+00:10:50,814 --> 00:11:02,889
+The notes say there is no simple solution in B N F. But in E B N F we can use repetition: an Expr is a Term, followed by zero or more minus Term.
 
 97
-00:15:26,656 --> 00:15:35,723
-An operator lower in the tree is done first, so it has higher precedence than its parent. C is under B. So C is higher than B.
+00:11:03,339 --> 00:11:07,136
+The grammar gives a flat list. It does not fix the grouping.
 
 98
-00:15:36,173 --> 00:15:41,101
-B is under A, and D is under A. So B and D are both higher than A.
+00:11:07,586 --> 00:11:13,175
+Then the parser implementation combines the list from the left. 8 minus 6 is 2.
 
 99
-00:15:41,551 --> 00:15:48,057
-E is under D, so E is higher than D. The second B is under E, so B is higher than E.
+00:11:13,625 --> 00:11:15,780
+Then 2 minus 2 is 0.
 
 100
-00:15:48,507 --> 00:15:58,939
-Chain them: C, then B, then E, then D, then A. A python check tried all 120 orders. Only C B E D A fits all five facts.
+00:11:16,230 --> 00:11:23,761
+This E B N F grammar is weakly equivalent: it accepts the same strings, but it builds different trees.
 
 101
-00:15:59,389 --> 00:16:09,843
-Now the short questions in questions-pre, section 12.3. Question 12.3.4. How do we show that a grammar is ambiguous?
+00:11:24,211 --> 00:11:32,659
+Now a classic ambiguity: the dangling else. This line gives the enrollment rules for E C E 351.
 
 102
-00:16:10,293 --> 00:16:14,197
-Show one input string that has two parse trees in the grammar.
+00:11:33,109 --> 00:11:38,293
+If the department is E C E, and if the term is 3 A, enroll is yes.
 
 103
-00:16:14,647 --> 00:16:34,977
-Question 12.3.5. How do we show that a grammar is unambiguous? The posted answer: that is mathematically beyond this course. We say that we cannot find an input string with two parses. In this video, a python search over all short strings gave us extra confidence.
+00:11:38,743 --> 00:11:41,047
+Else, enroll needs an override.
 
 104
-00:16:35,427 --> 00:16:50,894
-Question 12.3.7. How many kinds of grammar equivalence did we see? Two. Weak equivalence: the grammars accept the same strings. Strong equivalence: same strings, and exactly the same parse trees.
+00:11:41,497 --> 00:11:47,961
+Here is the typical grammar for an optional else. A conditional is: if, expression, statement.
 
 105
-00:16:51,344 --> 00:17:04,741
-Question 12.3.8. When we refactor a grammar, it is usually weakly equivalent. The precedence grammar accepts the same strings as the ambiguous one, but it builds different trees.
+00:11:48,411 --> 00:11:51,312
+Or: if, expression, statement, else, statement.
 
 106
-00:17:05,191 --> 00:17:15,303
-The other questions in section 12.3 use this table from the notes, Figure 4.2. Each class of grammar needs a kind of machine.
+00:11:51,762 --> 00:11:55,879
+The else is optional, so the grammar has two conditional forms.
 
 107
-00:17:15,753 --> 00:17:26,676
-Question 12.3.1. What machine recognizes an L L one language? A pushdown automaton. The table says a deterministic one.
+00:11:56,329 --> 00:12:06,121
+Third year E C E students can enroll. But who needs an override? It depends on which if owns the else, the inner if or the outer if.
 
 108
-00:17:27,126 --> 00:17:44,171
-Question 12.3.2. What grammar class is needed for a to the n, b to the n? A context free grammar. L L one is also a correct answer, because S goes to a S b, or a b, is in the L L one subset.
+00:12:06,571 --> 00:12:15,937
+This problem comes from Algol 60. Algol 60 gave us the B N F notation, and C is an industrial descendant of it.
 
 109
-00:17:44,621 --> 00:17:56,931
-Question 12.3.3. a to the n, b to the n, c to the n needs a context sensitive grammar. Counting three things is outside the context free class.
+00:12:16,387 --> 00:12:22,595
+The same line can have two parse trees. The leaves of each tree read the line from left to right.
 
 110
-00:17:57,381 --> 00:18:09,349
-Question 12.3.6. What can a C F G express that a peg cannot? Ambiguity. Pegs do not permit ambiguity. We study pegs after the midterm.
+00:12:23,045 --> 00:12:26,565
+In tree 1, the else belongs to the inner conditional.
 
 111
-00:18:09,799 --> 00:18:18,140
-To summarize. A grammar is ambiguous when one legal string has two parse trees. One example string is the proof.
+00:12:27,015 --> 00:12:29,255
+The outer conditional has no else.
 
 112
-00:18:18,590 --> 00:18:29,619
-For precedence, give each level its own nonterminal. The lowest level is at the top. Each level uses the next higher level. The highest level has the operands.
+00:12:29,705 --> 00:12:33,310
+In tree 2, the else belongs to the outer conditional.
 
 113
-00:18:30,069 --> 00:18:39,947
-For associativity, a left associative operator needs a left recursive rule, and a right associative operator needs a right recursive rule.
+00:12:33,760 --> 00:12:35,957
+The inner conditional has no else.
 
 114
-00:18:40,397 --> 00:18:49,847
-Left recursion is not L L one. Removing it changes the trees. E B N F repetition gives a weakly equivalent grammar.
+00:12:36,407 --> 00:12:44,386
+Both trees accept the same line. So the grammar is ambiguous. A python check found exactly these two trees.
 
 115
-00:18:50,297 --> 00:19:04,036
+00:12:44,836 --> 00:12:51,151
+The two trees are two different programs. Here is the program when the else belongs to the inner if.
+
+116
+00:12:51,601 --> 00:12:58,107
+E C E students in another term take the no edge of the term test. They use an override.
+
+117
+00:12:58,557 --> 00:13:04,339
+Students outside E C E take the no edge of the department test. They get nothing.
+
+118
+00:13:04,789 --> 00:13:08,095
+Now the program when the else belongs to the outer if.
+
+119
+00:13:08,545 --> 00:13:12,343
+Students from outside E C E use an override.
+
+120
+00:13:12,793 --> 00:13:15,950
+E C E students in other terms get nothing.
+
+121
+00:13:16,400 --> 00:13:19,515
+The same text gives two different enrollment rules.
+
+122
+00:13:19,965 --> 00:13:28,669
+In practice there are four ways to resolve the dangling else. One: every if needs an end if. V H D L does this.
+
+123
+00:13:29,119 --> 00:13:32,276
+Two: every if needs an else. Haskell does this.
+
+124
+00:13:32,726 --> 00:13:36,246
+Three: put indentation into the grammar. Python does this.
+
+125
+00:13:36,696 --> 00:13:45,123
+Four: add a note to the language specification. C and Java do this. The note says that the else goes with the inner if.
+
+126
+00:13:45,573 --> 00:13:54,554
+Exercise 4.6.1 from the notes. Which of the four approaches change the grammar, so that the ambiguity is gone?
+
+127
+00:13:55,004 --> 00:13:56,647
+Pause the video and try it.
+
+128
+00:13:57,097 --> 00:14:03,902
+The answer is the first three. End if, a required else, and indentation all change the grammar.
+
+129
+00:14:04,352 --> 00:14:11,648
+The note in the specification leaves the grammar ambiguous. The parser writer must deal with this case specially.
+
+130
+00:14:12,098 --> 00:14:23,767
+Exercise 4.6.2. For the approaches that remove the ambiguity, write the new grammar. The notes do not give a solution yet, so this is our solution.
+
+131
+00:14:24,217 --> 00:14:25,860
+Pause the video and try it.
+
+132
+00:14:26,310 --> 00:14:29,830
+With end if, each conditional closes with end if.
+
+133
+00:14:30,280 --> 00:14:38,131
+Now the programmer must write where the inner if ends. If end if comes after the else, the else is inside the inner if.
+
+134
+00:14:38,581 --> 00:14:42,506
+If the end if comes first, the else belongs to the outer if.
+
+135
+00:14:42,956 --> 00:14:49,655
+With a required else, there is only one form. Every if has its own else, so no else is left over.
+
+136
+00:14:50,105 --> 00:15:01,497
+A python check counted the parse trees of every string up to 8 symbols. Both new grammars give at most one tree. The old grammar gives two trees for some strings.
+
+137
+00:15:01,947 --> 00:15:07,664
+Indentation needs special tokens from the lexer, so we do not write that grammar here.
+
+138
+00:15:08,114 --> 00:15:29,063
+Now exercises 4.11.6 and 4.11.7 from the notes. The grammar is E goes to E plus E, E times E, or int. First, give an input string with two parse trees. Second, refactor the grammar for normal precedence, and make it right associative.
+
+139
+00:15:29,513 --> 00:15:31,156
+Pause the video and try it.
+
+140
+00:15:31,606 --> 00:15:36,619
+Part 6. The string 1 plus 2 times 3 has two trees, as we saw.
+
+141
+00:15:37,069 --> 00:15:39,651
+1 plus 2 plus 3 also works.
+
+142
+00:15:40,101 --> 00:15:47,695
+Part 7. Our solution follows the notes. E goes to F plus E, or F. Plus is at the low level.
+
+143
+00:15:48,145 --> 00:15:52,753
+F goes to int times F, or int. Times is at the high level.
+
+144
+00:15:53,203 --> 00:16:01,417
+Both rules are right recursive. E is at the right end of F plus E, and F is at the right end of int times F.
+
+145
+00:16:01,867 --> 00:16:06,496
+1 plus 2 times 3 has one tree: 1 plus, 2 times 3.
+
+146
+00:16:06,946 --> 00:16:14,050
+1 plus 2 plus 3 also has one tree. It leans right, so the grammar is right associative.
+
+147
+00:16:14,500 --> 00:16:28,815
+The notes also show a wrong first try: E goes to E plus E or F, and F goes to F times F or int. The precedence is correct, but it is not right associative, and it is still ambiguous.
+
+148
+00:16:29,265 --> 00:16:37,137
+A python check found at most one tree for every string up to length 7, and the same language as the original grammar.
+
+149
+00:16:37,587 --> 00:16:51,944
+This grammar is not L L one, because of common prefixes: both E rules start with F, and both F rules start with int. That is OK here. Video 19 shows an L L one version.
+
+150
+00:16:52,394 --> 00:17:13,194
+Exercise 4.11.4 from the notes. A to E are binary operators. Each has a different precedence, and none is associative. The input 3 C 4 B 1 A 2 D 6 B 7 E 5 gives this tree. List the operators from highest to lowest precedence.
+
+151
+00:17:13,644 --> 00:17:15,287
+Pause the video and try it.
+
+152
+00:17:15,737 --> 00:17:21,475
+An operator lower in the tree is done first. So it has higher precedence than its parent.
+
+153
+00:17:21,925 --> 00:17:24,997
+C is under B. So C is higher than B.
+
+154
+00:17:25,447 --> 00:17:28,327
+B is under A. So B is higher than A.
+
+155
+00:17:28,777 --> 00:17:31,657
+D is under A. So D is higher than A.
+
+156
+00:17:32,107 --> 00:17:35,137
+E is under D. So E is higher than D.
+
+157
+00:17:35,587 --> 00:17:39,107
+The second B is under E. So B is higher than E.
+
+158
+00:17:39,557 --> 00:17:43,589
+Chain the five facts: C, then B, then E, then D, then A.
+
+159
+00:17:44,039 --> 00:17:52,956
+A python check tried all 120 orders of the five operators. Only C B E D A fits all five facts.
+
+160
+00:17:53,406 --> 00:18:03,859
+Now the short questions in questions-pre, section 12.3. Question 12.3.4. How do we show that a grammar is ambiguous?
+
+161
+00:18:04,309 --> 00:18:08,213
+Show one input string that has two parse trees in the grammar.
+
+162
+00:18:08,663 --> 00:18:23,362
+Question 12.3.5. How do we show that a grammar is unambiguous? The posted answer: that is mathematically beyond this course. We say that we cannot find an input string with two parses.
+
+163
+00:18:23,812 --> 00:18:29,657
+In this video, a python search over all short strings gave us extra confidence.
+
+164
+00:18:30,107 --> 00:18:36,145
+Question 12.3.7. How many kinds of grammar equivalence did we see? Two.
+
+165
+00:18:36,595 --> 00:18:40,200
+Weak equivalence: the grammars accept the same strings.
+
+166
+00:18:40,650 --> 00:18:45,557
+Strong equivalence: the same strings, and exactly the same parse trees.
+
+167
+00:18:46,007 --> 00:18:53,153
+Question 12.3.8. When we refactor a grammar, it is usually only weakly equivalent.
+
+168
+00:18:53,603 --> 00:19:00,771
+For example, the precedence grammar accepts the same strings as the ambiguous one, but it builds different trees.
+
+169
+00:19:01,221 --> 00:19:11,333
+The other questions in section 12.3 use this table from the notes, Figure 4.2. Each class of grammar needs a kind of machine.
+
+170
+00:19:11,783 --> 00:19:22,706
+Question 12.3.1. What machine recognizes an L L one language? A pushdown automaton. The table says a deterministic one.
+
+171
+00:19:23,156 --> 00:19:40,201
+Question 12.3.2. What grammar class is needed for a to the n, b to the n? A context free grammar. L L one is also a correct answer, because S goes to a S b, or a b, is in the L L one subset.
+
+172
+00:19:40,651 --> 00:19:52,961
+Question 12.3.3. a to the n, b to the n, c to the n needs a context sensitive grammar. Counting three things is outside the context free class.
+
+173
+00:19:53,411 --> 00:20:05,357
+Question 12.3.6. What can a C F G express that a peg cannot? Ambiguity. Pegs do not permit ambiguity. We study pegs after the midterm.
+
+174
+00:20:05,807 --> 00:20:14,149
+To summarize. A grammar is ambiguous when one legal string has two parse trees. One example string is the proof.
+
+175
+00:20:14,599 --> 00:20:25,628
+For precedence, give each level its own nonterminal. The lowest level is at the top. Each level uses the next higher level. The highest level has the operands.
+
+176
+00:20:26,078 --> 00:20:35,955
+For associativity, a left associative operator needs a left recursive rule, and a right associative operator needs a right recursive rule.
+
+177
+00:20:36,405 --> 00:20:45,877
+Left recursion is not L L one. Removing it changes the trees. E B N F repetition gives a weakly equivalent grammar.
+
+178
+00:20:46,327 --> 00:21:00,066
 For the dangling else, end if, a required else, and indentation remove the ambiguity from the grammar. A note in the specification does not. The next video tests if a grammar is L L one.

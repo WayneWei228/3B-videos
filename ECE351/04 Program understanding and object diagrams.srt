@@ -7,333 +7,677 @@ This video is about program understanding. We learn to draw object diagrams. An 
 First we list what it means to understand a program. Then we learn the notation and five rules that execute one line by hand. At the end we run two story programs from the course notes, line by line.
 
 3
-00:00:26,265 --> 00:00:31,577
-If we understand a program, what do we know about it? The course notes give six things.
+00:00:26,265 --> 00:00:31,001
+The course notes list six things that we know when we understand a program.
 
 4
-00:00:32,027 --> 00:00:36,187
-First, the inputs and the outputs. The outputs include errors.
+00:00:31,451 --> 00:00:33,393
+One: the inputs of the program.
 
 5
-00:00:36,637 --> 00:00:47,005
-Then the static structure and the dynamic execution. Static means what you can see in the source text. Dynamic means what happens when the program runs.
+00:00:33,843 --> 00:00:37,213
+Two: the outputs. The outputs include the errors.
 
 6
-00:00:47,455 --> 00:00:51,317
-Then the algorithms, and the programming paradigm, or style.
+00:00:37,663 --> 00:00:42,549
+Three: the static structure. Static means what you can see in the source text.
 
 7
-00:00:51,767 --> 00:01:05,740
-Why does a compiler course care? A compiler analyzes the programs that it compiles in some of these ways. And a compiler is a large program itself. You must understand the programs that you write.
+00:00:42,999 --> 00:00:48,695
+Four: the dynamic execution. Dynamic means what happens when the program runs.
 
 8
-00:01:06,190 --> 00:01:15,555
-Static structure is data structures, class diagrams, and design patterns. The slides say you already know this from earlier courses.
+00:00:49,145 --> 00:00:50,809
+Five: the algorithms.
 
 9
-00:01:16,005 --> 00:01:35,141
-Dynamic execution is what you need to learn more about. Control structures and the call graph. Pointers and aliasing. Object diagrams, which show program execution. Mutation, which is what data changes. And invariants, which are data relationships that do not change.
+00:00:51,259 --> 00:00:53,947
+Six: the programming paradigm, or style.
 
 10
-00:01:35,591 --> 00:01:46,151
-Algorithms: the runtime and the space usage, both in big O and in constant factors. And termination conditions: when will the program end?
+00:00:54,397 --> 00:01:07,261
+This matters in a compiler course for two reasons. First, a compiler is a program that understands other programs. It analyzes the programs that it compiles in some of these ways.
 
 11
-00:01:46,601 --> 00:01:52,639
-This video and the next one teach pointers, aliasing, object diagrams and mutation.
+00:01:07,711 --> 00:01:14,111
+Second, a compiler is a large program itself. You must understand the programs that you write.
 
 12
-00:01:53,089 --> 00:01:58,315
-First, a short refresher of object oriented terms, from the course notes.
+00:01:14,561 --> 00:01:23,563
+Static structure is data structures, class diagrams and design patterns. The slides say that you know this from earlier courses.
 
 13
-00:01:58,765 --> 00:02:05,720
-B is a base class, or super class. D is a derived class, or sub class. D extends B.
+00:01:24,013 --> 00:01:29,987
+Dynamic execution is the second group. The slides say that you must learn more about it.
 
 14
-00:02:06,170 --> 00:02:17,455
-x is a field, or instance variable. Every object of class B has its own x. y is a local variable. It lives only during one call of foo.
+00:01:30,437 --> 00:01:32,911
+Control structures and the call graph.
 
 15
-00:02:17,905 --> 00:02:32,241
-foo is a method. In C plus plus terms, it is a virtual method. The definition of foo in D overrides the definition in B. Fields and local variables are the slots of an object diagram.
+00:01:33,361 --> 00:01:34,876
+Pointers and aliasing.
 
 16
-00:02:32,691 --> 00:02:43,678
-Here is the order in which the course uses these topics. You need procedural programming, data structures such as lists and trees, and classes before you start.
+00:01:35,326 --> 00:01:39,059
+Object diagrams. They show the program execution.
 
 17
-00:02:44,128 --> 00:02:55,200
-For the midterm: object diagrams with pointers and aliasing, inheritance and polymorphism, which means virtual methods, and the labs up to lab 4.
+00:01:39,509 --> 00:01:41,941
+Mutation: which data changes.
 
 18
-00:02:55,650 --> 00:03:05,954
-For the final: design patterns, termination by iteration to a fixed point, and all the labs. So object diagrams are midterm material.
+00:01:42,391 --> 00:01:46,018
+Invariants: data relationships that do not change.
 
 19
-00:03:06,404 --> 00:03:22,105
-Example programs often use names with no meaning, such as foo and bar. The course notes use stories instead. Super hero origin stories follow a pattern. First, the hero is young, and has no super powers.
+00:01:46,468 --> 00:01:50,799
+Algorithms is the third group. You must learn more about it too.
 
 20
-00:03:22,555 --> 00:03:26,694
-Second, tragedy comes to the hero's family, often from a villain.
+00:01:51,249 --> 00:01:54,513
+The runtime, in big O and in constant factors.
 
 21
-00:03:27,144 --> 00:03:31,027
-Third, the hero gets super powers, and perhaps an alias.
+00:01:54,963 --> 00:01:58,675
+The space usage, in big O and in constant factors.
 
 22
-00:03:31,477 --> 00:03:42,847
-Each step is a change of program state. Harry is a new Person object. The attack sets his father and mother to null. Superman is a second name for the same object.
+00:01:59,125 --> 00:02:03,861
+And the termination conditions: the conditions that make the program stop.
 
 23
-00:03:43,297 --> 00:03:52,385
-These programs have no input, no output and no algorithm. Their only purpose is to show program state, and how it changes.
+00:02:04,311 --> 00:02:10,348
+This video and the next one teach pointers, aliasing, object diagrams and mutation.
 
 24
-00:03:52,835 --> 00:03:59,534
-Here is the notation. The program counter, or P C, is the line that is about to execute.
+00:02:10,798 --> 00:02:19,694
+First, a short refresher of object oriented terms, from the course notes. Here is a small Java program with two classes.
 
 25
-00:03:59,984 --> 00:04:09,328
-A stack frame has one slot for each local variable, and the parameters are included. There is one special frame for the static variables.
+00:02:20,144 --> 00:02:22,704
+B is a base class, or super class.
 
 26
-00:04:09,778 --> 00:04:19,570
-An object lives in the heap, the white space. Its name is the class name and a number that you make up. Only the keyword new makes an object.
+00:02:23,154 --> 00:02:27,314
+D is a derived class, or sub class. D extends B.
 
 27
-00:04:20,020 --> 00:04:27,167
-A field of one object can refer to another object. That is a solid arrow. The label is optional.
+00:02:27,764 --> 00:02:34,228
+x is a field, or instance variable. Every object of class B has its own x.
 
 28
-00:04:27,617 --> 00:04:34,977
-A variable on the stack can refer to an object. That arrow is dotted. A solid line is also accepted.
+00:02:34,678 --> 00:02:39,371
+y is a local variable. It exists only during one call of foo.
 
 29
-00:04:35,427 --> 00:04:50,808
-Two rules. The numbers have no meaning: Person 12 and Person 1005 are equally good. And every arrow ends in the heap. An arrow can start in the stack or in the heap, but it never ends at a stack slot.
+00:02:39,821 --> 00:02:44,579
+foo is a method. In C plus plus terms, it is a virtual method.
 
 30
-00:04:51,258 --> 00:05:00,645
-The course notes add one point. U M L object diagrams show only the heap. Our object diagrams also show the call stack.
+00:02:45,029 --> 00:02:48,762
+The foo in class D overrides the foo in class B.
 
 31
-00:05:01,095 --> 00:05:18,887
-The slides give five rules to execute one line by hand. Do it without thinking. The rules give the right answer even for code that you do not understand. This is our own small example. Line 4 ran: new made Person 1, and slot a points to it.
+00:02:49,212 --> 00:03:00,049
+Here is the order in which the course uses these topics. Before you start, you need procedural programming, data structures such as lists and trees, and classes.
 
 32
-00:05:19,337 --> 00:05:29,897
-Now line 5: b equals a. Rule 1: the right hand side. a is a name. Find its slot, follow the arrow, and you get that object, Person 1.
+00:03:00,499 --> 00:03:11,571
+For the midterm: object diagrams with pointers and aliasing, inheritance and polymorphism, which means virtual methods, and the labs up to lab 4.
 
 33
-00:05:30,347 --> 00:05:34,912
-Rule 2: the left hand side. b is a name, so find its slot.
+00:03:12,021 --> 00:03:18,720
+For the final: design patterns, termination by iteration to a fixed point, and all the labs.
 
 34
-00:05:35,362 --> 00:05:48,653
-Rule 3: assign. Erase the old arrow out of slot b. There is none. Draw the new arrow, from b to Person 1. Now a and b refer to the same object. Null means no arrow.
+00:03:19,170 --> 00:03:22,349
+So object diagrams are midterm material.
 
 35
-00:05:49,103 --> 00:06:02,372
-A common error is to draw an arrow from b to the slot a. That is wrong. Arrows never go from stack to stack. An assignment copies the arrow, so b points to the object that a points to.
+00:03:22,799 --> 00:03:34,895
+Example programs often use names with no meaning, such as foo and bar. The course notes use stories instead: super hero origin stories. They follow a pattern.
 
 36
-00:06:02,822 --> 00:06:17,798
-Line 6: b dot spouse equals new Person. The right hand side is new. Rule 4: new is the only thing that makes a bubble. No new on the line, no new bubble. Line 5 had no new, so it made no bubble.
+00:03:35,345 --> 00:03:38,843
+First, the hero is young, and has no super powers.
 
 37
-00:06:18,248 --> 00:06:36,680
-Here new makes Person 2. The left hand side is b dot spouse. Resolve b: follow its arrow to Person 1. Then take field spouse of Person 1. Rule 3: draw the arrow from that field to Person 2. This arrow starts in the heap, so it is solid.
+00:03:39,293 --> 00:03:43,432
+Second, tragedy comes to the hero's family, often from a villain.
 
 38
-00:06:37,130 --> 00:06:55,370
-Line 7 calls f with b. Rule 5: a call makes a new frame, with one slot per parameter and local variable. f has one parameter, p. The argument b points to Person 1, so p points to Person 1. p is an alias of a and b.
+00:03:43,882 --> 00:03:47,765
+Third, the hero gets super powers, and perhaps an alias.
 
 39
-00:06:55,820 --> 00:07:05,676
-Line 10: p dot spouse equals null. Resolve p to Person 1, field spouse. Erase the old arrow. Null means no new arrow.
+00:03:48,215 --> 00:03:53,079
+Each part is a change of program state. Harry is a new Person object.
 
 40
-00:07:06,126 --> 00:07:25,667
-f returns. Erase the frame f and every arrow that leaves it. The objects stay. Person 2 has no arrow into it now, but it is still in the heap. The garbage collector decides when it goes. Note that f changed the object of a and b, but f never names a or b.
+00:03:53,529 --> 00:03:56,281
+The attack sets his father and mother to null.
 
 41
-00:07:26,117 --> 00:07:41,776
-Now the first story from the course notes: Harry Potter's origin story. Harry and Voldemort are static variables. main calls book 1. book 1 makes Harry, his father James and his mother Lily. Then Voldemort attacks.
+00:03:56,731 --> 00:03:59,867
+Superman is a second name for the same object.
 
 42
-00:07:42,226 --> 00:07:48,477
-Draw the object diagram at line 16 and at line 19. Pause the video and try it.
+00:04:00,317 --> 00:04:09,405
+These programs have no input, no output and no algorithm. Their only purpose is to show program state, and how it changes.
 
 43
-00:07:48,927 --> 00:08:03,881
-Java does not show you two things. The first: static variables are initialized before main runs. So draw the statics frame first. Its slots, Harry and Voldemort, start as null. Null means no arrow.
+00:04:09,855 --> 00:04:16,553
+Here is the notation. The program counter, or P C, is the line that is about to execute.
 
 44
-00:08:04,331 --> 00:08:16,193
-Then the runtime calls main. Its one local variable is args, and args is never null. It points to an array of the command line words. The P C is line 6.
+00:04:17,003 --> 00:04:22,614
+A stack frame has one slot for each local variable, and the parameters are included.
 
 45
-00:08:16,643 --> 00:08:29,955
-Line 6 calls book 1. Rule 5: a new frame, with a slot for each local: James and Lily. book 1 is static, so it has no hidden this slot. The P C is now line 9.
+00:04:23,064 --> 00:04:27,907
+There is one special frame for the static variables. Its name is statics.
 
 46
-00:08:30,405 --> 00:08:41,733
-Line 9: Harry equals new Person. New makes a bubble, Person 1. Harry is not a local of book 1, so its slot is in statics. Draw Harry to Person 1.
+00:04:28,357 --> 00:04:38,149
+An object lives in the heap, the white space. Its name is the class name and a number that you make up. Only the keyword new makes an object.
 
 47
-00:08:42,183 --> 00:08:47,281
-Line 10: new makes Person 2. Draw the slot James to Person 2.
+00:04:38,599 --> 00:04:45,745
+A field of one object can refer to another object. That is a solid arrow. The label is optional.
 
 48
-00:08:47,731 --> 00:08:57,523
-Line 11: new makes Person 3. Draw Lily to Person 3. Every field of a new Person is null, so the bubbles have no arrows yet.
+00:04:46,195 --> 00:04:53,555
+A variable on the stack can refer to an object. That arrow is dotted. A solid line is also accepted.
 
 49
-00:08:57,973 --> 00:09:14,229
-Line 12: Harry dot father equals James. Right hand side: James gives Person 2. Left hand side: Harry gives Person 1, field father. Draw father from Person 1 to Person 2. No new on the line, so no new bubble.
+00:04:54,005 --> 00:05:01,664
+Two rules. First: the numbers have no meaning. Person 12 and Person 1005 are equally good.
 
 50
-00:09:14,679 --> 00:09:21,058
-Line 13: Harry dot mother equals Lily. Draw mother from Person 1 to Person 3.
+00:05:02,114 --> 00:05:10,285
+Second: every arrow ends in the heap. An arrow can start in the stack or in the heap, but it never ends at a stack slot.
 
 51
-00:09:21,508 --> 00:09:28,399
-Line 14: James dot spouse equals Lily. Draw spouse from Person 2 to Person 3.
+00:05:10,735 --> 00:05:20,100
+The course notes add one point. U M L object diagrams show only the heap. Our object diagrams also show the call stack.
 
 52
-00:09:28,849 --> 00:09:35,931
-Line 15: Lily dot spouse equals James. Draw spouse from Person 3 back to Person 2.
+00:05:20,550 --> 00:05:31,217
+The slides give five rules to execute one line by hand. Use them without thinking. They give the right answer even for code that you do not understand.
 
 53
-00:09:36,381 --> 00:09:48,691
-This is object diagram 1 at P C 16. It matches the course notes: four bubbles in the heap, four slot arrows, four field arrows. Voldemort is still null.
+00:05:31,667 --> 00:05:38,301
+This is our own small example. Line 4 runs: new makes Person 1, and slot a points to it.
 
 54
-00:09:49,141 --> 00:09:59,359
-Line 17: Voldemort equals new Person. New makes Person 4. Voldemort is a static slot. Draw Voldemort to Person 4.
+00:05:38,751 --> 00:05:45,642
+Now line 5: b equals a. Rule 1 is for the right hand side. Here the right hand side is a.
 
 55
-00:09:59,809 --> 00:10:15,788
-Line 18 calls attack on Voldemort. Here is the second thing Java does not show you. Every instance method has a hidden first parameter, this. So the call means attack, with this equal to Voldemort, and p equal to Harry.
+00:05:46,092 --> 00:05:51,575
+a is a name. Find its slot, and follow the arrow out of it. You get Person 1.
 
 56
-00:10:16,238 --> 00:10:26,435
-So the attack frame has two slots, this and p. this points to Person 4. p points to Person 1. The P C is now line 27.
+00:05:52,025 --> 00:05:58,126
+Rule 2 is for the left hand side. Here it is b. b is a name, so find its slot.
 
 57
-00:10:26,885 --> 00:10:41,541
-this is a slot like any other. It points into the heap, at Person 4. It does not point to the variable Voldemort. A static method has no this. That is why book 1 must name an object before the dot to call attack.
+00:05:58,576 --> 00:06:09,051
+Rule 3: assign. First erase the old arrow out of slot b. Slot b holds null, and null means no arrow. So there is nothing to erase.
 
 58
-00:10:41,991 --> 00:10:51,805
-Line 27: p dot mother equals null. Resolve p: Person 1. Field mother. Erase the old arrow. Null, so no new arrow.
+00:06:09,501 --> 00:06:13,085
+Then draw the new arrow, from slot b to Person 1.
 
 59
-00:10:52,255 --> 00:10:58,612
-Line 28: p dot father equals null. Erase the father arrow of Person 1.
+00:06:13,535 --> 00:06:17,204
+Now a and b refer to the same object, Person 1.
 
 60
-00:10:59,062 --> 00:11:07,083
-attack returns. Erase its frame and the arrows this and p. The P C goes back to book 1, line 19.
+00:06:17,654 --> 00:06:31,179
+A common error is to draw an arrow from slot b to slot a. That is wrong. Arrows never go from stack to stack. The assignment copies the arrow, so b points to the object that a points to.
 
 61
-00:11:07,533 --> 00:11:27,352
-This is object diagram 2 at P C 19, as in the notes. Harry's object lost its father and mother arrows. The code of attack never says Harry. It changed Harry's object through the alias p. Person 2 and Person 3 still exist. James and Lily still point to them.
+00:06:31,629 --> 00:06:37,197
+Line 6: b dot spouse equals new Person. The right hand side is new.
 
 62
-00:11:27,802 --> 00:11:45,018
-The second story is Superman's origin story. There are two classes, Planet and Person. A Person has three Person fields, father, mother and spouse, and one Planet field, planet. The constructor copies its four parameters into the four fields.
+00:06:37,647 --> 00:06:41,125
+Rule 4: new is the only thing that makes a bubble.
 
 63
-00:11:45,468 --> 00:11:54,001
-Draw object diagrams 1 to 4, at lines 12, 19, 32 and 35. Pause the video and try it.
+00:06:41,575 --> 00:06:47,441
+So a line with no new makes no bubble. Line 5 had no new, and it made no bubble.
 
 64
-00:11:54,451 --> 00:12:09,214
-The main frame has a slot for every local variable, from Krypton to Martha Kent. All of them start as null. Lines 4 and 5 make two planets. Krypton points to Planet 1, and Earth points to Planet 2.
+00:06:47,891 --> 00:06:51,497
+Here new makes Person 2. No arrow points to it yet.
 
 65
-00:12:09,664 --> 00:12:24,576
-Line 7 calls the constructor with new. New makes Person 1. Then the constructor runs in its own frame. this points to the new object. The parameters f, m and s are null. p points to Planet 1.
+00:06:51,947 --> 00:06:59,029
+The left hand side is b dot spouse. Rule 2: resolve b. Follow its arrow to Person 1.
 
 66
-00:12:25,026 --> 00:12:34,903
-Line 43 copies the parameters into the fields. Only planet gets an arrow, to Planet 1. The null parameters give no arrows.
+00:06:59,479 --> 00:07:02,103
+Then take the field spouse of Person 1.
 
 67
-00:12:35,353 --> 00:12:43,183
-The constructor returns. Its frame and its arrows are erased. Then the assignment draws Jor El to Person 1.
+00:07:02,553 --> 00:07:11,663
+Rule 3: draw the arrow from the spouse field of Person 1 to Person 2. It starts in the heap, so it is a solid arrow.
 
 68
-00:12:43,633 --> 00:12:52,401
-Line 8 makes Lara, Person 2, with spouse Jor El and planet Krypton. Line 9 sets Jor El's spouse to Lara.
+00:07:12,113 --> 00:07:17,275
+Line 7 calls f with b. Rule 5: a call makes a new frame.
 
 69
-00:12:52,851 --> 00:13:04,797
-Line 11 makes Kal El, Person 3, with father Jor El, mother Lara and planet Krypton. This is object diagram 1 at P C 12. It matches the notes.
+00:07:17,725 --> 00:07:26,429
+The frame has one slot for each parameter and each local variable. f has one parameter, p, and no local variables.
 
 70
-00:13:05,247 --> 00:13:13,610
-Planet Krypton explodes. Line 15 sets Krypton, Jor El and Lara to null. Erase the three slot arrows.
+00:07:26,879 --> 00:07:32,981
+The argument is b. b points to Person 1, so p also points to Person 1.
 
 71
-00:13:14,060 --> 00:13:22,316
-Lines 16 to 18 set Kal El's father, mother and planet to null. Erase the three field arrows of Person 3.
+00:07:33,431 --> 00:07:41,068
+An alias is a second name for the same object. p is an alias of a and b: three names, one object.
 
 72
-00:13:22,766 --> 00:13:41,710
-This is object diagram 2 at P C 19. Person 1, Person 2 and Planet 1 are still in the heap, with their arrows. No slot can reach them now, so we gray them. Assigning null does not delete an object. The garbage collector decides when they go.
+00:07:41,518 --> 00:07:48,409
+Line 10: p dot spouse equals null. Resolve p to Person 1, and take its field spouse.
 
 73
-00:13:42,160 --> 00:13:48,219
-Line 21: Kal El lands on Earth. Draw planet from Person 3 to Planet 2.
+00:07:48,859 --> 00:07:54,000
+Erase the old arrow. The right hand side is null, so draw no new arrow.
 
 74
-00:13:48,669 --> 00:13:59,229
-Lines 23 to 26 make Jonathan Kent, Person 4, and Martha Kent, Person 5. Both have planet Earth. Martha's spouse is Jonathan.
+00:07:54,450 --> 00:08:01,341
+f returns. Rule 5: a return erases the frame of f, and every arrow that leaves it.
 
 75
-00:13:59,679 --> 00:14:03,263
-Line 27 sets Jonathan's spouse to Martha.
+00:08:01,791 --> 00:08:13,695
+The objects stay. No arrow goes into Person 2 now, so no slot can reach it. We draw it gray. It is still in the heap. The garbage collector decides when it goes.
 
 76
-00:14:03,713 --> 00:14:17,110
-Line 28: Clark Kent equals Kal El. No new, so no new bubble. Follow Kal El's arrow and draw Clark Kent to the same object, Person 3. Now two names refer to one object.
+00:08:14,145 --> 00:08:19,563
+f changed the object of a and b, but the code of f never names a or b.
 
 77
-00:14:17,560 --> 00:14:27,395
-Lines 29 and 30 go through Clark Kent: they set father to Person 4 and mother to Person 5. These are fields of Person 3.
+00:08:20,013 --> 00:08:24,963
+Now the first story from the course notes: Harry Potter's origin story.
 
 78
-00:14:27,845 --> 00:14:38,853
-Line 31 sets Kal El to null. Erase that slot arrow. Person 3 does not change. This is object diagram 3 at P C 32.
+00:08:25,413 --> 00:08:28,335
+Harry and Voldemort are static variables.
 
 79
-00:14:39,303 --> 00:14:56,903
-Line 34: Superman equals Clark Kent. Follow Clark Kent's arrow to Person 3, and draw Superman to Person 3. This is object diagram 4 at P C 35. No new object: Superman is a second name for the same Person.
+00:08:28,785 --> 00:08:30,407
+main calls book 1.
 
 80
-00:14:57,353 --> 00:15:15,955
-Two slots, one object. Clark Kent dot father and Superman dot father are the same field. Kal El was a third name for this object from line 28 to line 31. Several names for one object is called aliasing. It is the topic of the next video.
+00:08:30,857 --> 00:08:34,611
+book 1 makes Harry, his father James and his mother Lily.
 
 81
-00:15:16,405 --> 00:15:27,285
-To summarize. An object diagram has the P C, stack frames with slots, with statics first, and objects in the heap. Every arrow ends in the heap.
+00:08:35,061 --> 00:08:39,243
+Lines 12 to 15 connect them: father, mother and spouse.
 
 82
-00:15:27,735 --> 00:15:37,698
-To execute an assignment: the right side gives an object. The left side gives a slot or a field. Then move one arrow. Null means no arrow.
+00:08:39,693 --> 00:08:43,746
+Then the program makes Voldemort, and Voldemort attacks Harry.
 
 83
-00:15:38,148 --> 00:15:46,340
-Only new makes a bubble. A call adds a frame, and a return erases the frame and its arrows. The objects stay.
+00:08:44,196 --> 00:08:50,447
+Draw the object diagram at line 16 and at line 19. Pause the video and try it.
 
 84
-00:15:46,790 --> 00:15:55,451
-Java hides two things. Statics exist before main, and args is never null. Every instance method has a hidden this slot.
+00:08:50,897 --> 00:08:59,985
+Java does not show you two things. The first: static variables exist before main runs. So draw the statics frame first.
 
 85
-00:15:55,901 --> 00:16:05,523
+00:09:00,435 --> 00:09:05,235
+Its slots, Harry and Voldemort, start as null. Null means no arrow.
+
+86
+00:09:05,685 --> 00:09:10,335
+Then the runtime calls main. main has one local variable, args.
+
+87
+00:09:10,785 --> 00:09:15,415
+args is never null. It points to an array of the command line words.
+
+88
+00:09:15,865 --> 00:09:17,657
+The P C is line 6.
+
+89
+00:09:18,107 --> 00:09:25,872
+Line 6 calls book 1. Rule 5: a new frame, with a slot for each local variable, James and Lily.
+
+90
+00:09:26,322 --> 00:09:29,757
+book 1 is static, so it has no hidden this slot.
+
+91
+00:09:30,207 --> 00:09:32,447
+The P C is now line 9.
+
+92
+00:09:32,897 --> 00:09:37,761
+Line 9: Harry equals new Person. new makes a bubble, Person 1.
+
+93
+00:09:38,211 --> 00:09:43,736
+Harry is not a local variable of book 1. So its slot is in the statics frame.
+
+94
+00:09:44,186 --> 00:09:47,087
+Draw the arrow from slot Harry to Person 1.
+
+95
+00:09:47,537 --> 00:09:52,636
+Line 10: new makes Person 2. Draw the slot James to Person 2.
+
+96
+00:09:53,086 --> 00:09:58,355
+Line 11: new makes Person 3. Draw the slot Lily to Person 3.
+
+97
+00:09:58,805 --> 00:10:04,011
+Every field of a new Person is null. So no arrows leave the three bubbles yet.
+
+98
+00:10:04,461 --> 00:10:14,423
+Line 12: Harry dot father equals James. Rule 1, the right hand side: James. Follow the arrow of slot James to Person 2.
+
+99
+00:10:14,873 --> 00:10:21,743
+Rule 2, the left hand side: Harry dot father. Harry leads to Person 1. Take its field father.
+
+100
+00:10:22,193 --> 00:10:29,745
+Rule 3: draw the father arrow from Person 1 to Person 2. The line has no new, so it makes no bubble.
+
+101
+00:10:30,195 --> 00:10:36,573
+Line 13: Harry dot mother equals Lily. Draw mother from Person 1 to Person 3.
+
+102
+00:10:37,023 --> 00:10:43,914
+Line 14: James dot spouse equals Lily. Draw spouse from Person 2 to Person 3.
+
+103
+00:10:44,364 --> 00:10:51,447
+Line 15: Lily dot spouse equals James. Draw spouse from Person 3 back to Person 2.
+
+104
+00:10:51,897 --> 00:10:57,529
+This is object diagram 1, at P C 16. It matches the course notes.
+
+105
+00:10:57,979 --> 00:11:01,285
+Count what it has. There are four bubbles in the heap.
+
+106
+00:11:01,735 --> 00:11:05,917
+There are four slot arrows: Harry, args, James and Lily.
+
+107
+00:11:06,367 --> 00:11:10,569
+There are four field arrows: father, mother, and two spouse arrows.
+
+108
+00:11:11,019 --> 00:11:14,262
+Voldemort is still null, so it has no arrow.
+
+109
+00:11:14,712 --> 00:11:24,952
+Line 17: Voldemort equals new Person. new makes Person 4. Voldemort is a static slot, so draw Voldemort to Person 4.
+
+110
+00:11:25,402 --> 00:11:31,951
+Line 18 calls attack on Voldemort. Here is the second thing that Java does not show you.
+
+111
+00:11:32,401 --> 00:11:38,567
+Every instance method has a hidden first parameter, called this. attack is an instance method.
+
+112
+00:11:39,017 --> 00:11:44,606
+So the call means: attack, with this equal to Voldemort, and p equal to Harry.
+
+113
+00:11:45,056 --> 00:11:48,725
+Rule 5: the attack frame has two slots, this and p.
+
+114
+00:11:49,175 --> 00:11:53,527
+this gets the arrow of Voldemort. So this points to Person 4.
+
+115
+00:11:53,977 --> 00:11:57,924
+p gets the arrow of Harry. So p points to Person 1.
+
+116
+00:11:58,374 --> 00:12:02,534
+The P C is now line 27, the first line of attack.
+
+117
+00:12:02,984 --> 00:12:10,685
+this is a slot like any other. It points into the heap, at Person 4. It does not point to the variable Voldemort.
+
+118
+00:12:11,135 --> 00:12:19,413
+A static method has no this. So book 1 must name an object before the dot to call attack. Here it names Voldemort.
+
+119
+00:12:19,863 --> 00:12:27,799
+Line 27: p dot mother equals null. Resolve p: it leads to Person 1. Take its field mother.
+
+120
+00:12:28,249 --> 00:12:34,627
+Rule 3: erase the old mother arrow. The right hand side is null, so draw no new arrow.
+
+121
+00:12:35,077 --> 00:12:41,435
+Line 28: p dot father equals null. Erase the father arrow of Person 1.
+
+122
+00:12:41,885 --> 00:12:47,751
+The code of attack never names Harry. It changed the object of Harry through the alias p.
+
+123
+00:12:48,201 --> 00:12:53,428
+attack returns. Rule 5: erase its frame, and the arrows this and p.
+
+124
+00:12:53,878 --> 00:12:57,185
+The P C goes back to book 1, line 19.
+
+125
+00:12:57,635 --> 00:13:07,448
+This is object diagram 2, at P C 19, as in the notes. The object of Harry has no father arrow and no mother arrow now.
+
+126
+00:13:07,898 --> 00:13:13,530
+Person 2 and Person 3 still exist. James and Lily still point to them.
+
+127
+00:13:13,980 --> 00:13:20,124
+The second story is Superman's origin story. It has two classes, Planet and Person.
+
+128
+00:13:20,574 --> 00:13:27,294
+A Person has three Person fields: father, mother and spouse. It has one Planet field: planet.
+
+129
+00:13:27,744 --> 00:13:31,669
+The constructor copies its four parameters into the four fields.
+
+130
+00:13:32,119 --> 00:13:40,653
+Draw object diagrams 1 to 4, at lines 12, 19, 32 and 35. Pause the video and try it.
+
+131
+00:13:41,103 --> 00:13:48,591
+The main frame has a slot for every local variable, from Krypton to Martha Kent. All of them start as null.
+
+132
+00:13:49,041 --> 00:13:52,966
+Line 4: new makes Planet 1, and Krypton points to it.
+
+133
+00:13:53,416 --> 00:13:57,235
+Line 5: new makes Planet 2, and Earth points to it.
+
+134
+00:13:57,685 --> 00:14:00,693
+Line 7: new Person makes Person 1.
+
+135
+00:14:01,143 --> 00:14:06,903
+Then the constructor runs in its own frame. this points to the new object, Person 1.
+
+136
+00:14:07,353 --> 00:14:14,798
+The arguments are null, null, null and Krypton. So f, m and s are null, and p points to Planet 1.
+
+137
+00:14:15,248 --> 00:14:25,104
+Line 43 copies the parameters into the fields. Only planet gets an arrow, to Planet 1. The null parameters give no arrows.
+
+138
+00:14:25,554 --> 00:14:29,821
+The constructor returns. Its frame and its arrows are erased.
+
+139
+00:14:30,271 --> 00:14:34,665
+Then the assignment on line 7 draws Jor El to Person 1.
+
+140
+00:14:35,115 --> 00:14:40,427
+Line 8 makes Lara, Person 2, with spouse Jor El and planet Krypton.
+
+141
+00:14:40,877 --> 00:14:44,333
+Line 9 sets the spouse of Jor El to Lara.
+
+142
+00:14:44,783 --> 00:14:51,354
+Line 11 makes Kal El, Person 3, with father Jor El, mother Lara and planet Krypton.
+
+143
+00:14:51,804 --> 00:14:56,860
+This is object diagram 1, at P C 12. It matches the notes.
+
+144
+00:14:57,310 --> 00:15:05,673
+Planet Krypton explodes. Line 15 sets Krypton, Jor El and Lara to null. Erase the three slot arrows.
+
+145
+00:15:06,123 --> 00:15:11,819
+Line 16 sets the father of Kal El to null. Erase that arrow of Person 3.
+
+146
+00:15:12,269 --> 00:15:16,471
+Line 17 erases the mother arrow of Person 3.
+
+147
+00:15:16,921 --> 00:15:20,889
+Line 18 erases the planet arrow of Person 3.
+
+148
+00:15:21,339 --> 00:15:25,030
+This is object diagram 2, at P C 19.
+
+149
+00:15:25,480 --> 00:15:30,600
+Person 1, Person 2 and Planet 1 are still in the heap, with their arrows.
+
+150
+00:15:31,050 --> 00:15:40,586
+No slot can reach them now, so we draw them gray. Assigning null does not delete an object. The garbage collector decides when they go.
+
+151
+00:15:41,036 --> 00:15:47,095
+Line 21: Kal El lands on Earth. Draw planet from Person 3 to Planet 2.
+
+152
+00:15:47,545 --> 00:15:53,582
+Lines 23 and 24 make Jonathan Kent, Person 4, with planet Earth.
+
+153
+00:15:54,032 --> 00:16:01,584
+Lines 25 and 26 make Martha Kent, Person 5, with planet Earth and spouse Jonathan Kent.
+
+154
+00:16:02,034 --> 00:16:06,855
+Line 27 sets the spouse of Jonathan Kent to Martha Kent.
+
+155
+00:16:07,305 --> 00:16:15,775
+Line 28: Clark Kent equals Kal El. No new, so no new bubble. Follow the arrow of Kal El to Person 3.
+
+156
+00:16:16,225 --> 00:16:22,198
+Draw Clark Kent to the same object, Person 3. Now two names refer to one object.
+
+157
+00:16:22,648 --> 00:16:29,112
+Line 29 goes through Clark Kent. It sets the father of Person 3 to Person 4.
+
+158
+00:16:29,562 --> 00:16:33,594
+Line 30 sets the mother of Person 3 to Person 5.
+
+159
+00:16:34,044 --> 00:16:40,700
+Line 31 sets Kal El to null. Erase that slot arrow. Person 3 does not change.
+
+160
+00:16:41,150 --> 00:16:45,011
+This is object diagram 3, at P C 32.
+
+161
+00:16:45,461 --> 00:16:52,309
+Line 34: Superman equals Clark Kent. Follow the arrow of Clark Kent to Person 3.
+
+162
+00:16:52,759 --> 00:16:58,413
+Draw Superman to Person 3. The line has no new, so it makes no new object.
+
+163
+00:16:58,863 --> 00:17:02,745
+This is object diagram 4, at P C 35.
+
+164
+00:17:03,195 --> 00:17:09,745
+Two slots, one object. Clark Kent dot father and Superman dot father are the same field.
+
+165
+00:17:10,195 --> 00:17:15,656
+Kal El was a third name for this object, from line 28 to line 31.
+
+166
+00:17:16,106 --> 00:17:22,613
+Several names for one object is called aliasing. Aliasing is the topic of the next video.
+
+167
+00:17:23,063 --> 00:17:33,943
+To summarize. An object diagram has the P C, stack frames with slots, with statics first, and objects in the heap. Every arrow ends in the heap.
+
+168
+00:17:34,393 --> 00:17:44,355
+To execute an assignment: the right side gives an object. The left side gives a slot or a field. Then move one arrow. Null means no arrow.
+
+169
+00:17:44,805 --> 00:17:52,997
+Only new makes a bubble. A call adds a frame, and a return erases the frame and its arrows. The objects stay.
+
+170
+00:17:53,447 --> 00:18:02,151
+Java hides some things. Statics exist before main, and args is never null. Every instance method has a hidden this slot.
+
+171
+00:18:02,601 --> 00:18:12,201
 An assignment copies an arrow. So two names can refer to one object. The next video is about this aliasing, and about mutation.

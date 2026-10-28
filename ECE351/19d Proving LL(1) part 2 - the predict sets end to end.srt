@@ -1,0 +1,727 @@
+1
+00:00:00,000 --> 00:00:10,731
+This video follows part 2 of the week 6 slides: computing the predict sets, end to end. We run the full recipe on grammars where something can vanish.
+
+2
+00:00:11,181 --> 00:00:24,151
+The examples: S 4, S 5, a bigger grammar, one that fails, and the algorithm behind it all. The slides say this material is not on the midterm. It is examined on the final.
+
+3
+00:00:24,601 --> 00:00:30,276
+A short recap of the four definitions from part 1. E P S: can it vanish?
+
+4
+00:00:30,726 --> 00:00:32,582
+FIRST: what can it start with?
+
+5
+00:00:33,032 --> 00:00:35,933
+FOLLOW: what can come right after a non-terminal?
+
+6
+00:00:36,383 --> 00:00:39,455
+PREDICT: which lookahead token picks this production?
+
+7
+00:00:39,905 --> 00:00:49,164
+The recipe has five steps. Convert E B N F to B N F. Then nullable, first sets, follow sets, and predict sets.
+
+8
+00:00:49,614 --> 00:00:57,742
+For each non-terminal, the predict sets of its alternatives must be pairwise disjoint. Then the grammar is L L one.
+
+9
+00:00:58,192 --> 00:01:05,851
+In part 1, steps 2 and 4 did nothing, because nothing could vanish. Today something can, and every step matters.
+
+10
+00:01:06,301 --> 00:01:15,879
+First, a point that almost everyone gets wrong the first time. Dollar dollar is a real token. The lexer produces it when the input ends.
+
+11
+00:01:16,329 --> 00:01:21,940
+You cannot print it, but a program can inspect it and consume it like any other token.
+
+12
+00:01:22,390 --> 00:01:31,307
+On a slow network, consume of dollar dollar would wait, to find out if more input comes. That makes it a token, not an absence.
+
+13
+00:01:31,757 --> 00:01:40,696
+Epsilon is not a token at all. It never appears in the input. It is a way to write: this non-terminal may match nothing here.
+
+14
+00:01:41,146 --> 00:01:44,069
+In code, it is a return with nothing consumed.
+
+15
+00:01:44,519 --> 00:01:54,140
+Why it matters: S 4 goes to A dollar dollar, with A going to epsilon. S 4 is not nullable. It still has to consume dollar dollar.
+
+16
+00:01:54,590 --> 00:02:04,659
+The first example is S 4. In E B N F: S 4 goes to A or B. A goes to u, or to epsilon. B goes to w.
+
+17
+00:02:05,109 --> 00:02:06,859
+B needs no change.
+
+18
+00:02:07,309 --> 00:02:20,621
+The start symbol consumes dollar dollar. Here the slides put it into S 4 itself: one production per alternative. S 4 goes to A dollar dollar, and S 4 goes to B dollar dollar.
+
+19
+00:02:21,071 --> 00:02:27,001
+A also has a bar: A goes to u, and A goes to epsilon. Now A can match nothing.
+
+20
+00:02:27,451 --> 00:02:36,347
+Step 2: nullable. A non-terminal is nullable when it can derive epsilon. What can disappear? Pause the video and try it.
+
+21
+00:02:36,797 --> 00:02:40,637
+E P S of A: yes. A goes to epsilon, directly.
+
+22
+00:02:41,087 --> 00:02:46,037
+E P S of B: no. B goes only to the terminal w.
+
+23
+00:02:46,487 --> 00:02:55,020
+E P S of S 4: no. Both productions end in dollar dollar, and dollar dollar is a token. It never vanishes.
+
+24
+00:02:55,470 --> 00:03:06,734
+Step 3: first sets. Which terminals can we see first? First of A is first of u, union first of epsilon. First of epsilon is empty. So the set u.
+
+25
+00:03:07,184 --> 00:03:10,853
+First of B is first of w: the set w.
+
+26
+00:03:11,303 --> 00:03:16,829
+First of S 4 is first of A dollar dollar, union first of B dollar dollar.
+
+27
+00:03:17,279 --> 00:03:23,700
+A can vanish. So first of A dollar dollar is first of A, which is u, plus dollar dollar.
+
+28
+00:03:24,150 --> 00:03:32,150
+B cannot vanish, so first of B dollar dollar is first of B: w. Together: u, w and dollar dollar.
+
+29
+00:03:32,600 --> 00:03:43,501
+Step 4: follow sets. What comes after each non-terminal? Here we look at where the non-terminals are used. For first sets, we looked at where they are defined.
+
+30
+00:03:43,951 --> 00:03:49,583
+S 4 is never on a right-hand side. So follow of S 4 is the empty set.
+
+31
+00:03:50,033 --> 00:03:57,884
+A is used in S 4 goes to A dollar dollar. Dollar dollar comes after it. So follow of A is dollar dollar.
+
+32
+00:03:58,334 --> 00:04:04,755
+B is used in S 4 goes to B dollar dollar. So follow of B is also dollar dollar.
+
+33
+00:04:05,205 --> 00:04:16,469
+Step 5: predict sets. S 4 goes to A dollar dollar: first of A dollar dollar, which is u and dollar dollar. It does not vanish, so there is no follow part.
+
+34
+00:04:16,919 --> 00:04:22,487
+S 4 goes to B dollar dollar: first of B dollar dollar, the set w.
+
+35
+00:04:22,937 --> 00:04:24,815
+A goes to u: the set u.
+
+36
+00:04:25,265 --> 00:04:33,265
+A goes to epsilon: first of epsilon is empty, and the body vanishes. So we add follow of A: dollar dollar.
+
+37
+00:04:33,715 --> 00:04:38,536
+The verdict. For S 4: u and dollar dollar, against w. Disjoint.
+
+38
+00:04:38,986 --> 00:04:44,127
+For A: u against dollar dollar. Disjoint. So S 4 is L L one.
+
+39
+00:04:44,577 --> 00:04:58,017
+Compare only the productions of the same non-terminal. Predict sets of unrelated rules may overlap. You never have to choose between them. B has one production, so there is nothing to compare.
+
+40
+00:04:58,467 --> 00:05:07,598
+Now the code. Each inspect is exactly that production's predict set. For S 4: inspect u or dollar dollar, then call A.
+
+41
+00:05:08,048 --> 00:05:10,245
+Inspect w, then call B.
+
+42
+00:05:10,695 --> 00:05:12,637
+Then consume E O F.
+
+43
+00:05:13,087 --> 00:05:20,361
+For A: if the next token is dollar dollar, return. That is the epsilon production, chosen by follow of A.
+
+44
+00:05:20,811 --> 00:05:25,675
+If it is u, consume u. This is what a parser generator would emit.
+
+45
+00:05:26,125 --> 00:05:40,888
+One detail, from our python check of the code as written. The two ifs in S 4 are separate. On input u w dollar dollar, A takes u, and then the second if also runs. So that input is accepted too.
+
+46
+00:05:41,338 --> 00:05:46,031
+With else if, the code accepts exactly the three strings of the language.
+
+47
+00:05:46,481 --> 00:05:53,948
+The second example, S 5, is a list. S 5 goes to N, star. N goes to i d, semicolon.
+
+48
+00:05:54,398 --> 00:05:56,019
+N needs no change.
+
+49
+00:05:56,469 --> 00:06:01,845
+The star becomes a new non-terminal, List. S 5 goes to List dollar dollar.
+
+50
+00:06:02,295 --> 00:06:10,146
+List has a base case and a step: the same pattern as AStar in part 1. The step: List goes to N List.
+
+51
+00:06:10,596 --> 00:06:13,455
+The base case: List goes to epsilon.
+
+52
+00:06:13,905 --> 00:06:24,529
+Here is a derivation of i d semicolon i d semicolon dollar dollar. Pick a non-terminal, apply a rule, repeat. Start from S 5.
+
+53
+00:06:24,979 --> 00:06:27,325
+S 5 gives List dollar dollar.
+
+54
+00:06:27,775 --> 00:06:31,423
+The recursive rule, List goes to N List, gives one item.
+
+55
+00:06:31,873 --> 00:06:34,071
+Again: now there are two items.
+
+56
+00:06:34,521 --> 00:06:38,787
+List goes to epsilon: stop. The base case ends the list.
+
+57
+00:06:39,237 --> 00:06:51,440
+Each N gives i d semicolon. The recursive case adds one more item. That is the whole of the star in B N F. It has the same shape as the while loop you would write.
+
+58
+00:06:51,890 --> 00:06:57,074
+The same grammar, as code. S 5 calls List, then consume E O F.
+
+59
+00:06:57,524 --> 00:07:04,372
+List has two productions, so it has an if. If the next token is E O F, return: the base case.
+
+60
+00:07:04,822 --> 00:07:08,235
+Otherwise call N, then List: the recursive case.
+
+61
+00:07:08,685 --> 00:07:11,779
+N consumes i d, then the semicolon.
+
+62
+00:07:12,229 --> 00:07:20,463
+Run it on two items: i d semicolon i d semicolon dollar dollar. S 5 calls List for item 1.
+
+63
+00:07:20,913 --> 00:07:23,495
+That List calls List again for item 2.
+
+64
+00:07:23,945 --> 00:07:26,675
+The third List sees E O F and returns.
+
+65
+00:07:27,125 --> 00:07:32,928
+Recursion is where the unbounded memory comes from. Each item adds one stack frame.
+
+66
+00:07:33,378 --> 00:07:40,034
+Now the recipe for S 5. Nullable first. What can disappear? Pause the video and try it.
+
+67
+00:07:40,484 --> 00:07:45,028
+E P S of List: yes. List goes to epsilon, directly.
+
+68
+00:07:45,478 --> 00:07:49,979
+E P S of N: no. It starts with the terminal i d.
+
+69
+00:07:50,429 --> 00:07:54,525
+E P S of S 5: no. It ends in dollar dollar.
+
+70
+00:07:54,975 --> 00:08:00,565
+First sets. First of N is first of i d semicolon: the set i d.
+
+71
+00:08:01,015 --> 00:08:09,719
+First of List is first of N List, union first of epsilon. N is not nullable, so we stop at N. The set i d.
+
+72
+00:08:10,169 --> 00:08:19,449
+First of S 5 is first of List dollar dollar. List is nullable, so dollar dollar comes through. The set i d and dollar dollar.
+
+73
+00:08:19,899 --> 00:08:31,397
+A quick check: can anything here start with a semicolon? No. A semicolon only comes after an i d. So it is in no first set. Our python check agrees.
+
+74
+00:08:31,847 --> 00:08:37,693
+Follow sets. S 5 is never on a right-hand side. Its follow set is empty.
+
+75
+00:08:38,143 --> 00:08:44,137
+List is used twice. In S 5 goes to List dollar dollar, dollar dollar follows it.
+
+76
+00:08:44,587 --> 00:08:53,910
+In List goes to N List, List is at the end, so add follow of List itself. That adds nothing new. Follow of List is dollar dollar.
+
+77
+00:08:54,360 --> 00:09:00,632
+N is used in List goes to N List. List follows N, so add first of List: i d.
+
+78
+00:09:01,082 --> 00:09:05,221
+List can vanish, so also add follow of List: dollar dollar.
+
+79
+00:09:05,671 --> 00:09:11,793
+Why: N is followed by List, which can vanish. So whatever follows List can follow N too.
+
+80
+00:09:12,243 --> 00:09:19,625
+Predict sets. Only List has two productions. List goes to N List: first of N List, the set i d.
+
+81
+00:09:20,075 --> 00:09:25,536
+List goes to epsilon: the body vanishes, so follow of List: dollar dollar.
+
+82
+00:09:25,986 --> 00:09:30,935
+I d against dollar dollar: disjoint. So S 5 is L L one.
+
+83
+00:09:31,385 --> 00:09:36,207
+The other non-terminals have one production each. There is nothing to predict.
+
+84
+00:09:36,657 --> 00:09:43,291
+The code again, written with a loop. List says: while the next token is not dollar dollar, call N.
+
+85
+00:09:43,741 --> 00:09:50,568
+Predict of List goes to epsilon is dollar dollar. That is exactly the exit condition of the loop.
+
+86
+00:09:51,018 --> 00:10:00,938
+The recursion of the B N F is the while loop of the code. Our python check confirms that both versions accept the same strings as the grammar.
+
+87
+00:10:01,388 --> 00:10:12,161
+Now a bigger one. The language is: a to the n, b to the m, with n at least 0 and m at least 1. Union c to the n, with n at least 0.
+
+88
+00:10:12,611 --> 00:10:21,273
+Question a: is this language L L one? Question b: is it regular, and why is that the easier question to answer first?
+
+89
+00:10:21,723 --> 00:10:23,365
+Pause the video and try it.
+
+90
+00:10:23,815 --> 00:10:35,101
+It is regular. Here is the regular expression: a star, b plus, or c star. Our python check confirms that it gives the same strings as the set definition.
+
+91
+00:10:35,551 --> 00:10:46,964
+And anything regular is L L one. A D F A is a recognizer with no recursion at all. That is why regular is the easier question: it answers both.
+
+92
+00:10:47,414 --> 00:10:59,489
+That regular expression is already a grammar. E B N F lets any regular expression stand on the right of a rule. S goes to a star, b plus, or c star.
+
+93
+00:10:59,939 --> 00:11:06,147
+Now convert it to B N F, the mechanical way. First, b plus becomes b, b star.
+
+94
+00:11:06,597 --> 00:11:18,117
+So S keeps one explicit b, and the star of b becomes B. With a star and c star, that is three stars, so three new non-terminals: A, B and C.
+
+95
+00:11:18,567 --> 00:11:20,871
+And G goes to S dollar dollar.
+
+96
+00:11:21,321 --> 00:11:26,739
+The bar gives two productions for S. S goes to A b B. S goes to C.
+
+97
+00:11:27,189 --> 00:11:32,203
+Each star becomes a base case and a step. A goes to epsilon, or a A.
+
+98
+00:11:32,653 --> 00:11:35,085
+B goes to epsilon, or b B.
+
+99
+00:11:35,535 --> 00:11:45,412
+C goes to epsilon, or c C. Our python check: this grammar gives the same strings as the regular expression, up to 6 tokens.
+
+100
+00:11:45,862 --> 00:11:49,489
+Nullable. What can disappear? Pause the video and try it.
+
+101
+00:11:49,939 --> 00:11:52,563
+G: no. It ends in dollar dollar.
+
+102
+00:11:53,013 --> 00:11:55,978
+A: yes. A goes to epsilon, directly.
+
+103
+00:11:56,428 --> 00:11:58,924
+B: yes. B goes to epsilon.
+
+104
+00:11:59,374 --> 00:12:01,806
+C: yes. C goes to epsilon.
+
+105
+00:12:02,256 --> 00:12:09,168
+S: yes, but not directly. S goes to C, and C goes to epsilon. So S can vanish too.
+
+106
+00:12:09,618 --> 00:12:18,450
+First sets. Start at the bottom. First of A: first of epsilon, union first of a A. Epsilon adds nothing. So the set a.
+
+107
+00:12:18,900 --> 00:12:20,948
+First of B: the set b.
+
+108
+00:12:21,398 --> 00:12:23,275
+First of C: the set c.
+
+109
+00:12:23,725 --> 00:12:32,707
+First of S: first of A b B, union first of C. A can vanish, so the b comes through. First of A b B is a and b.
+
+110
+00:12:33,157 --> 00:12:37,338
+First of C is c. So first of S is a, b, and c.
+
+111
+00:12:37,788 --> 00:12:46,087
+First of G is first of S dollar dollar. S can vanish, so dollar dollar comes through: a, b, c, and dollar dollar.
+
+112
+00:12:46,537 --> 00:12:58,633
+Why is dollar dollar in first of G but not in first of S? No rule of S produces dollar dollar. It comes from G goes to S dollar dollar, because S can vanish.
+
+113
+00:12:59,083 --> 00:13:07,659
+Follow sets. Point at the rule that put each terminal there. G is never on a right-hand side, so follow of G is empty.
+
+114
+00:13:08,109 --> 00:13:13,869
+S is used in G goes to S dollar dollar. So follow of S is dollar dollar.
+
+115
+00:13:14,319 --> 00:13:18,372
+A is used in S goes to A b B. The b follows A.
+
+116
+00:13:18,822 --> 00:13:26,694
+A is also at the end of A goes to a A, which adds follow of A to itself: nothing new. So follow of A is b.
+
+117
+00:13:27,144 --> 00:13:32,819
+B is at the end of S goes to A b B. So add follow of S: dollar dollar.
+
+118
+00:13:33,269 --> 00:13:40,074
+B goes to b B adds follow of B to itself: nothing new. So follow of B is dollar dollar.
+
+119
+00:13:40,524 --> 00:13:46,839
+C is at the end of S goes to C, so add follow of S. Follow of C is dollar dollar.
+
+120
+00:13:47,289 --> 00:13:56,931
+Predict sets, two at a time. S goes to A b B: first of A b B, which is a and b. The body cannot vanish, because of the b.
+
+121
+00:13:57,381 --> 00:14:04,571
+S goes to C: first of C, plus follow of S, because C can vanish. That gives c and dollar dollar.
+
+122
+00:14:05,021 --> 00:14:08,455
+a and b, against c and dollar dollar: disjoint.
+
+123
+00:14:08,905 --> 00:14:14,879
+A goes to epsilon: follow of A, which is b. A goes to a A: the set a. Disjoint.
+
+124
+00:14:15,329 --> 00:14:22,006
+B goes to epsilon: follow of B, dollar dollar. B goes to b B: the set b. Disjoint.
+
+125
+00:14:22,456 --> 00:14:28,067
+C goes to epsilon: dollar dollar. C goes to c C: the set c. Disjoint.
+
+126
+00:14:28,517 --> 00:14:41,615
+Every pair, for every non-terminal, is disjoint. Therefore the grammar is L L one. A table driven parser built from these sets accepts exactly the language, up to 6 tokens.
+
+127
+00:14:42,065 --> 00:14:50,513
+Now one that fails. The two productions for S start with different symbols: one with A, one with b. Nothing looks wrong.
+
+128
+00:14:50,963 --> 00:14:58,046
+Run the machinery: nullable, first, follow, and the two predict sets of S. Pause the video and try it.
+
+129
+00:14:58,496 --> 00:15:01,269
+A is nullable: A goes to epsilon.
+
+130
+00:15:01,719 --> 00:15:04,109
+First of A is a, from A goes to a.
+
+131
+00:15:04,559 --> 00:15:07,524
+Follow of A is b, from S goes to A b.
+
+132
+00:15:07,974 --> 00:15:13,777
+Predict of S goes to A b is first of A b. A can vanish, so that is a and b.
+
+133
+00:15:14,227 --> 00:15:16,296
+Predict of S goes to b is b.
+
+134
+00:15:16,746 --> 00:15:24,682
+They share b. Therefore the grammar is not L L one. Because A can vanish, the first production can start with b too.
+
+135
+00:15:25,132 --> 00:15:32,001
+Here are the two parse trees for the input b dollar dollar. The first one uses A goes to epsilon.
+
+136
+00:15:32,451 --> 00:15:34,777
+The other one uses S goes to b.
+
+137
+00:15:35,227 --> 00:15:40,859
+How would you fix it? Look at the language first. What strings does this grammar accept?
+
+138
+00:15:41,309 --> 00:15:43,143
+Two strings: a b, and b.
+
+139
+00:15:43,593 --> 00:15:53,897
+And S goes to b is redundant: A goes to epsilon already gives you b. The grammar says the same thing twice. That is what the collision was telling you.
+
+140
+00:15:54,347 --> 00:15:57,974
+Delete S goes to b. Now S has one production.
+
+141
+00:15:58,424 --> 00:16:08,813
+A goes to a is predicted by a, and A goes to epsilon by b, the follow of A. Disjoint. Our python check: same language, and no collision.
+
+142
+00:16:09,263 --> 00:16:18,223
+Two shapes fail often. The first is a common prefix: S goes to u w, or u t. You saw it first in part 1.
+
+143
+00:16:18,673 --> 00:16:27,932
+The fix: consume the prefix, then decide. S goes to u R, and R goes to w or t. This is called left factoring.
+
+144
+00:16:28,382 --> 00:16:42,014
+The second is left recursion: E goes to E plus T, or T. It is the natural way to write an expression grammar, and it is never L L one. Both productions start with whatever T starts with.
+
+145
+00:16:42,464 --> 00:16:57,824
+The fix turns the recursion around. E goes to T E prime. E prime goes to plus T E prime, or epsilon. Our python check, with T going to i d: the conflict is gone, and the language is the same.
+
+146
+00:16:58,274 --> 00:17:09,047
+Both fixes change the parse tree, so the A S T code must follow. The slides cover that properly later. Video 19 a shows the same two patterns.
+
+147
+00:17:09,497 --> 00:17:25,007
+The computation is long and the mistakes are small. Four checks cost only seconds. Check 1: every terminal in first of X must be one you could see first, when you parse X. Our python check did this for the bigger grammar.
+
+148
+00:17:25,457 --> 00:17:36,145
+Check 2: dollar dollar reaches a first set only when a nullable prefix lets it through. In the bigger grammar, it reached first of G, because S can vanish.
+
+149
+00:17:36,595 --> 00:17:42,931
+Check 3: every follow set must have a reason. Point at the rule that put each terminal there.
+
+150
+00:17:43,381 --> 00:17:52,853
+Check 4: at the end, write the recognizer from your predict sets. If the conditions are not what you would write by hand, one of you is wrong.
+
+151
+00:17:53,303 --> 00:18:02,135
+Last, the algorithm, for study. It comes from Scott, Programming Language Pragmatics. It computes E P S and FIRST together.
+
+152
+00:18:02,585 --> 00:18:06,937
+Start: a terminal is never nullable, and its first set is itself.
+
+153
+00:18:07,387 --> 00:18:15,109
+A non-terminal is nullable at the start only if it has an epsilon production. Its first set starts empty.
+
+154
+00:18:15,559 --> 00:18:25,415
+The inner loop is the rule you already know. For each production X goes to Y 1 to Y k, add first of each Y i to first of X.
+
+155
+00:18:25,865 --> 00:18:28,660
+Stop at the first Y i that cannot vanish.
+
+156
+00:18:29,110 --> 00:18:34,806
+If the inner loop never stopped, every Y i was nullable. So X is nullable too.
+
+157
+00:18:35,256 --> 00:18:40,419
+Repeat all of this until a full pass changes nothing. That is the fixed point.
+
+158
+00:18:40,869 --> 00:18:54,522
+Here is the algorithm on the bigger grammar, with the productions in the order on the left. At the start, A, B and C are nullable, in purple: they have epsilon productions. All first sets are empty.
+
+159
+00:18:54,972 --> 00:19:04,593
+Pass 1. G goes to S dollar dollar: first of S is still empty, and S is not yet nullable, so stop. G stays empty.
+
+160
+00:19:05,043 --> 00:19:12,211
+S goes to A b B. First of A is still empty, and A is nullable, so go on to b. S gets b.
+
+161
+00:19:12,661 --> 00:19:16,907
+S goes to C finds C nullable, so S becomes nullable.
+
+162
+00:19:17,357 --> 00:19:21,687
+Then A, B and C get a, b and c, from their step productions.
+
+163
+00:19:22,137 --> 00:19:28,495
+Pass 2. Now S is nullable, and first of S is b. So G gets b and dollar dollar.
+
+164
+00:19:28,945 --> 00:19:31,505
+S gets a, from A, and c, from C.
+
+165
+00:19:31,955 --> 00:19:34,707
+Pass 3. G gets a and c from S.
+
+166
+00:19:35,157 --> 00:19:46,527
+Pass 4 changes nothing. The algorithm stops. The result matches the table we built by hand. Our python run of the algorithm gives these exact passes.
+
+167
+00:19:46,977 --> 00:19:59,948
+The bars show the total size of all first sets: 0, 4, 8, 10, 10. It only grows, and it has an upper bound: 5 non-terminals times 4 terminals, 20.
+
+168
+00:20:00,398 --> 00:20:03,555
+Now FOLLOW. All follow sets start empty.
+
+169
+00:20:04,005 --> 00:20:12,091
+Each pass applies two rules. Rule 1: what comes after B in a rule. Add first of beta to follow of B.
+
+170
+00:20:12,541 --> 00:20:19,197
+Rule 2: when what comes after B can vanish, add follow of A, the rule's own left-hand side.
+
+171
+00:20:19,647 --> 00:20:23,231
+On the bigger grammar, pass 1 finds every follow set.
+
+172
+00:20:23,681 --> 00:20:26,603
+Pass 2 changes nothing, so the loop stops.
+
+173
+00:20:27,053 --> 00:20:34,563
+The slides say: this version is not in the lecture notes. It is the version to study with, and to run by hand.
+
+174
+00:20:35,013 --> 00:20:42,799
+Repeat until no further progress is a fixed point. A fixed point is a state that one more pass does not change.
+
+175
+00:20:43,249 --> 00:20:49,329
+Why must the loop stop? Each pass can only add to the sets. It never removes anything.
+
+176
+00:20:49,779 --> 00:20:57,310
+And the sets are bounded by the alphabet: a set cannot hold more terminals than exist. So the loop must stop.
+
+177
+00:20:57,760 --> 00:21:03,179
+The slides say you will meet fixed point iteration again, in dataflow analysis.
+
+178
+00:21:03,629 --> 00:21:14,807
+In a nutshell. A grammar is L L one when one token of lookahead always tells you which production to use. Then the recursive descent parser can be generated.
+
+179
+00:21:15,257 --> 00:21:27,268
+The recipe: E B N F to B N F, then nullable, first, follow and predict. Then check that the predict sets of each non-terminal's productions are disjoint.
+
+180
+00:21:27,718 --> 00:21:36,209
+Epsilon is not dollar dollar. Epsilon is a convention that matches nothing. Dollar dollar is a token you must consume.
+
+181
+00:21:36,659 --> 00:21:44,403
+The conversion to B N F is not unique, and neither is the answer. You are graded against your own conversion.
+
+182
+00:21:44,853 --> 00:21:56,330
+If the grammar is not L L one, the language may still be. Refactor the grammar. The slides say: this is not on the midterm this term. It is examined on the final.

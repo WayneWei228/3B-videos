@@ -31,341 +31,481 @@ L L one is short for three things. The first L: the parser reads the input from 
 The second L: it builds a leftmost derivation. It always expands the leftmost nonterminal first.
 
 9
-00:01:23,557 --> 00:01:29,509
+00:01:23,557 --> 00:01:29,488
 And 1: it looks at one token of lookahead. That is the next token, not yet consumed.
 
 10
-00:01:29,959 --> 00:01:37,234
-Here the parser has read i d and the arrow. It now expects a Factor. Factor has four alternatives.
+00:01:29,938 --> 00:01:32,861
+Here the parser has read i d and the arrow.
 
 11
-00:01:37,684 --> 00:01:50,719
-The lookahead is the not sign. Only the first alternative can start with it. So the parser picks it, with no guessing. That is the L L one property. One token predicts the alternative.
+00:01:33,311 --> 00:01:37,129
+It now expects a Factor. Factor has four alternatives.
 
 12
-00:01:51,169 --> 00:01:58,955
-A recursive descent parser has one function per nonterminal. Here is a sketch for Factor. It is not lab code.
+00:01:37,579 --> 00:01:46,475
+The lookahead is the not sign. Only the first alternative, not Factor, can start with it. So the parser picks it, with no guessing.
 
 13
-00:01:59,405 --> 00:02:06,211
-The first test looks at the next token. If it is the not sign, the parser takes the first alternative.
+00:01:46,925 --> 00:01:51,640
+That is the L L one property. One token predicts the alternative.
 
 14
-00:02:06,661 --> 00:02:11,098
-If it is an open parenthesis, it takes the second alternative.
+00:01:52,090 --> 00:02:00,751
+A recursive descent parser has one function per nonterminal. Here is a sketch of the function for Factor. It is not lab code.
 
 15
-00:02:11,548 --> 00:02:14,343
-If it is an identifier, it calls Var.
+00:02:01,201 --> 00:02:08,007
+The first test looks at the next token. If it is the not sign, the parser takes the first alternative.
 
 16
-00:02:14,793 --> 00:02:28,979
-Otherwise it must be a constant. Each test looks at one token, and the tests must not overlap. When one token can start two alternatives, the parser cannot choose. Then the grammar is not L L one.
+00:02:08,457 --> 00:02:12,894
+If it is an open parenthesis, it takes the second alternative.
 
 17
-00:02:29,429 --> 00:02:41,355
-The notes list three things that put a grammar outside L L one. The first is common prefixes: two alternatives of the same nonterminal that start with the same symbols.
+00:02:13,344 --> 00:02:16,160
+If it is an identifier, it calls Var.
 
 18
-00:02:41,805 --> 00:02:47,074
-The second is left recursion: a production for A whose right side starts with A.
+00:02:16,610 --> 00:02:18,765
+Otherwise it must be a constant.
 
 19
-00:02:47,524 --> 00:02:53,327
-The third is ambiguity: a string with two parse trees. Video 18 covered it.
+00:02:19,215 --> 00:02:31,012
+Each test looks at one token, and the tests must not overlap. When one token can start two alternatives, the parser cannot choose. Then the grammar is not L L one.
 
 20
-00:02:53,777 --> 00:03:08,753
-The two simple tests can only show that a grammar is not L L one. After we refactor, the new grammar might be L L one. To know for sure, we need the full test with the predict sets. That is video 19 b.
+00:02:31,462 --> 00:02:43,387
+The notes list three things that put a grammar outside L L one. The first is common prefixes: two alternatives of the same nonterminal that start with the same symbols.
 
 21
-00:03:09,203 --> 00:03:21,256
-Here is the example from the notes. A statement is an assignment, i d colon equals expression, or a call, i d, open parenthesis, expression, close parenthesis.
+00:02:43,837 --> 00:02:49,107
+The second is left recursion: a production for A whose right side starts with A.
 
 22
-00:03:21,706 --> 00:03:25,439
-The parser expects a statement. The lookahead is i d.
+00:02:49,557 --> 00:02:55,359
+The third is ambiguity: a string with two parse trees. Video 18 covered it.
 
 23
-00:03:25,889 --> 00:03:32,119
-Both alternatives start with i d. One token of lookahead cannot choose between them.
+00:02:55,809 --> 00:03:04,385
+The two simple tests can only show that a grammar is not L L one. After we refactor, the new grammar might be L L one.
 
 24
-00:03:32,569 --> 00:03:41,785
-The tokens that decide are colon equals or the open parenthesis. They are the second token. So this grammar is not L L one.
+00:03:04,835 --> 00:03:10,979
+To know for sure, we need the full test with the predict sets. That is video 19 b.
 
 25
-00:03:42,235 --> 00:03:51,920
-The fix is called left factoring. Here is the general pattern from the notes. Goal has two alternatives, and both start with the same Prefix.
+00:03:11,429 --> 00:03:18,491
+Here is the example from the notes. A statement is an assignment: i d, colon equals, expression.
 
 26
-00:03:52,370 --> 00:03:57,533
-We keep one copy of the Prefix, and follow it with a new nonterminal, Tail.
+00:03:18,941 --> 00:03:23,869
+Or a call: i d, open parenthesis, expression, close parenthesis.
 
 27
-00:03:57,983 --> 00:04:01,289
-Tail has the two suffixes as its alternatives.
+00:03:24,319 --> 00:03:28,052
+The parser expects a statement. The lookahead is i d.
 
 28
-00:04:01,739 --> 00:04:13,729
-Now the parser reads the shared prefix first. It chooses between the suffixes only after the prefix, when the next token is different. The new grammar accepts the same strings.
+00:03:28,502 --> 00:03:34,731
+Both alternatives start with i d. One token of lookahead cannot choose between them.
 
 29
-00:04:14,179 --> 00:04:28,301
-Apply the pattern. The prefix is i d. The new grammar is: statement goes to i d Tail. Tail goes to colon equals expression, or to open parenthesis, expression, close parenthesis.
+00:03:35,181 --> 00:03:41,645
+The tokens that decide are colon equals or the open parenthesis. They are the second token.
 
 30
-00:04:28,751 --> 00:04:35,983
-Parse i d, colon equals, x. Statement has only one alternative. The parser reads i d.
+00:03:42,095 --> 00:03:47,322
+So one token of lookahead is not enough. This grammar is not L L one.
 
 31
-00:04:36,433 --> 00:04:42,748
-Now it expects a Tail. The lookahead is colon equals, so it picks the assignment alternative.
+00:03:47,772 --> 00:03:57,457
+The fix is called left factoring. Here is the general pattern from the notes. Goal has two alternatives, and both start with the same Prefix.
 
 32
-00:04:43,198 --> 00:04:56,425
-The two Tail alternatives start with different tokens, colon equals and open parenthesis. A check in python found no overlap, and both grammars give the same strings up to length 7.
+00:03:57,907 --> 00:04:03,070
+We keep one copy of the Prefix, and follow it with a new nonterminal, Tail.
 
 33
-00:04:56,875 --> 00:05:10,933
-Now the second problem. A list of identifiers, separated by commas. List goes to List comma i d, or to i d. The first alternative starts with List itself. That is left recursion.
+00:04:03,520 --> 00:04:06,848
+Tail has the two suffixes as its alternatives.
 
 34
-00:05:11,383 --> 00:05:16,973
-Write the function for List from the first alternative. Its first action is to call List.
+00:04:07,298 --> 00:04:18,882
+The new grammar accepts the same strings. The parser reads the shared prefix first. It chooses between the suffixes only after the prefix, when the next token is different.
 
 35
-00:05:17,423 --> 00:05:24,505
-That call does not read a token. So the new call sees the same lookahead, i d, and calls List again.
+00:04:19,332 --> 00:04:25,775
+Apply the pattern. The prefix is i d. The new grammar is: statement goes to i d Tail.
 
 36
-00:05:24,955 --> 00:05:38,971
-The call stack grows, and no input is consumed. The parser never stops. Both alternatives also start with i d, so the predict sets overlap. A left recursive grammar is not L L one.
+00:04:26,225 --> 00:04:33,137
+Tail goes to colon equals expression, or to open parenthesis, expression, close parenthesis.
 
 37
-00:05:39,421 --> 00:05:44,456
-Here is the pattern from the notes. Goal goes to Goal Suffix, or to Prefix.
+00:04:33,587 --> 00:04:40,819
+Parse i d, colon equals, x. Statement has only one alternative. The parser reads i d.
 
 38
-00:05:44,906 --> 00:05:56,042
-What strings does Goal make? It must end with the Prefix alternative, so it starts with a Prefix. So the solution starts with Prefix, then a new nonterminal, Tail.
+00:04:41,269 --> 00:04:47,583
+Now it expects a Tail. The lookahead is colon equals, so it picks the assignment alternative.
 
 39
-00:05:56,492 --> 00:06:01,889
-Tail goes to Suffix Tail, or to epsilon. Epsilon stops the repetition.
+00:04:48,033 --> 00:04:56,929
+The two Tail alternatives start with different tokens, colon equals and open parenthesis. Their predict sets do not overlap.
 
 40
-00:06:02,339 --> 00:06:13,049
-Both grammars give a Prefix, then zero or more Suffixes. The new Tail is right recursive, and the parser reads a token before each recursive call.
+00:04:57,379 --> 00:05:02,286
+A check in python: both grammars give the same strings up to length 7.
 
 41
-00:06:13,499 --> 00:06:25,936
-Apply the pattern to List. The Prefix is i d, and the Suffix is comma i d. So List goes to i d Tail, and Tail goes to comma i d Tail, or to epsilon.
+00:05:02,736 --> 00:05:11,611
+Now the second problem. A list of identifiers, separated by commas. List goes to List comma i d, or to i d.
 
 42
-00:06:26,386 --> 00:06:34,706
-Derive i d comma i d comma i d. We start from List. The orange box is the leftmost nonterminal.
+00:05:12,061 --> 00:05:16,669
+The first alternative starts with List itself. That is left recursion.
 
 43
-00:06:35,156 --> 00:06:38,121
-List has one alternative: i d Tail.
+00:05:17,119 --> 00:05:22,708
+Write the function for List from the first alternative. Its first action is to call List.
 
 44
-00:06:38,571 --> 00:06:42,561
-The lookahead is a comma, so Tail takes comma i d Tail.
+00:05:23,158 --> 00:05:30,219
+That call does not read a token. So the new call sees the same lookahead, i d, and calls List again.
 
 45
-00:06:43,011 --> 00:06:46,723
-Another comma. Tail takes comma i d Tail again.
+00:05:30,669 --> 00:05:35,661
+The call stack grows, and no input is consumed. The parser never stops.
 
 46
-00:06:47,173 --> 00:07:02,575
-Now the input is finished. Tail takes epsilon. Each choice used one token of lookahead. A python check found no overlap in the predict sets, and the parser agrees with the language on all strings up to length 7.
+00:05:36,111 --> 00:05:44,687
+Both alternatives also start with i d, so the predict sets overlap. A left recursive grammar is not L L one.
 
 47
-00:07:03,025 --> 00:07:11,388
-Compare the parse trees for i d comma i d comma i d. The old grammar builds a tree that leans to the left.
+00:05:45,137 --> 00:05:50,172
+Here is the pattern from the notes. Goal goes to Goal Suffix, or to Prefix.
 
 48
-00:07:11,838 --> 00:07:17,577
-The new grammar builds a tree that leans to the right. Each Tail holds the rest of the list.
+00:05:50,622 --> 00:06:01,801
+What strings does Goal make? Each step adds a Suffix on the right. The last step must use the Prefix alternative. So the string is a Prefix, then the Suffixes.
 
 49
-00:07:18,027 --> 00:07:24,469
-So the two grammars accept the same strings, but they build different trees. They are weakly equivalent.
+00:06:02,251 --> 00:06:06,709
+So the solution starts with Prefix, then a new nonterminal, Tail.
 
 50
-00:07:24,919 --> 00:07:43,074
-This matters for operators. Video 18 showed that a left associative operator, such as minus, needs left recursion. If we remove the left recursion, we also change the associativity. The notes say there is no simple solution in B N F.
+00:06:07,159 --> 00:06:12,578
+Tail goes to Suffix Tail, or to epsilon. Epsilon stops the repetition.
 
 51
-00:07:43,524 --> 00:07:53,551
-The notes suggest E B N F with repetition. The parser reads the repetition with a loop, and it can build a left associative tree from it.
+00:06:13,028 --> 00:06:17,060
+Both grammars give a Prefix, then zero or more Suffixes.
 
 52
-00:07:54,001 --> 00:08:02,939
-This is the E B N F grammar for the F language from the notes, Figure 4.5. It uses two extra notations.
+00:06:17,510 --> 00:06:23,441
+The new Tail is right recursive, and the parser reads a token before each recursive call.
 
 53
-00:08:03,389 --> 00:08:10,216
-The star means repetition: zero or more. It appears three times, in Program, Expr and Term.
+00:06:23,891 --> 00:06:29,565
+Apply the pattern to List. The Prefix is i d, and the Suffix is comma i d.
 
 54
-00:08:10,666 --> 00:08:23,509
-The bar means alternation. It appears in Factor and Constant. B N F has neither the star nor the bar. We convert to B N F so that we can compute the sets for the full test.
+00:06:30,015 --> 00:06:36,138
+So List goes to i d Tail, and Tail goes to comma i d Tail, or to epsilon.
 
 55
-00:08:23,959 --> 00:08:31,361
-Take Expr. It is a Term, then plus Term, repeated zero or more times. The starred group is in orange.
+00:06:36,588 --> 00:06:44,908
+Derive i d comma i d comma i d. We start from List. The orange box is the leftmost nonterminal.
 
 56
-00:08:31,811 --> 00:08:36,121
-Replace the starred group with a new nonterminal. Call it TermTail.
+00:06:45,358 --> 00:06:48,323
+List has one alternative: i d Tail.
 
 57
-00:08:36,571 --> 00:08:44,699
-TermTail goes to plus Term TermTail, which is one more repetition. Or it goes to epsilon, which stops the repetition.
+00:06:48,773 --> 00:06:52,763
+The lookahead is a comma, so Tail takes comma i d Tail.
 
 58
-00:08:45,149 --> 00:08:50,034
-So Expr still makes a Term, followed by zero or more plus Term groups.
+00:06:53,213 --> 00:06:56,925
+Another comma. Tail takes comma i d Tail again.
 
 59
-00:08:50,484 --> 00:08:56,265
-The bar is easy. Write each alternative as its own production with the same left side.
+00:06:57,375 --> 00:07:00,980
+Now the input is finished. Tail takes epsilon.
 
 60
-00:08:56,715 --> 00:09:05,526
-Here is the full B N F grammar, Figure 4.6 in the notes. It has 17 productions and no star or bar.
+00:07:01,430 --> 00:07:12,907
+Each choice used one token of lookahead. A python check found no overlap in the predict sets, and the parser agrees with the language on all strings up to length 7.
 
 61
-00:09:05,976 --> 00:09:14,360
-Three new nonterminals come from the three stars. FList, TermTail and FactorTail. Each has an epsilon production.
+00:07:13,357 --> 00:07:21,720
+Compare the parse trees for i d comma i d comma i d. The old grammar builds a tree that leans to the left.
 
 62
-00:09:14,810 --> 00:09:30,021
-We checked the conversion in python. A recognizer written from the E B N F and the B N F grammar agree on every token string up to length 6. Video 19 b uses this grammar for the full test.
+00:07:22,170 --> 00:07:27,909
+The new grammar builds a tree that leans to the right. Each Tail holds the rest of the list.
 
 63
-00:09:30,471 --> 00:09:44,956
-Now an exercise from the notes. This grammar is not suitable for a top down predictive parser. Fix the problems, then make the L L one parsing table. The terminals are the letters a, b and c.
+00:07:28,359 --> 00:07:34,801
+So the two grammars accept the same strings, but they build different trees. They are weakly equivalent.
 
 64
-00:09:45,406 --> 00:09:47,049
-Pause the video and try it.
+00:07:35,251 --> 00:07:44,019
+This matters for operators. Video 18 showed that a left associative operator, such as minus, needs left recursion.
 
 65
-00:09:47,499 --> 00:09:55,797
-Look for the two simple problems. R goes to R b c. The right side starts with R, so this is left recursion.
+00:07:44,469 --> 00:07:53,557
+If we remove the left recursion, we also change the associativity. The notes say there is no simple solution in B N F.
 
 66
-00:09:56,247 --> 00:10:02,797
-Q goes to b b c, and Q goes to b c. Both start with b. That is a common prefix.
+00:07:54,007 --> 00:08:04,034
+The notes suggest E B N F with repetition. The parser reads the repetition with a loop, and it can build a left associative tree from it.
 
 67
-00:10:03,247 --> 00:10:10,479
-The two L productions are fine. R starts with a or c. Q starts with b. They do not overlap.
+00:08:04,484 --> 00:08:13,423
+This is the E B N F grammar for the F language from the notes, Figure 4.5. It uses two extra notations.
 
 68
-00:10:10,929 --> 00:10:21,275
-Fix the left recursion first. R has two non recursive alternatives, a b a and c a b a. Each is a Prefix. The Suffix is b c.
+00:08:13,873 --> 00:08:20,699
+The star means repetition: zero or more. It appears three times, in Program, Expr and Term.
 
 69
-00:10:21,725 --> 00:10:31,965
-So R goes to a b a R 1, or to c a b a R 1. R 1 goes to b c R 1, or to epsilon. The notes call it R prime.
+00:08:21,149 --> 00:08:25,352
+The bar means alternation. It appears in Factor and Constant.
 
 70
-00:10:32,415 --> 00:10:40,351
-Now left factor Q. The common prefix is b. Q goes to b Qtail. Qtail goes to b c, or to c.
+00:08:25,802 --> 00:08:34,037
+B N F has neither the star nor the bar. We convert to B N F so that we can compute the sets for the full test.
 
 71
-00:10:40,801 --> 00:10:50,017
-The L productions do not change. A python check confirms that the new grammar gives the same strings as the old one, up to length 10.
+00:08:34,487 --> 00:08:41,569
+Take Expr. It is a Term, then plus Term, repeated zero or more times. The starred group is marked.
 
 72
-00:10:50,467 --> 00:11:07,342
-The table has a row for each nonterminal and a column for each lookahead token. A cell holds the production to use. For L: R starts with a or c, so those columns take L to R a. The b column takes L to Q b a.
+00:08:42,019 --> 00:08:46,329
+Replace the starred group with a new nonterminal. Call it TermTail.
 
 73
-00:11:07,792 --> 00:11:14,811
-For R: lookahead a takes the a b a alternative. Lookahead c takes the c a b a alternative.
+00:08:46,779 --> 00:08:51,216
+TermTail goes to plus Term TermTail. That is one more repetition.
 
 74
-00:11:15,261 --> 00:11:34,525
-For R 1: lookahead b takes b c R 1. When does R 1 go to epsilon? When the next token can follow R. In L to R a, an a follows R. So the a column takes R 1 to epsilon. Video 19 b explains this rule, the follow set.
+00:08:51,666 --> 00:08:55,762
+Or TermTail goes to epsilon. That stops the repetition.
 
 75
-00:11:34,975 --> 00:11:41,289
-Q has one production, for lookahead b. Qtail: b takes b c, and c takes c.
+00:08:56,212 --> 00:09:01,097
+So Expr still makes a Term, followed by zero or more plus Term groups.
 
 76
-00:11:41,739 --> 00:11:57,099
-No cell holds two productions. So the new grammar is L L one. This table is our solution; the notes give only the grammar. A table driven parser built from it agrees with the language on every string up to length 10.
+00:09:01,547 --> 00:09:07,329
+The bar is easy. Write each alternative as its own production with the same left side.
 
 77
-00:11:57,549 --> 00:12:11,395
-Next exercise. Refactor this grammar to L L one form. S is an identifier with a list in parentheses, or in square brackets. A is a list of identifiers separated by commas.
+00:09:07,779 --> 00:09:16,589
+Here is the full B N F grammar, Figure 4.6 in the notes. It has 17 productions and no star or bar.
 
 78
-00:12:11,845 --> 00:12:13,487
-Pause the video and try it.
+00:09:17,039 --> 00:09:22,949
+Three new nonterminals come from the three stars: FList, TermTail and FactorTail.
 
 79
-00:12:13,937 --> 00:12:20,999
-There are two problems. The S alternatives have the common prefix i d. And A is left recursive.
+00:09:23,399 --> 00:09:26,300
+Each of them has an epsilon production.
 
 80
-00:12:21,449 --> 00:12:31,305
-Left factor S. S goes to i d T. T goes to open parenthesis A close parenthesis, or to open bracket A close bracket.
+00:09:26,750 --> 00:09:41,961
+We checked the conversion in python. A recognizer written from the E B N F and the B N F grammar agree on every token string up to length 6. Video 19 b uses this grammar for the full test.
 
 81
-00:12:31,755 --> 00:12:47,435
-Remove the left recursion from A, with the same pattern as List. A goes to i d U. U goes to comma i d U, or to epsilon. A python check: same strings up to length 9, and no overlapping predict sets.
+00:09:42,411 --> 00:09:56,896
+Now an exercise from the notes. This grammar is not suitable for a top down predictive parser. Fix the problems, then make the L L one parsing table. The terminals are the letters a, b and c.
 
 82
-00:12:47,885 --> 00:12:58,338
-Last exercise. The start symbol is expr, and i d is any single letter. Explain why an L L one parser cannot parse this grammar.
-
-83
-00:12:58,788 --> 00:13:00,431
+00:09:57,346 --> 00:09:58,989
 Pause the video and try it.
 
+83
+00:09:59,439 --> 00:10:07,737
+Look for the two simple problems. R goes to R b c. The right side starts with R, so this is left recursion.
+
 84
-00:13:00,881 --> 00:13:07,665
-The problem is in expr. The first production starts with i d. Now follow the second production.
+00:10:08,187 --> 00:10:14,737
+Q goes to b b c, and Q goes to b c. Both start with b. That is a common prefix.
 
 85
-00:13:08,115 --> 00:13:10,291
-expr goes to term term tail.
+00:10:15,187 --> 00:10:18,472
+The two L productions start with R and with Q.
 
 86
-00:13:10,741 --> 00:13:12,917
-term goes to factor factor tail.
+00:10:18,922 --> 00:10:20,842
+R starts with a or c.
 
 87
-00:13:13,367 --> 00:13:18,956
-factor can go to i d. So the second production can also start with i d.
+00:10:21,292 --> 00:10:27,777
+Q starts with b. The sets a, c and b do not overlap, so the L productions are fine.
 
 88
-00:13:19,406 --> 00:13:37,219
-Both expr productions can start with i d. It is a common prefix, but it is hidden behind three nonterminals. With lookahead i d, the parser cannot choose. A python check of the predict sets finds exactly this one overlap, on i d.
+00:10:28,227 --> 00:10:36,675
+Fix the left recursion first. R has two non recursive alternatives, a b a and c a b a. Each is a Prefix.
 
 89
-00:13:37,669 --> 00:13:47,824
-To summarize. L L one means left to right, leftmost derivation, one token of lookahead. One token must predict the alternative.
+00:10:37,125 --> 00:10:40,816
+The Suffix is b c, from R goes to R b c.
 
 90
-00:13:48,274 --> 00:13:56,637
-A common prefix blocks the choice. Left factor it: keep the prefix, and move the suffixes into a new Tail nonterminal.
+00:10:41,266 --> 00:10:45,426
+So R goes to a b a R 1, or to c a b a R 1.
 
 91
-00:13:57,087 --> 00:14:09,097
-Left recursion makes recursive descent loop. Rewrite Goal as Prefix Tail, with Tail going to Suffix Tail or epsilon. The strings stay the same, but the trees change.
+00:10:45,876 --> 00:10:51,529
+R 1 goes to b c R 1, or to epsilon. The notes call it R prime.
 
 92
-00:14:09,547 --> 00:14:20,747
-To convert E B N F to B N F, split each bar into productions, and replace each star with a new nonterminal that uses recursion and epsilon.
+00:10:51,979 --> 00:10:55,414
+Now left factor Q. The common prefix is b.
 
 93
-00:14:21,197 --> 00:14:36,301
+00:10:55,864 --> 00:11:00,259
+Q goes to b Qtail. Qtail goes to b c, or to c.
+
+94
+00:11:00,709 --> 00:11:02,778
+The L productions do not change.
+
+95
+00:11:03,228 --> 00:11:09,756
+A python check confirms that the new grammar gives the same strings as the old one, up to length 10.
+
+96
+00:11:10,206 --> 00:11:18,441
+The table has a row for each nonterminal and a column for each lookahead token. A cell holds the production to use.
+
+97
+00:11:18,891 --> 00:11:24,629
+For L: R starts with a or c, so the a and c columns take L goes to R a.
+
+98
+00:11:25,079 --> 00:11:29,623
+Q starts with b, so the b column takes L goes to Q b a.
+
+99
+00:11:30,073 --> 00:11:37,092
+For R: lookahead a takes the a b a alternative. Lookahead c takes the c a b a alternative.
+
+100
+00:11:37,542 --> 00:11:41,126
+For R 1: lookahead b takes b c R 1.
+
+101
+00:11:41,576 --> 00:11:58,024
+When does R 1 go to epsilon? When the next token can follow R. In L goes to R a, an a follows R. So the a column takes R 1 goes to epsilon. Video 19 b explains this rule, the follow set.
+
+102
+00:11:58,474 --> 00:12:01,311
+Q has one production, for lookahead b.
+
+103
+00:12:01,761 --> 00:12:04,641
+Qtail: b takes b c, and c takes c.
+
+104
+00:12:05,091 --> 00:12:09,614
+No cell holds two productions. So the new grammar is L L one.
+
+105
+00:12:10,064 --> 00:12:20,325
+This table is our solution; the notes give only the grammar. A table driven parser built from it agrees with the language on every string up to length 10.
+
+106
+00:12:20,775 --> 00:12:30,674
+Next exercise. Refactor this grammar to L L one form. S is an identifier with a list in parentheses, or in square brackets.
+
+107
+00:12:31,124 --> 00:12:34,495
+A is a list of identifiers separated by commas.
+
+108
+00:12:34,945 --> 00:12:36,587
+Pause the video and try it.
+
+109
+00:12:37,037 --> 00:12:42,029
+There are two problems. The S alternatives have the common prefix i d.
+
+110
+00:12:42,479 --> 00:12:47,087
+And A is left recursive: A goes to A comma i d starts with A.
+
+111
+00:12:47,537 --> 00:12:50,801
+Left factor S. S goes to i d T.
+
+112
+00:12:51,251 --> 00:12:57,246
+T goes to open parenthesis A close parenthesis, or to open bracket A close bracket.
+
+113
+00:12:57,696 --> 00:13:03,669
+Remove the left recursion from A, with the same pattern as List. A goes to i d U.
+
+114
+00:13:04,119 --> 00:13:07,405
+U goes to comma i d U, or to epsilon.
+
+115
+00:13:07,855 --> 00:13:13,444
+A python check: same strings up to length 9, and no overlapping predict sets.
+
+116
+00:13:13,894 --> 00:13:24,347
+Last exercise. The start symbol is expr, and i d is any single letter. Explain why an L L one parser cannot parse this grammar.
+
+117
+00:13:24,797 --> 00:13:26,440
+Pause the video and try it.
+
+118
+00:13:26,890 --> 00:13:31,327
+The problem is in expr. The first production starts with i d.
+
+119
+00:13:31,777 --> 00:13:36,215
+Now follow the second production. expr goes to term term tail.
+
+120
+00:13:36,665 --> 00:13:38,841
+term goes to factor factor tail.
+
+121
+00:13:39,291 --> 00:13:44,880
+factor can go to i d. So the second production can also start with i d.
+
+122
+00:13:45,330 --> 00:13:53,351
+Both expr productions can start with i d. It is a common prefix, but it is hidden behind three nonterminals.
+
+123
+00:13:53,801 --> 00:14:03,487
+With lookahead i d, the parser cannot choose. A python check of the predict sets finds exactly this one overlap, on i d.
+
+124
+00:14:03,937 --> 00:14:14,091
+To summarize. L L one means left to right, leftmost derivation, one token of lookahead. One token must predict the alternative.
+
+125
+00:14:14,541 --> 00:14:22,904
+A common prefix blocks the choice. Left factor it: keep the prefix, and move the suffixes into a new Tail nonterminal.
+
+126
+00:14:23,354 --> 00:14:35,365
+Left recursion makes recursive descent loop. Rewrite Goal as Prefix Tail, with Tail going to Suffix Tail or epsilon. The strings stay the same, but the trees change.
+
+127
+00:14:35,815 --> 00:14:47,015
+To convert E B N F to B N F, split each bar into productions, and replace each star with a new nonterminal that uses recursion and epsilon.
+
+128
+00:14:47,465 --> 00:15:02,569
 Look for prefixes that hide behind nonterminals. And remember: the simple tests can only show that a grammar is not L L one. The next video gives the full test: nullable, first, follow and predict sets.

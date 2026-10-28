@@ -7,293 +7,425 @@ This video is about one fact. Every regular language has exactly one minimal D F
 We use a map between two machines, called a homomorphism. It shows that two machines agree. Then we show why the minimal D F A is the smallest one. Part 2 uses these facts to decide if two regexes are the same.
 
 3
-00:00:25,220 --> 00:00:36,548
-So far we have the full pipeline. Templates give an N F A. The subset construction gives a D F A. Moore's algorithm gives the minimal D F A.
+00:00:25,220 --> 00:00:29,913
+So far we have the full pipeline. The templates give an N F A.
 
 4
-00:00:36,998 --> 00:00:45,851
-Now a new question. Two different D F As accept the same language. How are they related? Do they give the same minimal machine?
+00:00:30,363 --> 00:00:33,265
+The subset construction gives a D F A.
 
 5
-00:00:46,301 --> 00:00:57,949
-First, homomorphisms. A homomorphism is a map from the states of one D F A to the states of another. It proves that the two machines accept the same strings.
+00:00:33,715 --> 00:00:37,064
+Moore's algorithm gives the minimal D F A.
 
 6
-00:00:58,399 --> 00:01:05,205
-Second, why the minimal D F A is the smallest. No D F A for the language can have fewer states.
+00:00:37,514 --> 00:00:46,367
+Now a new question. Two different D F As accept the same language. How are they related? Do they give the same minimal machine?
 
 7
-00:01:05,655 --> 00:01:12,033
-Third, deciding if two regexes are the same, and the cost of each step. That is part 2.
+00:00:46,817 --> 00:00:58,465
+First, homomorphisms. A homomorphism is a map from the states of one D F A to the states of another. It proves that the two machines accept the same strings.
 
 8
-00:01:12,483 --> 00:01:22,638
-At the top is our D F A for a or a b star, from the subset construction. It has four states. B and C accept. D is the error state.
+00:00:58,915 --> 00:01:05,721
+Second, why the minimal D F A is the smallest. No D F A for the language can have fewer states.
 
 9
-00:01:23,088 --> 00:01:31,600
-Below is the minimal machine from Moore's algorithm. Moore merged B and C into one state, B C. It has three states.
+00:01:06,171 --> 00:01:12,549
+Third, deciding if two regexes are the same, and the cost of each step. That is part 2.
 
 10
-00:01:32,050 --> 00:01:44,018
-The dashed arrows are a map. We call it h. Each state of our D F A goes to the state that it became. A goes to A. D goes to D. B and C both go to B C.
+00:01:12,999 --> 00:01:19,847
+At the top is our D F A for a or a b star, from the subset construction. It has four states.
 
 11
-00:01:44,468 --> 00:01:51,807
-Now compare the arrows of the two machines. Take one arrow at the top, and follow h from both of its ends.
+00:01:20,297 --> 00:01:21,769
+B and C accept.
 
 12
-00:01:52,257 --> 00:02:05,889
-B reads b and goes to C. h sends B to B C, and h sends C to B C. Below, B C reads b and goes to B C. So the step is still there. It is the loop on B C.
+00:01:22,219 --> 00:01:23,947
+D is the error state.
 
 13
-00:02:06,339 --> 00:02:11,160
-Another arrow. C reads a and goes to D. Which step is that below?
+00:01:24,397 --> 00:01:32,909
+Below is the minimal machine from Moore's algorithm. Moore merged B and C into one state, B C. It has three states.
 
 14
-00:02:11,610 --> 00:02:20,143
-h sends C to B C, and D to D. Below, B C reads a and goes to D. Again the arrow is there, with the same letter.
+00:01:33,359 --> 00:01:40,293
+The dashed arrows are a map. We call it h. Each state of our D F A goes to the state that it became.
 
 15
-00:02:20,593 --> 00:02:29,063
-Check all eight arrows at the top, and you find the same result. Every arrow up top lands on an arrow below with the same letter.
+00:01:40,743 --> 00:01:42,897
+A goes to A. D goes to D.
 
 16
-00:02:29,513 --> 00:02:34,889
-Now run a string on both machines. Take a b b. Where does each machine end?
+00:01:43,347 --> 00:01:45,310
+B and C both go to B C.
 
 17
-00:02:35,339 --> 00:02:38,624
-Both machines start in A. And h of A is A.
+00:01:45,760 --> 00:01:53,099
+Now compare the arrows of the two machines. Take one arrow at the top, and follow h from both of its ends.
 
 18
-00:02:39,074 --> 00:02:44,685
-Read a. The top goes to B. The machine below goes to B C, which is h of B.
+00:01:53,549 --> 00:01:55,767
+B reads b and goes to C.
 
 19
-00:02:45,135 --> 00:02:51,087
-Read b. The top goes to C. Below, B C loops to B C, which is h of C.
+00:01:56,217 --> 00:01:59,929
+h sends B to B C, and h sends C to B C.
 
 20
-00:02:51,537 --> 00:03:03,078
-Read the last b. The top stays in C, and the machine below stays in B C. Both states accept. At each step, the state below is h of the state at the top.
+00:02:00,379 --> 00:02:07,206
+Below, B C reads b and goes to B C. So the step is still there. It is the loop on B C.
 
 21
-00:03:03,528 --> 00:03:10,056
-Here are the three things that we saw in the picture. First, the start state goes to the start state.
+00:02:07,656 --> 00:02:12,477
+Another arrow. C reads a and goes to D. Which step is that below?
 
 22
-00:03:10,506 --> 00:03:22,517
-Second, every step up top is a step below, with the same letter. Go right on x and then down with h. Or go down with h and then right on x. You arrive at the same state.
+00:02:12,927 --> 00:02:15,807
+h sends C to B C, and D to D.
 
 23
-00:03:22,967 --> 00:03:29,217
-Third, accepting states go to accepting states, and rejecting states go to rejecting states.
+00:02:16,257 --> 00:02:21,889
+Below, B C reads a and goes to D. Again the arrow is there, with the same letter.
 
 24
-00:03:29,667 --> 00:03:42,723
-So for every string, the run below is h of the run up top, step by step. One run ends in an accepting state exactly when the other does. The two machines accept the same strings.
+00:02:22,339 --> 00:02:34,926
+The top machine has four states and two letters, so eight transitions. Check all eight, and you find the same result. Every arrow up top lands on an arrow below with the same letter.
 
 25
-00:03:43,173 --> 00:03:47,035
-A map with these three properties is called a homomorphism.
+00:02:35,376 --> 00:02:40,752
+Now run a string on both machines. Take a b b. Where does each machine end?
 
 26
-00:03:47,485 --> 00:04:00,455
-Now the same three lines, formally. M and M prime are two D F As over the same alphabet. A homomorphism h is a map from the states of M to the states of M prime.
+00:02:41,202 --> 00:02:44,487
+Both machines start in A. And h of A is A.
 
 27
-00:04:00,905 --> 00:04:06,964
-Line 1. h of the start state q zero is the start state q zero prime.
+00:02:44,937 --> 00:02:50,548
+Read a. The top goes to B. The machine below goes to B C, which is h of B.
 
 28
-00:04:07,414 --> 00:04:18,721
-Line 2. For every state q and letter x, h of delta of q and x equals delta prime of h of q and x. Reading a letter commutes with h.
+00:02:50,998 --> 00:02:56,950
+Read b. The top goes to C. Below, B C loops to B C, which is h of C.
 
 29
-00:04:19,171 --> 00:04:24,163
-Line 3. q is accepting if and only if h of q is accepting.
+00:02:57,400 --> 00:03:03,011
+Read the last b. The top stays in C, and the machine below stays in B C.
 
 30
-00:04:24,613 --> 00:04:48,506
-The consequence comes by induction on the length of the string w. Line 1 starts the two runs together. Line 2 keeps them together for each letter. So h of the end state at the top is the end state below. Line 3 then gives the same answer. So the two machines have the same language. A homomorphism is a proof that two machines agree.
+00:03:03,461 --> 00:03:09,391
+Both end states accept. At each step, the state below is h of the state at the top.
 
 31
-00:04:48,956 --> 00:05:02,631
-You can check a homomorphism by hand with a table. Line 2 must hold for every state and every letter. Four states and two letters give eight rows. In each row, compare the two blue columns.
+00:03:09,841 --> 00:03:16,369
+Here are the three things that we saw in the picture. First, the start state goes to the start state.
 
 32
-00:05:03,081 --> 00:05:17,865
-State A. On a, A goes to B, and h of B is B C. Below, h of A is A, and A on a goes to B C. Same. On b, A goes to D, and h of D is D. Below, A on b goes to D. Same.
+00:03:16,819 --> 00:03:20,873
+Second, every step up top is a step below, with the same letter.
 
 33
-00:05:18,315 --> 00:05:31,307
-State B. On a, B goes to D, which maps to D. Below, B C on a goes to D. On b, B goes to C, which maps to B C. Below, B C on b goes to B C.
+00:03:21,323 --> 00:03:24,053
+Go right on x, and then down with h.
 
 34
-00:05:31,757 --> 00:05:40,823
-State C gives the same two rows as B, because C also maps to B C. C on a goes to D, and C on b goes to C.
+00:03:24,503 --> 00:03:32,567
+Or go down with h, and then right on x. Both routes arrive at the same state, h of delta of q and x.
 
 35
-00:05:41,273 --> 00:05:48,484
-State D. D goes to D on both letters, and below, D also goes to D. All eight rows agree.
+00:03:33,017 --> 00:03:39,268
+Third, accepting states go to accepting states, and rejecting states go to rejecting states.
 
 36
-00:05:48,934 --> 00:06:02,907
-Now lines 1 and 3. h of A is A, the start state. B and C accept and map to B C, which accepts. A and D reject and map to A and D, which reject. So h is a homomorphism.
+00:03:39,718 --> 00:03:52,774
+So for every string, the run below is h of the run up top, step by step. One run ends in an accepting state exactly when the other does. The two machines accept the same strings.
 
 37
-00:06:03,357 --> 00:06:13,021
-Here is another D F A for a or a b star. Its states are P, Q, R and S. Q and R accept, and S is the error state.
+00:03:53,224 --> 00:03:57,085
+A map with these three properties is called a homomorphism.
 
 38
-00:06:13,471 --> 00:06:20,746
-The shape is different. From R, the letter b goes back to Q. In our first D F A, C looped to itself.
+00:03:57,535 --> 00:04:10,506
+Now the same three lines, formally. M and M prime are two D F As over the same alphabet. A homomorphism h is a map from the states of M to the states of M prime.
 
 39
-00:06:21,196 --> 00:06:29,836
-Now take the map P to A, Q and R to B C, and S to D. It maps this machine onto the same minimal machine.
+00:04:10,956 --> 00:04:17,015
+Line 1. h of the start state q zero is the start state q zero prime.
 
 40
-00:06:30,286 --> 00:06:40,334
-The slides say that every D F A for the language does this. If you minimize two of them, you get the same picture. Only the names of the states are different.
+00:04:17,465 --> 00:04:28,771
+Line 2. For every state q and letter x, h of delta of q and x equals delta prime of h of q and x. Reading a letter commutes with h.
 
 41
-00:06:40,784 --> 00:06:46,331
-Check the second map with the same table. Eight rows again, one per state and letter.
+00:04:29,221 --> 00:04:34,213
+Line 3. q is accepting if and only if h of q is accepting.
 
 42
-00:06:46,781 --> 00:06:58,215
-P. On a, P goes to Q, which maps to B C. Below, A on a goes to B C. On b, P goes to S, which maps to D. Below, A on b goes to D.
+00:04:34,663 --> 00:04:45,010
+The consequence comes by induction on the length of the string w. Line 1 starts the two runs together: q zero goes to h of q zero.
 
 43
-00:06:58,665 --> 00:07:09,524
-Q. On a, Q goes to S, so D. Below, B C on a goes to D. On b, Q goes to R, which maps to B C. Below, B C loops on b.
+00:04:45,460 --> 00:04:48,852
+Line 2 keeps the two runs together for each letter.
 
 44
-00:07:09,974 --> 00:07:19,958
-R. On a, R goes to S, so D. On b, R goes back to Q, and Q maps to B C. The loop on B C covers this arrow too.
+00:04:49,302 --> 00:04:56,171
+So h of the end state at the top is the end state below. Line 3 then gives the same answer.
 
 45
-00:07:20,408 --> 00:07:24,717
-S goes to S on both letters, and below, D goes to D.
+00:04:56,621 --> 00:05:02,915
+So the two machines have the same language. A homomorphism is a proof that two machines agree.
 
 46
-00:07:25,167 --> 00:07:39,546
-P maps to the start state A. Q and R accept, and their image B C accepts. P and S reject, and so do A and D. So this map is also a homomorphism onto the same minimal machine.
+00:05:03,365 --> 00:05:17,039
+You can check a homomorphism by hand with a table. Line 2 must hold for every state and every letter. Four states and two letters give eight rows. In each row, compare the two blue columns.
 
 47
-00:07:39,996 --> 00:07:54,737
-The slides add two conditions on the input D F A. Total means that every state has an arrow on every letter, so the error state is drawn. Trim means that every state is reached from the start by some string.
+00:05:17,489 --> 00:05:25,511
+A on a. A goes to B, and h of B is B C. Below, h of A is A, and A on a goes to B C. Same.
 
 48
-00:07:55,187 --> 00:08:05,833
-Here the machine has no sink. Q has no arrow on a. So delta of Q and a does not exist, and line 2 has no left side for this state and letter.
+00:05:25,961 --> 00:05:32,190
+A on b. A goes to D, and h of D is D. Below, A on b goes to D. Same.
 
 49
-00:08:06,283 --> 00:08:17,376
-Here the machine has a state U that no string reaches. The map gets a state from a string that reaches it. No string reaches U, so h has no rule for U.
+00:05:32,640 --> 00:05:40,384
+B on a. B goes to D, which maps to D. Below, h of B is B C, and B C on a goes to D.
 
 50
-00:08:17,826 --> 00:08:27,661
-So the statement is for trim, total D F As. Each of them maps onto the minimal machine. This is one more reason to draw the error state.
+00:05:40,834 --> 00:05:47,341
+B on b. B goes to C, which maps to B C. Below, B C on b goes to B C.
 
 51
-00:08:28,111 --> 00:08:36,324
-The minimal machine for a or a b star has three states. Could some other D F A for the language get away with two states?
+00:05:47,791 --> 00:05:56,900
+State C gives the same two rows as B, because C also maps to B C. C on a goes to D, and C on b goes to C.
 
 52
-00:08:36,774 --> 00:08:48,081
-Pick one string that reaches each state of the minimal machine. The empty string, epsilon, reaches A. The string a reaches B C. The string b reaches D.
+00:05:57,350 --> 00:06:04,561
+State D. D goes to D on both letters, and below, D also goes to D. All eight rows agree.
 
 53
-00:08:48,531 --> 00:08:56,829
-Now compare them in pairs. Epsilon and a. Add the empty suffix. Then a is in the language, and epsilon is not.
+00:06:05,011 --> 00:06:18,984
+Now lines 1 and 3. h of A is A, the start state. B and C accept and map to B C, which accepts. A and D reject and map to A and D, which reject. So h is a homomorphism.
 
 54
-00:08:57,279 --> 00:09:03,594
-Epsilon and b. Add the suffix a. Then the string a is in the language, and b a is not.
+00:06:19,434 --> 00:06:25,279
+Here is another D F A for a or a b star. Its states are P, Q, R and S.
 
 55
-00:09:04,044 --> 00:09:13,729
-a and b. Add the empty suffix. a is in the language, and b is not. So every two of the three strings are told apart by some suffix.
+00:06:25,729 --> 00:06:27,372
+Q and R accept.
 
 56
-00:09:14,179 --> 00:09:20,110
-Any D F A for a or a b star reads epsilon, a and b from its start state.
+00:06:27,822 --> 00:06:29,486
+S is the error state.
 
 57
-00:09:20,560 --> 00:09:24,635
-Suppose that a D F A for the language has only two states.
+00:06:29,936 --> 00:06:37,211
+The shape is different. From R, the letter b goes back to Q. In our first D F A, C looped to itself.
 
 58
-00:09:25,085 --> 00:09:31,847
-Three strings and two states. So two of the strings end in the same state. Say epsilon and a.
+00:06:37,661 --> 00:06:41,970
+Now take the map P to A, Q and R to B C, and S to D.
 
 59
-00:09:32,297 --> 00:09:43,007
-After that state, every suffix does the same thing for both strings. The suffix leads to one end state. So the machine accepts both or rejects both.
+00:06:42,420 --> 00:06:45,897
+It maps this machine onto the same minimal machine.
 
 60
-00:09:43,457 --> 00:09:55,958
-But the table says that the empty suffix gives a, which is in the language, and epsilon, which is not. That is a contradiction. The same thing happens for each pair of the three strings.
+00:06:46,347 --> 00:06:56,417
+The slides say that every D F A for the language does this. If you minimize two of them, you get the same picture. Only the names of the states are different.
 
 61
-00:09:56,408 --> 00:10:13,048
-So the three strings end in three different states. Every D F A for the language has at least three states. Ours has exactly three. A python check also tried every two-state D F A over a and b. None of them accepts this language.
+00:06:56,867 --> 00:07:02,413
+Check the second map with the same table. Eight rows again, one per state and letter.
 
 62
-00:10:13,498 --> 00:10:25,423
-The same argument works for any machine that minimization returns. Moore splits two states only when a suffix forces it. So every pair of its states has a separating suffix.
+00:07:02,863 --> 00:07:14,298
+P. On a, P goes to Q, which maps to B C. Below, A on a goes to B C. On b, P goes to S, which maps to D. Below, A on b goes to D.
 
 63
-00:10:25,873 --> 00:10:44,604
-The last slides of the lecture go deeper. They are background for the facts above. Two states p and q are equivalent if no string is accepted from one and rejected from the other. The block of q is the set of states equivalent to q. Here the block of B is B and C.
+00:07:14,748 --> 00:07:25,607
+Q. On a, Q goes to S, so D. Below, B C on a goes to D. On b, Q goes to R, which maps to B C. Below, B C loops on b.
 
 64
-00:10:45,054 --> 00:10:56,019
-This relation is a congruence. If p and q are equivalent, then on each letter they go to equivalent states. On a, B and C both go to D.
+00:07:26,057 --> 00:07:36,041
+R. On a, R goes to S, so D. On b, R goes back to Q, and Q maps to B C. The loop on B C covers this arrow too.
 
 65
-00:10:56,469 --> 00:11:10,293
-On b, B goes to C and C goes to C. Both targets are in the block B C. The reason: if a suffix w separated the two targets, then x w would separate p and q.
+00:07:36,491 --> 00:07:40,800
+S goes to S on both letters, and below, D goes to D.
 
 66
-00:11:10,743 --> 00:11:34,935
-So we can build the quotient machine. Its states are the blocks. Its start state is the block of the start state. On letter x, the block of q goes to the block of delta of q and x. The choice of q in the block does not matter, because the relation is a congruence. The accepting states are the blocks inside F. This is exactly the minimal machine below.
+00:07:41,250 --> 00:07:55,629
+P maps to the start state A. Q and R accept, and their image B C accepts. P and S reject, and so do A and D. So this map is also a homomorphism onto the same minimal machine.
 
 67
-00:11:35,385 --> 00:11:51,321
-The theorem. Let M be trim and total. The map that sends each state to its block is a surjective homomorphism onto the quotient. Surjective means that every state of the quotient is hit, because every block is non-empty.
+00:07:56,079 --> 00:08:06,063
+The slides add two conditions on the input D F A. Total means that every state has an arrow on every letter, so the error state is drawn.
 
 68
-00:11:51,771 --> 00:12:10,075
-And no D F A for the language has fewer states than the quotient. The algorithm splits only when a suffix forces it, so any D F A for the language must keep those states apart too. The slides name Moore, 1956, and the Myhill Nerode theorem.
+00:08:06,513 --> 00:08:10,779
+Trim means that every state is reached from the start by some string.
 
 69
-00:12:10,525 --> 00:12:28,573
-The corollary. If two machines have the same language, then their quotients are isomorphic. They are the same machine after a renaming of states. The renaming is unique, because in a trim machine every state is reached by some string, so the map has no choices.
+00:08:11,229 --> 00:08:15,027
+Here the machine has no sink. Q has no arrow on a.
 
 70
-00:12:29,023 --> 00:12:42,933
-So the minimal D F A is not just a smallest one. It is the smallest one, up to the names of the states. The homomorphisms also tell you which state of one machine does the job of which state of the other.
+00:08:15,477 --> 00:08:22,047
+So delta of Q and a does not exist, and line 2 has no left side for this state and letter.
 
 71
-00:12:43,383 --> 00:12:56,929
-To summarize. A homomorphism maps the states of one D F A to the states of another. The start goes to the start, each step goes to a step with the same letter, and accepting goes to accepting.
+00:08:22,497 --> 00:08:25,911
+Here the machine has a state U that no string reaches.
 
 72
-00:12:57,379 --> 00:13:05,977
-A homomorphism proves that two D F As accept the same strings. You can check one with a table of all states and letters.
+00:08:26,361 --> 00:08:33,315
+The map gets a state from a string that reaches it. No string reaches U, so h has no rule for U.
 
 73
-00:13:06,427 --> 00:13:12,336
-Every trim, total D F A for a language maps onto the same minimal D F A.
+00:08:33,765 --> 00:08:43,600
+So the statement is for trim, total D F As. Each of them maps onto the minimal machine. This is one more reason to draw the error state.
 
 74
-00:13:12,786 --> 00:13:22,151
-The minimal D F A is the smallest. Strings that reach different states are told apart by some suffix, so no machine can merge them.
+00:08:44,050 --> 00:08:52,263
+The minimal machine for a or a b star has three states. Could some other D F A for the language get away with two states?
 
 75
-00:13:22,601 --> 00:13:33,268
+00:08:52,713 --> 00:08:59,711
+Pick one string that reaches each state of the minimal machine. The empty string, epsilon, reaches A.
+
+76
+00:09:00,161 --> 00:09:02,017
+The string a reaches B C.
+
+77
+00:09:02,467 --> 00:09:04,173
+The string b reaches D.
+
+78
+00:09:04,623 --> 00:09:12,922
+Now compare them in pairs. Epsilon and a. Add the empty suffix. Then a is in the language, and epsilon is not.
+
+79
+00:09:13,372 --> 00:09:19,687
+Epsilon and b. Add the suffix a. Then the string a is in the language, and b a is not.
+
+80
+00:09:20,137 --> 00:09:24,851
+a and b. Add the empty suffix. a is in the language, and b is not.
+
+81
+00:09:25,301 --> 00:09:29,397
+So every two of the three strings are told apart by some suffix.
+
+82
+00:09:29,847 --> 00:09:35,778
+Any D F A for a or a b star reads epsilon, a and b from its start state.
+
+83
+00:09:36,228 --> 00:09:40,303
+Suppose that a D F A for the language has only two states.
+
+84
+00:09:40,753 --> 00:09:47,515
+Three strings and two states. So two of the strings end in the same state. Say epsilon and a.
+
+85
+00:09:47,965 --> 00:09:58,675
+After that state, every suffix does the same thing for both strings. The suffix leads to one end state. So the machine accepts both or rejects both.
+
+86
+00:09:59,125 --> 00:10:09,471
+But with the empty suffix, a is in the language, and epsilon is not. That is a contradiction. The same thing happens for each pair of the three strings.
+
+87
+00:10:09,921 --> 00:10:18,839
+So the three strings end in three different states. Every D F A for the language has at least three states. Ours has exactly three.
+
+88
+00:10:19,289 --> 00:10:27,715
+A python check also tried all 64 two-state D F As over a and b. None of them accepts this language.
+
+89
+00:10:28,165 --> 00:10:40,091
+The same argument works for any machine that minimization returns. Moore splits two states only when a suffix forces it. So every pair of its states has a separating suffix.
+
+90
+00:10:40,541 --> 00:10:59,271
+The last slides of the lecture go deeper. They are background for the facts above. Two states p and q are equivalent if no string is accepted from one and rejected from the other. The block of q is the set of states equivalent to q. Here the block of B is B and C.
+
+91
+00:10:59,721 --> 00:11:10,687
+This relation is a congruence. If p and q are equivalent, then on each letter they go to equivalent states. On a, B and C both go to D.
+
+92
+00:11:11,137 --> 00:11:17,025
+On b, B goes to C and C goes to C. Both targets are in the block B C.
+
+93
+00:11:17,475 --> 00:11:24,707
+The reason: if a suffix w separated the two targets, then x w would separate p and q.
+
+94
+00:11:25,157 --> 00:11:30,853
+So we can build the quotient machine. Its states are the blocks: A, B C and D.
+
+95
+00:11:31,303 --> 00:11:34,865
+Its start state is the block of the start state, A.
+
+96
+00:11:35,315 --> 00:11:46,409
+On letter x, the block of q goes to the block of delta of q and x. The choice of q in the block does not matter, because the relation is a congruence.
+
+97
+00:11:46,859 --> 00:11:54,645
+The accepting states are the blocks inside F. Here that is B C. This is exactly the minimal machine below.
+
+98
+00:11:55,095 --> 00:12:04,205
+The theorem. Let M be trim and total. The map that sends each state to its block is a surjective homomorphism onto the quotient.
+
+99
+00:12:04,655 --> 00:12:10,628
+Surjective means that every state of the quotient is hit, because every block is non-empty.
+
+100
+00:12:11,078 --> 00:12:29,382
+And no D F A for the language has fewer states than the quotient. The algorithm splits only when a suffix forces it, so any D F A for the language must keep those states apart too. The slides name Moore, 1956, and the Myhill Nerode theorem.
+
+101
+00:12:29,832 --> 00:12:39,773
+The corollary. If two machines have the same language, then their quotients are isomorphic. They are the same machine after a renaming of states.
+
+102
+00:12:40,223 --> 00:12:47,925
+The renaming is unique, because in a trim machine every state is reached by some string, so the map has no choices.
+
+103
+00:12:48,375 --> 00:13:02,284
+So the minimal D F A is not just a smallest one. It is the smallest one, up to the names of the states. The homomorphisms also tell you which state of one machine does the job of which state of the other.
+
+104
+00:13:02,734 --> 00:13:16,281
+To summarize. A homomorphism maps the states of one D F A to the states of another. The start goes to the start, each step goes to a step with the same letter, and accepting goes to accepting.
+
+105
+00:13:16,731 --> 00:13:25,328
+A homomorphism proves that two D F As accept the same strings. You can check one with a table of all states and letters.
+
+106
+00:13:25,778 --> 00:13:31,687
+Every trim, total D F A for a language maps onto the same minimal D F A.
+
+107
+00:13:32,137 --> 00:13:41,481
+The minimal D F A is the smallest. Strings that reach different states are told apart by some suffix, so no machine can merge them.
+
+108
+00:13:41,931 --> 00:13:52,598
 And the minimal D F A is unique up to the names of its states. In part 2 we use this fact to decide if two regexes describe the same language.

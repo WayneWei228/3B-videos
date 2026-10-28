@@ -35,321 +35,773 @@ d alone does not match. A pair is not finished.
 b d does not match. The letters of a pair have a fixed order.
 
 10
-00:00:58,642 --> 00:01:02,674
+00:00:58,642 --> 00:01:02,695
 d b f does not match. The last pair is not finished.
 
 11
-00:01:03,124 --> 00:01:11,017
+00:01:03,145 --> 00:01:11,017
 d m does not match. d must be followed by b. A python check with the regex gave all eight answers.
 
 12
-00:01:11,467 --> 00:01:22,027
-Here is the N F A from the course notes. Ten states. State 1 is the start, and state 7 accepts. Dashed purple edges are epsilon edges.
+00:01:11,467 --> 00:01:18,827
+Here is the N F A from the course notes. It has ten states. Dashed purple edges are epsilon edges.
 
 13
-00:01:22,477 --> 00:01:31,096
-In blue, the two concatenations: d then b, and f then m. Each is two constant machines joined end to end.
+00:01:19,277 --> 00:01:21,283
+State 1 is the start state.
 
 14
-00:01:31,546 --> 00:01:40,485
-In orange, the alternation template. State 2 is the new entry, and state 6 is the new exit. Four epsilon edges.
+00:01:21,733 --> 00:01:24,442
+State 7 is the only accepting state.
 
 15
-00:01:40,935 --> 00:01:56,231
-In purple, the repetition template. State 1 is the new entry and state 7 the new exit. 1 to 2 goes in, 6 to 7 goes out, 1 to 7 skips, and 6 back to 2 repeats. Every part matches a template.
+00:01:24,892 --> 00:01:34,300
+Now the templates. First the two concatenations: d then b, and f then m. Each is two constant machines joined end to end.
 
 16
-00:01:56,681 --> 00:02:13,278
-Step 2. The start state P is the closure of 1. From 1 we reach 2 and 7. From 2 we reach 3 and 8. So P is 1, 2, 3, 7, 8. It contains 7, so P accepts. The empty string is in the language.
+00:01:34,750 --> 00:01:43,710
+Next the alternation template. State 2 is the new entry, and state 6 is the new exit. It has four epsilon edges.
 
 17
-00:02:13,728 --> 00:02:22,944
-P on d. Only 3 has a d edge, to 4. State 4 has no epsilon edges. So Q is the set with only 4.
+00:01:44,160 --> 00:01:53,632
+Then the repetition template. State 1 is the new entry and state 7 the new exit. 1 to 2 goes in, and 6 to 7 goes out.
 
 18
-00:02:23,394 --> 00:02:29,730
-P on f. Only 8 has an f edge, to 9. So R is the set with only 9.
+00:01:54,082 --> 00:01:59,693
+1 to 7 skips, and 6 back to 2 repeats. Every part matches a template.
 
 19
-00:02:30,180 --> 00:02:40,292
-P on b and P on m. No state in P has those edges. Both go to the empty set, X. A pair cannot start with b or m.
+00:02:00,143 --> 00:02:06,649
+Step 2, the subset construction. The start state P is the epsilon closure of state 1.
 
 20
-00:02:40,742 --> 00:02:58,790
-Q on b. 4 goes to 5. Close: 5 reaches 6, and 6 reaches 2 and 7. Then 2 reaches 3 and 8. The set is 2, 3, 5, 6, 7, 8. Call it S. It contains 7, so S accepts. One pair d b is finished.
+00:02:07,099 --> 00:02:09,041
+From 1 we reach 2 and 7.
 
 21
-00:02:59,240 --> 00:03:09,203
-R on m. 9 goes to 10. Close the same way through 6. The set is 2, 3, 6, 7, 8, 10. Call it T. It accepts.
+00:02:09,491 --> 00:02:15,635
+From 2 we reach 3 and 8. States 3, 7 and 8 have no epsilon edges.
 
 22
-00:03:09,653 --> 00:03:19,935
-S on d. Only 3 has a d edge, to 4. That is Q again. S on f gives R again. T works the same way. No new sets appear.
+00:02:16,085 --> 00:02:19,071
+So P is the set 1, 2, 3, 7, 8.
 
 23
-00:03:20,385 --> 00:03:27,169
-All other entries go to X. For example, Q on d is X: after d, only b is allowed.
+00:02:19,521 --> 00:02:24,556
+P contains 7, so P accepts. The empty string is in the language.
 
 24
-00:03:27,619 --> 00:03:35,150
-Here is the full table. P, S and T accept. Every row has one entry for each of the four letters.
+00:02:25,006 --> 00:02:29,294
+Now take P, the set 1, 2, 3, 7, 8, and each letter.
 
 25
-00:03:35,600 --> 00:03:49,360
-Here is the D F A. P goes to Q on d and to R on f. Q goes to S on b, and R goes to T on m. From S and from T, d goes back to Q, and f goes back to R.
+00:02:29,744 --> 00:02:39,429
+P on d. Only state 3 has a d edge, to 4. State 4 has no epsilon edges. So Q is the set with only 4.
 
 26
-00:03:49,810 --> 00:03:59,239
-There are many arrows into X, so we do not draw them. Every arrow that is not drawn goes to X. The notes draw the same machine.
+00:02:39,879 --> 00:02:46,727
+P on f. Only state 8 has an f edge, to 9. So R is the set with only 9.
 
 27
-00:03:59,689 --> 00:04:11,060
-Step 3. The notes call the bubbles G, H and X. G holds the accepting states P, S and T. H holds Q and R. X is the error state.
+00:02:47,177 --> 00:02:57,289
+P on b and P on m. No state in P has those edges. Both go to the empty set, X. A pair cannot start with b or m.
 
 28
-00:04:11,510 --> 00:04:20,427
-Write the target bubble for each state and letter. P, S and T all go to H on d and f, and to X on b and m.
+00:02:57,739 --> 00:03:00,107
+Q is the set with only state 4.
 
 29
-00:04:20,877 --> 00:04:31,949
-Inside H, Q and R differ. On b, Q goes to G, but R goes to X. On m, it is the other way round. This is an ambiguous transition.
+00:03:00,557 --> 00:03:03,117
+Q on b. 4 goes to 5.
 
 30
-00:04:32,399 --> 00:04:43,343
-So H splits into H1, which is Q, and H2, which is R. Round 2 changes nothing. The minimal D F A has G, H1, H2 and X.
+00:03:03,567 --> 00:03:05,274
+Close: 5 reaches 6.
 
 31
-00:04:43,793 --> 00:04:57,511
-Here is the minimal D F A, as the notes draw it after the split. G is the start, and the only accepting state. H1 waits for b. H2 waits for m. All other letters go to X.
+00:03:05,724 --> 00:03:07,537
+6 reaches 2 and 7.
 
 32
-00:04:57,961 --> 00:05:04,553
-Test d b f m. G, H1, G, H2, G. It ends in G, so accept.
+00:03:07,987 --> 00:03:09,801
+2 reaches 3 and 8.
 
 33
-00:05:05,003 --> 00:05:12,277
-Test d b f. The run stops in H2, which does not accept. The pair f m is not finished.
+00:03:10,251 --> 00:03:15,051
+The set is 2, 3, 5, 6, 7, 8. It is new, so call it S.
 
 34
-00:05:12,727 --> 00:05:16,375
-Test b d. G goes to X on b. Reject.
+00:03:15,501 --> 00:03:20,087
+S contains 7, so S accepts. One pair d b is finished.
 
 35
-00:05:16,825 --> 00:05:27,108
-Six states became four. A python check ran the N F A, both D F As and the regex on every string up to length 7. They agree.
+00:03:20,537 --> 00:03:24,868
+R is the set with only 9. On m, 9 goes to 10.
 
 36
-00:05:27,558 --> 00:05:40,785
-Now the first question in questions-pre 4.8. Produce an N F A for x, y star, z or c w, a, b optional. Then convert it to a D F A and minimize it.
+00:03:25,318 --> 00:03:31,398
+Close the same way: 10 reaches 6, 6 reaches 2 and 7, and 2 reaches 3 and 8.
 
 37
-00:05:41,235 --> 00:05:50,237
-This question has no posted solution. So this is our solution, and a python check confirms each step. Pause the video and try it.
+00:03:31,848 --> 00:03:36,755
+The set is 2, 3, 6, 7, 8, 10. It is new, so call it T.
 
 38
-00:05:50,687 --> 00:05:59,647
-Here is our N F A, built with the templates. Concatenation joins an exit to the next entry. The letter edges are in blue.
+00:03:37,205 --> 00:03:39,679
+T contains 7, so T accepts.
 
 39
-00:06:00,097 --> 00:06:07,415
-y star uses the repetition template: 2 in, 4 back to 3, 4 out, and 2 to 5 to skip.
+00:03:40,129 --> 00:03:43,393
+S is the set 2, 3, 5, 6, 7, 8.
 
 40
-00:06:07,865 --> 00:06:15,267
-z or c w uses the alternation template: 5 is the entry and 11 is the exit.
+00:03:43,843 --> 00:03:49,219
+S on d. Only state 3 has a d edge, to 4. That is Q again.
 
 41
-00:06:15,717 --> 00:06:32,400
-b optional is b or epsilon, slide 04a page 45. So it is an alternation of the b machine and the epsilon machine, 15 to 16. 17 is the only accepting state. 17 states.
+00:03:49,669 --> 00:03:55,109
+S on f. Only state 8 has an f edge, to 9. That is R again.
 
 42
-00:06:32,850 --> 00:06:48,786
-The start state A is the closure of 1. State 1 has no epsilon edges, so A is just 1. A on x goes to 2. Close: 2 reaches 3 and 5, and 5 reaches 6 and 8. B is 2, 3, 5, 6, 8.
+00:03:55,559 --> 00:04:01,149
+T also contains 3 and 8. So T on d is Q, and T on f is R.
 
 43
-00:06:49,236 --> 00:06:59,177
-B on y. 3 goes to 4. Close: 4 reaches 3 and 5, and 5 reaches 6 and 8. C is 3, 4, 5, 6, 8.
+00:04:01,599 --> 00:04:05,716
+Q on d goes to X, because after d, only b is allowed.
 
 44
-00:06:59,627 --> 00:07:05,494
-B on z. 6 goes to 7, and 7 reaches 11. D is 7, 11.
+00:04:06,166 --> 00:04:13,121
+All other entries also go to X. No new sets appear. The D F A has 6 states, with X.
 
 45
-00:07:05,944 --> 00:07:13,304
-B on c. 8 goes to 9. E is the set with only 9. The other letters from A and B go to X.
+00:04:13,571 --> 00:04:17,475
+Here is the full table. It has 6 states, one row each.
 
 46
-00:07:13,754 --> 00:07:22,181
-C has the same y, z and c edges as B. So C on y is C, C on z is D, and C on c is E.
+00:04:17,925 --> 00:04:21,893
+P, S and T accept, because they contain state 7.
 
 47
-00:07:22,631 --> 00:07:41,105
-D on a. 11 goes to 12. Close: 12 reaches 13 and 15, 15 reaches 16, and 16 reaches 17. F is 12, 13, 15, 16, 17. It contains 17, so F accepts. The b is optional.
+00:04:22,343 --> 00:04:27,249
+Every row has one entry for each of the four letters. Check 2 passes.
 
 48
-00:07:41,555 --> 00:07:51,433
-E on w. 9 goes to 10, and 10 reaches 11. G is 10, 11. G on a goes to 12, so G on a is F again.
+00:04:27,699 --> 00:04:32,393
+Here is the D F A. P goes to Q on d, and to R on f.
 
 49
-00:07:51,883 --> 00:08:07,051
-F on b. 13 goes to 14, and 14 reaches 17. H is 14, 17. It accepts. H has no letter edges, so every letter from H goes to X. Nine states with X.
+00:04:32,843 --> 00:04:36,384
+Q goes to S on b. R goes to T on m.
 
 50
-00:08:07,501 --> 00:08:16,418
-Here is the table: nine states, seven letters. Most entries are X, because each state allows only one or a few letters.
+00:04:36,834 --> 00:04:41,442
+From S and from T, d goes back to Q, and f goes back to R.
 
 51
-00:08:16,868 --> 00:08:31,908
-Here is the D F A without the X arrows. B and C look alike: both go to C on y, to D on z, and to E on c. D and G also look alike: both go to F on a. Minimization will decide.
+00:04:41,892 --> 00:04:51,321
+There are many arrows into X, so we do not draw them. Every arrow that is not drawn goes to X. The notes draw the same machine.
 
 52
-00:08:32,358 --> 00:08:45,073
-Begin with three bubbles. F and H accept. X is the error state. All the other states are in one bubble, called rest. Each row shows the target bubble for each of the seven letters.
+00:04:51,771 --> 00:04:58,235
+Step 3, minimization. Here is the D F A as a table. It is total, because it has X.
 
 53
-00:08:45,523 --> 00:09:02,760
-F and H differ on b: F goes back into F H, and H goes to X. So they split. In the rest bubble, the rows fall into four groups. A reads x. B and C read y, z and c. D and G read a. E reads w.
+00:04:58,685 --> 00:05:05,043
+The notes call the bubbles G, H and X. G holds the accepting states P, S and T.
 
 54
-00:09:03,210 --> 00:09:15,093
-Round 2. B and C go to the same bubbles: B C on y, D G on z, and E on c. D and G both go to F on a. Nothing splits, so we stop.
+00:05:05,493 --> 00:05:07,413
+H holds Q and R.
 
 55
-00:09:15,543 --> 00:09:20,705
-Nine states became seven: A, B C, D G, E, F, H, and X.
+00:05:07,863 --> 00:05:09,548
+X is the error state.
 
 56
-00:09:21,155 --> 00:09:32,761
-Here is the minimal D F A. It follows the regex from left to right. x, then a loop on y, then z, or c and w, then a, then an optional b.
+00:05:09,998 --> 00:05:13,262
+Now write the target state and its bubble in each cell.
 
 57
-00:09:33,211 --> 00:09:40,592
-Test x y y c w a b. A, B C, B C, B C, E, D G, F, H. Accept.
+00:05:13,712 --> 00:05:21,648
+P, S and T all go to H on d and f, and to X on b and m. So the rows in G are equal.
 
 58
-00:09:41,042 --> 00:09:46,759
-Test x z. The run ends in D G, which does not accept. The a is missing.
+00:05:22,098 --> 00:05:30,717
+Inside H, Q and R differ. On b, Q goes to G, but R goes to X. This is an ambiguous transition.
 
 59
-00:09:47,209 --> 00:09:55,657
-A python check ran all the machines and the regex on every string over the seven letters, up to length 6. They agree.
+00:05:31,167 --> 00:05:36,201
+On m, it is the other way round. Q goes to X, but R goes to G.
 
 60
-00:09:56,107 --> 00:10:05,238
-The second question. Produce an N F A for r m b or c, optional, then n s f star. Then convert and minimize.
+00:05:36,651 --> 00:05:41,217
+So H splits into H1, which is Q, and H2, which is R.
 
 61
-00:10:05,688 --> 00:10:11,640
-Again there is no posted solution. This is our solution. Pause the video and try it.
+00:05:41,667 --> 00:05:55,853
+Round 2. P, S and T go to H1 on d, to H2 on f, and to X on b and m. Their rows are equal, so we stop. The minimal D F A has G, H1, H2 and X.
 
 62
-00:10:12,090 --> 00:10:17,445
-Here is our N F A. The letter edges are r m b, c, and n s f.
+00:05:56,303 --> 00:06:04,239
+Here is the minimal D F A, as the notes draw it after the split. G is the start, and the only accepting state.
 
 63
-00:10:17,895 --> 00:10:23,292
-The inner alternation, r m b or c, has entry 2 and exit 11.
+00:06:04,689 --> 00:06:06,503
+H1 waits for b.
 
 64
-00:10:23,742 --> 00:10:36,094
-The question mark means: this or epsilon. So a second alternation, with entry 1 and exit 12, picks either the inner machine or the epsilon machine from 9 to 10.
+00:06:06,953 --> 00:06:08,787
+H2 waits for m.
 
 65
-00:10:36,544 --> 00:10:51,477
-Then n s f star uses the repetition template: 12 in to 13, 16 back to 13, 16 out to 17, and 12 to 17 to skip. 17 is the only accepting state.
+00:06:09,237 --> 00:06:11,136
+All other letters go to X.
 
 66
-00:10:51,927 --> 00:11:11,106
-The start state A. From 1 we reach 2 and 9. From 2 we reach 3 and 7. From 9 we reach 10, then 12, then 13 and 17. A is 1, 2, 3, 7, 9, 10, 12, 13, 17. It contains 17, so A accepts the empty string.
+00:06:11,586 --> 00:06:18,178
+Test d b f m. G, H1, G, H2, G. It ends in G, so accept.
 
 67
-00:11:11,556 --> 00:11:16,036
-A on r. 3 goes to 4. B is the set with only 4.
+00:06:18,628 --> 00:06:25,903
+Test d b f. The run stops in H2, which does not accept. The pair f m is not finished.
 
 68
-00:11:16,486 --> 00:11:28,667
-A on c. 7 goes to 8. Close: 8 reaches 11, then 12, then 13 and 17. C is 8, 11, 12, 13, 17. It accepts.
+00:06:26,353 --> 00:06:30,001
+Test b d. G goes to X on b. Reject.
 
 69
-00:11:29,117 --> 00:11:39,869
-A on n. 13 goes to 14. D is the set with only 14. The optional part was skipped. A on m, b, s or f goes to X.
+00:06:30,451 --> 00:06:40,733
+Six states became four. A python check ran the N F A, both D F As and the regex on every string up to length 7. They agree.
 
 70
-00:11:40,319 --> 00:11:44,714
-B on m. 4 goes to 5. E is the set with only 5.
+00:06:41,183 --> 00:06:54,410
+Now the first question in questions-pre 4.8. Produce an N F A for x, y star, z or c w, a, b optional. Then convert it to a D F A and minimize it.
 
 71
-00:11:45,164 --> 00:11:56,983
-E on b. 5 goes to 6. Close: 6 reaches 11, 12, 13 and 17. F is 6, 11, 12, 13, 17. It accepts.
+00:06:54,860 --> 00:07:03,863
+This question has no posted solution. So this is our solution, and a python check confirms each step. Pause the video and try it.
 
 72
-00:11:57,433 --> 00:12:02,958
-D on s. 14 goes to 15. G is the set with only 15.
+00:07:04,313 --> 00:07:13,443
+Here is our N F A, built with the templates. Concatenation joins an exit to the next entry. The letter edges are in orange.
 
 73
-00:12:03,408 --> 00:12:14,117
-G on f. 15 goes to 16. Close: 16 reaches 13 and 17. H is 13, 16, 17. It accepts.
+00:07:13,893 --> 00:07:21,211
+y star uses the repetition template: 2 in, 4 back to 3, 4 out, and 2 to 5 to skip.
 
 74
-00:12:14,567 --> 00:12:23,741
-C, F and H all contain 13. So each one goes to D on n. All other entries go to X. Nine states with X.
+00:07:21,661 --> 00:07:29,063
+z or c w uses the alternation template: 5 is the entry and 11 is the exit.
 
 75
-00:12:24,191 --> 00:12:29,908
-Here is the table. Nine states and seven letters. A, C, F and H accept.
+00:07:29,513 --> 00:07:41,503
+b optional is b or epsilon, slide 04a page 45. So it is an alternation of the b machine and the epsilon machine, 15 to 16.
 
 76
-00:12:30,358 --> 00:12:37,867
-Here is the D F A without the X arrows. C, F and H look alike: each one only goes to D on n.
+00:07:41,953 --> 00:07:47,329
+17 is the only accepting state. The N F A has 17 states.
 
 77
-00:12:38,317 --> 00:12:44,995
-Three bubbles again. A C F H accept. B D E G do not. X is the error state.
+00:07:47,779 --> 00:07:55,203
+The start state A is the closure of state 1. State 1 has no epsilon edges, so A is just 1.
 
 78
-00:12:45,445 --> 00:13:00,613
-A differs from C, F and H: A also reads r and c. In the other bubble, each state reads a different letter: B reads m, D reads s, E reads b, and G reads f. So that bubble splits into four.
+00:07:55,653 --> 00:07:57,957
+A on x. 1 goes to 2.
 
 79
-00:13:01,063 --> 00:13:09,148
-Round 2. C, F and H have equal rows: n goes to D, and every other letter goes to X. Nothing splits.
+00:07:58,407 --> 00:08:00,476
+Close: 2 reaches 3 and 5.
 
 80
-00:13:09,598 --> 00:13:14,697
-Nine states became seven: A, B, E, C F H, D, G, and X.
+00:08:00,926 --> 00:08:02,782
+5 reaches 6 and 8.
 
 81
-00:13:15,147 --> 00:13:26,219
-Here is the minimal D F A. From A, the path r m b or the letter c leads to C F H. The letter n leads straight into the loop n s f.
+00:08:03,232 --> 00:08:07,733
+The set is 2, 3, 5, 6, 8. It is new, so call it B.
 
 82
-00:13:26,669 --> 00:13:33,346
-Test r m b n s f. A, B, E, C F H, D, G, C F H. Accept.
+00:08:08,183 --> 00:08:10,530
+A on every other letter goes to X.
 
 83
-00:13:33,796 --> 00:13:42,628
-Test n s f c. The loop ends in C F H, and c goes to X. The optional part must come first. Reject.
+00:08:10,980 --> 00:08:13,924
+B is the set 2, 3, 5, 6, 8.
 
 84
-00:13:43,078 --> 00:13:49,798
-A python check ran all the machines and the regex on every string up to length 6. They agree.
+00:08:14,374 --> 00:08:16,699
+B on y. 3 goes to 4.
 
 85
-00:13:50,248 --> 00:14:00,211
-To summarize. An optional part, x question mark, is x or epsilon. Build it with the alternation template and the epsilon machine.
+00:08:17,149 --> 00:08:19,411
+Close: 4 reaches 3 and 5.
 
 86
-00:14:00,661 --> 00:14:09,087
-With a large alphabet, most arrows go to the error state. Draw X once, and say that every missing arrow goes to X.
+00:08:19,861 --> 00:08:21,717
+5 reaches 6 and 8.
 
 87
-00:14:09,537 --> 00:14:18,519
-Minimize with X in the machine. States with equal rows stay together. Here: B and C, D and G, and C, F, H.
+00:08:22,167 --> 00:08:26,753
+The set is 3, 4, 5, 6, 8. It is new, so call it C.
 
 88
-00:14:18,969 --> 00:14:26,862
-The state counts were 10, 6, 4 for Under Pressure, and 17, 9, 7 for both questions in 4.8.
+00:08:27,203 --> 00:08:34,862
+B on z. 6 goes to 7, and 7 reaches 11 on an epsilon edge. So D is 7, 11.
 
 89
-00:14:27,312 --> 00:14:39,941
+00:08:35,312 --> 00:08:43,141
+B on c. 8 goes to 9. State 9 has no epsilon edges. So E is the set with only 9.
+
+90
+00:08:43,591 --> 00:08:45,789
+The other letters from B go to X.
+
+91
+00:08:46,239 --> 00:08:57,375
+C is 3, 4, 5, 6, 8. It has the same y, z and c edges as B. So C on y is C, C on z is D, and C on c is E.
+
+92
+00:08:57,825 --> 00:09:01,707
+D is 7, 11. On a, 11 goes to 12.
+
+93
+00:09:02,157 --> 00:09:04,845
+Close: 12 reaches 13 and 15.
+
+94
+00:09:05,295 --> 00:09:07,023
+15 reaches 16.
+
+95
+00:09:07,473 --> 00:09:09,351
+16 reaches 17.
+
+96
+00:09:09,801 --> 00:09:15,497
+The set is 12, 13, 15, 16, 17. It is new, so call it F.
+
+97
+00:09:15,947 --> 00:09:20,384
+F contains 17, so F accepts. The b is optional.
+
+98
+00:09:20,834 --> 00:09:28,941
+E is the set with only 9. On w, 9 goes to 10, and 10 reaches 11. So G is 10, 11.
+
+99
+00:09:29,391 --> 00:09:38,116
+G is 10, 11. On a, 11 goes to 12. The closure is the same as before, so G on a is F again.
+
+100
+00:09:38,566 --> 00:09:41,595
+F on b. 13 goes to 14.
+
+101
+00:09:42,045 --> 00:09:44,328
+Close: 14 reaches 17.
+
+102
+00:09:44,778 --> 00:09:48,853
+The set is 14, 17. It is new, so call it H.
+
+103
+00:09:49,303 --> 00:09:52,396
+H contains 17, so H accepts.
+
+104
+00:09:52,846 --> 00:09:57,305
+H has no letter edges. So every letter from H goes to X.
+
+105
+00:09:57,755 --> 00:10:01,979
+No new sets appear. With X, the D F A has 9 states.
+
+106
+00:10:02,429 --> 00:10:05,799
+Here is the table: nine states and seven letters.
+
+107
+00:10:06,249 --> 00:10:11,561
+Most entries are X, because each state allows only one or a few letters.
+
+108
+00:10:12,011 --> 00:10:15,617
+F and H accept, because they contain 17.
+
+109
+00:10:16,067 --> 00:10:18,904
+Here is the D F A without the X arrows.
+
+110
+00:10:19,354 --> 00:10:24,901
+B and C look alike. Both go to C on y, to D on z, and to E on c.
+
+111
+00:10:25,351 --> 00:10:31,367
+D and G also look alike. Both go to F on a. Minimization will decide.
+
+112
+00:10:31,817 --> 00:10:37,918
+Here is the D F A as a table, one row per state. Each cell shows the target state.
+
+113
+00:10:38,368 --> 00:10:41,461
+Begin with three bubbles. F and H accept.
+
+114
+00:10:41,911 --> 00:10:43,597
+X is the error state.
+
+115
+00:10:44,047 --> 00:10:47,161
+All the other states are in one bubble, called rest.
+
+116
+00:10:47,611 --> 00:10:52,113
+Now each cell shows the bubble of the target, not the target itself.
+
+117
+00:10:52,563 --> 00:10:59,112
+F and H differ on b. F goes back into F H, but H goes to X. So they split.
+
+118
+00:10:59,562 --> 00:11:03,829
+In the rest bubble, the rows fall into four groups. A reads x.
+
+119
+00:11:04,279 --> 00:11:06,561
+B and C read y, z and c.
+
+120
+00:11:07,011 --> 00:11:08,782
+D and G read a.
+
+121
+00:11:09,232 --> 00:11:10,704
+E reads w.
+
+122
+00:11:11,154 --> 00:11:14,546
+So rest splits into A, B C, D G and E.
+
+123
+00:11:14,996 --> 00:11:18,431
+Round 2. Write the rows again with the new bubbles.
+
+124
+00:11:18,881 --> 00:11:24,918
+B and C go to the same bubbles: B C on y, D G on z, and E on c.
+
+125
+00:11:25,368 --> 00:11:27,779
+D and G both go to F on a.
+
+126
+00:11:28,229 --> 00:11:32,559
+The other bubbles have one state each. Nothing splits, so we stop.
+
+127
+00:11:33,009 --> 00:11:38,172
+Nine states became seven: A, B C, D G, E, F, H, and X.
+
+128
+00:11:38,622 --> 00:11:43,635
+Here is the minimal D F A. It follows the regex from left to right.
+
+129
+00:11:44,085 --> 00:11:45,899
+x goes from A to B C.
+
+130
+00:11:46,349 --> 00:11:48,077
+B C loops on y.
+
+131
+00:11:48,527 --> 00:11:55,076
+z goes from B C to D G. Or c goes to E, and then w goes to D G.
+
+132
+00:11:55,526 --> 00:11:58,641
+a goes from D G to F. F accepts.
+
+133
+00:11:59,091 --> 00:12:04,147
+b goes from F to H. H also accepts, so the b is optional.
+
+134
+00:12:04,597 --> 00:12:11,978
+Test x y y c w a b. A, B C, B C, B C, E, D G, F, H. Accept.
+
+135
+00:12:12,428 --> 00:12:18,145
+Test x z. The run ends in D G, which does not accept. The a is missing.
+
+136
+00:12:18,595 --> 00:12:27,043
+A python check ran all the machines and the regex on every string over the seven letters, up to length 6. They agree.
+
+137
+00:12:27,493 --> 00:12:36,624
+The second question. Produce an N F A for r m b or c, optional, then n s f star. Then convert and minimize.
+
+138
+00:12:37,074 --> 00:12:43,026
+Again there is no posted solution. This is our solution. Pause the video and try it.
+
+139
+00:12:43,476 --> 00:12:48,831
+Here is our N F A. The letter edges are r m b, c, and n s f.
+
+140
+00:12:49,281 --> 00:12:54,678
+The inner alternation, r m b or c, has entry 2 and exit 11.
+
+141
+00:12:55,128 --> 00:13:07,480
+The question mark means: this or epsilon. So a second alternation, with entry 1 and exit 12, picks either the inner machine or the epsilon machine from 9 to 10.
+
+142
+00:13:07,930 --> 00:13:19,599
+Then n s f star uses the repetition template: 12 in to 13, 16 back to 13, 16 out to 17, and 12 to 17 to skip.
+
+143
+00:13:20,049 --> 00:13:22,673
+17 is the only accepting state.
+
+144
+00:13:23,123 --> 00:13:26,878
+The start state A is the epsilon closure of state 1.
+
+145
+00:13:27,328 --> 00:13:29,184
+From 1 we reach 2 and 9.
+
+146
+00:13:29,634 --> 00:13:31,810
+From 2 we reach 3 and 7.
+
+147
+00:13:32,260 --> 00:13:34,009
+From 9 we reach 10.
+
+148
+00:13:34,459 --> 00:13:36,294
+From 10 we reach 12.
+
+149
+00:13:36,744 --> 00:13:39,603
+From 12 we reach 13 and 17.
+
+150
+00:13:40,053 --> 00:13:44,895
+So A is 1, 2, 3, 7, 9, 10, 12, 13, 17.
+
+151
+00:13:45,345 --> 00:13:49,164
+A contains 17, so A accepts the empty string.
+
+152
+00:13:49,614 --> 00:13:51,491
+Now take A and each letter.
+
+153
+00:13:51,941 --> 00:13:59,792
+A on r. 3 goes to 4. State 4 has no epsilon edges. So B is the set with only 4.
+
+154
+00:14:00,242 --> 00:14:02,674
+A on c. 7 goes to 8.
+
+155
+00:14:03,124 --> 00:14:04,959
+Close: 8 reaches 11.
+
+156
+00:14:05,409 --> 00:14:07,073
+11 reaches 12.
+
+157
+00:14:07,523 --> 00:14:09,805
+12 reaches 13 and 17.
+
+158
+00:14:10,255 --> 00:14:15,823
+The set is 8, 11, 12, 13, 17. It is new, so call it C.
+
+159
+00:14:16,273 --> 00:14:19,025
+C contains 17, so C accepts.
+
+160
+00:14:19,475 --> 00:14:27,091
+A on n. 13 goes to 14. So D is the set with only 14. The optional part was skipped.
+
+161
+00:14:27,541 --> 00:14:30,571
+A on m, b, s or f goes to X.
+
+162
+00:14:31,021 --> 00:14:41,047
+B is the set with only 4. On m, 4 goes to 5. State 5 has no epsilon edges, so E is the set with only 5.
+
+163
+00:14:41,497 --> 00:14:44,015
+E on b. 5 goes to 6.
+
+164
+00:14:44,465 --> 00:14:46,406
+Close: 6 reaches 11.
+
+165
+00:14:46,856 --> 00:14:48,520
+11 reaches 12.
+
+166
+00:14:48,970 --> 00:14:51,253
+12 reaches 13 and 17.
+
+167
+00:14:51,703 --> 00:14:57,143
+The set is 6, 11, 12, 13, 17. It is new, so call it F.
+
+168
+00:14:57,593 --> 00:15:00,643
+F contains 17, so F accepts.
+
+169
+00:15:01,093 --> 00:15:09,072
+D is the set with only 14. On s, 14 goes to 15. So G is the set with only 15.
+
+170
+00:15:09,522 --> 00:15:12,530
+G on f. 15 goes to 16.
+
+171
+00:15:12,980 --> 00:15:16,095
+Close: 16 reaches 13 and 17.
+
+172
+00:15:16,545 --> 00:15:21,259
+The set is 13, 16, 17. It is new, so call it H.
+
+173
+00:15:21,709 --> 00:15:24,803
+H contains 17, so H accepts.
+
+174
+00:15:25,253 --> 00:15:30,202
+C, F and H all contain 13. So each one goes to D on n.
+
+175
+00:15:30,652 --> 00:15:37,137
+All other entries go to X. No new sets appear. With X, the D F A has 9 states.
+
+176
+00:15:37,587 --> 00:15:40,937
+Here is the table. Nine states and seven letters.
+
+177
+00:15:41,387 --> 00:15:45,568
+A, C, F and H accept, because they contain 17.
+
+178
+00:15:46,018 --> 00:15:48,855
+Here is the D F A without the X arrows.
+
+179
+00:15:49,305 --> 00:15:53,593
+C, F and H look alike. Each one only goes to D on n.
+
+180
+00:15:54,043 --> 00:15:58,587
+Here is the D F A as a table. Each cell shows the target state.
+
+181
+00:15:59,037 --> 00:16:02,600
+Three bubbles again. A, C, F and H accept.
+
+182
+00:16:03,050 --> 00:16:05,247
+B, D, E and G do not.
+
+183
+00:16:05,697 --> 00:16:07,383
+X is the error state.
+
+184
+00:16:07,833 --> 00:16:10,606
+Now each cell shows the bubble of the target.
+
+185
+00:16:11,056 --> 00:16:15,429
+A differs from C, F and H. A also reads r and c.
+
+186
+00:16:15,879 --> 00:16:23,794
+In the other bubble, each state reads a different letter. B reads m, D reads s, E reads b, and G reads f.
+
+187
+00:16:24,244 --> 00:16:29,855
+So A splits away from C F H, and B D E G splits into four bubbles.
+
+188
+00:16:30,305 --> 00:16:33,739
+Round 2. Write the rows again with the new bubbles.
+
+189
+00:16:34,189 --> 00:16:40,291
+C, F and H have equal rows: n goes to D, and every other letter goes to X.
+
+190
+00:16:40,741 --> 00:16:45,071
+The other bubbles have one state each. Nothing splits, so we stop.
+
+191
+00:16:45,521 --> 00:16:50,620
+Nine states became seven: A, B, E, C F H, D, G, and X.
+
+192
+00:16:51,070 --> 00:16:57,107
+Here is the minimal D F A. From A, the path r m b leads to C F H.
+
+193
+00:16:57,557 --> 00:17:00,672
+The letter c also leads from A to C F H.
+
+194
+00:17:01,122 --> 00:17:06,882
+The letter n leads from A straight into the loop n s f: D, G, then C F H.
+
+195
+00:17:07,332 --> 00:17:13,988
+Test r m b n s f. A, B, E, C F H, D, G, C F H. Accept.
+
+196
+00:17:14,438 --> 00:17:23,270
+Test n s f c. The loop ends in C F H, and c goes to X. The optional part must come first. Reject.
+
+197
+00:17:23,720 --> 00:17:30,440
+A python check ran all the machines and the regex on every string up to length 6. They agree.
+
+198
+00:17:30,890 --> 00:17:40,853
+To summarize. An optional part, x question mark, is x or epsilon. Build it with the alternation template and the epsilon machine.
+
+199
+00:17:41,303 --> 00:17:49,729
+With a large alphabet, most arrows go to the error state. Draw X once, and say that every missing arrow goes to X.
+
+200
+00:17:50,179 --> 00:17:59,161
+Minimize with X in the machine. States with equal rows stay together. Here: B and C, D and G, and C, F, H.
+
+201
+00:17:59,611 --> 00:18:07,504
+The state counts were 10, 6, 4 for Under Pressure, and 17, 9, 7 for both questions in 4.8.
+
+202
+00:18:07,954 --> 00:18:20,583
 Always test some accepted and some rejected strings on every machine and on the regex. The next video is a hard design question: binary numbers divisible by 5.

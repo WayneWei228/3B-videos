@@ -7,489 +7,785 @@ This video is about grammars. A grammar is a finite way to write down a language
 We learn the parts of a grammar, how a derivation works, and how to draw a parse tree. We also learn the classes of grammars, from regular to unrestricted. At the end we solve three question bank questions.
 
 3
-00:00:20,804 --> 00:00:29,657
-The compiler front end has two stages. The lexer cuts the characters into tokens. The parser groups the tokens into a tree.
+00:00:20,804 --> 00:00:26,479
+The compiler front end has two stages. The lexer cuts the characters into tokens.
 
 4
-00:00:30,107 --> 00:00:36,699
-For the lexer, the specification is a set of regular expressions. The machine is a D F A.
+00:00:26,929 --> 00:00:30,449
+The parser groups the tokens into a tree, the A S T.
 
 5
-00:00:37,149 --> 00:00:50,611
-For the parser, the specification is a grammar. Regular expressions cannot describe nested structure, such as nested parentheses. A grammar can. This chapter of the notes is about grammars.
+00:00:30,899 --> 00:00:37,491
+For the lexer, the specification is a set of regular expressions. The machine is a D F A.
 
 6
-00:00:51,061 --> 00:00:59,402
-Start with the basic idea. A language is a set of strings. Here the set has three strings: a, a b, and a b c.
+00:00:37,941 --> 00:00:42,613
+For the parser, the specification is a grammar. The machine is a parser.
 
 7
-00:00:59,852 --> 00:01:06,615
-A recognizer is a program that checks if an input string is in the set. It answers yes or no.
+00:00:43,063 --> 00:00:53,580
+Regular expressions cannot describe nested structure, such as these nested parentheses. A grammar can. This chapter of the notes is about grammars.
 
 8
-00:01:07,065 --> 00:01:13,529
-If the language is finite, we can write all its strings down. This example has only three.
+00:00:54,030 --> 00:01:02,371
+Start with the basic idea. A language is a set of strings. Here the set has three strings: a, a b, and a b c.
 
 9
-00:01:13,979 --> 00:01:29,979
-But almost all languages are infinite. We cannot list an infinite set in finite space and time. So we need a finite notation. The notes list four: grammars, regular expressions, set comprehensions, and words.
+00:01:02,821 --> 00:01:09,584
+A recognizer is a program that checks if an input string is in the set. It answers yes or no.
 
 10
-00:01:30,429 --> 00:01:41,479
-Here are three languages from the notes, each in four notations. Language 1 is any number of x's. Language 2 is an x followed by some y's.
+00:01:10,034 --> 00:01:16,498
+If the language is finite, we can write all its strings down. This example has only three.
 
 11
-00:01:41,929 --> 00:01:53,748
-As regular expressions: x star, and x y plus. As set comprehensions: x to the n for n at least 0, and x y to the n for n at least 1.
+00:01:16,948 --> 00:01:23,711
+But almost all languages are infinite. We cannot list an infinite set in finite space and time.
 
 12
-00:01:54,198 --> 00:02:10,433
-As grammars. Language 1: S goes to x S, or epsilon. Language 2: S goes to x y T, and T goes to y T or epsilon. A grammar repeats with recursion: S appears on its own right side.
+00:01:24,161 --> 00:01:32,651
+So we need a finite notation. The notes list four: grammars, regular expressions, set comprehensions, and words.
 
 13
-00:02:10,883 --> 00:02:29,357
-Language 3 counts two things: n x's, then the same number of y's. A set comprehension and a grammar can describe it. A regular expression cannot, because a regex cannot count. Some languages are impossible to specify in some notations.
+00:01:33,101 --> 00:01:45,048
+Here are three languages from the notes, each in four notations. In words: language 1 is any number of x's. Language 2 is an x followed by some y's.
 
 14
-00:02:29,807 --> 00:02:39,237
-Look at the grammar for language 2 in detail. It has two rules. S goes to x y T. T goes to y T, or epsilon.
+00:01:45,498 --> 00:01:48,869
+The last column lists some strings of each language.
 
 15
-00:02:39,687 --> 00:02:50,652
-S and T are nonterminals. A nonterminal stands for a part of the language. It must be rewritten. In the notes, nonterminals start with a capital letter.
+00:01:49,319 --> 00:01:53,308
+As regular expressions: x star, and x y plus.
 
 16
-00:02:51,102 --> 00:02:57,865
-x and y are terminals. Terminals are the tokens that come from the lexer. They are never rewritten.
+00:01:53,758 --> 00:02:01,139
+As set comprehensions: x to the n for n at least 0, and x y to the n for n at least 1.
 
 17
-00:02:58,315 --> 00:03:10,965
-Each rule is a production. It has a left hand side, an arrow, and a right hand side. The bar separates alternatives for the same left hand side. Epsilon is the empty string.
+00:02:01,589 --> 00:02:12,640
+As grammars. Language 1: S goes to x S, or epsilon. Language 2: S goes to x y T, and T goes to y T or epsilon.
 
 18
-00:03:11,415 --> 00:03:18,349
-The start symbol is the left hand side of the first rule. Here it is S. Every derivation starts there.
+00:02:13,090 --> 00:02:19,831
+A grammar repeats with recursion: S appears on its own right side, and T on its own right side.
 
 19
-00:03:18,799 --> 00:03:34,457
-Now use a grammar. A derivation starts with the start symbol and rewrites one nonterminal per step, with one production. Derive x x x with the grammar S goes to x S, or epsilon. Line 1 is S.
+00:02:20,281 --> 00:02:28,964
+Language 3 counts two things: n x's, then the same number of y's. A set comprehension and a grammar can describe it.
 
 20
-00:03:34,907 --> 00:03:44,507
-Rewrite S with S goes to x S. The new symbols are orange. On the right, the parse tree grows: S gets two children, x and S.
+00:02:29,414 --> 00:02:39,142
+A regular expression cannot, because a regex cannot count. Some languages are impossible to specify in some notations.
 
 21
-00:03:44,957 --> 00:03:49,437
-Rewrite the new S, again with x S. Now we have x x S.
+00:02:39,592 --> 00:02:49,021
+Look at the grammar for language 2 in detail. It has two rules. S goes to x y T. T goes to y T, or epsilon.
 
 22
-00:03:49,887 --> 00:03:51,999
-Once more. x x x S.
+00:02:49,471 --> 00:03:00,437
+S and T are nonterminals. A nonterminal stands for a part of the language. It must be rewritten. In the notes, nonterminals start with a capital letter.
 
 23
-00:03:52,449 --> 00:04:10,433
-Now choose the other alternative, S goes to epsilon. The S disappears. The string x x x has no nonterminals left, so x x x is in the language. The parse tree shows which rule made which part. Its leaves, read left to right, are the string.
+00:03:00,887 --> 00:03:07,649
+x and y are terminals. Terminals are the tokens that come from the lexer. They are never rewritten.
 
 24
-00:04:10,883 --> 00:04:16,707
-Another one. Derive x y y with the grammar for language 2. Start with S.
+00:03:08,099 --> 00:03:13,881
+Each rule is a production. It has a left hand side, an arrow, and a right hand side.
 
 25
-00:04:17,157 --> 00:04:24,603
-S has only one production. S goes to x y T. Two terminals appear, and one nonterminal, T.
+00:03:14,331 --> 00:03:22,117
+The bar separates alternatives for the same left hand side. T goes to y T, or T goes to epsilon.
 
 26
-00:04:25,053 --> 00:04:30,215
-The input still has one more y. So rewrite T with T goes to y T.
+00:03:22,567 --> 00:03:24,850
+Epsilon is the empty string.
 
 27
-00:04:30,665 --> 00:04:39,177
-Now the input is finished. Rewrite T with epsilon. The result is x y y, so x y y is in the language.
+00:03:25,300 --> 00:03:32,233
+The start symbol is the left hand side of the first rule. Here it is S. Every derivation starts there.
 
 28
-00:04:39,627 --> 00:04:47,521
-Language 3: S goes to x S y, or x y, or epsilon. Derive x x x y y y.
+00:03:32,683 --> 00:03:48,342
+Now use a grammar. A derivation starts with the start symbol and rewrites one nonterminal per step, with one production. Derive x x x with the grammar S goes to x S, or epsilon. Line 1 is S.
 
 29
-00:04:47,971 --> 00:04:53,901
-S goes to x S y. One x on the left, one y on the right, and S in the middle.
+00:03:48,792 --> 00:03:58,392
+Rewrite S with S goes to x S. The new symbols are orange. On the right, the parse tree grows: S gets two children, x and S.
 
 30
-00:04:54,351 --> 00:04:59,194
-Again, S goes to x S y. Now there are two x's and two y's.
+00:03:58,842 --> 00:04:04,410
+Rewrite the new S, again with S goes to x S. Now we have x x S.
 
 31
-00:04:59,644 --> 00:05:24,647
-Last, S goes to x y. The result is three x's and three y's. Each step adds one x and one y at the same time. That is how a grammar counts. The tree is nested: each S is inside the one above it. A second derivation also exists: x S y, then epsilon. Two derivations for one string is ambiguity. Video 18 covers it.
+00:04:04,860 --> 00:04:06,972
+Once more. x x x S.
 
 32
-00:05:25,097 --> 00:05:46,814
-Language 5 in the notes is nested subtractions. S goes to E. E goes to E minus T, or T. T goes to an expression in parentheses, or an integer. Here is the tree for 9 minus, open parenthesis, 5 minus 2, close parenthesis. At the top, E becomes E minus T.
+00:04:07,422 --> 00:04:12,755
+Now choose the other alternative, S goes to epsilon. The S disappears.
 
 33
-00:05:47,264 --> 00:05:54,795
-The left E becomes T, then the integer 9. The right T becomes parentheses with a new E inside.
+00:04:13,205 --> 00:04:19,093
+The string x x x has no nonterminals left. So x x x is in the language.
 
 34
-00:05:55,245 --> 00:06:09,751
-Inside the parentheses, the same rules repeat: E minus T, then 5 and 2. An E inside a T inside an E. Nesting to any depth is one of the things a regular expression cannot do.
+00:04:19,543 --> 00:04:27,586
+The parse tree shows which rule made which part. Its leaves, read left to right, are x, x, x, and the empty string.
 
 35
-00:06:10,201 --> 00:06:25,412
-Grammars are classified by complexity. This is the Chomsky hierarchy from the notes. The outside class is unrestricted grammars. To parse them, you need a Turing machine, and the time has no reasonable limit.
+00:04:28,036 --> 00:04:33,860
+Another one. Derive x y y with the grammar for language 2. Start with S.
 
 36
-00:06:25,862 --> 00:06:31,451
-Inside are the context-sensitive grammars. They need a linear bounded automaton.
+00:04:34,310 --> 00:04:42,907
+S has only one production. S goes to x y T. It makes two terminals, x and y, and one nonterminal, T.
 
 37
-00:06:31,901 --> 00:06:42,525
-Inside those are the context-free grammars, C F Gs. A nondeterministic pushdown automaton parses them in order n cubed time.
+00:04:43,357 --> 00:04:48,520
+The input still has one more y. So rewrite T with T goes to y T.
 
 38
-00:06:42,975 --> 00:07:00,789
-Inside the context-free class is L L one. You can write an L L one parser by hand with recursive descent. It runs in linear time. P E G, parsing expression grammars, overlap with L L one. They come later in the course.
+00:04:48,970 --> 00:04:57,589
+Now the input is complete. Rewrite T with epsilon. The result is x y y, so x y y is in the language.
 
 39
-00:07:01,239 --> 00:07:12,631
-In the centre are the regular grammars. A finite automaton parses them in linear time. This course works mostly with regular, L L one and context-free.
+00:04:58,039 --> 00:05:05,932
+Language 3: S goes to x S y, or x y, or epsilon. Derive x x x y y y.
 
 40
-00:07:13,081 --> 00:07:24,323
-When you design a language, always choose the simplest possible class. Simpler grammars take less time and less machinery to parse. The notes call this the kiss rule.
+00:05:06,382 --> 00:05:12,313
+S goes to x S y. One x on the left, one y on the right, and S in the middle.
 
 41
-00:07:24,773 --> 00:07:35,419
-Engineers do not always follow it. The full grammar for V H D L is at least ambiguous. a of i can be an array access or a function call.
+00:05:12,763 --> 00:05:17,605
+Again, S goes to x S y. Now there are two x's and two y's.
 
 42
-00:07:35,869 --> 00:07:50,759
-The language that the airline industry uses to encode ticket information uses an unrestricted grammar. It was designed before grammar complexity was well understood, and it still causes trouble for engineers.
+00:05:18,055 --> 00:05:22,855
+Last, S goes to x y. The result is three x's and three y's.
 
 43
-00:07:51,209 --> 00:08:04,841
-Two grammars can describe the same language. Here are two grammars for x star. The left one is right recursive: S goes to x S. The right one is left recursive: S goes to S x.
+00:05:23,305 --> 00:05:28,852
+Each step adds one x and one y at the same time. That is how a grammar counts.
 
 44
-00:08:05,291 --> 00:08:16,705
-Both grammars give the same set of strings. A python check compared all strings up to length 8. Two grammars that accept exactly the same strings are weakly equivalent.
+00:05:29,302 --> 00:05:33,227
+The tree is nested: each S is inside the S above it.
 
 45
-00:08:17,155 --> 00:08:24,941
-But the parse trees are different. For x x, the left tree leans to the right, and the right tree leans to the left.
+00:05:33,677 --> 00:05:46,563
+A second derivation also exists. Use x S y three times, then S goes to epsilon. Two derivations for one string is ambiguity. Video 18 covers it.
 
 46
-00:08:25,391 --> 00:08:39,727
-Two grammars that give the same strings and the same parse trees are strongly equivalent. These two are only weakly equivalent. Engineers often refactor a complex grammar into an equivalent, simpler one.
+00:05:47,013 --> 00:06:09,562
+Language 5 in the notes is nested subtractions. S goes to E. E goes to E minus T, or T. T goes to an expression in parentheses, or an integer. Build the tree for 9 minus, open parenthesis, 5 minus 2, close parenthesis. At the top, S goes to E, and E goes to E minus T.
 
 47
-00:08:40,177 --> 00:08:52,167
-How do we test if a grammar is context free? Here is a grammar from the notes for a to the n, b to the n, c to the n. That is n a's, then n b's, then n c's.
+00:06:10,012 --> 00:06:13,191
+The left E goes to T, then int, then 9.
 
 48
-00:08:52,617 --> 00:09:04,819
-The test: a context-free grammar has exactly one nonterminal on the left hand side of every production. The top two rules pass. They rewrite S, wherever it appears.
+00:06:13,641 --> 00:06:17,161
+The right T goes to parentheses with a new E inside.
 
 49
-00:09:05,269 --> 00:09:21,803
-All the other rules have two symbols on the left. C B goes to H B. a B goes to a b. The rule a B can rewrite B only when B comes right after an a. The context decides, so the grammar is context sensitive.
+00:06:17,611 --> 00:06:22,859
+Inside the parentheses, the same rule repeats: E goes to E minus T.
 
 50
-00:09:22,253 --> 00:09:35,351
-Multiple symbols on the left hand side mean the grammar is not context free. The canonical example is this language, which counts three things. No context-free grammar exists for it.
+00:06:23,309 --> 00:06:26,423
+The inner left E goes to T, int, and 5.
 
 51
-00:09:35,801 --> 00:09:47,855
-Here is a full derivation of a a b b c c with this grammar. S goes to a S B C. Then S goes to a B C. Now we have two a's, and B's and C's mixed.
+00:06:26,873 --> 00:06:29,177
+The inner T goes to int, and 2.
 
 52
-00:09:48,305 --> 00:09:54,385
-The C's must move to the right of the B's. The rule C B goes to H B starts a swap.
+00:06:29,627 --> 00:06:37,606
+An E inside a T inside an E. Nesting to any depth is one of the things a regular expression cannot do.
 
 53
-00:09:54,835 --> 00:10:03,347
-H B goes to H C, and H C goes to B C. The three rules together swap C and B. Now the B's are together.
+00:06:38,056 --> 00:06:53,267
+Grammars are classified by complexity. This is the Chomsky hierarchy from the notes. The outside class is unrestricted grammars. To parse them, you need a Turing machine, and the time has no reasonable limit.
 
 54
-00:10:03,797 --> 00:10:11,349
-a B goes to a b, then b B goes to b b. Each B becomes a b only after an a or a b.
+00:06:53,717 --> 00:06:59,242
+Inside are the context-sensitive grammars. They need a linear bounded automaton.
 
 55
-00:10:11,799 --> 00:10:40,471
-b C goes to b c, and c C goes to c c. The result is a a b b c c. Our python search found a flaw in this figure. It also derives a a a b b c c c c, because one H can help in two swaps. The source that the notes cite uses two helpers, Z and W. That version derives only a to the n, b to the n, c to the n. For the exam, the important point is the test: several symbols on a left hand side.
+00:06:59,692 --> 00:07:10,316
+Inside those are the context-free grammars, C F Gs. A nondeterministic pushdown automaton parses them in order n cubed time.
 
 56
-00:10:40,921 --> 00:10:49,902
-Is a grammar regular? First, the three common cases that are outside the regular class. Engineers need all three in practice.
+00:07:10,766 --> 00:07:21,177
+Inside the context-free class is L L one. You can write an L L one parser by hand with recursive descent. It runs in linear time.
 
 57
-00:10:50,352 --> 00:10:57,435
-One. Unlimited balanced parentheses. n open parentheses, an a, then n close parentheses.
+00:07:21,627 --> 00:07:28,347
+P E G, parsing expression grammars, overlap with L L one. They come later in the course.
 
 58
-00:10:57,885 --> 00:11:05,970
-Two. Expression nesting. An expression can contain an expression in parentheses, or two expressions with a plus.
+00:07:28,797 --> 00:07:34,941
+In the centre are the regular grammars. A finite automaton parses them in linear time.
 
 59
-00:11:06,420 --> 00:11:13,076
-Three. Indefinite counting. n a's followed by n b's. S goes to a S b, or a b.
+00:07:35,391 --> 00:07:40,617
+This course works mostly with regular, L L one and context-free grammars.
 
 60
-00:11:13,526 --> 00:11:29,227
-These are the three main features to look for. Each one needs a count with no limit. A finite automaton has a finite number of states, so it cannot keep such a count. If the language needs one of them, the grammar is not regular.
+00:07:41,067 --> 00:07:52,310
+When you design a language, always choose the simplest possible class. Simpler grammars take less time and less machinery to parse. The notes call this the kiss rule.
 
 61
-00:11:29,677 --> 00:11:43,331
-Now the test to prove that a grammar is regular. The left hand side must be one nonterminal, as in a context-free grammar. The right hand side must be the empty string, or a single terminal.
+00:07:52,760 --> 00:08:03,405
+Engineers do not always follow it. The full grammar for V H D L is at least ambiguous. a of i can be an array access or a function call.
 
 62
-00:11:43,781 --> 00:12:04,090
-Or it must be linear. Right linear is a terminal followed by a nonterminal, such as x S. Left linear is a nonterminal followed by a terminal, such as S x. All the rules must be right linear, or all must be left linear. If the two forms are mixed, the grammar might not be regular.
+00:08:03,855 --> 00:08:18,746
+The language that the airline industry uses to encode ticket information uses an unrestricted grammar. It was designed before grammar complexity was well understood, and it still causes trouble for engineers.
 
 63
-00:12:04,540 --> 00:12:14,012
-Test the grammar for language 2. The rule S goes to x y T has two terminals before the nonterminal. That is not one of the forms.
+00:08:19,196 --> 00:08:27,815
+Two grammars can describe the same language. Here is a grammar for x star. It is right recursive: S goes to x S.
 
 64
-00:12:14,462 --> 00:12:30,377
-Refactor it. Add a nonterminal U. S goes to x U, and U goes to y T. Now every rule is right linear, so the grammar is regular. A python check showed that both grammars give the same strings up to length 8.
+00:08:28,265 --> 00:08:34,153
+Here is a second grammar for x star. It is left recursive: S goes to S x.
 
 65
-00:12:30,827 --> 00:12:44,608
-Language 3 has S goes to x S y. The nonterminal is in the middle, with terminals on both sides. That is not linear. The language counts two things, so no regular grammar exists for it.
+00:08:34,603 --> 00:08:41,003
+Both grammars give the same set of strings. A python check compared all strings up to length 8.
 
 66
-00:12:45,058 --> 00:12:57,751
-Here is our own example of why the two forms must not be mixed. S goes to a T, or epsilon. T goes to S b. The first rule is right linear. The second is left linear.
+00:08:41,453 --> 00:08:46,061
+Two grammars that accept exactly the same strings are weakly equivalent.
 
 67
-00:12:58,201 --> 00:13:06,265
-Derive a a b b. S goes to a T. T goes to S b. Now S is in the middle again, between a and b.
+00:08:46,511 --> 00:08:53,103
+But the parse trees are different. For x x, the left grammar gives a tree that leans to the right.
 
 68
-00:13:06,715 --> 00:13:20,987
-Repeat once, then use epsilon. The result is a a b b. This grammar gives n a's then n b's. A python check confirmed it up to length 8. So every rule is linear, but the mix is not regular.
+00:08:53,553 --> 00:08:56,646
+The right grammar gives a tree that leans to the left.
 
 69
-00:13:21,437 --> 00:13:39,293
-Now the question bank. Question 1.1.1. Engineers work in both measurement systems. Using this grammar, derive metric 3.875, and imperial 3 7 slash 8. Digits is one or more digits, from the lexer.
+00:08:57,096 --> 00:09:05,501
+Two grammars that give the same strings and the same parse trees are strongly equivalent. These two are only weakly equivalent.
 
 70
-00:13:39,743 --> 00:13:41,386
-Pause the video and try it.
+00:09:05,951 --> 00:09:11,285
+Engineers often refactor a complex grammar into an equivalent, simpler one.
 
 71
-00:13:41,836 --> 00:13:48,620
-The lexer gives four tokens: metric, 3, dot, 875. Start with Measurement.
+00:09:11,735 --> 00:09:23,724
+How do we test if a grammar is context free? Here is a grammar from the notes for a to the n, b to the n, c to the n. That is n a's, then n b's, then n c's.
 
 72
-00:13:49,070 --> 00:13:56,110
-The first token is metric. So use the first alternative: Measurement goes to metric DecimalNumber.
+00:09:24,174 --> 00:09:31,555
+The test: a context-free grammar has exactly one nonterminal on the left hand side of every production.
 
 73
-00:13:56,560 --> 00:14:12,987
-DecimalNumber has one production: Digits dot Digits. Now there are two nonterminals. We rewrite the leftmost one first. This is a leftmost derivation. The L L in L L one means left to right, leftmost derivation.
+00:09:32,005 --> 00:09:36,101
+The top two rules pass. They rewrite S, wherever it appears.
 
 74
-00:14:13,437 --> 00:14:16,359
-The leftmost Digits matches the token 3.
+00:09:36,551 --> 00:09:42,631
+All the other rules have two symbols on the left. For example, C B goes to H B.
 
 75
-00:14:16,809 --> 00:14:26,260
-The last Digits matches 875. No nonterminals are left, and the string matches the input. The derivation accepts.
+00:09:43,081 --> 00:09:53,236
+The rule a B goes to a b can rewrite B only when B comes right after an a. The context decides, so the grammar is context sensitive.
 
 76
-00:14:26,710 --> 00:14:36,502
-Now imperial 3 7 slash 8. Five tokens. The first token is imperial, so Measurement goes to imperial FractionalNumber.
+00:09:53,686 --> 00:10:06,785
+Multiple symbols on the left hand side mean the grammar is not context free. The canonical example is this language, which counts three things. No context-free grammar exists for it.
 
 77
-00:14:36,952 --> 00:14:44,739
-FractionalNumber goes to Digits Digits slash Digits. The space between 3 and 7 separates two tokens.
+00:10:07,235 --> 00:10:17,688
+Here is a full derivation of a a b b c c with this grammar. Start with S. Lowercase letters are terminals. Uppercase letters are nonterminals.
 
 78
-00:14:45,189 --> 00:14:58,266
-Rewrite each Digits, leftmost first: 3, then 7, then 8. The result matches the input. The posted solution does the three Digits steps in one line. That is fine on an exam.
+00:10:18,138 --> 00:10:20,037
+S goes to a S B C.
 
 79
-00:14:58,716 --> 00:15:14,311
-Question 1.1.2. Try to derive five sentences with this grammar. The parentheses group two alternatives. For example, Technical is Engineer calculates, or Architect draws, followed by design.
+00:10:20,487 --> 00:10:25,820
+Then S goes to a B C. Now we have two a's, but the B's and C's are mixed.
 
 80
-00:15:14,761 --> 00:15:16,403
-Pause the video and try it.
+00:10:26,270 --> 00:10:32,350
+The C's must move to the right of the B's. The rule C B goes to H B starts a swap.
 
 81
-00:15:16,853 --> 00:15:25,237
-Engineer calculates design. ProfessionalSkills goes to Technical. Technical goes to Engineer calculates design.
+00:10:32,800 --> 00:10:34,720
+H B goes to H C.
 
 82
-00:15:25,687 --> 00:15:32,429
-Physician examines patient. ProfessionalSkills goes to Medical, then Physician examines patient.
+00:10:35,170 --> 00:10:43,170
+H C goes to B C. These three rules together swap C and B. H is a helper. Now the B's are together.
 
 83
-00:15:32,879 --> 00:15:38,831
-Judge decides case. ProfessionalSkills goes to Legal, then Judge decides case.
+00:10:43,620 --> 00:10:48,079
+a B goes to a b. A B becomes a b only after an a.
 
 84
-00:15:39,281 --> 00:15:44,166
-Each accepted sentence takes two steps. The first word decides the group.
+00:10:48,529 --> 00:10:50,427
+b B goes to b b.
 
 85
-00:15:44,616 --> 00:15:52,595
-Engineer cuts patient. The word Engineer appears only in Technical. So ProfessionalSkills must go to Technical.
+00:10:50,877 --> 00:10:52,733
+b C goes to b c.
 
 86
-00:15:53,045 --> 00:15:58,911
-Technical goes to Engineer calculates design. Engineer matches the first token.
+00:10:53,183 --> 00:10:57,514
+c C goes to c c. The result is a a b b c c.
 
 87
-00:15:59,361 --> 00:16:04,844
-The grammar needs calculates next. The input has cuts. The derivation is stuck.
+00:10:57,964 --> 00:11:07,116
+Our python search found a flaw in this figure. It also derives a a a b b c c c c, because one H can help in two swaps.
 
 88
-00:16:05,294 --> 00:16:16,174
-Lawyer advocates design. Lawyer appears only in Legal. Lawyer and advocates match. Then Legal needs case, but the input has design. Stuck again.
+00:11:07,566 --> 00:11:16,995
+The source that the notes cite uses two helpers, Z and W. That version derives only a to the n, b to the n, c to the n.
 
 89
-00:16:16,624 --> 00:16:29,467
-When no derivation reaches the input, the string is not in the language. The posted solution writes stuck, reject. Surgeon cuts patient, and Lawyer advocates case, would be accepted.
+00:11:17,445 --> 00:11:23,376
+For the exam, the important point is the test: several symbols on a left hand side.
 
 90
-00:16:29,917 --> 00:16:49,031
-Question 1.2.1. A simple calculator language with operator precedence and nested expressions. Derive five strings: 1 plus 2, 2 times 3, 1 plus 2 times 3, open 1 plus 2 close times 3, and 1 times 2 plus 3.
+00:11:23,826 --> 00:11:32,807
+Is a grammar regular? First, the three common cases that are outside the regular class. Engineers need all three in practice.
 
 91
-00:16:49,481 --> 00:16:51,124
-Pause the video and try it.
+00:11:33,257 --> 00:11:40,340
+One. Unlimited balanced parentheses. n open parentheses, an a, then n close parentheses.
 
 92
-00:16:51,574 --> 00:16:57,291
-First see how the grammar encodes precedence. Expr is a sum of one or more Terms.
+00:11:40,790 --> 00:11:48,875
+Two. Expression nesting. An expression can contain an expression in parentheses, or two expressions with a plus.
 
 93
-00:16:57,741 --> 00:17:00,749
-Term is a product of one or more Factors.
+00:11:49,325 --> 00:11:56,003
+Three. Indefinite counting. n a's followed by n b's. S goes to a S b, or a b.
 
 94
-00:17:01,199 --> 00:17:17,626
-Factor is an integer, or a whole Expr in parentheses. Each level of precedence is its own nonterminal. Times is one level deeper than plus. So in every parse tree, a times sits below the plus nodes, and is done first.
+00:11:56,453 --> 00:12:12,154
+These are the three main features to look for. Each one needs a count with no limit. A finite automaton has a finite number of states, so it cannot keep such a count. If the language needs one of them, the grammar is not regular.
 
 95
-00:17:18,076 --> 00:17:21,212
-Start with 1 plus 2. S goes to Expr.
+00:12:12,604 --> 00:12:21,201
+Now the test to prove that a grammar is regular. The left hand side must be one nonterminal, as in a context-free grammar.
 
 96
-00:17:21,662 --> 00:17:29,513
-The input has a plus. So Expr goes to Term plus Expr. Then the left Term goes to Factor, and Factor to Int.
+00:12:21,651 --> 00:12:26,089
+The right hand side must be the empty string, or a single terminal.
 
 97
-00:17:29,963 --> 00:17:38,795
-Int is the token 1. Then the right Expr has no more plus, so it goes to Term, Term goes to Factor, and Factor goes to Int.
+00:12:26,539 --> 00:12:33,067
+Or it must be linear. Right linear is a terminal followed by a nonterminal, such as x S.
 
 98
-00:17:39,245 --> 00:17:48,610
-The last Int is the token 2. The derivation reaches 1 plus 2. On the right, the tree has plus at the top, with 1 and 2 below.
+00:12:33,517 --> 00:12:38,530
+Left linear is a nonterminal followed by a terminal, such as S x.
 
 99
-00:17:49,060 --> 00:17:54,415
-2 times 3. S goes to Expr. There is no plus, so Expr goes to Term.
+00:12:38,980 --> 00:12:47,364
+All the rules must be right linear, or all must be left linear. If the two forms are mixed, the grammar might not be regular.
 
 100
-00:17:54,865 --> 00:18:01,521
-There is a times. So Term goes to Factor times Term. The left Factor goes to Int, which is 2.
+00:12:47,814 --> 00:12:57,286
+Test the grammar for language 2. The rule S goes to x y T has two terminals before the nonterminal. That is not one of the forms.
 
 101
-00:18:01,971 --> 00:18:08,456
-The right Term goes to Factor, then Int, then 3. The derivation reaches 2 times 3.
+00:12:57,736 --> 00:13:13,651
+Refactor it. Add a nonterminal U. S goes to x U, and U goes to y T. Now every rule is right linear, so the grammar is regular. A python check showed that both grammars give the same strings up to length 8.
 
 102
-00:18:08,906 --> 00:18:16,735
-1 plus 2 times 3. S goes to Expr. There is a plus in the input, so Expr goes to Term plus Expr.
+00:13:14,101 --> 00:13:27,882
+Language 3 has S goes to x S y. The nonterminal is in the middle, with terminals on both sides. That is not linear. The language counts two things, so no regular grammar exists for it.
 
 103
-00:18:17,185 --> 00:18:23,009
-The left Term has no times before the plus. It goes to Factor, then Int, then 1.
+00:13:28,332 --> 00:13:36,993
+Here is our own example of why the two forms must not be mixed. S goes to a T, or epsilon. T goes to S b.
 
 104
-00:18:23,459 --> 00:18:31,971
-The right Expr must derive 2 times 3. It has no plus, so it goes to Term. That Term goes to Factor times Term.
+00:13:37,443 --> 00:13:42,713
+The rule S goes to a T is right linear: a terminal, then a nonterminal.
 
 105
-00:18:32,421 --> 00:18:36,816
-The Factor goes to Int, then 2. The last Term goes to Factor.
+00:13:43,163 --> 00:13:48,261
+The rule T goes to S b is left linear: a nonterminal, then a terminal.
 
 106
-00:18:37,266 --> 00:18:52,007
-Then Int, and 3. With brackets, the result is 1 plus, bracket, 2 times 3. In the tree, the times is inside the right Expr, below the plus. So the multiplication is done first: 1 plus 6 is 7.
+00:13:48,711 --> 00:13:52,615
+Derive a a b b. Start with S. S goes to a T.
 
 107
-00:18:52,457 --> 00:18:58,260
-1 times 2 plus 3. S goes to Expr. Expr goes to Term plus Expr.
+00:13:53,065 --> 00:13:57,311
+T goes to S b. Now S is in the middle, between a and b.
 
 108
-00:18:58,710 --> 00:19:04,235
-Now the left Term must derive 1 times 2. Term goes to Factor times Term.
+00:13:57,761 --> 00:13:59,467
+S goes to a T again.
 
 109
-00:19:04,685 --> 00:19:10,893
-Factor goes to Int, then 1. The inner Term goes to Factor. It must stop before the plus.
+00:13:59,917 --> 00:14:03,523
+T goes to S b again. Now we have a a S b b.
 
 110
-00:19:11,343 --> 00:19:17,829
-Then Int, then 2. The left side is complete: 1 times 2. The right Expr goes to Term.
+00:14:03,973 --> 00:14:07,599
+S goes to epsilon. The result is a a b b.
 
 111
-00:19:18,279 --> 00:19:29,052
-Term goes to Factor, Int, then 3. With brackets: bracket 1 times 2, plus 3. The times is again below the plus. 2 plus 3 is 5.
+00:14:08,049 --> 00:14:17,713
+This grammar gives n a's then n b's. A python check confirmed it up to length 8. So every rule is linear, but the mix is not regular.
 
 112
-00:19:29,502 --> 00:19:40,958
-Open 1 plus 2 close, times 3. S goes to Expr. The plus is inside the parentheses, so Expr goes to Term. Term goes to Factor times Term.
+00:14:18,163 --> 00:14:32,670
+Now the question bank. Question 1.1.1. Engineers work in both measurement systems. Using this grammar, derive metric 3.875, and imperial 3 7 slash 8.
 
 113
-00:19:41,408 --> 00:19:50,624
-This Factor must derive the part in parentheses. Factor goes to open, Expr, close. The inner Expr goes to Term plus Expr.
+00:14:33,120 --> 00:14:37,451
+Digits is one or more digits. It is a token from the lexer.
 
 114
-00:19:51,074 --> 00:19:58,221
-Inside the parentheses, the rules repeat. Term, Factor, Int, 1. Then Expr, Term, Factor, Int.
+00:14:37,901 --> 00:14:39,543
+Pause the video and try it.
 
 115
-00:19:58,671 --> 00:20:03,940
-That Int is 2. Then the last Term after the times goes to Factor, then Int.
+00:14:39,993 --> 00:14:46,713
+The input has four tokens: metric, 3, dot, 875. Start with Measurement.
 
 116
-00:20:04,390 --> 00:20:14,545
-The last Int is 3. Now the plus is below the times, because the parentheses put a whole Expr inside a Factor. 3 times 3 is 9.
+00:14:47,163 --> 00:14:54,203
+The first token is metric. So use the first alternative: Measurement goes to metric DecimalNumber.
 
 117
-00:20:14,995 --> 00:20:22,888
-Compare with the posted solution. In 2 times 3 and in 1 times 2 plus 3, it writes Factor times Expr.
+00:14:54,653 --> 00:14:58,408
+DecimalNumber has one production: Digits dot Digits.
 
 118
-00:20:23,338 --> 00:20:33,983
-The grammar has no such production. It says Term goes to Factor times Term. Our derivations use the grammar exactly, and a python check found each one.
+00:14:58,858 --> 00:15:05,941
+Now there are two nonterminals. We rewrite the leftmost one first. This is a leftmost derivation.
 
 119
-00:20:34,433 --> 00:20:49,004
-Some posted lines also do two rewrites at once. The posted solution says that on an exam you may skip the steps that only move down the grammar to an Int. But every step you write must use a real production.
+00:15:06,391 --> 00:15:10,977
+The L L in L L one means left to right, leftmost derivation.
 
 120
-00:20:49,454 --> 00:20:57,027
-To summarize. A language is a set of strings. A grammar describes an infinite language in finite space.
+00:15:11,427 --> 00:15:14,350
+The leftmost Digits matches the token 3.
 
 121
-00:20:57,477 --> 00:21:06,736
-Nonterminals are rewritten. Terminals are the tokens. A derivation starts at the start symbol and uses one production per step.
+00:15:14,800 --> 00:15:24,464
+The last Digits matches 875. No nonterminals are left, and the string matches the input. The derivation is complete.
 
 122
-00:21:07,186 --> 00:21:15,314
-The parse tree records each rewrite. In a leftmost derivation, you always rewrite the leftmost nonterminal first.
+00:15:24,914 --> 00:15:31,421
+Now imperial 3 7 slash 8. The input has five tokens. Start with Measurement.
 
 123
-00:21:15,764 --> 00:21:24,788
-The classes nest: regular, L L one, context free, context sensitive, unrestricted. Always choose the simplest class.
+00:15:31,871 --> 00:15:37,225
+The first token is imperial. So Measurement goes to imperial FractionalNumber.
 
 124
-00:21:25,238 --> 00:21:43,457
+00:15:37,675 --> 00:15:45,462
+FractionalNumber goes to Digits Digits slash Digits. The space between 3 and 7 separates two tokens.
+
+125
+00:15:45,912 --> 00:15:48,493
+Rewrite the leftmost Digits: 3.
+
+126
+00:15:48,943 --> 00:15:51,013
+Then the next Digits: 7.
+
+127
+00:15:51,463 --> 00:15:55,281
+Then the last Digits: 8. The result matches the input.
+
+128
+00:15:55,731 --> 00:16:01,470
+The posted solution does the three Digits steps in one line. That is fine on an exam.
+
+129
+00:16:01,920 --> 00:16:07,424
+Question 1.1.2. Try to derive five sentences with this grammar.
+
+130
+00:16:07,874 --> 00:16:17,303
+The parentheses group two alternatives. For example, Technical is Engineer calculates, or Architect draws, followed by design.
+
+131
+00:16:17,753 --> 00:16:19,396
+Pause the video and try it.
+
+132
+00:16:19,846 --> 00:16:28,230
+Engineer calculates design. ProfessionalSkills goes to Technical. Technical goes to Engineer calculates design.
+
+133
+00:16:28,680 --> 00:16:35,421
+Physician examines patient. ProfessionalSkills goes to Medical, then Physician examines patient.
+
+134
+00:16:35,871 --> 00:16:41,845
+Judge decides case. ProfessionalSkills goes to Legal, then Judge decides case.
+
+135
+00:16:42,295 --> 00:16:47,180
+Each accepted sentence takes two steps. The first word decides the group.
+
+136
+00:16:47,630 --> 00:16:55,609
+Engineer cuts patient. The word Engineer appears only in Technical. So ProfessionalSkills must go to Technical.
+
+137
+00:16:56,059 --> 00:17:01,925
+Technical goes to Engineer calculates design. Engineer matches the first token.
+
+138
+00:17:02,375 --> 00:17:07,879
+The grammar needs calculates next. The input has cuts. The derivation is stuck.
+
+139
+00:17:08,329 --> 00:17:16,009
+Lawyer advocates design. The word Lawyer appears only in Legal. So ProfessionalSkills must go to Legal.
+
+140
+00:17:16,459 --> 00:17:21,259
+Legal goes to Lawyer advocates case. Lawyer and advocates match.
+
+141
+00:17:21,709 --> 00:17:25,763
+Then Legal needs case, but the input has design. Stuck again.
+
+142
+00:17:26,213 --> 00:17:34,362
+When no derivation reaches the input, the string is not in the language. The posted solution writes: stuck, reject.
+
+143
+00:17:34,812 --> 00:17:39,228
+Surgeon cuts patient, and Lawyer advocates case, would be accepted.
+
+144
+00:17:39,678 --> 00:17:50,387
+Question 1.2.1. A simple calculator language with operator precedence and nested expressions. Use square brackets to show precedence.
+
+145
+00:17:50,837 --> 00:18:01,355
+Derive five strings: 1 plus 2, 2 times 3, 1 plus 2 times 3, open 1 plus 2 close times 3, and 1 times 2 plus 3.
+
+146
+00:18:01,805 --> 00:18:03,447
+Pause the video and try it.
+
+147
+00:18:03,897 --> 00:18:09,615
+First see how the grammar encodes precedence. Expr is a sum of one or more Terms.
+
+148
+00:18:10,065 --> 00:18:13,073
+Term is a product of one or more Factors.
+
+149
+00:18:13,523 --> 00:18:21,288
+Factor is an integer, or a whole Expr in parentheses. Each level of precedence is its own nonterminal.
+
+150
+00:18:21,738 --> 00:18:29,930
+Times is one level deeper than plus. So in every parse tree, a times sits below the plus nodes, and is done first.
+
+151
+00:18:30,380 --> 00:18:33,516
+Start with 1 plus 2. S goes to Expr.
+
+152
+00:18:33,966 --> 00:18:38,083
+The input has a plus. So Expr goes to Term plus Expr.
+
+153
+00:18:38,533 --> 00:18:45,723
+The left Term must derive 1. Term goes to Factor, Factor goes to Int, and Int is the token 1.
+
+154
+00:18:46,173 --> 00:18:50,333
+The right Expr has no more plus. So Expr goes to Term.
+
+155
+00:18:50,783 --> 00:18:58,527
+Term goes to Factor, Factor goes to Int, and Int is the token 2. The derivation reaches 1 plus 2.
+
+156
+00:18:58,977 --> 00:19:03,094
+In the tree, the plus is at the top, with 1 and 2 below it.
+
+157
+00:19:03,544 --> 00:19:06,168
+2 times 3. S goes to Expr.
+
+158
+00:19:06,618 --> 00:19:10,501
+There is no plus in the input. So Expr goes to Term.
+
+159
+00:19:10,951 --> 00:19:14,727
+There is a times. So Term goes to Factor times Term.
+
+160
+00:19:15,177 --> 00:19:18,142
+The left Factor goes to Int, and Int is 2.
+
+161
+00:19:18,592 --> 00:19:25,077
+The right Term goes to Factor, then Int, then 3. The derivation reaches 2 times 3.
+
+162
+00:19:25,527 --> 00:19:28,834
+1 plus 2 times 3. S goes to Expr.
+
+163
+00:19:29,284 --> 00:19:33,700
+There is a plus in the input. So Expr goes to Term plus Expr.
+
+164
+00:19:34,150 --> 00:19:39,974
+The left Term has no times before the plus. It goes to Factor, then Int, then 1.
+
+165
+00:19:40,424 --> 00:19:45,928
+The right Expr must derive 2 times 3. It has no plus, so it goes to Term.
+
+166
+00:19:46,378 --> 00:19:48,767
+That Term goes to Factor times Term.
+
+167
+00:19:49,217 --> 00:19:51,372
+The Factor goes to Int, then 2.
+
+168
+00:19:51,822 --> 00:19:55,363
+The last Term goes to Factor, then Int, then 3.
+
+169
+00:19:55,813 --> 00:20:00,101
+With brackets, the result is 1 plus, bracket, 2 times 3.
+
+170
+00:20:00,551 --> 00:20:11,282
+In the tree, the times is inside the right Expr, below the plus. So the multiplication is done first: 2 times 3 is 6, and 1 plus 6 is 7.
+
+171
+00:20:11,732 --> 00:20:15,167
+1 times 2 plus 3. S goes to Expr.
+
+172
+00:20:15,617 --> 00:20:19,265
+There is a plus. So Expr goes to Term plus Expr.
+
+173
+00:20:19,715 --> 00:20:24,856
+The left Term must derive 1 times 2. Term goes to Factor times Term.
+
+174
+00:20:25,306 --> 00:20:27,247
+Factor goes to Int, then 1.
+
+175
+00:20:27,697 --> 00:20:31,772
+The inner Term must stop before the plus. So it goes to Factor.
+
+176
+00:20:32,222 --> 00:20:36,553
+Then Int, then 2. The left side is complete: 1 times 2.
+
+177
+00:20:37,003 --> 00:20:39,008
+The right Expr goes to Term.
+
+178
+00:20:39,458 --> 00:20:42,125
+Term goes to Factor, Int, then 3.
+
+179
+00:20:42,575 --> 00:20:52,345
+With brackets: bracket 1 times 2, plus 3. The times is again below the plus. 1 times 2 is 2, and 2 plus 3 is 5.
+
+180
+00:20:52,795 --> 00:20:56,955
+Open 1 plus 2 close, times 3. S goes to Expr.
+
+181
+00:20:57,405 --> 00:21:04,232
+The plus is inside the parentheses. Outside them, there is no plus. So Expr goes to Term.
+
+182
+00:21:04,682 --> 00:21:08,458
+There is a times. So Term goes to Factor times Term.
+
+183
+00:21:08,908 --> 00:21:14,945
+This Factor must derive the part in parentheses. Factor goes to open, Expr, close.
+
+184
+00:21:15,395 --> 00:21:21,326
+Inside the parentheses, the rules repeat. The inner Expr goes to Term plus Expr.
+
+185
+00:21:21,776 --> 00:21:24,869
+The inner Term goes to Factor, Int, then 1.
+
+186
+00:21:25,319 --> 00:21:27,367
+The inner Expr goes to Term.
+
+187
+00:21:27,817 --> 00:21:29,716
+Then Factor, Int, and 2.
+
+188
+00:21:30,166 --> 00:21:34,433
+The last Term after the times goes to Factor, Int, then 3.
+
+189
+00:21:34,883 --> 00:21:45,123
+Now the plus is below the times, because the parentheses put a whole Expr inside a Factor. 1 plus 2 is 3, and 3 times 3 is 9.
+
+190
+00:21:45,573 --> 00:21:54,533
+Compare with the posted solution. In 2 times 3 and in 1 times 2 plus 3, it writes Term goes to Factor times Expr.
+
+191
+00:21:54,983 --> 00:22:05,628
+The grammar has no such production. It says Term goes to Factor times Term. Our derivations use the grammar exactly, and a python check found each one.
+
+192
+00:22:06,078 --> 00:22:14,782
+Some posted lines also do two rewrites at once. For example, Term plus Expr becomes Factor plus Term in one line.
+
+193
+00:22:15,232 --> 00:22:25,749
+The posted solution says that on an exam you may skip the steps that only move down the grammar to an Int. But every step you write must use a real production.
+
+194
+00:22:26,199 --> 00:22:33,815
+To summarize. A language is a set of strings. A grammar describes an infinite language in finite space.
+
+195
+00:22:34,265 --> 00:22:43,503
+Nonterminals are rewritten. Terminals are the tokens. A derivation starts at the start symbol and uses one production per step.
+
+196
+00:22:43,953 --> 00:22:52,081
+The parse tree records each rewrite. In a leftmost derivation, you always rewrite the leftmost nonterminal first.
+
+197
+00:22:52,531 --> 00:23:01,555
+The classes nest: regular, L L one, context free, context sensitive, unrestricted. Always choose the simplest class.
+
+198
+00:23:02,005 --> 00:23:20,223
 A context-free grammar has one nonterminal on every left hand side. A regular grammar is all right linear or all left linear. Counting, nesting and balanced parentheses are not regular. Next video: recursive descent, which turns a grammar into code.

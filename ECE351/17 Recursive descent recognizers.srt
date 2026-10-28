@@ -11,433 +11,665 @@ We learn four rules that map each part of a grammar to code. Then we write and r
 In this course the input is always a string. A recognizer answers one question: is the string in the language? Yes or no.
 
 4
-00:00:27,953 --> 00:00:34,801
-A parser also builds a tree, the A S T. A compiler outputs an executable program.
+00:00:27,953 --> 00:00:31,003
+A parser also builds a tree, the A S T.
 
 5
-00:00:35,251 --> 00:00:40,072
-An interpreter, or evaluator, computes a value, such as an integer.
+00:00:31,453 --> 00:00:34,760
+A compiler outputs an executable program.
 
 6
-00:00:40,522 --> 00:00:55,114
-All four follow the same pattern. In the labs, a recognizer method returns void. The lexer throws an exception when the input is wrong. So an exception means reject, and normal completion means accept.
+00:00:35,210 --> 00:00:40,031
+An interpreter, or evaluator, computes a value, such as an integer.
 
 7
-00:00:55,564 --> 00:01:06,295
-Recursive descent is a way to write a parser by hand, from a grammar. Four rules do it. Rule 1. Each nonterminal becomes a method with the same name.
+00:00:40,481 --> 00:00:55,073
+All four follow the same pattern. In the labs, a recognizer method returns void. The lexer throws an exception when the input is wrong. So an exception means reject, and normal completion means accept.
 
 8
-00:01:06,745 --> 00:01:17,582
-Rule 2. Each terminal becomes a call to consume on the lexer. Consume takes the next token if it is the right one, and throws an exception if it is not.
+00:00:55,523 --> 00:01:06,254
+Recursive descent is a way to write a parser by hand, from a grammar. Four rules do it. Rule 1. Each nonterminal becomes a method with the same name.
 
 9
-00:01:18,032 --> 00:01:22,384
-Rule 3. Each repetition, star or plus, becomes a loop.
+00:01:06,704 --> 00:01:17,541
+Rule 2. Each terminal becomes a call to consume on the lexer. Consume takes the next token if it is the right one, and throws an exception if it is not.
 
 10
-00:01:22,834 --> 00:01:31,026
-Rule 4. Each alternation, the bar, becomes an if statement. The if looks at the next token to choose the alternative.
+00:01:17,991 --> 00:01:22,343
+Rule 3. Each repetition, star or plus, becomes a loop.
 
 11
-00:01:31,476 --> 00:01:42,569
-A grammar is a mathematical specification for a language. It is also a specification for the parser. With these rules, you derive the code from the grammar.
+00:01:22,793 --> 00:01:30,985
+Rule 4. Each alternation, the bar, becomes an if statement. The if looks at the next token to choose the alternative.
 
 12
-00:01:43,019 --> 00:01:51,105
-The recognizer reads tokens from a lexer. The lexer has a position in the token stream. Here the next token is metric.
+00:01:31,435 --> 00:01:42,529
+A grammar is a mathematical specification for a language. It is also a specification for the parser. With these rules, you derive the code from the grammar.
 
 13
-00:01:51,555 --> 00:02:00,515
-inspect looks at the next token and returns true or false. It does not move the position. Use inspect to choose an alternative.
+00:01:42,979 --> 00:01:51,064
+The recognizer reads tokens from a lexer. The lexer has a position in the token stream. Here the next token is metric.
 
 14
-00:02:00,965 --> 00:02:09,285
-consume takes the next token, if it is the expected one, and moves the position forward. Use consume for every terminal.
+00:01:51,514 --> 00:02:00,474
+inspect looks at the next token and returns true or false. It does not move the position. Use inspect to choose an alternative.
 
 15
-00:02:09,735 --> 00:02:29,767
-If the next token is not the expected one, consume throws an exception. That is a reject. There are also forms for the end of input and for token classes, such as consume I D and consume Int. On an exam, you can assume a lexer like the one in the labs. The answers are pseudo-code.
+00:02:00,924 --> 00:02:09,244
+consume takes the next token, if it is the expected one, and moves the position forward. Use consume for every terminal.
 
 16
-00:02:30,217 --> 00:02:41,353
-Question 3.1.1. A list of names. List goes to Name star. Name goes to I D, a name token from the lexer. Write a recognizer.
+00:02:09,694 --> 00:02:20,190
+If the next token is not the expected one, consume throws an exception. Here consume dot throws, because the next token is 3. That is a reject.
 
 17
-00:02:41,803 --> 00:02:43,445
-Pause the video and try it.
+00:02:20,640 --> 00:02:28,128
+There are also forms for the end of input and for token classes, such as consume I D and consume Int.
 
 18
-00:02:43,895 --> 00:02:48,909
-Apply the rules. List is a nonterminal, so it becomes a method, List.
+00:02:28,578 --> 00:02:34,295
+On an exam, you can assume a lexer like the one in the labs. The answers are pseudo-code.
 
 19
-00:02:49,359 --> 00:03:03,716
-The right side of List is a repetition, Name star. So List has a while loop. Inside the loop is a call to Name, because the rule uses Name. The loop runs while the next token is not the end of input.
+00:02:34,745 --> 00:02:41,807
+Question 3.1.1. A list of names. List goes to Name star. Write a recognizer.
 
 20
-00:03:04,166 --> 00:03:09,393
-After the loop, consume E O F. This checks that the whole input was used.
+00:02:42,257 --> 00:02:45,777
+Name goes to I D, a name token from the lexer.
 
 21
-00:03:09,843 --> 00:03:18,696
-Name is a nonterminal, so it becomes a method too. Its right side is the terminal I D, so Name calls consume I D.
+00:02:46,227 --> 00:02:47,869
+Pause the video and try it.
 
 22
-00:03:19,146 --> 00:03:23,562
-Run the recognizer on two names, Ana and Bo. List starts.
+00:02:48,319 --> 00:02:53,354
+Apply the rules. List is a nonterminal, so it becomes a method, List.
 
 23
-00:03:24,012 --> 00:03:29,644
-inspect E O F returns false. There is input left, so the loop body runs.
+00:02:53,804 --> 00:03:08,161
+The right side of List is a repetition, Name star. So List has a while loop. Inside the loop is a call to Name, because the rule uses Name. The loop runs while the next token is not the end of input.
 
 24
-00:03:30,094 --> 00:03:36,409
-List calls Name. Name consumes I D: the token Ana. The position moves to Bo.
+00:03:08,611 --> 00:03:15,737
+List is the start symbol. After the loop, consume E O F. This checks that the whole input was used.
 
 25
-00:03:36,859 --> 00:03:43,173
-Back in the loop. The input is not finished, so List calls Name again. Name consumes Bo.
+00:03:16,187 --> 00:03:25,040
+Name is a nonterminal, so it becomes a method too. Its right side is the terminal I D, so Name calls consume I D.
 
 26
-00:03:43,623 --> 00:03:47,570
-Now inspect E O F returns true, and the loop stops.
+00:03:25,490 --> 00:03:29,906
+Run the recognizer on two names, Ana and Bo. List starts.
 
 27
-00:03:48,020 --> 00:03:54,484
-consume E O F succeeds. List returns normally, so the recognizer accepts the input.
+00:03:30,356 --> 00:03:35,988
+inspect E O F returns false. There is input left, so the loop body runs.
 
 28
-00:03:54,934 --> 00:04:01,697
-Now the input Ana, 7. The first name is consumed as before. The input is not finished.
+00:03:36,438 --> 00:03:37,803
+List calls Name.
 
 29
-00:04:02,147 --> 00:04:03,683
-So List calls Name.
+00:03:38,253 --> 00:03:43,075
+Name consumes I D: the token Ana. The position moves to Bo.
 
 30
-00:04:04,133 --> 00:04:14,479
-Name calls consume I D, but the next token is the number 7, not a name. consume throws an exception. The recognizer rejects the input.
+00:03:43,525 --> 00:03:47,130
+Back in the loop. inspect E O F is false again.
 
 31
-00:04:14,929 --> 00:04:26,321
-Question 3.1.2 uses the measurement grammar from question 1.1.1. Digits is a token class from the lexer. Write a recognizer.
+00:03:47,580 --> 00:03:49,393
+So List calls Name again.
 
 32
-00:04:26,771 --> 00:04:28,414
-Pause the video and try it.
+00:03:49,843 --> 00:03:51,337
+Name consumes Bo.
 
 33
-00:04:28,864 --> 00:04:32,875
-Measurement is the start nonterminal. It becomes a method.
+00:03:51,787 --> 00:03:55,733
+Now inspect E O F returns true, and the loop stops.
 
 34
-00:04:33,325 --> 00:04:51,394
-Its right side has a bar, so the method has an if statement. If the next token is metric, consume metric and call DecimalNumber. Else if it is imperial, consume imperial and call FractionalNumber. Else, no alternative fits, so throw an exception.
+00:03:56,183 --> 00:03:58,295
+consume E O F succeeds.
 
 35
-00:04:51,844 --> 00:04:56,687
-Measurement is the start symbol. So at the end it calls consume E O F.
+00:03:58,745 --> 00:04:02,927
+List returns normally, so the recognizer accepts the input.
 
 36
-00:04:57,137 --> 00:05:13,371
-DecimalNumber and FractionalNumber have no bars. Each is a sequence: consume Digits, consume dot, consume Digits, and so on. The posted solution misspells FractionalNumber in one place. The method name must match the call.
+00:04:03,377 --> 00:04:10,395
+Now the input Ana, 7. The first name is consumed as before. inspect E O F is false.
 
 37
-00:05:13,821 --> 00:05:23,933
-Run it on metric 3.875. Four tokens. Measurement inspects the next token. It is metric, so the first branch runs.
+00:04:10,845 --> 00:04:12,403
+So List calls Name.
 
 38
-00:05:24,383 --> 00:05:27,583
-consume metric. The position moves to 3.
+00:04:12,853 --> 00:04:18,271
+Name calls consume I D, but the next token is the number 7, not a name.
 
 39
-00:05:28,033 --> 00:05:29,569
-Call DecimalNumber.
+00:04:18,721 --> 00:04:23,137
+consume throws an exception. The recognizer rejects the input.
 
 40
-00:05:30,019 --> 00:05:34,371
-consume Digits takes 3. Then consume dot takes the dot.
+00:04:23,587 --> 00:04:31,971
+Question 3.1.2 uses the measurement grammar from question 1.1.1. Write a recognizer.
 
 41
-00:05:34,821 --> 00:05:39,877
-consume Digits takes 875. DecimalNumber returns.
+00:04:32,421 --> 00:04:35,173
+Digits is a token class from the lexer.
 
 42
-00:05:40,327 --> 00:05:46,535
-Back in Measurement, consume E O F succeeds. The method returns normally: accept.
+00:04:35,623 --> 00:04:37,266
+Pause the video and try it.
 
 43
-00:05:46,985 --> 00:05:51,081
-Now imperial 3 slash 8. inspect metric is false.
+00:04:37,716 --> 00:04:41,727
+Measurement is the start nonterminal. It becomes a method.
 
 44
-00:05:51,531 --> 00:05:56,097
-inspect imperial is true. Consume it, and call FractionalNumber.
+00:04:42,177 --> 00:04:54,422
+Its right side has a bar, so the method has an if statement. Each alternative starts with a different token: metric or imperial. So one inspect chooses the alternative.
 
 45
-00:05:56,547 --> 00:05:58,637
-consume Digits takes 3.
+00:04:54,872 --> 00:04:59,544
+If the next token is metric, consume metric and call DecimalNumber.
 
 46
-00:05:59,087 --> 00:06:11,397
-The grammar needs a second Digits, but the next token is the slash. consume throws: reject. This grammar needs a whole number before the fraction, such as 3 7 slash 8.
+00:04:59,994 --> 00:05:04,666
+Else if it is imperial, consume imperial and call FractionalNumber.
 
 47
-00:06:11,847 --> 00:06:20,380
-Question 3.1.3 uses the professions grammar from question 1.1.2. Write a recognizer.
+00:05:05,116 --> 00:05:09,788
+Else, no alternative fits, so throw an exception. That is a reject.
 
 48
-00:06:20,830 --> 00:06:22,473
-Pause the video and try it.
+00:05:10,238 --> 00:05:15,081
+Measurement is the start symbol. So at the end it calls consume E O F.
 
 49
-00:06:22,923 --> 00:06:37,941
-ProfessionalSkills has three alternatives, so it has an if with three branches. Each alternative is a nonterminal. To choose, look at the first word: Engineer or Architect means Technical, and so on.
+00:05:15,531 --> 00:05:22,251
+DecimalNumber has no bar. It is a sequence: consume Digits, consume dot, consume Digits.
 
 50
-00:06:38,391 --> 00:06:46,178
-If no first word fits, throw. ProfessionalSkills is the start symbol, so it ends with consume E O F.
+00:05:22,701 --> 00:05:27,671
+FractionalNumber is also a sequence: Digits, Digits, slash, Digits.
 
 51
-00:06:46,628 --> 00:07:01,668
-Technical has a group with a bar inside, so it has its own if. Engineer is followed by calculates. Architect is followed by draws. After the group, consume design. Medical and Legal have the same shape.
+00:05:28,121 --> 00:05:34,756
+The posted solution misspells FractionalNumber in one place. The method name must match the call.
 
 52
-00:07:02,118 --> 00:07:18,374
-The posted solution misspells calculates in the consume call. With that typo, the correct sentence Engineer calculates design is rejected. A python copy of our code accepts exactly the five sentence patterns of the grammar.
+00:05:35,206 --> 00:05:40,945
+Run it on metric 3.875. Four tokens. Measurement starts.
 
 53
-00:07:18,824 --> 00:07:24,968
-Run it on Engineer cuts patient. inspect Engineer is true, so the first branch runs.
+00:05:41,395 --> 00:05:46,643
+Measurement inspects the next token. It is metric, so the first branch runs.
 
 54
-00:07:25,418 --> 00:07:26,677
-Call Technical.
+00:05:47,093 --> 00:05:50,293
+consume metric. The position moves to 3.
 
 55
-00:07:27,127 --> 00:07:30,476
-Technical inspects Engineer again, and consumes it.
+00:05:50,743 --> 00:05:52,279
+Call DecimalNumber.
 
 56
-00:07:30,926 --> 00:07:43,811
-Now Technical needs calculates. The next token is cuts. consume throws, and the recognizer rejects the sentence. This matches the stuck derivation in question 1.1.2.
+00:05:52,729 --> 00:05:54,819
+consume Digits takes 3.
 
 57
-00:07:44,261 --> 00:07:51,536
-Why does one inspect call choose the right branch? Each alternative of Measurement begins with a different token.
+00:05:55,269 --> 00:05:57,317
+consume dot takes the dot.
 
 58
-00:07:51,986 --> 00:07:56,573
-So one token of lookahead decides. Anything else is a reject.
+00:05:57,767 --> 00:06:00,967
+consume Digits takes 875.
 
 59
-00:07:57,023 --> 00:08:12,553
-Grammars where one token of lookahead always decides are L L one. Left to right, leftmost derivation, one token of lookahead. Recursive descent works directly for them. Video 19 shows the full test.
+00:06:01,417 --> 00:06:03,103
+DecimalNumber returns.
 
 60
-00:08:13,003 --> 00:08:22,283
-A recursive descent recognizer always works on the leftmost unfinished part first. So its calls follow the leftmost derivation.
+00:06:03,553 --> 00:06:06,603
+Back in Measurement, consume E O F succeeds.
 
 61
-00:08:22,733 --> 00:08:40,867
-Question 3.2.1. An L L one calculator grammar. It is a left-factored form of the grammar in question 1.2.1. Write a recognizer, then an evaluator. Note the epsilon alternatives in TermTail and FactorTail.
+00:06:07,053 --> 00:06:09,635
+Measurement returns normally: accept.
 
 62
-00:08:41,317 --> 00:08:42,959
-Pause the video and try it.
+00:06:10,085 --> 00:06:14,181
+Now imperial 3 slash 8. inspect metric is false.
 
 63
-00:08:43,409 --> 00:08:50,300
-First, the new part: an epsilon alternative. TermTail goes to plus Expr, or to epsilon.
+00:06:14,631 --> 00:06:16,508
+inspect imperial is true.
 
 64
-00:08:50,750 --> 00:08:57,001
-If the next token is a plus, take the first alternative: consume the plus and call Expr.
+00:06:16,958 --> 00:06:18,537
+consume imperial.
 
 65
-00:08:57,451 --> 00:09:10,656
-Otherwise take epsilon. Epsilon consumes nothing, so the method does nothing and returns. In code, that is an if with no else. The caller then goes on with the same next token.
+00:06:18,987 --> 00:06:20,587
+Call FractionalNumber.
 
 66
-00:09:11,106 --> 00:09:23,074
-S, Expr and Term have one alternative each. Each is a sequence of nonterminals, so each method is a sequence of calls. Expr calls Term, then TermTail.
+00:06:21,037 --> 00:06:23,127
+consume Digits takes 3.
 
 67
-00:09:23,524 --> 00:09:38,009
-Factor has two alternatives. An open parenthesis starts the second one. So: if the next token is an open parenthesis, consume it, call Expr, and consume the close parenthesis. Else consume an Int.
+00:06:23,577 --> 00:06:27,887
+The grammar needs a second Digits, but the next token is the slash.
 
 68
-00:09:38,459 --> 00:09:43,153
-TermTail and FactorTail are the epsilon pattern: an if with no else.
+00:06:28,337 --> 00:06:35,974
+consume throws: reject. This grammar needs a whole number before the fraction, such as 3 7 slash 8.
 
 69
-00:09:43,603 --> 00:10:04,893
-The posted S method calls only Expr. It does not check the end of input. Then the input 1 plus 2, close parenthesis, is accepted, which is wrong. Add consume E O F, as in the earlier questions. A python check compared our recognizer with the grammar on all strings up to 7 tokens.
+00:06:36,424 --> 00:06:44,957
+Question 3.1.3 uses the professions grammar from question 1.1.2. Write a recognizer.
 
 70
-00:10:05,343 --> 00:10:16,437
-Run the recognizer on 1 plus 2. S calls Expr, Expr calls Term, and Term calls Factor. Factor inspects for an open parenthesis. There is none.
+00:06:45,407 --> 00:06:47,050
+Pause the video and try it.
 
 71
-00:10:16,887 --> 00:10:19,233
-So Factor consumes the Int, 1.
+00:06:47,500 --> 00:06:55,799
+ProfessionalSkills has three alternatives, so it has an if with three branches. Each alternative is a nonterminal.
 
 72
-00:10:19,683 --> 00:10:27,619
-Term calls FactorTail. The next token is a plus, not a times. So FactorTail takes epsilon and returns.
+00:06:56,249 --> 00:07:06,723
+To choose, look at the first word. Engineer or Architect means Technical. Physician or Surgeon means Medical. Lawyer or Judge means Legal.
 
 73
-00:10:28,069 --> 00:10:34,811
-Expr calls TermTail. The next token is a plus, so TermTail consumes it and calls Expr.
+00:07:07,173 --> 00:07:09,435
+If no first word fits, throw.
 
 74
-00:10:35,261 --> 00:10:39,165
-The new Expr calls Term, then Factor, which consumes 2.
+00:07:09,885 --> 00:07:15,026
+ProfessionalSkills is the start symbol, so it ends with consume E O F.
 
 75
-00:10:39,615 --> 00:10:44,329
-FactorTail and TermTail see the end of input. Both take epsilon.
+00:07:15,476 --> 00:07:22,644
+Technical has a group with a bar inside, so it has its own if. Engineer is followed by calculates.
 
 76
-00:10:44,779 --> 00:10:50,326
-All calls return, and S calls consume E O F. It succeeds: accept.
+00:07:23,094 --> 00:07:25,334
+Architect is followed by draws.
 
 77
-00:10:50,776 --> 00:10:59,523
-Draw every call of that run as a tree. Each call is a node, and its children are the calls it makes and the tokens it consumes.
+00:07:25,784 --> 00:07:30,712
+After the group, consume design. Medical and Legal have the same shape.
 
 78
-00:10:59,973 --> 00:11:03,685
-A method that took epsilon has no tokens below it.
+00:07:31,162 --> 00:07:46,885
+The posted solution misspells calculates in the consume call. With that typo, the correct sentence Engineer calculates design is rejected. A python copy of our code accepts exactly the six sentences of the grammar.
 
 79
-00:11:04,135 --> 00:11:19,388
-This tree has the same shape as the parse tree of 1 plus 2 in the grammar. A python check compared the two trees. So a recognizer builds the parse tree in its calls, even if it never stores it. A parser stores it.
+00:07:47,335 --> 00:07:53,479
+Run it on Engineer cuts patient. inspect Engineer is true, so the first branch runs.
 
 80
-00:11:19,838 --> 00:11:35,475
-Now the evaluator. Start from the recognizer and make two changes. Each method returns an int, and each method does the computation. Expr returns Term plus TermTail. Term returns Factor times FactorTail.
+00:07:53,929 --> 00:07:55,209
+Call Technical.
 
 81
-00:11:35,925 --> 00:11:40,981
-Factor returns the value inside the parentheses, or the Int it consumes.
+00:07:55,659 --> 00:07:58,816
+Technical inspects Engineer again. It is true.
 
 82
-00:11:41,431 --> 00:11:57,986
-TermTail returns the value of the Expr after the plus. For epsilon, it must return something that does not change the sum. That is 0, the identity for plus. FactorTail returns 1 for epsilon, the identity for times.
+00:07:59,266 --> 00:08:01,122
+Technical consumes Engineer.
 
 83
-00:11:58,436 --> 00:12:03,236
-The evaluator computes while it parses. It does not build an A S T.
+00:08:01,572 --> 00:08:05,604
+Now Technical needs calculates. The next token is cuts.
 
 84
-00:12:03,686 --> 00:12:11,622
-Test the evaluator on 2 times 3 plus 4. The answer should be 10. Factor consumes 2 and returns 2.
+00:08:06,054 --> 00:08:14,417
+consume throws, and the recognizer rejects the sentence. This matches the stuck derivation in question 1.1.2.
 
 85
-00:12:12,072 --> 00:12:20,328
-FactorTail sees a times. It consumes it and calls Expr, as the grammar says: FactorTail goes to times Expr.
+00:08:14,867 --> 00:08:24,061
+Why does one inspect call choose the right branch? Each alternative of Measurement begins with a different token: metric or imperial.
 
 86
-00:12:20,778 --> 00:12:23,658
-Inside that Expr, Factor returns 3.
+00:08:24,511 --> 00:08:29,098
+So one token of lookahead decides. Anything else is a reject.
 
 87
-00:12:24,108 --> 00:12:27,329
-TermTail sees the plus and calls Expr again.
+00:08:29,548 --> 00:08:45,079
+Grammars where one token of lookahead always decides are L L one. Left to right, leftmost derivation, one token of lookahead. Recursive descent works directly for them. Video 19 shows the full test.
 
 88
-00:12:27,779 --> 00:12:29,422
-Factor returns 4.
+00:08:45,529 --> 00:08:54,809
+A recursive descent recognizer always works on the leftmost unfinished part first. So its calls follow the leftmost derivation.
 
 89
-00:12:29,872 --> 00:12:37,488
-Now the values come back up. The inner Expr returns 3 plus 4, which is 7. FactorTail returns 7.
+00:08:55,259 --> 00:09:08,869
+Question 3.2.1. An L L one calculator grammar. It is a left-factored form of the grammar in question 1.2.1. Write a recognizer, then an evaluator.
 
 90
-00:12:37,938 --> 00:12:44,615
-So Term returns 2 times 7, which is 14. The evaluator returns 14, not 10.
+00:09:09,319 --> 00:09:13,373
+Note the epsilon alternatives in TermTail and FactorTail.
 
 91
-00:12:45,065 --> 00:12:59,295
-The cause is in the grammar of the question. FactorTail goes to times Expr. So after a times, the whole rest of the input, 3 plus 4, becomes one Expr. The evaluator computes 2 times 7.
+00:09:13,823 --> 00:09:15,465
+Pause the video and try it.
 
 92
-00:12:59,745 --> 00:13:20,694
-Our fix: FactorTail goes to times Term. Then the times takes only the next Term, 3. The value is 2 times 3, plus 4, which is 10. In the code, FactorTail returns Term instead of Expr. Question 1.2.1 has the same idea: Term goes to Factor times Term.
+00:09:15,915 --> 00:09:22,806
+First, the new part: an epsilon alternative. TermTail goes to plus Expr, or to epsilon.
 
 93
-00:13:21,144 --> 00:13:39,448
-Both grammars accept the same strings. They are weakly equivalent, from video 16. So the recognizer is correct either way. Only the trees differ, and the evaluator follows the tree. A python check ran both versions on all strings up to 7 tokens.
+00:09:23,256 --> 00:09:29,507
+If the next token is a plus, take the first alternative: consume the plus and call Expr.
 
 94
-00:13:39,898 --> 00:14:01,637
-The notes have a job interview question. Evaluate exponents, with integers and parentheses. Exponentiation is right associative: 2 to the 3 to the 2 is 2 to the 9, which is 512. The grammar is right recursive and left factored. Tail goes to caret Number, or epsilon.
+00:09:29,957 --> 00:09:39,599
+Otherwise take epsilon. Epsilon consumes nothing, so the method does nothing and returns. In code, that is an if with no else.
 
 95
-00:14:02,087 --> 00:14:16,679
-The code follows the same rules. Number calls Base, then Tail, and returns base to the power exp. Tail consumes a caret and returns Number. For epsilon it returns 1, because x to the 1 is x.
+00:09:40,049 --> 00:09:43,015
+The caller then goes on with the same next token.
 
 96
-00:14:17,129 --> 00:14:27,518
-Base returns the value in parentheses, or the integer. This code uses an array and a position instead of a lexer, but the technique is the same.
+00:09:43,465 --> 00:09:55,433
+S, Expr and Term have one alternative each. Each is a sequence of nonterminals, so each method is a sequence of calls. Expr calls Term, then TermTail.
 
 97
-00:14:27,968 --> 00:14:35,712
-Run it on 2 caret 3 caret 2. The caret is the exponent sign. Base consumes 2 and returns 2.
+00:09:55,883 --> 00:10:10,368
+Factor has two alternatives. An open parenthesis starts the second one. So: if the next token is an open parenthesis, consume it, call Expr, and consume the close parenthesis. Else consume an Int.
 
 98
-00:14:36,162 --> 00:14:39,767
-Tail sees a caret. It consumes it and calls Number.
+00:10:10,818 --> 00:10:15,511
+TermTail and FactorTail are the epsilon pattern: an if with no else.
 
 99
-00:14:40,217 --> 00:14:45,721
-The second Number gets base 3. Its Tail sees another caret and calls Number again.
+00:10:15,961 --> 00:10:37,252
+The posted S method calls only Expr. It does not check the end of input. Then the input 1 plus 2, close parenthesis, is accepted, which is wrong. Add consume E O F, as in the earlier questions. A python check compared our recognizer with the grammar on all strings up to 7 tokens.
 
 100
-00:14:46,171 --> 00:14:55,131
-The last Number gets base 2. Its Tail sees the end of input and returns 1. So that Number returns 2 to the 1, which is 2.
+00:10:37,702 --> 00:10:44,614
+Run the recognizer on 1 plus 2. S calls Expr, Expr calls Term, and Term calls Factor.
 
 101
-00:14:55,581 --> 00:14:59,037
-The middle Number returns 3 to the 2, which is 9.
+00:10:45,064 --> 00:10:48,925
+Factor inspects for an open parenthesis. There is none.
 
 102
-00:14:59,487 --> 00:15:08,277
-The first Number returns 2 to the 9, which is 512. The right recursion makes the operator right associative.
+00:10:49,375 --> 00:10:51,722
+So Factor consumes the Int, 1.
 
 103
-00:15:08,727 --> 00:15:21,783
-The notes list common mistakes for these questions. The grammar does not accept a single integer. The associativity is wrong. Or the grammar has common prefixes, so it is not L L one.
+00:10:52,172 --> 00:10:56,652
+Term calls FactorTail. The next token is a plus, not a times.
 
 104
-00:15:22,233 --> 00:15:31,299
-Another mistake is to build an explicit A S T in an evaluator. That makes the code larger. Compute the value while you parse.
+00:10:57,102 --> 00:11:00,067
+So FactorTail takes epsilon and returns.
 
 105
-00:15:31,749 --> 00:15:40,603
-From the posted solutions in this video: check the end of input in the start method, and spell every terminal exactly as in the grammar.
+00:11:00,517 --> 00:11:04,059
+Expr calls TermTail. The next token is a plus.
 
 106
-00:15:41,053 --> 00:15:47,581
-In an evaluator, an epsilon alternative returns the identity element of its operator.
+00:11:04,509 --> 00:11:06,407
+TermTail consumes the plus.
 
 107
-00:15:48,031 --> 00:15:58,271
-To summarize. A nonterminal becomes a method. A terminal becomes consume. A repetition becomes a loop. An alternation becomes an if.
+00:11:06,857 --> 00:11:08,649
+TermTail calls Expr.
 
 108
-00:15:58,721 --> 00:16:08,811
-inspect looks at the next token without moving. consume takes it, or throws. An exception means reject, and normal completion means accept.
+00:11:09,099 --> 00:11:13,195
+The new Expr calls Term, then Factor. Factor consumes 2.
 
 109
-00:16:09,261 --> 00:16:16,387
-An epsilon alternative becomes an if with no else. The start method ends with consume E O F.
+00:11:13,645 --> 00:11:17,443
+FactorTail sees the end of input. It takes epsilon.
 
 110
-00:16:16,837 --> 00:16:22,170
-The calls follow the leftmost derivation, so the call tree is the parse tree.
+00:11:17,893 --> 00:11:22,074
+TermTail also sees the end of input, and takes epsilon.
 
 111
-00:16:22,620 --> 00:16:35,036
+00:11:22,524 --> 00:11:27,324
+All calls return. S calls consume E O F. It succeeds.
+
+112
+00:11:27,774 --> 00:11:30,142
+S returns normally: accept.
+
+113
+00:11:30,592 --> 00:11:37,376
+Draw every call of that run as a tree. Each call is a node, and its children are the calls it makes.
+
+114
+00:11:37,826 --> 00:11:42,818
+Each token that a call consumes is a leaf below it: 1, plus, and 2.
+
+115
+00:11:43,268 --> 00:11:46,980
+A method that took epsilon has no tokens below it.
+
+116
+00:11:47,430 --> 00:12:02,705
+This tree has the same shape as the parse tree of 1 plus 2 in the grammar. A python check compared the two trees. So a recognizer builds the parse tree in its calls, even if it never stores it. A parser stores it.
+
+117
+00:12:03,155 --> 00:12:18,813
+Now the evaluator. Start from the recognizer and make two changes. Each method returns an int, and each method does the computation. Expr returns Term plus TermTail. Term returns Factor times FactorTail.
+
+118
+00:12:19,263 --> 00:12:24,319
+Factor returns the value inside the parentheses, or the Int it consumes.
+
+119
+00:12:24,769 --> 00:12:36,503
+TermTail returns the value of the Expr after the plus. For epsilon, it must return something that does not change the sum. That is 0, the identity for plus.
+
+120
+00:12:36,953 --> 00:12:41,454
+FactorTail returns 1 for epsilon, the identity for times.
+
+121
+00:12:41,904 --> 00:12:46,704
+The evaluator computes while it parses. It does not build an A S T.
+
+122
+00:12:47,154 --> 00:12:53,874
+Test the evaluator on 2 times 3 plus 4. The answer should be 10. Factor consumes 2.
+
+123
+00:12:54,324 --> 00:12:55,881
+Factor returns 2.
+
+124
+00:12:56,331 --> 00:12:58,187
+FactorTail sees a times.
+
+125
+00:12:58,637 --> 00:13:00,408
+It consumes the times.
+
+126
+00:13:00,858 --> 00:13:06,917
+Then FactorTail calls Expr, as the grammar says: FactorTail goes to times Expr.
+
+127
+00:13:07,367 --> 00:13:10,247
+Inside that Expr, Factor returns 3.
+
+128
+00:13:10,697 --> 00:13:17,523
+TermTail sees the plus. The finished Term call now shows as one row: its tokens and its value.
+
+129
+00:13:17,973 --> 00:13:19,531
+It consumes the plus.
+
+130
+00:13:19,981 --> 00:13:21,666
+It calls Expr again.
+
+131
+00:13:22,116 --> 00:13:23,759
+Factor returns 4.
+
+132
+00:13:24,209 --> 00:13:27,857
+FactorTail sees the end of input. It returns 1.
+
+133
+00:13:28,307 --> 00:13:31,912
+TermTail also sees the end. It returns 0.
+
+134
+00:13:32,362 --> 00:13:37,823
+Now the values come back up. The inner Expr returns 3 plus 4, which is 7.
+
+135
+00:13:38,273 --> 00:13:40,172
+FactorTail returns 7.
+
+136
+00:13:40,622 --> 00:13:44,206
+So Term returns 2 times 7, which is 14.
+
+137
+00:13:44,656 --> 00:13:47,728
+The evaluator returns 14, not 10.
+
+138
+00:13:48,178 --> 00:14:02,407
+The cause is in the grammar of the question. FactorTail goes to times Expr. So after a times, the whole rest of the input, 3 plus 4, becomes one Expr. The evaluator computes 2 times 7.
+
+139
+00:14:02,857 --> 00:14:23,807
+Our fix: FactorTail goes to times Term. Then the times takes only the next Term, 3. The value is 2 times 3, plus 4, which is 10. In the code, FactorTail returns Term instead of Expr. Question 1.2.1 has the same idea: Term goes to Factor times Term.
+
+140
+00:14:24,257 --> 00:14:42,561
+Both grammars accept the same strings. They are weakly equivalent, from video 16. So the recognizer is correct either way. Only the trees differ, and the evaluator follows the tree. A python check ran both versions on all strings up to 7 tokens.
+
+141
+00:14:43,011 --> 00:14:58,093
+The notes have a job interview question. Evaluate exponents, with integers and parentheses. Exponentiation is right associative: 2 to the 3 to the 2 is 2 to the 9, which is 512.
+
+142
+00:14:58,543 --> 00:15:04,922
+The grammar is right recursive and left factored. Tail goes to caret Number, or epsilon.
+
+143
+00:15:05,372 --> 00:15:12,177
+The code follows the same rules. Number calls Base, then Tail, and returns base to the power exp.
+
+144
+00:15:12,627 --> 00:15:19,667
+Tail consumes a caret and returns Number. For epsilon it returns 1, because x to the 1 is x.
+
+145
+00:15:20,117 --> 00:15:30,528
+Base returns the value in parentheses, or the integer. This code uses an array and a position instead of a lexer, but the technique is the same.
+
+146
+00:15:30,978 --> 00:15:37,549
+Run it on 2 caret 3 caret 2. The caret is the exponent sign. Base consumes 2.
+
+147
+00:15:37,999 --> 00:15:39,492
+Base returns 2.
+
+148
+00:15:39,942 --> 00:15:41,435
+Tail sees a caret.
+
+149
+00:15:41,885 --> 00:15:43,635
+It consumes the caret.
+
+150
+00:15:44,085 --> 00:15:45,514
+Tail calls Number.
+
+151
+00:15:45,964 --> 00:15:47,991
+The second Number gets base 3.
+
+152
+00:15:48,441 --> 00:15:51,406
+Its Tail sees another caret and consumes it.
+
+153
+00:15:51,856 --> 00:15:53,819
+The last Number gets base 2.
+
+154
+00:15:54,269 --> 00:15:57,618
+Its Tail sees the end of input and returns 1.
+
+155
+00:15:58,068 --> 00:16:01,204
+So that Number returns 2 to the 1, which is 2.
+
+156
+00:16:01,654 --> 00:16:05,110
+The middle Number returns 3 to the 2, which is 9.
+
+157
+00:16:05,560 --> 00:16:09,997
+The first Number returns 2 to the 9, which is 512.
+
+158
+00:16:10,447 --> 00:16:16,869
+S returns 512. The right recursion makes the operator right associative.
+
+159
+00:16:17,319 --> 00:16:24,167
+The notes list common mistakes for these questions. First: the grammar does not accept a single integer.
+
+160
+00:16:24,617 --> 00:16:31,550
+Second: the associativity is wrong, or the grammar has common prefixes, so it is not L L one.
+
+161
+00:16:32,000 --> 00:16:40,000
+Third: an evaluator builds an explicit A S T. That makes the code larger. Compute the value while you parse.
+
+162
+00:16:40,450 --> 00:16:45,677
+From the posted solutions in this video: check the end of input in the start method.
+
+163
+00:16:46,127 --> 00:16:49,455
+And spell every terminal exactly as in the grammar.
+
+164
+00:16:49,905 --> 00:16:56,433
+In an evaluator, an epsilon alternative returns the identity element of its operator.
+
+165
+00:16:56,883 --> 00:17:07,123
+To summarize. A nonterminal becomes a method. A terminal becomes consume. A repetition becomes a loop. An alternation becomes an if.
+
+166
+00:17:07,573 --> 00:17:17,663
+inspect looks at the next token without moving. consume takes it, or throws. An exception means reject, and normal completion means accept.
+
+167
+00:17:18,113 --> 00:17:25,281
+An epsilon alternative becomes an if with no else. The start method ends with consume E O F.
+
+168
+00:17:25,731 --> 00:17:31,086
+The calls follow the leftmost derivation, so the call tree is the parse tree.
+
+169
+00:17:31,536 --> 00:17:43,973
 For an evaluator, each method returns a value, and an epsilon alternative returns the identity element. Next video: ambiguity, precedence and associativity.

@@ -11,425 +11,573 @@ First, four versions of linear search. We draw an object diagram for each one at
 The slides list what we know about a program when we understand it.
 
 4
-00:00:25,158 --> 00:00:29,510
-We know its inputs and its outputs. Outputs include the errors.
+00:00:25,158 --> 00:00:27,569
+We know its inputs: what goes in.
 
 5
-00:00:29,960 --> 00:00:34,611
-We know its static structure: the data structures and the class diagram.
+00:00:28,019 --> 00:00:31,432
+We know its outputs. Outputs include the errors.
 
 6
-00:00:35,061 --> 00:00:43,210
-We know its dynamic execution: the call graph, pointers and aliasing, and object diagrams at points in time.
+00:00:31,882 --> 00:00:36,554
+We know its static structure: the data structures and the class diagram.
 
 7
-00:00:43,660 --> 00:00:48,567
-And we know its algorithms: runtime, space, and when the program ends.
+00:00:37,004 --> 00:00:45,153
+We know its dynamic execution: the call graph, pointers and aliasing, and object diagrams at points in time.
 
 8
-00:00:49,017 --> 00:00:59,086
-The four linear search programs have the same inputs, outputs and algorithm. They differ only in static structure and in dynamic execution.
+00:00:45,603 --> 00:00:50,510
+And we know its algorithms: runtime, space, and when the program ends.
 
 9
-00:00:59,536 --> 00:01:13,808
-Here are the four programs of questions-pre section 2.2. The input is a list of strings on the command line. The first string is the token to search for. The program searches for it in the rest of the list.
+00:00:50,960 --> 00:01:01,029
+The four linear search programs have the same inputs, outputs and algorithm. They differ only in static structure and in dynamic execution.
 
 10
-00:01:14,258 --> 00:01:20,978
-The output is found it, or didn't find it. If no list is given, the program fails with an error.
+00:01:01,479 --> 00:01:07,815
+Here are the four programs of questions-pre section 2.2. They solve the same problem.
 
 11
-00:01:21,428 --> 00:01:27,487
-The four programs use two data structures: an array, or a linked list of Node objects.
+00:01:08,265 --> 00:01:17,887
+The input is a list of strings on the command line. The first string is the token to search for. The program searches for it in the rest of the list.
 
 12
-00:01:27,937 --> 00:01:33,099
-And they use two control structures: a loop, or a method that calls itself.
+00:01:18,337 --> 00:01:25,057
+The output is found it, or didn't find it. If no list is given, the program fails with an error.
 
 13
-00:01:33,549 --> 00:01:46,477
-The algorithm is the same in all four: linear search. The runtime is order n, the space is order n, and the program ends when it finds the token or reaches the end of the list.
+00:01:25,507 --> 00:01:31,565
+The four programs use two data structures: an array, or a linked list of Node objects.
 
 14
-00:01:46,927 --> 00:01:53,925
-Each solution is an object diagram. This is the notation from the course notes, section 2.2.
+00:01:32,015 --> 00:01:39,461
+And they use two control structures: iteration, which is a loop, or recursion, a method that calls itself.
 
 15
-00:01:54,375 --> 00:01:59,516
-The PC tag gives the program counter: the line that is about to execute.
+00:01:39,911 --> 00:01:52,839
+The algorithm is the same in all four: linear search. The runtime is order n, the space is order n, and the program ends when it finds the token or reaches the end of the list.
 
 16
-00:01:59,966 --> 00:02:07,454
-A stack frame has one slot for each local variable, parameters included. A method call adds a frame.
+00:01:53,289 --> 00:02:00,286
+Each solution is an object diagram. This is the notation from the course notes, section 2.2.
 
 17
-00:02:07,904 --> 00:02:16,181
-An object in the heap is an ellipse. Its name is the class name plus a number that you choose. Only new makes an object.
+00:02:00,736 --> 00:02:05,877
+The PC tag gives the program counter: the line that is about to execute.
 
 18
-00:02:16,631 --> 00:02:25,762
-A solid arrow is a field of one object that refers to another object. The label is the field name or the array index.
+00:02:06,327 --> 00:02:13,815
+A stack frame has one slot for each local variable, parameters included. A method call adds a frame.
 
 19
-00:02:26,212 --> 00:02:38,564
-A dotted arrow is a variable on the stack that refers to an object. A null variable has no arrow. Arrows go from the stack or the heap into the heap, never from stack to stack.
+00:02:14,265 --> 00:02:22,543
+An object in the heap is an ellipse. Its name is the class name plus a number that you choose. Only new makes an object.
 
 20
-00:02:39,014 --> 00:02:53,179
-Question 2.2.1. This is the array and loop version. The input on the command line is Moe, Larry, Curly, Moe. Draw the object diagram at the moment the program finds the match.
+00:02:22,993 --> 00:02:32,123
+A solid arrow is a field of one object that refers to another object. The label is the field name or the array index.
 
 21
-00:02:53,629 --> 00:02:55,272
-Pause the video and try it.
+00:02:32,573 --> 00:02:44,925
+A dotted arrow is a variable on the stack that refers to an object. A null variable has no arrow. Arrows go from the stack or the heap into the heap, never from stack to stack.
 
 22
-00:02:55,722 --> 00:03:07,242
-Before line 3 runs, the runtime made the args array. It has four slots. Slot 0 and slot 3 refer to Moe. Slot 1 is Larry, slot 2 is Curly.
+00:02:45,375 --> 00:02:59,541
+Question 2.2.1. This is the array and loop version. The input on the command line is Moe, Larry, Curly, Moe. Draw the object diagram at the moment the program finds the match.
 
 23
-00:03:07,692 --> 00:03:15,969
-Line 3. toFind gets the object at index 0, so toFind refers to Moe. No new object is made.
+00:02:59,991 --> 00:03:01,633
+Pause the video and try it.
 
 24
-00:03:16,419 --> 00:03:23,822
-Line 4. The loop starts with i equal to 1. Line 5 compares Moe with Larry. They are not equal.
+00:03:02,083 --> 00:03:08,867
+Before line 3 runs, the runtime made the args array from the command line. args refers to it.
 
 25
-00:03:24,272 --> 00:03:27,664
-i becomes 2. Moe is not equal to Curly.
+00:03:09,317 --> 00:03:14,117
+The array has four slots. Slot 0 and slot 3 refer to Moe.
 
 26
-00:03:28,114 --> 00:03:39,335
-i becomes 3. Moe equals Moe. The program is about to run line 6 and print found it. So the PC is 6. This is the diagram for the solution.
+00:03:14,567 --> 00:03:18,621
+Slot 1 refers to Larry, and slot 2 refers to Curly.
 
 27
-00:03:39,785 --> 00:03:53,759
-There is one frame, main. The slot i changes in place. The posted solution draws one Moe object for index 0 and index 3. equals compares the letters, so the result is the same.
+00:03:19,071 --> 00:03:27,348
+Line 3. toFind gets the object at index 0, so toFind refers to Moe. No new object is made.
 
 28
-00:03:54,209 --> 00:04:04,619
-Question 2.2.2. The same array, but search calls itself. Same input. Draw the object diagram when the program finds the match.
+00:03:27,798 --> 00:03:35,201
+Line 4. The loop starts with i equal to 1. Line 5 compares Moe with Larry. They are not equal.
 
 29
-00:04:05,069 --> 00:04:06,712
-Pause the video and try it.
+00:03:35,651 --> 00:03:39,043
+i becomes 2. Moe is not equal to Curly.
 
 30
-00:04:07,162 --> 00:04:15,055
-Line 3 runs as before. main has two slots: args refers to the array, and toFind refers to Moe.
+00:03:39,493 --> 00:03:42,181
+i becomes 3. Moe equals Moe.
 
 31
-00:04:15,505 --> 00:04:33,319
-Line 4 calls search with i equal to 1. A call makes a new frame with one slot per parameter: toFind, a, and i. toFind and a are copies of references, so they refer to the same objects. Line 9 compares Moe with Larry. No.
+00:03:42,631 --> 00:03:50,823
+The program is about to run line 6 and print found it. So the PC is 6. This is the diagram for the solution.
 
 32
-00:04:33,769 --> 00:04:43,539
-Line 13. i is less than 3, so search calls itself with i equal to 2. A second search frame appears. Moe is not Curly.
+00:03:51,273 --> 00:03:55,390
+There is one frame, main. The slot i changes in place.
 
 33
-00:04:43,989 --> 00:04:51,136
-The third call has i equal to 3. Moe equals Moe. The next line is 10, so the PC is 10.
+00:03:55,840 --> 00:04:05,099
+The posted solution draws one Moe object for index 0 and index 3. equals compares the letters, so the result is the same.
 
 34
-00:04:51,586 --> 00:05:03,191
-The solution has four frames: main and three search frames. Each search frame has its own i. The old frames stay on the stack, because no call has returned yet.
+00:04:05,549 --> 00:04:15,959
+Question 2.2.2. The same array, but search calls itself. Same input. Draw the object diagram when the program finds the match.
 
 35
-00:05:03,641 --> 00:05:13,071
-Compare the two array programs. In the loop version, the call graph is only main. One frame holds i, and i changes in place.
+00:04:16,409 --> 00:04:18,052
+Pause the video and try it.
 
 36
-00:05:13,521 --> 00:05:20,539
-In the recursive version, main calls search, and search calls itself. The call graph has a loop on search.
+00:04:18,502 --> 00:04:26,395
+Line 3 runs as before. main has two slots: args refers to the array, and toFind refers to Moe.
 
 37
-00:05:20,989 --> 00:05:30,099
-At the match, the loop version has one frame. The recursive version has main plus one search frame per element it visited, here three.
+00:04:26,845 --> 00:04:36,040
+Line 4 calls search with i equal to 1. A call makes a new frame with one slot per parameter: toFind, a, and i.
 
 38
-00:05:30,549 --> 00:05:38,527
-In the worst case the token is not there, and the recursion makes one frame per element. That is order n stack space.
+00:04:36,490 --> 00:04:42,357
+toFind and a are copies of references, so they refer to the same objects as in main.
 
 39
-00:05:38,977 --> 00:05:53,015
-Question 2.2.3. Now the program first copies the array into a linked list of Node objects. Then it searches the list with a loop. Same input. Draw the object diagram at the match.
+00:04:42,807 --> 00:04:47,329
+Line 9 compares Moe with a of 1, which is Larry. Not equal.
 
 40
-00:05:53,465 --> 00:05:55,107
-Pause the video and try it.
+00:04:47,779 --> 00:04:59,491
+Line 13. i is 1, which is less than a dot length minus 1, which is 3. So search calls itself with i equal to 2. A second search frame appears.
 
 41
-00:05:55,557 --> 00:06:06,885
-First, the Node class. Both fields are final, so the constructor sets them once and they never change. Line 5 sets head to null. A null variable has no arrow.
+00:04:59,941 --> 00:05:02,331
+Line 9: Moe is not Curly.
 
 42
-00:06:07,335 --> 00:06:19,879
-The loop starts at the end of the array, with i equal to 3. new makes Node 1. Its next is the old head, null, and its data refers to Moe. Then head refers to Node 1.
+00:05:02,781 --> 00:05:10,290
+Line 13: 2 is less than 3, so search calls itself with i equal to 3. A third frame appears.
 
 43
-00:06:20,329 --> 00:06:31,359
-i equal to 2. new makes Node 2. Its next is Node 1, and its data is Curly. The old head arrow is erased. head now refers to Node 2.
+00:05:10,740 --> 00:05:15,796
+Line 9: Moe equals Moe. The next line is 10, so the PC is 10.
 
 44
-00:06:31,809 --> 00:06:40,107
-i equal to 1. Node 3 gets next equal to Node 2, and data equal to Larry. head refers to Node 3.
+00:05:16,246 --> 00:05:23,094
+The solution has four frames: main and three search frames. Each search frame has its own i.
 
 45
-00:06:40,557 --> 00:06:56,109
-i equal to 0. The loop ends. The list reads Larry, Curly, Moe, in the same order as the array. The program builds from the back because the next field is final. A node needs its next node to exist first.
+00:05:23,544 --> 00:05:27,981
+The old frames stay on the stack, because no call has returned yet.
 
 46
-00:06:56,559 --> 00:07:04,218
-Now the search. Line 10 sets n to head, so n refers to Node 3. Its data is Larry. Not equal.
+00:05:28,431 --> 00:05:37,861
+Compare the two array programs. In the loop version, the call graph is only main. One frame holds i, and i changes in place.
 
 47
-00:07:04,668 --> 00:07:13,841
-Line 16 sets n to n dot next. The arrow from n is erased and drawn again, to Node 2. Curly. Not equal.
+00:05:38,311 --> 00:05:45,329
+In the recursive version, main calls search, and search calls itself. The call graph has a loop on search.
 
 48
-00:07:14,291 --> 00:07:18,217
-n moves again, to Node 1. Its data is Moe. Equal.
+00:05:45,779 --> 00:05:54,889
+At the match, the loop version has one frame. The recursive version has main plus one search frame per element it visited, here three.
 
 49
-00:07:18,667 --> 00:07:25,813
-The next line is 13, so the PC is 13. There is one frame. Only the arrow from n moved.
+00:05:55,339 --> 00:06:03,296
+In the worst case the token is not there, and the recursion makes one frame per element. That is order n stack space.
 
 50
-00:07:26,263 --> 00:07:35,074
-The slot i belongs to the first loop, which is over. The posted solution keeps an empty i slot. You can also leave it out.
+00:06:03,746 --> 00:06:17,783
+Question 2.2.3. Now the program first copies the array into a linked list of Node objects. Then it searches the list with a loop. Same input. Draw the object diagram at the match.
 
 51
-00:07:35,524 --> 00:07:47,385
-Question 2.2.4. The last variant. It builds the same linked list, then search calls itself on n dot next. Draw the object diagram at the match.
-
-52
-00:07:47,835 --> 00:07:49,478
+00:06:18,233 --> 00:06:19,876
 Pause the video and try it.
 
+52
+00:06:20,326 --> 00:06:27,174
+First, the Node class. Both fields are final, so the constructor sets them once, and they never change.
+
 53
-00:07:49,928 --> 00:08:05,971
-The list is the same as before. The posted solution shows i equal to 0, the last value of the loop. Line 10 calls search with head. The new frame has toFind and n. n refers to Node 3. Larry is not Moe.
+00:06:27,624 --> 00:06:34,387
+In main, line 3 runs as before: args refers to the array, and toFind refers to Moe.
 
 54
-00:08:06,421 --> 00:08:14,741
-Line 22 calls search with n dot next. A second frame. Its n refers to Node 2. Curly is not Moe.
+00:06:34,837 --> 00:06:39,146
+Line 5 sets head to null. A null variable has no arrow.
 
 55
-00:08:15,191 --> 00:08:23,660
-A third frame. Its n refers to Node 1. Moe equals Moe. The next line is 19, so the PC is 19.
+00:06:39,596 --> 00:06:49,516
+The loop starts at the end of the array, with i equal to 3. new makes Node 1. Its next is the old head, null. Its data refers to Moe.
 
 56
-00:08:24,110 --> 00:08:34,073
-The stack has main and three search frames. Each frame has its own n. Line 16, the return when n is null, does not run for this input.
+00:06:49,966 --> 00:06:51,950
+Then head refers to Node 1.
 
 57
-00:08:34,523 --> 00:08:41,691
-Here are the four solutions side by side. The PC at the match is 6, 10, 13 and 19.
+00:06:52,400 --> 00:06:58,651
+i equal to 2. new makes Node 2. Its next is Node 1, and its data is Curly.
 
 58
-00:08:42,141 --> 00:08:48,306
-The recursive versions have main plus three search frames. The iterative versions have only main.
+00:06:59,101 --> 00:07:03,303
+The old head arrow is erased. head now refers to Node 2.
 
 59
-00:08:48,756 --> 00:08:55,391
-The linked list versions add three Node objects to the heap. new runs three times, once per node.
+00:07:03,753 --> 00:07:12,436
+i equal to 1. Node 3 gets next equal to Node 2, and data equal to Larry. head now refers to Node 3.
 
 60
-00:08:55,841 --> 00:09:03,627
-In each program, something different moves: the value of i, a new frame, the arrow from n, or a new frame per node.
+00:07:12,886 --> 00:07:18,326
+i equal to 0. The test i greater than 0 is false, so the loop ends.
 
 61
-00:09:04,077 --> 00:09:15,789
-All four use order n space. The constant factors differ: nodes and frames add more memory. This is why the slides list both big O and constant factors.
+00:07:18,776 --> 00:07:23,149
+The list reads Larry, Curly, Moe, in the same order as the array.
 
 62
-00:09:16,239 --> 00:09:30,319
-Program understanding includes the errors. We ran the four programs on short inputs. This check is ours, not from the posted solution. With Moe, Larry, Curly, Moe, all four print found it.
+00:07:23,599 --> 00:07:30,895
+The program builds from the back because the next field is final. A node needs its next node to exist first.
 
 63
-00:09:30,769 --> 00:09:38,428
-With Moe, Larry, Curly, the token is not in the rest of the list. All four print didn't find it and exit with 1.
+00:07:31,345 --> 00:07:36,487
+Now the search. Line 10 sets n to head, so n refers to Node 3.
 
 64
-00:09:38,878 --> 00:09:57,225
-With only Moe, three programs print didn't find it. Array Recursive fails. Line 4 calls search with i equal to 1 without a test. Line 9 reads a of 1, but the array has only one slot. Java throws an array index out of bounds exception.
+00:07:36,937 --> 00:07:41,950
+Line 12 compares Moe with n dot data, which is Larry. Not equal.
 
 65
-00:09:57,675 --> 00:10:07,125
-With no input, all four fail at line 3, because args of 0 does not exist. This is the error that the question bank lists.
+00:07:42,400 --> 00:07:49,653
+Line 16 sets n to n dot next. The arrow from n is erased and drawn again, to Node 2.
 
 66
-00:10:07,575 --> 00:10:18,861
-Now the second topic. Course notes section 2.1 gives the terms. B is the base class, or super class. It has a field x and a method foo.
+00:07:50,103 --> 00:07:54,327
+Line 12: the data of Node 2 is Curly. Not equal.
 
 67
-00:10:19,311 --> 00:10:33,028
-D extends B. D is the derived class, or sub class. D defines foo again. The definition in D overrides the one in B. In C plus plus terms, foo is a virtual method.
+00:07:54,777 --> 00:07:57,785
+Line 16 moves n again, to Node 1.
 
 68
-00:10:33,478 --> 00:10:37,019
-Here is a call site, r dot foo. Which foo runs?
+00:07:58,235 --> 00:08:01,969
+Line 12: the data of Node 1 is Moe. Equal.
 
 69
-00:10:37,469 --> 00:10:42,461
-If r refers to an object of class B, the call runs B dot foo.
+00:08:02,419 --> 00:08:05,939
+The next line is 13, so the PC is 13.
 
 70
-00:10:42,911 --> 00:10:48,373
-If r refers to an object of class D, the same call runs D dot foo.
+00:08:06,389 --> 00:08:09,759
+There is one frame. Only the arrow from n moved.
 
 71
-00:10:48,823 --> 00:11:01,943
-The class of the object decides the target, when the program runs. A call site with more than one possible target is polymorphic. A call site with only one target is monomorphic.
+00:08:10,209 --> 00:08:19,020
+The slot i belongs to the first loop, which is over. The posted solution keeps an empty i slot. You can also leave it out.
 
 72
-00:11:02,393 --> 00:11:22,595
-Question 2.3.1. This is a simple version of the A S T code for the language F. Draw the class diagram, and the object diagram when the PC is 29 and i is 2. Give the input, the output, and the targets of the polymorphic call on line 28.
+00:08:19,470 --> 00:08:31,331
+Question 2.2.4. The last variant. It builds the same linked list, then search calls itself on n dot next. Draw the object diagram at the match.
 
 73
-00:11:23,045 --> 00:11:24,688
+00:08:31,781 --> 00:08:33,424
 Pause the video and try it.
 
 74
-00:11:25,138 --> 00:11:38,087
-Start the class diagram at the top. Expr is abstract. It declares one abstract method, operator. An italic name means abstract: no object of class Expr can exist.
+00:08:33,874 --> 00:08:42,002
+The list is built in the same way as before. The posted solution shows i equal to 0, the last value of the loop.
 
 75
-00:11:38,537 --> 00:11:53,385
-BinaryExpr extends Expr. The hollow triangle means extends. It has two final fields, left and right, of type Expr. It declares the abstract method newBinaryExpr, and it defines toString.
+00:08:42,452 --> 00:08:49,855
+Line 10 calls search with head. The new frame has two slots, toFind and n. n refers to Node 3.
 
 76
-00:11:53,835 --> 00:12:09,494
-AndExpr and OrExpr extend BinaryExpr. Each one defines operator and newBinaryExpr. They are the only concrete classes, so every object in this program is an AndExpr or an OrExpr.
+00:08:50,305 --> 00:08:55,339
+Line 18 compares Moe with the data of Node 3, Larry. Not equal.
 
 77
-00:12:09,944 --> 00:12:18,029
-Note one detail for later. toString is defined only in BinaryExpr. AndExpr and OrExpr inherit it.
+00:08:55,789 --> 00:09:02,488
+Line 22 calls search with n dot next. A second frame. Its n refers to Node 2.
 
 78
-00:12:18,479 --> 00:12:37,786
-Now run main. Line 20. new makes AndExpr 1, and b refers to it. The declared type of b is BinaryExpr, but the object's class is AndExpr. The variable can refer to any BinaryExpr subclass object. This answers the comment on line 20.
+00:09:02,938 --> 00:09:05,498
+Line 18: Curly is not Moe.
 
 79
-00:12:38,236 --> 00:12:45,319
-Line 21 makes an array with three slots. They are all null, so array 1 has no arrows yet.
+00:09:05,948 --> 00:09:11,729
+Line 22 calls search again. A third frame. Its n refers to Node 1.
 
 80
-00:12:45,769 --> 00:12:56,435
-Line 23. a of 0 gets b. There is no new, so no new object. Slot 0 and b refer to the same object. They are aliases.
+00:09:12,179 --> 00:09:18,174
+Line 18: Moe equals Moe. The next line is 19, so the PC is 19.
 
 81
-00:12:56,885 --> 00:13:01,131
-Line 24. new makes OrExpr 1, in slot 1.
+00:09:18,624 --> 00:09:23,189
+The stack has main and three search frames. Each frame has its own n.
 
 82
-00:13:01,581 --> 00:13:20,205
-Line 25 calls newBinaryExpr on b. b refers to an AndExpr, so line 12 runs, and new makes AndExpr 2 in slot 2. So the objects in the array are AndExpr, OrExpr, AndExpr. That answers the comment on line 22.
+00:09:23,639 --> 00:09:28,461
+Line 16, the return when n is null, does not run for this input.
 
 83
-00:13:20,655 --> 00:13:24,964
-The loop. With i equal to 0, e refers to AndExpr 1.
+00:09:28,911 --> 00:09:36,079
+Here are the four solutions side by side. The PC at the match is 6, 10, 13 and 19.
 
 84
-00:13:25,414 --> 00:13:31,046
-With i equal to 1, the arrow from e is erased and drawn to OrExpr 1.
+00:09:36,529 --> 00:09:42,694
+The recursive versions have main plus three search frames. The iterative versions have only main.
 
 85
-00:13:31,496 --> 00:13:45,043
-With i equal to 2, e refers to AndExpr 2. The next line is 29. This is the requested diagram. The frame of main has args, b, a, i equal to 2, and e.
+00:09:43,144 --> 00:09:49,779
+The linked list versions add three Node objects to the heap. new runs three times, once per node.
 
 86
-00:13:45,493 --> 00:13:58,613
-First line 25, which the code calls monomorphic. b is assigned once, to AndExpr 1. So the call always runs AndExpr dot newBinaryExpr. One target.
+00:09:50,229 --> 00:09:57,994
+In each program, something different moves: the value of i, a new frame, the arrow from n, or a new frame per node.
 
 87
-00:13:59,063 --> 00:14:09,644
-Line 28 calls operator on e. With i equal to 0, e refers to AndExpr 1. The target is AndExpr dot operator.
+00:09:58,444 --> 00:10:10,156
+All four use order n space. The constant factors differ: nodes and frames add more memory. This is why the slides list both big O and constant factors.
 
 88
-00:14:10,094 --> 00:14:18,051
-With i equal to 1, e refers to OrExpr 1. The same line now runs OrExpr dot operator.
+00:10:10,606 --> 00:10:24,686
+Program understanding includes the errors. We ran the four programs on short inputs. This check is ours, not from the posted solution. With Moe, Larry, Curly, Moe, all four print found it.
 
 89
-00:14:18,501 --> 00:14:29,104
-With i equal to 2, e refers to AndExpr 2. The target is AndExpr dot operator again. This is the table in the posted solution.
+00:10:25,136 --> 00:10:32,795
+With Moe, Larry, Curly, the token is not in the rest of the list. All four print didn't find it and exit with 1.
 
 90
-00:14:29,554 --> 00:14:37,767
-One call site, two targets, chosen by the class of the object. So line 28 is a polymorphic call site.
+00:10:33,245 --> 00:10:51,613
+With only Moe, three programs print didn't find it. Array Recursive fails. Line 4 calls search with i equal to 1 without a test. Line 9 reads a of 1, but the array has only one slot. Java throws an array index out of bounds exception.
 
 91
-00:14:38,217 --> 00:14:46,729
-The code asks if line 29 is mono or polymorphic. The posted solution does not answer. Here is our solution.
+00:10:52,063 --> 00:11:01,513
+With no input, all four fail at line 3, because args of 0 does not exist. This is the error that the question bank lists.
 
 92
-00:14:47,179 --> 00:15:00,342
-toString is defined only in BinaryExpr. AndExpr and OrExpr do not override it. So for all three objects, the call runs BinaryExpr dot toString. One target.
+00:11:01,963 --> 00:11:13,249
+Now the second topic. Course notes section 2.1 gives the terms. B is the base class, or super class. It has a field x and a method foo.
 
 93
-00:15:00,792 --> 00:15:09,091
-But inside toString, the call to operator is polymorphic. That call picks and or or, by the class of the object.
+00:11:13,699 --> 00:11:27,416
+D extends B. D is the derived class, or sub class. D defines foo again. The definition in D overrides the one in B. In C plus plus terms, foo is a virtual method.
 
 94
-00:15:09,541 --> 00:15:25,263
-So line 29 is monomorphic in this program. Java still compiles it as a virtual call. If a new subclass overrides toString, line 29 becomes polymorphic. We checked the targets by running the code.
+00:11:27,866 --> 00:11:32,325
+Here is a call site, r dot foo. Two methods named foo exist.
 
 95
-00:15:25,713 --> 00:15:28,871
-The input is none. main never reads args.
+00:11:32,775 --> 00:11:37,767
+If r refers to an object of class B, the call runs B dot foo.
 
 96
-00:15:29,321 --> 00:15:42,334
-With i equal to 0, line 28 prints and. Line 29 prints null and null. Both fields of AndExpr 1 are null, and joining null with a string gives the word null.
+00:11:38,217 --> 00:11:43,678
+If r refers to an object of class D, the same call runs D dot foo.
 
 97
-00:15:42,784 --> 00:15:46,667
-With i equal to 1, the lines are or, then null or null.
+00:11:44,128 --> 00:11:48,565
+The class of the object decides the target, when the program runs.
 
 98
-00:15:47,117 --> 00:15:52,493
-With i equal to 2, and, then null and null again. Six lines in total.
+00:11:49,015 --> 00:11:57,463
+A call site with more than one possible target is polymorphic. A call site with only one target is monomorphic.
 
 99
-00:15:52,943 --> 00:15:59,961
-The posted solution writes and without spaces. The method returns and with one space on each side.
+00:11:57,913 --> 00:12:18,116
+Question 2.3.1. This is a simple version of the A S T code for the language F. Draw the class diagram, and the object diagram when the PC is 29 and i is 2. Give the input, the output, and the targets of the polymorphic call on line 28.
 
 100
-00:16:00,411 --> 00:16:12,806
-This slide is optional. It is from course notes section 5.4, later in the course. How does compiled code find the target? Each object has a header that names its class.
+00:12:18,566 --> 00:12:20,209
+Pause the video and try it.
 
 101
-00:16:13,256 --> 00:16:23,944
-In one translation, the header points to a type information block with a vtable. A vtable is an array of function pointers, one slot per method.
+00:12:20,659 --> 00:12:34,931
+Start the class diagram at the top, with lines 1 and 2. Expr is abstract. It declares one abstract method, operator. An italic name means abstract: no object of class Expr can exist.
 
 102
-00:16:24,394 --> 00:16:38,154
-A polymorphic call loads the slot for operator from the vtable of the object's class, then jumps there. OrExpr has its own vtable, with OrExpr dot operator in slot 0.
+00:12:35,381 --> 00:12:51,807
+Lines 4 to 8. BinaryExpr extends Expr. The hollow triangle means extends. It has two final fields, left and right, of type Expr. It declares the abstract method newBinaryExpr, and it defines toString.
 
 103
-00:16:38,604 --> 00:16:47,031
-The notes also show a second translation, a switch on a type number. You do not need this for question 2.3.1.
+00:12:52,257 --> 00:13:09,409
+Lines 10 to 16. AndExpr and OrExpr extend BinaryExpr. Each one defines operator and newBinaryExpr. They are the only concrete classes, so every object in this program is an AndExpr or an OrExpr.
 
 104
-00:16:47,481 --> 00:16:58,169
-To summarize. An object diagram shows the PC, the frames with one slot per variable, the objects, and the arrows. Only new makes an object.
+00:13:09,859 --> 00:13:18,606
+One detail for later. toString is defined only in BinaryExpr, on line 8. AndExpr and OrExpr inherit it.
 
 105
-00:16:58,619 --> 00:17:07,045
-A loop keeps one frame and changes values in place. Recursion adds one frame per call, each with its own parameters.
+00:13:19,056 --> 00:13:24,773
+Now run main. Line 20. new makes AndExpr 1, and b refers to it.
 
 106
-00:17:07,495 --> 00:17:12,637
-An immutable linked list is built from the back, because the next field is final.
+00:13:25,223 --> 00:13:38,983
+The declared type of b is BinaryExpr, but the class of the object is AndExpr. b can refer to an object of any subclass of BinaryExpr. This answers the comment on line 20.
 
 107
-00:17:13,087 --> 00:17:19,145
-Outputs include errors. Test the short inputs: no arguments, and one argument.
+00:13:39,433 --> 00:13:46,580
+Line 21 makes an array with three slots. They are all null, so array 1 has no arrows yet.
 
 108
-00:17:19,595 --> 00:17:27,894
-The declared type of a variable is not the class of the object. At a virtual call, the class of the object picks the target.
+00:13:47,030 --> 00:13:57,697
+Line 23. a of 0 gets b. There is no new, so no new object. Slot 0 and b refer to the same object. They are aliases.
 
 109
-00:17:28,344 --> 00:17:41,592
+00:13:58,147 --> 00:14:02,392
+Line 24. new makes OrExpr 1, in slot 1.
+
+110
+00:14:02,842 --> 00:14:13,658
+Line 25 calls newBinaryExpr on b. b refers to an AndExpr, so line 12 runs, and new makes AndExpr 2 in slot 2.
+
+111
+00:14:14,108 --> 00:14:21,852
+So the objects in the array are AndExpr, OrExpr, AndExpr. That answers the comment on line 22.
+
+112
+00:14:22,302 --> 00:14:28,531
+The loop. With i equal to 0, line 27 makes e refer to AndExpr 1.
+
+113
+00:14:28,981 --> 00:14:34,613
+With i equal to 1, the arrow from e is erased and drawn to OrExpr 1.
+
+114
+00:14:35,063 --> 00:14:38,839
+With i equal to 2, e refers to AndExpr 2.
+
+115
+00:14:39,289 --> 00:14:43,641
+The next line is 29. This is the requested diagram.
+
+116
+00:14:44,091 --> 00:14:48,358
+The frame of main has args, b, a, i equal to 2, and e.
+
+117
+00:14:48,808 --> 00:14:57,235
+First line 25, which the code calls monomorphic. b is assigned once, on line 20, to AndExpr 1.
+
+118
+00:14:57,685 --> 00:15:02,719
+So the call always runs AndExpr dot newBinaryExpr. One target.
+
+119
+00:15:03,169 --> 00:15:13,751
+Line 28 calls operator on e. With i equal to 0, e refers to AndExpr 1. The target is AndExpr dot operator.
+
+120
+00:15:14,201 --> 00:15:22,137
+With i equal to 1, e refers to OrExpr 1. The same line now runs OrExpr dot operator.
+
+121
+00:15:22,587 --> 00:15:33,189
+With i equal to 2, e refers to AndExpr 2. The target is AndExpr dot operator again. This is the table in the posted solution.
+
+122
+00:15:33,639 --> 00:15:41,853
+One call site, two targets, chosen by the class of the object. So line 28 is a polymorphic call site.
+
+123
+00:15:42,303 --> 00:15:50,815
+The code asks if line 29 is mono or polymorphic. The posted solution does not answer. Here is our solution.
+
+124
+00:15:51,265 --> 00:15:57,985
+toString is defined only in BinaryExpr. AndExpr and OrExpr do not override it.
+
+125
+00:15:58,435 --> 00:16:04,451
+So for all three objects, the call runs BinaryExpr dot toString. One target.
+
+126
+00:16:04,901 --> 00:16:13,199
+But inside toString, the call to operator is polymorphic. That call picks and or or, by the class of the object.
+
+127
+00:16:13,649 --> 00:16:17,361
+So line 29 is monomorphic in this program.
+
+128
+00:16:17,811 --> 00:16:29,566
+Java still compiles it as a virtual call. If a new subclass overrides toString, line 29 becomes polymorphic. We checked the targets by running the code.
+
+129
+00:16:30,016 --> 00:16:33,173
+The input is none. main never reads args.
+
+130
+00:16:33,623 --> 00:16:39,021
+With i equal to 0, line 28 prints and, with a space on each side.
+
+131
+00:16:39,471 --> 00:16:52,036
+Line 29 prints null and null. toString joins left, operator, and right. Both fields of AndExpr 1 are null, and joining null with a string gives the word null.
+
+132
+00:16:52,486 --> 00:16:56,411
+With i equal to 1, the lines are or, then null or null.
+
+133
+00:16:56,861 --> 00:17:02,237
+With i equal to 2, and, then null and null again. Six lines in total.
+
+134
+00:17:02,687 --> 00:17:09,706
+The posted solution writes and without spaces. The method returns and with one space on each side.
+
+135
+00:17:10,156 --> 00:17:16,108
+This slide is optional. It is from course notes section 5.4, later in the course.
+
+136
+00:17:16,558 --> 00:17:22,873
+Compiled code must find the target of a call. Each object has a header that names its class.
+
+137
+00:17:23,323 --> 00:17:34,565
+In one translation, the header points to a type information block, tib, with a vtable. A vtable is an array of function pointers, one slot per method.
+
+138
+00:17:35,015 --> 00:17:42,162
+A polymorphic call loads the slot for operator from the vtable of the object's class, then jumps there.
+
+139
+00:17:42,612 --> 00:17:48,351
+OrExpr has its own vtable, with OrExpr dot operator in slot 0.
+
+140
+00:17:48,801 --> 00:17:57,227
+The notes also show a second translation, a switch on a type number. You do not need this for question 2.3.1.
+
+141
+00:17:57,677 --> 00:18:08,365
+To summarize. An object diagram shows the PC, the frames with one slot per variable, the objects, and the arrows. Only new makes an object.
+
+142
+00:18:08,815 --> 00:18:17,242
+A loop keeps one frame and changes values in place. Recursion adds one frame per call, each with its own parameters.
+
+143
+00:18:17,692 --> 00:18:22,833
+An immutable linked list is built from the back, because the next field is final.
+
+144
+00:18:23,283 --> 00:18:29,342
+Outputs include errors. Test the short inputs: no arguments, and one argument.
+
+145
+00:18:29,792 --> 00:18:38,091
+The declared type of a variable is not the class of the object. At a virtual call, the class of the object picks the target.
+
+146
+00:18:38,541 --> 00:18:51,789
 A call site with more than one target is polymorphic. A call site with exactly one target is monomorphic. Next video: complexity, undecidability and programming paradigms.

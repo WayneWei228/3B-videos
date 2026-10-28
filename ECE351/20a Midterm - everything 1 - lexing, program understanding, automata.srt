@@ -1,0 +1,1087 @@
+1
+00:00:00,000 --> 00:00:14,720
+Videos 20 a and 20 b have everything for the E C E 351 midterm: the lecture slides, the course notes, and the pre midterm question bank, called questions pre. This is part 1.
+
+2
+00:00:15,170 --> 00:00:29,314
+Each slide has a picture, the rule, one small example, and the common mistake. The slides follow the lecture order. Part 2 ends with the exam questions, a rule sheet, and the mistakes to avoid.
+
+3
+00:00:29,764 --> 00:00:46,255
+The E C E 351 midterm is on Thursday, October 29, from 3 to 4 15 pm. That is 75 minutes. It is worth 10 percent of the course mark, and it covers the labs up to Lab 4.
+
+4
+00:00:46,705 --> 00:00:57,521
+Block 1: compilers and lexical analysis. The five phases, tokens and lexemes, maximal munch, and regular expressions. Videos 1 to 3.
+
+5
+00:00:57,971 --> 00:01:10,429
+Block 2: program understanding. Object diagrams, aliasing and mutation, final, linear search, and polymorphism. Videos 4 to 6, and questions pre chapter 2.
+
+6
+00:01:10,879 --> 00:01:23,509
+Block 3: from a regular expression to a D F A. D F As, N F As, the four templates, the subset construction, minimization, and equivalence. Videos 8 to 15.
+
+7
+00:01:23,959 --> 00:01:33,431
+Block 4: grammars and parsing. Derivations, ambiguity, recursive descent, and L L 1. Videos 16 to 19 d.
+
+8
+00:01:33,881 --> 00:01:44,355
+The slides of the L L 1 proof lecture say that this material is on the final, not on this midterm. Video 20 b still gives a short summary.
+
+9
+00:01:44,805 --> 00:01:59,099
+Block 5: the lab concepts from the lab lectures of weeks 1 to 4. Regular expressions and recursive descent, program transformations, object orientation and equality, and term rewriting.
+
+10
+00:01:59,549 --> 00:02:09,341
+After the five blocks come the exam questions, one rule sheet for each block, the common mistakes, and a recap. We start with block 1.
+
+11
+00:02:09,791 --> 00:02:19,156
+Block 1. A compiler has five phases. Phase 1, lexical analysis, reads the input program and makes a stream of tokens.
+
+12
+00:02:19,606 --> 00:02:25,942
+Phase 2, the parser, reads the tokens and builds the abstract syntax tree, the A S T.
+
+13
+00:02:26,392 --> 00:02:35,416
+Phase 3, semantic analysis, checks the meaning, for example the types. It makes the intermediate representation, the I R.
+
+14
+00:02:35,866 --> 00:02:41,050
+Phase 4 optimizes the code. Here the code is in three-address format.
+
+15
+00:02:41,500 --> 00:02:45,468
+Phase 5, code generation, writes the output program.
+
+16
+00:02:45,918 --> 00:02:58,569
+The rule: a compiler is a linear pipeline. Each phase makes the input of the next. The first three phases work like reading English: first the words, then the sentences, then the meaning.
+
+17
+00:02:59,019 --> 00:03:10,389
+A common mistake is to give the lexer too much work. The lexer only cuts the text into tokens. The parser checks the structure, and semantic analysis checks the types.
+
+18
+00:03:10,839 --> 00:03:25,367
+The lexer, phase 1, gets the program as a string of characters. Here is the start of the slide example: if, open parenthesis, i equals equals j, close parenthesis, z equals 0, semicolon.
+
+19
+00:03:25,817 --> 00:03:35,951
+The lexer cuts the string into lexemes. A lexeme is a substring of the input. This line has 16 lexemes. A space is a lexeme too.
+
+20
+00:03:36,401 --> 00:03:48,326
+Each lexeme belongs to a token. The colour shows the token: 1 keyword, 6 whitespace, 4 punctuation, 3 identifiers, 1 relation, and 1 integer.
+
+21
+00:03:48,776 --> 00:04:02,067
+The rule: a token is a syntactic category, a set of strings. For example, an identifier is letters or digits that start with a letter. An integer is a non-empty string of digits.
+
+22
+00:04:02,517 --> 00:04:10,218
+The lexer usually drops the whitespace. 16 lexemes minus 6 whitespace gives 10 tokens for the parser.
+
+23
+00:04:10,668 --> 00:04:17,601
+A common mistake: the string if fits the identifier rule too. But if is a keyword. The keyword wins.
+
+24
+00:04:18,051 --> 00:04:28,185
+Our exercise: cut i f 1, less than or equal, 2 0, semicolon into tokens with maximal munch. Pause the video and try it.
+
+25
+00:04:28,635 --> 00:04:41,477
+Start at byte 0. i is an identifier, i f is a keyword, and i f 1 is an identifier. i f 1 less than is no token. So emit i f 1, one identifier.
+
+26
+00:04:41,927 --> 00:04:52,018
+At byte 3: less than, then less than or equal, are relations. Add the 2, and it is no token. So emit the relation less than or equal.
+
+27
+00:04:52,468 --> 00:05:01,343
+At byte 5: 2 and 2 0 are integers. 2 0 semicolon is no token. So emit the integer 2 0.
+
+28
+00:05:01,793 --> 00:05:08,833
+At byte 7: the semicolon is punctuation, and the input ends. Emit it. That makes 4 tokens.
+
+29
+00:05:09,283 --> 00:05:20,525
+This is the rule of maximal munch, or longest match. Keep extending the current token while it can still grow. Emit it when the next character cannot extend it.
+
+30
+00:05:20,975 --> 00:05:31,834
+A common mistake is to emit the keyword if, and then the integer 1. Maximal munch takes the longest match, so i f 1 is one identifier.
+
+31
+00:05:32,284 --> 00:05:47,196
+Maximal munch also explains the C plus plus problem. In Foo of Bar of Bazz, the two closing brackets become one token, the shift operator. Before C plus plus 11, the fix was a space between them.
+
+32
+00:05:47,646 --> 00:05:59,273
+A regular expression, or regex, describes a token exactly. It has three base operations. The first is sequence: a b matches only the string a b.
+
+33
+00:05:59,723 --> 00:06:03,883
+The second is choice: a or b matches a, and it matches b.
+
+34
+00:06:04,333 --> 00:06:11,010
+The third is the star, zero or more: a star matches the empty string, a, a a, and so on.
+
+35
+00:06:11,460 --> 00:06:23,727
+The other operators are short forms. A plus is A A star. A question mark is A or epsilon. Bracket a b c is a or b or c. The dot is any character.
+
+36
+00:06:24,177 --> 00:06:33,713
+Precedence decides the tree. In a b star or c, the star binds tightest, then the sequence, then the bar. So the bar is at the root.
+
+37
+00:06:34,163 --> 00:06:40,371
+So a b star or c matches a, a b, a b b, and c. It does not match a c.
+
+38
+00:06:40,821 --> 00:06:52,383
+A common mistake: a star means a, repeated. It does not mean a, then anything. a star does not match a b c. To say a, then anything, write a dot star.
+
+39
+00:06:52,833 --> 00:07:07,041
+Slide 28 of the lexical analysis slides is an exercise. Each row gives a set of strings. Write a regex for each set. The first row is done: a b c. Pause the video and try it.
+
+40
+00:07:07,491 --> 00:07:13,187
+The set a b, a b c. The c is optional, so write a b, then c question mark.
+
+41
+00:07:13,637 --> 00:07:19,568
+The set a b c, a c. Now the b is optional: a, then b question mark, then c.
+
+42
+00:07:20,018 --> 00:07:24,370
+The set a, a b, a b b, and so on. Write a, then b star.
+
+43
+00:07:24,820 --> 00:07:35,145
+The set of the empty string, a b, a b a b, and so on. The star must apply to a b, so write the parentheses: open, a b, close, star.
+
+44
+00:07:35,595 --> 00:07:43,403
+The set a b, a b b, and so on: at least one b. Write a b plus. It is the same as a b b star.
+
+45
+00:07:43,853 --> 00:07:49,187
+The set if, else, while. One choice covers all the keywords: if or else or while.
+
+46
+00:07:49,637 --> 00:08:01,903
+A common mistake is to drop the parentheses. a b star matches a b b. Open a b close star matches a b a b. The star applies only to the part just before it.
+
+47
+00:08:02,353 --> 00:08:12,465
+Block 2: program understanding. An object diagram shows the state of a run. The PC tag gives the line that runs next: line 4.
+
+48
+00:08:12,915 --> 00:08:18,803
+The stack frame of main has one slot for each local variable: args, a, and b.
+
+49
+00:08:19,253 --> 00:08:25,355
+Line 4. new makes a bubble in the heap, Person 1. The slot a gets an arrow to it.
+
+50
+00:08:25,805 --> 00:08:34,935
+Line 5. b equals a. There is no new, so no new bubble. b copies the arrow of a, so b points to the same Person 1.
+
+51
+00:08:35,385 --> 00:08:44,388
+Line 6. The right side first: new makes Person 2. Then the left side: follow b to Person 1, and set its field friend.
+
+52
+00:08:44,838 --> 00:08:52,049
+Line 7. a equals null. Erase the arrow out of a. null means no arrow. The objects stay.
+
+53
+00:08:52,499 --> 00:09:07,219
+Calls follow the same rules. A call adds a frame with one slot for each parameter and local. An instance method also gets the hidden parameter this. A return erases the frame, but the objects stay.
+
+54
+00:09:07,669 --> 00:09:19,359
+A common mistake is to draw an arrow from b to a. Arrows go from a slot or a field to an object, never to another slot. b equals a copies the arrow of a.
+
+55
+00:09:19,809 --> 00:09:28,940
+questions-pre 2.1.1. What does line 10 print? The four options are below the code. Pause the video and try it.
+
+56
+00:09:29,390 --> 00:09:40,611
+Lines 6 and 7. new makes one Linked List 1. alias copies the arrow of list. So list and alias are aliases: two names for one object.
+
+57
+00:09:41,061 --> 00:09:46,864
+Line 8. list dot add mutates Linked List 1. The list now holds hello.
+
+58
+00:09:47,314 --> 00:09:53,202
+Line 9. alias leads to the same object. add mutates it again, with world.
+
+59
+00:09:53,652 --> 00:09:57,151
+Line 10 prints hello, world. The answer is c.
+
+60
+00:09:57,601 --> 00:10:08,481
+The rule: aliasing means several names for one object. Mutation means a change to an object. A change through one alias is seen through all of them.
+
+61
+00:10:08,931 --> 00:10:18,445
+A common mistake is to read alias equals list as a copy of the list. No new runs on line 7, so there is still only one list.
+
+62
+00:10:18,895 --> 00:10:32,527
+questions-pre 2.1.2 uses Parboiled's Immutable List. append never changes a list. It returns a new list. What do lines 9 and 12 print? Pause the video and try it.
+
+63
+00:10:32,977 --> 00:10:44,903
+Lines 5 to 8. list and alias point to the empty Immutable List 1. Lines 7 and 8 make two new lists, but nothing keeps them. So they are gray, garbage.
+
+64
+00:10:45,353 --> 00:10:49,683
+Line 9 prints list. It is still the empty list. Answer a.
+
+65
+00:10:50,133 --> 00:10:56,661
+Line 10 assigns the result. list now points to Immutable List 4, which holds hello.
+
+66
+00:10:57,111 --> 00:11:07,842
+Line 11. alias still points to the empty list. So alias gets Immutable List 5, with world only. The two names are no longer aliases.
+
+67
+00:11:08,292 --> 00:11:12,132
+Line 12 prints hello. Answer b, not hello world.
+
+68
+00:11:12,582 --> 00:11:23,547
+The rule: an immutable object never changes. With an immutable list, always assign the result of append. A call that is not assigned changes nothing.
+
+69
+00:11:23,997 --> 00:11:36,136
+The keyword final prevents re-assignment. Line 1 declares a final list. The compiler proves that a final variable is assigned exactly once on every program path.
+
+70
+00:11:36,586 --> 00:11:43,839
+Line 2, list dot add hello, compiles. The arrow out of list does not move, but the object changes.
+
+71
+00:11:44,289 --> 00:11:51,863
+Line 3 assigns list again. java C rejects it: cannot assign a value to final variable list.
+
+72
+00:11:52,313 --> 00:12:03,043
+The rule: final fixes the slot. Immutable fixes the object. The notes use both together, so that a value is set in one place and never changes.
+
+73
+00:12:03,493 --> 00:12:11,109
+A common mistake is to think that final makes the object immutable. A final list can still change with add.
+
+74
+00:12:11,559 --> 00:12:25,447
+questions-pre 2.2 has four programs for one algorithm, linear search. The first string is the token to find. The program searches the rest. Here the input is Moe, Larry, Curly, Moe.
+
+75
+00:12:25,897 --> 00:12:32,511
+An array with a loop. At the match, main is the only frame, and i is 3. The PC is 6.
+
+76
+00:12:32,961 --> 00:12:42,689
+An array with recursion. Each call adds a search frame with its own i. At the match: main plus 3 search frames. The PC is 10.
+
+77
+00:12:43,139 --> 00:12:53,400
+A linked list with a loop. The program first copies the array into 3 Node objects. Then n walks the list and stops at Node 1, which holds Moe.
+
+78
+00:12:53,850 --> 00:13:00,058
+A linked list with recursion: 3 Node objects and 3 search frames, one for each Node.
+
+79
+00:13:00,508 --> 00:13:15,143
+The rule: all four have the same input, output and algorithm, with order n time and order n space. They differ in the data structure, array or linked list, and in the control structure, loop or recursion.
+
+80
+00:13:15,593 --> 00:13:25,257
+A common mistake is to forget the errors. With no input, args of 0 does not exist, and all four programs fail on line 3.
+
+81
+00:13:25,707 --> 00:13:41,664
+Polymorphism. questions-pre 2.3.1 has the abstract class Expr. BinaryExpr extends it, and AndExpr and OrExpr extend BinaryExpr. Each of the last two defines its own operator method.
+
+82
+00:13:42,114 --> 00:13:48,749
+main fills an array of three Expr slots: an AndExpr, an OrExpr, and a second AndExpr.
+
+83
+00:13:49,199 --> 00:14:00,719
+Line 28 calls e dot operator in a loop. With i equal to 0, e refers to AndExpr 1. So the call runs AndExpr dot operator.
+
+84
+00:14:01,169 --> 00:14:09,105
+With i equal to 1, e refers to OrExpr 1. The same line now runs OrExpr dot operator.
+
+85
+00:14:09,555 --> 00:14:17,192
+With i equal to 2, e refers to AndExpr 2, and the target is AndExpr dot operator again.
+
+86
+00:14:17,642 --> 00:14:32,703
+The rule: the class of the object picks the target, when the program runs. A call site with more than one possible target is polymorphic. Line 28 has two. A call site with one target is monomorphic.
+
+87
+00:14:33,153 --> 00:14:49,196
+A common mistake is to use the declared type. b is declared as a BinaryExpr, but it refers to an AndExpr. So the call to new binary expr on line 25 always runs the AndExpr method: one target.
+
+88
+00:14:49,646 --> 00:14:59,609
+Block 3 of the midterm goes from a regular expression to a D F A. A lexer generator compiles each regex along this pipeline.
+
+89
+00:15:00,059 --> 00:15:08,571
+First, the D F A. It is the machine that the lexer runs. You must run it, write it as a table, design it, and complement it.
+
+90
+00:15:09,021 --> 00:15:15,293
+Second, the N F A. It is a machine with choices, missing arrows and epsilon edges.
+
+91
+00:15:15,743 --> 00:15:20,543
+Third, the four templates. They turn any regex into an N F A.
+
+92
+00:15:20,993 --> 00:15:26,049
+Fourth, the subset construction. It turns an N F A into a D F A.
+
+93
+00:15:26,499 --> 00:15:30,893
+The last arrow, minimization, comes in the next part of this video.
+
+94
+00:15:31,343 --> 00:15:43,183
+A D F A, a deterministic finite automaton, reads its input one letter at a time. This D F A from the slides accepts only the string a b b a.
+
+95
+00:15:43,633 --> 00:15:47,729
+The start state has the arrow from nowhere. Here it is q zero.
+
+96
+00:15:48,179 --> 00:15:52,937
+An accepting state has a double circle. Here only q four accepts.
+
+97
+00:15:53,387 --> 00:16:03,264
+Deterministic means: in every state, there is exactly one arrow for each letter. For example, q two has one a arrow and one b arrow.
+
+98
+00:16:03,714 --> 00:16:08,983
+q five is the error state. It does not accept, and its arrows never leave it.
+
+99
+00:16:09,433 --> 00:16:12,569
+Run it on a b b. Start in q zero.
+
+100
+00:16:13,019 --> 00:16:14,726
+Read a. Go to q one.
+
+101
+00:16:15,176 --> 00:16:17,160
+Read b. Go to q two.
+
+102
+00:16:17,610 --> 00:16:20,234
+Read the second b. Go to q three.
+
+103
+00:16:20,684 --> 00:16:27,489
+The input is finished in q three. q three does not accept, so the D F A rejects a b b.
+
+104
+00:16:27,939 --> 00:16:33,763
+The rule: read the whole input. Accept if and only if the last state is accepting.
+
+105
+00:16:34,213 --> 00:16:43,280
+The common mistake is to decide early. a b b is the start of a b b a, but it ends in q three, so it is rejected.
+
+106
+00:16:43,730 --> 00:16:50,173
+Formally, a D F A is a tuple of five parts: Q, sigma, delta, q zero, and F.
+
+107
+00:16:50,623 --> 00:16:54,740
+Q is the set of states. Here it is q zero to q five.
+
+108
+00:16:55,190 --> 00:17:00,417
+Sigma is the alphabet. Here it is a and b. Epsilon is never in sigma.
+
+109
+00:17:00,867 --> 00:17:08,525
+Delta maps a state and a letter to exactly one state. So delta is a table, with one state in every cell.
+
+110
+00:17:08,975 --> 00:17:11,215
+q zero is the start state.
+
+111
+00:17:11,665 --> 00:17:16,145
+F is the set of accepting states. Here F has only q four.
+
+112
+00:17:16,595 --> 00:17:27,454
+Delta star runs a whole string. Delta star of q and the empty string is q. For x w, take one step on x, then run the rest, w.
+
+113
+00:17:27,904 --> 00:17:37,611
+For example, delta star of q zero and a b. Row q zero, column a, gives q one. So we get delta star of q one and b.
+
+114
+00:17:38,061 --> 00:17:44,845
+Row q one, column b, gives q two. The rest is the empty string, so the result is q two.
+
+115
+00:17:45,295 --> 00:17:52,911
+The language of M is the set of all strings w where delta star of q zero and w is in F.
+
+116
+00:17:53,361 --> 00:18:00,465
+The common mistake is an empty cell. Every cell needs a state. A missing arrow goes to the error state.
+
+117
+00:18:00,915 --> 00:18:11,325
+This D F A from the course notes accepts only a b. Some arrows are missing: 1 has no b arrow, 2 has no a arrow, and 3 has no arrows.
+
+118
+00:18:11,775 --> 00:18:19,370
+A missing arrow goes to an implicit error state. Draw it as X. X loops on every letter and never accepts.
+
+119
+00:18:19,820 --> 00:18:26,668
+Now the D F A is total: every state has one arrow for each letter. It still accepts only a b.
+
+120
+00:18:27,118 --> 00:18:35,993
+The complement accepts exactly the strings that the D F A rejects. To build it, swap the accepting and the non-accepting states.
+
+121
+00:18:36,443 --> 00:18:46,597
+Check a a in the complement. The path is 1, 2, X. X accepts now, so the complement accepts a a. That is correct, because a a is not a b.
+
+122
+00:18:47,047 --> 00:18:54,962
+The common mistake is to swap before you draw X. Then a a has no path, so the machine rejects a a. That is wrong.
+
+123
+00:18:55,412 --> 00:19:06,676
+To design a D F A, ask what the program must remember about the letters so far. The example from the slides: does the string contain zero zero one?
+
+124
+00:19:07,126 --> 00:19:12,886
+State epsilon: no part of zero zero one is seen yet. It is the start state.
+
+125
+00:19:13,336 --> 00:19:17,219
+State zero: the input so far ends with one zero.
+
+126
+00:19:17,669 --> 00:19:22,149
+State zero zero: the input so far ends with zero zero.
+
+127
+00:19:22,599 --> 00:19:29,063
+State zero zero one: the pattern is found. It accepts, and it loops on zero and on one.
+
+128
+00:19:29,513 --> 00:19:36,126
+A one in state epsilon or in state zero breaks the pattern. Both go to state epsilon.
+
+129
+00:19:36,576 --> 00:19:43,893
+A zero in state zero zero keeps the end zero zero. So state zero zero loops on zero.
+
+130
+00:19:44,343 --> 00:19:55,223
+Check the input one zero zero one. The path is epsilon, epsilon, zero, zero zero, and zero zero one. The last state accepts.
+
+131
+00:19:55,673 --> 00:20:03,716
+The rule: one state for each value of the memory. Here the memory is how much of zero zero one the input ends with.
+
+132
+00:20:04,166 --> 00:20:15,558
+The common mistake is to send state zero zero back to epsilon on a zero. Then zero zero zero one is rejected, but it contains zero zero one.
+
+133
+00:20:16,008 --> 00:20:24,819
+An N F A, a nondeterministic finite automaton, may have choices. Here q zero has two arrows labelled a.
+
+134
+00:20:25,269 --> 00:20:32,501
+It may have missing arrows. q three has no arrows out. A run with no arrow to follow stops there.
+
+135
+00:20:32,951 --> 00:20:41,676
+On the input a, there are two runs: q zero to q three, and q zero to q one. Neither ends in an accepting state.
+
+136
+00:20:42,126 --> 00:20:50,275
+On the input a a, one run goes q zero, q one, q two. q two accepts, so the N F A accepts a a.
+
+137
+00:20:50,725 --> 00:20:57,744
+The rule: an N F A accepts a string if some run reads the whole string and ends in an accepting state.
+
+138
+00:20:58,194 --> 00:21:08,797
+An N F A may also have epsilon edges. An epsilon edge moves without reading a letter. This second N F A also accepts only a a.
+
+139
+00:21:09,247 --> 00:21:21,705
+Formally, delta becomes a relation, capital Delta. It is a set of triples: a state, a letter or epsilon, and a state. For the first machine, capital Delta has three triples.
+
+140
+00:21:22,155 --> 00:21:28,171
+The common mistake is to reject because one run fails. One accepting run is enough.
+
+141
+00:21:28,621 --> 00:21:32,227
+A language L is regular if some D F A accepts it.
+
+142
+00:21:32,677 --> 00:21:46,458
+For every regex, there is a D F A with the same language. The compiler of this block is the proof: regex to N F A with the templates, then N F A to D F A with the subset construction.
+
+143
+00:21:46,908 --> 00:21:57,745
+N F As and D F As have the same power: the subset construction converts every N F A. But an N F A can have exponentially fewer states.
+
+144
+00:21:58,195 --> 00:22:06,601
+Some languages are not regular. For example, a to the n, b to the n: n copies of a, then n copies of b.
+
+145
+00:22:07,051 --> 00:22:18,464
+A D F A for it must count the a's. It needs one state for each count, and n has no bound. A D F A has finitely many states, so no D F A exists.
+
+146
+00:22:18,914 --> 00:22:26,807
+The common mistake is to think that choices give an N F A more power. For finite automata, they add no power.
+
+147
+00:22:27,257 --> 00:22:40,164
+To compile a regex into an N F A, use one template for each regex construct. Every template has one entry state and one exit state. The exit state accepts.
+
+148
+00:22:40,614 --> 00:22:45,243
+Template 1, a constant x: two states, and one edge labelled x.
+
+149
+00:22:45,693 --> 00:22:55,123
+Template 2, concatenation x y: an epsilon edge joins the exit of x to the entry of y. It adds no new states.
+
+150
+00:22:55,573 --> 00:23:07,221
+Template 3, alternation x or y: a new entry with epsilon edges into both machines, and a new exit. It adds 2 states and 4 epsilon edges.
+
+151
+00:23:07,671 --> 00:23:19,980
+Template 4, repetition x star: a new entry and a new exit. The epsilon edges go in, out, skip, and back. It also adds 2 states and 4 epsilon edges.
+
+152
+00:23:20,430 --> 00:23:31,225
+x question mark and x plus are short forms. Rewrite x question mark as x or epsilon, and x plus as x x star, before you build.
+
+153
+00:23:31,675 --> 00:23:37,819
+So count the states before you draw: 2 for each constant, each alternation, and each star.
+
+154
+00:23:38,269 --> 00:23:44,754
+The common mistake is to add states for a concatenation. It adds only one epsilon edge.
+
+155
+00:23:45,204 --> 00:23:56,020
+The example from the slides: build the N F A for a or a b star. Parse it first. Star binds tightest, then concatenation, then alternation.
+
+156
+00:23:56,470 --> 00:24:03,489
+Build from the bottom up. The three constants come first, from left to right. They get the states 1 to 6.
+
+157
+00:24:03,939 --> 00:24:09,720
+The star around b adds the new states 7 and 8, and four epsilon edges.
+
+158
+00:24:10,170 --> 00:24:15,866
+The concatenation of a and b star adds one epsilon edge, from 4 to 7.
+
+159
+00:24:16,316 --> 00:24:24,572
+The alternation at the root adds the new states 9 and 10. State 9 is the start state, and state 10 accepts.
+
+160
+00:24:25,022 --> 00:24:33,107
+Count to check: 3 constants, 1 star and 1 alternation. That is 5, and 2 times 5 gives 10 states.
+
+161
+00:24:33,557 --> 00:24:44,544
+Test it with a b b. The path is 9, 3, 4, 7, 5, 6, 5, 6, 8, 10. It ends in 10, so the N F A accepts a b b.
+
+162
+00:24:44,994 --> 00:24:52,205
+The common mistake is to skip the parse. a b star is a, then b star. It is not a b, repeated.
+
+163
+00:24:52,655 --> 00:25:03,087
+An N F A can be in many states at once. The subset construction makes one D F A state for each set of N F A states that the N F A can be in.
+
+164
+00:25:03,537 --> 00:25:14,182
+The start state A is the epsilon closure of the N F A start state. From 9, the epsilon edges reach 1 and 3. So A is 1, 3, 9.
+
+165
+00:25:14,632 --> 00:25:23,933
+Now A on the letter a. First, the move: follow every a edge out of A. 1 goes to 2, and 3 goes to 4. The move is 2, 4.
+
+166
+00:25:24,383 --> 00:25:37,461
+Then the closure: add every state that epsilon edges reach. From 4 we reach 7, then 5 and 8. From 2 and 8 we reach 10. So B is 2, 4, 5, 7, 8, 10.
+
+167
+00:25:37,911 --> 00:25:45,932
+So the rule for a set S and a letter x is: the next state is the epsilon closure of the move of S on x.
+
+168
+00:25:46,382 --> 00:25:54,489
+A D F A state accepts if its set contains an accepting N F A state. B contains 10, so B accepts.
+
+169
+00:25:54,939 --> 00:26:06,779
+If no x edge leaves the set, the result is the empty set. This is the error state. A on b gives the empty set, because no b edge leaves 1, 3 or 9.
+
+170
+00:26:07,229 --> 00:26:15,250
+Now fill the D F A table, one cell at a time. Row A is the set 1, 3, 9. A on a gives B, as we found.
+
+171
+00:26:15,700 --> 00:26:23,487
+A on b: no b edge leaves 1, 3 or 9. The result is the empty set. Call it D, the error state.
+
+172
+00:26:23,937 --> 00:26:30,571
+Row B is 2, 4, 5, 7, 8, 10. No a edge leaves B, so B on a gives D.
+
+173
+00:26:31,021 --> 00:26:42,115
+B on b: the only b edge is 5 to 6. The epsilon closure of 6 is 5, 6, 8, 10. This is a new set, so it is a new state, C.
+
+174
+00:26:42,565 --> 00:26:46,383
+Row C. No a edge leaves C, so C on a gives D.
+
+175
+00:26:46,833 --> 00:26:54,769
+C on b: the b edge 5 to 6 again. The closure is 5, 6, 8, 10 again, so C goes to C.
+
+176
+00:26:55,219 --> 00:27:02,323
+Row D, the empty set. Every letter goes back to D. No new set appears, so the table is complete.
+
+177
+00:27:02,773 --> 00:27:09,664
+Here is the D F A. B and C accept, because their sets contain 10. D is the error state.
+
+178
+00:27:10,114 --> 00:27:21,570
+Mistake 1 is to close the old set again. For B on b, some students close B together with the move. That gives 2, 4, 5, 6, 7, 8, 10.
+
+179
+00:27:22,020 --> 00:27:31,727
+But 2, 4 and 7 are not reachable after reading b. Close only the move: the closure of 6 is 5, 6, 8, 10, which is C.
+
+180
+00:27:32,177 --> 00:27:39,963
+Mistake 2 is to leave out the empty set. It is a real D F A state, the error state D, with its own row.
+
+181
+00:27:40,413 --> 00:27:51,955
+Mistake 3 is wrong accepting states. A D F A state accepts if its set contains any accepting N F A state. Here that is state 10, in B and in C.
+
+182
+00:27:52,405 --> 00:28:05,589
+The size: an N F A with n states can give up to 2 to the n D F A states, one for each subset. Here 2 to the 10 is 1024, but only 4 sets are reached.
+
+183
+00:28:06,039 --> 00:28:19,052
+Block 3 b finishes the pipeline. Block 3 a ended with a D F A from the subset construction. Block 3 b makes that D F A as small as possible, with Moore's algorithm.
+
+184
+00:28:19,502 --> 00:28:27,118
+Topic 1: when two states are the same, and Moore's algorithm, which merges them. Then a past midterm question.
+
+185
+00:28:27,568 --> 00:28:33,477
+Topic 2: a homomorphism, and why the minimal D F A is unique and the smallest.
+
+186
+00:28:33,927 --> 00:28:38,685
+Topic 3: how to decide if two regexes give the same language.
+
+187
+00:28:39,135 --> 00:28:42,292
+Topic 4: how many states a D F A can have.
+
+188
+00:28:42,742 --> 00:28:50,678
+Topic 5: the full exam pipeline, from a regex to the minimal D F A, on a past midterm question.
+
+189
+00:28:51,128 --> 00:28:58,936
+Topic 6: a D F A that you design by hand. It accepts the binary numbers that are divisible by 5.
+
+190
+00:28:59,386 --> 00:29:11,183
+First, when are two states of a D F A the same? This D F A accepts the strings that end in a b. It has four states, p, q, r and s. Only r accepts.
+
+191
+00:29:11,633 --> 00:29:20,721
+The rule: two states are equivalent if no string w takes one of them to an accepting state and the other to a non accepting state.
+
+192
+00:29:21,171 --> 00:29:27,166
+A string that does tell two states apart is a witness. Then the two states must stay apart.
+
+193
+00:29:27,616 --> 00:29:38,880
+Compare p and q. Read the letter b. p goes to p, which rejects. q goes to r, which accepts. So b is a witness, and p and q are different.
+
+194
+00:29:39,330 --> 00:29:42,765
+Now compare p and s. On a, both go to q.
+
+195
+00:29:43,215 --> 00:29:47,993
+On b, p goes back to p, and s goes back to s. Both reject.
+
+196
+00:29:48,443 --> 00:29:57,275
+So any string takes p and s to the same state or back to the pair p and s. No witness exists, so p and s are equivalent.
+
+197
+00:29:57,725 --> 00:30:07,240
+The common mistake is to merge states that look alike. And you cannot try every string w. Moore's algorithm finds every split for you.
+
+198
+00:30:07,690 --> 00:30:18,079
+Moore's algorithm minimizes a D F A. The input is our D F A for a or a b star, from the subset construction. D is the error state.
+
+199
+00:30:18,529 --> 00:30:24,716
+Round 0 makes two blocks: the accepting states B and C, and the other states A and D.
+
+200
+00:30:25,166 --> 00:30:32,931
+Round 1. For each state and each letter, write the block of the target. These blocks form the signature of the state.
+
+201
+00:30:33,381 --> 00:30:39,120
+A on a goes to B, in the block B C. But D on a goes to D, in the block A D.
+
+202
+00:30:39,570 --> 00:30:46,781
+So A and D have different signatures. The block A D splits into A and D. The witness is the letter a.
+
+203
+00:30:47,231 --> 00:30:55,508
+B and C both go to A D on a, and both go to B C on b. They have the same signature, so they stay together.
+
+204
+00:30:55,958 --> 00:30:59,499
+Round 1 gives three blocks: B C, A, and D.
+
+205
+00:30:59,949 --> 00:31:09,827
+Round 2 uses these blocks. B and C still agree, and a block with one state cannot split. Nothing splits, so the algorithm stops.
+
+206
+00:31:10,277 --> 00:31:18,917
+Each block becomes one state. The minimal D F A has three states: A, B C, and D. The old D F A had four.
+
+207
+00:31:19,367 --> 00:31:26,300
+The common mistake is to stop after one round. Repeat with the new blocks until a round makes no split.
+
+208
+00:31:26,750 --> 00:31:33,939
+Now a past midterm question. Minimize this D F A and draw the result. All six states are final.
+
+209
+00:31:34,389 --> 00:31:36,032
+Pause the video and try it.
+
+210
+00:31:36,482 --> 00:31:45,954
+First check that the D F A is total. Moore's algorithm needs one arrow per letter in every state. State 2 has no arrow on b.
+
+211
+00:31:46,404 --> 00:31:48,708
+State 4 has no arrow on a.
+
+212
+00:31:49,158 --> 00:31:58,673
+The common mistake is to skip this check. Then all six states are in one block, and nothing splits. You get one state that loops on a and b.
+
+213
+00:31:59,123 --> 00:32:09,363
+That machine accepts b b. The given D F A rejects b b: 1 goes to 2 on b, and 2 has no b arrow. So that answer is wrong.
+
+214
+00:32:09,813 --> 00:32:18,367
+So add the error state E. 2 on b goes to E, and 4 on a goes to E. E loops on a and b, and E is not final.
+
+215
+00:32:18,817 --> 00:32:23,596
+Round 0: the final states 1 to 6 in one block, and E alone.
+
+216
+00:32:24,046 --> 00:32:33,070
+Round 1: 2 on b goes to E, and 4 on a goes to E. These are two new signatures, so 2 and 4 each get their own block.
+
+217
+00:32:33,520 --> 00:32:38,085
+Round 2: 1 and 3 both go to 4 on a, and to 2 on b.
+
+218
+00:32:38,535 --> 00:32:47,111
+5 and 6 go to 6 on both letters, in the block 1 3 5 6. So that block splits into 1 3, and 5 6.
+
+219
+00:32:47,561 --> 00:32:52,148
+Round 3: nothing splits. The algorithm stops with five blocks.
+
+220
+00:32:52,598 --> 00:33:01,430
+Each block is one state. X is 1 and 3, Y is 4, Z is 2, W is 5 and 6, and E is the error state.
+
+221
+00:33:01,880 --> 00:33:12,717
+The posted solution draws X, Y, Z and W, and leaves out E. That is also correct. A python check agrees on every string up to length 10.
+
+222
+00:33:13,167 --> 00:33:28,805
+A homomorphism h maps each state of a D F A M to a state of a D F A M prime, over the same alphabet. Here M is our D F A for a or a b star, and M prime is its minimal D F A.
+
+223
+00:33:29,255 --> 00:33:34,481
+Condition 1: h of the start state is the start state. h of A is A.
+
+224
+00:33:34,931 --> 00:33:43,742
+Condition 2: for every state q and letter x, h of delta of q and x equals delta prime of h of q and x.
+
+225
+00:33:44,192 --> 00:33:55,413
+For example, B on b goes to C, and h of C is B C. Below, h of B is B C, and B C on b goes to B C. Both ways give B C.
+
+226
+00:33:55,863 --> 00:34:04,119
+Condition 3: q is accepting if and only if h of q is accepting. B and C accept, and so does B C.
+
+227
+00:34:04,569 --> 00:34:12,804
+If such an h exists, the two D F As accept the same language. Each run in M maps to a run in M prime.
+
+228
+00:34:13,254 --> 00:34:27,505
+The common mistake is to check only some arrows. Condition 2 must hold for every state and every letter. Here that is 4 states times 2 letters, so 8 arrows. One arrow that fails breaks h.
+
+229
+00:34:27,955 --> 00:34:35,827
+Here is a different D F A for a or a b star. Its states are P, Q, R and S. Q and R accept.
+
+230
+00:34:36,277 --> 00:34:42,847
+It also maps onto the same minimal D F A. Here the map h sends Q and R to B C.
+
+231
+00:34:43,297 --> 00:34:58,636
+The rule from the slides: every trim and total D F A for a language maps onto its minimal D F A. Trim means that every state is reachable from the start. Total means one arrow per letter in every state.
+
+232
+00:34:59,086 --> 00:35:03,438
+So the minimal D F A is unique, up to the names of the states.
+
+233
+00:35:03,888 --> 00:35:10,736
+It is also the smallest. The strings epsilon, a and b reach the three states A, B C and D.
+
+234
+00:35:11,186 --> 00:35:17,181
+Each pair of these strings is told apart by a suffix. The table gives one for each pair.
+
+235
+00:35:17,631 --> 00:35:24,095
+For example, epsilon and b. Add the suffix a. Then a is in the language, and b a is not.
+
+236
+00:35:24,545 --> 00:35:31,819
+So the three strings need three different states. Every D F A for a or a b star has at least 3 states.
+
+237
+00:35:32,269 --> 00:35:40,227
+A slide exercise. Do a followed by b a star, and a b star followed by a, describe the same language?
+
+238
+00:35:40,677 --> 00:35:42,319
+Pause the video and try it.
+
+239
+00:35:42,769 --> 00:35:58,897
+The procedure: for each regex, build the N F A, the D F A, and the minimal D F A. Then walk both minimal D F As from the start in lockstep. Lockstep means that both read the same letter at the same time.
+
+240
+00:35:59,347 --> 00:36:03,571
+Start with the two start states, A C and A C. Both reject.
+
+241
+00:36:04,021 --> 00:36:07,776
+On a, the pair goes to B D and B. Both accept.
+
+242
+00:36:08,226 --> 00:36:14,839
+On b, the pair goes to X and X. The other arrows lead back to pairs that we already have.
+
+243
+00:36:15,289 --> 00:36:23,801
+Every pair agrees, and no state gets two partners. So the two machines have the same shape, and the languages are the same.
+
+244
+00:36:24,251 --> 00:36:35,473
+The common mistake is to compare D F As before minimization. These two D F As have 5 and 4 states. Only the minimal D F As have the same shape.
+
+245
+00:36:35,923 --> 00:36:42,067
+A slide question. An N F A has 5 states. How many states can its D F A have?
+
+246
+00:36:42,517 --> 00:36:44,159
+Pause the video and try it.
+
+247
+00:36:44,609 --> 00:36:52,503
+Each D F A state is a set of N F A states. Each of the 5 N F A states is in the set or out of it.
+
+248
+00:36:52,953 --> 00:37:03,918
+That is 2 times 2 times 2 times 2 times 2, which is 2 to the 5, or 32 subsets. The empty set is one of them: it is the error state.
+
+249
+00:37:04,368 --> 00:37:09,979
+The rule: an N F A with n states gives a D F A with at most 2 to the n states.
+
+250
+00:37:10,429 --> 00:37:16,167
+In the pipeline, regex to N F A is linear: one template for each operator.
+
+251
+00:37:16,617 --> 00:37:21,716
+N F A to D F A is the expensive step: up to 2 to the n states.
+
+252
+00:37:22,166 --> 00:37:27,222
+Minimization only merges states, so it only makes the D F A smaller.
+
+253
+00:37:27,672 --> 00:37:45,507
+The common mistake is to think that 2 to the n is the usual count. It is the worst case. Our N F A for a or a b star has 10 states, so 2 to the 10, which is 1024 subsets. But the subset construction reached only 4.
+
+254
+00:37:45,957 --> 00:37:57,157
+Now the full pipeline, on a past midterm question. For U or F or T, star, build the N F A, the D F A, and the minimized D F A.
+
+255
+00:37:57,607 --> 00:37:59,249
+Pause the video and try it.
+
+256
+00:37:59,699 --> 00:38:08,318
+Step 1, the templates. An alternation of U, F and T sits inside the star template. The N F A has 8 states.
+
+257
+00:38:08,768 --> 00:38:17,813
+Step 2, the subset construction. The start state A is the epsilon closure of state 1. It is 1, 2, 3, 4 and 8.
+
+258
+00:38:18,263 --> 00:38:26,135
+Every set contains 2, 3 and 4. So from every state, U goes to B, F goes to C, and T goes to D.
+
+259
+00:38:26,585 --> 00:38:33,625
+Every set contains state 8, the accepting N F A state. So all four D F A states accept.
+
+260
+00:38:34,075 --> 00:38:42,566
+Step 3, Moore. All four states accept, and the D F A is total. So round 0 has one block, and nothing can split.
+
+261
+00:38:43,016 --> 00:38:50,845
+The minimal D F A has one state with a loop on U, F and T. It accepts every string, and the empty string too.
+
+262
+00:38:51,295 --> 00:39:03,562
+The common mistake: one block is right here only because the D F A is total. In question 4.5.1, one block was wrong, because the error state was missing.
+
+263
+00:39:04,012 --> 00:39:16,065
+Last, a D F A that you design by hand. Accept the binary numbers that are divisible by 5. The most significant bit comes first, and leading zeros are allowed.
+
+264
+00:39:16,515 --> 00:39:18,158
+Pause the video and try it.
+
+265
+00:39:18,608 --> 00:39:28,763
+The machine cannot store the whole number. It stores only the remainder mod 5 of the bits read so far. So it has 5 states, 0 to 4.
+
+266
+00:39:29,213 --> 00:39:37,639
+Reading bit b doubles the value and adds b. So from remainder s, the new remainder is 2 s plus b, mod 5.
+
+267
+00:39:38,089 --> 00:39:47,668
+For example, from 3 on bit 1: 2 times 3 plus 1 is 7, and 7 mod 5 is 2. So 3 goes to 2 on 1.
+
+268
+00:39:48,118 --> 00:39:55,990
+State 0 is the start state, because the empty string has value 0. It is also the only accepting state.
+
+269
+00:39:56,440 --> 00:40:12,269
+Test 1 1 0 0 1. The values are 1, 3, 6, 12 and 25. The states are 1, 3, 1, 2 and 0. It ends in 0, so it accepts. 25 is divisible by 5.
+
+270
+00:40:12,719 --> 00:40:23,215
+The common mistake is to try to store the whole number, which has no bound. Moore's algorithm splits all 5 remainders, so all 5 states are needed.
+
+271
+00:40:23,665 --> 00:40:33,500
+That is the end of part 1: lexical analysis, program understanding, and the pipeline from a regular expression to a minimal D F A.
+
+272
+00:40:33,950 --> 00:40:42,355
+Video 20 b has grammars and parsing, the lab concepts, the exam questions, the rule sheet, and the common mistakes.

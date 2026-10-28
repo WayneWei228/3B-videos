@@ -1,0 +1,679 @@
+1
+00:00:00,000 --> 00:00:13,760
+This video follows the week 6 slides, Proving a Grammar is L L one, part 1. A grammar is L L one when one token of lookahead always tells the parser which production to use.
+
+2
+00:00:14,210 --> 00:00:29,506
+We learn what that means in code, the predict test, the conversion from E B N F to B N F, and four definitions: E P S, FIRST, FOLLOW and PREDICT. Video 19 d does part 2 of the slides.
+
+3
+00:00:29,956 --> 00:00:43,161
+You already write recursive descent parsers by hand. Such a parser has one method for each non-terminal. A non-terminal is a symbol that has rules. So a non-terminal becomes a method.
+
+4
+00:00:43,611 --> 00:00:49,841
+A terminal is a token from the lexer. A terminal becomes a call to lexer dot consume.
+
+5
+00:00:50,291 --> 00:00:53,405
+A repetition, star or plus, becomes a loop.
+
+6
+00:00:53,855 --> 00:00:56,927
+An alternation, the bar, becomes an if statement.
+
+7
+00:00:57,377 --> 00:01:02,433
+The grammar fixes all of this, except one thing: the condition inside each if.
+
+8
+00:01:02,883 --> 00:01:11,267
+L L one means: scan the input from left to right, build a leftmost derivation, and use one token of lookahead.
+
+9
+00:01:11,717 --> 00:01:24,667
+The lookahead token is the next token, not yet consumed. A grammar is L L one exactly when one token always fills in those conditions. Then a tool can generate the parser.
+
+10
+00:01:25,117 --> 00:01:34,333
+First, where this topic sits in the course. These two lectures say what L L one means, and how to decide if a grammar is L L one.
+
+11
+00:01:34,783 --> 00:01:41,033
+The slides say clearly: this material is not on the midterm. It lands too close to it.
+
+12
+00:01:41,483 --> 00:01:45,814
+Later lectures show how to fix a grammar that is not L L one.
+
+13
+00:01:46,264 --> 00:01:48,696
+That material is on the final exam.
+
+14
+00:01:49,146 --> 00:02:00,133
+A language is a set of strings. The set can be infinite. You can describe it by a list, by a regular expression, by set comprehension, or by a grammar.
+
+15
+00:02:00,583 --> 00:02:09,564
+The smallest class here is the regular languages. A finite automaton recognizes them: finite memory, and no recursion.
+
+16
+00:02:10,014 --> 00:02:24,115
+The largest class here is the context free languages. They need a non-deterministic push-down automaton. Non-deterministic means it has an oracle: a part that always guesses the correct choice.
+
+17
+00:02:24,565 --> 00:02:35,467
+Between them is L L one. A deterministic push-down automaton recognizes it. It adds recursion to a finite automaton, and needs no oracle.
+
+18
+00:02:35,917 --> 00:02:42,167
+The slides classify languages by how complicated the machine must be to recognize them.
+
+19
+00:02:42,617 --> 00:02:57,849
+Keep two things apart: a language and a grammar. A language L is regular if some finite automaton recognizes it. That is true even if the recognizer you wrote uses recursion or dynamic data structures.
+
+20
+00:02:58,299 --> 00:03:06,299
+L L one is the same. A grammar G is L L one if G itself parses with one token of lookahead.
+
+21
+00:03:06,749 --> 00:03:11,549
+A language L is L L one if some grammar for L is L L one.
+
+22
+00:03:11,999 --> 00:03:21,855
+Some means: one bad grammar proves nothing about L. If your grammar is not L L one, the language can still be L L one. Fix the grammar.
+
+23
+00:03:22,305 --> 00:03:29,068
+But if the language is not L L one, then no grammar for it is L L one. There is nothing to fix.
+
+24
+00:03:29,518 --> 00:03:35,598
+Here are three grammars. What language does each one describe? Pause the video and try it.
+
+25
+00:03:36,048 --> 00:03:40,677
+All three describe the same language: the two strings u and w.
+
+26
+00:03:41,127 --> 00:03:47,655
+Two grammars are weakly equivalent when they accept the same language. All three are weakly equivalent.
+
+27
+00:03:48,105 --> 00:03:55,188
+Below each grammar is its parse tree for u. A parse tree shows which rule produced each part of the string.
+
+28
+00:03:55,638 --> 00:04:04,555
+Two grammars are strongly equivalent when they are weakly equivalent and also build the same parse trees. That is true for the last two.
+
+29
+00:04:05,005 --> 00:04:09,251
+Only the names differ: A in the second tree, X in the third.
+
+30
+00:04:09,701 --> 00:04:14,394
+The first grammar builds a different tree, so it is only weakly equivalent.
+
+31
+00:04:14,844 --> 00:04:25,105
+A grammar optimizer may keep only weak equivalence. That is fine for a recognizer. It is not fine when the A S T classes must match the rules.
+
+32
+00:04:25,555 --> 00:04:35,987
+Start with the simplest grammar, S 1. S 1 goes to the terminal u, or to the terminal w. Terminals are written in quotes on the slides.
+
+33
+00:04:36,437 --> 00:04:38,336
+The method has one if statement.
+
+34
+00:04:38,786 --> 00:04:42,583
+Say the next token is u. The arrow marks the lookahead.
+
+35
+00:04:43,033 --> 00:04:51,289
+inspect u returns true, so the method consumes u. inspect looks at the next token. It does not move the input.
+
+36
+00:04:51,739 --> 00:04:57,670
+If the token is not u, it must be w. So the second inspect is not needed.
+
+37
+00:04:58,120 --> 00:05:03,219
+One token of lookahead decides it. S 1 is obviously L L one.
+
+38
+00:05:03,669 --> 00:05:09,237
+Now S 2. S 2 goes to A or B. A goes to u, and B goes to w.
+
+39
+00:05:09,687 --> 00:05:14,956
+The choice is now between two non-terminals. What goes in the two conditions?
+
+40
+00:05:15,406 --> 00:05:21,870
+The grammar line S 2 goes to A does not show a token. So look one level deeper, into A.
+
+41
+00:05:22,320 --> 00:05:26,501
+A goes to u, so A starts with u. That is the first condition.
+
+42
+00:05:26,951 --> 00:05:32,071
+B goes to w, so B starts with w. That is the second condition.
+
+43
+00:05:32,521 --> 00:05:38,815
+The two starts are different, so S 2 is L L one. We had to hunt one level into the grammar.
+
+44
+00:05:39,265 --> 00:05:47,201
+Now S 3. S 3 goes to P or Q. P goes to u w, and Q goes to u t. Do the same hunt.
+
+45
+00:05:47,651 --> 00:05:51,043
+P starts with u, and Q also starts with u.
+
+46
+00:05:51,493 --> 00:05:57,701
+So both conditions are inspect u. The second branch can never run. It is unreachable.
+
+47
+00:05:58,151 --> 00:06:03,463
+You may change only the conditions. Can you fix it? Pause the video and try it.
+
+48
+00:06:03,913 --> 00:06:08,371
+No. The token that decides is the second one, w or t.
+
+49
+00:06:08,821 --> 00:06:15,136
+Two tokens of lookahead would work. That is L L two. The generator may use only one.
+
+50
+00:06:15,586 --> 00:06:20,962
+The language of S 3 has two strings: u w and u t. It is finite.
+
+51
+00:06:21,412 --> 00:06:29,860
+Every finite language is regular. And every regular language is L L one. So the grammar S 3 is what is broken.
+
+52
+00:06:30,310 --> 00:06:38,459
+Here is an L L one grammar for the same language. S 3 prime goes to u R. R goes to w, or to t.
+
+53
+00:06:38,909 --> 00:06:46,973
+Consume the common prefix u first, then decide. R chooses on the second token, which is now the next token.
+
+54
+00:06:47,423 --> 00:07:02,229
+The two grammars accept the same language. They build different parse trees. So they are weakly equivalent. That is the freedom you have when you need only a recognizer. A python check confirms the languages and the trees.
+
+55
+00:07:02,679 --> 00:07:14,156
+Now give the conditions a name. Predict of A goes to alpha is the set of lookahead tokens for which the parser may choose the production A goes to alpha, when it expands A.
+
+56
+00:07:14,606 --> 00:07:19,257
+Here, predict of S 2 goes to A is the set u, because A goes to u.
+
+57
+00:07:19,707 --> 00:07:24,613
+In code, the predict set is what goes inside the inspect that guards alpha.
+
+58
+00:07:25,063 --> 00:07:41,383
+The test: for each non-terminal, the predict sets of its alternatives must be disjoint. Disjoint means they have no token in common. If they are disjoint, the grammar is L L one. If two of them intersect, it is not L L one.
+
+59
+00:07:41,833 --> 00:07:47,977
+Fill the table for S 2. S 2 goes to A is predicted by u, because A goes to u.
+
+60
+00:07:48,427 --> 00:07:53,547
+S 2 goes to B is predicted by w, because B goes to w.
+
+61
+00:07:53,997 --> 00:07:58,883
+The sets u and w are disjoint. Therefore S 2 is L L one.
+
+62
+00:07:59,333 --> 00:08:05,285
+Now S 3. S 3 goes to P is predicted by u, because P starts with u.
+
+63
+00:08:05,735 --> 00:08:11,516
+S 3 goes to Q is also predicted by u, because Q also starts with u.
+
+64
+00:08:11,966 --> 00:08:16,254
+The sets intersect, on u. Therefore S 3 is not L L one.
+
+65
+00:08:16,704 --> 00:08:23,488
+That is the whole test. The rest of the two lectures is how to compute the predict sets when the grammar is bigger.
+
+66
+00:08:23,938 --> 00:08:31,341
+Here is the recipe for bigger grammars. Step 1: convert the grammar from E B N F to B N F.
+
+67
+00:08:31,791 --> 00:08:39,791
+Step 2: determine which non-terminals are nullable. Nullable means it can derive the empty string, epsilon.
+
+68
+00:08:40,241 --> 00:08:43,398
+Step 3: the first sets of each non-terminal.
+
+69
+00:08:43,848 --> 00:08:45,811
+Step 4: the follow sets.
+
+70
+00:08:46,261 --> 00:08:49,055
+Step 5: the predict set of each production.
+
+71
+00:08:49,505 --> 00:09:05,292
+The verdict: for each non-terminal, its alternative productions must have pairwise disjoint predict sets. Then the grammar is L L one. If two alternatives of the same non-terminal intersect, it is not L L one.
+
+72
+00:09:05,742 --> 00:09:11,993
+Predict sets of different non-terminals may overlap. The parser never has to choose between them.
+
+73
+00:09:12,443 --> 00:09:27,035
+Step 1 is the conversion. E B N F is the form we write grammars in. It has stars, pluses, bars and brackets: a regular expression on the right of every rule. That is convenient for humans.
+
+74
+00:09:27,485 --> 00:09:39,346
+B N F has none of that. Every rule is a flat sequence of symbols. The only tool is recursion. That is inconvenient for humans, but great for algorithms.
+
+75
+00:09:39,796 --> 00:09:45,556
+The conversion has two jobs. Job 1: remove the stars, pluses and bars.
+
+76
+00:09:46,006 --> 00:09:55,777
+Job 2: make the boundaries explicit. Add a new start symbol G, and an end of file marker, dollar dollar. G goes to S dollar dollar.
+
+77
+00:09:56,227 --> 00:10:00,920
+Dollar dollar is the token that the lexer produces when the input ends.
+
+78
+00:10:01,370 --> 00:10:12,357
+There is more than one correct way to remove a star. The results are not always the same grammar. Here is our example, not from the slides: S goes to a, star.
+
+79
+00:10:12,807 --> 00:10:20,807
+Both conversions start with G goes to S dollar dollar, and S goes to AStar. They differ in the rules for AStar.
+
+80
+00:10:21,257 --> 00:10:24,201
+Conversion 1 puts the a before the recursion.
+
+81
+00:10:24,651 --> 00:10:35,040
+Its predict sets are dollar dollar and a. After AStar comes only dollar dollar, from G goes to S dollar dollar. Disjoint, so it is L L one.
+
+82
+00:10:35,490 --> 00:10:40,418
+Conversion 2 puts the a after the recursion. It accepts the same strings.
+
+83
+00:10:40,868 --> 00:10:54,500
+But now an a can also come after AStar. So the epsilon production is predicted by a and dollar dollar. The other production is predicted by a. They intersect, so it is not L L one.
+
+84
+00:10:54,950 --> 00:11:08,774
+Both conversions are correct. They are answers about different grammars. So on the exam, you are graded against your own conversion. A classmate's answer can be correct for their grammar and wrong for yours.
+
+85
+00:11:09,224 --> 00:11:16,627
+Now the conversion, one piece at a time. Start with S 2. A and B have no bar, so they stay as they are.
+
+86
+00:11:17,077 --> 00:11:25,397
+A bar gives two productions for the same non-terminal. S 2 goes to A, and S 2 goes to B. Nothing else to do.
+
+87
+00:11:25,847 --> 00:11:30,775
+Job 2: add the new start symbol. G goes to S 2 dollar dollar.
+
+88
+00:11:31,225 --> 00:11:42,019
+Next, a star. S goes to a, star: zero or more a's. B N F has no stars and no loops. Recursion has the same effect as a star.
+
+89
+00:11:42,469 --> 00:11:46,395
+Give the starred part a name, AStar. S goes to AStar.
+
+90
+00:11:46,845 --> 00:11:54,034
+Then write AStar as a base case and a step. AStar goes to epsilon: the base case, zero a's.
+
+91
+00:11:54,484 --> 00:11:57,940
+AStar goes to a AStar: the step, one more a.
+
+92
+00:11:58,390 --> 00:12:01,398
+And as always, G goes to S dollar dollar.
+
+93
+00:12:01,848 --> 00:12:08,419
+Here is the parse tree for a a dollar dollar. G gives S and dollar dollar. S gives AStar.
+
+94
+00:12:08,869 --> 00:12:11,962
+The step gives the first a, and a new AStar.
+
+95
+00:12:12,412 --> 00:12:14,631
+The step again gives the second a.
+
+96
+00:12:15,081 --> 00:12:24,062
+Then the base case, epsilon, ends the list. A python check confirms that this grammar gives exactly a star, up to length 6.
+
+97
+00:12:24,512 --> 00:12:31,680
+Now a plus. S goes to a, plus: one or more a's. Do it in two steps, and you do not have to think.
+
+98
+00:12:32,130 --> 00:12:39,383
+First rewrite the regular expression. a plus equals a, a star. So S goes to a, then a star.
+
+99
+00:12:39,833 --> 00:12:48,793
+Then it is a star, and you already know that one. Give the starred part the name A. G goes to S dollar dollar, and S goes to a A.
+
+100
+00:12:49,243 --> 00:12:56,155
+A goes to epsilon, or to a A. A python check confirms: exactly a plus, up to length 6.
+
+101
+00:12:56,605 --> 00:13:06,248
+First sets answer this: which terminals can we see first, for each non-terminal? Here the slides write dollar dollar inside the S 2 rules.
+
+102
+00:13:06,698 --> 00:13:10,005
+First of A is first of u, which is the set u.
+
+103
+00:13:10,455 --> 00:13:14,124
+First of B is first of w: the set w.
+
+104
+00:13:14,574 --> 00:13:20,227
+First of S 2 is first of A dollar dollar, union first of B dollar dollar.
+
+105
+00:13:20,677 --> 00:13:32,475
+A cannot vanish, so first of A dollar dollar is first of A: u. B cannot vanish, so first of B dollar dollar is first of B: w. Together: u and w.
+
+106
+00:13:32,925 --> 00:13:36,829
+Read the sets off by chasing each rule to its first terminal.
+
+107
+00:13:37,279 --> 00:13:42,356
+Now S 3. First of P is first of u w. That is the set u.
+
+108
+00:13:42,806 --> 00:13:46,518
+First of Q is first of u t. Also the set u.
+
+109
+00:13:46,968 --> 00:13:57,464
+First of S 3 is first of P dollar dollar, union first of Q dollar dollar. P and Q cannot vanish, so that is u, union u: the set u.
+
+110
+00:13:57,914 --> 00:14:04,591
+So both productions of S 3 start with u. They already collide. There is no need to go further.
+
+111
+00:14:05,041 --> 00:14:13,212
+First applies to sequences of symbols too. First of A b includes b, if A is nullable. The details come later.
+
+112
+00:14:13,662 --> 00:14:24,158
+Now the four definitions. Each one is a single line. That only works because the letters carry the types. Capital A, B, C are non-terminals.
+
+113
+00:14:24,608 --> 00:14:26,955
+Small a, b, c are terminals.
+
+114
+00:14:27,405 --> 00:14:29,901
+Capital X, Y, Z can be either.
+
+115
+00:14:30,351 --> 00:14:33,081
+Small x, y, z are token strings.
+
+116
+00:14:33,531 --> 00:14:37,137
+Greek alpha, beta, gamma are strings of any symbols.
+
+117
+00:14:37,587 --> 00:14:42,003
+L H S and R H S are the left and right side of a rule.
+
+118
+00:14:42,453 --> 00:14:51,498
+A double arrow is one derivation step. A derivation step replaces one non-terminal with the right side of one of its rules.
+
+119
+00:14:51,948 --> 00:14:55,084
+The arrow with a star is zero or more steps.
+
+120
+00:14:55,534 --> 00:14:58,499
+The arrow with a plus is one or more steps.
+
+121
+00:14:58,949 --> 00:15:11,963
+Example: S derives, in zero or more steps, alpha A c beta. In words: from the start symbol you can derive something that has an A followed by the terminal c, somewhere in it.
+
+122
+00:15:12,413 --> 00:15:25,469
+For each definition, ask two questions every time. First: is it defined for the thing I am asking about? Second: if it is, what is the answer, and which part of the definition gave it to me?
+
+123
+00:15:25,919 --> 00:15:37,332
+Here are the four definitions. E P S of alpha is true if alpha derives epsilon in zero or more steps, and false otherwise. It asks: can it vanish?
+
+124
+00:15:37,782 --> 00:15:47,297
+FIRST of alpha is the set of terminals c such that alpha derives c beta, in zero or more steps. It asks: what can it start with?
+
+125
+00:15:47,747 --> 00:15:58,605
+FOLLOW of A is the set of terminals c such that the start symbol derives alpha A c beta, in one or more steps. It asks: what can come right after A?
+
+126
+00:15:59,055 --> 00:16:17,125
+PREDICT of A goes to alpha is FIRST of alpha, union FOLLOW of A if alpha can vanish, else the empty set. It asks: which token picks this production? The slides say: if the formal form helps, great. If not, learn from the examples. Now we read each one.
+
+127
+00:16:17,575 --> 00:16:28,497
+E P S is defined for anything: a terminal, a non-terminal, or a string of them. It asks: is there some derivation that erases it completely?
+
+128
+00:16:28,947 --> 00:16:32,745
+Use the grammar A goes to epsilon, and A goes to a A.
+
+129
+00:16:33,195 --> 00:16:36,608
+Find the four answers. Pause the video and try it.
+
+130
+00:16:37,058 --> 00:16:41,197
+E P S of A is true. One step: A goes to epsilon.
+
+131
+00:16:41,647 --> 00:16:48,260
+E P S of epsilon is true. Zero steps. That is what the star on the arrow is for.
+
+132
+00:16:48,710 --> 00:16:54,683
+E P S of A A A is true. Erase each A, one at a time, with A goes to epsilon.
+
+133
+00:16:55,133 --> 00:17:02,259
+E P S of A a A is false. The terminal a is not going anywhere. No rule can erase a terminal.
+
+134
+00:17:02,709 --> 00:17:18,197
+FIRST is also defined for anything. Derive as far as you like. Every terminal c that can end up leftmost goes in the set. You do not have to finish the derivation. The rest, beta, can stay as non-terminals.
+
+135
+00:17:18,647 --> 00:17:26,839
+How you compute it, on our example A B c D. Take the first symbol, A. A is a non-terminal, so add its first set.
+
+136
+00:17:27,289 --> 00:17:32,451
+A is nullable, so keep going to the next symbol. Add the first set of B too.
+
+137
+00:17:32,901 --> 00:17:38,021
+B is nullable too, so go on. c is a terminal. Add c, and stop.
+
+138
+00:17:38,471 --> 00:17:41,543
+D is never reached, because c cannot vanish.
+
+139
+00:17:41,993 --> 00:17:47,988
+So FIRST of A B c D is FIRST of A, union FIRST of B, union the set c.
+
+140
+00:17:48,438 --> 00:17:56,886
+Now read FIRST on a small grammar. G goes to S dollar dollar. S goes to A b. A goes to a, or to epsilon.
+
+141
+00:17:57,336 --> 00:18:04,696
+Find FIRST of A, FIRST of epsilon, and FIRST of A b. Is each one defined? Pause the video and try it.
+
+142
+00:18:05,146 --> 00:18:12,250
+FIRST of A is the set a. One rule reaches the terminal a. The other rule vanishes, and adds nothing.
+
+143
+00:18:12,700 --> 00:18:22,556
+FIRST of epsilon is defined, because alpha can be any string. Nothing is leftmost, so it is the empty set. Epsilon is not a token.
+
+144
+00:18:23,006 --> 00:18:29,705
+FIRST of A b is a and b. A can vanish, with A goes to epsilon, so b can be leftmost too.
+
+145
+00:18:30,155 --> 00:18:45,451
+FOLLOW is only defined for non-terminals. It works differently from the other two. You do not look inside A. You look at where A is used. Start from S, derive, and collect every terminal that can land right after an A.
+
+146
+00:18:45,901 --> 00:18:51,810
+Case 1: A is followed by something in a rule, beta. Then add the FIRST set of beta.
+
+147
+00:18:52,260 --> 00:19:01,967
+Case 2: A is at the end of a rule for B, or everything after A is nullable. Then whatever follows B can follow A. Add FOLLOW of B.
+
+148
+00:19:02,417 --> 00:19:15,601
+So FOLLOW of A can depend on FOLLOW of B, and FOLLOW of B can depend on FOLLOW of A. That is why FOLLOW needs a fixed point loop. A fixed point loop repeats until nothing changes.
+
+149
+00:19:16,051 --> 00:19:20,808
+Case 1 uses FIRST. That is why FOLLOW is computed after FIRST.
+
+150
+00:19:21,258 --> 00:19:25,781
+The same grammar. Find FOLLOW of a, FOLLOW of A, and FOLLOW of S.
+
+151
+00:19:26,231 --> 00:19:33,015
+Ask the same two questions. This time the first question has a no in it. Pause the video and try it.
+
+152
+00:19:33,465 --> 00:19:38,990
+FOLLOW of a is not defined. FOLLOW takes a non-terminal, and a is a terminal.
+
+153
+00:19:39,440 --> 00:19:45,200
+FOLLOW of A is the set b. A appears once, in S goes to A b, with b after it.
+
+154
+00:19:45,650 --> 00:19:54,418
+FOLLOW of S is dollar dollar. Look at where S is used, not inside it. S is used in G goes to S dollar dollar.
+
+155
+00:19:54,868 --> 00:20:05,471
+PREDICT is the one we wanted. You are about to expand A, and you see token c. Is this the rule to use? Yes, if c is in this rule's predict set.
+
+156
+00:20:05,921 --> 00:20:11,211
+The normal case: whatever the rule's body can start with. That is FIRST of alpha.
+
+157
+00:20:11,661 --> 00:20:21,197
+The vanishing case: the whole body can derive epsilon. Then a token that can follow A also means: use this rule, and match nothing.
+
+158
+00:20:21,647 --> 00:20:34,063
+The test: for every non-terminal with more than one production, the predict sets of those productions must be pairwise disjoint. If all of them are disjoint, the grammar is L L one.
+
+159
+00:20:34,513 --> 00:20:40,743
+Last, PREDICT on the same grammar. A has two productions, so A is where the parser must choose.
+
+160
+00:20:41,193 --> 00:20:45,033
+Which token picks which production? Pause the video and try it.
+
+161
+00:20:45,483 --> 00:20:53,589
+PREDICT of A goes to a is the set a. It is FIRST of the body. The body cannot vanish, so there is no FOLLOW part.
+
+162
+00:20:54,039 --> 00:21:07,799
+PREDICT of A goes to epsilon is the set b. FIRST of epsilon is empty. The body vanishes, so we take FOLLOW of A. A is followed by b, in S goes to A b. So FOLLOW of A is b.
+
+163
+00:21:08,249 --> 00:21:13,348
+The two sets, a and b, are disjoint. So A is fine, and so is this grammar.
+
+164
+00:21:13,798 --> 00:21:17,126
+On input a b, lookahead a picks A goes to a.
+
+165
+00:21:17,576 --> 00:21:26,813
+On input b, lookahead b picks A goes to epsilon. A python parser built from these sets accepts exactly the two strings.
+
+166
+00:21:27,263 --> 00:21:40,170
+To summarize. A grammar is L L one when one token of lookahead always tells you which production to use. That means the predict sets of each non-terminal's productions are disjoint.
+
+167
+00:21:40,620 --> 00:21:45,612
+If the grammar is not L L one, the language may still be. Fix the grammar.
+
+168
+00:21:46,062 --> 00:22:03,321
+To convert E B N F to B N F: a bar gives more productions. A star gives a base case and a step. A plus is a, a star. Add G goes to S dollar dollar. The conversion is not unique, and you are graded against your own.
+
+169
+00:22:03,771 --> 00:22:11,877
+Four definitions. E P S: can it vanish? FIRST: what can it start with? FOLLOW: what can come after a non-terminal?
+
+170
+00:22:12,327 --> 00:22:23,207
+PREDICT: FIRST of the body, plus FOLLOW of A if the body can vanish. Video 19 d runs the whole recipe on bigger grammars, where something can vanish.
