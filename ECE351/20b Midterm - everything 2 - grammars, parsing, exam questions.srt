@@ -3,801 +3,749 @@
 This is part 2 of the E C E 351 midterm review. Part 1, video 20 a, covered blocks 1 to 3: lexical analysis, program understanding, and automata.
 
 2
-00:00:14,039 --> 00:00:24,151
-Part 2 starts with block 4, grammars and parsing. Then come the lab concepts, the exam questions, the rule sheet, and the mistakes to avoid.
+00:00:14,039 --> 00:00:22,402
+Part 2 starts with block 4, grammars and parsing. Then come the lab concepts, the exam questions, and the rule sheet.
 
 3
-00:00:24,601 --> 00:00:34,884
+00:00:22,852 --> 00:00:33,135
 Block 4 is grammars and parsing, from Notes chapter 4 and the week 6 slides. It starts with a grammar: terminals, nonterminals and productions.
 
 4
-00:00:35,334 --> 00:00:44,465
+00:00:33,585 --> 00:00:42,715
 A derivation uses the productions. It rewrites the start symbol, one nonterminal per step, until only terminals are left.
 
 5
-00:00:44,915 --> 00:00:52,488
+00:00:43,165 --> 00:00:50,739
 A parse tree shows the derivation as a tree. If one string has two parse trees, the grammar is ambiguous.
 
 6
-00:00:52,938 --> 00:00:58,549
+00:00:51,189 --> 00:00:56,799
 Recursive descent turns the grammar into code, with one method for each nonterminal.
 
 7
-00:00:58,999 --> 00:01:04,673
+00:00:57,249 --> 00:01:02,924
 LL(1) tells us when one token of lookahead is enough to choose each production.
 
 8
-00:01:05,123 --> 00:01:14,190
+00:01:03,374 --> 00:01:12,441
 The pre-midterm questions for this block are in questions-pre: section 1, section 3, and the short answers in 12.3.
 
 9
-00:01:14,640 --> 00:01:26,139
+00:01:12,891 --> 00:01:24,389
 The week 6 slides say that the LL(1) proofs, with first, follow and predict sets, are not on this midterm. They are on the final. So that part is short here.
 
 10
-00:01:26,589 --> 00:01:35,826
+00:01:24,839 --> 00:01:34,077
 A grammar has terminals. They are the tokens from the lexer, written in quotes, such as metric and the dot. A terminal is never rewritten.
 
 11
-00:01:36,276 --> 00:01:42,505
+00:01:34,527 --> 00:01:40,756
 Nonterminals, such as DecimalNumber, start with a capital letter. Each one must be rewritten.
 
 12
-00:01:42,955 --> 00:01:51,702
+00:01:41,206 --> 00:01:49,953
 Each line is a production: a left side, an arrow, and a right side. The bar starts another alternative for the same left side.
 
 13
-00:01:52,152 --> 00:01:56,952
+00:01:50,403 --> 00:01:55,203
 The start symbol is the left side of the first production. Here it is Measurement.
 
 14
-00:01:57,402 --> 00:02:06,831
+00:01:55,653 --> 00:02:05,082
 Now derive metric 3 point 875. Start with Measurement, and use its first production. The new symbols are orange.
 
 15
-00:02:07,281 --> 00:02:10,737
+00:02:05,532 --> 00:02:08,988
 Rewrite DecimalNumber with Digits, dot, Digits.
 
 16
-00:02:11,187 --> 00:02:13,982
+00:02:09,438 --> 00:02:12,233
 Rewrite the first Digits with the token 3.
 
 17
-00:02:14,432 --> 00:02:22,091
+00:02:12,683 --> 00:02:20,341
 Rewrite the last Digits with 875. Only terminals are left, so the string is in the language.
 
 18
-00:02:22,541 --> 00:02:32,461
+00:02:20,791 --> 00:02:30,711
 The rule: a derivation rewrites one nonterminal per step, with one production. A leftmost derivation always rewrites the leftmost one.
 
 19
-00:02:32,911 --> 00:02:46,073
+00:02:31,161 --> 00:02:44,324
 Now try metric 3, 7 slash 8. After metric and 3, the grammar needs a dot, but the input has 7. No production fits. The derivation is stuck, so the string is rejected.
 
 20
-00:02:46,523 --> 00:02:54,865
+00:02:44,774 --> 00:02:53,115
 Grammars come in classes. The smallest class is regular. A finite automaton recognizes it, for example x star.
 
 21
-00:02:55,315 --> 00:03:05,875
+00:02:53,565 --> 00:03:04,125
 Next is LL(1). It needs a deterministic pushdown automaton. The stack adds recursion. That is question 12.3.1.
 
 22
-00:03:06,325 --> 00:03:23,669
+00:03:04,575 --> 00:03:21,919
 Next is context-free. It needs a nondeterministic pushdown automaton. a to the n, b to the n, needs a context-free grammar, question 12.3.2. The posted answer says that LL(1) is also correct.
 
 23
-00:03:24,119 --> 00:03:32,268
+00:03:22,369 --> 00:03:30,519
 a to the n, b to the n, c to the n needs a context-sensitive grammar, question 12.3.3.
 
 24
-00:03:32,718 --> 00:03:40,505
-The rule from the notes: choose the simplest class that describes the language. Simpler classes are faster to parse.
+00:03:30,969 --> 00:03:46,243
+The rule from the notes: choose the simplest class that describes the language. Simpler classes are faster to parse. a to the n, b to the n needs a context-free grammar, because counting the a's needs a stack.
 
 25
-00:03:40,955 --> 00:03:50,832
-A common mistake is to call a to the n, b to the n regular. A finite automaton has finite memory, so it cannot count the a's.
-
-26
-00:03:51,282 --> 00:04:03,506
+00:03:46,693 --> 00:03:58,917
 Two grammars for x star. The first is right recursive: S goes to x S, or epsilon. The second is left recursive: S goes to S x, or epsilon.
 
-27
-00:04:03,956 --> 00:04:15,391
+26
+00:03:59,367 --> 00:04:10,802
 Both give the same strings: epsilon, x, x x, and so on. A python check compared all strings up to length 8. Same strings means weakly equivalent.
 
-28
-00:04:15,841 --> 00:04:21,366
+27
+00:04:11,252 --> 00:04:16,777
 The trees are different. For x x, the first grammar gives a tree that leans right.
 
-29
-00:04:21,816 --> 00:04:32,184
+28
+00:04:17,227 --> 00:04:27,595
 The second grammar gives a tree that leans left. Strongly equivalent needs the same strings and the same trees, so these two are only weakly equivalent.
 
-30
-00:04:32,634 --> 00:04:44,495
+29
+00:04:28,045 --> 00:04:39,907
 Question 12.3.8: when we refactor a grammar, the new grammar is usually only weakly equivalent. It accepts the same strings, but it builds different trees.
 
-31
-00:04:44,945 --> 00:04:57,468
+30
+00:04:40,357 --> 00:04:52,879
 Question 1.2.1 has a calculator grammar with precedence. Each level has its own nonterminal: Expr for plus, Term for times, Factor for the operands.
 
-32
-00:04:57,918 --> 00:05:06,643
+31
+00:04:53,329 --> 00:05:02,055
 Plus has the lowest precedence, so it is at the top level: Expr goes to Term plus Expr. In the tree, the plus is near the root.
 
-33
-00:05:07,093 --> 00:05:16,245
+32
+00:05:02,505 --> 00:05:11,657
 Times is one level lower. The right Expr becomes a Term, and Term goes to Factor times Term. The times is lower in the tree.
 
-34
-00:05:16,695 --> 00:05:20,621
+33
+00:05:12,107 --> 00:05:16,032
 Factor gives the operands, the integers 1, 2 and 3.
 
-35
-00:05:21,071 --> 00:05:28,857
+34
+00:05:16,482 --> 00:05:24,269
 Evaluate from the leaves up. The times is lower, so 2 times 3 is 6 first. Then 1 plus 6 is 7.
 
-36
-00:05:29,307 --> 00:05:42,022
+35
+00:05:24,719 --> 00:05:37,433
 The rule: one nonterminal per level, and the lowest precedence at the top. High precedence ends up near the leaves, so it is done first. A python check found exactly one tree.
 
-37
-00:05:42,472 --> 00:05:55,315
-A common mistake: precedence does not fix associativity. Expr goes to Term plus Expr is right recursive, so 1 plus 2 plus 3 groups as 1 plus, 2 plus 3.
+36
+00:05:37,883 --> 00:05:52,134
+Two plus signs are grouped by the recursion. Expr goes to Term plus Expr is right recursive, so 1 plus 2 plus 3 groups as 1 plus, 2 plus 3. The next slides show associativity.
 
-38
-00:05:55,765 --> 00:06:07,989
+37
+00:05:52,584 --> 00:06:04,808
 A grammar is ambiguous if one legal string has two different parse trees. Take E goes to E plus E, or E times E, or int, and the string 1 plus 2 times 3.
 
-39
-00:06:08,439 --> 00:06:16,247
+38
+00:06:05,258 --> 00:06:13,066
 Tree 1 has the plus at the root. The times is lower, so 2 times 3 is done first: 1 plus 6 is 7.
 
-40
-00:06:16,697 --> 00:06:23,587
+39
+00:06:13,516 --> 00:06:20,407
 Tree 2 has the times at the root. Now 1 plus 2 is done first: 3 times 3 is 9.
 
-41
-00:06:24,037 --> 00:06:36,155
+40
+00:06:20,857 --> 00:06:32,974
 One string with two trees: the grammar is ambiguous. Question 12.3.4: to show that a grammar is ambiguous, give one string with two parse trees.
 
-42
-00:06:36,605 --> 00:06:56,914
+41
+00:06:33,424 --> 00:06:53,733
 Question 12.3.5: to show that a grammar is unambiguous is beyond E C E 351. We say that we cannot find such a string. And question 12.3.6: a context-free grammar can express ambiguity, a P E G cannot.
 
-43
-00:06:57,364 --> 00:07:08,671
-A common mistake: the same value does not mean one tree. 4 plus 5 plus 6 has two trees, and both give 15. The grammar is still ambiguous.
+42
+00:06:54,183 --> 00:07:04,103
+Ambiguity counts trees, not values. 4 plus 5 plus 6 has two trees, and both give 15. So the grammar is ambiguous.
 
-44
-00:07:09,121 --> 00:07:16,651
+43
+00:07:04,553 --> 00:07:12,084
 Associativity decides the order when the same operator appears twice, as in 8 minus 6 minus 2.
 
-45
-00:07:17,101 --> 00:07:25,507
+44
+00:07:12,534 --> 00:07:20,939
 Minus is left associative, so the rule is left recursive: E goes to E minus F. Only the left side can grow.
 
-46
-00:07:25,957 --> 00:07:32,741
+45
+00:07:21,389 --> 00:07:28,173
 The tree leans left. 8 minus 6 is done first, which is 2. Then 2 minus 2 is 0.
 
-47
-00:07:33,191 --> 00:07:39,676
+46
+00:07:28,623 --> 00:07:35,109
 The exponent is right associative, so the rule is right recursive: E goes to F, caret, E.
 
-48
-00:07:40,126 --> 00:07:47,699
+47
+00:07:35,559 --> 00:07:43,132
 The tree leans right. 3 to the 2 is done first, which is 9. Then 2 to the 9 is 512.
 
+48
+00:07:43,582 --> 00:07:59,091
+The rule: a left associative operator needs a left recursive rule. A right associative operator needs a right recursive rule. Only one side of the operator repeats the nonterminal, so each string has one tree.
+
 49
-00:07:48,149 --> 00:07:57,429
-The rule: a left associative operator needs a left recursive rule. A right associative operator needs a right recursive rule.
-
-50
-00:07:57,879 --> 00:08:10,637
-A common mistake is E goes to E minus E. It is ambiguous: 8 minus 6 minus 2 gets two trees. One gives 0, the other gives 8 minus 4, which is 4.
-
-51
-00:08:11,087 --> 00:08:20,388
+00:07:59,541 --> 00:08:08,843
 The dangling else is a classic ambiguity. The else is optional, so the grammar has two forms of cond: with an else, and without one.
 
-52
-00:08:20,838 --> 00:08:24,891
+50
+00:08:09,293 --> 00:08:13,346
 For if, if, s, else, s, tree 1 gives the else to the inner if.
 
-53
-00:08:25,341 --> 00:08:31,720
+51
+00:08:13,796 --> 00:08:20,175
 Tree 2 gives the else to the outer if. One string, two trees: the grammar is ambiguous.
 
-54
-00:08:32,170 --> 00:08:39,445
+52
+00:08:20,625 --> 00:08:27,899
 Three fixes change the grammar and remove the ambiguity: end if, a required else, or indentation.
 
-55
-00:08:39,895 --> 00:08:51,585
+53
+00:08:28,349 --> 00:08:40,040
 A note in the language specification, as in C and Java, says that the else goes with the inner if. It does not change the grammar, so the grammar stays ambiguous.
 
-56
-00:08:52,035 --> 00:09:04,302
+54
+00:08:40,490 --> 00:08:52,757
 Recursive descent writes a parser by hand from the grammar, with four rules. Rule 1: a nonterminal becomes a method. List and Name each get a method, and List calls Name.
 
-57
-00:09:04,752 --> 00:09:11,877
+55
+00:08:53,207 --> 00:09:00,332
 Rule 2: a terminal becomes a call to consume on the lexer. Name consumes an I D token.
 
-58
-00:09:12,327 --> 00:09:21,714
+56
+00:09:00,782 --> 00:09:10,169
 Rule 3: a repetition, star or plus, becomes a loop. Name star becomes a while loop that runs until the end of the input.
 
-59
-00:09:22,164 --> 00:09:27,305
+57
+00:09:10,619 --> 00:09:15,760
 Rule 4: an alternation, the bar, becomes an if. The next slides show it.
 
-60
-00:09:27,755 --> 00:09:36,843
-The start method ends with consume E O F. Without it, the recognizer also accepts input with extra tokens at the end.
+58
+00:09:16,210 --> 00:09:22,994
+The start method ends with consume E O F. It checks that no tokens are left after the list.
 
-61
-00:09:37,293 --> 00:09:46,125
+59
+00:09:23,444 --> 00:09:32,276
 A recognizer maps a string to true or false. A normal return means accept. An exception from the lexer means reject.
 
-62
-00:09:46,575 --> 00:10:01,039
+60
+00:09:32,726 --> 00:09:47,190
 Question 3.2.1 is an LL(1) calculator grammar. Here is the complete recognizer from the posted solution. S, Expr and Term call the methods of their right side, in order.
 
-63
-00:10:01,489 --> 00:10:11,345
+61
+00:09:47,640 --> 00:09:57,496
 Factor has two alternatives, so it has an if. If the next token is an open parenthesis, it takes the second one. Else it consumes an Int.
 
-64
-00:10:11,795 --> 00:10:22,377
+62
+00:09:57,946 --> 00:10:08,527
 TermTail goes to plus Expr, or epsilon. The plus alternative starts with a token. So the if inspects for a plus, consumes it, and calls Expr.
 
-65
-00:10:22,827 --> 00:10:33,024
+63
+00:10:08,977 --> 00:10:19,175
 The epsilon alternative consumes nothing. So the if has no else. When the next token is not a plus, TermTail returns and consumes nothing.
 
-66
-00:10:33,474 --> 00:10:37,549
-FactorTail has the same shape, with times in place of plus.
+64
+00:10:19,625 --> 00:10:27,689
+FactorTail has the same shape, with times in place of plus. It calls Term, so the times takes only the next Term.
 
-67
-00:10:37,999 --> 00:10:48,644
+65
+00:10:28,139 --> 00:10:38,784
 The evaluator has the same methods, and each one returns a value. Expr returns Term plus TermTail. Term returns Factor times FactorTail.
 
-68
-00:10:49,094 --> 00:10:57,158
+66
+00:10:39,234 --> 00:10:47,298
 For epsilon, TermTail returns 0, the identity of plus. So Term plus 0 is just the value of Term.
 
-69
-00:10:57,608 --> 00:11:01,939
+67
+00:10:47,748 --> 00:10:52,079
 For epsilon, FactorTail returns 1, the identity of times.
 
-70
-00:11:02,389 --> 00:11:19,903
-This grammar has a problem: FactorTail goes to times Expr, so FactorTail returns Expr. After the times, all of 3 plus 4, which is 7, becomes one Expr. So 2 times 3 plus 4 gives 2 times 7, which is 14, not 10.
+68
+00:10:52,529 --> 00:11:09,894
+FactorTail goes to times Term, so line 23 returns Term. Run it on 2 times 3 plus 4. Term returns 2 times 3, which is 6. Then TermTail adds 4: 6 plus 4 is 10. A python check ran this code.
 
-71
-00:11:20,353 --> 00:11:35,223
-Our fix: FactorTail goes to times Term, and line 23 returns Term. Then the times takes only the next Term. 2 times 3 is 6, plus 4 is 10. A python check ran both versions.
-
-72
-00:11:35,673 --> 00:11:44,526
+69
+00:11:10,344 --> 00:11:19,197
 LL(1) means: scan the input from the left to the right, build a leftmost derivation, and use 1 token of lookahead.
 
-73
-00:11:44,976 --> 00:11:52,101
+70
+00:11:19,647 --> 00:11:26,773
 Measurement has two alternatives, so the code has an if. One token decides: metric or imperial.
 
-74
-00:11:52,551 --> 00:12:01,170
+71
+00:11:27,223 --> 00:11:35,841
 Here the lookahead is imperial, so the parser takes the second alternative. It consumes imperial and calls FractionalNumber.
 
-75
-00:12:01,620 --> 00:12:06,335
+72
+00:11:36,291 --> 00:11:41,006
 If no alternative matches, the method throws an exception: reject.
 
-76
-00:12:06,785 --> 00:12:15,809
+73
+00:11:41,456 --> 00:11:50,480
 A grammar is LL(1) when one token always picks the production. Then the recursive descent parser can be generated by a tool.
 
-77
-00:12:16,259 --> 00:12:24,685
+74
+00:11:50,930 --> 00:11:59,357
 The first shape that fails is a common prefix. S goes to u w, or u t. Both alternatives start with u.
 
-78
-00:12:25,135 --> 00:12:29,658
+75
+00:11:59,807 --> 00:12:04,329
 With the lookahead u, the if cannot choose. One token is not enough.
 
-79
-00:12:30,108 --> 00:12:39,132
+76
+00:12:04,779 --> 00:12:13,803
 Left factoring fixes it: consume the common prefix first, then decide. S goes to u R. R goes to w, or t.
 
-80
-00:12:39,582 --> 00:12:46,494
+77
+00:12:14,253 --> 00:12:21,165
 Now the two alternatives of R start with different tokens, w and t. One token decides.
 
-81
-00:12:46,944 --> 00:12:59,403
-A common mistake: a prefix can hide behind a nonterminal, so look at what each alternative can start with. And the simple tests can only show that a grammar is not LL(1).
+78
+00:12:21,615 --> 00:12:34,778
+A prefix can hide behind a nonterminal, so look at what each alternative can start with, also through nonterminals. And the simple tests can only show that a grammar is not LL(1).
 
-82
-00:12:59,853 --> 00:13:09,154
+79
+00:12:35,228 --> 00:12:44,529
 The second shape that fails is left recursion. E goes to E plus T, or T. This is the natural way to write an expression grammar.
 
-83
-00:13:09,604 --> 00:13:20,356
+80
+00:12:44,979 --> 00:12:55,731
 Write the method E from the first alternative. Its first line calls E, before it consumes a token. The input never moves, so the calls never end.
 
-84
-00:13:20,806 --> 00:13:27,163
+81
+00:12:56,181 --> 00:13:02,539
 Also, both alternatives start with whatever T starts with. So one token cannot choose.
 
-85
-00:13:27,613 --> 00:13:35,912
+82
+00:13:02,989 --> 00:13:11,287
 The fix turns the recursion around. E goes to T E prime. E prime goes to plus T E prime, or epsilon.
 
-86
-00:13:36,362 --> 00:13:43,317
+83
+00:13:11,737 --> 00:13:18,692
 The strings stay the same, but the trees change. For 1 plus 2 plus 3, the old tree leans left.
 
-87
-00:13:43,767 --> 00:13:48,417
+84
+00:13:19,142 --> 00:13:23,793
 The new tree leans right. So the two grammars are only weakly equivalent.
 
-88
-00:13:48,867 --> 00:13:57,550
-A common mistake is to forget that the trees changed. The code that builds the A S T must put the left associativity back.
+85
+00:13:24,243 --> 00:13:31,304
+Both fixes change the parse tree. So the code that builds the A S T puts the left associativity back.
 
-89
-00:13:58,000 --> 00:14:13,104
+86
+00:13:31,754 --> 00:13:46,858
 The full test proves that a grammar is LL(1). The slides say it is not on this midterm, but it is on the final. Step 1 converts E B N F to B N F. This grammar is already in B N F.
 
-90
-00:14:13,554 --> 00:14:21,831
+87
+00:13:47,308 --> 00:13:55,585
 EPS asks: can the nonterminal derive epsilon? Only E prime can, with E prime goes to epsilon.
 
-91
-00:14:22,281 --> 00:14:32,543
+88
+00:13:56,035 --> 00:14:06,297
 First is the set of terminals that can start the nonterminal. T starts with int, so E and S also start with int. E prime starts with plus.
 
-92
-00:14:32,993 --> 00:14:44,854
+89
+00:14:06,747 --> 00:14:18,608
 Follow is the set of terminals that can come right after the nonterminal. After E comes dollar dollar. E prime is at the end of E, so its follow is also dollar dollar.
 
-93
-00:14:45,304 --> 00:14:55,992
+90
+00:14:19,058 --> 00:14:29,746
 After T comes E prime, so the follow of T has the first of E prime, plus. E prime can vanish, so add the follow of E prime: dollar dollar.
 
-94
-00:14:56,442 --> 00:15:07,919
+91
+00:14:30,196 --> 00:14:41,673
 Predict of a production is the first of its right side. If the right side can vanish, add the follow of the left side. So E prime goes to epsilon gets dollar dollar.
 
-95
-00:15:08,369 --> 00:15:24,945
+92
+00:14:42,123 --> 00:14:58,699
 E prime's two predict sets, plus and dollar dollar, are disjoint. The other nonterminals have one production each. So the grammar is LL(1). In the common prefix grammar, both predict sets were u. They overlap, so it is not LL(1).
 
-96
-00:15:25,395 --> 00:15:36,019
-A common mistake: epsilon is not dollar dollar. Epsilon matches nothing. Dollar dollar is the end of input token, and the parser must consume it.
+93
+00:14:59,149 --> 00:15:08,707
+Epsilon and dollar dollar are different. Epsilon matches nothing. Dollar dollar is the end of input token, and the parser consumes it.
 
-97
-00:15:36,469 --> 00:15:46,773
+94
+00:15:09,157 --> 00:15:19,461
 Block 5 is the labs. The slides say that the midterm covers the labs up to Lab 4. We use only the slides and the notes, never lab code.
 
-98
-00:15:47,223 --> 00:15:58,231
+95
+00:15:19,911 --> 00:15:30,919
 The notes draw a compiler as a chain of stages. Lexing cuts the source string into tokens. Lab 1 does this with regular expressions. Block 1 taught them.
 
-99
-00:15:58,681 --> 00:16:06,511
+96
+00:15:31,369 --> 00:15:39,198
 Parsing builds the A S T from the tokens. Labs 1 and 3 use recursive descent for this. Block 4 taught it.
 
-100
-00:16:06,961 --> 00:16:14,257
+97
+00:15:39,648 --> 00:15:46,944
 Lab 2 is about transformations. A transformer reads a string, builds a tree, and writes another string.
 
-101
-00:16:14,707 --> 00:16:21,277
+98
+00:15:47,394 --> 00:15:53,965
 Lab 3 is about objects and equality. The question is: when are two A S Ts the same?
 
-102
-00:16:21,727 --> 00:16:30,026
+99
+00:15:54,415 --> 00:16:02,713
 Lab 4 is term rewriting, a kind of optimization. It rewrites the A S T with rules until no rule applies.
 
-103
-00:16:30,476 --> 00:16:41,719
+100
+00:16:03,163 --> 00:16:14,406
 A program transformation turns one form into another. The slides do it by syntax-directed translation: the grammar of the input guides the translation.
 
-104
-00:16:42,169 --> 00:16:51,086
+101
+00:16:14,856 --> 00:16:23,773
 Step 0: define one translation for each production, before you see any input. Here each production computes a value v.
 
-105
-00:16:51,536 --> 00:16:57,019
+102
+00:16:24,223 --> 00:16:29,706
 Step 1: parse the input. This is the parse tree of 1 plus 2 times 3.
 
-106
-00:16:57,469 --> 00:17:06,685
+103
+00:16:30,156 --> 00:16:39,372
 Step 2: start at the bottom and work up. Each Factor gives its number: 1, 2 and 3. A Term with only a Factor keeps that value.
 
-107
-00:17:07,135 --> 00:17:13,919
+104
+00:16:39,822 --> 00:16:46,606
 The Term for 2 times 3 multiplies: 2 times 3 is 6. The Expr above it keeps 6.
 
-108
-00:17:14,369 --> 00:17:21,899
+105
+00:16:47,056 --> 00:16:54,587
 Step 3: the root adds: 1 plus 6 is 7. The value at the root is the translation of the whole input.
 
-109
-00:17:22,349 --> 00:17:31,907
+106
+00:16:55,037 --> 00:17:04,594
 The regex to N F A templates are also a syntax-directed translation. The one exception in the course is the Lab 2 de-compiler.
 
-110
-00:17:32,357 --> 00:17:41,295
+107
+00:17:05,044 --> 00:17:13,983
 Lab 3 asks when two things are the same. The slides name three kinds of sameness: equals, isomorphic and equivalent.
 
-111
-00:17:41,745 --> 00:17:46,588
+108
+00:17:14,433 --> 00:17:19,275
 Equals: the same structure with the same names. These two machines are copies.
 
-112
-00:17:47,038 --> 00:17:54,099
+109
+00:17:19,725 --> 00:17:26,787
 Isomorphic: the same shape with other names. Rename P to A and Q to B, and the two machines match.
 
-113
-00:17:54,549 --> 00:18:04,235
+110
+00:17:27,237 --> 00:17:36,922
 Equivalent: the same language. The lower machine has 4 states, but it accepts the same strings: a, a b a, a b a b a, and so on.
 
-114
-00:18:04,685 --> 00:18:15,821
+111
+00:17:37,372 --> 00:17:48,508
 For expressions, equivalence is co N P complete, so it is expensive. The labs ask a SAT solver for an input on which the two expressions differ.
 
-115
-00:18:16,271 --> 00:18:26,532
-For automata it is cheap. Minimize both machines, and equivalent becomes isomorphic. The 4 state machine minimizes to the P Q shape.
+112
+00:17:48,958 --> 00:18:07,134
+For automata it is cheap. Minimize both machines, and equivalent becomes isomorphic. The 4 state machine minimizes to the P Q shape. In the same way, a followed by b a star, and a b star followed by a, give the same minimal D F A.
 
-116
-00:18:26,982 --> 00:18:39,227
-The common mistake is to decide by looking. a followed by b a star, and a b star followed by a, look different, but both give this language. Minimize both to prove it.
-
-117
-00:18:39,677 --> 00:18:54,483
+113
+00:18:07,584 --> 00:18:22,389
 Lab 4 is term rewriting. A rule replaces a pattern in the tree with a smaller tree. Our example has two rules: e plus 0 becomes e, and e times 1 becomes e. It is not lab code.
 
-118
-00:18:54,933 --> 00:18:59,498
+114
+00:18:22,839 --> 00:18:27,405
 Start with x times 1, plus 0. The tree has 5 nodes.
 
-119
-00:18:59,948 --> 00:19:06,113
+115
+00:18:27,855 --> 00:18:34,020
 The first rule matches the root: e plus 0 becomes e. The tree now has 3 nodes.
 
-120
-00:19:06,563 --> 00:19:11,406
+116
+00:18:34,470 --> 00:18:39,313
 The second rule matches: e times 1 becomes e. 1 node is left.
 
-121
-00:19:11,856 --> 00:19:17,552
+117
+00:18:39,763 --> 00:18:45,459
 No rule matches x. The rewriting is stuck. The notes call this point a fixed point.
 
-122
-00:19:18,002 --> 00:19:23,527
+118
+00:18:45,909 --> 00:18:51,434
 Why must it stop? The notes give three reasons. One: the input tree is finite.
 
-123
-00:19:23,977 --> 00:19:29,097
+119
+00:18:51,884 --> 00:18:57,004
 Two: every rewrite makes the program smaller. The notes call this monotonic.
 
-124
-00:19:29,547 --> 00:19:35,350
+120
+00:18:57,454 --> 00:19:03,257
 Three: the size has a bound. It cannot be negative. So the rewriting must stop.
 
-125
-00:19:35,800 --> 00:19:44,568
-The common mistake: a rule that does not shrink the tree breaks the argument. a plus b becomes b plus a can apply forever.
-
-126
-00:19:45,018 --> 00:19:59,098
+121
+00:19:03,707 --> 00:19:17,787
 questions-pre is the course bank of past midterm questions. Chapter 1: derive a string from a grammar. Block 4 taught it. This video adds 1.1.2, where a derivation gets stuck.
 
-127
-00:19:59,548 --> 00:20:12,967
+122
+00:19:18,237 --> 00:19:31,655
 Chapter 2: program understanding. What does this print, the object diagram at a line, and polymorphic call targets. Block 2 taught them. This video adds one question about call targets.
 
-128
-00:20:13,417 --> 00:20:19,795
+123
+00:19:32,105 --> 00:19:38,484
 Chapter 3: write a recognizer, a parser or an evaluator. Block 4 taught and solved it.
 
-129
-00:20:20,245 --> 00:20:29,504
+124
+00:19:38,934 --> 00:19:48,193
 Chapter 4: automata. Most types are in blocks 1 and 3. This video solves running an automaton and designing a regex.
 
-130
-00:20:29,954 --> 00:20:40,194
+125
+00:19:48,643 --> 00:19:58,883
 Chapter 12: short answers. Block 4 answered the grammar questions. This video answers the automata questions, after the worked questions.
 
-131
-00:20:40,644 --> 00:20:50,223
+126
+00:19:59,333 --> 00:20:08,911
 questions-pre 1.1.2: derive five sentences from this grammar, or show that you cannot. Pause the video and try it.
 
-132
-00:20:50,673 --> 00:21:01,830
+127
+00:20:09,361 --> 00:20:20,519
 Engineer calculates design. The first word, Engineer, picks Technical. Technical gives Engineer, calculates, design. All three words match, so we accept.
 
-133
-00:21:02,280 --> 00:21:05,224
+128
+00:20:20,969 --> 00:20:23,913
 Physician examines patient goes through Medical.
 
-134
-00:21:05,674 --> 00:21:12,693
+129
+00:20:24,363 --> 00:20:31,381
 Judge decides case goes through Legal. Both derivations match every word, so both are accepted.
 
-135
-00:21:13,143 --> 00:21:24,556
+130
+00:20:31,831 --> 00:20:43,245
 Engineer cuts patient. Engineer picks Technical, so the next word must be calculates. The input has cuts. The derivation is stuck, so the sentence is rejected.
 
-136
-00:21:25,006 --> 00:21:35,225
+131
+00:20:43,695 --> 00:20:53,913
 Lawyer advocates design. Lawyer picks Legal. Lawyer and advocates match, but Legal ends with case, not design. Stuck again: reject.
 
-137
-00:21:35,675 --> 00:21:48,944
+132
+00:20:54,363 --> 00:21:07,633
 questions-pre 2.3.1, the last question: line 29 calls e dot toString. Is this call site monomorphic or polymorphic? Pause the video and try it.
 
-138
-00:21:49,394 --> 00:22:03,922
+133
+00:21:08,083 --> 00:21:22,611
 A call site is polymorphic when it can call more than one method at run time. Line 28 calls operator. It runs AndExpr, then OrExpr, then AndExpr: two targets, so it is polymorphic.
 
-139
-00:22:04,372 --> 00:22:17,940
+134
+00:21:23,061 --> 00:21:36,629
 Line 29 calls toString. Only BinaryExpr defines it, on line 8. AndExpr and OrExpr do not override it. So all three calls run BinaryExpr dot toString.
 
-140
-00:22:18,390 --> 00:22:33,153
+135
+00:21:37,079 --> 00:21:51,841
 One target, so in this program line 29 is monomorphic. This is our answer: the posted solution does not give one. Inside toString, on line 8, the call to operator is polymorphic again.
 
-141
-00:22:33,603 --> 00:22:40,835
+136
+00:21:52,291 --> 00:21:59,523
 The output: each loop prints the operator, then null, operator, null. For example and, then null and null.
 
-142
-00:22:41,285 --> 00:22:53,573
+137
+00:21:59,973 --> 00:22:12,261
 questions-pre 4.1: run machine 1 on a b c, a b, and a c b. Then run machine 2, which adds an epsilon edge, on a c. Pause the video and try it.
 
-143
-00:22:54,023 --> 00:23:04,775
+138
+00:22:12,711 --> 00:22:23,463
 Input a b c. a goes from 1 to 2. b goes back to 1. c goes to 2. The input ends in 2, an accepting state, so the machine accepts.
 
-144
-00:23:05,225 --> 00:23:11,433
+139
+00:22:23,913 --> 00:22:30,121
 Input a b ends in state 1. State 1 is not accepting, so the machine rejects.
 
-145
-00:23:11,883 --> 00:23:23,552
+140
+00:22:30,571 --> 00:22:42,241
 Input a c b. After a, the machine is in state 2. State 2 has no c edge, so c goes to the error state X. X never leaves, and the machine rejects.
 
-146
-00:23:24,002 --> 00:23:36,930
+141
+00:22:42,691 --> 00:22:55,619
 Machine 2 has an epsilon edge from 2 back to 1. Input a c: a goes to 2. The epsilon edge goes to 1 without input. Then c goes to 2, and the machine accepts.
 
-147
-00:23:37,380 --> 00:23:47,065
+142
+00:22:56,069 --> 00:23:05,754
 questions-pre 4.2.1: write a regex for real constants. Read the constraints first. Pause the video and try it.
 
-148
-00:23:47,515 --> 00:23:54,747
+143
+00:23:06,204 --> 00:23:13,436
 Take one constraint at a time. Unary minus, written as a tilde, may come first: tilde, question mark.
 
-149
-00:23:55,197 --> 00:24:00,381
+144
+00:23:13,886 --> 00:23:19,070
 At least one digit must come before the decimal point: zero to 9, plus.
 
-150
-00:24:00,831 --> 00:24:09,386
+145
+00:23:19,520 --> 00:23:28,075
 Case one: a point, then zero or more digits, then an optional exponent: E, an optional minus, and one or more digits.
 
-151
-00:24:09,836 --> 00:24:17,964
+146
+00:23:28,525 --> 00:23:36,653
 Case two: no point, but an exponent. The bar joins the two cases. So a constant has a point, an E, or both.
 
-152
-00:24:18,414 --> 00:24:30,681
+147
+00:23:37,103 --> 00:23:49,369
 Test it. These must pass: 0 point 0 1, 2 point 7 8 and so on, minus 1 point 2 E 12, 7 E minus 5, and 35 point.
 
-153
-00:24:31,131 --> 00:24:42,181
+148
+00:23:49,819 --> 00:24:00,870
 These must fail: 35 has no point and no E, point 5 has no digit before the point, 1 E has no exponent digits, and plus is not allowed.
 
-154
-00:24:42,631 --> 00:24:52,103
+149
+00:24:01,320 --> 00:24:10,792
 questions-pre 4.6. This N F A reads x in state 1. It can go to 2, where it is stuck, or to 3, where it accepts.
 
-155
-00:24:52,553 --> 00:24:56,799
+150
+00:24:11,242 --> 00:24:15,487
 Angelic non-determinism takes the good choice: state 3.
 
-156
-00:24:57,249 --> 00:25:01,387
+151
+00:24:15,937 --> 00:24:20,076
 Demonic non-determinism takes the bad choice: state 2.
 
-157
-00:25:01,837 --> 00:25:05,763
+152
+00:24:20,526 --> 00:24:24,451
 Arbitrary non-determinism can take either: 2 or 3.
 
-158
-00:25:06,213 --> 00:25:15,109
+153
+00:24:24,901 --> 00:24:33,797
 Two differences: an N F A can have epsilon edges, and two edges with the same label from one state, like the two x edges.
 
-159
-00:25:15,559 --> 00:25:24,220
+154
+00:24:34,247 --> 00:24:42,909
 Are N F As more powerful than D F As? No. The subset construction turns every N F A into a D F A.
 
-160
-00:25:24,670 --> 00:25:31,774
+155
+00:24:43,359 --> 00:24:50,463
 A regular language needs a finite automaton. It runs in linear time: one step per input letter.
 
-161
-00:25:32,224 --> 00:25:41,248
+156
+00:24:50,913 --> 00:24:59,937
 Can a regex recognize H T M L? No. H T M L has nested tags, and nested structure is not regular.
 
-162
-00:25:41,698 --> 00:25:52,151
+157
+00:25:00,387 --> 00:25:10,840
 Rule sheet, block 1. A compiler has five phases: lexical analysis, parsing, semantic analysis, optimization, and code generation.
 
-163
-00:25:52,601 --> 00:25:59,471
+158
+00:25:11,290 --> 00:25:18,159
 A lexeme is the characters in the input. A token is its kind. The lexer drops the white space.
 
-164
-00:25:59,921 --> 00:26:06,385
+159
+00:25:18,609 --> 00:25:25,073
 Maximal munch: the lexer takes the longest match. So two greater-than signs are one token.
 
-165
-00:26:06,835 --> 00:26:13,683
+160
+00:25:25,523 --> 00:25:32,371
 The regex operators: concatenation, or, star, plus, question mark, and character classes.
 
-166
-00:26:14,133 --> 00:26:22,069
+161
+00:25:32,821 --> 00:25:40,757
 To design a regex, list the constraints, write one part for each, and test strings that must pass and must fail.
 
-167
-00:26:22,519 --> 00:26:33,036
+162
+00:25:41,207 --> 00:25:51,725
 Rule sheet, block 2. An object diagram has the P C, one stack frame per call with one slot per local, and heap objects with arrows.
 
-168
-00:26:33,486 --> 00:26:40,249
+163
+00:25:52,175 --> 00:25:58,937
 Aliasing: an assignment copies the arrow, not the object. Two names then point to one object.
 
-169
-00:26:40,699 --> 00:26:48,336
+164
+00:25:59,387 --> 00:26:07,025
 Mutation changes the object. Re-assignment moves the arrow. ImmutableList append returns a new list.
 
-170
-00:26:48,786 --> 00:26:56,914
+165
+00:26:07,475 --> 00:26:15,603
 final stops re-assignment. The compiler proves one assignment on every path. The object is not made immutable.
 
-171
-00:26:57,364 --> 00:27:02,484
+166
+00:26:16,053 --> 00:26:21,173
 A polymorphic call goes to the method of the object's class at run time.
 
-172
-00:27:02,934 --> 00:27:10,443
+167
+00:26:21,623 --> 00:26:29,132
 Linear search: an array or a linked list, a loop or recursion. Recursion adds one stack frame per call.
 
-173
-00:27:10,893 --> 00:27:18,552
+168
+00:26:29,582 --> 00:26:37,241
 Rule sheet, block 3. A D F A has one arrow per letter per state. A missing arrow goes to the error state.
 
-174
-00:27:19,002 --> 00:27:30,671
+169
+00:26:37,691 --> 00:26:49,360
 An N F A can have epsilon edges and several edges with one label. It accepts if some path accepts. The four templates turn a regex into an N F A.
 
-175
-00:27:31,121 --> 00:27:39,975
+170
+00:26:49,810 --> 00:26:58,663
 Subset construction: read a letter, then take the epsilon closure. A set is accepting if it has an accepting N F A state.
 
-176
-00:27:40,425 --> 00:27:49,022
+171
+00:26:59,113 --> 00:27:07,711
 Moore minimization needs the explicit error state. Start with accepting and not accepting, and split until nothing changes.
 
-177
-00:27:49,472 --> 00:27:58,283
+172
+00:27:08,161 --> 00:27:16,971
 The minimal D F A is unique. Minimize both machines to compare languages. A D F A can have up to 2 to the n states.
 
-178
-00:27:58,733 --> 00:28:05,474
+173
+00:27:17,421 --> 00:27:24,163
 Divisible by n: the states are the remainders, and bit b takes s to 2 s plus b, mod n.
 
-179
-00:28:05,924 --> 00:28:17,124
+174
+00:27:24,613 --> 00:27:35,813
 Rule sheet, block 4. A grammar has terminals, non-terminals, productions and a start symbol. A leftmost derivation replaces the leftmost non-terminal.
 
-180
-00:28:17,574 --> 00:28:20,838
+175
+00:27:36,263 --> 00:27:39,527
 Ambiguity: one string with two parse trees.
 
-181
-00:28:21,288 --> 00:28:25,981
+176
+00:27:39,977 --> 00:27:44,670
 Precedence: one non-terminal per level. The lower level binds tighter.
 
-182
-00:28:26,431 --> 00:28:34,090
+177
+00:27:45,120 --> 00:27:52,779
 Associativity: left recursion gives a left-associative operator. The dangling else is an ambiguity.
 
-183
-00:28:34,540 --> 00:28:41,772
+178
+00:27:53,229 --> 00:28:00,461
 Recursive descent: a method per non-terminal, consume per terminal, if per choice, and a loop per star.
 
-184
-00:28:42,222 --> 00:28:51,246
+179
+00:28:00,911 --> 00:28:09,935
 L L one: one token of lookahead picks the production. The full L L one proof is on the final, not on this midterm.
 
-185
-00:28:51,696 --> 00:28:56,603
+180
+00:28:10,385 --> 00:28:15,291
 Rule sheet, block 5. The midterm covers the labs up to Lab 4.
 
-186
-00:28:57,053 --> 00:29:05,181
+181
+00:28:15,741 --> 00:28:23,869
 Syntax-directed translation: one translation per production, parse, then apply the translations from the bottom up.
 
-187
-00:29:05,631 --> 00:29:09,940
+182
+00:28:24,319 --> 00:28:28,629
 Three kinds of sameness: equals, isomorphic and equivalent.
 
-188
-00:29:10,390 --> 00:29:17,601
+183
+00:28:29,079 --> 00:28:36,289
 Term rewriting stops: the input is finite, each rewrite makes it smaller, and the size has a bound.
 
-189
-00:29:18,051 --> 00:29:27,928
+184
+00:28:36,739 --> 00:28:46,617
 A recognizer gives a boolean, a parser an A S T, and an evaluator a value. The epsilon branch returns the identity element.
 
-190
-00:29:28,378 --> 00:29:39,706
-Common mistakes, block 1. Maximal munch takes the longest match. So in 8, two greater-than signs, 1, the two greater-than signs are one token, not two.
-
-191
-00:29:40,156 --> 00:29:51,548
-Block 2. alias equals list does not copy the list. It copies the arrow. Both names point to one LinkedList, so alias dot add also changes list.
-
-192
-00:29:51,998 --> 00:30:01,555
-ImmutableList append does not change the list. It returns a new list. When the program does not store it, the output is the empty list.
-
-193
-00:30:02,005 --> 00:30:15,296
-Block 3. Read the letter first, then follow the epsilon edges: x epsilon star, never epsilon star x. From 1, x gives 2, and the epsilon edges add 3 and 4.
-
-194
-00:30:15,746 --> 00:30:26,797
-Do not minimize a partial D F A. First add the explicit error state X, with all missing arrows. Moore's algorithm needs a total, trim machine.
-
-195
-00:30:27,247 --> 00:30:39,769
-In the subset construction, a D F A state accepts if its set has at least one accepting N F A state. State B holds 2 and 5, and 5 accepts, so B accepts.
-
-196
-00:30:40,219 --> 00:30:54,406
-Block 4. Two derivations do not prove ambiguity. One parse tree has many derivation orders. You need two different parse trees for one string, such as these two trees for 1 plus 2 times 3.
-
-197
-00:30:54,856 --> 00:31:05,395
-Recursive descent cannot use a left-recursive rule. The method E calls E before it reads a token, so it never stops. Rewrite the grammar first.
-
-198
-00:31:05,845 --> 00:31:18,837
+185
+00:28:47,067 --> 00:29:00,059
 Recap. Block 5 covers the labs up to Lab 4. Translation is syntax-directed. There are three kinds of sameness. Term rewriting stops because each rule makes the tree smaller.
 
-199
-00:31:19,287 --> 00:31:30,359
+186
+00:29:00,509 --> 00:29:11,581
 This video solved more exam types: a stuck derivation, the call targets, running an automaton, designing a regex, and the short answers on automata.
 
-200
-00:31:30,809 --> 00:31:34,670
+187
+00:29:12,031 --> 00:29:15,892
 Use the five rule sheets for a last check before the exam.
 
-201
-00:31:35,120 --> 00:31:45,829
+188
+00:29:16,342 --> 00:29:27,051
 The midterm is on Thursday, October 29, from 3 to 4 15 pm. Read each question, draw the picture, and check your answer. Good luck.
