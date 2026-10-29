@@ -1,0 +1,283 @@
+1
+00:00:00,000 --> 00:00:03,989
+This video solves two quiz questions about one D F A.
+
+2
+00:00:04,439 --> 00:00:11,629
+Question 18 minimizes it, round by round. Question 19 asks which language it accepts.
+
+3
+00:00:12,079 --> 00:00:18,479
+Question 18 gives this D F A. The arrow from the black dot shows the start state, p.
+
+4
+00:00:18,929 --> 00:00:24,454
+A double circle marks an accepting state. Here, only r has a double circle.
+
+5
+00:00:24,904 --> 00:00:28,829
+t is the error state. On a and on b, it stays in t.
+
+6
+00:00:29,279 --> 00:00:38,282
+Minimize the D F A by merge, then split. Start from two groups: accepting, and not accepting. Split until nothing changes.
+
+7
+00:00:38,732 --> 00:00:42,188
+Which groups do you end with? Pause the video and try it.
+
+8
+00:00:42,638 --> 00:00:48,163
+First, write every arrow in a table. One row per state, one column per letter.
+
+9
+00:00:48,613 --> 00:00:51,856
+p on a goes to t. p on b goes to q.
+
+10
+00:00:52,306 --> 00:00:55,634
+q on a goes to r. q on b goes to s.
+
+11
+00:00:56,084 --> 00:00:59,689
+r on a stays in r. r on b goes to s.
+
+12
+00:01:00,139 --> 00:01:03,681
+s on a goes to r. s on b stays in s.
+
+13
+00:01:04,131 --> 00:01:06,328
+t on a and on b stays in t.
+
+14
+00:01:06,778 --> 00:01:10,682
+r is the only accepting state. Its row is green.
+
+15
+00:01:11,132 --> 00:01:16,828
+Round 0. The accepting states form one group. That is only r, in green.
+
+16
+00:01:17,278 --> 00:01:22,099
+The other states form the second group: p, q, s, and t, in blue.
+
+17
+00:01:22,549 --> 00:01:28,501
+Next, check each group. A group with only one state cannot split, so r stays alone.
+
+18
+00:01:28,951 --> 00:01:36,802
+Round 1. For each state, write where a goes and where b goes. Then write the group of that target, from round 0.
+
+19
+00:01:37,252 --> 00:01:41,540
+p on a goes to t. t is in the blue group, p q s t.
+
+20
+00:01:41,990 --> 00:01:45,382
+p on b goes to q, also in the blue group.
+
+21
+00:01:45,832 --> 00:01:49,160
+t on a and on b goes to t, in the blue group.
+
+22
+00:01:49,610 --> 00:01:52,234
+q on a goes to r, in the green group.
+
+23
+00:01:52,684 --> 00:01:55,564
+q on b goes to s, in the blue group.
+
+24
+00:01:56,014 --> 00:02:02,499
+s on a goes to r, in green. s on b goes to s, in blue. The same groups as q.
+
+25
+00:02:02,949 --> 00:02:09,413
+r goes to r on a, and to s on b. r is alone in its group, so it stays alone.
+
+26
+00:02:09,863 --> 00:02:16,327
+Compare the group columns. p and t go to the blue group on a, and to the blue group on b.
+
+27
+00:02:16,777 --> 00:02:21,471
+q and s go to the green group on a, and to the blue group on b.
+
+28
+00:02:21,921 --> 00:02:29,942
+So the blue group splits in two: p t, and q s. After round 1, the groups are p t, q s, and r.
+
+29
+00:02:30,392 --> 00:02:37,709
+Round 2. Do the same again, but with the new groups: p t in blue, q s in purple, and r in green.
+
+30
+00:02:38,159 --> 00:02:41,338
+p on a goes to t, in the blue group p t.
+
+31
+00:02:41,788 --> 00:02:46,183
+p on b goes to q. Now q is in the purple group q s.
+
+32
+00:02:46,633 --> 00:02:49,811
+t on a goes to t, in the blue group p t.
+
+33
+00:02:50,261 --> 00:02:54,123
+t on b also goes to t, in the blue group p t.
+
+34
+00:02:54,573 --> 00:03:03,511
+On b, p goes to the purple group, but t goes to the blue group. The letter b takes them to different groups. So p and t split.
+
+35
+00:03:03,961 --> 00:03:08,719
+q on a goes to r, in green. q on b goes to s, in purple.
+
+36
+00:03:09,169 --> 00:03:16,507
+s on a goes to r, and s on b goes to s. The same groups as q, so q and s stay together.
+
+37
+00:03:16,957 --> 00:03:20,883
+After round 2, the groups are p, t, q s, and r.
+
+38
+00:03:21,333 --> 00:03:28,693
+Round 3 checks the groups p, t, q s, and r. p, t, and r are alone, so they cannot split.
+
+39
+00:03:29,143 --> 00:03:33,900
+q on a goes to r, in green. q on b goes to s, in purple.
+
+40
+00:03:34,350 --> 00:03:40,473
+s on a goes to r, in green. s on b goes to s, in purple. The same as q.
+
+41
+00:03:40,923 --> 00:03:45,509
+Nothing splits. The groups are the same as after round 2, so we stop.
+
+42
+00:03:45,959 --> 00:03:51,015
+The answer to question 18: p, q s, r, and t. Four groups.
+
+43
+00:03:51,465 --> 00:03:57,033
+Each group becomes one state of the minimal D F A. The start state is p.
+
+44
+00:03:57,483 --> 00:04:01,046
+p on a goes to t, and p on b goes to q s.
+
+45
+00:04:01,496 --> 00:04:08,856
+q s on a goes to r, and q s on b stays in q s. q and s both did this in the table.
+
+46
+00:04:09,306 --> 00:04:13,253
+r on a stays in r, and r on b goes to q s.
+
+47
+00:04:13,703 --> 00:04:16,241
+t stays in t, on a and on b.
+
+48
+00:04:16,691 --> 00:04:23,326
+A python check ran the old D F A and the new one on every string up to length 10. They agree.
+
+49
+00:04:23,776 --> 00:04:28,384
+Question 19 asks: which language does this D F A accept?
+
+50
+00:04:28,834 --> 00:04:36,642
+Read it from the minimal D F A of question 18. It accepts the same language, and it has only four states.
+
+51
+00:04:37,092 --> 00:04:38,735
+Pause the video and try it.
+
+52
+00:04:39,185 --> 00:04:42,833
+Start at p. The first letter decides what happens.
+
+53
+00:04:43,283 --> 00:04:50,984
+If the first letter is a, we go to t. t never leaves t, and t is not accepting. So the string is rejected.
+
+54
+00:04:51,434 --> 00:04:54,527
+If the first letter is b, we go to q s.
+
+55
+00:04:54,977 --> 00:04:59,969
+After that, the letter a always takes us to r, from q s and from r.
+
+56
+00:05:00,419 --> 00:05:05,241
+And the letter b always takes us to q s, from q s and from r.
+
+57
+00:05:05,691 --> 00:05:11,109
+So after the first b, we are in r exactly when the last letter we read is a.
+
+58
+00:05:11,559 --> 00:05:18,962
+r is the only accepting state. So the D F A accepts the strings that start with b and end with a.
+
+59
+00:05:19,412 --> 00:05:22,164
+The shortest one is b a, with two letters.
+
+60
+00:05:22,614 --> 00:05:32,363
+Check with test strings. b: p goes to q s, and stops there. q s is not accepting, so b is rejected. It does not end with a.
+
+61
+00:05:32,813 --> 00:05:38,211
+b a: p, q s, then r. Accepted. It starts with b and ends with a.
+
+62
+00:05:38,661 --> 00:05:44,463
+b b a: p, q s, q s, then r. Accepted. The middle can hold any letters.
+
+63
+00:05:44,913 --> 00:05:50,865
+b a b: p, q s, r, then back to q s. Rejected, because it ends with b.
+
+64
+00:05:51,315 --> 00:05:57,779
+a b: p goes to t on the first a, and stays in t. Rejected, because it starts with a.
+
+65
+00:05:58,229 --> 00:06:06,080
+In every row, the D F A and the description agree. A python check also tried every string up to length 10.
+
+66
+00:06:06,530 --> 00:06:11,757
+The answer to question 19: strings that start with b and end with a.
+
+67
+00:06:12,207 --> 00:06:19,929
+To summarize. Read the picture first. A double circle is accepting. The arrow from the dot marks the start state.
+
+68
+00:06:20,379 --> 00:06:24,454
+Round 0 has two groups: the accepting states, and the rest.
+
+69
+00:06:24,904 --> 00:06:34,717
+In each round, write, for each state, the group that a takes it to, and the group that b takes it to. The same groups: stay together. Different groups: split.
+
+70
+00:06:35,167 --> 00:06:43,295
+Each round uses the newest groups. Stop when a round changes nothing. Question 18: p, q s, r, t.
+
+71
+00:06:43,745 --> 00:06:53,409
+Read the language from the minimal D F A, and check it with test strings. Question 19: strings that start with b and end with a.
