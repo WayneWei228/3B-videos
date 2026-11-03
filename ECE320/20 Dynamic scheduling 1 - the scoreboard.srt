@@ -1,0 +1,863 @@
+1
+00:00:00,000 --> 00:00:10,987
+This is ECE 320, video 20. The topic is dynamic scheduling, part 1: the scoreboard. It is unit 11 of the slides.
+
+2
+00:00:11,437 --> 00:00:19,031
+After this video, you can do four things. One: explain why an in-order pipeline stalls more than it must.
+
+3
+00:00:19,481 --> 00:00:24,879
+Two: explain the instruction buffer, and the two new stages, dispatch and issue.
+
+4
+00:00:25,329 --> 00:00:29,147
+Three: fill the three scoreboard tables, cycle by cycle.
+
+5
+00:00:29,597 --> 00:00:35,976
+Four: find the structural, RAW, WAW and WAR stalls of a scoreboard.
+
+6
+00:00:36,426 --> 00:00:42,314
+The basic pipeline started with single, in-order issue and single-cycle operations.
+
+7
+00:00:42,764 --> 00:00:46,049
+We extended it with multi-cycle operations.
+
+8
+00:00:46,499 --> 00:00:50,617
+Then with multiple issue. This is the superscalar pipeline.
+
+9
+00:00:51,067 --> 00:00:56,101
+Now: dynamic scheduling. Instructions issue and execute out of order.
+
+10
+00:00:56,551 --> 00:01:05,021
+The first method is the scoreboard. It executes out of order, but it does not solve WAW and WAR hazards.
+
+11
+00:01:05,471 --> 00:01:14,324
+The second method is Tomasulo's algorithm. It adds register renaming to fix WAR and WAW hazards.
+
+12
+00:01:14,774 --> 00:01:19,425
+The slides of part 1 teach the scoreboard. This video follows them.
+
+13
+00:01:19,875 --> 00:01:25,656
+The next half unit adds precise state and speculation, and dynamic load scheduling.
+
+14
+00:01:26,106 --> 00:01:41,807
+Here is an in-order pipeline with a multi-cycle execute stage. Three floating-point instructions run: divide, add and multiply. Cycle 1: divf is fetched. Cycle 2: divf decodes, and addf is fetched.
+
+15
+00:01:42,257 --> 00:01:56,167
+Cycles 3 to 6: divf executes for 4 cycles. The slash marks the divider. addf stays in decode, with a star. A star means a stall. mulf stays in fetch, also with a star.
+
+16
+00:01:56,617 --> 00:02:09,438
+Cycles 7 to 11: divf writes back in cycle 7. addf executes in cycles 7 and 8. mulf executes in cycles 9 and 10, and writes back in cycle 11.
+
+17
+00:02:09,888 --> 00:02:24,757
+Why does addf stall in cycle 3? addf reads f0, and divf writes f0 in cycle 7. This is a RAW hazard. It is a fundamental problem: addf must wait for its operand.
+
+18
+00:02:25,207 --> 00:02:33,335
+Why does mulf stall in cycle 3? mulf uses only f2 and f4. It does not need the result of divf.
+
+19
+00:02:33,785 --> 00:02:43,151
+mulf cannot go into decode, because addf is there. Each stage holds one instruction. That is the only reason. It is not good enough.
+
+20
+00:02:43,601 --> 00:02:54,886
+The idea of slide 4: decode mulf in cycle 4 and execute it in cycle 5. No fundamental reason stops this. Dynamic scheduling does this.
+
+21
+00:02:55,336 --> 00:03:04,531
+Dynamic scheduling is also called out-of-order execution. The program gives the instructions in an order: divf, addf, mulf.
+
+22
+00:03:04,981 --> 00:03:15,626
+The hardware can execute them in another order: divf, mulf, addf. This is a non-sequential order. The slides call it non-von Neumann order.
+
+23
+00:03:16,076 --> 00:03:18,145
+The first gain: fewer stalls.
+
+24
+00:03:18,595 --> 00:03:22,606
+The second gain: the functional units are busy more often.
+
+25
+00:03:23,056 --> 00:03:30,117
+The third gain: parallel execution. When the order is not fixed, instructions can run in parallel.
+
+26
+00:03:30,567 --> 00:03:38,247
+But the result must look like sequential execution. This is extremely important, and it is hard to get correct.
+
+27
+00:03:38,697 --> 00:03:43,625
+Scheduling means: re-arrange the instructions to get the best performance.
+
+28
+00:03:44,075 --> 00:03:50,177
+To schedule, you must know the structure of the processor, the latencies, and the dependencies.
+
+29
+00:03:50,627 --> 00:03:56,195
+Two options. Dynamic scheduling: the hardware schedules. This unit is about it.
+
+30
+00:03:56,645 --> 00:03:59,546
+Static scheduling: the compiler schedules.
+
+31
+00:03:59,996 --> 00:04:06,439
+The compiler works at compile time, before the program runs. The hardware works at run time.
+
+32
+00:04:06,889 --> 00:04:14,675
+Why build complex hardware? One: performance portability. You do not want to recompile for each new machine.
+
+33
+00:04:15,125 --> 00:04:25,664
+Two: the hardware has more information. Addresses, branch directions and cache misses are known only at run time. The compiler does not know them.
+
+34
+00:04:26,114 --> 00:04:36,781
+Three: the hardware has more resources. The compiler may not have enough architectural registers to fix WAR and WAW hazards.
+
+35
+00:04:37,231 --> 00:04:43,460
+Four: it is easier to speculate in hardware. It is easier to recover from a mis-speculation.
+
+36
+00:04:43,910 --> 00:04:46,577
+But the compiler can look at more instructions.
+
+37
+00:04:47,027 --> 00:04:53,661
+So a combination is possible. The compiler does as much as it can, and the hardware does the rest.
+
+38
+00:04:54,111 --> 00:05:07,935
+Here is a simple in-order pipeline with 4 stages: IF, ID, EX and WB. EX takes multiple cycles and includes the memory access. Each red bar is a pipeline register.
+
+39
+00:05:08,385 --> 00:05:20,375
+Each stage has one pipeline register. So each stage holds one instruction per cycle. This is a structural hazard. Here the older instruction is stalled in ID.
+
+40
+00:05:20,825 --> 00:05:27,651
+The younger instruction cannot pass the older one. It could pass only if it killed the older instruction.
+
+41
+00:05:28,101 --> 00:05:34,096
+An out-of-order pipeline adds this function: a younger instruction can pass an older one.
+
+42
+00:05:34,546 --> 00:05:41,181
+The trick is an instruction buffer. It has many names. It is a set of latches that hold instructions.
+
+43
+00:05:41,631 --> 00:05:47,881
+The buffer is the scope of the scheduler: the scheduler can see only the instructions in the buffer.
+
+44
+00:05:48,331 --> 00:05:58,891
+Split ID into two parts, ID1 and ID2. ID1 puts decoded instructions into the buffer in order. Here is instruction 1.
+
+45
+00:05:59,341 --> 00:06:00,963
+Then instruction 2.
+
+46
+00:06:01,413 --> 00:06:05,551
+Then instructions 3 and 4. They go in, in program order.
+
+47
+00:06:06,001 --> 00:06:14,407
+ID2 sends instructions from the buffer down the rest of the pipeline out of order. Here instruction 3 goes first.
+
+48
+00:06:14,857 --> 00:06:25,843
+The two parts of ID get names. Dispatch, D S, is the first part. It puts the instruction into the instruction buffer: it allocates resources there.
+
+49
+00:06:26,293 --> 00:06:31,307
+This adds a new kind of structural hazard: the instruction buffer can be full.
+
+50
+00:06:31,757 --> 00:06:37,581
+Dispatch is in order. When dispatch stalls, the stall goes to all younger instructions.
+
+51
+00:06:38,031 --> 00:06:44,815
+Issue, I S, is the second part. It sends instructions from the buffer to the execution units.
+
+52
+00:06:45,265 --> 00:06:52,070
+Issue is out of order. When one instruction stalls in issue, younger instructions can still issue.
+
+53
+00:06:52,520 --> 00:07:07,133
+Dispatch method 1 is scoreboarding. The instruction buffer becomes the scoreboard. It is a centralized control scheme. It has no bypassing, and it does not remove WAR and WAW hazards.
+
+54
+00:07:07,583 --> 00:07:26,314
+The first scoreboard was in the CDC 6600, in 1964. It had 16 separate functional units, not pipelined: 4 for floating point, 5 for memory, and 7 for integers. 4 plus 5 plus 7 is 16.
+
+55
+00:07:26,764 --> 00:07:39,052
+Our example is the Simple Scoreboard. It has 5 functional units: one ALU, one load unit, one store unit, and two floating-point units, FP1 and FP2.
+
+56
+00:07:39,502 --> 00:07:46,777
+All units take 1 cycle, except the floating-point units. They take 3 cycles, and they are pipelined.
+
+57
+00:07:47,227 --> 00:07:55,141
+To keep it simple, the pipeline is 1-wide: not superscalar. The same ideas apply to wider pipelines.
+
+58
+00:07:55,591 --> 00:08:11,165
+The scoreboard has three tables. Instruction status has one entry for each active instruction. It shows the stage of the instruction. An instruction in the scoreboard has dispatched. Here mulf dispatched in cycle 2.
+
+59
+00:08:11,615 --> 00:08:20,596
+Functional unit status has one entry for each functional unit. Busy tells if the unit is busy. op is the current operation.
+
+60
+00:08:21,046 --> 00:08:26,870
+R is the destination register. R1 and R2 are the source registers.
+
+61
+00:08:27,320 --> 00:08:33,677
+T1 and T2 are the tags of the functional units that will produce the source registers.
+
+62
+00:08:34,127 --> 00:08:43,087
+T is the tag of the functional unit that produces the destination register. It is the unit of this entry: here FP1.
+
+63
+00:08:43,537 --> 00:08:58,727
+Register status has one entry for each architectural register. Its T is the tag of the functional unit, if any, that will write the register. Here load will write f0, and FP1 will write f4.
+
+64
+00:08:59,177 --> 00:09:11,251
+The tag fields work as ready bits. A tag that is not empty means: the value is not ready in the register file. Here T1 is load, so f0 is not ready.
+
+65
+00:09:11,701 --> 00:09:19,339
+An empty tag means: the value is ready in the register file. Here T2 is empty, so f2 is ready.
+
+66
+00:09:19,789 --> 00:09:35,789
+Here is the Simple Scoreboard as hardware. Fetched instructions come in from the left. The scoreboard keeps instruction fields and status bits: the instruction status, and the functional unit status with R, R1 and R2.
+
+67
+00:09:36,239 --> 00:09:44,111
+It keeps tags, in red: T, T1 and T2, the register status, and a comparator that compares tags.
+
+68
+00:09:44,561 --> 00:09:51,899
+The values, in blue, are in the register file and the functional unit. The scoreboard holds no values.
+
+69
+00:09:52,349 --> 00:09:59,816
+The new pipeline has five stages: IF, DS, IS, EX and WB. IF fetches the instruction.
+
+70
+00:10:00,266 --> 00:10:14,090
+DS, dispatch, sends the instruction from fetch to the scoreboard. If there is a structural hazard or a WAW hazard, dispatch stalls. Otherwise it allocates a scoreboard entry.
+
+71
+00:10:14,540 --> 00:10:26,913
+IS, issue, sends the instruction to its functional unit. If there is a RAW hazard, issue stalls. Otherwise it reads the registers and goes directly to execute.
+
+72
+00:10:27,363 --> 00:10:32,121
+EX executes the operation. It tells the scoreboard when it is done.
+
+73
+00:10:32,571 --> 00:10:42,576
+WB, write-back. If there is a WAR hazard, write-back stalls. Otherwise it writes the register and frees the scoreboard entry.
+
+74
+00:10:43,026 --> 00:10:54,375
+Two assumptions. Write-back and a RAW-dependent issue can be in the same cycle. Write-back and a structural-dependent dispatch can also be in the same cycle.
+
+75
+00:10:54,825 --> 00:11:11,252
+Dispatch, with the example of cycle 2. mulf f4, f0, f2 dispatches. FP1 is free, and the register status of f4 is empty. So there is no structural hazard and no WAW hazard.
+
+76
+00:11:11,702 --> 00:11:22,859
+Dispatch allocates the scoreboard entry of FP1. It writes R, R1 and R2: f4, f0 and f2. T is FP1.
+
+77
+00:11:23,309 --> 00:11:37,155
+Then it copies the status of the input registers. R1 is f0. The register status of f0 is load, because the load unit will write f0. So T1 becomes load.
+
+78
+00:11:37,605 --> 00:11:45,647
+R2 is f2. The register status of f2 is empty. So T2 stays empty: f2 is ready.
+
+79
+00:11:46,097 --> 00:11:56,956
+Then it sets the status of the output register. R is f4. The register status of f4 becomes FP1: FP1 will write f4.
+
+80
+00:11:57,406 --> 00:12:15,283
+Issue, with the example of cycle 4. Issue waits for RAW hazards: it waits while T1 or T2 is not empty. In cycle 4 the load unit wrote f0, so T1 of FP1 is empty. T2 is also empty.
+
+81
+00:12:15,733 --> 00:12:20,789
+So mulf issues in cycle 4. The instruction status gets the issue bit.
+
+82
+00:12:21,239 --> 00:12:31,458
+Issue reads the registers. R1 and R2 select f0 and f2. Their values go from the register file to the functional unit.
+
+83
+00:12:31,908 --> 00:12:44,239
+Execute, with the example. mulf executes in FP1 in cycles 5, 6 and 7. The instruction status shows 5 plus. The plus means more than one cycle.
+
+84
+00:12:44,689 --> 00:12:54,011
+The tag T, FP1, goes with the operation to the functional unit. When the unit is done, it tells the scoreboard with this tag.
+
+85
+00:12:54,461 --> 00:13:10,568
+Write-back, with the example of cycle 8. Write-back waits for WAR hazards: an older instruction that still must read the register. No older instruction waits to read f4. The store reads f4, but it is younger.
+
+86
+00:13:11,018 --> 00:13:16,949
+So mulf writes back in cycle 8. The result goes into f4 in the register file.
+
+87
+00:13:17,399 --> 00:13:28,812
+Then the scoreboard compares the tag FP1 with T1 and T2 of all waiting instructions. T1 of the store entry is FP1. It matches.
+
+88
+00:13:29,262 --> 00:13:43,747
+On a match, clear the tag: the input is now ready. T1 of the store becomes empty. The register status of f4 is also cleared. The FP1 entry is freed: its fields become empty.
+
+89
+00:13:44,197 --> 00:13:53,243
+The example is SAX, Scalar Alpha X. It is a simplified SAXPY. For each I, Z of I is A times X of I.
+
+90
+00:13:53,693 --> 00:14:10,013
+Here is the assembly code. Load float loads X of i into f0. Multiply float puts A times f0 into f4. A is in f2. Store float stores f4 into Z of i. i is in x1.
+
+91
+00:14:10,463 --> 00:14:20,191
+Add immediate adds 4 to x1. The branch loops while x2 is greater than or equal to x1. x2 holds 4 times N.
+
+92
+00:14:20,641 --> 00:14:27,958
+We look at two iterations: the loop is unrolled, and the branch is ignored. So there are seven instructions.
+
+93
+00:14:28,408 --> 00:14:37,219
+Instructions 5, 6 and 7 are the second iteration. They use the same registers as instructions 1, 2 and 3.
+
+94
+00:14:37,669 --> 00:14:52,261
+Here are the tables for the example. Instruction status has one row for each of the seven instructions, and a column for each stage: DS, IS, EX and WB. Each cell will hold a cycle number.
+
+95
+00:14:52,711 --> 00:15:01,991
+Functional unit status has one row for each of the five units: ALU, load, store, FP1 and FP2. All are free.
+
+96
+00:15:02,441 --> 00:15:10,825
+Register status shows the four registers of the example: f0, f2, f4 and x1. All are ready.
+
+97
+00:15:11,275 --> 00:15:22,304
+Remember: the ALU, load and store units take 1 cycle. FP1 and FP2 take 3 cycles. One instruction dispatches per cycle, in order.
+
+98
+00:15:22,754 --> 00:15:27,597
+Cycle 1. All tables are empty: no instruction has dispatched.
+
+99
+00:15:28,047 --> 00:15:43,855
+Load float, ldf f0,X(x1), dispatches in cycle 1. The load unit is free, and the register status of f 0 is empty. So there is no structural hazard and no WAW hazard.
+
+100
+00:15:44,305 --> 00:15:51,558
+Allocate the load entry. Busy is yes, op is load float. R is f 0, R2 is x 1.
+
+101
+00:15:52,008 --> 00:15:58,728
+Copy the status of the inputs. X 1 has no tag, so T2 stays empty: x 1 is ready.
+
+102
+00:15:59,178 --> 00:16:06,666
+Set the status of the output. load will write f 0, so the register status of f 0 becomes load.
+
+103
+00:16:07,116 --> 00:16:11,489
+Cycle 2. The tables show the state at the end of cycle 1.
+
+104
+00:16:11,939 --> 00:16:23,566
+Load float, ldf f0,X(x1), issues in cycle 2. T1 and T2 of load are empty, so it reads x 1 from the register file.
+
+105
+00:16:24,016 --> 00:16:41,125
+Multiply float, mulf f4,f0,f2, dispatches in cycle 2. The F P 1 unit is free, and the register status of f 4 is empty. So there is no structural hazard and no WAW hazard.
+
+106
+00:16:41,575 --> 00:16:51,751
+Allocate the F P 1 entry. Busy is yes, op is multiply float. R is f 4, R1 is f 0, R2 is f 2.
+
+107
+00:16:52,201 --> 00:17:04,297
+Copy the status of the inputs. The register status of f 0 is load, so T1 becomes load. F 2 has no tag, so T2 stays empty: f 2 is ready.
+
+108
+00:17:04,747 --> 00:17:13,089
+Set the status of the output. F P 1 will write f 4, so the register status of f 4 becomes F P 1.
+
+109
+00:17:13,539 --> 00:17:17,891
+Cycle 3. The tables show the state at the end of cycle 2.
+
+110
+00:17:18,341 --> 00:17:28,687
+Multiply float in F P 1 cannot issue. Its T1 is load: f 0 is not ready. This is a RAW hazard, so it waits.
+
+111
+00:17:29,137 --> 00:17:31,804
+Load float executes in cycle 3.
+
+112
+00:17:32,254 --> 00:17:44,286
+Store float, stf f4,Z(x1), dispatches in cycle 3. The store unit is free, so there is no structural hazard. A store has no destination.
+
+113
+00:17:44,736 --> 00:17:52,309
+Allocate the store entry. Busy is yes, op is store float. R1 is f 4, R2 is x 1.
+
+114
+00:17:52,759 --> 00:18:06,477
+Copy the status of the inputs. The register status of f 4 is F P 1, so T1 becomes F P 1. X 1 has no tag, so T2 stays empty: x 1 is ready.
+
+115
+00:18:06,927 --> 00:18:11,321
+Cycle 4. The tables show the state at the end of cycle 3.
+
+116
+00:18:11,771 --> 00:18:27,601
+Load float, ldf f0,X(x1), writes back in cycle 4. No older instruction still waits to read f 0, so there is no WAR hazard. It writes f 0 into the register file.
+
+117
+00:18:28,051 --> 00:18:35,325
+The register status of f 0 holds load. Clear it: f 0 is now ready in the register file.
+
+118
+00:18:35,775 --> 00:18:47,061
+Compare the tag load with T1 and T2 of the waiting entries. T1 of F P 1 matches. Clear it: f 0 is now ready for F P 1.
+
+119
+00:18:47,511 --> 00:18:50,305
+Free the load entry. Busy becomes no.
+
+120
+00:18:50,755 --> 00:19:11,790
+Multiply float, mulf f4,f0,f2, issues in cycle 4. T1 and T2 of F P 1 are empty, so it reads f 0 and f 2 from the register file. The write-back in this cycle cleared its tag. A RAW-dependent issue can be in the same cycle.
+
+121
+00:19:12,240 --> 00:19:22,160
+Store float in store cannot issue. Its T1 is F P 1: f 4 is not ready. This is a RAW hazard, so it waits.
+
+122
+00:19:22,610 --> 00:19:38,397
+Add immediate, addi x1,x1,#4, dispatches in cycle 4. The A L U unit is free, and the register status of x 1 is empty. So there is no structural hazard and no WAW hazard.
+
+123
+00:19:38,847 --> 00:19:46,569
+Allocate the A L U entry. Busy is yes, op is add immediate. R is x 1, R1 is x 1.
+
+124
+00:19:47,019 --> 00:19:53,697
+Copy the status of the inputs. X 1 has no tag, so T1 stays empty: x 1 is ready.
+
+125
+00:19:54,147 --> 00:20:02,104
+Set the status of the output. A L U will write x 1, so the register status of x 1 becomes A L U.
+
+126
+00:20:02,554 --> 00:20:07,013
+Cycle 5. The tables show the state at the end of cycle 4.
+
+127
+00:20:07,463 --> 00:20:19,345
+Add immediate, addi x1,x1,#4, issues in cycle 5. T1 and T2 of A L U are empty, so it reads x 1 from the register file.
+
+128
+00:20:19,795 --> 00:20:24,382
+Store float in store still waits: its T1 is still F P 1.
+
+129
+00:20:24,832 --> 00:20:35,200
+Multiply float starts to execute in cycle 5. FP1 takes 3 cycles: 5, 6 and 7. The table shows 5 plus.
+
+130
+00:20:35,650 --> 00:20:51,629
+Load float, ldf f0,X(x1), dispatches in cycle 5. The load unit is free, and the register status of f 0 is empty. So there is no structural hazard and no WAW hazard.
+
+131
+00:20:52,079 --> 00:20:59,332
+Allocate the load entry. Busy is yes, op is load float. R is f 0, R2 is x 1.
+
+132
+00:20:59,782 --> 00:21:07,398
+Copy the status of the inputs. The register status of x 1 is A L U, so T2 becomes A L U.
+
+133
+00:21:07,848 --> 00:21:15,336
+Set the status of the output. load will write f 0, so the register status of f 0 becomes load.
+
+134
+00:21:15,786 --> 00:21:20,159
+Cycle 6. The tables show the state at the end of cycle 5.
+
+135
+00:21:20,609 --> 00:21:25,196
+Store float in store still waits: its T1 is still F P 1.
+
+136
+00:21:25,646 --> 00:21:35,182
+Load float in load cannot issue. Its T2 is A L U: x 1 is not ready. This is a RAW hazard, so it waits.
+
+137
+00:21:35,632 --> 00:21:38,448
+Add immediate executes in cycle 6.
+
+138
+00:21:38,898 --> 00:21:58,973
+mulf f4,f0,f2 cannot dispatch. It writes f 4, and the register status of f 4 holds F P 1. This is a WAW hazard. FP2 is free, so it is not a structural hazard. Dispatch is in order, so younger instructions wait too.
+
+139
+00:21:59,423 --> 00:22:03,775
+Cycle 7. The tables show the state at the end of cycle 6.
+
+140
+00:22:04,225 --> 00:22:24,107
+Add immediate finished executing in cycle 6, but it cannot write back x 1. The older stf f4,Z(x1) has not issued, and it reads x 1: its R2. Writing now would destroy the value it must read. This is a WAR hazard, so write-back stalls.
+
+141
+00:22:24,557 --> 00:22:29,144
+Store float in store still waits: its T1 is still F P 1.
+
+142
+00:22:29,594 --> 00:22:33,946
+Load float in load still waits: its T2 is still A L U.
+
+143
+00:22:34,396 --> 00:22:45,127
+mulf f4,f0,f2 still cannot dispatch: the register status of f 4 still holds F P 1. WAW hazard.
+
+144
+00:22:45,577 --> 00:22:49,907
+Cycle 8. The tables show the state at the end of cycle 7.
+
+145
+00:22:50,357 --> 00:23:05,909
+Multiply float, mulf f4,f0,f2, writes back in cycle 8. No older instruction still waits to read f 4, so there is no WAR hazard. It writes f 4 into the register file.
+
+146
+00:23:06,359 --> 00:23:13,783
+The register status of f 4 holds F P 1. Clear it: f 4 is now ready in the register file.
+
+147
+00:23:14,233 --> 00:23:24,601
+Compare the tag F P 1 with T1 and T2 of the waiting entries. T1 of store matches. Clear it: f 4 is now ready for store.
+
+148
+00:23:25,051 --> 00:23:28,443
+Free the F P 1 entry. Busy becomes no.
+
+149
+00:23:28,893 --> 00:23:48,776
+Add immediate finished executing in cycle 6, but it cannot write back x 1. The older stf f4,Z(x1) has not issued, and it reads x 1: its R2. Writing now would destroy the value it must read. This is a WAR hazard, so write-back stalls.
+
+150
+00:23:49,226 --> 00:24:09,151
+Store float, stf f4,Z(x1), issues in cycle 8. T1 and T2 of store are empty, so it reads f 4 and x 1 from the register file. The write-back in this cycle cleared its tag. A RAW-dependent issue can be in the same cycle.
+
+151
+00:24:09,601 --> 00:24:13,953
+Load float in load still waits: its T2 is still A L U.
+
+152
+00:24:14,403 --> 00:24:34,329
+Multiply float, mulf f4,f0,f2, dispatches in cycle 8. FP1 wrote f 4 in this cycle, so the register status of f 4 is empty now: no WAW hazard. FP2 has been free all the time, so mulf goes to FP2.
+
+153
+00:24:34,779 --> 00:24:44,827
+Allocate the F P 2 entry. Busy is yes, op is multiply float. R is f 4, R1 is f 0, R2 is f 2.
+
+154
+00:24:45,277 --> 00:24:57,373
+Copy the status of the inputs. The register status of f 0 is load, so T1 becomes load. F 2 has no tag, so T2 stays empty: f 2 is ready.
+
+155
+00:24:57,823 --> 00:25:06,079
+Set the status of the output. F P 2 will write f 4, so the register status of f 4 becomes F P 2.
+
+156
+00:25:06,529 --> 00:25:10,838
+Cycle 9. The tables show the state at the end of cycle 8.
+
+157
+00:25:11,288 --> 00:25:27,800
+Add immediate, addi x1,x1,#4, writes back in cycle 9. The older store has issued now: it read x 1 in cycle 8. So the WAR hazard is gone. addi writes x 1 into the register file.
+
+158
+00:25:28,250 --> 00:25:35,482
+The register status of x 1 holds A L U. Clear it: x 1 is now ready in the register file.
+
+159
+00:25:35,932 --> 00:25:46,087
+Compare the tag A L U with T1 and T2 of the waiting entries. T2 of load matches. Clear it: x 1 is now ready for load.
+
+160
+00:25:46,537 --> 00:25:49,694
+Free the A L U entry. Busy becomes no.
+
+161
+00:25:50,144 --> 00:26:09,600
+Load float, ldf f0,X(x1), issues in cycle 9. T1 and T2 of load are empty, so it reads x 1 from the register file. The write-back in this cycle cleared its tag. A RAW-dependent issue can be in the same cycle.
+
+162
+00:26:10,050 --> 00:26:20,375
+Multiply float in F P 2 cannot issue. Its T1 is load: f 0 is not ready. This is a RAW hazard, so it waits.
+
+163
+00:26:20,825 --> 00:26:23,556
+Store float executes in cycle 9.
+
+164
+00:26:24,006 --> 00:26:34,566
+stf f4,Z(x1) cannot dispatch. The store unit is busy with the first store. This is a structural hazard, so dispatch stalls.
+
+165
+00:26:35,016 --> 00:26:39,389
+Cycle 10. The tables show the state at the end of cycle 9.
+
+166
+00:26:39,839 --> 00:26:52,938
+Store float, stf f4,Z(x1), writes back in cycle 10. A store has no destination register, so there is no WAR check. The store unit finishes.
+
+167
+00:26:53,388 --> 00:26:56,225
+Free the store entry. Busy becomes no.
+
+168
+00:26:56,675 --> 00:27:01,497
+Multiply float in F P 2 still waits: its T1 is still load.
+
+169
+00:27:01,947 --> 00:27:04,549
+Load float executes in cycle 10.
+
+170
+00:27:04,999 --> 00:27:18,717
+Store float, stf f4,Z(x1), dispatches in cycle 10. The store unit was freed by the write-back in this cycle. A dispatch that waited for it can be in the same cycle.
+
+171
+00:27:19,167 --> 00:27:26,740
+Allocate the store entry. Busy is yes, op is store float. R1 is f 4, R2 is x 1.
+
+172
+00:27:27,190 --> 00:27:40,630
+Copy the status of the inputs. The register status of f 4 is F P 2, so T1 becomes F P 2. X 1 has no tag, so T2 stays empty: x 1 is ready.
+
+173
+00:27:41,080 --> 00:27:58,701
+At the end of cycle 10, look at the order. addi is instruction 4, but it issued in cycle 5, executed in cycle 6 and wrote back in cycle 9. The older store, instruction 3, did each of these later. This is out-of-order execution.
+
+174
+00:27:59,151 --> 00:28:10,309
+Here are the same results as a timing picture. Each row is an instruction, and each column is a cycle. The boxes show DS, IS, EX and WB.
+
+175
+00:28:10,759 --> 00:28:19,143
+Look at addi, instruction 4. It issues in cycle 5, executes in cycle 6, and writes back in cycle 9.
+
+176
+00:28:19,593 --> 00:28:26,035
+The store, instruction 3, is older. It issues in cycle 8 and writes back in cycle 10.
+
+177
+00:28:26,485 --> 00:28:31,691
+So the younger addi passed the older store. The slide calls this out-of-orderness.
+
+178
+00:28:32,141 --> 00:28:41,762
+This slide is optional. It is not on the slides. With the same rules, we can finish the two iterations, in cycles 11 to 17.
+
+179
+00:28:42,212 --> 00:28:50,852
+The second load executes in cycle 10 and writes back in cycle 11. No older instruction waits to read f 0.
+
+180
+00:28:51,302 --> 00:29:05,489
+The second multiply waits for f 0. The write-back in cycle 11 clears its tag, so it issues in cycle 11. It executes in cycles 12 to 14 and writes back in cycle 15.
+
+181
+00:29:05,939 --> 00:29:15,325
+The second store waits for f 4. It issues in cycle 15, executes in cycle 16 and writes back in cycle 17.
+
+182
+00:29:15,775 --> 00:29:19,999
+A summary of the scoreboard. The good side: the hardware is cheap.
+
+183
+00:29:20,449 --> 00:29:30,220
+The performance is pretty good: a speedup of 1 point 7 times for FORTRAN programs, and 2 point 5 times for hand-coded assembly.
+
+184
+00:29:30,670 --> 00:29:43,257
+The bad side: there is no bypassing. RAW dependencies go through the registers. In the example, the store waited until the multiply wrote f 4 into the register file.
+
+185
+00:29:43,707 --> 00:29:57,616
+The scheduling scope is limited. WAW and structural hazards force dispatch to stay in order. In the example, the second multiply waited for the WAW hazard on f 4.
+
+186
+00:29:58,066 --> 00:30:10,930
+WAR hazards delay the write-back, and so the issue of dependent operations. In the example, addi waited for the store to read x 1, and the second load waited for addi.
+
+187
+00:30:11,380 --> 00:30:29,471
+Now assignment 7, question 1. The machine has 2 floating-point multiply units, which take 7 cycles, and 2 floating-point add units, which take 4 cycles. Show the scoreboard when FADD.D has finished executing, but has not written its result.
+
+188
+00:30:29,921 --> 00:30:40,993
+There is a RAW hazard on F0. FSUB.D reads F0, and FMUL.D writes it. So FSUB.D must wait for FMUL.D.
+
+189
+00:30:41,443 --> 00:30:52,835
+There is a WAR hazard on F2. FADD.D writes F2, and the older FSUB.D reads F2. FSUB.D must read the old F2 first.
+
+190
+00:30:53,285 --> 00:31:00,282
+So for RAW, the reader waits for the writer. For WAR, the writer waits until the reader issues.
+
+191
+00:31:00,732 --> 00:31:16,945
+If the scoreboard could not tell the two apart, FMUL.D could wait for FSUB.D, while FSUB.D waits for FMUL.D. This is a deadlock. Pause the video and try it: find the cycle of the snapshot, and fill the three tables.
+
+192
+00:31:17,395 --> 00:31:21,129
+FMUL.D dispatches in cycle 1 to Mult1.
+
+193
+00:31:21,579 --> 00:31:26,571
+Its sources F6 and F4 are ready, so it issues in cycle 2.
+
+194
+00:31:27,021 --> 00:31:30,967
+It executes for 7 cycles: cycles 3 to 9.
+
+195
+00:31:31,417 --> 00:31:39,588
+FSUB.D dispatches in cycle 2 to Add1. T1 is Mult1, because Mult1 will write F0.
+
+196
+00:31:40,038 --> 00:31:46,139
+FADD.D dispatches in cycle 3 to Add2. F10 and F2 have no tags.
+
+197
+00:31:46,589 --> 00:31:49,213
+So FADD.D issues in cycle 4.
+
+198
+00:31:49,663 --> 00:32:00,245
+It executes for 4 cycles: cycles 5 to 8. At the end of cycle 8, FADD.D has finished executing. This is the cycle of the snapshot.
+
+199
+00:32:00,695 --> 00:32:08,567
+FMUL.D writes back in cycle 10. No older instruction waits to read F0, so it does not wait.
+
+200
+00:32:09,017 --> 00:32:18,723
+The write-back clears T1 of FSUB.D in cycle 10. So FSUB.D issues in cycle 10, and reads F0 and F2.
+
+201
+00:32:19,173 --> 00:32:34,768
+FADD.D could write back in cycle 9. But the older FSUB.D has not read F2 yet. This is a WAR hazard. FSUB.D reads F2 in cycle 10, so FADD.D writes back in cycle 11.
+
+202
+00:32:35,218 --> 00:32:40,253
+FSUB.D executes for 4 cycles: cycles 11 to 14.
+
+203
+00:32:40,703 --> 00:32:42,943
+It writes back in cycle 15.
+
+204
+00:32:43,393 --> 00:33:02,785
+Here is the scoreboard at the end of cycle 8. Black cycle numbers are done; blue ones come later. Mult1 holds FMUL.D: R is F0, R1 is F6, R2 is F4. No tags: its sources were ready. The register status of F0 is Mult1.
+
+205
+00:33:03,235 --> 00:33:15,224
+Add1 holds FSUB.D: R is F8, R1 is F0, R2 is F2. T1 is Mult1. The register status of F8 is Add1.
+
+206
+00:33:15,674 --> 00:33:28,858
+Add2 holds FADD.D: R is F2, R1 is F10, R2 is F2. No tags. The register status of F2 is Add2. The ALU, Mult2 and Div are not busy.
+
+207
+00:33:29,308 --> 00:33:44,220
+How does the scoreboard tell RAW from WAR? A RAW hazard is a tag in T1 or T2. Add1 has T1 equal to Mult1, so FSUB.D waits for FMUL.D.
+
+208
+00:33:44,670 --> 00:34:00,947
+A WAR hazard is an older instruction that has not issued and has the destination as a source. Add2 writes F2. Add1 is older, has not issued, and its R2 is F2. So FADD.D waits to write back.
+
+209
+00:34:01,397 --> 00:34:12,661
+FMUL.D has no older instruction that waits to read F0. So it writes back in cycle 10 and does not wait for FSUB.D. There is no deadlock.
+
+210
+00:34:13,111 --> 00:34:22,903
+Here is the recap. One. In an in-order pipeline, an instruction stalls behind an older stalled instruction, even when it does not depend on it.
+
+211
+00:34:23,353 --> 00:34:31,247
+Two. Dynamic scheduling executes instructions out of order. But the result must look like sequential execution.
+
+212
+00:34:31,697 --> 00:34:39,334
+Three. An instruction buffer splits decode into two stages. Dispatch is in order. Issue is out of order.
+
+213
+00:34:39,784 --> 00:34:51,261
+Four. The scoreboard has three tables: instruction status, functional unit status with R, R1, R2, T1 and T2, and register status with T.
+
+214
+00:34:51,711 --> 00:35:05,919
+Five. Dispatch stalls on structural and WAW hazards. Issue stalls on RAW hazards, when T1 or T2 is set. Write-back stalls on WAR hazards.
+
+215
+00:35:06,369 --> 00:35:17,399
+Six. Write-back writes the register, clears the matching tags, and frees the entry. A dependent issue or dispatch can be in the same cycle as the write-back.
+
+216
+00:35:17,849 --> 00:35:34,489
+Seven. The scoreboard is cheap and gives 1 point 7 to 2 point 5 times speedup. But it has no bypassing and a limited scope. Part 2 adds register renaming, with Tomasulo's algorithm. That is the end of video 20.

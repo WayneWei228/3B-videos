@@ -1,0 +1,551 @@
+1
+00:00:00,000 --> 00:00:08,875
+This is ECE 320, video 19. The topic is superscalar pipelines. It is unit 10 of the slides.
+
+2
+00:00:09,325 --> 00:00:17,154
+After this video, you can do four things. One: explain the Flynn bottleneck, and why multiple issue removes it.
+
+3
+00:00:17,604 --> 00:00:23,812
+Two: draw ideal and realistic pipeline diagrams for a 2-way superscalar pipeline.
+
+4
+00:00:24,262 --> 00:00:30,171
+Three: calculate the CPI and the slowdown of an N-way pipeline that has stalls.
+
+5
+00:00:30,621 --> 00:00:39,517
+Four: explain what each wide stage costs. These are fetch, decode, stall logic, bypass, memory and the register file.
+
+6
+00:00:39,967 --> 00:00:52,639
+The slides list three kinds of parallelism. The first is ILP, instruction-level parallelism. A core runs independent instructions of one program at the same time.
+
+7
+00:00:53,089 --> 00:01:01,473
+Today's topic is one way to get ILP: multiple issue. The pipeline puts two or more instructions in each stage.
+
+8
+00:01:01,923 --> 00:01:08,835
+The next unit is dynamic scheduling. It uses out-of-order processing to find much more ILP.
+
+9
+00:01:09,285 --> 00:01:16,133
+The second kind is TLP, thread-level parallelism. Many threads run on one processor.
+
+10
+00:01:16,583 --> 00:01:21,191
+The third kind is multicore. A chip has many separate processors.
+
+11
+00:01:21,641 --> 00:01:35,103
+So far, all our pipelines were scalar. A scalar pipeline has one instruction in each stage. It can also have branch prediction and bypassing. Bypassing is the forwarding of unit 5.
+
+12
+00:01:35,553 --> 00:01:53,131
+IPC means instructions per cycle. It is 1 divided by CPI. At most one instruction leaves the W stage in each cycle. So 6 instructions finish in 6 cycles. IPC is 1, and CPI is 1.
+
+13
+00:01:53,581 --> 00:02:02,371
+This limit, CPI equal to IPC equal to 1, is called the Flynn bottleneck. A scalar pipeline cannot do better.
+
+14
+00:02:02,821 --> 00:02:16,133
+Hazards add stall cycles. Here, one cycle has a stall, so only 5 instructions finish in 6 cycles. IPC is less than 1. A real pipeline never reaches the limit.
+
+15
+00:02:16,583 --> 00:02:27,335
+Super-pipelining means more stages, each one shorter. It gives diminishing returns, because it adds more hazards and more pipeline-register overhead.
+
+16
+00:02:27,785 --> 00:02:34,014
+One solution to the Flynn bottleneck is multiple issue. Another name for it is superscalar.
+
+17
+00:02:34,464 --> 00:02:44,320
+An N-way, or N-wide, pipeline has N instructions in each stage at the same time. Here N is 2. Each stage has two instructions.
+
+18
+00:02:44,770 --> 00:02:59,149
+In the best case, two instructions leave W in each cycle. So 12 instructions finish in 6 cycles. IPC is 2, and CPI is 1 divided by 2, which is 0 point 5.
+
+19
+00:02:59,599 --> 00:03:07,236
+Today, most cores are 4-wide. Some are 6-wide. Simple cores are often dual-issue, which means 2-wide.
+
+20
+00:03:07,686 --> 00:03:20,059
+What does a 2-way pipeline need? Look at each stage for two instructions, A and B. First, fetch. The I dollar, the instruction cache, must give two instructions in each cycle.
+
+21
+00:03:20,509 --> 00:03:28,296
+Second, decode. The pipeline decodes two instructions in each cycle, and reads the source registers of both.
+
+22
+00:03:28,746 --> 00:03:34,122
+Third, execute. The pipeline does two ALU operations in each cycle.
+
+23
+00:03:34,572 --> 00:03:40,353
+Fourth, memory. The D dollar, the data cache, can get two accesses in each cycle.
+
+24
+00:03:40,803 --> 00:03:46,627
+Fifth, writeback. The pipeline writes two results into the register file in each cycle.
+
+25
+00:03:47,077 --> 00:03:53,947
+A 4-wide or 8-wide pipeline needs all of this for 4 or 8 instructions in each cycle.
+
+26
+00:03:54,397 --> 00:04:05,447
+Here is the program of slide 6: three loads, three adds, and one more load. First, the scalar pipeline. One instruction enters F in each cycle.
+
+27
+00:04:05,897 --> 00:04:19,081
+The first instruction leaves W in cycle 5. After that, one instruction leaves W in each cycle. So the last one leaves in cycle 5 plus 6, which is cycle 11.
+
+28
+00:04:19,531 --> 00:04:25,291
+Now the 2-way superscalar pipeline. Two instructions enter F in each cycle.
+
+29
+00:04:25,741 --> 00:04:33,976
+The instructions go in pairs. Cycles 1, 2 and 3 each fetch two instructions. Cycle 4 fetches the last one.
+
+30
+00:04:34,426 --> 00:04:43,023
+The last W is in cycle 8, not 11. This diagram is ideal. It assumes that there are no stalls at all.
+
+31
+00:04:43,473 --> 00:04:55,655
+Now the same program with the hazards. This is slide 7. First, the scalar pipeline. The three loads have no hazards. One instruction enters F in each cycle.
+
+32
+00:04:56,105 --> 00:05:07,219
+add x6 needs x4. load word x4 has the value at the end of M, in cycle 6. The WX path forwards it into X in cycle 7.
+
+33
+00:05:07,669 --> 00:05:16,885
+So add x6 waits one cycle in decode. This is the D star in cycle 5. It is the load-use stall of unit 5.
+
+34
+00:05:17,335 --> 00:05:26,039
+Fetch also waits one cycle during the stall. This slide leaves that cell empty. add x7 enters F in cycle 6.
+
+35
+00:05:26,489 --> 00:05:39,652
+load word x9 needs x8 for its address. add x8 has x8 at the end of X, in cycle 9. The MX path forwards it into X in cycle 10. There is no stall.
+
+36
+00:05:40,102 --> 00:05:48,827
+The last W is in cycle 12. The ideal diagram ended in cycle 11. There is one stall cycle in total.
+
+37
+00:05:49,277 --> 00:06:10,205
+Now the 2-way pipeline of slide 7. The rules: two instructions in each stage, in program order. There is one D dollar port, so only one load or store enters X in each cycle. Slide 21 says a 2-wide machine usually has one port. Forwarding works as in unit 5.
+
+38
+00:06:10,655 --> 00:06:15,882
+load word x2 enters F in cycle 1. It goes through without a stall.
+
+39
+00:06:16,332 --> 00:06:31,884
+load word x3 is also a load. load word x2 uses the D dollar port first. It enters X in cycle 3. So load word x3 waits. It has D star in cycle 2, and X in cycle 4.
+
+40
+00:06:32,334 --> 00:06:44,814
+load word x4 is a load too. load word x3 goes to X in cycle 4, so load word x4 goes to X in cycle 5. It has D star in cycle 3.
+
+41
+00:06:45,264 --> 00:06:59,963
+add x6 needs x4. The value is ready at the end of M, in cycle 6. The WX path forwards it into X in cycle 7. So add x6 has D star in cycles 3, 4 and 5.
+
+42
+00:07:00,413 --> 00:07:12,509
+add x7 has no hazard. But the pipeline is in order, so add x7 cannot pass add x6. Both go to X in cycle 7, on the two ALUs.
+
+43
+00:07:12,959 --> 00:07:20,425
+add x8 and load word x9 enter F in cycle 6. add x8 goes through without a stall.
+
+44
+00:07:20,875 --> 00:07:36,107
+load word x9 needs x8. The two instructions of a pair cannot go to X together when one needs the result of the other. The MX path forwards x8, and load word x9 goes to X in cycle 9.
+
+45
+00:07:36,557 --> 00:07:53,304
+The last W is in cycle 11. Count the orange cells: 8 stall cycles in the 2-way pipeline, and only 1 in the scalar pipeline. In the ideal case, 2-way saved 3 cycles. Here, it saves only 1 cycle.
+
+46
+00:07:53,754 --> 00:08:05,530
+Now the CPI. A scalar pipeline with no stalls finishes one instruction in each cycle. 8 instructions take 8 cycles. The base CPI is 1.
+
+47
+00:08:05,980 --> 00:08:17,820
+A 2-way pipeline finishes two instructions in each cycle. 8 instructions take 4 cycles. The base CPI is 4 divided by 8, which is one half.
+
+48
+00:08:18,270 --> 00:08:33,246
+A 4-way pipeline needs only 2 cycles. In general, the base CPI of an N-way pipeline is 1 divided by N. This assumes no data stalls. That is an overly optimistic assumption.
+
+49
+00:08:33,696 --> 00:08:45,301
+A stall cycle costs one full cycle at every width. The base part gets smaller, but the stall part does not. So multiple issue amplifies the stall penalties.
+
+50
+00:08:45,751 --> 00:09:03,394
+Slide 9 has an example. 20 percent of the instructions are branches. 75 percent of the branches are taken. There is no branch prediction, and the branch penalty is 2 cycles. Find the CPI for scalar, 2-way and 4-way pipelines.
+
+51
+00:09:03,844 --> 00:09:06,660
+Count cycles for 100 instructions.
+
+52
+00:09:07,110 --> 00:09:13,339
+20 percent of 100 is 20. So 20 instructions are branches. They are purple.
+
+53
+00:09:13,789 --> 00:09:20,488
+75 percent of the 20 branches are taken. That is 15 taken branches. They are red.
+
+54
+00:09:20,938 --> 00:09:31,285
+Each taken branch costs 2 stall cycles. So 15 times 2 gives 30 stall cycles. These 30 cycles are the same at every width.
+
+55
+00:09:31,735 --> 00:09:58,039
+Scalar: 100 instructions take 100 base cycles, plus 30 stall cycles. That is 130 cycles, so the CPI is 1 point 3. The slide writes it as 1 plus 0 point 2 times 0 point 7 5 times 2. The base CPI is 1, so 1 point 3 divided by 1 is 1 point 3. That is a 30 percent slowdown.
+
+56
+00:09:58,489 --> 00:10:17,305
+2-way: the base cycles are 100 divided by 2, which is 50. Plus 30 gives 80 cycles, so the CPI is 0 point 8. Divide by the base CPI, 0 point 5. The result is 1 point 6, a 60 percent slowdown.
+
+57
+00:10:17,755 --> 00:10:39,749
+4-way: the base cycles are 25. Plus 30 gives 55 cycles, so the CPI is 0 point 5 5. Divided by 0 point 2 5, the result is 2 point 2. That is a 120 percent slowdown. The same 30 stall cycles hurt more when the pipeline is wider.
+
+58
+00:10:40,199 --> 00:10:59,378
+Now a practice problem of our own. 25 percent of the instructions are branches. 60 percent of them are taken. There is no prediction, and the penalty is 3 cycles. Find the CPI and the slowdown for 2-way and 4-way pipelines. Pause the video and try it.
+
+59
+00:10:59,828 --> 00:11:03,028
+Count cycles for 100 instructions again.
+
+60
+00:11:03,478 --> 00:11:07,510
+25 percent of 100 is 25 branches.
+
+61
+00:11:07,960 --> 00:11:11,864
+60 percent of 25 is 15 taken branches.
+
+62
+00:11:12,314 --> 00:11:17,605
+15 taken branches times 3 cycles gives 45 stall cycles.
+
+63
+00:11:18,055 --> 00:11:36,721
+2-way: 50 base cycles plus 45 stall cycles gives 95 cycles. The CPI is 0 point 9 5. Divided by the base CPI, 0 point 5, the result is 1 point 9. That is a 90 percent slowdown.
+
+64
+00:11:37,171 --> 00:11:53,235
+4-way: 25 base cycles plus 45 gives 70 cycles. The CPI is 0 point 7. Divided by 0 point 2 5, the result is 2 point 8. That is a 180 percent slowdown.
+
+65
+00:11:53,685 --> 00:12:03,499
+Slide 10 shows a simple superscalar, SS1. It starts with the integer pipeline of unit 5, with its integer register file.
+
+66
+00:12:03,949 --> 00:12:21,357
+It adds floating-point units after decode. FP multiply, E star, takes 3 stages. FP add, E plus, takes 2 stages. There is also an FP divider, E slash. The FP units write a separate FP register file.
+
+67
+00:12:21,807 --> 00:12:40,345
+One integer instruction and one FP instruction go on together. One goes to X, and the other goes to the FP units. The changes to the design are small. But the speedup is also small, because the two instructions must be one integer and one FP.
+
+68
+00:12:40,795 --> 00:12:48,625
+FP loads and stores use the load unit of the integer pipeline. That is the M stage of the integer lane.
+
+69
+00:12:49,075 --> 00:13:10,429
+Slide 11 shows SS2, a four-issue pipeline. It adds a second integer ALU, and more ports on both register files. They are orange here, and red on the slide. Two integer and two FP instructions can go on in each cycle. The FP units are the same as in SS1.
+
+70
+00:13:10,879 --> 00:13:23,935
+Slide 12 lists the challenges at the front end of the pipeline. First, wide fetch. The pipeline must fetch many instructions in each cycle, and predict many branches in each cycle.
+
+71
+00:13:24,385 --> 00:13:28,993
+Second, wide decode. The pipeline needs copies of the decoder.
+
+72
+00:13:29,443 --> 00:13:46,723
+Third, wide issue. Issue means to let an instruction go on to execute. The pipeline must decide which instructions can go on together. Not all combinations are possible. The stall logic grows as N squared for an N-wide machine.
+
+73
+00:13:47,173 --> 00:13:57,648
+Fourth, wide register read. Each register read needs its own port on the register file. Each port has its own address wires and data wires.
+
+74
+00:13:58,098 --> 00:14:06,653
+Example: a 4-wide pipeline. Each of the 4 instructions reads 2 registers. Count the arrows: 8 read ports.
+
+75
+00:14:07,103 --> 00:14:16,383
+Slide 13 lists the challenges at the back end. First, wide execute. The pipeline needs copies of the arithmetic units.
+
+76
+00:14:16,833 --> 00:14:30,465
+Second, wide bypass. Each value can come from more places. The number of bypass paths grows as N squared times P. N is the width, and P is the depth of the execute pipeline.
+
+77
+00:14:30,915 --> 00:14:37,293
+Third, wide writeback. Each instruction that writes a register needs its own write port.
+
+78
+00:14:37,743 --> 00:14:42,586
+Example: a 4-wide pipeline. Count the arrows: 4 write ports.
+
+79
+00:14:43,036 --> 00:14:58,417
+The fundamental challenge is the amount of ILP in the program. If the instructions depend on each other, a wide pipeline cannot run them together. The compiler must schedule the code to expose parallel instructions.
+
+80
+00:14:58,867 --> 00:15:11,305
+Slide 14: wide fetch of sequential instructions. The pipeline fetches two instructions that follow each other. In this drawing, an I dollar block holds two instructions.
+
+81
+00:15:11,755 --> 00:15:19,008
+Case 1: the two instructions are 1020 and 1021. They are in the same block.
+
+82
+00:15:19,458 --> 00:15:34,498
+One cache access gives both. So nothing extra is necessary. Larger blocks make this case more frequent. Compilers also align basic blocks to I dollar blocks. This gives better use of the fetch bandwidth.
+
+83
+00:15:34,948 --> 00:15:42,308
+Case 2: the instructions are 1021 and 1022. They are in two different blocks.
+
+84
+00:15:42,758 --> 00:15:53,915
+The cache fetches block A and block A plus 1 in parallel. This can add latency. The designer adds pipeline stages, so that the clock does not slow down.
+
+85
+00:15:54,365 --> 00:16:06,803
+Slide 15: non-sequential fetch. There are two questions. How many branches must the pipeline predict in each cycle? And what happens to instructions fetched after a taken branch?
+
+86
+00:16:07,253 --> 00:16:21,205
+The most common organization is called 1 and squash. The pipeline makes one prediction in each cycle. In our example, a 4-wide fetch group has a branch in slot 2. It is predicted taken.
+
+87
+00:16:21,655 --> 00:16:30,593
+The instructions after the taken branch are discarded. This is called squash. Here, insn 3 and insn 4 are squashed.
+
+88
+00:16:31,043 --> 00:16:40,366
+Only 2 of the 4 fetched instructions are useful in this cycle. So the effective fetch width goes down, and the IPC goes down.
+
+89
+00:16:40,816 --> 00:16:47,600
+The compiler can help. It can reduce the number of taken branches. One way is to unroll loops.
+
+90
+00:16:48,050 --> 00:17:02,749
+Slide 16: wide decode. With fixed-length instructions, decoding is easy. In RISC-V, each instruction has 4 bytes, so each one starts at a known address. The pipeline decodes all of them at once.
+
+91
+00:17:03,199 --> 00:17:12,500
+With variable-length instructions, decoding is harder. The start of instruction 2 is known only after instruction 1 is decoded.
+
+92
+00:17:12,950 --> 00:17:30,401
+Decode also reads the source registers. N instructions need 2 N read ports. The latency of the register file grows with the number of ports. In reality, fewer than 2 N ports are enough, because most values come from the bypass network.
+
+93
+00:17:30,851 --> 00:17:33,624
+The next problem is the stall logic.
+
+94
+00:17:34,074 --> 00:17:55,151
+Slide 17. Start with the 1-wide pipeline with full bypassing. A load-use stall happens when X M holds a load, and the instruction in D X reads its destination register. The condition has two compare terms. The WD stall from unit 5 needs the same kind of logic.
+
+95
+00:17:55,601 --> 00:18:03,687
+Each term compares one source register, rs1 or rs2, with the destination register of the load.
+
+96
+00:18:04,137 --> 00:18:15,443
+Now the 2-wide pipeline. D X holds two instructions, and each one has two sources. X M also holds two instructions, and each one can be a load.
+
+97
+00:18:15,893 --> 00:18:28,715
+There is one compare term for each source and each load. That is 4 times 2, which gives 8 terms. In general, 2 N squared. This is called the N squared dependence cross-check.
+
+98
+00:18:29,165 --> 00:18:39,661
+This is not all. The second instruction of a pair must also check the first one. If it reads the destination of the first one, the two cannot go together.
+
+99
+00:18:40,111 --> 00:18:51,737
+This part is not on the slides. A 4-wide pipeline has 8 sources and 4 possible loads. The grid has 8 times 4, which is 32 compare terms.
+
+100
+00:18:52,187 --> 00:19:04,411
+Slide 18: wide execute. To execute N instructions in each cycle, the pipeline needs multiple execution units. Does it need N units of every kind?
+
+101
+00:19:04,861 --> 00:19:07,805
+N ALUs? Maybe. ALUs are small.
+
+102
+00:19:08,255 --> 00:19:15,871
+N floating-point dividers? No. FP dividers are huge, and the f div instruction is uncommon.
+
+103
+00:19:16,321 --> 00:19:27,927
+A typical design has a mix of functional units. The mix follows the instruction mix of programs. Intel Nehalem has 3 arithmetic units and 3 memory units.
+
+104
+00:19:28,377 --> 00:19:39,555
+Slide 19: wide bypass. The slide draws 4 ALUs. The result of each ALU can go to the input of every ALU in the next cycle.
+
+105
+00:19:40,005 --> 00:19:54,320
+Count the wires. Each of the 4 outputs connects to each of the 4 inputs. That is 4 times 4, which is 16. In general, N squared point-to-point connections. Routing makes the wires longer.
+
+106
+00:19:54,770 --> 00:20:05,351
+Each ALU input needs a mux with N plus 1 inputs. Here, 4 bypass values plus the value from the register file. That is 5 inputs.
+
+107
+00:20:05,801 --> 00:20:13,737
+The N squared stall logic is OK. It compares only a few bits, for example 5-bit register numbers.
+
+108
+00:20:14,187 --> 00:20:26,945
+But N squared bypass busses are not OK. Each one is 32 or 64 bits wide. They are hard to lay out and route. This is one of the big problems of superscalar.
+
+109
+00:20:27,395 --> 00:20:37,891
+Slide 20 shows one solution to the N squared bypass problem: clustering. The ALUs are put in K groups, called clusters. Here K is 2.
+
+110
+00:20:38,341 --> 00:20:41,327
+Inside a cluster, there is full bypassing.
+
+111
+00:20:41,777 --> 00:20:45,276
+Between clusters, there is limited bypassing, or none.
+
+112
+00:20:45,726 --> 00:20:55,475
+The key to performance: the hardware steers dependent instructions to the same cluster. Then their values use the fast bypass inside the cluster.
+
+113
+00:20:55,925 --> 00:21:10,987
+Usually each cluster has its own copy of the register file, RF0 and RF1. The slide asks what a write must ensure. Every copy must get the write, so that all copies hold the same values.
+
+114
+00:21:11,437 --> 00:21:24,749
+Slides 21 and 22: wide memory access. Does the pipeline need many loads and stores in each cycle? For 2-wide, usually not. For 4-wide or wider, sometimes.
+
+115
+00:21:25,199 --> 00:21:34,521
+Look at the rough instruction mix. Loads are about 20 to 25 percent of instructions. Stores are about 10 to 15 percent.
+
+116
+00:21:34,971 --> 00:21:41,713
+Loads are more frequent. So support for many loads is more important than support for many stores.
+
+117
+00:21:42,163 --> 00:21:55,987
+How can the D dollar get a second port? Option 1 is multi-porting. The cache accepts any two accesses in each cycle. It is the most general solution. But it costs latency, area and power.
+
+118
+00:21:56,437 --> 00:22:06,997
+Option 2 is replication. The pipeline keeps two copies of the D dollar. Each copy serves one load. But every store must write to all copies.
+
+119
+00:22:07,447 --> 00:22:18,135
+So replication adds read bandwidth only. Loads have no latency penalty. It does not help stores, and that is OK. It costs area and power.
+
+120
+00:22:18,585 --> 00:22:33,070
+Slide 23: register file ports. Each instruction reads 2 registers and writes 1. So N instructions need 2 N read ports and N write ports. More ports cost latency and area.
+
+121
+00:22:33,520 --> 00:22:39,728
+In reality, fewer read ports are enough, because many values come from the bypass network.
+
+122
+00:22:40,178 --> 00:22:49,223
+Fewer write ports are also enough. Stores and branches do not write a register. They are about 35 percent of instructions.
+
+123
+00:22:49,673 --> 00:23:02,815
+Slide 24 lists the ways to build a multiple-issue machine. First, superscalar. It runs unmodified sequential programs. The hardware must find what can run in parallel.
+
+124
+00:23:03,265 --> 00:23:19,926
+Second, VLIW, very long instruction word. The compiler groups parallel instructions into one long instruction. The hardware can be simple and low power. But programs need new binaries. A binary is the compiled machine code.
+
+125
+00:23:20,376 --> 00:23:30,403
+Third, EPIC, explicitly parallel instruction computing. It is a compromise. The compiler does some of the work, and the hardware does the rest.
+
+126
+00:23:30,853 --> 00:23:44,634
+Fourth, the dynamically scheduled superscalar. Examples are the Pentium Pro, two and three, which are 3-wide, and the Core i7 series. Dynamic scheduling is the topic of the next unit.
+
+127
+00:23:45,084 --> 00:24:01,553
+A last practice problem of our own. Draw the 2-way pipeline diagram of these four instructions. Two instructions enter F in cycle 1, and two in cycle 2. Use the rules of slide 7. Pause the video and try it.
+
+128
+00:24:02,003 --> 00:24:06,398
+add x5 has no hazard. It enters X in cycle 3.
+
+129
+00:24:06,848 --> 00:24:25,088
+load word x6 needs x5 for its address. add x5 has x5 at the end of X, in cycle 3. The two cannot go to X together. The MX path forwards x5, so load word x6 goes to X in cycle 4. It has one D star.
+
+130
+00:24:25,538 --> 00:24:37,975
+load word x7 is a load. load word x6 uses the D dollar port in cycle 4, so load word x7 goes to X in cycle 5. It has one D star.
+
+131
+00:24:38,425 --> 00:24:54,404
+add x8 needs x7. load word x7 has the value at the end of M, in cycle 6. The WX path forwards it into X in cycle 7. So add x8 has D star in cycles 3, 4 and 5.
+
+132
+00:24:54,854 --> 00:25:05,627
+The last W is in cycle 9. A scalar pipeline also ends in cycle 9 for this code. The hazards remove all the gain of the second lane.
+
+133
+00:25:06,077 --> 00:25:15,549
+Here is the recap. One. A scalar pipeline has CPI equal to IPC equal to 1 at best. This is the Flynn bottleneck.
+
+134
+00:25:15,999 --> 00:25:24,234
+Two. A superscalar pipeline puts N instructions in each stage. Its base CPI is 1 divided by N.
+
+135
+00:25:24,684 --> 00:25:38,465
+Three. In realistic diagrams, there is one D dollar port, the order stays the same, and a pair cannot send a producer and its user to X together. The D star stalls remove much of the gain.
+
+136
+00:25:38,915 --> 00:25:54,233
+Four. The CPI is 1 divided by N, plus the stall cycles per instruction. The slowdown is the CPI divided by 1 over N. A wider pipeline has a larger slowdown for the same stalls.
+
+137
+00:25:54,683 --> 00:26:14,096
+Five. Each wide part has a cost: wide fetch with 1 and squash, wide decode, N squared stall logic, N squared bypass with clustering as one solution, D dollar ports with multi-porting or replication, and 2 N read and N write register ports.
+
+138
+00:26:14,546 --> 00:26:27,218
+Six. The implementations are superscalar, VLIW, EPIC and the dynamically scheduled superscalar. Dynamic scheduling is the next unit. That is the end of video 19.

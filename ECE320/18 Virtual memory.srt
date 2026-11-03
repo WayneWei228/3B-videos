@@ -1,0 +1,587 @@
+1
+00:00:00,000 --> 00:00:08,363
+This is ECE 320, video 18. The topic is virtual memory. It is unit 7 of the slides.
+
+2
+00:00:08,813 --> 00:00:19,778
+After this video, you can do four things. One: split a virtual address into the virtual page number and the page offset, and translate it with a page table.
+
+3
+00:00:20,228 --> 00:00:27,396
+Two: calculate the size of a page table. This includes the two-level page table of assignment 6.
+
+4
+00:00:27,846 --> 00:00:33,499
+Three: explain the translation buffer, translation buffer misses and page faults.
+
+5
+00:00:33,949 --> 00:00:42,120
+Four: compare virtual, physical and virtual-physical caches, and explain the parallel T L B and cache access.
+
+6
+00:00:42,570 --> 00:00:57,546
+A program uses virtual addresses, or V A. They go from 0 to 2 to the N, minus 1. N is the machine size, for example 32 bits for embedded systems or 64 bits for servers.
+
+7
+00:00:57,996 --> 00:01:11,287
+Memory uses physical addresses, or P A. They go from 0 to 2 to the M, minus 1. Usually M is smaller than N. 2 to the M is the most memory that the machine supports.
+
+8
+00:01:11,737 --> 00:01:24,537
+The mapping from V A to P A works on pages. A page is a block of addresses with a fixed size. Virtual page 0, the first code page, maps to physical page 3.
+
+9
+00:01:24,987 --> 00:01:38,469
+The mapping does not have to keep pages in order. Virtual page 1 is next to virtual page 0, but it maps to physical page 0. Virtual page 2 maps to physical page 1.
+
+10
+00:01:38,919 --> 00:01:47,879
+A virtual page does not have to map to any physical page. Virtual pages 3 and 4 are not used, so they have no mapping.
+
+11
+00:01:48,329 --> 00:01:57,673
+Virtual pages that are not in memory live on disk, in the swap area. Here the stack page, virtual page 5, is on the disk.
+
+12
+00:01:58,123 --> 00:02:12,651
+This is the basic idea of virtual memory: memory acts like a cache for the disk. It holds a changing subset of the program's pages. The operating system manages this, and the program does not see it.
+
+13
+00:02:13,101 --> 00:02:28,376
+Why was virtual memory made? The original reason was compatibility. IBM System 370 was a family of computers with one set of software. Virtual memory is older than caches, by a little.
+
+14
+00:02:28,826 --> 00:02:31,706
+One machine of the family had a small memory.
+
+15
+00:02:32,156 --> 00:02:34,460
+Another machine had a large memory.
+
+16
+00:02:34,910 --> 00:02:45,342
+With virtual memory, the same program runs on both machines. On each machine, the program sees 2 to the N bytes, for any amount of real memory.
+
+17
+00:02:45,792 --> 00:02:52,043
+Before virtual memory, the programmers had to write their code for the memory size of the machine.
+
+18
+00:02:52,493 --> 00:03:00,471
+The word virtual means: in effect, but not in actuality. The memory appears to be 2 to the N bytes, but it is not.
+
+19
+00:03:00,921 --> 00:03:12,911
+Virtual memory has other uses. The first is multiprogramming: many processes run on one machine. Each process thinks that it has 2 to the N bytes of address space.
+
+20
+00:03:13,361 --> 00:03:27,846
+The system maps the virtual pages of different processes to different physical pages. Program 0 gets physical pages 0 to 2. Program 1 gets 3 to 5. Program 2 gets 6 and 7.
+
+21
+00:03:28,296 --> 00:03:36,701
+Each process can reach only its own physical pages. So a process cannot read or write the memory of another process.
+
+22
+00:03:37,151 --> 00:03:50,783
+The second use is inter-process communication. The system maps virtual pages of two processes to the same physical page. Here Program 0 and Program 2 share physical page 8.
+
+23
+00:03:51,233 --> 00:04:03,308
+The third use is protection at the level of pages. The operating system gives each page a set of permissions: read, write and execute. The hardware enforces them.
+
+24
+00:04:03,758 --> 00:04:10,606
+Virtual page 0 holds code. It has read and execute permission, but no write permission.
+
+25
+00:04:11,056 --> 00:04:17,669
+Virtual page 1 holds data. It has read and write permission, but no execute permission.
+
+26
+00:04:18,119 --> 00:04:27,933
+Now the program tries to store a word to virtual page 0. The hardware checks the write permission of virtual page 0. It is not set.
+
+27
+00:04:28,383 --> 00:04:34,377
+So the hardware raises an exception. The operating system then terminates the program.
+
+28
+00:04:34,827 --> 00:04:40,779
+The same happens when the program tries to execute data, or to write a read-only page.
+
+29
+00:04:41,229 --> 00:04:55,160
+The mapping from V A to P A is called address translation. Slide 7 gives an example: a 32-bit machine, so the virtual address has 32 bits, bit 31 to bit 0.
+
+30
+00:04:55,610 --> 00:05:09,178
+The pages are 64 kilobytes. That is 2 to the 16 bytes. So the low 16 bits select a byte in the page. They are the page offset, P O F S, bits 15 to 0.
+
+31
+00:05:09,628 --> 00:05:18,695
+The other bits are the virtual page number, V P N. 32 minus 16 is 16 bits, bits 31 to 16.
+
+32
+00:05:19,145 --> 00:05:28,574
+The maximum memory is 256 megabytes. That is 2 to the 28 bytes. So the physical address has 28 bits.
+
+33
+00:05:29,024 --> 00:05:36,405
+The page offset is not translated. The hardware copies it into bits 15 to 0 of the physical address.
+
+34
+00:05:36,855 --> 00:05:48,717
+Only the V P N is translated, into the physical page number, P P N. It has 28 minus 16, which is 12 bits, bits 27 to 16.
+
+35
+00:05:49,167 --> 00:05:55,161
+So there are 2 to the 16 virtual pages, but only 2 to the 12 physical pages.
+
+36
+00:05:55,611 --> 00:06:06,982
+How are addresses translated? Each process gets a page table, P T. It is stored in physical memory. Each row is a page table entry, P T E.
+
+37
+00:06:07,432 --> 00:06:15,325
+A page table entry points to a location. It is a physical page in memory, or a place on the swap disk.
+
+38
+00:06:15,775 --> 00:06:22,175
+The page table is indexed by the V P N. So the row number is the virtual page number.
+
+39
+00:06:22,625 --> 00:06:39,649
+Here is our example, with the split of slide 7. The virtual address is 0 x 0 0 0 3 1 2 3 4. The top 16 bits give V P N 3. The low 16 bits give the page offset 1 2 3 4.
+
+40
+00:06:40,099 --> 00:06:48,099
+Use V P N 3 as the row number. Row 3 of the page table holds the entry for virtual page 3.
+
+41
+00:06:48,549 --> 00:06:56,144
+The entry gives P P N 0 x 0 5 A. It goes into the top 12 bits of the physical address.
+
+42
+00:06:56,594 --> 00:07:02,503
+The page offset 1 2 3 4 is copied unchanged into the low 16 bits.
+
+43
+00:07:02,953 --> 00:07:10,719
+So the physical address is 0 x 0 5 A 1 2 3 4. One process has one page table.
+
+44
+00:07:11,169 --> 00:07:24,353
+Slide 9 asks: how big is a page table on this machine? It has 32-bit addresses, 4 kilobyte pages, and 4 byte page table entries. Pause the video and try it.
+
+45
+00:07:24,803 --> 00:07:31,480
+A page is 4 kilobytes, which is 2 to the 12 bytes. So the page offset has 12 bits.
+
+46
+00:07:31,930 --> 00:07:46,437
+The V P N has 32 minus 12, which is 20 bits. So there are 2 to the 20 virtual pages, about 1 million. The slide says the same: 4 gigabytes divided by 4 kilobytes.
+
+47
+00:07:46,887 --> 00:07:52,967
+The page table has one entry for each virtual page. So it has 2 to the 20 rows.
+
+48
+00:07:53,417 --> 00:08:01,950
+Each entry is 4 bytes. 2 to the 20 entries times 4 bytes is 2 to the 22 bytes. That is 4 megabytes.
+
+49
+00:08:02,400 --> 00:08:13,195
+Each process has its own page table. 100 processes need 100 tables, so 100 times 4 megabytes is 400 megabytes.
+
+50
+00:08:13,645 --> 00:08:25,975
+So page tables can get very large. Multi-level page tables make them smaller. The O S course covers them, and assignment 6 at the end of this video uses two levels.
+
+51
+00:08:26,425 --> 00:08:42,319
+Slide 11 asks six questions. What, why and how have answers: translate addresses, for compatibility, multiprogramming and protection, with page tables. Three are open: who translates, when, and where is the page table?
+
+52
+00:08:42,769 --> 00:08:53,435
+Option 1: the process, that is the program, translates its own addresses. Then the page table is in the virtual address space that the process can see.
+
+53
+00:08:53,885 --> 00:09:03,891
+Slide 11 gives two problems. First, the program, and the programmer, must know physical addresses. Virtual memory exists to avoid this.
+
+54
+00:09:04,341 --> 00:09:10,271
+Second, the program can forge physical addresses and change the memory of other programs.
+
+55
+00:09:10,721 --> 00:09:20,279
+Option 2: the operating system translates for the process. The page table is in the virtual address space of the operating system.
+
+56
+00:09:20,729 --> 00:09:24,974
+So a user process cannot view or change its own page table.
+
+57
+00:09:25,424 --> 00:09:29,371
+And a user process does not need to know physical addresses.
+
+58
+00:09:29,821 --> 00:09:34,023
+With option 2, the translation happens on L2 misses.
+
+59
+00:09:34,473 --> 00:09:45,033
+Here is option 2 step by step. The C P U accesses memory with a virtual address. The L1 and L2 caches use the virtual address.
+
+60
+00:09:45,483 --> 00:09:51,094
+On an L2 miss, an interrupt transfers control to the operating system handler.
+
+61
+00:09:51,544 --> 00:09:57,197
+The handler translates the virtual address. It reads the page table of the process.
+
+62
+00:09:57,647 --> 00:10:00,869
+Then it accesses memory with the physical address.
+
+63
+00:10:01,319 --> 00:10:06,055
+When the L2 fill completes, the handler returns to the user process.
+
+64
+00:10:06,505 --> 00:10:14,313
+This is still slow. An interrupt handler runs, and a page table lookup in memory comes before the memory access.
+
+65
+00:10:14,763 --> 00:10:20,843
+Address translation is still too slow. Remember that the page table is in physical memory.
+
+66
+00:10:21,293 --> 00:10:27,607
+So the first memory transaction reads the page table entry. This translates the address.
+
+67
+00:10:28,057 --> 00:10:33,881
+The second memory transaction accesses the page, if the page is in physical memory.
+
+68
+00:10:34,331 --> 00:10:37,681
+Two memory transactions for each access is slow.
+
+69
+00:10:38,131 --> 00:10:50,141
+The fix is to cache the translations, in a translation buffer, T B. On a T B hit, the translation is ready at once, and only the page access goes to memory.
+
+70
+00:10:50,591 --> 00:10:53,941
+The page table is walked only on a T B miss.
+
+71
+00:10:54,391 --> 00:11:09,153
+In the hierarchy of slide 14, the T B sits after the L2 cache, before main memory. The caches use virtual addresses. The T B turns the virtual address into a physical address for memory.
+
+72
+00:11:09,603 --> 00:11:14,403
+The T B is a small cache. It has 16 to 64 entries.
+
+73
+00:11:14,853 --> 00:11:22,704
+Each entry has a tag and data. The tag is a V P N. The data is the P P N for that V P N.
+
+74
+00:11:23,154 --> 00:11:33,117
+The T B is usually fully associative. A lookup compares the V P N with every tag. Here we look up V P N 3 from our example.
+
+75
+00:11:33,567 --> 00:11:40,713
+The second entry has tag 3. That is a hit, and the T B gives P P N 0 x 0 5 A.
+
+76
+00:11:41,163 --> 00:11:54,049
+The T B uses temporal locality in the page table accesses: a page that was used is used again soon. And the operating system handler runs only on a T B miss.
+
+77
+00:11:54,499 --> 00:12:04,077
+Each access first looks up the virtual address in the T B. On a hit, the P P N gives the physical address, and the access goes on.
+
+78
+00:12:04,527 --> 00:12:13,210
+A T B miss means that the translation is not in the T B. It may still be in the page table. So the page table is walked.
+
+79
+00:12:13,660 --> 00:12:22,279
+If the page is in memory, the page table entry is loaded from memory into the T B. Then the instruction is restarted.
+
+80
+00:12:22,729 --> 00:12:28,873
+If the page is not in memory, this is a page fault. The next slide covers page faults.
+
+81
+00:12:29,323 --> 00:12:45,557
+There are two methods to walk the page table on a T B miss. Option 1: an operating system routine, as in Alpha, MIPS and ARM. A short routine of about 10 instructions walks the page table and updates the T B.
+
+82
+00:12:46,007 --> 00:12:50,103
+The page table format is flexible, because software walks it.
+
+83
+00:12:50,553 --> 00:12:55,353
+But the routine needs an operating system call, and this adds latency.
+
+84
+00:12:55,803 --> 00:13:06,257
+Option 2: a hardware finite state machine, as in x86. A page table register gives the page table, and the hardware walks it.
+
+85
+00:13:06,707 --> 00:13:09,843
+This saves the cost of the operating system call.
+
+86
+00:13:10,293 --> 00:13:14,154
+But the page table format is hard-coded in the hardware.
+
+87
+00:13:14,604 --> 00:13:25,612
+A page fault is a T B miss where the page is not in physical memory. It starts as a T B miss, and the operating system or hardware handler finds it.
+
+88
+00:13:26,062 --> 00:13:36,089
+Then an operating system routine runs. First, it chooses a physical page to replace. It uses a software version of L R U.
+
+89
+00:13:36,539 --> 00:13:44,176
+If the chosen page is dirty, the routine writes it to disk. This is like a dirty block in a write-back cache.
+
+90
+00:13:44,626 --> 00:13:57,661
+Then the operating system reads the missing page from disk and puts it in physical memory. This takes about 10 milliseconds. So the operating system runs another task in the meantime.
+
+91
+00:13:58,111 --> 00:14:05,492
+When the read completes, the page table is updated. Then the access is handled like a normal T B miss.
+
+92
+00:14:05,942 --> 00:14:21,473
+Now, where does the translation happen? Slide 17 shows the hierarchy so far: virtual caches. The caches are indexed and tagged with virtual addresses. The T B translates only to access physical memory.
+
+93
+00:14:21,923 --> 00:14:27,107
+This is fast. In the common case, a cache hit, no translation is needed.
+
+94
+00:14:27,557 --> 00:14:42,149
+But on a context switch, the next process uses the same virtual addresses for other data. So the caches must be flushed, which is slow. Or a process I D, P I D, is added to the cache tags.
+
+95
+00:14:42,599 --> 00:14:57,404
+And inter-process communication is difficult. With aliasing, two virtual addresses map to the same physical address. Then two copies can be in the cache, so shared memory cannot be cached. This is very slow.
+
+96
+00:14:57,854 --> 00:15:09,246
+Slide 18 shows the other choice: physical caches. The T B comes first and translates at once. The caches are indexed and tagged with physical addresses.
+
+97
+00:15:09,696 --> 00:15:16,907
+On a context switch, the caches need no flush. Different processes do not share physical addresses.
+
+98
+00:15:17,357 --> 00:15:25,783
+Inter-process communication can use the cache. A shared page has one physical address, so there is one copy in the cache.
+
+99
+00:15:26,233 --> 00:15:33,508
+But the hit time increases. The T B is on the critical path of every access, also in the common case.
+
+100
+00:15:33,958 --> 00:15:43,835
+Slide 19 shows the compromise: virtual-physical caches. The cache is indexed with the virtual address, and tagged with the physical address.
+
+101
+00:15:44,285 --> 00:15:48,616
+So the cache access and the address translation happen in parallel.
+
+102
+00:15:49,066 --> 00:15:58,282
+There are no context switch or aliasing problems, because the tags are physical. And it is fast: there are no extra hit time cycles.
+
+103
+00:15:58,732 --> 00:16:09,740
+A T B that works in parallel with a cache is called a translation lookaside buffer, T L B. This organization is common in processors today.
+
+104
+00:16:10,190 --> 00:16:28,857
+Slide 20 shows how the T L B and the cache work in parallel. It uses 32-bit addresses. There are two ways to look at the virtual address. The T L B sees the V P N, bits 31 to 16, and the page offset, bits 15 to 0.
+
+105
+00:16:29,307 --> 00:16:39,248
+The cache sees a tag, bits 31 to 12, an index, bits 11 to 5, and a block offset, bits 4 to 0. The tag is physical.
+
+106
+00:16:39,698 --> 00:16:43,751
+The index and the block offset lie inside the page offset.
+
+107
+00:16:44,201 --> 00:16:52,500
+Address translation does not change the page offset. So the index bits are the same in the virtual and the physical address.
+
+108
+00:16:52,950 --> 00:17:03,062
+This gives the rule: the V P N and the index must not overlap. Here the V P N ends at bit 16, and the index starts at bit 11.
+
+109
+00:17:03,512 --> 00:17:12,771
+So the virtual address goes to both units at the same time. The V P N goes to the T L B. The index selects the cache set.
+
+110
+00:17:13,221 --> 00:17:25,957
+The T L B gives the P P N, the physical tag. It is compared with the tags of the set. This gives the cache hit or miss. The T L B also gives its own hit or miss.
+
+111
+00:17:26,407 --> 00:17:38,780
+Like caches, T L Bs have associativity, block size and capacity. The associativity is at least 4-way. Fully associative T L Bs are common.
+
+112
+00:17:39,230 --> 00:17:46,206
+What does a block size of two mean for a T L B? Two consecutive virtual pages share one tag.
+
+113
+00:17:46,656 --> 00:17:54,912
+Here is our example. Take V P N 6 and V P N 7. In binary they are 1 1 0 and 1 1 1.
+
+114
+00:17:55,362 --> 00:18:02,167
+They differ only in the lowest bit. The bits above it are 1 1 for both. So both have tag 3.
+
+115
+00:18:02,617 --> 00:18:06,223
+The lowest bit selects one of the two pages in the block.
+
+116
+00:18:06,673 --> 00:18:16,379
+So one T L B entry holds tag 3 and two P P Ns: one for virtual page 6 and one for virtual page 7.
+
+117
+00:18:16,829 --> 00:18:20,819
+Also like caches, there can be L2 T L Bs.
+
+118
+00:18:21,269 --> 00:18:36,287
+Virtual memory is almost everywhere today, at least in general-purpose processors. It has several forms. Paging, also called flat memory, uses translation blocks of equal size. Most systems do this.
+
+119
+00:18:36,737 --> 00:18:46,615
+Segmentation uses translation blocks of variable size. IA 32 uses it. The slide says that it makes life very difficult.
+
+120
+00:18:47,065 --> 00:18:52,163
+A third form, paged segments, is named on the slide but not explained.
+
+121
+00:18:52,613 --> 00:19:11,280
+Now assignment 6, question 1. A virtual memory system has a 32-bit virtual address, 4 kilobyte pages, and 4 byte page table entries. Part a: what is the total page table size for 5 applications? Pause the video and try it.
+
+122
+00:19:11,730 --> 00:19:21,202
+A page has 4096 bytes. Log 2 of 4096 is 12. So the page offset has 12 bits.
+
+123
+00:19:21,652 --> 00:19:32,895
+There are 2 to the 32 addresses. Divide by 2 to the 12 bytes per page: 2 to the 20 pages. So each page table has 2 to the 20 entries.
+
+124
+00:19:33,345 --> 00:19:41,793
+One table is 2 to the 20 entries times 4 bytes, which is 4 megabytes. Each application has its own table.
+
+125
+00:19:42,243 --> 00:19:49,752
+So the total is 5 applications times 2 to the 20 entries times 4 bytes. That is 20 megabytes.
+
+126
+00:19:50,202 --> 00:20:17,274
+Part b uses a two-level page table. The page size stays the same. There are 256 second-level tables, and a first-level table points to them. A first-level entry is 6 bytes. A second-level entry is 4 bytes. Find the total size for 5 applications when 50 percent, and when 100 percent, of the second-level tables are used. Pause the video and try it.
+
+127
+00:20:17,724 --> 00:20:24,828
+The offset stays 12 bits, and the page number stays 20 bits. Now the 20 bits are split in two.
+
+128
+00:20:25,278 --> 00:20:35,049
+The first-level bits select one of 256 second-level tables. Log 2 of 256 is 8. So 8 bits.
+
+129
+00:20:35,499 --> 00:20:49,600
+The other 20 minus 8, which is 12 bits, select the entry in the second-level table. So each second-level table has 2 to the 20, divided by 2 to the 8, which is 2 to the 12 entries.
+
+130
+00:20:50,050 --> 00:21:03,085
+The first-level table has 256 entries of 6 bytes. 256 times 6 is 1536 bytes, which is 1.5 kilobytes.
+
+131
+00:21:03,535 --> 00:21:10,191
+One second-level table has 2 to the 12 entries of 4 bytes. That is 16 kilobytes.
+
+132
+00:21:10,641 --> 00:21:16,507
+A second-level table that is not used is left out. Its first-level entry is NULL.
+
+133
+00:21:16,957 --> 00:21:29,267
+Case 1: 50 percent of the second-level tables are used. That is 128 of 256. So 128 first-level entries are not NULL.
+
+134
+00:21:29,717 --> 00:21:43,114
+Each used second-level table is 2 to the 12 entries times 4 bytes, which is 16 kilobytes. 128 times 16 kilobytes is 2 megabytes for each application.
+
+135
+00:21:43,564 --> 00:21:51,777
+The first-level table is always complete: 256 entries times 6 bytes is 1.5 kilobytes.
+
+136
+00:21:52,227 --> 00:22:05,838
+Each application needs 2 megabytes plus 1.5 kilobytes. For 5 applications: 10 megabytes plus 7.5 kilobytes. That is about 10 point 0 1 megabytes.
+
+137
+00:22:06,288 --> 00:22:14,629
+Case 2: 100 percent are used. All 256 first-level entries point to a second-level table.
+
+138
+00:22:15,079 --> 00:22:21,159
+256 times 16 kilobytes is 4 megabytes for each application.
+
+139
+00:22:21,609 --> 00:22:26,452
+The first-level table is the same as before: 1.5 kilobytes.
+
+140
+00:22:26,902 --> 00:22:38,742
+5 times, 4 megabytes plus 1.5 kilobytes, is 20 megabytes plus 7.5 kilobytes. That is about 20 point 0 1 megabytes.
+
+141
+00:22:39,192 --> 00:22:53,635
+Compare with part a. When only half of the tables are used, two levels need about half the memory. When all are used, two levels need 1.5 kilobytes more per application, for the first-level table.
+
+142
+00:22:54,085 --> 00:23:12,303
+Here is the recap. One. Programs use virtual addresses, from 0 to 2 to the N, minus 1. Memory uses physical addresses, from 0 to 2 to the M, minus 1. Virtual memory gives compatibility, multiprogramming, sharing and protection.
+
+143
+00:23:12,753 --> 00:23:25,532
+Two. A virtual address is a V P N and a page offset. Only the V P N is translated, to the P P N. The number of offset bits is log 2 of the page size.
+
+144
+00:23:25,982 --> 00:23:37,907
+Three. Each process has a page table, indexed by the V P N. Its size is 2 to the number of V P N bits, times the size of a page table entry.
+
+145
+00:23:38,357 --> 00:23:50,069
+Four. With two levels, a complete first-level table points to the second-level tables. Unused second-level tables are left out, and their first-level entries are NULL.
+
+146
+00:23:50,519 --> 00:24:13,581
+Five. The T B is a small, fully associative cache of translations. Its tag is the V P N and its data is the P P N. On a T B miss, an operating system routine or a hardware state machine walks the page table. If the page is not in memory, it is a page fault, which takes about 10 milliseconds.
+
+147
+00:24:14,031 --> 00:24:29,071
+Six. Virtual-physical caches use the virtual address for the index and the physical address for the tag, with the T L B in parallel. The index must lie inside the page offset. That is the end of video 18.
