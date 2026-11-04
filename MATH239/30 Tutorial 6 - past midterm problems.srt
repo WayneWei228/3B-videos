@@ -1,0 +1,439 @@
+1
+00:00:00,000 --> 00:00:10,261
+This is MATH 239, video 30. It solves all five problems of Tutorial 6. These problems come from previous midterms.
+
+2
+00:00:10,711 --> 00:00:30,103
+After this video, you can find a coefficient in a product of two series. You can find a generating series with a bijection. You can prove a formula for compositions, and its recurrence. You can restrict a block decomposition. And you can work with a recursive expression for binary strings.
+
+3
+00:00:30,553 --> 00:00:38,575
+Problem T6-1 asks for one coefficient. It uses a geometric series and the Binomial Series.
+
+4
+00:00:39,025 --> 00:00:46,129
+Problem T6-2 asks for a generating series. It uses a bijection and the Product Lemma.
+
+5
+00:00:46,579 --> 00:00:55,752
+Problem T6-3 is about compositions. It asks for a generating series, a recurrence, and a combinatorial proof.
+
+6
+00:00:56,202 --> 00:01:03,135
+Problem T6-4 asks for an unambiguous expression for binary strings, built from blocks.
+
+7
+00:01:03,585 --> 00:01:08,983
+Problem T6-5 is about a recursive expression for binary strings.
+
+8
+00:01:09,433 --> 00:01:18,691
+Before each solution, pause the video and try the problem. In your answers, name each lemma that you use, and justify every step.
+
+9
+00:01:19,141 --> 00:01:33,200
+Problem T6-1. Find the coefficient of x to the 20 in a product of two series. Large powers and binomial coefficients may stay unevaluated. Pause the video and try it.
+
+10
+00:01:33,650 --> 00:01:43,591
+The first factor is 1 over 1 minus x to the 10. Its coefficients are 1 at x to the 0, x to the 10, and x to the 20.
+
+11
+00:01:44,041 --> 00:01:52,532
+This is a geometric series in x to the 10: the sum over i of x to the 10 i. Only multiples of 10 appear.
+
+12
+00:01:52,982 --> 00:02:07,745
+For the second factor, use the Binomial Series, Theorem 2.4. 1 over 1 minus x, to the t, is the sum over n of n plus t minus 1, choose t minus 1, times x to the n.
+
+13
+00:02:08,195 --> 00:02:19,096
+Here t is 10, and x is replaced by 10 x. So the coefficient of x to the j is j plus 9 choose 9, times 10 to the j.
+
+14
+00:02:19,546 --> 00:02:23,962
+So every power of x has a nonzero term in the second factor.
+
+15
+00:02:24,412 --> 00:02:38,855
+Multiply the two series. A term x to the 10 i times a term x to the j gives x to the 10 i plus j. We need 10 i plus j equal to 20, with i and j at least 0.
+
+16
+00:02:39,305 --> 00:02:49,481
+i equals 0 and j equals 20. The first factor gives 1. The second gives 29 choose 9, times 10 to the 20.
+
+17
+00:02:49,931 --> 00:02:56,907
+i equals 1 and j equals 10. This gives 19 choose 9, times 10 to the 10.
+
+18
+00:02:57,357 --> 00:03:05,079
+i equals 2 and j equals 0. This gives 9 choose 9, times 10 to the 0, which is 1.
+
+19
+00:03:05,529 --> 00:03:14,489
+For i equals 3, 10 i is 30, which is more than 20. No j at least 0 fits. So there are only three pairs.
+
+20
+00:03:14,939 --> 00:03:25,670
+Add the three products. The coefficient is 29 choose 9 times 10 to the 20, plus 19 choose 9 times 10 to the 10, plus 1.
+
+21
+00:03:26,120 --> 00:03:31,560
+A computer expanded the product up to x to the 20. It gets the same value.
+
+22
+00:03:32,010 --> 00:03:47,925
+Problem T6-2. Every positive integer n is 2 to the ell, times m, with ell at least 0 and m odd. The weight of n is ell plus m. Find the generating series. Pause the video and try it.
+
+23
+00:03:48,375 --> 00:03:57,420
+The grid puts n equals 2 to the ell times m in row ell and column m. Each positive integer is in exactly one cell.
+
+24
+00:03:57,870 --> 00:04:06,851
+For example, 12 is 2 squared times 3. So 12 is in row 2, column 3. Its weight is 2 plus 3, which is 5.
+
+25
+00:04:07,301 --> 00:04:10,800
+Each cell now also shows its weight, ell plus m.
+
+26
+00:04:11,250 --> 00:04:16,413
+The integers of weight 5 are 5, 12 and 16. There are three of them.
+
+27
+00:04:16,863 --> 00:04:25,652
+For weight k, ell and m are at most k. So only finitely many integers have weight k, and w is a weight function.
+
+28
+00:04:26,102 --> 00:04:37,174
+Let A be the set 0, 1, 2, and so on. Let B be the odd positive integers 1, 3, 5, and so on. The weight of each number is its value.
+
+29
+00:04:37,624 --> 00:04:50,168
+The map f sends n to the pair ell, m. Its inverse sends the pair ell, m to 2 to the ell times m. So f is a bijection from the positive integers to A cross B.
+
+30
+00:04:50,618 --> 00:04:58,191
+The weight of n is ell plus m. This is the weight of the pair ell, m in A cross B. So f preserves weight.
+
+31
+00:04:58,641 --> 00:05:09,564
+Phi of A is 1 over 1 minus x. Phi of B is x plus x cubed plus x to the 5, and so on. This is x over 1 minus x squared.
+
+32
+00:05:10,014 --> 00:05:22,089
+By the Product Lemma, the generating series of the positive integers is phi of A times phi of B. This is x over 1 minus x, times 1 minus x squared.
+
+33
+00:05:22,539 --> 00:05:30,731
+Check. The coefficient of x to the 5 is 3. These are the three integers 5, 12 and 16 of weight 5.
+
+34
+00:05:31,181 --> 00:05:47,863
+Problem T6-3 has three parts. S n is the set of compositions of n in which every part is congruent to 1 or 2, mod 3. a n is the number of these compositions. a 0 is 1. Pause the video and try it.
+
+35
+00:05:48,313 --> 00:05:56,975
+The allowed part sizes are 1, 2, 4, 5, 7, 8, 10 and 11. The multiples of 3 are not allowed.
+
+36
+00:05:57,425 --> 00:06:06,769
+S 3 has three compositions: 1 plus 2, 2 plus 1, and 1 plus 1 plus 1. The part 3 alone is not allowed.
+
+37
+00:06:07,219 --> 00:06:14,835
+So a 3 is 3. The first counts are 1, 1, 2, 3, 6, 11, 20, 37 and 68.
+
+38
+00:06:15,285 --> 00:06:29,642
+Part a. Let P be the set of allowed parts. The weight of a part is its value. The parts congruent to 1 mod 3 are 1, 4, 7 and so on. Their series is x over 1 minus x cubed.
+
+39
+00:06:30,092 --> 00:06:39,116
+The parts congruent to 2 mod 3 are 2, 5, 8 and so on. Their series is x squared over 1 minus x cubed.
+
+40
+00:06:39,566 --> 00:06:45,411
+In each row the gaps are 3. So each row is a geometric series in x cubed.
+
+41
+00:06:45,861 --> 00:06:55,419
+The two sets are disjoint, and P is their union. By the Sum Lemma, phi of P is x plus x squared, over 1 minus x cubed.
+
+42
+00:06:55,869 --> 00:07:13,575
+A composition with allowed parts is a finite sequence of elements of P. For example, 2, 1, 4 is an element of P cross P cross P. So the set of all these compositions is P star. The weight is the sum of the parts, which is n.
+
+43
+00:07:14,025 --> 00:07:25,119
+Every part has weight at least 1, so no element of P has weight 0. The String Lemma applies: phi of P star is 1 over 1 minus phi of P.
+
+44
+00:07:25,569 --> 00:07:35,083
+Put in phi of P. 1 minus phi of P is 1 minus x cubed minus x minus x squared, over 1 minus x cubed.
+
+45
+00:07:35,533 --> 00:07:46,755
+Take the reciprocal. The sum of a n x to the n is 1 minus x cubed, over 1 minus x minus x squared minus x cubed. This proves part a.
+
+46
+00:07:47,205 --> 00:08:03,055
+Part b. Write A of x for the sum of a n x to the n. Multiply both sides of part a by the denominator. 1 minus x minus x squared minus x cubed, times A of x, equals 1 minus x cubed.
+
+47
+00:08:03,505 --> 00:08:17,649
+Write the left side as four rows of coefficients: A of x, then minus x A of x, minus x squared A of x, and minus x cubed A of x. Each row moves one more place to the right.
+
+48
+00:08:18,099 --> 00:08:27,507
+Add each column. The sums must be the coefficients of 1 minus x cubed: 1, 0, 0, minus 1, and then 0.
+
+49
+00:08:27,957 --> 00:08:40,288
+For n at least 4, the column sum is 0. So a n minus a n minus 1, minus a n minus 2, minus a n minus 3, is 0. This gives the recurrence.
+
+50
+00:08:40,738 --> 00:08:53,815
+Columns 0 to 3 give the initial conditions. a 0 is 1. Then a 1 is 1, a 2 is 2, and a 3 is 3. These four values and the recurrence fix the whole sequence.
+
+51
+00:08:54,265 --> 00:09:04,569
+Part c. Take n at least 4. Split S n by its last part. The last part is 1, or 2, or at least 4, because 3 is not allowed.
+
+52
+00:09:05,019 --> 00:09:21,745
+The example is n equals 5. Last part 1: remove it. The result is in S n minus 1. The inverse adds a part 1 at the end. Here the 6 compositions of 5 that end in 1 match the 6 compositions in S 4.
+
+53
+00:09:22,195 --> 00:09:29,661
+Last part 2: remove it. The result is in S n minus 2. Here 3 compositions match S 3.
+
+54
+00:09:30,111 --> 00:09:44,319
+Last part at least 4: subtract 3 from it. The part stays positive, and it stays congruent to 1 or 2 mod 3. The result is in S n minus 3. Here 2 compositions match S 2.
+
+55
+00:09:44,769 --> 00:09:59,041
+The three cases are disjoint, and together they cover S n. So 11 equals 6 plus 3 plus 2. In general, a n equals a n minus 1, plus a n minus 2, plus a n minus 3.
+
+56
+00:09:59,491 --> 00:10:13,486
+The inverse of the third map adds 3 to the last part. This needs a last part. For n at least 4, n minus 3 is at least 1. So every composition in S n minus 3 is not empty.
+
+57
+00:10:13,936 --> 00:10:24,667
+The picture shows S 1, S 2 and S 3. Every composition has a last part, in orange. Add 3 to it to get back the composition in S n.
+
+58
+00:10:25,117 --> 00:10:37,981
+So all three maps are bijections, and the size of S n is the sum of the sizes of S n minus 1, S n minus 2 and S n minus 3, for every n at least 4.
+
+59
+00:10:38,431 --> 00:10:57,929
+Problem T6-4. Find an unambiguous expression for the binary strings in which every block of 0s is followed by a block of 1s. That block of 1s must have length divisible by 3. A block is a maximal run of equal bits. Pause the video and try it.
+
+60
+00:10:58,379 --> 00:11:05,654
+0111 is in the set. The block 0 is followed by the block 111, of length 3.
+
+61
+00:11:06,104 --> 00:11:18,819
+1100111111 is in the set. The block 00 is followed by six 1s, and 6 is divisible by 3.
+
+62
+00:11:19,269 --> 00:11:24,687
+1 is in the set. It has no block of 0s, so there is no condition to check.
+
+63
+00:11:25,137 --> 00:11:30,748
+01 is not in the set. The block of 1s after the 0 has length 1.
+
+64
+00:11:31,198 --> 00:11:37,086
+0 is not in the set. Its block of 0s is not followed by a block of 1s.
+
+65
+00:11:37,536 --> 00:11:46,965
+000111011 is not in the set. Its second block of 0s is followed by 11, of length 2.
+
+66
+00:11:47,415 --> 00:12:03,330
+Start from the block decomposition of the notes, Proposition 3.17. 1 star, then 0 star 0, 1 star 1, repeated, then 0 star. It produces every binary string once, block by block.
+
+67
+00:12:03,780 --> 00:12:08,473
+1 star at the start is the first block of 1s. It may be empty.
+
+68
+00:12:08,923 --> 00:12:12,081
+0 star 0 is a block of 0s.
+
+69
+00:12:12,531 --> 00:12:17,352
+1 star 1 is the block of 1s right after that block of 0s.
+
+70
+00:12:17,802 --> 00:12:22,709
+0 star at the end is a last block of 0s. It may be empty.
+
+71
+00:12:23,159 --> 00:12:32,076
+Now restrict each part. The first block of 1s has no block of 0s before it. So it has no condition: keep 1 star.
+
+72
+00:12:32,526 --> 00:12:38,350
+The rule puts no condition on the length of a block of 0s. Keep 0 star 0.
+
+73
+00:12:38,800 --> 00:12:49,936
+The block of 1s after a block of 0s must have a positive length divisible by 3. So it is 111, followed by 111 star.
+
+74
+00:12:50,386 --> 00:12:56,743
+A last block of 0s has no block of 1s after it. So remove the final 0 star.
+
+75
+00:12:57,193 --> 00:13:12,084
+The answer is 1 star, then 0 star 0, 111, 111 star, repeated. The posted solution writes 0 0 star for a block of 0s. This produces the same set.
+
+76
+00:13:12,534 --> 00:13:27,275
+Test the expression on the string 1001111110111. Its blocks are 1, 00, six 1s, 0, and 111.
+
+77
+00:13:27,725 --> 00:13:30,712
+1 star produces the first block, 1.
+
+78
+00:13:31,162 --> 00:13:34,789
+0 star 0 produces the block 00.
+
+79
+00:13:35,239 --> 00:13:42,471
+111, 111 star produces the six 1s. 6 is divisible by 3.
+
+80
+00:13:42,921 --> 00:13:47,571
+The second pass produces the block 0, and then 111.
+
+81
+00:13:48,021 --> 00:13:59,883
+Each part only restricts a part of the block decomposition, which is unambiguous. So each block is produced in exactly one way, and the expression is unambiguous.
+
+82
+00:14:00,333 --> 00:14:09,399
+A computer listed all strings up to length 12. The expression produces each string of the set exactly once, and no other string.
+
+83
+00:14:09,849 --> 00:14:27,087
+Problem T6-5. S is given by a recursive expression: epsilon, or 0 followed by a string of S, or 1 0 followed by a string of S. Pause the video and try it. Part a. Length 0: only epsilon.
+
+84
+00:14:27,537 --> 00:14:34,619
+Length 1: 0 followed by epsilon gives 0. The prefix 1 0 already has length 2.
+
+85
+00:14:35,069 --> 00:14:48,957
+Length 2: 0 followed by the length 1 string gives 00. 1 0 followed by epsilon gives 10. Orange cells come from 0 S. Purple cells come from 1 0 S.
+
+86
+00:14:49,407 --> 00:15:00,202
+Length 3: 0 in front of each length 2 string gives 000 and 010. 1 0 in front of the length 1 string gives 100.
+
+87
+00:15:00,652 --> 00:15:12,983
+Length 4: 0000, 0010, 0100, 1000 and 1010. The counts are 1, 1, 2, 3 and 5.
+
+88
+00:15:13,433 --> 00:15:22,243
+Part b. S is the set of binary strings in which every 1 is immediately followed by a 0. The empty string is in S.
+
+89
+00:15:22,693 --> 00:15:33,147
+First, every generated string has this property. Epsilon has it. A prefix 0 or 1 0 keeps it, because the new 1 is followed by a 0.
+
+90
+00:15:33,597 --> 00:15:48,210
+Conversely, take a nonempty string with the property. It starts with 0, or it starts with 1. A 1 is followed by 0, so then it starts with 1 0. Remove this prefix. The rest still has the property.
+
+91
+00:15:48,660 --> 00:15:56,532
+Example: 0100100 has the property. It starts with 0. Remove the 0.
+
+92
+00:15:56,982 --> 00:16:00,289
+The rest starts with 1 0. Remove 1 0.
+
+93
+00:16:00,739 --> 00:16:01,997
+Remove 0.
+
+94
+00:16:02,447 --> 00:16:03,983
+Remove 1 0.
+
+95
+00:16:04,433 --> 00:16:05,692
+Remove 0.
+
+96
+00:16:06,142 --> 00:16:15,977
+We reach epsilon. Each removal makes the string shorter, so this always ends at epsilon. So every string with the property is generated.
+
+97
+00:16:16,427 --> 00:16:28,651
+Part c. The three alternatives produce disjoint sets. Epsilon is empty. Strings from 0 S start with 0. Strings from 1 0 S start with 1.
+
+98
+00:16:29,101 --> 00:16:32,983
+So the first bit of a string tells which alternative produced it.
+
+99
+00:16:33,433 --> 00:16:47,236
+In each nonempty case, removing the prefix leaves one shorter string, w prime. Repeat this on w prime. So each string has a unique construction, and the expression is unambiguous.
+
+100
+00:16:47,686 --> 00:16:54,513
+A computer checked all strings of S up to length 12. Each one has exactly one construction.
+
+101
+00:16:54,963 --> 00:17:10,600
+Part d. The expression is unambiguous. So the Sum and Product Lemmas turn it into an equation. Epsilon gives 1. 0 S gives x times phi of S. 1 0 S gives x squared times phi of S.
+
+102
+00:17:11,050 --> 00:17:21,226
+Write each term as a row of coefficients. x phi of S is phi of S moved one place right. x squared phi of S is moved two places.
+
+103
+00:17:21,676 --> 00:17:29,697
+Each column of the three lower rows adds up to the top row. For example, 8 equals 0 plus 5 plus 3.
+
+104
+00:17:30,147 --> 00:17:41,667
+Solve the equation. 1 minus x minus x squared, times phi of S, equals 1. So phi of S is 1 over 1 minus x minus x squared.
+
+105
+00:17:42,117 --> 00:17:46,981
+The coefficients 1, 1, 2, 3 and 5 match the counts of part a.
+
+106
+00:17:47,431 --> 00:17:58,205
+To recap. T6-1: multiply a geometric series by the Binomial Series, and find the pairs with 10 i plus j equal to 20.
+
+107
+00:17:58,655 --> 00:18:05,993
+T6-2: the bijection from n to the pair ell, m preserves weight. Then use the Product Lemma.
+
+108
+00:18:06,443 --> 00:18:17,835
+T6-3: the Sum Lemma and the String Lemma give the series. Compare coefficients for the recurrence. Split by the last part for the combinatorial proof.
+
+109
+00:18:18,285 --> 00:18:22,872
+T6-4: restrict each part of the block decomposition.
+
+110
+00:18:23,322 --> 00:18:33,391
+T6-5: the first bit decides the alternative. The Sum and Product Lemmas give 1 over 1 minus x minus x squared.
