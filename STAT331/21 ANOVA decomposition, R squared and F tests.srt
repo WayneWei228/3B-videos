@@ -1,0 +1,491 @@
+1
+00:00:00,000 --> 00:00:09,451
+This is STAT 331, video 21. It covers Lecture 11: the ANOVA decomposition, R squared, and F tests.
+
+2
+00:00:09,901 --> 00:00:29,101
+After this video, you can split the total variation of y into two parts. You can compute R squared and fill an ANOVA table. You can test the whole model, a group of covariates, and a general linear hypothesis. And you can solve the three practice questions of Lecture 11.
+
+3
+00:00:29,551 --> 00:00:46,788
+First, a short recap from slides 7 and 8. The model is y equals X beta plus epsilon. The errors are multivariate normal with mean 0 and variance sigma squared times I. X has a column of ones and p covariates.
+
+4
+00:00:47,238 --> 00:01:06,993
+We estimate beta by least squares: beta hat is X transpose X inverse, times X transpose y. sigma hat squared is e transpose e over n minus p plus 1. The standard error of beta j hat uses V j j, a diagonal entry of V.
+
+5
+00:01:07,443 --> 00:01:19,389
+We have two tests. The t test is for one coefficient. The F test is for a joint null hypothesis, beta star equals 0, where beta star has length q.
+
+6
+00:01:19,839 --> 00:01:34,773
+In Lecture 10, indicators, interactions and polynomial terms only changed the columns of X. So all these tools still apply. This lecture adds a new way to look at the F test: the sums of squares.
+
+7
+00:01:35,223 --> 00:02:03,788
+Slide 15 recalls the fit. beta hat gives the fitted values y hat, which equal H times y. H is the hat matrix. The residuals e are y minus y hat, which equal I minus H, times y. The plot uses the mercury data and model M1, with fishpart and weight. Each blue point is one fisherman: the fitted value across, the observed MeHg up. The green line is y equals y hat.
+
+8
+00:02:04,238 --> 00:02:18,147
+The variability in the outcome is how far the y i values are from their mean, y bar. The purple dashed line is y bar, 3.644. The points spread far above and below it.
+
+9
+00:02:18,597 --> 00:02:26,000
+ANOVA means analysis of variance. It asks: how much of this variability does our model explain?
+
+10
+00:02:26,450 --> 00:02:37,373
+Slide 16 is drawn in class. Here we draw it with the mercury data. Each point has an observed value y i and a fitted value y hat i.
+
+11
+00:02:37,823 --> 00:02:40,404
+The purple line is the mean, y bar.
+
+12
+00:02:40,854 --> 00:02:49,430
+Take one subject. Its total deviation is y i minus y bar: the black bar, from the purple line up to the point.
+
+13
+00:02:49,880 --> 00:03:02,253
+The green bar goes from y bar up to the fitted value y hat i, on the green line. This part, y hat i minus y bar, is the part that the model explains.
+
+14
+00:03:02,703 --> 00:03:11,727
+The orange bar goes from y hat i up to y i. This is the residual e i: the part that the model does not explain.
+
+15
+00:03:12,177 --> 00:03:23,313
+So the total deviation is the residual plus the explained part. This holds for every subject. Next, we square these parts and add them over all subjects.
+
+16
+00:03:23,763 --> 00:03:34,153
+Slide 17 defines the total sum of squares, S S Total. It is the sum over all subjects of y i minus y bar, squared.
+
+17
+00:03:34,603 --> 00:03:43,051
+Write each deviation as the two parts from the picture: y i minus y hat i, plus y hat i minus y bar.
+
+18
+00:03:43,501 --> 00:03:51,501
+Expand the square, as a plus b, squared, equals a squared plus b squared plus 2 a b. This gives three sums.
+
+19
+00:03:51,951 --> 00:04:09,423
+The first sum is the residual sum of squares, S S Res. The second is the regression sum of squares, S S Reg. The third sum, the cross term, is 0. The next slide shows why. So S S Total equals S S Res plus S S Reg.
+
+20
+00:04:09,873 --> 00:04:27,921
+y i minus y hat i is the residual e i. So the cross term is the sum of e i times y hat i minus y bar. The plane in the picture is the column space of X. It holds every vector X times b, and the ones vector.
+
+21
+00:04:28,371 --> 00:04:47,208
+In vector form, the sum is e transpose, times the vector y hat minus y bar times 1. 1 is the vector of ones. In the picture, y minus y bar 1 is the black arrow, and y hat minus y bar 1 is the green arrow in the plane.
+
+22
+00:04:47,658 --> 00:05:00,586
+y hat is X beta hat. So the cross term is e transpose X beta hat, minus y bar times e transpose 1. The orange arrow is e, from y hat up to y.
+
+23
+00:05:01,036 --> 00:05:12,513
+From the normal equations, e transpose X is 0. Also, 1 is the first column of X, so e transpose 1 is 0. So the cross term is 0.
+
+24
+00:05:12,963 --> 00:05:29,070
+So e is perpendicular to the plane. The three arrows make a right triangle. By Pythagoras, the squared length of the black side equals the sum of the other two. That is S S Total equals S S Reg plus S S Res.
+
+25
+00:05:29,520 --> 00:05:44,240
+Slide 19 writes the sums of squares with matrices. J is an n by n matrix of ones. Here is a small example of our own, with n equal to 4 and y equal to 2, 4, 3, 7.
+
+26
+00:05:44,690 --> 00:05:52,839
+J times y: each row of J adds all the y values. So every entry of J y is 16, the sum.
+
+27
+00:05:53,289 --> 00:06:05,833
+Divide by n. One over n, J y, has y bar in every entry: 16 over 4 is 4. So one over n J y is y bar times the ones vector.
+
+28
+00:06:06,283 --> 00:06:28,747
+So y minus one over n J y is the vector of deviations, y i minus y bar. S S Total is its squared length. Expand it. One transpose y is n y bar, so the middle term is minus 2 n y bar squared. The result is y transpose y, minus n y bar squared.
+
+29
+00:06:29,197 --> 00:06:51,448
+Check with the example. y transpose y is 4 plus 16 plus 9 plus 49, which is 78. n y bar squared is 4 times 16, which is 64. 78 minus 64 is 14. The deviations are minus 2, 0, minus 1 and 3. Their squares add to 14 too.
+
+30
+00:06:51,898 --> 00:07:10,330
+S S Reg is the sum of y hat i minus y bar, squared. y hat is H y, and y bar 1 is one over n J y. So S S Reg is the squared length of H y minus one over n J y: the green side of the triangle.
+
+31
+00:07:10,780 --> 00:07:17,265
+Expand the product, in the same way as before. The middle term has 1 transpose H y.
+
+32
+00:07:17,715 --> 00:07:38,686
+From Lecture 6, H is symmetric and idempotent, so H transpose H is H. Also, 1 is a column of X, so H times 1 is 1: the projection of a vector that is already in the plane is the same vector. So 1 transpose H y is 1 transpose y, which is n y bar.
+
+33
+00:07:39,136 --> 00:07:44,597
+So S S Reg equals y transpose H y, minus n y bar squared.
+
+34
+00:07:45,047 --> 00:08:05,143
+S S Res is the squared length of y minus H y: the orange side. It equals y transpose, I minus H, y. Lecture 7 used this form. Check: S S Reg plus S S Res is y transpose y minus n y bar squared, which is S S Total.
+
+35
+00:08:05,593 --> 00:08:22,873
+Slide 24 computes the three sums for the mercury model M1, with fishpart and weight. S S Total, the total variation of MeHg around its mean, is 1091.77. The purple bar shows it.
+
+36
+00:08:23,323 --> 00:08:36,187
+The model splits this bar into two parts. S S Reg, in green, is 263.74. S S Res, in orange, is 828.03.
+
+37
+00:08:36,637 --> 00:08:51,720
+Check: 263.74 plus 828.03 is 1091.77. The R output on slide 24 shows the same total two times.
+
+38
+00:08:52,170 --> 00:09:07,637
+Slide 20 defines the coefficient of determination, R squared. It is S S Reg over S S Total. Because the two parts add to the total, it is also 1 minus S S Res over S S Total.
+
+39
+00:09:08,087 --> 00:09:31,084
+For the mercury model, R squared is 263.74 over 1091.77, which is 0.2416. In the bar, it is the green part as a fraction of the whole bar. The R output on slide 24 shows Multiple R-squared, 0.2416.
+
+40
+00:09:31,534 --> 00:09:44,505
+So R squared is the proportion of the variability in y that the regression model explains. Fishpart and weight explain about 24 percent of the variation in MeHg.
+
+41
+00:09:44,955 --> 00:10:06,544
+Slide 20 asks how to interpret R squared equal to 1, and R squared equal to 0. Pause the video and try it. R squared is 1 when S S Res is 0. Then every residual is 0, and every point is on the line y equals y hat. The model explains all the variability.
+
+42
+00:10:06,994 --> 00:10:24,722
+R squared is 0 when S S Reg is 0. Then every fitted value equals y bar: all points are above the same fitted value. The covariates explain none of the variability. Most real models, like the mercury model, are in between.
+
+43
+00:10:25,172 --> 00:10:32,873
+Slide 21 tests the whole model. The design matrix has the column of ones and p covariate columns.
+
+44
+00:10:33,323 --> 00:10:52,971
+The null hypothesis is beta 1 equals beta 2 and so on, up to beta p, all equal to 0. This says: y has no association with any of the covariates. Under this null, the model is beta 0 plus epsilon, and every fitted value is y bar.
+
+45
+00:10:53,421 --> 00:11:10,040
+The test uses the decomposition. F is S S Reg over p, divided by S S Res over n minus p plus 1. Under the null, F has an F distribution with p and n minus p plus 1 degrees of freedom.
+
+46
+00:11:10,490 --> 00:11:28,047
+If F is large, the model explains a large part of the variation. That is evidence of an association with some of the covariates. We reject the null hypothesis when the p-value is less than alpha. A large F does not say which covariates matter.
+
+47
+00:11:28,497 --> 00:11:55,207
+Slide 22 shows why. Recall: if X 1 is chi squared with nu 1 degrees of freedom, X 2 is chi squared with nu 2, and they are independent, then X 1 over nu 1, divided by X 2 over nu 2, has an F distribution. So we need three facts. Fact 1: under the null, S S Reg over sigma squared is chi squared with p degrees of freedom. The next slide sketches it.
+
+48
+00:11:55,657 --> 00:12:08,009
+Fact 2: S S Res over sigma squared is e transpose e over sigma squared. Lecture 7 showed that it is chi squared with n minus p plus 1 degrees of freedom.
+
+49
+00:12:08,459 --> 00:12:21,408
+Fact 3: S S Reg and S S Res are independent. S S Reg uses y hat, which is X beta hat. S S Res uses e. And beta hat and e are independent.
+
+50
+00:12:21,858 --> 00:12:35,789
+Put the two chi squared variables into the ratio. sigma squared is in the top and in the bottom, so it cancels. The result is the F statistic, with p and n minus p plus 1 degrees of freedom.
+
+51
+00:12:36,239 --> 00:13:06,212
+Slide 23 sketches fact 1. Write S S Reg as y transpose, H minus one over n J, y. The plan is the same as the proof in Lecture 7. Eigendecompose the matrix. It is idempotent, so its eigenvalues are 0 or 1. To count the ones, use the trace: the sum of the eigenvalues equals the trace. The trace of H minus one over n J is the trace of H minus the trace of one over n J.
+
+52
+00:13:06,662 --> 00:13:20,763
+The diagonal of one over n J has n entries, each one over n. So its trace is 1. The trace of H is the trace of X, times X transpose X inverse X transpose.
+
+53
+00:13:21,213 --> 00:13:40,285
+The trace does not change when we move a factor from the front to the back. X times the rest is n by n. The rest times X is p plus 1 by p plus 1, and it is the identity. Its trace is p plus 1. So the trace is p plus 1 minus 1, which is p.
+
+54
+00:13:40,735 --> 00:13:56,501
+So exactly p eigenvalues are 1. As in Lecture 7, S S Reg over sigma squared is then a sum of p squared independent standard normal variables under the null. It is chi squared with p degrees of freedom.
+
+55
+00:13:56,951 --> 00:14:20,759
+Slide 24 tests the whole mercury model M1. The null hypothesis says all four covariate coefficients are 0: the three fishpart indicators and weight. n is 135, and p is 4, so n minus p plus 1 is 130. The null distribution is F with 4 and 130 degrees of freedom.
+
+56
+00:14:21,209 --> 00:14:40,750
+S S Reg over p is 263.74 over 4, which is 65.94. S S Res over 130 is 828.03 over 130, which is 6.3695.
+
+57
+00:14:41,200 --> 00:14:59,461
+F is 65.94 over 6.3695, which is 10.35. The red region starts at 2.441, the 95 percent quantile. The blue line is the observed F, far into the red region.
+
+58
+00:14:59,911 --> 00:15:14,717
+The p-value is the area beyond 10.35. It is 2.6 times 10 to the minus 7. We reject the null hypothesis. MeHg is associated with some of the covariates.
+
+59
+00:15:15,167 --> 00:15:22,740
+Slide 24 ends with three lines of the R summary output. Now we can explain almost every number.
+
+60
+00:15:23,190 --> 00:15:41,729
+Residual standard error is sigma hat. It is the square root of S S Res over n minus p plus 1. That is the square root of 6.3695, which is 2.524. The 130 is the residual degrees of freedom.
+
+61
+00:15:42,179 --> 00:15:52,163
+Multiple R-squared is S S Reg over S S Total, 0.2416. Adjusted R squared comes in a later lecture.
+
+62
+00:15:52,613 --> 00:16:08,677
+The F-statistic line is the test of the entire model: F is 10.35, with p equal to 4 and 130 degrees of freedom, and the p-value is 2.613 times 10 to the minus 7.
+
+63
+00:16:09,127 --> 00:16:31,911
+Slide 25 collects all of this in an ANOVA table. Bold numbers are the mercury model. The regression row has S S Reg, 263.74, with p, which is 4, degrees of freedom. MS means mean square: S S divided by its degrees of freedom. So M S Reg is 65.94.
+
+64
+00:16:32,361 --> 00:16:49,150
+The residual row has S S Res, 828.03, with n minus p plus 1, which is 130, degrees of freedom. Its mean square is 6.3695. This is sigma hat squared.
+
+65
+00:16:49,600 --> 00:17:00,864
+F is the regression mean square over the residual mean square: 65.94 over 6.3695, which is 10.35.
+
+66
+00:17:01,314 --> 00:17:27,959
+The total row has S S Total, 1091.77, with n minus 1, which is 134, degrees of freedom. Both the S S column and the degrees of freedom column add up: 4 plus 130 is 134. The total has n minus 1 degrees of freedom, because the model has p covariates plus a column of ones for the intercept.
+
+67
+00:17:28,409 --> 00:17:36,921
+Slide 26 tests a group of covariates. Take the full model with three covariates, x 1, x 2 and x 3.
+
+68
+00:17:37,371 --> 00:17:52,006
+Split the columns of X into two blocks. X dagger has the columns we keep, here the ones and x 1. X star has the q columns we test, here x 2 and x 3. beta splits in the same way.
+
+69
+00:17:52,456 --> 00:18:06,600
+The null hypothesis is beta star equals 0. Here, beta 2 equals beta 3 equals 0, so q is 2. This is the same as leaving the columns of X star out of the model.
+
+70
+00:18:07,050 --> 00:18:21,599
+So fit two models. The full model has all the columns. The reduced model has only X dagger. It is the model under the null hypothesis. Here it is beta 0 plus beta 1 x i 1.
+
+71
+00:18:22,049 --> 00:18:27,767
+The question is: does the full model explain much more variability than the reduced model?
+
+72
+00:18:28,217 --> 00:18:49,571
+Slide 27 compares the two fits. The bars use the mercury data: the reduced model has weight only. Both bars have the same length, S S Total, because y is the same. The reduced model has S S Reg 187.17 and S S Res 904.61.
+
+73
+00:18:50,021 --> 00:19:03,717
+The full model adds the three fishpart indicators. Its S S Reg is larger, 263.74, and its S S Res is smaller, 828.03.
+
+74
+00:19:04,167 --> 00:19:28,445
+The red box is the extra variation that the q added covariates explain: S S Reg of the full model, minus S S Reg of the reduced model. Here it is 76.58. By the same logic as before, under the null, this over sigma squared is chi squared with q degrees of freedom. q is the difference in the number of parameters.
+
+75
+00:19:28,895 --> 00:19:41,993
+Divide by q, and divide by the residual mean square of the full model. Under the null, this F has an F distribution with q and n minus p plus 1 degrees of freedom.
+
+76
+00:19:42,443 --> 00:20:02,027
+Slide 28 says: we saw this test before. In Lecture 9, the F statistic was beta star hat transpose, times V star inverse, times beta star hat, over q, divided by sigma hat squared. It measures how far the estimates are from the null value 0.
+
+77
+00:20:02,477 --> 00:20:09,859
+The new version uses sums of squares. It measures how much extra variability the q covariates explain.
+
+78
+00:20:10,309 --> 00:20:27,802
+The two F statistics are exactly equal. On slide 24, the R code computes both for the mercury data, and both give 4.007444. Assignment 3 asks why they are equal, so this video does not show it.
+
+79
+00:20:28,252 --> 00:20:50,951
+Slides 24 and 25 ask: is fishpart associated with MeHg, in the presence of weight? The full model has fishpart and weight, with 130 residual degrees of freedom. The reduced model has weight only, with 133. Under the null, all three fishpart coefficients are 0.
+
+80
+00:20:51,401 --> 00:20:59,614
+q is 133 minus 130, which is 3. This is the difference in the number of parameters.
+
+81
+00:21:00,064 --> 00:21:21,483
+The extra regression sum of squares is 263.74 minus 187.17. Divide by 3 to get 25.525. Divide by the residual mean square of the full model, 6.3695. F is 4.007.
+
+82
+00:21:21,933 --> 00:21:50,263
+The 95 percent quantile of F with 3 and 130 degrees of freedom is 2.674. The observed F is in the red region. The p-value is 0.009128, less than 0.05. We reject the null hypothesis. Fishpart is associated with MeHg, given weight. Video 19 found the same p-value with the Lecture 9 formula.
+
+83
+00:21:50,713 --> 00:21:57,433
+Slide 25 also shows a table that R prints for two models. Each row is one model.
+
+84
+00:21:57,883 --> 00:22:17,766
+Res dot Df is the residual degrees of freedom: 133 and 130. RSS means residual sum of squares, which is S S Res: 904.61 for the reduced model and 828.03 for the full model.
+
+85
+00:22:18,216 --> 00:22:48,915
+Sum of Sq is the drop in RSS: 904.61 minus 828.03 is 76.576. This is the same as the extra regression sum of squares, because both models have the same S S Total. In the bars, the red box is the same piece. Df is 3, F is 4.0074, and the p-value is 0.009128, as before.
+
+86
+00:22:49,365 --> 00:23:11,039
+Slide 31 uses the same method for a larger class of null hypotheses: general linear hypotheses. Each has the form C beta equals 0, where C is a matrix of rank r. Example: in a model with four covariates, test beta 1 equals beta 2 equals 0.
+
+87
+00:23:11,489 --> 00:23:19,511
+Write one row of C for each restriction. C has 5 columns, one for each of beta 0 to beta 4.
+
+88
+00:23:19,961 --> 00:23:29,390
+Row 1 is 0, 1, 0, 0, 0. Times beta, it gives beta 1. So row 1 says beta 1 equals 0.
+
+89
+00:23:29,840 --> 00:23:40,869
+Row 2 is 0, 0, 1, 0, 0. It gives beta 2 equals 0. The two rows are not multiples of each other, so the rank r is 2.
+
+90
+00:23:41,319 --> 00:24:01,138
+Slide 33 gives the test. Fit the full model, and the reduced model under C beta equals 0. The F statistic is the same as before, with r in place of q. Under the null, it has an F distribution with r and n minus p plus 1 degrees of freedom.
+
+91
+00:24:01,588 --> 00:24:14,345
+Slide 34 lists the tests we now have. t tests are for one number: one coefficient, beta j equals theta 0, or one linear combination of coefficients.
+
+92
+00:24:14,795 --> 00:24:31,094
+F tests are for several restrictions at the same time: a joint null, beta star equals 0, or a general linear hypothesis, C beta equals 0. Each F test compares a full model and a reduced model.
+
+93
+00:24:31,544 --> 00:24:40,248
+The test of the entire model is one case: X star has all p covariates, and the reduced model has only the intercept.
+
+94
+00:24:40,698 --> 00:24:56,805
+Practice question 1. An ANOVA table has some missing values. Part a: how many observations? Part b: what is S S Total? Part c: test that all coefficients except the intercept are 0. Pause the video and try it.
+
+95
+00:24:57,255 --> 00:25:14,620
+Start with the regression degrees of freedom. MS is S S over its degrees of freedom. So the degrees of freedom are S S over MS: 138.75 over 46.25, which is 3. So p is 3.
+
+96
+00:25:15,070 --> 00:25:36,403
+The degrees of freedom add up. The total is 3 plus 131, which is 134. The total degrees of freedom are n minus 1, so n is 135. This answers part a. Check: n minus p plus 1 is 135 minus 4, which is 131.
+
+97
+00:25:36,853 --> 00:25:50,443
+Part b. The sums of squares add up. S S Total is 138.75 plus 953.02, which is 1091.77.
+
+98
+00:25:50,893 --> 00:26:02,775
+Part c needs F. F is the regression mean square over the residual mean square: 46.25 over 7.275, which is 6.36.
+
+99
+00:26:03,225 --> 00:26:17,412
+Part c. The null hypothesis is beta 1 equals beta 2 equals beta 3 equals 0. Under this null, F has an F distribution with 3 and 131 degrees of freedom.
+
+100
+00:26:17,862 --> 00:26:28,358
+The 95 percent quantile of F with 3 and 131 degrees of freedom is 2.674. The red region starts there.
+
+101
+00:26:28,808 --> 00:26:48,264
+The observed F is 6.36, larger than 2.674. The p-value is 0.000467. We reject the null hypothesis at the 0.05 level. This matches the solution on slide 37.
+
+102
+00:26:48,714 --> 00:27:06,207
+Practice question 2. The model has four covariates. How would you test beta 1 equals beta 2, and beta 3 equals beta 4? Pause the video and try it. First, write it as a general linear hypothesis, C beta equals 0.
+
+103
+00:27:06,657 --> 00:27:19,223
+Row 1 of C is 0, 1, minus 1, 0, 0. Times beta, it gives beta 1 minus beta 2. Setting it to 0 gives beta 1 equals beta 2.
+
+104
+00:27:19,673 --> 00:27:32,707
+Row 2 is 0, 0, 0, 1, minus 1. It gives beta 3 minus beta 4 equals 0. The two rows are not multiples of each other, so the rank r is 2.
+
+105
+00:27:33,157 --> 00:27:47,557
+So we can use the F test of slide 33, with r equal to 2. Under the null, F has an F distribution with 2 and n minus 5 degrees of freedom. Next: how to fit the reduced model.
+
+106
+00:27:48,007 --> 00:28:05,949
+Slide 39 fits the reduced model. Under the null, beta 2 equals beta 1 and beta 4 equals beta 3. Put these into the model. The columns x 1 and x 2 now have the same coefficient, and so do x 3 and x 4.
+
+107
+00:28:06,399 --> 00:28:24,895
+Group the terms. The reduced model is beta 0, plus beta 1 times x i 1 plus x i 2, plus beta 3 times x i 3 plus x i 4. In the picture, the blue columns add to one column, and the orange columns add to another.
+
+108
+00:28:25,345 --> 00:28:42,262
+So we fit the reduced model with two new covariates: the sums. Then the F statistic uses the extra regression sum of squares over r equal to 2, and the residual mean square of the full model, with n minus 5 degrees of freedom.
+
+109
+00:28:42,712 --> 00:29:00,653
+Practice question 3 uses the same model. How would you test C beta equals 0 for this C, and what does it test? Pause the video and try it. C has 3 rows. Each row has 1 in the column of beta 1, and minus 1 in one other column.
+
+110
+00:29:01,103 --> 00:29:07,631
+Row 1 gives beta 1 minus beta 2 equals 0, so beta 1 equals beta 2.
+
+111
+00:29:08,081 --> 00:29:11,260
+Row 2 gives beta 1 equals beta 3.
+
+112
+00:29:11,710 --> 00:29:15,038
+Row 3 gives beta 1 equals beta 4.
+
+113
+00:29:15,488 --> 00:29:30,101
+Together: beta 1 equals beta 2 equals beta 3 equals beta 4. The null says all four slopes are equal. The three rows are not linear combinations of each other, so the rank r is 3.
+
+114
+00:29:30,551 --> 00:29:43,501
+Slide 41 fits the reduced model. Put beta 2, beta 3 and beta 4 equal to beta 1 into the model. All four covariate columns now have the same coefficient.
+
+115
+00:29:43,951 --> 00:29:59,865
+Group the terms. The reduced model is beta 0 plus beta 1 times the sum of the four covariates. So it is a simple linear regression on the new covariate x tilde i, the sum of x i 1 to x i 4.
+
+116
+00:30:00,315 --> 00:30:10,363
+Then use the F test with r equal to 3. Under the null, F has an F distribution with 3 and n minus 5 degrees of freedom.
+
+117
+00:30:10,813 --> 00:30:49,463
+Here is a tutorial question with the ANOVA view. Tutorial 3, question 1 c. The model fit 1 has salary and the district size as a factor with 3 levels. Test that mean salary does not differ among the three sizes. The output gives Multiple R-squared 0.3909, and an F-statistic of 103.3 on 2 and 322 degrees of freedom. Pause the video and try it. In the bar, R squared is the green part of S S Total, and 1 minus R squared is the orange part.
+
+118
+00:30:49,913 --> 00:31:14,105
+The null hypothesis is beta 1 equals beta 2 equals 0. These are all the coefficients except the intercept. So this is the test of the entire model, with p equal to 2 and 322 residual degrees of freedom. The posted solution uses the Lecture 9 formula. By slide 28, it gives the same F.
+
+119
+00:31:14,555 --> 00:31:50,027
+Divide the top and the bottom of F by S S Total. S S Reg over S S Total is R squared, and S S Res over S S Total is 1 minus R squared. So F is 0.3909 over 2, divided by 0.6091 over 322. That is 0.19545 over 0.0018916, which is 103.3. This is the F-statistic line of the output.
+
+120
+00:31:50,477 --> 00:32:12,045
+103.3 is much larger than 3.024, the 95 percent quantile of F with 2 and 322 degrees of freedom. The p-value is less than 2.2 times 10 to the minus 16. We reject the null hypothesis. The district size matters.
+
+121
+00:32:12,495 --> 00:32:27,940
+To recap. The total sum of squares splits into the regression part and the residual part. The cross term is 0, because the residuals are perpendicular to the columns of X. Each sum also has a matrix form.
+
+122
+00:32:28,390 --> 00:32:48,337
+R squared is S S Reg over S S Total: the proportion of the variability that the model explains. The F test of the entire model divides the regression mean square by the residual mean square. In the ANOVA table, the sums of squares and the degrees of freedom add up.
+
+123
+00:32:48,787 --> 00:33:07,283
+To test a group of covariates, or any C beta equals 0, fit a full and a reduced model, and use the extra regression sum of squares. To get the reduced model, substitute the restrictions and add the matching columns. This is the end of video 21.
