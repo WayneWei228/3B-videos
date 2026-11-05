@@ -3,313 +3,557 @@
 This is STAT 331, video 9. The topic is the estimate of the mean response in simple linear regression.
 
 2
-00:00:09,133 --> 00:00:24,429
-After this video, you can estimate the mean response at any x value. You can derive its mean and its variance. You can build a confidence interval for it. And you can solve Tutorial 2, question 1, parts a to d.
+00:00:09,133 --> 00:00:15,490
+This video prepares you for these question types. Each type gets a method card and worked problems.
 
 3
-00:00:24,879 --> 00:00:44,249
-First, a short recap. The model says y i equals beta zero plus beta one x i plus an error. The errors are I I D normal with mean 0 and variance sigma squared. The four assumptions are linearity, independence, normality, and equal variance.
+00:00:15,940 --> 00:00:25,369
+Type R is a short recap: inference for beta one from computer output. Tutorial 2, question 1, parts a to c, asks it.
 
 4
-00:00:44,699 --> 00:01:00,550
-The least squares estimates are beta one hat equals S x y over S x x, and beta zero hat equals y bar minus beta one hat times x bar. For the brainhead data, the green line is the fitted line.
+00:00:25,819 --> 00:00:33,563
+Type A: derive the mean, the variance, and the distribution of mu zero hat, the estimate of the mean response.
 
 5
-00:01:01,000 --> 00:01:16,616
-When we put sigma hat in place of sigma, beta one hat minus beta one, over its standard error, has a t distribution with n minus 2 degrees of freedom. This gives the confidence interval and the test for beta one.
+00:00:34,013 --> 00:00:45,533
+Type B: compute mu zero hat and a confidence interval for the mean response. Tutorial 2, Assignment 1, and the practice questions of lecture 4 ask it.
 
 6
-00:01:17,066 --> 00:01:37,354
-For the brainhead data, the standard error of beta one hat is 0.01307. The 95 percent confidence interval for beta one is from 0.2351 to 0.2866. Now we ask a new question about the line itself.
+00:00:45,983 --> 00:00:51,167
+Type C: explain the width of the interval, and the shape of the confidence band.
 
 7
-00:01:37,804 --> 00:01:44,183
-The gray dashed line is the true line, beta zero plus beta one x. We do not know it.
+00:00:51,617 --> 00:01:10,988
+First, a short recap. The model says y i equals beta zero plus beta one x i plus an error. The errors are I I D normal with mean 0 and variance sigma squared. The four assumptions are linearity, independence, normality, and equal variance.
 
 8
-00:01:44,633 --> 00:01:54,339
-At each x, the responses are normal around the true line. The orange curves show this spread. The mean of y at each x is on the true line.
+00:01:11,438 --> 00:01:27,289
+The least squares estimates are beta one hat equals S x y over S x x, and beta zero hat equals y bar minus beta one hat times x bar. For the brainhead data, the green line is the fitted line.
 
 9
-00:01:54,789 --> 00:02:11,323
-Pick any value x zero. The mean outcome there is mu zero. Mu zero is the expected value of y zero, given x zero. It equals beta zero plus beta one x zero. It is a parameter, so it is unknown.
+00:01:27,739 --> 00:01:43,355
+When we put sigma hat in place of sigma, beta one hat minus beta one, over its standard error, has a t distribution with n minus 2 degrees of freedom. This gives the confidence interval and the test for beta one.
 
 10
-00:02:11,773 --> 00:02:29,202
-We estimate it with the fitted line. Mu zero hat equals beta zero hat plus beta one hat x zero. It is the height of the fitted line at x zero. Because the fitted line is not the true line, mu zero hat is not exactly mu zero.
+00:01:43,805 --> 00:02:01,597
+For the brainhead data, the standard error of beta one hat is 0.01307. The 95 percent confidence interval for beta one is from 0.2351 to 0.2866.
 
 11
-00:02:29,652 --> 00:02:35,391
-Start from mu zero hat equals beta zero hat plus beta one hat x zero.
+00:02:02,047 --> 00:02:11,348
+Question type R recaps videos 7 and 8. Tutorial 2 asks it in parts b and c. Method card R has four steps.
 
 12
-00:02:35,841 --> 00:02:56,833
-Put in the formula for beta zero hat. Beta zero hat equals y bar minus beta one hat x bar. In the picture, the purple point is x bar, y bar. For the brainhead data, it is 3637.86 and 1284.26.
+00:02:11,798 --> 00:02:19,841
+Step 1: read beta one hat, its standard error, sigma hat, and the degrees of freedom, n minus 2, from the output.
 
 13
-00:02:57,283 --> 00:03:17,656
-Collect the two terms with beta one hat. Mu zero hat equals y bar, plus beta one hat times x zero minus x bar. In the picture, take x zero equal to 4500. The step from x bar to x zero is 862 cubic centimeters.
+00:02:20,291 --> 00:02:36,632
+Step 2: to test beta one equals 0, compute t equals beta one hat over its standard error. The p-value is the probability that the absolute value of T is at least the absolute value of t. The red tails show it.
 
 14
-00:03:18,106 --> 00:03:30,458
-The rise is beta one hat times 862. That is 0.2608 times 862, which is 224.9 grams.
+00:02:37,082 --> 00:02:51,183
+Step 3: the confidence interval is beta one hat plus or minus the t quantile times the standard error. The marked points minus t and t cut off the central area 1 minus alpha.
 
 15
-00:03:30,908 --> 00:03:53,244
-So mu zero hat is y bar, 1284.26, plus 224.9. That is 1509.1 grams. At x zero equal to x bar, the second term is zero, so mu zero hat equals y bar. This form is the key to the variance.
+00:02:51,633 --> 00:02:56,945
+Step 4: conclude in words. Use the units of the problem and the word mean.
 
 16
-00:03:53,694 --> 00:03:59,774
-Here is an illustration with our own simulation. The gray dashed line is one true line.
+00:02:57,395 --> 00:03:17,598
+Now Tutorial 2, question 1. A hospital measures satisfaction, y, and illness severity, x, for 25 patients. The question gives x bar, 50.48, S x x, 532.24, and the R output. Video 10 covers parts e and f.
 
 17
-00:04:00,224 --> 00:04:09,888
-We draw a sample of 10 points from this model and fit a line. Then we do it again with a new sample. Each sample gives a different green line.
+00:03:18,048 --> 00:03:42,389
+Pause the video and try it. Part a asks for the fitted line. Step 1 of card R: read the Estimate column. Beta zero hat is 179.1312 and beta one hat is minus 2.3283. So y hat equals 179.1312 minus 2.3283 x.
 
 18
-00:04:10,338 --> 00:04:29,303
-Here are 15 fitted lines. They cross near the middle, at x bar. The formula explains why. Mu zero hat is y bar plus beta one hat times x zero minus x bar. An error in the slope is multiplied by the distance x zero minus x bar.
+00:03:42,839 --> 00:04:04,557
+The fitted line passes through x bar, y bar. So y bar is 179.1312 minus 2.3283 times 50.48. That is 179.1312 minus 117.53, which is 61.60.
 
 19
-00:04:29,753 --> 00:04:42,020
-So the lines are close together near x bar, and far apart at the edges. The estimate of the mean is most precise at x bar. The variance formula will show this exactly.
+00:04:05,007 --> 00:04:30,692
+Read also sigma hat, 13.52, on 23 degrees of freedom. 23 is n minus 2, so n is 25. As a check, 13.52 over the square root of 532.24 is 0.5860. This matches the standard error of the slope, 0.5859, up to rounding.
 
 20
-00:04:42,470 --> 00:04:57,105
-Next, the mean of mu zero hat. Mu zero hat is random, because it comes from the random sample. Its distribution is the green curve. Start with E of beta zero hat plus beta one hat x zero.
+00:04:31,142 --> 00:04:49,617
+Pause the video and try it. Part b asks if satisfaction depends on severity. Step 2 of card R: write it as a test. The null hypothesis is beta one equals 0: no linear relation. The alternative is beta one is not 0.
 
 21
-00:04:57,555 --> 00:05:07,560
-Expectation is linear, and x zero is a constant. So this is E of beta zero hat, plus E of beta one hat times x zero.
+00:04:50,067 --> 00:05:07,069
+Under the null hypothesis, beta one hat over its standard error has a t distribution with 23 degrees of freedom. At the 5 percent level, the critical values are minus 2.069 and 2.069.
 
 22
-00:05:08,010 --> 00:05:23,925
-Video 6 showed that beta zero hat and beta one hat are unbiased. So the result is beta zero plus beta one x zero. That is mu zero. So mu zero hat is an unbiased estimator of mu zero.
-
-23
-00:05:24,375 --> 00:05:34,679
-In repeated samples, each sample gives one value of mu zero hat. The blue marks are such values. They are centered at the true mean mu zero.
-
-24
-00:05:35,129 --> 00:05:44,153
-Now the variance. Start from the second form: the variance of y bar plus beta one hat times x zero minus x bar.
-
-25
-00:05:44,603 --> 00:06:04,165
-Write both parts as sums over the y i. Y bar is the sum of 1 over n times y i. Beta one hat is S x y over S x x, and that is the sum of x i minus x bar, over S x x, times y i. Video 6 showed this form.
-
-26
-00:06:04,615 --> 00:06:24,861
-Put the two sums together. Mu zero hat is a weighted sum of the y i, with weight c i. C i equals 1 over n, plus x i minus x bar times x zero minus x bar, over S x x. The weights depend only on the x values, so they are constants.
-
-27
-00:06:25,311 --> 00:06:42,356
-Look at the weights for a small data set: x equals 1 to 5. Then x bar is 3 and S x x is 10. At x zero equal to x bar, the second part is zero. Every weight is one fifth. Mu zero hat is just y bar.
-
-28
-00:06:42,806 --> 00:07:03,777
-At x zero equal to 5, the weights are minus 0.2, 0, 0.2, 0.4, and 0.6. The point at the far end gets a large weight. The sum of the squared weights is 0.6, not 0.2. Large squared weights give a large variance.
-
-29
-00:07:04,227 --> 00:07:16,045
-The y i are independent, and each has variance sigma squared. So the variance of the sum of c i y i is the sum of c i squared, times sigma squared.
-
-30
-00:07:16,495 --> 00:07:25,967
-Square each weight. A square of a sum of two parts gives three terms: the first part squared, the second part squared, and two times the product.
-
-31
-00:07:26,417 --> 00:07:46,599
-Now sum each term over i. The first term gives n times 1 over n squared, which is 1 over n. The second term contains the sum of x i minus x bar squared. That sum is S x x. So it becomes x zero minus x bar squared, over S x x.
-
-32
-00:07:47,049 --> 00:07:55,411
-The cross term contains the sum of x i minus x bar. This sum is always zero. So the cross term is zero.
-
-33
-00:07:55,861 --> 00:08:18,261
-The result: the variance of mu zero hat is sigma squared times the quantity 1 over n, plus x zero minus x bar squared over S x x. Check it on the small data set at x zero equal to 5. 1 over 5 plus 4 over 10 is 0.6. That equals the sum of the squared weights.
-
-34
-00:08:18,711 --> 00:08:35,607
-The slide asks why mu zero hat is normal. Mu zero hat is a linear combination of the y i, with constant weights. The y i are independent and normal. A linear combination of independent normal variables is normal.
-
-35
-00:08:36,057 --> 00:08:41,881
-So mu zero hat is normal, with mean mu zero and the variance from the last slide.
-
-36
-00:08:42,331 --> 00:08:53,958
-Subtract the mean and divide by the standard deviation. The result has a standard normal distribution. But sigma is unknown, so we cannot use this directly.
-
-37
-00:08:54,408 --> 00:09:09,000
-Put sigma hat in place of sigma, by the same logic as for beta one hat. The result has a t distribution with n minus 2 degrees of freedom. The denominator is the standard error of mu zero hat.
-
-38
-00:09:09,450 --> 00:09:19,221
-Now build the interval. The t quantile t 1 minus alpha over 2, n minus 2, cuts off area alpha over 2 in each tail.
-
-39
-00:09:19,671 --> 00:09:28,609
-So the probability that the standardized statistic is between minus t and t is 1 minus alpha. This is the green area.
-
-40
-00:09:29,059 --> 00:09:43,118
-Multiply the inequality by the standard error, and solve for mu zero. Mu zero is between mu zero hat minus t times the standard error, and mu zero hat plus t times the standard error.
-
-41
-00:09:43,568 --> 00:10:07,589
-So a 100 times 1 minus alpha percent confidence interval for mu zero is mu zero hat plus or minus t times sigma hat times the square root of 1 over n plus x zero minus x bar squared over S x x. It has the same shape as the interval for beta one: estimate, plus or minus t, times standard error.
-
-42
-00:10:08,039 --> 00:10:15,335
-The green curve is the standard error of mu zero hat for the brainhead data, as a function of x zero.
-
-43
-00:10:15,785 --> 00:10:33,300
-At x zero equal to x bar, the second term is zero. The standard error is sigma hat over root n, which is 72.35 over root 236. That is 4.71 grams. This is the smallest value.
-
-44
-00:10:33,750 --> 00:10:54,059
-Away from x bar, the term x zero minus x bar squared over S x x grows. At 3000 the standard error is 9.57. At 4500 it is 12.21. This is the fan of lines from the simulation, now as a formula.
-
-45
-00:10:54,509 --> 00:11:06,819
-The formula also shows how to get a precise estimate. A larger sample size n makes 1 over n small. A larger spread of the x values makes S x x large.
-
-46
-00:11:07,269 --> 00:11:30,138
-Here is an example with the brainhead data, at x zero equal to 4000 cubic centimeters. First, the point estimate. 335.4323 plus 0.2608207 times 4000 is 1378.72 grams.
-
-47
-00:11:30,588 --> 00:11:51,196
-Second, the two parts under the square root. 1 over 236 is 0.00424. x zero minus x bar is 362.14. Its square, over S x x of about 30.6 million, is 0.00428.
-
-48
-00:11:51,646 --> 00:12:06,366
-Third, the standard error. 72.35 times the square root of the sum is 6.68 grams. The t quantile with 234 degrees of freedom is 1.970.
-
-49
-00:12:06,816 --> 00:12:25,675
-Fourth, the interval. 1378.72 plus or minus 1.970 times 6.68 gives 1365.56 to 1391.87 grams.
-
-50
-00:12:26,125 --> 00:12:42,893
-Interpret it for the mean. We are 95 percent confident that the mean brain weight of all people with head size 4000 is between 1365.6 and 1391.9 grams.
-
-51
-00:12:43,343 --> 00:12:53,220
-The slides compute the interval at many values of x zero, from the smallest head size to the largest. Here are the data and the fitted line.
-
-52
-00:12:53,670 --> 00:13:01,286
-Join the lower limits and the upper limits. This gives a 95 percent confidence band for the mean response.
-
-53
-00:13:01,736 --> 00:13:20,147
-Why does the band get wider toward the edges? At x bar, the half width is 9.3 grams. At the smallest x, it is 24 grams, and at the largest x, it is 30 grams. The term x zero minus x bar squared grows at the edges.
-
-54
-00:13:20,597 --> 00:13:39,967
-Why do most points fall outside the lines? The band shows where the mean is. It does not show where single people are. A single y has its own error, with standard deviation about 72 grams. Here only 41 of the 236 points are inside the band.
-
-55
-00:13:40,417 --> 00:13:52,428
-Even if we knew the mean exactly, new points would not fall on the line. To predict a new response, we must add the error of the new point. That is the topic of the next video.
-
-56
-00:13:52,878 --> 00:14:15,875
-Now Tutorial 2, question 1. A hospital measures satisfaction, y, and illness severity, x, for 25 patients. The question gives x bar, 50.48, and S x x, 532.24, and the regression output. We answer parts a to d. Part e and f are about prediction, in video 10.
-
-57
-00:14:16,325 --> 00:14:35,205
-This is the coefficient table from the question. The Estimate column gives beta zero hat, 179.1312, and beta one hat, minus 2.3283. The next columns are the standard error, the t value, and the p-value.
-
-58
-00:14:35,655 --> 00:14:57,202
-The residual standard error is sigma hat, 13.52, on 23 degrees of freedom. So n is 25. As a check, 13.52 over the square root of 532.24 is 0.586. This matches the standard error of the slope.
-
-59
-00:14:57,652 --> 00:15:12,180
-Pause the video and try it. Part a asks for the fitted line. Read the two estimates from the table. Y hat equals 179.1312 minus 2.3283 x.
-
-60
-00:15:12,630 --> 00:15:31,382
-The line passes through x bar, y bar. So we can also find y bar: 179.1312 minus 2.3283 times 50.48 is 61.60. We use this point again in part d.
-
-61
-00:15:31,832 --> 00:15:48,387
-Pause the video and try it. Part b asks if satisfaction depends on severity. Write it as a test. The null hypothesis is beta one equals zero: no linear relation. The alternative is beta one is not zero.
-
-62
-00:15:48,837 --> 00:16:04,175
-Under the null hypothesis, beta one hat over its standard error has a t distribution with 23 degrees of freedom. At the 5 percent level, the critical values are plus and minus 2.069.
-
-63
-00:16:04,625 --> 00:16:16,401
+00:05:07,519 --> 00:05:19,274
 The observed value is minus 2.3283 over 0.5859, which is minus 3.974. It is far in the left tail.
 
-64
-00:16:16,851 --> 00:16:34,537
-The p-value is two times the probability that T is larger than 3.974. The table gives 0.000601. This is less than 0.05, so we reject the null hypothesis.
+23
+00:05:19,724 --> 00:05:36,961
+The p-value is two times the probability that T is at least 3.974. The output gives 0.000601. This is less than 0.05, so we reject the null hypothesis.
 
-65
-00:16:34,987 --> 00:16:41,536
-Conclusion: there is strong evidence that the mean satisfaction depends on the severity of the illness.
+24
+00:05:37,411 --> 00:05:44,601
+Step 4, conclude: there is strong evidence that the mean satisfaction depends on the severity of the illness.
 
-66
-00:16:41,986 --> 00:16:59,522
-Pause the video and try it. Part c asks for an interpretation and a confidence interval. Compare two groups of patients whose severity differs by 1. The estimated mean satisfaction of the group with higher severity is 2.33 units lower.
+25
+00:05:45,051 --> 00:06:02,373
+Pause the video and try it. Part c asks for an interpretation and a confidence interval. Step 4 of card R gives the sentence: for each 1-unit increase in severity, the estimated mean satisfaction is 2.33 units lower.
 
-67
-00:16:59,972 --> 00:17:07,823
-For a 95 percent interval with 23 degrees of freedom, the t quantile is 2.0687.
+26
+00:06:02,823 --> 00:06:11,527
+Step 3: for a 95 percent interval with 23 degrees of freedom, the t quantile is 2.0687.
 
-68
-00:17:08,273 --> 00:17:21,457
-The interval is minus 2.3283 plus or minus 2.0687 times 0.5859. The half width is 1.212.
+27
+00:06:11,977 --> 00:06:26,655
+The interval is minus 2.3283 plus or minus 2.0687 times 0.5859. The half width is 1.212. The blue bar shows it.
 
-69
-00:17:21,907 --> 00:17:31,400
+28
+00:06:27,105 --> 00:06:36,598
 So the 95 percent confidence interval for beta one is from minus 3.540 to minus 1.116.
 
+29
+00:06:37,048 --> 00:06:47,160
+The whole interval is below 0. 0 is not in it. This agrees with the test in part b. Now we ask a new question about the line itself.
+
+30
+00:06:47,610 --> 00:06:53,989
+The gray dashed line is the true line, beta zero plus beta one x. We do not know it.
+
+31
+00:06:54,439 --> 00:07:04,167
+At each x, the responses are normal around the true line. The orange curves show this spread. The mean of y at each x is on the true line.
+
+32
+00:07:04,617 --> 00:07:21,171
+Pick any value x zero. The mean outcome there is mu zero. Mu zero is the expected value of y zero, given x zero. It equals beta zero plus beta one x zero. It is a parameter, so it is unknown.
+
+33
+00:07:21,621 --> 00:07:32,821
+We estimate it with the fitted line. Mu zero hat equals beta zero hat plus beta one hat x zero. It is the height of the fitted line at x zero.
+
+34
+00:07:33,271 --> 00:07:53,325
+The fitted line is not the true line, so mu zero hat is not exactly mu zero. The red segment shows the difference. Tutorial 2, question 1 d, asks for mu zero hat at severity 55 and a confidence interval. For the interval, we need the distribution of mu zero hat.
+
+35
+00:07:53,775 --> 00:08:00,559
+Start from the definition: mu zero hat equals beta zero hat plus beta one hat x zero.
+
+36
+00:08:01,009 --> 00:08:20,465
+Put in the formula for beta zero hat: y bar minus beta one hat x bar. In the picture, the purple point is x bar, y bar. For the brainhead data, it is 3637.86 and 1284.263.
+
+37
+00:08:20,915 --> 00:08:32,392
+Collect the two terms with beta one hat. Mu zero hat equals y bar, plus beta one hat times x zero minus x bar. This is the second form.
+
+38
+00:08:32,842 --> 00:08:52,959
+Use it for the brainhead data at x zero equal to 4500. x zero minus x bar is 4500 minus 3637.86, which is 862.14. The blue arrow shows this step along x.
+
+39
+00:08:53,409 --> 00:09:11,457
+The rise along the line is beta one hat times 862.14. 0.26082 times 862.14 is 224.863 grams. The orange arrow shows it.
+
+40
+00:09:11,907 --> 00:09:26,563
+So mu zero hat is y bar, 1284.263, plus 224.863. That is 1509.126 grams.
+
+41
+00:09:27,013 --> 00:09:37,573
+At x zero equal to x bar, the second term is 0, so mu zero hat equals y bar. Card A uses this second form in step 1.
+
+42
+00:09:38,023 --> 00:09:48,071
+Slide 13 asks: what happens at x bar? Here is an illustration with our own simulation. The dark dashed line is one true line.
+
+43
+00:09:48,521 --> 00:09:58,185
+We draw a sample of 10 points from this model and fit a line. Then we do it again with a new sample. Each sample gives a different green line.
+
+44
+00:09:58,635 --> 00:10:17,921
+Here are 15 fitted lines. They cross near the middle, at x bar. The second form explains why. Mu zero hat is y bar plus beta one hat times x zero minus x bar. An error in the slope is multiplied by the distance x zero minus x bar.
+
+45
+00:10:18,371 --> 00:10:32,728
+So the lines are close together near x bar, and far apart at the edges. The red bars show the spread. The estimate of the mean is most precise at x bar. The variance formula will show this exactly.
+
+46
+00:10:33,178 --> 00:10:49,071
+Section 3. Question type A asks you to derive the mean and the variance of mu zero hat, and its distribution. Lecture 4 does it on slides 14 to 20. Slide 18 asks why mu zero hat is normal.
+
+47
+00:10:49,521 --> 00:10:59,143
+Method card A has five steps. Step 1: use the second form, y bar plus beta one hat times x zero minus x bar.
+
+48
+00:10:59,593 --> 00:11:06,675
+Step 2: write mu zero hat as a sum of c i times y i, where the weights c i are constants.
+
+49
+00:11:07,125 --> 00:11:14,805
+Step 3: for the mean, use linearity of the expected value and the fact that both estimates are unbiased.
+
+50
+00:11:15,255 --> 00:11:31,298
+Step 4: for the variance, the y i are independent. So the variance is sigma squared times the sum of the c i squared. Expand the square, and use the fact that the deviations x i minus x bar add to 0.
+
+51
+00:11:31,748 --> 00:11:46,596
+Step 5: mu zero hat is normal, because it is a linear combination of independent normal variables. Put sigma hat in place of sigma to get a t distribution. Then solve for the confidence interval.
+
+52
+00:11:47,046 --> 00:11:50,502
+Now we use the card on the slides of lecture 4.
+
+53
+00:11:50,952 --> 00:12:08,424
+Now card A, step 3: the mean of mu zero hat. Mu zero hat is random, because it comes from the random sample. Its density is the green curve. Line 1: E of mu zero hat is E of beta zero hat plus beta one hat x zero.
+
+54
+00:12:08,874 --> 00:12:19,839
+Line 2: expectation is linear, and x zero is a constant. So this is E of beta zero hat, plus E of beta one hat times x zero.
+
+55
+00:12:20,289 --> 00:12:30,871
+Line 3: video 6 showed that beta zero hat and beta one hat are unbiased. So the result is beta zero plus beta one x zero.
+
+56
+00:12:31,321 --> 00:12:38,830
+Line 4: that is the definition of mu zero. In the picture, the center of the green curve is mu zero.
+
+57
+00:12:39,280 --> 00:12:43,568
+So mu zero hat is an unbiased estimator of mu zero.
+
+58
+00:12:44,018 --> 00:12:53,533
+In repeated samples, each sample gives one value of mu zero hat. The blue marks are such values. They are centered at mu zero.
+
+59
+00:12:53,983 --> 00:13:10,644
+Now the variance. Step 1 of card A: start from the second form. The variance of mu zero hat is the variance of y bar plus beta one hat times x zero minus x bar. The next line changes the two marked parts.
+
+60
+00:13:11,094 --> 00:13:28,353
+Step 2: write both parts as sums over the y i. Y bar is the sum of 1 over n times y i. Beta one hat is the sum of x i minus x bar, over S x x, times y i. Video 6 showed this form.
+
+61
+00:13:28,803 --> 00:13:48,707
+Put the two sums together. Mu zero hat is a weighted sum of the y i, with weight c i. C i equals 1 over n, plus x i minus x bar times x zero minus x bar, over S x x. The weights use only the x values, so they are constants.
+
+62
+00:13:49,157 --> 00:14:09,893
+Look at the weights for a small data set: x equals 1 to 5. Then x bar is 3 and S x x is 10. At x zero equal to x bar, the second part is 0. Every weight is 0.2. The sum of the squared weights is 5 times 0.04, which is 0.2.
+
+63
+00:14:10,343 --> 00:14:23,548
+At x zero equal to 5, the weights are minus 0.2, 0, 0.2, 0.4, and 0.6. The point at the far end gets a large weight.
+
+64
+00:14:23,998 --> 00:14:45,715
+The sum of the squared weights is 0.04 plus 0 plus 0.04 plus 0.16 plus 0.36. That is 0.6, not 0.2. Step 4 shows that the variance is sigma squared times this sum. So large weights give a large variance.
+
+65
+00:14:46,165 --> 00:15:00,587
+Step 4 of card A. Line 1: the y i are independent, and each has variance sigma squared. So the variance of the sum of c i y i is the sum of c i squared, times sigma squared.
+
+66
+00:15:01,037 --> 00:15:11,703
+Line 2: square each weight. The square of a sum of two parts gives three terms: the first part squared, the second part squared, and two times the product.
+
+67
+00:15:12,153 --> 00:15:23,332
+Line 3: sum each term over i, and take the constants out of the sums. The first term gives n times 1 over n squared, which is 1 over n.
+
+68
+00:15:23,782 --> 00:15:37,585
+Line 4: the sum of x i minus x bar squared is S x x. So the second term becomes x zero minus x bar squared, over S x x squared, times S x x.
+
+69
+00:15:38,035 --> 00:15:47,656
+Line 5: the cross term contains the sum of x i minus x bar. This sum is always 0. So the cross term is 0.
+
 70
-00:17:31,850 --> 00:17:43,263
-The whole interval is below zero. Zero is not in it. This agrees with the test in part b, which rejected beta one equals zero at the 5 percent level.
+00:15:48,106 --> 00:15:52,095
+Line 6: cancel one S x x in the second term.
 
 71
-00:17:43,713 --> 00:17:56,257
-Pause the video and try it. Part d asks for the estimated mean satisfaction at severity 55, with a 95 percent confidence interval. Here is the fitted line.
+00:15:52,545 --> 00:16:14,967
+The result: the variance of mu zero hat is sigma squared times the quantity 1 over n, plus x zero minus x bar squared over S x x. Check it on the small data set at x zero equal to 5. 1 over 5 plus 4 over 10 is 0.6. That equals the sum of the squared weights.
 
 72
-00:17:56,707 --> 00:18:08,185
-First, the estimate. 179.1312 minus 2.3283 times 55 is 51.07.
+00:16:15,417 --> 00:16:35,641
+Step 5 of card A. Slide 18 asks why mu zero hat is normal. Line 1: mu zero hat is a sum of c i times y i, with constant weights. The y i are independent and normal. A linear combination of independent normal variables is normal.
 
 73
-00:18:08,635 --> 00:18:37,989
-Second, the standard error. x zero minus x bar is 55 minus 50.48, which is 4.52. Its square is 20.43. Divide by 532.24 to get 0.0384. Add 1 over 25, which is 0.04. The square root of the sum is 0.280. Times 13.52, the standard error is 3.785.
+00:16:36,091 --> 00:16:47,653
+Line 2: so mu zero hat is normal, with mean mu zero from step 3, and the variance from step 4. The orange arrows show one standard deviation.
 
 74
-00:18:38,439 --> 00:18:57,831
-Third, the interval. The t quantile is 2.0687 again. 2.0687 times 3.785 is 7.83. So the interval is from 43.24 to 58.91. The blue bar shows it.
+00:16:48,103 --> 00:17:01,735
+Line 3: subtract the mean and divide by the standard deviation. The result has a standard normal distribution, on the z scale. But sigma is unknown, so we cannot use this directly.
 
 75
-00:18:58,281 --> 00:19:17,503
-Interpret it for the mean of a group, not for one patient. We are 95 percent confident that the mean satisfaction of all patients with severity 55 is between 43.24 and 58.91. The green band shows the interval at each severity.
+00:17:02,185 --> 00:17:13,769
+Line 4: put sigma hat in place of sigma, by the same logic as for beta one hat. The result has a t distribution with n minus 2 degrees of freedom.
 
 76
-00:19:17,953 --> 00:19:32,865
-To recap. The mean response at x zero is beta zero plus beta one x zero. We estimate it with the fitted line, which also equals y bar plus beta one hat times x zero minus x bar.
+00:17:14,219 --> 00:17:21,558
+The denominator of line 4 is the standard error of mu zero hat. Card B uses it in step 3.
 
 77
-00:19:33,315 --> 00:19:49,933
-The estimate is unbiased. Its variance is sigma squared times 1 over n plus x zero minus x bar squared over S x x. It is normal, because it is a linear combination of independent normal y values.
+00:17:22,008 --> 00:17:40,333
+Now solve for the interval. Line 1: the t quantile t 1 minus alpha over 2, n minus 2, cuts off area alpha over 2 in each tail. So the statistic is between minus t and t with probability 1 minus alpha, the green area.
 
 78
-00:19:50,383 --> 00:19:59,365
-The confidence interval is mu zero hat plus or minus t with n minus 2 degrees of freedom, times the standard error.
+00:17:40,783 --> 00:17:55,311
+Line 2: multiply all three parts by the standard error. It is positive, so the inequalities stay the same. The distance between mu zero hat and mu zero is at most t times the standard error.
 
 79
-00:19:59,815 --> 00:20:10,055
-The interval is narrowest at x bar and wider at the edges. It is for the mean, not for single points. The next video predicts a new response.
+00:17:55,761 --> 00:18:14,812
+Line 3: subtract mu zero hat, and multiply by minus 1. This turns the inequalities around. Mu zero is between mu zero hat minus t times the standard error, and mu zero hat plus t times the standard error. The blue bar shows this interval.
+
+80
+00:18:15,262 --> 00:18:39,283
+So a 100 times 1 minus alpha percent confidence interval for mu zero is mu zero hat plus or minus t times sigma hat times the square root of 1 over n plus x zero minus x bar squared over S x x. It has the same shape as the interval for beta one: estimate, plus or minus t, times standard error.
+
+81
+00:18:39,733 --> 00:18:49,653
+Section 4. Question type B asks for the estimated mean response and a confidence interval for it. Method card B has five steps.
+
+82
+00:18:50,103 --> 00:18:59,661
+Step 1: the estimate, mu zero hat, equals beta zero hat plus beta one hat x zero. The second form gives the same number.
+
+83
+00:19:00,111 --> 00:19:09,007
+Step 2: compute the two terms under the square root: 1 over n, and x zero minus x bar squared over S x x.
+
+84
+00:19:09,457 --> 00:19:15,366
+Step 3: the standard error is sigma hat times the square root of the sum of the two terms.
+
+85
+00:19:15,816 --> 00:19:23,773
+Step 4: find the t quantile with n minus 2 degrees of freedom, from a table, from R, or from the question.
+
+86
+00:19:24,223 --> 00:19:37,279
+Step 5: the interval is mu zero hat plus or minus t times the standard error. In the answer, say that it is for the mean of y, for all units with x equal to x zero.
+
+87
+00:19:37,729 --> 00:20:04,012
+Here is the example of slide 21, with the brainhead data, at x zero equal to 4000 cubic centimeters. Pause the video and try it. Step 1: 335.4323 plus 0.2608207 times 4000 is 1378.715 grams. The ring marks it on the line.
+
+88
+00:20:04,462 --> 00:20:14,446
+Step 2, the first term: 1 over 236 is 0.004237. The blue part of the bar shows it.
+
+89
+00:20:14,896 --> 00:20:33,925
+The second term: x zero minus x bar is 4000 minus 3637.86. Square it and divide by S x x. The result is 0.004279. The orange part of the bar shows it.
+
+90
+00:20:34,375 --> 00:20:49,031
+Step 3: the sum of the two terms is 0.008516. 72.35 times its square root is 6.677 grams. This is the standard error.
+
+91
+00:20:49,481 --> 00:20:57,311
+Step 4: the t quantile with 234 degrees of freedom is 1.9702.
+
+92
+00:20:57,761 --> 00:21:15,062
+Step 5: 1.9702 times 6.677 is 13.155. So the interval is 1378.715 plus or minus 13.155.
+
+93
+00:21:15,512 --> 00:21:34,755
+The interval is from 1365.56 to 1391.87 grams. The blue bar shows it. We are 95 percent confident that the mean brain weight of all people with head size 4000 is in this interval.
+
+94
+00:21:35,205 --> 00:21:58,949
+Now Tutorial 2, question 1 d. Pause the video and try it. Step 1 of card B: 179.1312 minus 2.3283 times 55. 2.3283 times 55 is 128.0565, so mu zero hat is 51.0747.
+
+95
+00:21:59,399 --> 00:22:04,263
+Step 2, the first term: 1 over 25 is 0.04.
+
+96
+00:22:04,713 --> 00:22:25,129
+The second term: x zero minus x bar is 55 minus 50.48, which is 4.52. The blue arrow shows it. Its square is 20.4304. Divide by 532.24 to get 0.038386.
+
+97
+00:22:25,579 --> 00:22:38,208
+Step 3: the sum is 0.078386. 13.52 times its square root is 3.7853. This is the standard error.
+
+98
+00:22:38,658 --> 00:22:44,738
+Step 4: the t quantile with 23 degrees of freedom is 2.0687.
+
+99
+00:22:45,188 --> 00:23:00,164
+Step 5: 2.0687 times 3.7853 is 7.831. So the interval is 51.0747 plus or minus 7.831.
+
+100
+00:23:00,614 --> 00:23:26,257
+The interval is from 43.24 to 58.91. The tutorial solution uses R with unrounded inputs and gets 43.25 to 58.91. We are 95 percent confident that the mean satisfaction of all patients with severity 55 is in this interval. The green band shows the interval at each severity.
+
+101
+00:23:26,707 --> 00:23:48,765
+The next type B problem is from Assignment 1, question 3 d. Pause the video and try it. There are 90 berries. x is the sugar content, and y is the chewiness. Find a 95 percent interval for the mean chewiness at 220 grams per liter. The box gives the numbers that we compute from the data file.
+
+102
+00:23:49,215 --> 00:24:16,927
+Step 1: use the second form. x zero minus x bar is 220 minus 217.333, which is 2.667. Beta one hat times 2.667 is minus 0.0608. So mu zero hat is 2.7083 minus 0.0608, which is 2.6475.
+
+103
+00:24:17,377 --> 00:24:23,009
+Step 2, the first term: 1 over 90 is 0.011111.
+
+104
+00:24:23,459 --> 00:24:43,470
+The second term: 2.667 squared, over S x x, 70657.4, is only 0.000101. In the bar, the orange part is very small, because 220 is close to x bar.
+
+105
+00:24:43,920 --> 00:25:06,363
+Step 3: sigma hat is the square root of S S E over n minus 2. That is the square root of 74.126 over 88, which is 0.9178. Times the square root of the sum, 0.011212, the standard error is 0.0972.
+
+106
+00:25:06,813 --> 00:25:14,173
+Step 4: the t quantile with 88 degrees of freedom is 1.9873.
+
+107
+00:25:14,623 --> 00:25:31,476
+Step 5: 1.9873 times 0.0972 is 0.1932. So the interval is 2.6475 plus or minus 0.1932.
+
+108
+00:25:31,926 --> 00:25:44,086
+The interval is from 2.454 to 2.841 millijoules. It is for the mean chewiness of all berries with 220 grams per liter of sugar.
+
+109
+00:25:44,536 --> 00:26:01,837
+The last type B problem is practice question 2 b of lecture 4. Pause the video and try it. The question gives the estimates, S x x, x bar equal to 0, and sigma hat. It asks for a 95 percent interval for beta zero.
+
+110
+00:26:02,287 --> 00:26:16,922
+Line 1: beta zero is the mean response at x equal to 0. So a confidence interval for beta zero is a confidence interval for mu zero at x zero equal to 0. Card B solves it.
+
+111
+00:26:17,372 --> 00:26:24,455
+Step 1: mu zero hat is beta zero hat plus beta one hat times 0. That is minus 2.
+
+112
+00:26:24,905 --> 00:26:36,339
+Step 2: 1 over 10, plus 0 minus 0 squared over 16. The second term is 0, because x zero equals x bar. The sum is 0.1.
+
+113
+00:26:36,789 --> 00:26:50,357
+Step 3: the standard error is 0.4 times the square root of 0.1, which is 0.1265. This is also the standard error of beta zero hat.
+
+114
+00:26:50,807 --> 00:27:04,013
+Step 4: n minus 2 is 8. The question says that the probability that T is less than 2.31 is 0.975. So the t quantile is 2.31.
+
+115
+00:27:04,463 --> 00:27:18,756
+Step 5: 2.31 times 0.1265 is 0.2922. So the interval is minus 2 plus or minus 0.2922.
+
+116
+00:27:19,206 --> 00:27:31,259
+The 95 percent confidence interval for beta zero is from minus 2.2922 to minus 1.7078. The blue bar shows it.
+
+117
+00:27:31,709 --> 00:27:49,395
+Section 5. Question type C asks you to explain the width of the interval. Lecture 4 asks it on slides 23 to 25. The green curve is the standard error of mu zero hat for the brainhead data, as a function of x zero.
+
+118
+00:27:49,845 --> 00:28:01,791
+Step 1 of method card C: write the standard error. Sigma hat times the square root of 1 over n plus x zero minus x bar squared over S x x.
+
+119
+00:28:02,241 --> 00:28:19,927
+Step 2: at x zero equal to x bar, the second term is 0. The standard error is sigma hat over root n, which is 72.35 over root 236. That is 4.71 grams, the smallest value.
+
+120
+00:28:20,377 --> 00:28:36,483
+Step 3: away from x bar, the second term grows. At 3000 the standard error is 9.57. At 4500 it is 12.21. A larger standard error gives a wider interval.
+
+121
+00:28:36,933 --> 00:28:52,507
+Step 4: a larger sample size n makes 1 over n small. A larger spread of the x values makes S x x large. The dashed curve shows n and S x x 4 times larger: the standard error is half.
+
+122
+00:28:52,957 --> 00:29:02,365
+Step 5: the interval is for the mean mu zero, not for single y values. Each single y has its own error epsilon.
+
+123
+00:29:02,815 --> 00:29:15,572
+Slide 21 computes the interval at many values of x zero, from the smallest head size to the largest. Here are the data and the fitted line. Pause the video and try it.
+
+124
+00:29:16,022 --> 00:29:28,715
+Join the lower limits and the upper limits. This gives a 95 percent confidence band for the mean response. Slide 23 asks why the band gets wider toward the edges.
+
+125
+00:29:29,165 --> 00:29:41,432
+Card C, step 2: at x bar, the second term is 0. The standard error is 72.35 over root 236, which is 4.71.
+
+126
+00:29:41,882 --> 00:29:54,405
+The half width is t times the standard error: 1.9702 times 4.71, which is 9.3 grams. The red bar at x bar shows it.
+
+127
+00:29:54,855 --> 00:30:13,329
+Step 3: at the smallest x, 2773, the second term is 2773 minus 3637.86, squared, over S x x. That is 0.024406.
+
+128
+00:30:13,779 --> 00:30:24,830
+Add 1 over n, 0.004237. 72.35 times the square root of the sum is 12.24.
+
+129
+00:30:25,280 --> 00:30:36,032
+The half width is 1.9702 times 12.24, which is 24.1 grams. The red bar at the left edge shows it.
+
+130
+00:30:36,482 --> 00:30:45,079
+At the largest x, 4747, the second term is 0.040140.
+
+131
+00:30:45,529 --> 00:30:53,017
+Add 1 over n. 72.35 times the square root of the sum is 15.24.
+
+132
+00:30:53,467 --> 00:31:04,219
+The half width is 1.9702 times 15.24, which is 30.0 grams. The red bar at the right edge shows it.
+
+133
+00:31:04,669 --> 00:31:15,123
+So the term x zero minus x bar squared over S x x grows with the distance from x bar. The standard error and the interval grow with it.
+
+134
+00:31:15,573 --> 00:31:23,722
+Slide 24 asks the second question: why do most of the points fall outside the lines? Pause the video and try it.
+
+135
+00:31:24,172 --> 00:31:33,089
+Card C, step 5: the band shows where the mean is. Its half width is only 9.3 to 30.0 grams.
+
+136
+00:31:33,539 --> 00:31:52,206
+A single y is the mean plus its own error epsilon. The standard deviation of epsilon is about 72.35 grams, much more than the half width. So only 41 of the 236 points are inside the band. They are orange.
+
+137
+00:31:52,656 --> 00:32:06,587
+Slide 25 adds: even if we knew the mean exactly, new points would not fall on the line. To predict a new response, we must add the error of the new point. That is the topic of the next video.
+
+138
+00:32:07,037 --> 00:32:27,133
+To recap. Card A derives the properties of mu zero hat. It is unbiased. Its variance is sigma squared times 1 over n plus x zero minus x bar squared over S x x. It is normal, and with sigma hat we get a t distribution and the confidence interval.
+
+139
+00:32:27,583 --> 00:32:39,999
+Card B computes the interval: the estimate, the two terms, the standard error, the t quantile, and the interval. Say that it is for the mean of all units with x equal to x zero.
+
+140
+00:32:40,449 --> 00:32:58,347
+Card C explains the width. It is smallest at x bar and grows with the distance from x bar. A larger n or a larger S x x makes it smaller. The interval is for the mean, not for single points. The next video predicts a new response.

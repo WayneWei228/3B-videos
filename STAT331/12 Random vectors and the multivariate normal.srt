@@ -1,387 +1,703 @@
 1
-00:00:00,000 --> 00:00:08,917
-This is STAT 331, video 12. The topic is random vectors and the multivariate normal distribution.
+00:00:00,000 --> 00:00:10,325
+This is STAT 331, video 12. The topic is random vectors and the multivariate normal distribution, from Lecture 5.
 
 2
-00:00:09,367 --> 00:00:36,290
-After this video, you can find the mean vector and the covariance matrix of a random vector. You can use and prove the rules for the mean and the variance of A times y. You can define the multivariate normal distribution and use its four properties. You can write multiple linear regression as a multivariate normal model. And you can solve the exercise and the two practice questions of Lecture 5.
+00:00:10,775 --> 00:00:17,239
+This video prepares you for four question types. Each type gets a method card and worked problems.
 
 3
-00:00:36,740 --> 00:00:49,220
-In multiple linear regression, we have n responses, y 1 to y n. Each response is a random variable. We stack them in one column. This column is a random vector.
+00:00:17,689 --> 00:00:28,676
+Type A: compute the mean and the variance of one linear combination, a transpose y. Practice question 1 of Lecture 5 and Tutorial 3 ask this.
 
 4
-00:00:49,670 --> 00:00:57,115
-Each entry has its own distribution. The entries can have different means. They can also depend on each other.
+00:00:29,126 --> 00:00:39,430
+Type B: compute the mean vector and the covariance matrix of A y, a vector of linear combinations. Practice question 1 asks this too.
 
 5
-00:00:57,565 --> 00:01:10,088
-We need two summaries of the whole vector. The first is the mean vector. The second is the covariance matrix. With these, one matrix equation does the work of n equations.
+00:00:39,880 --> 00:00:50,973
+Type C: prove a rule for a mean or a covariance matrix with matrix algebra. The slides prove two rules, and practice question 2 asks for a third.
 
 6
-00:01:10,538 --> 00:01:22,250
-Let y be a random vector with entries y 1 to y n. The T means transpose. So y is a column. Each curve shows the distribution of one entry.
+00:00:51,423 --> 00:01:04,735
+Type D: find the distribution of a linear function of a multivariate normal vector, and decide if a vector is multivariate normal. The slides use it for multiple linear regression.
 
 7
-00:01:22,700 --> 00:01:28,737
-Each entry has an expected value. The purple dot marks the mean of each distribution.
+00:01:05,185 --> 00:01:20,353
+Section 1 defines the two summaries that all four question types use. In multiple linear regression, we have n responses, y 1 to y n. We stack them in one column. This column is a random vector.
 
 8
-00:01:29,187 --> 00:01:37,209
-The mean of the vector is the column of these means. We take the expectation entry by entry. We call this vector mu.
+00:01:20,803 --> 00:01:26,457
+Each response is a random variable. So each entry has its own distribution.
 
 9
-00:01:37,659 --> 00:01:50,437
-The variance of a random vector is the expectation of y minus mu, times its transpose. y minus mu is a column, n by 1. Its transpose is a row, 1 by n.
+00:01:26,907 --> 00:01:34,203
+The first summary is the mean vector: the column of the means of the entries. The purple dots mark the means.
 
 10
-00:01:50,887 --> 00:02:07,869
-A column times a row gives an n by n matrix. Entry i, j is y i minus mu i, times y j minus mu j. On the diagonal, i equals j. There the expectation of the square is the variance of y i.
+00:01:34,653 --> 00:01:42,375
+The second summary is the covariance matrix. It shows how each entry varies, and how the entries vary together.
 
 11
-00:02:08,319 --> 00:02:20,991
-Off the diagonal, the expectation of the product is the covariance of y i and y j. We call this matrix V. It is the covariance matrix, or the variance matrix.
+00:01:42,825 --> 00:01:54,303
+Let y be a random vector with entries y 1 to y n. The T means transpose, so y is a column. Each curve shows the distribution of one entry.
 
 12
-00:02:21,441 --> 00:02:37,505
-V is symmetric. Entry i, j equals entry j, i, because the covariance of y i and y j equals the covariance of y j and y i. The red boxes show entries 1, 3 and 3, 1.
+00:01:54,753 --> 00:02:00,790
+Each entry has an expected value. The purple dot marks the mean of each distribution.
 
 13
-00:02:37,955 --> 00:02:56,024
-Here are samples of a random vector with two entries. Each dot is one draw of y 1 and y 2. Both variances are 1. The covariance is positive, 0.8. A large y 1 comes with a large y 2. The cloud tilts up.
+00:02:01,240 --> 00:02:09,261
+The mean of the vector is the column of these means. We take the expectation entry by entry. We call this vector mu.
 
 14
-00:02:56,474 --> 00:03:05,135
-With covariance 0, the cloud has no tilt. The green ellipse is a circle here, because the two variances are equal.
+00:02:09,711 --> 00:02:22,490
+The variance of a random vector is the expectation of y minus mu, times its transpose. y minus mu is a column, n by 1. Its transpose is a row, 1 by n.
 
 15
-00:03:05,585 --> 00:03:20,689
-With covariance minus 0.8, a large y 1 comes with a small y 2. The cloud tilts down. So the diagonal of V gives the spread of each entry. The off-diagonal entries give the tilt.
+00:02:22,940 --> 00:02:37,319
+A column times a row gives an n by n matrix. Entry 1, 2 comes from y 1 minus mu 1, times y 2 minus mu 2. The matrix holds the expectation of each such product.
 
 16
-00:03:21,139 --> 00:03:32,339
-The slides give one more property. V is positive semi-definite. For every vector a in R n, a transpose V a is greater than or equal to 0.
+00:02:37,769 --> 00:02:44,617
+On the diagonal, i equals j. There the expectation of the square is the variance of y i.
 
 17
-00:03:32,789 --> 00:03:37,909
-Here is the reason. Pick a direction a. The purple line shows that direction.
+00:02:45,067 --> 00:03:01,088
+Off the diagonal, the expectation of the product is the covariance of y i and y j. For example, entry 1, 2 is the covariance of y 1 and y 2. We call this matrix V, the covariance matrix.
 
 18
-00:03:38,359 --> 00:03:48,621
-Project each point onto the line. The projected value is a transpose y. It is one number for each draw. The histogram shows these numbers.
+00:03:01,538 --> 00:03:13,314
+V is symmetric. Entry 1, 3 equals entry 3, 1, because the covariance of y 1 and y 3 equals the covariance of y 3 and y 1.
 
 19
-00:03:49,071 --> 00:04:04,687
-Later in this video we show that the variance of a transpose y is a transpose V a. The orange curve has exactly this variance. A variance is never negative. So a transpose V a is never negative, for every a.
+00:03:13,764 --> 00:03:31,044
+Here are samples of a random vector with two entries. Each dot is one draw of y 1 and y 2. Here V has variances 1 and covariance 0.8. A large y 1 comes with a large y 2, so the cloud tilts up.
 
 20
-00:04:05,137 --> 00:04:22,438
-Recall linear combinations of random variables. z is the sum of a i y i, plus a constant c. Its mean is the sum of a i times E of y i, plus c. In matrix form, E of z is a transpose mu, plus c.
+00:03:31,494 --> 00:03:40,305
+Here the covariance is 0. The cloud has no tilt. The green ellipse is a circle, because the two variances are equal.
 
 21
-00:04:22,888 --> 00:04:28,093
-Let u be a second linear combination, with weights b i and a constant d.
+00:03:40,755 --> 00:03:49,352
+Here the covariance is minus 0.8. A large y 1 comes with a small y 2, so the cloud tilts down.
 
 22
-00:04:28,543 --> 00:04:42,175
-The covariance of z and u is a double sum. Each term is a i, times b j, times the covariance of y i and y j. The grid shows one term for each pair i, j.
+00:03:49,802 --> 00:03:58,122
+So the diagonal of V gives the spread of each entry. All three clouds have variances 1, so they have the same spread.
 
 23
-00:04:42,625 --> 00:04:52,887
-Add all n squared cells. In matrix notation, this sum is a transpose V b. The constants c and d do not change a covariance.
+00:03:58,572 --> 00:04:03,564
+The off-diagonal entries give the tilt: how the two entries move together.
 
 24
-00:04:53,337 --> 00:05:04,174
-Now three rules for a random vector y and a constant vector a. First, a constant does not change when you take its expectation. E of a is a.
+00:04:04,014 --> 00:04:15,129
+The slides give one more property. V is positive semi-definite: for every vector a in R n, a transpose V a is greater than or equal to 0.
 
 25
-00:05:04,624 --> 00:05:16,677
-Second, E of a transpose y plus b is a transpose E of y, plus b. Here b is a constant. This is the matrix form of the rule for linear combinations.
+00:04:15,579 --> 00:04:19,760
+Here is the reason. Pick a direction a. The purple arrow shows it.
 
 26
-00:05:17,127 --> 00:05:36,647
-Third, the variance of a transpose y is a transpose, times the variance of y, times a. It is the covariance rule with b equal to a. Look at the shapes. A 1 by n row, times an n by n matrix, times an n by 1 column, gives a 1 by 1 result.
+00:04:20,210 --> 00:04:30,535
+Project each point onto the line. The projected value is a transpose y, one number for each draw. The orange histogram shows these numbers.
 
 27
-00:05:37,097 --> 00:05:43,668
-So the result is one number. It is the variance of the single random variable a transpose y.
+00:04:30,985 --> 00:04:44,916
+Section 2 shows that the variance of a transpose y is a transpose V a. A variance is never negative. So a transpose V a is never negative, for every a. Type A uses this as a check.
 
 28
-00:05:44,118 --> 00:06:02,123
-Now take k linear combinations of y at the same time. z 1 is a 1 1 y 1, plus a 1 2 y 2, and so on, to a 1 n y n. The same holds for z 2 to z k. A is the k by n matrix of the weights a i j.
+00:04:45,366 --> 00:05:01,558
+Section 2 is about one linear combination. Slide 26: z is the sum of a i y i, plus a constant c. In matrix form, z is a transpose y plus c. A row times a column gives one number.
 
 29
-00:06:02,573 --> 00:06:10,275
-Row 1 of A times y gives z 1. So the k equations are one matrix equation: z equals A y.
+00:05:02,008 --> 00:05:12,675
+Take the expectation. The expectation of a sum is the sum of the expectations, and constants come out. So E of z is a transpose mu, plus c.
 
 30
-00:06:10,725 --> 00:06:16,293
-Each row of A gives one entry of z. z is a random vector with k entries.
+00:05:13,125 --> 00:05:33,903
+Let u be a second combination, b transpose y plus d. Slide 26 recalls the covariance: a double sum of a i, times b j, times the covariance of y i and y j. The grid has one cell for each pair. The marked cell is i equals 1, j equals 2.
 
 31
-00:06:16,743 --> 00:06:29,820
-Take the expectation of each entry. E of z i is the sum over j of a i j times E of y j. Stack these k results. E of z equals A times E of y.
+00:05:34,353 --> 00:05:45,532
+The covariance of y i and y j is entry i, j of V. So the grid is V, with the weight a i on row i and b j on column j.
 
 32
-00:06:30,270 --> 00:06:40,851
-The variance rule is: the variance of z equals A, times the variance of y, times A transpose. The next two slides prove both rules.
+00:05:45,982 --> 00:05:55,667
+Add all n squared cells. In matrix form, this sum is a transpose V b. The constants c and d do not change a covariance.
 
 33
-00:06:41,301 --> 00:06:55,424
-Here is the proof that E of A y equals A E of y. Write A y as a column. Entry i is the sum of a i j times y j. The expectation of a vector is taken entry by entry.
+00:05:56,117 --> 00:06:10,389
+Now take u equal to z, so b equals a. The covariance of z with itself is its variance. So the variance of a transpose y is a transpose V a. The sizes give 1 by 1: one number.
 
 34
-00:06:55,874 --> 00:07:11,405
-Look at one entry. The weights a i j are constants. The expectation of a sum is the sum of the expectations. A constant comes out of the expectation. So each term becomes a i j times E of y j.
+00:06:10,839 --> 00:06:29,165
+These are the rules of slides 27 to 29. E of a constant vector is the vector itself. E of a transpose y plus b is a transpose E of y, plus b. The variance of a transpose y is a transpose V a. Type A uses them.
 
 35
-00:07:11,855 --> 00:07:18,148
-Do this for every entry. Entry i becomes the sum of a i j times E of y j.
+00:06:29,615 --> 00:06:44,057
+Question type A asks for the mean and the variance of one linear combination, a transpose y. Practice question 1 of Lecture 5 asks it with numbers. Tutorial 3 asks it with computer output.
 
 36
-00:07:18,598 --> 00:07:26,342
-This column is A times the column E of y. So E of A y equals A E of y. The proof is complete.
+00:06:44,507 --> 00:06:54,662
+Method card A has five steps. Step 1: read the vector a, the mean vector mu, and the covariance matrix V. Check that the sizes match.
 
 37
-00:07:26,792 --> 00:07:33,555
-Now the variance rule. Line 1 is the definition of the variance, with A y in place of y.
+00:06:55,112 --> 00:07:02,963
+Step 2: the mean. E of a transpose y is a transpose mu. Multiply each a i by mu i, and add.
 
 38
-00:07:34,005 --> 00:07:45,973
-Line 2. E of A y is A E of y, from the last slide. So A y minus E of A y equals A, times y minus E of y. We take A out on the left.
+00:07:03,413 --> 00:07:08,682
+Step 3: compute V a, a column. Entry i is row i of V times a.
 
 39
-00:07:46,423 --> 00:08:03,127
-Line 3. The transpose of a product reverses the order. The transpose of A times w is w transpose times A transpose. So the second factor becomes y minus E of y, transpose, times A transpose.
+00:07:09,132 --> 00:07:17,260
+Step 4: the variance is a transpose times V a. Multiply each a i by entry i of V a, and add.
 
 40
-00:08:03,577 --> 00:08:17,017
-Line 4. A and A transpose are constants. A comes out of the expectation on the left. A transpose comes out on the right. The order must stay the same, because matrix products do not commute.
+00:07:17,710 --> 00:07:25,326
+Step 5: check that the variance is not negative. If the question asks for a standard error, take the square root.
 
 41
-00:08:17,467 --> 00:08:35,045
-Line 5. The middle part is the definition of the variance of y. So the variance of A y is A, times the variance of y, times A transpose. The shapes give a k by k matrix, one row and one column for each entry of z.
+00:07:25,776 --> 00:07:43,163
+Here is practice question 1 of Lecture 5. Pause the video and try it. y has three entries, with mean 1, 2, 2, and the covariance matrix V on the right. a is 1, 2, 3. Step 1 of card A: read mu, a and V. All have size 3.
 
 42
-00:08:35,495 --> 00:08:48,231
-Now the multivariate normal distribution. Start with z, a vector of n independent standard normal variables. The cloud of z is round. It is centred at 0.
+00:07:43,613 --> 00:07:52,829
+Step 2: E of a transpose y is a transpose mu. 1 times 1, plus 2 times 2, plus 3 times 2, is 11.
 
 43
-00:08:48,681 --> 00:08:55,785
-Multiply by a constant matrix A. This stretches and turns the cloud. The ellipse shows the new shape.
+00:07:53,279 --> 00:08:03,476
+Step 3: V a. Row 1 of V is 4, 0, 1. Times a: 4 times 1, plus 0 times 2, plus 1 times 3, is 7.
 
 44
-00:08:56,235 --> 00:09:09,611
-Add a constant vector mu. This moves the centre to mu. The result, y equals A z plus mu, has a multivariate normal distribution. We write: y follows M V N, mu, Sigma.
+00:08:03,926 --> 00:08:11,499
+Row 2 of V is 0, 3, minus 1. 0, plus 3 times 2, minus 1 times 3, is 3.
 
 45
-00:09:10,061 --> 00:09:18,744
-Find the mean with our rules. E of y equals A times E of z, plus mu. E of z is 0. So E of y is mu.
+00:08:11,949 --> 00:08:21,336
+Row 3 of V is 1, minus 1, 4. 1, minus 2, plus 4 times 3, is 11. So V a is 7, 3, 11.
 
 46
-00:09:19,194 --> 00:09:37,498
-Find the variance. The variance of z is the identity matrix, because the entries are independent with variance 1. A constant shift does not change the variance. So the variance of y is A I A transpose, which is A A transpose. We call it Sigma.
+00:08:21,786 --> 00:08:33,541
+Step 4: a transpose times V a. 1 times 7, plus 2 times 3, plus 3 times 11. That is 7 plus 6 plus 33, which is 46.
 
 47
-00:09:37,948 --> 00:09:48,188
-The slide gives the density of y. The bars around Sigma mean the determinant of Sigma. The purple dot marks mu. The density is highest there.
+00:08:33,991 --> 00:08:45,340
+Step 5: 46 is positive, so the check passes. The answers: E of a transpose y is 11, and the variance of a transpose y is 46.
 
 48
-00:09:48,638 --> 00:10:04,190
-The density depends on y only through one number: the quadratic form, y minus mu transpose, Sigma inverse, y minus mu. The green ellipses are the sets of points where this quadratic form is constant.
+00:08:45,790 --> 00:09:08,723
+Now a type A question with computer output: Tutorial 3, question 1 d. Pause the video and try it. The estimates form a random vector, beta hat, and R gives its covariance matrix, v cov. Step 1: beta 2 hat minus beta 1 hat is a transpose beta hat, with a equal to 0, minus 1, 1.
 
 49
-00:10:04,640 --> 00:10:13,344
-So the density is constant on each ellipse. The outer ellipses have a larger quadratic form. The density there is smaller.
+00:09:09,173 --> 00:09:21,696
+The estimate is a transpose beta hat: minus 3527.1, plus 6035.2. This is 2508.1.
 
 50
-00:10:13,794 --> 00:10:33,890
-Check with n equal to 1. Sigma is the number sigma squared, and its determinant is sigma squared. The density becomes 1 over the square root of 2 pi sigma squared, times e to the power minus, y minus mu squared, over 2 sigma squared. This is the normal density.
+00:09:22,146 --> 00:09:34,754
+Step 3: V a. Row 1 of v cov times a: 0, plus 32012.55, minus 32012.55. This is 0.
 
 51
-00:10:34,340 --> 00:10:46,095
-Now four properties of the multivariate normal. Property 1 is linearity. Let u equal C y plus d, with a constant matrix C and a constant vector d.
+00:09:35,204 --> 00:09:50,649
+Row 2: 0, minus 136994.86, plus 32012.55. This is minus 104982.31.
 
 52
-00:10:46,545 --> 00:11:02,950
-Put in y equals A z plus mu. Then u equals C A times z, plus C mu plus d. This has the same form as the definition: a constant matrix times z, plus a constant vector. So u is multivariate normal.
+00:09:51,099 --> 00:10:06,779
+Row 3: 0, minus 32012.55, plus 241977.18. This is 209964.63.
 
 53
-00:11:03,400 --> 00:11:12,808
-The mean is C mu plus d. The variance is C Sigma C transpose. Both come from the rules for the mean and the variance of A y.
+00:10:07,229 --> 00:10:26,472
+Step 4: a transpose times V a. 0, plus 104982.31, plus 209964.63. The variance is 314946.94.
 
 54
-00:11:13,258 --> 00:11:25,055
-Property 2 is about marginal distributions. Take a subset of the entries of y, for example only y 1. Then this subset is also multivariate normal.
+00:10:26,922 --> 00:10:44,095
+Step 5: the variance is positive. Its square root, the standard error, is 561.2. The tutorial solution uses this standard error in the 95 percent confidence interval. A later video covers that step.
 
 55
-00:11:25,505 --> 00:11:33,655
-The bars show the values of y 1 alone, from the same cloud. The green curve is a normal density. It fits.
+00:10:44,545 --> 00:10:59,799
+Section 3 is about many linear combinations at once. Slide 30: z 1 is a 1 1 y 1, plus a 1 2 y 2, and so on, to a 1 n y n. The same holds for z 2 to z k.
 
 56
-00:11:34,105 --> 00:11:44,601
-The reason is linearity. To pick entries, multiply by a matrix of zeros and ones. Here y 1 equals the row 1, 0, times y.
+00:11:00,249 --> 00:11:06,201
+Collect the weights in a k by n matrix A. Row 1 of A times y gives z 1.
 
 57
-00:11:45,051 --> 00:11:58,917
-Property 3 is about conditional distributions. Split y into two parts, y 1 and y 2. Then fix y 2 at one value. Here we keep only the points with y 2 near 1.2.
+00:11:06,651 --> 00:11:17,659
+Each row of A gives one entry of z. So the k equations are one matrix equation: z equals A y. z is a random vector with k entries.
 
 58
-00:11:59,367 --> 00:12:12,317
-The distribution of y 1 among these points is normal again. So y 1 given y 2 is multivariate normal. The slides do not give the formulas for its mean and variance.
+00:11:18,109 --> 00:11:31,037
+Take the expectation of each entry. E of z i is the sum over j of a i j times E of y j. Stack the k results: E of z equals A times E of y.
 
 59
-00:12:12,767 --> 00:12:26,441
-Property 4 is about independence. Let y be multivariate normal. If Sigma i j is 0, then y i and y j are independent. The ellipse lies along the axes.
+00:11:31,487 --> 00:11:44,969
+Slide 31 also gives the variance: the variance of z equals A, times the variance of y, times A transpose. Section 4 proves both rules. Type B uses them.
 
 60
-00:12:26,891 --> 00:12:34,230
-If Sigma i j is not 0, the ellipse tilts. Then y 1 and y 2 depend on each other.
+00:11:45,419 --> 00:11:55,766
+Question type B asks for the mean vector and the covariance matrix of A y. Practice question 1 asks it. Method card B has five steps.
 
 61
-00:12:34,680 --> 00:12:47,075
-This property needs a multivariate normal vector. For other distributions, a covariance of 0 does not always give independence. The next exercise shows such a case.
+00:11:56,216 --> 00:12:06,499
+Step 1: the sizes. A is k by n, and y is n by 1. So E of A y is k by 1, and the variance of A y is k by k.
 
 62
-00:12:47,525 --> 00:13:04,399
-Here is the exercise from the slides. X 1 is standard normal. B is Bernoulli with probability one half, independent of X 1. The histogram shows a sample of X 1. The red curve is the N 0 1 density.
+00:12:06,949 --> 00:12:12,069
+Step 2: E of A y is A mu. Entry i is row i of A times mu.
 
 63
-00:13:04,849 --> 00:13:15,644
-Define X 2. If B is 0, X 2 equals X 1. If B is 1, X 2 equals minus X 1. So we flip the sign half of the time.
+00:12:12,519 --> 00:12:24,828
+Step 3: compute A V first. It is k by n. Row i of A V is row i of A times V. This is a weighted sum of the rows of V, with the weights in row i of A.
 
 64
-00:13:16,094 --> 00:13:26,505
-The normal density is symmetric about 0. So a flip of the sign does not change the distribution. The histogram of X 2 has the same shape.
+00:12:25,278 --> 00:12:36,755
+Step 4: multiply A V by A transpose. Column j of A transpose is row j of A. So entry i, j is row i of A V times row j of A.
 
 65
-00:13:26,955 --> 00:13:38,624
-The red curve fits X 2 too. So X 2 is standard normal. The slides check this with a simulation of one million draws. Here we use 4000 draws.
+00:12:37,205 --> 00:12:45,867
+Step 5: check. A covariance matrix is symmetric, and its diagonal entries are variances, so they are not negative.
 
 66
-00:13:39,074 --> 00:13:45,239
-Now let Y equal X 1 plus X 2. Is Y normal? Pause the video and try it.
+00:12:46,317 --> 00:12:58,925
+Back to practice question 1. Now we use card B. Pause the video and try it. Step 1: A is 4 by 3, and mu is 3 by 1. So E of A y is 4 by 1.
 
 67
-00:13:45,689 --> 00:14:02,948
-Look at the pairs X 1, X 2. When B is 0, X 2 equals X 1. These are the blue points, on the line with slope 1. When B is 1, X 2 equals minus X 1. These are the green points, on the line with slope minus 1.
+00:12:59,375 --> 00:13:08,932
+Step 2: E of A y is A mu. Row 1 of A is 1, minus 1, 0. Times mu: 1, minus 2, plus 0, is minus 1.
 
 68
-00:14:03,398 --> 00:14:11,782
-When B is 0, Y equals 2 X 1. When B is 1, Y equals X 1 minus X 1, which is 0.
+00:13:09,382 --> 00:13:15,462
+Row 2 of A is 0, 1, minus 1. 0, plus 2, minus 2, is 0.
 
 69
-00:14:12,232 --> 00:14:25,928
-So the probability that Y equals 0 is the probability that B equals 1. This is one half. A normal variable has probability 0 at any single value. So Y is not normal.
+00:13:15,912 --> 00:13:22,483
+Row 3 of A is 1, 0, minus 1. 1, plus 0, minus 2, is minus 1.
 
 70
-00:14:26,378 --> 00:14:45,727
-The reason: X 1 and X 2 are each normal, but the vector X 1, X 2 is not multivariate normal. No matrix A gives this vector as A times independent standard normals. A multivariate normal cloud is an ellipse. This cloud is two lines.
+00:13:22,933 --> 00:13:27,839
+Row 4 of A is 1, 1, 1. 1, plus 2, plus 2, is 5.
 
 71
-00:14:46,177 --> 00:15:06,615
-One more check, added here. The covariance of X 1 and X 2 is E of X 1 squared, times E of 1 minus 2 B. This is 1 times 0, which is 0. But X 1 and X 2 are not independent. So the independence property needs a multivariate normal vector.
+00:13:28,289 --> 00:13:32,407
+So E of A y is minus 1, 0, minus 1, 5.
 
 72
-00:15:07,065 --> 00:15:27,715
-Now the reason for this lecture. Multiple linear regression has p covariates. y i equals beta 0, plus beta 1 x i 1, and so on, to beta p x i p, plus epsilon i. The errors are I I D normal, with mean 0 and variance sigma squared.
+00:13:32,857 --> 00:13:50,435
+Now the variance of A y. Pause the video and try it. Step 1 of card B: 4 by 3, times 3 by 3, times 3 by 4, gives 4 by 4. A V is 4 by 3. We call the rows of V v 1, v 2 and v 3.
 
 73
-00:15:28,165 --> 00:15:43,909
-Stack the n equations. y is n by 1. X is n by p plus 1, with a first column of ones. Beta is p plus 1 by 1. Epsilon is n by 1. So y equals X beta plus epsilon.
+00:13:50,885 --> 00:14:06,267
+Step 3: compute A V, row by row. Row 1 of A is 1, minus 1, 0. So row 1 of A V is v 1 minus v 2: 4, 0, 1, minus 0, 3, minus 1. This is 4, minus 3, 2.
 
 74
-00:15:44,359 --> 00:16:02,450
-The errors are independent with the same variance. So the covariance matrix of epsilon has sigma squared on the diagonal, and 0 at all other positions. This is sigma squared I. So epsilon follows M V N, 0, sigma squared I.
+00:14:06,717 --> 00:14:16,274
+Row 2 of A is 0, 1, minus 1. So row 2 of A V is v 2 minus v 3. This is minus 1, 4, minus 5.
 
 75
-00:16:02,900 --> 00:16:14,100
-Use linearity. y is epsilon plus the constant vector X beta. So y follows M V N, with mean X beta and variance sigma squared I.
+00:14:16,724 --> 00:14:23,871
+Row 3 of A is 1, 0, minus 1. v 1 minus v 3 is 3, 1, minus 3.
 
 76
-00:16:14,550 --> 00:16:30,038
-So each y i is normal, with mean x i transpose beta, where x i transpose is row i of X. All have variance sigma squared. They are independent, because the off-diagonal entries are 0.
+00:14:24,321 --> 00:14:32,043
+Row 4 of A is 1, 1, 1. The sum of the three rows of V is 5, 2, 4. Now A V is complete.
 
 77
-00:16:30,488 --> 00:16:52,760
-Practice question 1. y has three entries. Its mean is 1, 2, 2. Its variance matrix V is given. a is 1, 2, 3, and A is a 4 by 3 matrix. Compute four things: E of a transpose y, E of A y, the variance of a transpose y, and the variance of A y. Pause the video and try it.
+00:14:32,493 --> 00:14:46,936
+Step 4 of card B: entry i, j is row i of A V times row j of A. Entry 1, 1: 4, minus 3, 2, times 1, minus 1, 0. 4, plus 3, plus 0, is 7.
 
 78
-00:16:53,210 --> 00:17:02,789
-E of a transpose y is a transpose mu. This is 1 times 1, plus 2 times 2, plus 3 times 2. The answer is 11.
+00:14:47,386 --> 00:14:56,303
+Entry 2, 2: minus 1, 4, minus 5, times 0, 1, minus 1. 0, plus 4, plus 5, is 9.
 
 79
-00:17:03,239 --> 00:17:10,428
-E of A y is A mu. A is 4 by 3, and mu is 3 by 1. So the result is 4 by 1.
+00:14:56,753 --> 00:15:05,073
+Entry 3, 3: 3, 1, minus 3, times 1, 0, minus 1. 3, plus 0, plus 3, is 6.
 
 80
-00:17:10,878 --> 00:17:29,523
-Row 1: 1 minus 2, plus 0, which is minus 1. Row 2: 2 minus 2, which is 0. Row 3: 1 minus 2, which is minus 1. Row 4: 1 plus 2 plus 2, which is 5. So E of A y is minus 1, 0, minus 1, 5.
+00:15:05,523 --> 00:15:12,734
+Entry 4, 4: 5, 2, 4, times 1, 1, 1. 5, plus 2, plus 4, is 11.
 
 81
-00:17:29,973 --> 00:17:43,648
-The variance of a transpose y is a transpose V a. First compute V a. Row 1 of V times a: 4 times 1, plus 0 times 2, plus 1 times 3. This is 7.
+00:15:13,184 --> 00:15:23,424
+Now the entries above the diagonal. Entry 1, 2: row 1 of A V times row 2 of A. 0, minus 3, minus 2, is minus 5.
 
 82
-00:17:44,098 --> 00:17:51,287
-Row 2 of V times a: 0, plus 3 times 2, plus minus 1 times 3. This is 3.
+00:15:23,874 --> 00:15:30,594
+Entry 1, 3: row 1 of A V times row 3 of A. 4, plus 0, minus 2, is 2.
 
 83
-00:17:51,737 --> 00:18:00,377
-Row 3 of V times a: 1, minus 2, plus 4 times 3. This is 11. So V a is 7, 3, 11.
+00:15:31,044 --> 00:15:37,849
+Entry 1, 4: row 1 of A V times row 4 of A. 4, minus 3, plus 2, is 3.
 
 84
-00:18:00,827 --> 00:18:16,358
-Now a transpose times V a. 1 times 7, plus 2 times 3, plus 3 times 11. This is 7 plus 6 plus 33, which is 46. So the variance of a transpose y is 46.
+00:15:38,299 --> 00:15:45,702
+Entry 2, 3: row 2 of A V times row 3 of A. Minus 1, plus 0, plus 5, is 4.
 
 85
-00:18:16,808 --> 00:18:35,496
-The variance of A y is A V A transpose. First compute A V. It is 4 by 3. Row 1 of A is 1, minus 1, 0. So row 1 of A V is row 1 of V minus row 2 of V: 4, minus 3, 2. The other rows follow in the same way.
+00:15:46,152 --> 00:15:54,067
+Entry 2, 4: row 2 of A V times row 4 of A. Minus 1, plus 4, minus 5, is minus 2.
 
 86
-00:18:35,946 --> 00:18:54,101
-Then multiply A V by A transpose. The result is 4 by 4. First the diagonal entries. Entry 1, 1 is row 1 of A V times row 1 of A: 4, plus 3, plus 0, which is 7. The diagonal is 7, 9, 6, 11.
+00:15:54,517 --> 00:16:01,514
+Entry 3, 4: row 3 of A V times row 4 of A. 3, plus 1, minus 3, is 1.
 
 87
-00:18:54,551 --> 00:19:09,335
-Then the entries off the diagonal. For example, entry 1, 2 is row 1 of A V times row 2 of A: 4 times 0, minus 3 times 1, plus 2 times minus 1. This is minus 5.
+00:16:01,964 --> 00:16:22,679
+Step 5. V is symmetric, so A V A transpose is symmetric too. The entries below the diagonal are mirror copies: for example, entry 2, 1 equals entry 1, 2, minus 5. The diagonal entries, 7, 9, 6 and 11, are positive, as variances must be.
 
 88
-00:19:09,785 --> 00:19:23,417
-Check the result. It is symmetric: entry 1, 2 and entry 2, 1 are both minus 5. The diagonal entries are positive, because they are the variances of the four entries of A y.
+00:16:23,129 --> 00:16:36,419
+Section 4 proves the rules. Question type C asks you to prove a rule for a mean or a covariance matrix. The slides prove two rules, and practice question 2 asks for a third.
 
 89
-00:19:23,867 --> 00:19:47,056
-Practice question 2. x has mean mu and variance V. y equals A x, with A p by n. w equals B x, with B q by n. C is the cross-covariance matrix. Entry i, j is the covariance of y i and w j. Write C in terms of mu, V, A and B. Pause the video and try it.
+00:16:36,869 --> 00:16:49,392
+Method card C. Step 1: write the definition. A mean is taken entry by entry. A variance is the expectation of u minus its mean, times the transpose.
 
 90
-00:19:47,506 --> 00:20:02,013
-Stack y and w into one vector. Its variance matrix has four blocks. The diagonal blocks are the variance of y and the variance of w. C is the top right block. It is p by q.
+00:16:49,842 --> 00:16:55,986
+Step 2: centre with the mean rule. A y minus its mean is A times y minus mu.
 
 91
-00:20:02,463 --> 00:20:21,407
-Write C as an expectation: E of y minus E of y, times w minus E of w, transpose. By the mean rule, y minus E of y is A times x minus mu. In the same way, w minus E of w is B times x minus mu.
+00:16:56,436 --> 00:17:05,033
+Step 3: the transpose of a product reverses the order. A w, transpose, is w transpose, A transpose.
 
 92
-00:20:21,857 --> 00:20:45,153
-Put these in. The transpose of B times x minus mu is x minus mu transpose, times B transpose. A and B transpose are constants, so they come out of the expectation. The middle part is V. So C equals A V B transpose. The shapes check: p by n, times n by n, times n by q, gives p by q.
+00:17:05,483 --> 00:17:16,470
+Step 4: take the constants out of the expectation. A stays on the left, and A transpose stays on the right, because the order of a matrix product matters.
 
 93
-00:20:45,603 --> 00:20:50,851
-C does not depend on mu. A shift of the mean does not change a covariance.
+00:17:16,920 --> 00:17:22,424
+Step 5: name the known part in the middle, here V, and check that the sizes match.
 
 94
-00:20:51,301 --> 00:21:00,453
-To recap. The mean vector is the expectation entry by entry. The covariance matrix is symmetric and positive semi-definite.
+00:17:22,874 --> 00:17:36,613
+Here is the proof of slides 32 and 33. Pause the video and try it. Step 1 of card C: write A y entry by entry. Entry 1 is the sum over i of a 1 i y i.
 
 95
-00:21:00,903 --> 00:21:08,263
-For a constant matrix A, E of A y is A E of y, and the variance of A y is A V A transpose.
+00:17:37,063 --> 00:17:45,361
+The expectation of a vector is taken entry by entry. On the right is one entry, j, inside the expectation.
 
 96
-00:21:08,713 --> 00:21:26,633
-A multivariate normal vector is A z plus mu, with independent standard normal z. Its variance is A A transpose. Linear functions, marginals and conditionals of it are multivariate normal. A zero covariance gives independence.
+00:17:45,811 --> 00:17:55,881
+Step 4: the expectation of a sum is the sum of the expectations, and the constants a come out. So each term becomes a times E of y i.
 
 97
-00:21:27,083 --> 00:21:45,579
-Entries that are each normal do not always make a multivariate normal vector. Multiple linear regression says y is M V N with mean X beta and variance sigma squared I. The next video uses this model to estimate beta by least squares.
+00:17:56,331 --> 00:18:05,568
+Step 5: name the result. Entry j is row j of A times the column E of y. So the column is A times E of y.
+
+98
+00:18:06,018 --> 00:18:13,741
+So E of A y equals A E of y. Type B uses it in step 2, and card C uses it in step 2.
+
+99
+00:18:14,191 --> 00:18:32,687
+Now the variance rule, slides 34 and 35. Pause the video and try it. Step 1 of card C: write the definition of the variance, with A y in place of y. The picture shows the sizes: a column times a row gives a k by k matrix.
+
+100
+00:18:33,137 --> 00:18:43,185
+Step 2: by the mean rule, A y minus E of A y equals A, times y minus E of y. A comes out on the left in both factors.
+
+101
+00:18:43,635 --> 00:18:54,152
+Step 3: the transpose of a product reverses the order. So the second factor becomes y minus E of y, transpose, times A transpose.
+
+102
+00:18:54,602 --> 00:19:05,738
+Step 4: A and A transpose are constants. A comes out on the left, and A transpose comes out on the right. The expectation acts only on the random middle part.
+
+103
+00:19:06,188 --> 00:19:19,543
+Step 5: the middle part is the definition of the variance of y. So the variance of A y is A, times the variance of y, times A transpose. The result is k by k.
+
+104
+00:19:19,993 --> 00:19:28,078
+This is the variance rule of slide 31. Type B uses it in steps 3 and 4, and type D uses it too.
+
+105
+00:19:28,528 --> 00:19:49,776
+Practice question 2. Pause the video and try it. x has mean mu and variance V. y is A x, and w is B x. Entry i, j of C is the covariance of y i and w j. In the variance matrix of y and w stacked, C is the top right block, p by q.
+
+106
+00:19:50,226 --> 00:20:06,397
+Step 1 of card C: write the definition. C is the expectation of y minus its mean, times w minus its mean, transpose. Entry i, j of this matrix is the covariance of y i and w j.
+
+107
+00:20:06,847 --> 00:20:12,863
+Step 2: centre with the mean rule. y minus E of y is A times x minus mu.
+
+108
+00:20:13,313 --> 00:20:18,646
+In the same way, w minus E of w is B times x minus mu.
+
+109
+00:20:19,096 --> 00:20:21,400
+Put lines 2 and 3 into line 1.
+
+110
+00:20:21,850 --> 00:20:29,637
+Step 3: the transpose of B times x minus mu is x minus mu, transpose, times B transpose.
+
+111
+00:20:30,087 --> 00:20:38,300
+Step 4: A and B transpose are constants. They come out of the expectation, A on the left and B transpose on the right.
+
+112
+00:20:38,750 --> 00:20:50,633
+Step 5: the middle part is V. So C equals A V B transpose. The sizes check: p by n, times n by n, times n by q, gives p by q.
+
+113
+00:20:51,083 --> 00:20:56,608
+The answer does not contain mu. A shift of the mean does not change a covariance.
+
+114
+00:20:57,058 --> 00:21:10,434
+Section 5 is about the multivariate normal distribution. Start with z, a vector of n independent standard normal variables. Its cloud is round and centred at 0.
+
+115
+00:21:10,884 --> 00:21:32,068
+Slide 36: multiply z by a constant matrix A, and add a constant vector mu. Then y equals A z plus mu has a multivariate normal distribution. We write: y follows M V N, mu, Sigma. In the example, A stretches and turns the cloud, and mu moves its centre to 2, 1.
+
+116
+00:21:32,518 --> 00:21:37,809
+Find the mean with the mean rule. E of y equals A times E of z, plus mu.
+
+117
+00:21:38,259 --> 00:21:46,323
+Each z i has mean 0, so E of z is the zero vector. So E of y is mu: the centre of the cloud.
+
+118
+00:21:46,773 --> 00:21:59,295
+Find the variance with the variance rule. Adding the constant mu does not change the variance. So the variance of y is A, times the variance of z, times A transpose.
+
+119
+00:21:59,745 --> 00:22:27,756
+The entries of z are independent with variance 1, so the variance of z is the identity matrix I. So the variance of y is A A transpose. We call it Sigma. In the example: 1.2 squared is 1.44, 1.2 times 0.9 is 1.08, and 0.9 squared plus 0.6 squared is 1.17. Sigma sets the shape of the ellipse.
+
+120
+00:22:28,206 --> 00:22:36,761
+So y is M V N with mean mu and variance Sigma equal to A A transpose. Type D uses this definition.
+
+121
+00:22:37,211 --> 00:22:47,536
+Slide 36 also gives the density of y. The bars around Sigma mean its determinant. The density is highest at mu, the purple point.
+
+122
+00:22:47,986 --> 00:23:03,986
+The density depends on y only through one number: the quadratic form, y minus mu, transpose, Sigma inverse, y minus mu. On each green ellipse, this quadratic form is constant, so the density is constant.
+
+123
+00:23:04,436 --> 00:23:09,855
+The outer ellipses have a larger quadratic form. There the density is smaller.
+
+124
+00:23:10,305 --> 00:23:21,121
+Check with n equal to 1. Sigma is the number sigma squared. The square root of its determinant is sigma, and its inverse is 1 over sigma squared.
+
+125
+00:23:21,571 --> 00:23:26,776
+The quadratic form becomes y minus mu, squared, over sigma squared.
+
+126
+00:23:27,226 --> 00:23:39,301
+So the density is 1 over the square root of 2 pi sigma squared, times e to the minus y minus mu squared over 2 sigma squared. This is the normal density.
+
+127
+00:23:39,751 --> 00:23:50,076
+The slides give four properties of the multivariate normal. Property 1 is linearity. Start from the definition: y equals A z plus mu.
+
+128
+00:23:50,526 --> 00:23:59,507
+Let u equal C y plus d, with a constant matrix C and a constant vector d. Put in y equals A z plus mu.
+
+129
+00:23:59,957 --> 00:24:14,592
+Multiply out. u equals C A times z, plus C mu plus d. This is a constant matrix times z, plus a constant vector: the same form as the definition. So u is multivariate normal.
+
+130
+00:24:15,042 --> 00:24:19,159
+The mean: E of z is 0, so E of u is C mu plus d.
+
+131
+00:24:19,609 --> 00:24:33,220
+The variance: C A times its transpose. The transpose of C A is A transpose C transpose. In the middle, A A transpose is Sigma. So the variance of u is C Sigma C transpose.
+
+132
+00:24:33,670 --> 00:24:43,462
+So u is M V N with mean C mu plus d and variance C Sigma C transpose. Type D uses this in steps 2 to 4.
+
+133
+00:24:43,912 --> 00:24:55,709
+Property 2 is about marginal distributions. Take a subset of the entries of y, for example only y 1. Then this subset is also multivariate normal.
+
+134
+00:24:56,159 --> 00:25:05,141
+The bars show the values of y 1 alone, from the same cloud. The green curve is a normal density, and it fits the bars.
+
+135
+00:25:05,591 --> 00:25:16,087
+The reason is linearity. To pick entries, multiply by a matrix of zeros and ones. Here y 1 equals the row 1, 0, times y.
+
+136
+00:25:16,537 --> 00:25:32,046
+Property 3 is about conditional distributions. Split y into two parts, y 1 and y 2, and fix y 2 at one value. Here we keep only the points with y 2 near 1.2, in the orange band.
+
+137
+00:25:32,496 --> 00:25:45,445
+The distribution of y 1 among these points is normal again. So y 1 given y 2 is multivariate normal. The slides do not give the formulas for its mean and variance.
+
+138
+00:25:45,895 --> 00:26:02,087
+Property 4 is about independence. Let y be multivariate normal. If Sigma i j is 0, then y i and y j are independent. Here Sigma 1 2 is 0, and the ellipse lies along the axes.
+
+139
+00:26:02,537 --> 00:26:10,047
+Here Sigma 1 2 is 0.7. The ellipse tilts, and y 1 and y 2 depend on each other.
+
+140
+00:26:10,497 --> 00:26:20,459
+This property needs a multivariate normal vector. The exercise at the end of this section shows a vector that is not multivariate normal.
+
+141
+00:26:20,909 --> 00:26:34,413
+Question type D asks for the distribution of a linear function of a multivariate normal vector, or asks if a vector is multivariate normal. Method card D has five steps.
+
+142
+00:26:34,863 --> 00:26:48,965
+Step 1: check that the vector is multivariate normal. Either the question says so, or the vector is A z plus mu with independent standard normal z. Entries that are each normal are not enough.
+
+143
+00:26:49,415 --> 00:26:54,193
+Step 2: write the new vector as C y plus d, and name C and d.
+
+144
+00:26:54,643 --> 00:26:57,075
+Step 3: the mean is C mu plus d.
+
+145
+00:26:57,525 --> 00:27:05,909
+Step 4: the variance is C Sigma C transpose. By linearity, u is M V N with this mean and variance.
+
+146
+00:27:06,359 --> 00:27:17,282
+Step 5: read off what the question asks. Each entry is normal, with its mean and its diagonal variance. A zero covariance gives independence.
+
+147
+00:27:17,732 --> 00:27:40,601
+Now the reason for this lecture: multiple linear regression, slide 45. Pause the video and try it. Stack the n equations. y is n by 1. X is n by p plus 1, with a first column of ones. Beta is p plus 1 by 1. Epsilon is n by 1. So y equals X beta plus epsilon.
+
+148
+00:27:41,051 --> 00:28:06,843
+Step 1 of card D: is epsilon multivariate normal? The errors are independent normals with mean 0 and variance sigma squared. So epsilon equals sigma times z, with independent standard normal z. This is the definition with A equal to sigma I. Its variance matrix has sigma squared on the diagonal and 0 everywhere else: sigma squared I.
+
+149
+00:28:07,293 --> 00:28:17,363
+Step 2: y equals the identity times epsilon, plus X beta. X and beta are constants. So C is I, and d is X beta.
+
+150
+00:28:17,813 --> 00:28:22,911
+Step 3: the mean is I times 0, plus X beta, which is X beta.
+
+151
+00:28:23,361 --> 00:28:36,503
+Step 4: the variance is I, times sigma squared I, times I transpose, which is sigma squared I. So y is M V N with mean X beta and variance sigma squared I.
+
+152
+00:28:36,953 --> 00:28:53,657
+Step 5: read off. Each y i is normal with mean x i transpose beta, where x i transpose is row i of X, and variance sigma squared. The off-diagonal entries are 0, so the y i are independent.
+
+153
+00:28:54,107 --> 00:29:10,448
+This is slide 45: y equals X beta plus epsilon, with epsilon M V N 0, sigma squared I, is the same as y M V N, X beta, sigma squared I. The next videos use this model.
+
+154
+00:29:10,898 --> 00:29:30,034
+A type D problem with the practice question 1 data. This part is added; it is not on the slides. Pause the video and try it. Suppose y is multivariate normal with the same mean and covariance matrix. Step 1 of card D: y is given as M V N.
+
+155
+00:29:30,484 --> 00:29:40,681
+First, a transpose y. Step 2: it is C y plus d, with C equal to a transpose, the row 1, 2, 3, and d equal to 0.
+
+156
+00:29:41,131 --> 00:29:46,571
+Step 3: the mean is a transpose mu. The type A example found it: 11.
+
+157
+00:29:47,021 --> 00:29:57,325
+Step 4: the variance is a transpose V a, which is 46. So a transpose y is normal with mean 11 and variance 46.
+
+158
+00:29:57,775 --> 00:30:12,431
+Now y 1 alone. C is the row 1, 0, 0. C mu picks mu 1, which is 1. C V C transpose picks V 1 1, which is 4. So y 1 is normal with mean 1 and variance 4.
+
+159
+00:30:12,881 --> 00:30:21,073
+Step 5: V 1 2 is 0. y is M V N, so y 1 and y 2 are independent, by property 4.
+
+160
+00:30:21,523 --> 00:30:35,091
+Now the exercise of the slides. Pause the video and try it. X 1 is standard normal. The blue histogram shows a sample of X 1, and the red curve is the N 0 1 density.
+
+161
+00:30:35,541 --> 00:30:50,005
+B is Bernoulli with probability one half, independent of X 1. If B is 0, X 2 equals X 1. If B is 1, X 2 equals minus X 1. So we flip the sign half of the time.
+
+162
+00:30:50,455 --> 00:31:01,293
+The normal density is symmetric about 0. So a flip of the sign does not change the distribution. The green histogram of X 2 has the same shape.
+
+163
+00:31:01,743 --> 00:31:13,412
+The red curve fits X 2 too. So X 2 is standard normal. The slides check this with a simulation of one million draws. Here we use 4000 draws.
+
+164
+00:31:13,862 --> 00:31:26,555
+Part 2 of the exercise. Let Y equal X 1 plus X 2. Is Y normal? And is the vector X 1, X 2 multivariate normal? Pause the video and try it.
+
+165
+00:31:27,005 --> 00:31:35,219
+Step 1 of card D: is the vector multivariate normal? Look at the pairs X 1, X 2 from the simulation.
+
+166
+00:31:35,669 --> 00:31:44,906
+When B is 0, X 2 equals X 1. These are the blue points, on the line with slope 1. Then Y equals 2 X 1.
+
+167
+00:31:45,356 --> 00:31:57,964
+When B is 1, X 2 equals minus X 1. These are the green points, on the line with slope minus 1. Then Y equals X 1 minus X 1, which is 0.
+
+168
+00:31:58,414 --> 00:32:11,833
+So the probability that Y equals 0 is the probability that B equals 1, which is one half. A normal variable has probability 0 at any single value. So Y is not normal.
+
+169
+00:32:12,283 --> 00:32:32,635
+So the vector X 1, X 2 is not multivariate normal. If it were, Y, the row 1, 1 times the vector, would be normal by linearity. An M V N cloud fills an ellipse, and this cloud is two lines. The answer of step 1 is no, so the M V N rules do not apply.
+
+170
+00:32:33,085 --> 00:32:43,815
+One more fact. X 2 equals 1 minus 2 B, times X 1: when B is 0 this is X 1, and when B is 1 it is minus X 1.
+
+171
+00:32:44,265 --> 00:32:57,727
+B is independent of X 1. So the covariance of X 1 and X 2 is E of X 1 squared, times E of 1 minus 2 B. This is 1 times 0, which is 0.
+
+172
+00:32:58,177 --> 00:33:11,617
+But X 1 and X 2 are not independent: the absolute value of X 2 always equals the absolute value of X 1. So property 4 needs a multivariate normal vector.
+
+173
+00:33:12,067 --> 00:33:32,099
+To recap. A random vector has a mean vector and a covariance matrix. The covariance matrix is symmetric and positive semi-definite. Card A: for a transpose y, the mean is a transpose mu, and the variance is a transpose V a: first V a, then a transpose times it.
+
+174
+00:33:32,549 --> 00:33:43,813
+Card B: for A y, the mean is A mu, and the variance is A V A transpose: first A V, then times A transpose. Check that the result is symmetric.
+
+175
+00:33:44,263 --> 00:33:54,311
+Card C proves such rules: write the definition, centre with the mean rule, transpose, take the constants out of the expectation, and name V.
+
+176
+00:33:54,761 --> 00:34:19,529
+Card D: A z plus mu is multivariate normal. C y plus d is M V N with mean C mu plus d and variance C Sigma C transpose. Check first that the vector is M V N. In multiple linear regression, y is M V N with mean X beta and variance sigma squared I. The next video estimates beta by least squares.

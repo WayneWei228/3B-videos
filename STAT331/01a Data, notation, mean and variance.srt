@@ -1,279 +1,467 @@
 1
-00:00:00,000 --> 00:00:07,360
-This is STAT 331, video 1. The topic is data, notation, and summary statistics.
+00:00:00,000 --> 00:00:07,829
+This is STAT 331, video 1, part a. The topic is data, notation, the mean, and the variance.
 
 2
-00:00:07,810 --> 00:00:26,818
-After this video, you can name the outcome and the covariate in a data set. You can use the rules for expectation and variance, and derive the short forms. And you can calculate the sample mean and the sample variance by hand. Part b covers covariance and correlation.
+00:00:08,279 --> 00:00:14,722
+This video prepares you for two question types. Each type gets a method card and worked problems.
 
 3
-00:00:27,268 --> 00:00:38,297
-Start with the two kinds of variables. The outcome is y. It is the main variable of interest. Other names are response, output, and dependent variable.
+00:00:15,172 --> 00:00:23,023
+Type A: find the expectation and the variance of a combination of random variables, with the rules of lecture 1.
 
 4
-00:00:38,747 --> 00:00:48,283
-Look at the purple box. We want to explain the mean of y, not each single value of y. Regression is a model for the mean of the outcome.
+00:00:23,473 --> 00:00:32,283
+Type B: compute the sample mean, the sample variance, and the sample standard deviation, from data or from computer output.
 
 5
-00:00:48,733 --> 00:01:07,144
-The covariate is x. It is another variable that explains or predicts the outcome in some sense. Other names are predictor, input, independent variable, and feature. In some sense means that x and y are related. It does not mean that x causes y.
+00:00:32,733 --> 00:00:41,437
+Part b of this video covers two more types: the variance of a sum with covariances, and the sample covariance and correlation.
 
 6
-00:01:07,594 --> 00:01:15,189
-In our example, the covariate is head size in cubic centimeters. The outcome is brain weight in grams.
+00:00:41,887 --> 00:00:55,050
+Section 1 is about data. Start with the two kinds of variables. The outcome is y. It is the main variable of interest. Other names are response, output, and dependent variable.
 
 7
-00:01:15,639 --> 00:01:36,012
-The data comes from a study by Gladstone, published in 1905. The researchers wanted brain weight. It is difficult to measure in a live person. So the question is: can we predict it from the size of the head? They recorded 236 deceased people. Here are the first 6 rows.
+00:00:55,500 --> 00:01:05,036
+Look at the purple box. We want to explain the mean of y, not each single value of y. Regression is a model for the mean of the outcome.
 
 8
-00:01:36,462 --> 00:01:46,446
-Each row is one person. The column head size is x. The column brain weight is y. We do not use the columns gender and age yet.
+00:01:05,486 --> 00:01:23,897
+The covariate is x. It is another variable that explains or predicts the outcome in some sense. Other names are predictor, input, independent variable, and feature. In some sense means that x and y are related. It does not mean that x causes y.
 
 9
-00:01:46,896 --> 00:02:02,128
-The subscript i is the row number. Row 1 gives x 1 equals 4512, and y 1 equals 1530. The pair x 1, y 1 is one point on a graph.
+00:01:24,347 --> 00:01:31,941
+In our example, the covariate is head size in cubic centimeters. The outcome is brain weight in grams.
 
 10
-00:02:02,578 --> 00:02:10,002
-Each row gives one point. The sample size is n, the number of rows. Here n is 236.
+00:01:32,391 --> 00:01:52,765
+The data comes from a study by Gladstone, published in 1905. The researchers wanted brain weight. It is difficult to measure in a live person. So the question is: can we predict it from the size of the head? They recorded 236 deceased people. Here are the first 6 rows.
 
 11
-00:02:10,452 --> 00:02:21,311
-A scatterplot shows each observation as one point. The covariate x goes on the horizontal axis. The outcome y goes on the vertical axis.
+00:01:53,215 --> 00:02:03,199
+Each row is one person. The column head size is x. The column brain weight is y. We do not use the columns gender and age yet.
 
 12
-00:02:21,761 --> 00:02:31,126
-Person 1 is the point at 4512 and 1530. Go across to x, and up to y.
+00:02:03,649 --> 00:02:18,881
+The subscript i is the row number. Row 1 gives x 1 equals 4512, and y 1 equals 1530. The pair x 1, y 1 is one point on a graph.
 
 13
-00:02:31,576 --> 00:02:47,469
-Here are all 236 points. Head size goes from 2773 to 4747. Brain weight goes from 1012 to 1635.
+00:02:19,331 --> 00:02:26,755
+Each row gives one point. The sample size is n, the number of rows. Here n is 236.
 
 14
-00:02:47,919 --> 00:03:00,165
-Take a narrow vertical strip near x equals 3300. The mean height of its points is the mean of y near this x. This is the quantity that regression models.
+00:02:27,205 --> 00:02:38,063
+A scatterplot shows each observation as one point. The covariate x goes on the horizontal axis. The outcome y goes on the vertical axis.
 
 15
-00:03:00,615 --> 00:03:10,961
-Near x equals 4000, the mean of y is higher. So a larger head goes with a larger mean brain weight. Next we describe this with numbers.
+00:02:38,513 --> 00:02:47,879
+Person 1 is the point at 4512 and 1530. Go across to x, and up to y.
 
 16
-00:03:11,411 --> 00:03:22,867
-There are two kinds of summaries. A univariate summary uses one variable at a time. The mean gives the centre. The variance and the standard deviation give the spread.
+00:02:48,329 --> 00:03:06,825
+Here are all 236 points. The orange brackets show the ranges. Head size goes from 2773 to 4747. Brain weight goes from 1012 to 1635.
 
 17
-00:03:23,317 --> 00:03:41,024
-A bivariate summary uses two variables together. The covariance and the correlation tell if the two variables go up together, or if one goes down when the other goes up. We review each summary in two forms: for a random variable, and for observed data.
+00:03:07,275 --> 00:03:19,520
+Take a narrow vertical strip near x equals 3300. The mean height of its points is the mean of y near this x. This is the quantity that regression models.
 
 18
-00:03:41,474 --> 00:03:56,258
-Capital Y is a random variable. Its value depends on chance. The density f of y tells which values are likely. The expectation of Y is the integral of y times f of y, d y.
+00:03:19,970 --> 00:03:30,701
+Near x equals 4000, the mean of y is higher. So a larger head goes with a larger mean brain weight. Next we describe the data with numbers.
 
 19
-00:03:56,708 --> 00:04:07,417
-Look at one thin strip. Its area is f of y, d y. This is the probability that Y is near y. We give this probability the weight y.
+00:03:31,151 --> 00:03:44,057
+There are two kinds of summaries. A univariate summary uses one variable at a time. The mean gives the centre. The variance and the standard deviation give the spread. Part a covers them.
 
 20
-00:04:07,867 --> 00:04:14,822
-Now add y times f of y, d y over all values of y. The integral does this sum.
+00:03:44,507 --> 00:04:03,558
+A bivariate summary uses two variables together. The covariance and the correlation tell if the two variables go up together, or if one goes down when the other goes up. Part b covers them. We review each summary in two forms: for a random variable, and for observed data.
 
 21
-00:04:15,272 --> 00:04:26,387
-The result is the balance point of the density. For this density, the expectation is 4. The expectation is the average value of Y over many repeats.
+00:04:04,008 --> 00:04:23,208
+Section 2 gives the rules for expectation and variance. Capital Y is a random variable. Its value depends on chance. The density f of y tells which values are likely. The expectation of Y is the integral of y times f of y, d y.
 
 22
-00:04:26,837 --> 00:04:32,618
-Here a random variable Z has expectation 2. The blue curve is its density.
+00:04:23,658 --> 00:04:34,367
+Look at one thin strip. Its area is f of y, d y. This is the probability that Y is near y. We give this probability the weight y.
 
 23
-00:04:33,068 --> 00:04:39,617
-Add the constant 4. Every value moves 4 to the right. So the expectation moves to 6.
+00:04:34,817 --> 00:04:41,772
+Now add y times f of y, d y over all values of y. The integral does this sum.
 
 24
-00:04:40,067 --> 00:04:57,390
-Now multiply by 3, then add 1. Every value is multiplied by 3, so the balance point is multiplied by 3. Then it moves 1 to the right. The expectation of 3 Z plus 1 is 3 times 2, plus 1. That is 7.
+00:04:42,222 --> 00:04:53,337
+The result is the balance point of the density. For this density, the expectation is 4. The expectation is the average value of Y over many repeats.
 
 25
-00:04:57,840 --> 00:05:16,741
-The general rule is linearity of expectation. For random variables Y i, and constants a i and b i: the expectation of the sum of a i Y i plus b i equals the sum of a i times the expectation of Y i, plus the sum of the b i.
+00:04:53,787 --> 00:04:59,568
+Here a random variable Z has expectation 2. The blue curve is its density.
 
 26
-00:05:17,191 --> 00:05:29,159
-So a constant factor moves outside the expectation. The expectation of a sum is the sum of the expectations. The variables do not need to be independent for this rule.
+00:05:00,018 --> 00:05:08,039
+Add the constant 4. Every value moves 4 to the right. So the expectation moves to 2 plus 4, which is 6.
 
 27
-00:05:29,609 --> 00:05:41,279
-For observed data y 1 to y n, the sample mean y bar is 1 over n, times the sum of the y i. Here are the brain weights of the first 4 people.
+00:05:08,489 --> 00:05:25,812
+Now multiply by 3, then add 1. Every value is multiplied by 3, so the balance point is multiplied by 3. Then it moves 1 to the right. The expectation of 3 Z plus 1 is 3 times 2, plus 1. That is 7.
 
 28
-00:05:41,729 --> 00:05:54,187
-Their sum is 5444. Divide by n equals 4. So y bar is 1361 grams. The triangle marks y bar.
+00:05:26,262 --> 00:05:45,163
+The general rule is linearity of expectation. For random variables Y i, and constants a i and b i: the expectation of the sum of a i Y i plus b i equals the sum of a i times the expectation of Y i, plus the sum of the b i.
 
 29
-00:05:54,637 --> 00:06:13,112
-The orange arrows are the deviations y i minus y bar. They are 169, minus 64, minus 26, and minus 79. They add to 0. This is true for every data set. So y bar is the balance point of the data.
+00:05:45,613 --> 00:05:57,581
+So a constant factor moves outside the expectation. The expectation of a sum is the sum of the expectations. The variables do not need to be independent for this rule.
 
 30
-00:06:13,562 --> 00:06:30,309
-For all 236 people, the sum is 303086 grams. So y bar is 1284.263 grams. The sample mean y bar estimates the expectation of Y.
-
-31
-00:06:30,759 --> 00:06:38,929
+00:05:58,031 --> 00:06:06,223
 The mean does not tell the spread. These two densities have the same mean. The blue one is narrow. The teal one is wide.
 
-32
-00:06:39,379 --> 00:06:49,961
+31
+00:06:06,673 --> 00:06:17,255
 Take one value of Y. Its deviation is Y minus the expectation of Y. The deviation is positive on the right, and negative on the left.
 
-33
-00:06:50,411 --> 00:07:00,800
+32
+00:06:17,705 --> 00:06:28,094
 Square the deviation. The orange square has this area. The variance is the expectation of the squared deviation: the average area of these squares.
 
-34
-00:07:01,250 --> 00:07:11,383
+33
+00:06:28,544 --> 00:06:38,677
 The standard deviation is the square root of the variance. It has the unit of Y. The variance has the unit squared, for example grams squared.
 
+34
+00:06:39,127 --> 00:06:54,423
+The slide gives a second form of the variance. Here is why it is true. Line 1: let mu be the expectation of Y. Mu is a constant. Start from the definition: the expectation of Y minus mu, squared.
+
 35
-00:07:11,833 --> 00:07:26,127
-The slide gives a second form of the variance. Here is why it is true. Let mu be the expectation of Y. Mu is a constant. Start from the definition: the expectation of Y minus mu, squared.
+00:06:54,873 --> 00:07:04,367
+Line 2: expand the square. Y squared, minus 2 mu Y, plus mu squared. The picture shows a square of side Y, split at mu.
 
 36
-00:07:26,577 --> 00:07:41,915
-Expand the square: Y squared, minus 2 mu Y, plus mu squared. The picture shows the same identity. A square of side Y splits into a square of side Y minus mu, two rectangles, and a square mu squared.
+00:07:04,817 --> 00:07:13,969
+Line 3: use linearity. The constant 2 mu moves outside. The expectation of the constant mu squared is mu squared.
 
 37
-00:07:42,365 --> 00:07:50,259
-Use linearity. The constant 2 mu moves outside. The expectation of the constant mu squared is mu squared.
+00:07:14,419 --> 00:07:30,888
+Line 4: the expectation of Y is mu. So the middle term is minus 2 mu squared. In the picture, the two rectangles mu times Y minus mu have expectation 0, because the expectation of Y minus mu is 0.
 
 38
-00:07:50,709 --> 00:08:04,383
-The expectation of Y is mu. So the middle term is minus 2 mu squared. In the picture, the two rectangles have expectation 0, because the expectation of Y minus mu is 0.
+00:07:31,338 --> 00:07:42,047
+Line 5: minus 2 mu squared plus mu squared is minus mu squared. In the picture, only the orange square and the blue square mu squared are left.
 
 39
-00:08:04,833 --> 00:08:16,332
-Minus 2 mu squared plus mu squared is minus mu squared. So the variance equals the expectation of Y squared, minus the square of the expectation of Y.
+00:07:42,497 --> 00:07:49,239
+So the variance equals the expectation of Y squared, minus the square of the expectation of Y.
 
 40
-00:08:16,782 --> 00:08:27,107
+00:07:49,689 --> 00:08:00,014
 Z has standard deviation 0.25. So its variance is 0.25 squared, which is 0.0625.
 
 41
-00:08:27,557 --> 00:08:35,451
+00:08:00,464 --> 00:08:08,357
 Add the constant 4. The density moves, but its width does not change. So a shift does not change the variance.
 
 42
-00:08:35,901 --> 00:08:57,917
+00:08:08,807 --> 00:08:30,823
 Now multiply by 3. The width becomes 3 times larger, so the variance becomes 3 squared, which is 9 times larger. Property 1: the variance of a Y plus b equals a squared times the variance of Y. Here, 9 times 0.0625 is 0.5625.
 
 43
-00:08:58,367 --> 00:09:24,991
-Property 2. For independent random variables X and Y, the variance of X plus Y is the variance of X plus the variance of Y. For example, standard deviations 0.25 and 1 give 0.0625 plus 1, which is 1.0625. Without independence, a covariance term is added. We find it later in this video.
+00:08:31,273 --> 00:08:57,129
+Property 2. For independent random variables X and Y, the variance of X plus Y is the variance of X plus the variance of Y. For example, standard deviations 0.25 and 1 give 0.0625 plus 1, which is 1.0625. Without independence, a covariance term is added. Part b finds it.
 
 44
-00:09:25,441 --> 00:09:43,809
-Why property 1 is true. The expectation of a Y plus b is a mu plus b. Subtract it: b cancels, and a times Y minus mu remains. Its square is a squared times Y minus mu squared. Take the expectation, and a squared moves outside.
+00:08:57,579 --> 00:09:14,817
+Here is why property 1 is true. The picture uses a equals 3 and b equals 1. Line 1: by linearity, the expectation of a Y plus b is a mu plus b. In the picture, the mean 2 goes to 3 times 2 plus 1, which is 7.
 
 45
-00:09:44,259 --> 00:09:57,400
-For observed data, the sample variance s y squared is 1 over n minus 1, times the sum of the squared deviations y i minus y bar. We use the same 4 people.
+00:09:15,267 --> 00:09:29,347
+Line 2: subtract the mean. b cancels, and a times Y minus mu remains. In the picture, a deviation of 0.5 becomes 3 times 0.5, which is 1.5.
 
 46
-00:09:57,850 --> 00:10:03,034
-First, find y bar. It is 1361 grams.
+00:09:29,797 --> 00:09:39,738
+Line 3: square both sides. The square of a is a squared. The squares in the picture have the areas 0.25 and 2.25.
 
 47
-00:10:03,484 --> 00:10:14,236
-Second, find each deviation y i minus y bar: 169, minus 64, minus 26, and minus 79.
+00:09:40,188 --> 00:09:51,644
+Line 4: the variance is the expectation of this square. In the picture, 2.25 is 9 times 0.25, and 9 is 3 squared.
 
 48
-00:10:14,686 --> 00:10:33,566
-Third, square each deviation. The orange squares have these areas: 28561, 4096, 676, and 6241. Their sum is 39574.
+00:09:52,094 --> 00:09:59,987
+Line 5: a squared is a constant, so it moves out of the expectation. What is left is the variance of Y.
 
 49
-00:10:34,016 --> 00:10:55,840
-Fourth, divide by n minus 1, which is 3. The sample variance is 13191.33 grams squared. The divisor is n minus 1, not n. The slides use this divisor. Not on the slides: the deviations add to 0, so only n minus 1 of them are free.
+00:10:00,437 --> 00:10:06,368
+So b drops out, and a is squared. Question type A uses this in steps 3 and 4.
 
 50
-00:10:56,290 --> 00:11:04,183
-Last, take the square root. The sample standard deviation s y is 114.85 grams.
+00:10:06,818 --> 00:10:16,845
+Question type A gives a combination of random variables, and asks for its expectation or its variance. Method card A has five steps.
 
 51
-00:11:04,633 --> 00:11:22,511
-Now all 236 people. The histogram shows how many people are in each bin of 50 grams. The sum of the squared deviations is 3309753.7. We call this sum S y y.
+00:10:17,295 --> 00:10:24,697
+Step 1: write the quantity as a sum of a i times Y i, plus a constant b. Name each constant.
 
 52
-00:11:22,961 --> 00:11:29,446
-The purple line is y bar, 1284.263 grams.
+00:10:25,147 --> 00:10:33,937
+Step 2: for the mean, use linearity. The expectation is the sum of a i times the expectation of Y i, plus b.
 
 53
-00:11:29,896 --> 00:11:51,592
-Divide S y y by n minus 1, which is 235. The sample variance is 14084.06 grams squared. The standard deviation s y is 118.68 grams. The orange band is y bar plus or minus s y.
+00:10:34,387 --> 00:10:39,933
+Step 3: for the variance, drop the constant b. A shift does not change the spread.
 
 54
-00:11:52,042 --> 00:12:02,517
-163 of the 236 people are inside this band. So most brain weights are within one standard deviation of the mean.
+00:10:40,383 --> 00:10:48,042
+Step 4: each term a i Y i gives a i squared times the variance of Y i. This is property 1.
 
 55
-00:12:02,967 --> 00:12:10,391
-Property 1 also holds for data. Here is the band y bar plus or minus s y, in grams.
+00:10:48,492 --> 00:10:54,017
+Step 5: when the Y i are independent, add the terms. This is property 2.
 
 56
-00:12:10,841 --> 00:12:35,886
-Change grams to kilograms: multiply by 0.001. The spread is multiplied by 0.001, so s y is 0.1187 kilograms. The variance is multiplied by 0.001 squared. It becomes 0.01408406 kilograms squared.
+00:10:54,467 --> 00:11:08,590
+A type A question. Pause the video and try it. The expectation of Y 1 is 2, and the expectation of Y 2 is 5. Find the expectation of 3 Y 1 minus 2 Y 2 plus 4.
 
 57
-00:12:36,336 --> 00:12:50,437
-Now add 100 grams to every value. The mean moves to 1384.263 grams. The width of the band stays the same, so the variance does not change.
+00:11:09,040 --> 00:11:16,507
+Step 1 of card A: the constants are a 1 equals 3, a 2 equals minus 2, and b equals 4.
 
 58
-00:12:50,887 --> 00:12:55,069
-Two practice questions on the rules. Pause the video and try them.
+00:11:16,957 --> 00:11:27,751
+Step 2: use linearity. The expectation is 3 times the expectation of Y 1, minus 2 times the expectation of Y 2, plus 4.
 
 59
-00:12:55,519 --> 00:13:10,047
-Question 1. Use linearity term by term. 3 Y 1 gives 3 times 2, which is 6. Minus 2 Y 2 gives minus 2 times 5, which is minus 10. The constant 4 stays 4.
+00:11:28,201 --> 00:11:41,428
+Put in the two given expectations. 3 times 2 is 6. Minus 2 times 5 is minus 10. The constant 4 stays 4. The arrows on the number line show the three parts.
 
 60
-00:13:10,497 --> 00:13:14,294
-Add the terms: 6 minus 10 plus 4 is 0.
+00:11:41,878 --> 00:11:47,467
+Add the parts: 6 minus 10 plus 4 is 0. The arrows end at 0.
 
 61
-00:13:14,744 --> 00:13:32,749
-Question 2. The constant 7 is a shift, so it adds nothing to the variance. X and Y are independent, so the variances add. 2 X gives 2 squared times 0.0625, which is 0.25. Y gives 1.
+00:11:47,917 --> 00:12:04,472
+Another type A question. Pause the video and try it. X and Y are independent. The variance of X is 0.0625, and the variance of Y is 1. Find the variance of 2 X plus Y plus 7.
 
 62
-00:13:33,199 --> 00:13:38,490
-So the variance is 0.25 plus 1, which is 1.25.
+00:12:04,922 --> 00:12:10,277
+Step 1 of card A: a 1 equals 2, a 2 equals 1, and b equals 7.
 
 63
-00:13:38,940 --> 00:13:48,967
-Practice question 3. Here are 5 brain weights. Find y bar, the sample variance, and the standard deviation. Pause the video and try it.
+00:12:10,727 --> 00:12:15,633
+Step 3: drop the constant 7. A shift adds nothing to the variance.
 
 64
-00:13:49,417 --> 00:13:57,715
-The sum is 7034. Divide by 5. So y bar is 1406.8 grams.
+00:12:16,083 --> 00:12:30,867
+Step 4: each term gives a squared times its variance. 2 X gives 2 squared times 0.0625, which is 0.25. Y gives 1 squared times 1, which is 1.
 
 65
-00:13:58,165 --> 00:14:13,696
-The deviations are 123.2, minus 109.8, minus 71.8, minus 124.8, and 183.2. Check: they add to 0.
+00:12:31,317 --> 00:12:39,637
+Step 5: X and Y are independent, so add the terms. 0.25 plus 1 is 1.25.
 
 66
-00:14:14,146 --> 00:14:20,333
-Square them and add. The sum of squares is 81526.8.
+00:12:40,087 --> 00:12:44,951
+So the variance of 2 X plus Y plus 7 is 1.25.
 
 67
-00:14:20,783 --> 00:14:36,164
-Divide by n minus 1, which is 4. The sample variance is 20381.7 grams squared. The standard deviation is the square root: 142.76 grams.
+00:12:45,401 --> 00:13:04,772
+Now a question from the slides, lecture 1, page 25. Pause the video and try it. Z 1 to Z n are independent. Z i has mean mu i and variance sigma i squared. Find the mean and the variance of U, the sum of a i Z i plus b i.
 
 68
-00:14:36,614 --> 00:14:48,027
-To recap. The outcome y is the variable whose mean we explain. The covariate x explains or predicts it. Row i gives the point x i, y i.
+00:13:05,222 --> 00:13:13,435
+Step 1 of card A: split U into the sum of a i Z i, plus the constant b, which is the sum of the b i.
 
 69
-00:14:48,477 --> 00:15:02,493
-Expectation is linear. The sample mean is the balance point of the data. The variance is the expected squared deviation. It equals the expectation of Y squared minus the squared expectation.
+00:13:13,885 --> 00:13:24,936
+Step 2: by linearity, the expectation of U is the sum of a i mu i, plus the sum of the b i. The table fills the column E, one term per row.
 
 70
-00:15:02,943 --> 00:15:19,967
-A shift does not change the variance. A factor a multiplies it by a squared. For independent variables, the variances add. The sample variance is S y y over n minus 1. Part b covers covariance and correlation.
+00:13:25,386 --> 00:13:29,525
+Step 3: for the variance, drop the constant, the sum of the b i.
+
+71
+00:13:29,975 --> 00:13:38,209
+Step 4: by property 1, term i gives a i squared times sigma i squared. The table fills the column Var.
+
+72
+00:13:38,659 --> 00:13:47,577
+Step 5: the Z i are independent, so add the terms. The variance of U is the sum of a i squared sigma i squared.
+
+73
+00:13:48,027 --> 00:13:57,349
+These are the mean and the variance on slide 25. When the Z i are normal, U is normal too. Video 2 explains this.
+
+74
+00:13:57,799 --> 00:14:12,605
+Section 3 computes summaries from observed data. For data y 1 to y n, the sample mean y bar is 1 over n, times the sum of the y i. Here are the brain weights of the first 4 people.
+
+75
+00:14:13,055 --> 00:14:26,068
+Their sum is 5444. Divide by n equals 4. So y bar is 1361 grams. The purple triangle marks y bar.
+
+76
+00:14:26,518 --> 00:14:45,014
+The orange arrows are the deviations y i minus y bar. They are 169, minus 64, minus 26, and minus 79. They add to 0. This is true for every data set. So y bar is the balance point of the data.
+
+77
+00:14:45,464 --> 00:15:02,211
+For all 236 people, the sum is 303086 grams. So y bar is 1284.263 grams. The sample mean y bar estimates the expectation of Y.
+
+78
+00:15:02,661 --> 00:15:15,866
+For observed data, the sample variance s y squared is 1 over n minus 1, times the sum of the squared deviations y i minus y bar. We use the same 4 people.
+
+79
+00:15:16,316 --> 00:15:21,500
+First, find y bar. It is 1361 grams.
+
+80
+00:15:21,950 --> 00:15:32,702
+Second, find each deviation y i minus y bar: 169, minus 64, minus 26, and minus 79.
+
+81
+00:15:33,152 --> 00:15:52,032
+Third, square each deviation. The orange squares have these areas: 28561, 4096, 676, and 6241. Their sum is 39574.
+
+82
+00:15:52,482 --> 00:16:13,815
+Fourth, divide by n minus 1, which is 3. The sample variance is 13191.33 grams squared. The slides use the divisor n minus 1. A remark that is not on the slides: the deviations add to 0, so only n minus 1 of them are free.
+
+83
+00:16:14,265 --> 00:16:22,159
+Last, take the square root. The sample standard deviation s y is 114.85 grams.
+
+84
+00:16:22,609 --> 00:16:34,897
+Question type B gives data, or computer output, and asks for the sample mean, the sample variance, or the sample standard deviation. Method card B has five steps.
+
+85
+00:16:35,347 --> 00:16:39,805
+Step 1: the mean, y bar, is the sum of the y i over n.
+
+86
+00:16:40,255 --> 00:16:46,079
+Step 2: the deviations y i minus y bar. Check that they add to 0.
+
+87
+00:16:46,529 --> 00:16:52,652
+Step 3: square the deviations and add them. Slide 20 calls this sum S y y.
+
+88
+00:16:53,102 --> 00:16:59,395
+Step 4: divide by n minus 1. This gives the sample variance s y squared.
+
+89
+00:16:59,845 --> 00:17:05,797
+Step 5: take the square root. The standard deviation s y has the unit of y.
+
+90
+00:17:06,247 --> 00:17:21,565
+A type B question with the data of Tutorial 1, question 1. Pause the video and try it. The costs of 7 months are given, in hundreds of dollars. Find y bar, the sample variance, and the standard deviation.
+
+91
+00:17:22,015 --> 00:17:32,212
+Step 1 of card B: the costs add to 189. 189 over 7 is 27. So y bar is 27.
+
+92
+00:17:32,662 --> 00:17:47,190
+Step 2: the deviations. 26 minus 27 is minus 1, 25 minus 27 is minus 2, and so on. The column adds to 0. The orange arrows show the deviations.
+
+93
+00:17:47,640 --> 00:17:58,413
+Step 3: square each deviation. Each square below has the deviation as its side. The areas add to 322. This is S y y.
+
+94
+00:17:58,863 --> 00:18:09,573
+Step 4: divide by n minus 1, which is 6. 322 over 6 is 53.67, in hundreds of dollars squared.
+
+95
+00:18:10,023 --> 00:18:21,329
+Step 5: the square root of 53.67 is 7.33 hundred dollars, about 733 dollars. This is s y.
+
+96
+00:18:21,779 --> 00:18:32,083
+One more type B question. Pause the video and try it. Here are 5 brain weights. Find y bar, the sample variance, and the standard deviation.
+
+97
+00:18:32,533 --> 00:18:41,579
+Step 1: the sum is 7034. Divide by 5. So y bar is 1406.8 grams.
+
+98
+00:18:42,029 --> 00:18:58,413
+Step 2: the deviations are 123.2, minus 109.8, minus 71.8, minus 124.8, and 183.2. Check: they add to 0.
+
+99
+00:18:58,863 --> 00:19:24,100
+Step 3: square them. The squares are 15178.24, 12056.04, 5155.24, 15575.04, and 33562.24. They add to 81526.8.
+
+100
+00:19:24,550 --> 00:19:34,107
+Step 4: divide by n minus 1, which is 4. The sample variance is 20381.7 grams squared.
+
+101
+00:19:34,557 --> 00:19:41,256
+Step 5: the standard deviation is the square root: 142.76 grams.
+
+102
+00:19:41,706 --> 00:20:02,122
+Now all 236 people. The histogram shows how many people are in each bin of 50 grams. Step 1 of card B: the sum is 303086 grams, so y bar is 1284.263 grams. The purple line marks it.
+
+103
+00:20:02,572 --> 00:20:17,484
+Steps 2 and 3 have 236 rows, so a computer does them. The sum of the squared deviations is 3309753.7. This is S y y.
+
+104
+00:20:17,934 --> 00:20:29,838
+Step 4: divide S y y by n minus 1, which is 235. The sample variance is 14084.06 grams squared.
+
+105
+00:20:30,288 --> 00:20:41,381
+Step 5: the standard deviation s y is 118.68 grams. The orange band is y bar plus or minus s y.
+
+106
+00:20:41,831 --> 00:20:52,306
+163 of the 236 people are inside this band. So most brain weights are within one standard deviation of the mean.
+
+107
+00:20:52,756 --> 00:21:07,007
+A type B question from computer output. Pause the video and try it. Tutorial 1, question 2, gives R output for 100 aircraft. Find the standard deviations of y and of x.
+
+108
+00:21:07,457 --> 00:21:23,585
+The output gives the sums directly, so steps 1 and 2 are done. Step 3: S y y is the sum of the squared deviations of y. The output gives 47854282.
+
+109
+00:21:24,035 --> 00:21:35,597
+Step 4: divide by n minus 1, which is 99. The sample variance of y is 483376.59.
+
+110
+00:21:36,047 --> 00:21:43,386
+Step 5: the square root is 695.25 thousand dollars. This is s y.
+
+111
+00:21:43,836 --> 00:21:58,919
+The same steps for x: 731093 over 99 is 7384.78. Its square root, s x, is 85.93 flight hours.
+
+112
+00:21:59,369 --> 00:22:13,598
+Property 1 also holds for data. Here is the band y bar plus or minus s y, in grams. The card strip shows the step of card A that we use: step 4, a squared times the variance.
+
+113
+00:22:14,048 --> 00:22:39,093
+Change grams to kilograms: multiply by 0.001. The spread is multiplied by 0.001, so s y is 0.1187 kilograms. The variance is multiplied by 0.001 squared. It becomes 0.01408406 kilograms squared.
+
+114
+00:22:39,543 --> 00:22:56,397
+Now add 100 grams to every value. This is step 3 of card A: a shift. The mean moves to 1384.263 grams. The width of the band stays the same, so the variance does not change.
+
+115
+00:22:56,847 --> 00:23:20,825
+To recap. Card A finds the expectation and the variance of a combination: write it as a sum of a i Y i plus b, use linearity for the mean, drop b for the variance, square each factor, and add the terms when the variables are independent. The variance also equals the expectation of Y squared minus the squared expectation.
+
+116
+00:23:21,275 --> 00:23:31,878
+Card B computes sample summaries: the mean, the deviations, S y y, the sample variance with the divisor n minus 1, and the square root.
+
+117
+00:23:32,328 --> 00:23:42,632
+The outcome y is the variable whose mean we explain. The covariate x explains or predicts it. Part b covers covariance and correlation.

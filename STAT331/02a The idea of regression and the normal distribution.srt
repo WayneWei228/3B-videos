@@ -3,297 +3,561 @@
 This is STAT 331, video 2 a. It covers Lecture 1, slides 21 to 25: the idea of regression, and the normal distribution.
 
 2
-00:00:12,034 --> 00:00:32,578
-After this video, you can read the simple and the multiple regression model, symbol by symbol. You can evaluate the normal density and explain its parameters. You can find the distribution of a linear combination of independent normals. Video 2 b covers the chi-square, t, and F distributions.
+00:00:12,034 --> 00:00:18,498
+This video prepares you for four question types. Each type gets a method card and worked problems.
 
 3
-00:00:33,028 --> 00:00:48,559
-Here is the Gladstone data again. Each blue point is one person: head size on the horizontal axis, and brain weight on the vertical axis. Question 1: how do we describe the relationship between x and y?
+00:00:18,948 --> 00:00:24,281
+Type A: find the change in the mean of y when x increases by an amount a.
 
 4
-00:00:49,009 --> 00:01:03,643
-Question 2: how do we predict y for a given x? For example, a person has a head size of 4000 cubic centimeters. Which brain weight do we expect? The purple strip shows the people near this x.
+00:00:24,731 --> 00:00:29,745
+Type B: read a regression model and its data table, symbol by symbol.
 
 5
-00:01:04,093 --> 00:01:16,211
-Question 3: how does the mean of y change when x increases by an amount a? A straight line answers this. Move a to the right along the line, and read the change in height.
+00:00:30,195 --> 00:00:33,587
+Type C: evaluate the normal density at a point.
 
 6
-00:01:16,661 --> 00:01:27,882
-Simple linear regression answers all three questions. The model is: y i equals beta 0, plus beta 1 times x i, plus epsilon i.
+00:00:34,037 --> 00:00:45,343
+Type D: find the distribution of a linear combination of independent normal variables. Lectures 2 and 3 use it for y i and for beta 1 hat.
 
 7
-00:01:28,332 --> 00:01:42,391
-Look at each symbol of the model. The index i is the row number. Row i is one person, with covariate x i and outcome y i. The dashed line is beta 0 plus beta 1 x.
+00:00:45,793 --> 00:00:58,508
+Here is the Gladstone data from Lecture 1. Each blue point is one person: head size and brain weight. Question 1: how do we describe the relationship between x and y?
 
 8
-00:01:42,841 --> 00:01:51,950
-Beta 0 is the intercept. It is the height of the line at x equals 0. It is a parameter: a fixed number that we do not know.
+00:00:58,958 --> 00:01:13,593
+Question 2: how do we predict y for a given x? For example, a person has a head size of 4000 cubic centimeters. Which brain weight do we expect? The purple strip shows the people near this x.
 
 9
-00:01:52,400 --> 00:02:02,192
-Beta 1 is the slope. When x increases by 1, the line height increases by beta 1. It is also a fixed, unknown parameter.
+00:01:14,043 --> 00:01:26,160
+Question 3: how does the mean of y change when x increases by an amount a? A straight line answers this. Move a to the right along the line, and read the change in height.
 
 10
-00:02:02,642 --> 00:02:17,533
-Epsilon i is the error of row i. It is the vertical distance from the point to the line: y i minus beta 0 plus beta 1 x i. This point is above the line, so its error is positive.
+00:01:26,610 --> 00:01:37,831
+Simple linear regression answers all three questions. The model is: y i equals beta 0, plus beta 1 times x i, plus epsilon i.
 
 11
-00:02:17,983 --> 00:02:27,668
-This point is below the line, so its error is negative. Beta 0 and beta 1 are the same for every row. Each row has its own error.
+00:01:38,281 --> 00:01:52,340
+Look at each symbol of the model. The index i is the row number. Row i is one person, with covariate x i and outcome y i. The dashed line is beta 0 plus beta 1 x.
 
 12
-00:02:28,118 --> 00:02:34,945
-Now answer question 3 with the line. Take two values of the covariate: x, and x plus a.
+00:01:52,790 --> 00:02:01,899
+Beta 0 is the intercept. It is the height of the line at x equals 0. It is a parameter: a fixed number that we do not know.
 
 13
-00:02:35,395 --> 00:02:48,088
-The line height at x is beta 0 plus beta 1 x. At x plus a, it is beta 0 plus beta 1 times x plus a. Subtract the first height from the second height.
+00:02:02,349 --> 00:02:12,141
+Beta 1 is the slope. When x increases by 1, the line height increases by beta 1. It is also a fixed, unknown parameter.
 
 14
-00:02:48,538 --> 00:03:04,111
-Expand the brackets. Beta 0 cancels. Beta 1 x cancels. Only beta 1 times a stays. So the change is beta 1 a. With a equals 1, the change is beta 1: that is the meaning of the slope.
+00:02:12,591 --> 00:02:27,482
+Epsilon i is the error of row i. It is the vertical distance from the point to the line: y i minus beta 0 plus beta 1 x i. This point is above the line, so its error is positive.
 
 15
-00:03:04,561 --> 00:03:21,031
-An example. Lecture 2 estimates beta 1 for the brain data as 0 point 2 6 0 8 grams per cubic centimeter. For a equals 100 cubic centimeters, the change is 26 point 0 8 grams.
+00:02:27,932 --> 00:02:38,172
+This second point is below the line, so its error is negative. Beta 0 and beta 1 are the same for every row. Each row has its own error.
 
 16
-00:03:21,481 --> 00:03:26,921
+00:02:38,622 --> 00:02:44,062
 Slide 22 draws all 236 people of the Gladstone data.
 
 17
-00:03:27,371 --> 00:03:45,483
-It adds one straight line through the points. The line goes up from left to right, so its slope is positive. Lecture 2 shows how to calculate this line. Its intercept is 335 point 4 3, and its slope is 0 point 2 6 0 8.
+00:02:44,512 --> 00:02:58,379
+It adds one straight line through the points. Lecture 2 shows how to calculate this line. Its intercept is 335 point 4 3, and its slope is 0 point 2 6 0 8.
 
 18
-00:03:45,933 --> 00:04:06,733
+00:02:58,829 --> 00:03:19,629
 Row 1 has head size 4512 and brain weight 1530. The line height at 4512 is 1512 point 3. The point is above the line. Its vertical distance is plus 17 point 7 grams.
 
 19
-00:04:07,183 --> 00:04:24,100
+00:03:20,079 --> 00:03:36,996
 Row 4 has head size 3777 and brain weight 1282. The line height is 1320 point 6. The point is below the line, by 38 point 6 grams.
 
 20
-00:04:24,550 --> 00:04:37,222
+00:03:37,446 --> 00:03:50,118
 In total, 116 points are above the line, and 120 are below. No line goes through all the points. So the model needs an error term for each observation.
 
 21
-00:04:37,672 --> 00:04:49,405
-Slide 23 prints the first rows of the data file. Each row is one person. The file has four columns: gender, age group, head size, and brain weight.
+00:03:50,568 --> 00:04:02,472
+Question type A asks: how does the mean of y change when x increases by an amount a? This is question 3 of slide 21. Method card A has four steps.
 
 22
-00:04:49,855 --> 00:04:55,637
-Brain weight is the outcome, y. It is the variable whose mean we want to explain.
+00:04:02,922 --> 00:04:10,666
+Step 1: write the mean of y at x. It is beta 0 plus beta 1 x, the height of the line at x.
 
 23
-00:04:56,087 --> 00:05:02,316
-The other three columns are possible covariates. Until now, we used only head size.
+00:04:11,116 --> 00:04:17,900
+Step 2: write the mean at x plus a. It is beta 0 plus beta 1 times x plus a.
 
 24
-00:05:02,766 --> 00:05:19,747
-Two columns contain numbers: head size and brain weight. Two columns contain text labels: gender is M or F, and age is the group 20 to 46, or 46 and older. Later in the course, text columns become numbers.
+00:04:18,350 --> 00:04:26,222
+Step 3: subtract the first mean from the second. The change is beta 1 times a. The purple segment shows it.
 
 25
-00:05:20,197 --> 00:05:28,005
-The data has four columns and one outcome. So there are four minus one, which is three, possible covariates.
+00:04:26,672 --> 00:04:37,424
+Step 4: put in the estimate beta 1 hat and the value of a, and give the units of y. With an estimate, the answer is a change in the estimated mean.
 
 26
-00:05:28,455 --> 00:05:46,013
-The slide also gives a summary of each number column. For head size, the smallest value is 2773 and the largest value is 4747 cubic centimeters. The blue line spans this range.
+00:04:37,874 --> 00:04:56,455
+We follow card A. Pause the video and try it. Step 1: the model says y i equals beta 0 plus beta 1 x i plus epsilon i, and epsilon i has mean 0. So the mean of y at x is beta 0 plus beta 1 x.
 
 27
-00:05:46,463 --> 00:06:05,769
-The box spans the first and third quartiles, 3390 and 3876. About half of the people are in the box. The thick line in the box is the median, 3614: the middle value of the sorted column.
+00:04:56,905 --> 00:05:03,007
+Step 2: at x plus a, the mean is beta 0 plus beta 1 times x plus a.
 
 28
-00:06:06,219 --> 00:06:14,497
-The purple dot is the mean, 3638. It is near the median, so the column is close to symmetric.
+00:05:03,457 --> 00:05:06,422
+Step 3: subtract line 1 from line 2.
 
 29
-00:06:14,947 --> 00:06:34,296
-For brain weight: the range is 1012 to 1635 grams. The quartiles are 1208 and 1351. The median is 1280, and the mean is 1284.
+00:05:06,872 --> 00:05:11,224
+Expand the brackets. The new term is beta 1 a, in orange.
 
 30
-00:06:34,746 --> 00:06:40,826
-Slide 24 compares two models. The simple model has one covariate, x i.
+00:05:11,674 --> 00:05:21,679
+Beta 0 cancels, and beta 1 x cancels. The change is beta 1 times a. In the picture, it is the height of the purple segment.
 
 31
-00:06:41,276 --> 00:06:55,612
-The multiple linear regression model has more covariates. Here it has three: beta 1 times x i 1, plus beta 2 times x i 2, plus beta 3 times x i 3, plus the error.
+00:05:22,129 --> 00:05:31,089
+With a equals 1, the change is beta 1. This is the meaning of the slope. Question type A uses this result in step 3.
 
 32
-00:06:56,062 --> 00:07:09,118
-The covariate now has two indices. x i j is covariate j of row i. The first index is the row. The second index is the column. Column 1 is head size.
+00:05:31,539 --> 00:05:56,585
+A type A question. Pause the video and try it. In the Gladstone data, x is head size and y is brain weight. Lecture 2 gives beta 0 hat 335 point 4 3 2 3, and beta 1 hat 0 point 2 6 0 8. Head size increases by 100 cubic centimeters. Find the change in the estimated mean brain weight.
 
 33
-00:07:09,568 --> 00:07:19,915
-For example, x 5 2 is covariate 2 of row 5. Covariate 2 is gender, so x 5 2 is the gender of person 5: M.
+00:05:57,035 --> 00:06:15,573
+Step 1 of card A: the estimated mean at x is 335 point 4 3 2 3 plus 0 point 2 6 0 8 x. The picture zooms into the data near x equals 3600. The green dot is the mean at x.
 
 34
-00:07:20,365 --> 00:07:34,615
-Count the parameters. There is one beta for each covariate, plus the intercept beta 0. Three covariates give four parameters. No beta has the index i: the betas are the same for all rows.
+00:06:16,023 --> 00:06:29,271
+Step 2: the estimated mean at x plus 100 is 335 point 4 3 2 3 plus 0 point 2 6 0 8 times x plus 100.
 
 35
-00:07:35,065 --> 00:07:47,375
-Keep only covariate 1 and write x i 1 as x i. Then you get the simple model again. So simple linear regression is a special case of multiple linear regression.
+00:06:29,721 --> 00:06:38,084
+Step 3: subtract. The change is beta 1 hat times a: 0 point 2 6 0 8 times 100.
 
 36
-00:07:47,825 --> 00:07:55,739
-Slide 24 also gives the plan of the course. The course develops multiple linear regression in four ways.
+00:06:38,534 --> 00:06:50,417
+Step 4: that is 26 point 0 8. The units of y are grams. So the estimated mean brain weight increases by 26 point 0 8 grams.
 
 37
-00:07:56,189 --> 00:08:00,840
-First, theory. We derive estimators of the betas mathematically.
+00:06:50,867 --> 00:07:14,547
+A second type A question, from Tutorial 1. Pause the video and try it. x is machine hours per month, and y is the monthly cost in hundreds of dollars. The fitted line is y hat equals 68 point 4 5 minus 0 point 4 1 0 4 x. Find the change in the estimated mean cost for 10 more hours.
 
 38
-00:08:01,290 --> 00:08:05,151
-Second, practice. We fit the models to data with software.
+00:07:14,997 --> 00:07:21,738
+Steps 1 and 2 of card A: write the estimated mean at x plus 10 and at x, and subtract.
 
 39
-00:08:05,601 --> 00:08:12,364
-Third, model choice. We choose and compare models: which covariates x i j to include.
+00:07:22,188 --> 00:07:33,089
+Step 3: the change is beta 1 hat times a: minus 0 point 4 1 0 4 times 10. The purple segment shows the 10 hours.
 
 40
-00:08:12,814 --> 00:08:18,766
-Fourth, diagnostics. We check if the model and its assumptions are appropriate for the data.
+00:07:33,539 --> 00:07:40,409
+Step 4: that is minus 4 point 1 0 4. The units of y are hundreds of dollars.
 
 41
-00:08:19,216 --> 00:08:35,984
-Two short practice questions. Question 1: write the simple model for row 3, and name the unknown values. Question 2: in the model with three covariates, what is x 5 2, and how many betas are there? Pause the video and try it.
+00:07:40,859 --> 00:07:55,472
+Minus 4 point 1 0 4 times 100 dollars is minus 410 dollars and 40 cents. So the estimated mean monthly cost decreases by 410 dollars and 40 cents.
 
 42
-00:08:36,434 --> 00:09:00,861
-Question 1. Row 3 has head size 4261 and brain weight 1335. So 1335 equals beta 0, plus beta 1 times 4261, plus epsilon 3. The unknown values are beta 0, beta 1, and epsilon 3.
+00:07:55,922 --> 00:08:07,655
+Slide 23 prints the first rows of the data file. Each row is one person. The file has four columns: gender, age group, head size, and brain weight.
 
 43
-00:09:01,311 --> 00:09:13,641
-Question 2. x 5 2 is covariate 2 of row 5: the gender of person 5, which is M. There are three covariates plus the intercept, so four parameters.
+00:08:08,105 --> 00:08:13,887
+Brain weight is the outcome, y. It is the variable whose mean we want to explain.
 
 44
-00:09:14,091 --> 00:09:30,390
-Now the four distributions. First, the normal distribution. Z follows a normal distribution with parameters mu and sigma squared. The blue curve is the standard normal: mu equals 0, and sigma squared equals 1.
+00:08:14,337 --> 00:08:20,566
+The other three columns are possible covariates. Until now, we used only head size.
 
 45
-00:09:30,840 --> 00:09:48,824
-The density is 1 over the square root of 2 pi sigma squared, times e to the power minus z minus mu, squared, over 2 sigma squared. The exponent is 0 at z equals mu. So the peak is at mu, and the curve is symmetric about mu.
+00:08:21,016 --> 00:08:37,187
+Gender and age contain text labels: gender is M or F, and age is the group 20 to 46, or 46 and older. Head size and brain weight contain numbers. Later in the course, text columns become numbers.
 
 46
-00:09:49,274 --> 00:09:56,207
-A change in mu moves the curve. The green curve has mu equals 2. Its shape stays the same.
+00:08:37,637 --> 00:08:45,445
+The data has four columns and one outcome. So there are four minus one, which is three, possible covariates.
 
 47
-00:09:56,657 --> 00:10:08,497
-A change in sigma squared changes the width. The orange curve has sigma squared equals 4. It is wider and lower, because the total area must stay equal to 1.
+00:08:45,895 --> 00:09:03,452
+The slide also gives a summary of each number column. For head size, the smallest value is 2773 and the largest value is 4747 cubic centimeters. The blue line spans this range.
 
 48
-00:10:08,947 --> 00:10:22,195
-The moments: the expected value of Z is mu. The variance of Z is sigma squared. The standard deviation sigma is the distance from the peak to the point where the curve changes its bend.
+00:09:03,902 --> 00:09:23,209
+The box spans the first and third quartiles, 3390 and 3876. About half of the people are in the box. The thick line in the box is the median, 3614: the middle value of the sorted column.
 
 49
-00:10:22,645 --> 00:10:27,808
-An example with the formula. Calculate f of 0 for the standard normal.
+00:09:23,659 --> 00:09:31,936
+The purple dot is the mean, 3638. It is near the median, so the column is close to symmetric.
 
 50
-00:10:28,258 --> 00:10:34,530
-Put z equals 0, mu equals 0, and sigma squared equals 1 into the formula.
+00:09:32,386 --> 00:09:51,735
+For brain weight: the range is 1012 to 1635 grams. The quartiles are 1208 and 1351. The median is 1280, and the mean is 1284.
 
 51
-00:10:34,980 --> 00:10:46,905
-The exponent is 0 minus 0, squared, over 2. That is 0. And e to the power 0 is 1. So f of 0 is 1 over the square root of 2 pi.
+00:09:52,185 --> 00:09:58,265
+Slide 24 compares two models. The simple model has one covariate, x i.
 
 52
-00:10:47,355 --> 00:10:59,750
-The square root of 2 pi is 2 point 5 0 6 6. So f of 0 is 0 point 3 9 8 9. This is the highest point of the standard normal curve.
+00:09:58,715 --> 00:10:13,051
+The multiple linear regression model has more covariates. Here it has three: beta 1 times x i 1, plus beta 2 times x i 2, plus beta 3 times x i 3, plus the error.
 
 53
-00:11:00,200 --> 00:11:13,299
-Slide 25 also gives a key rule. Start with n independent normal variables, Z 1 to Z n. Variable Z i has mean mu i and variance sigma i squared.
+00:10:13,501 --> 00:10:26,856
+The covariate now has two indices. x i j is covariate j of row i. The first index is the row. The second index is the column. Covariate 1 is head size.
 
 54
-00:11:13,749 --> 00:11:18,783
-Multiply each Z i by a constant a i, and add a constant b i.
+00:10:27,306 --> 00:10:37,653
+For example, x 5 2 is covariate 2 of row 5. Covariate 2 is gender, so x 5 2 is the gender of person 5: M.
 
 55
-00:11:19,233 --> 00:11:28,812
-Add all the terms. Call the sum U. The rule says: U is also normal. A linear combination of independent normals is normal.
+00:10:38,103 --> 00:10:52,353
+Count the parameters. There is one beta for each covariate, plus the intercept beta 0. Three covariates give four parameters. No beta has the index i: the betas are the same for all rows.
 
 56
-00:11:29,262 --> 00:11:33,059
-The mean of U is the sum of a i mu i plus b i.
+00:10:52,803 --> 00:11:05,113
+Keep only covariate 1 and write x i 1 as x i. Then you get the simple model again. So simple linear regression is a special case of multiple linear regression.
 
 57
-00:11:33,509 --> 00:11:54,053
-The variance of U is the sum of a i squared, times sigma i squared. The constants b i are not in the variance: a shift does not change the spread. The slide writes sigma squared in the assumption and sigma i squared in the result. The rule holds with a different variance for each i.
+00:11:05,563 --> 00:11:13,477
+Slide 24 also gives the plan of the course. The course develops multiple linear regression in four ways.
 
 58
-00:11:54,503 --> 00:12:14,130
-An example. Z 1, Z 2 and Z 3 are independent normals, each with variance 1. Their means are 1, 2 and 300. U is 2 Z 1 plus 1, plus minus Z 2, plus 0 point 5 Z 3 minus 3. Find the distribution of U.
+00:11:13,927 --> 00:11:24,317
+First, theory. We derive estimators of the betas mathematically. An estimator is a formula that calculates an unknown parameter from data.
 
 59
-00:12:14,580 --> 00:12:29,279
-First, check the conditions. Each Z i is normal, and they are independent. So the rule applies. Read the constants: a is 2, minus 1, and 0 point 5. b is 1, 0, and minus 3.
+00:11:24,767 --> 00:11:28,628
+Second, practice. We fit the models to data with software.
 
 60
-00:12:29,729 --> 00:12:45,579
-The mean. Term 1 is 2 times 1 plus 1, which is 3. Term 2 is minus 2. Term 3 is 0 point 5 times 300 minus 3, which is 147. The sum is 148.
+00:11:29,078 --> 00:11:35,841
+Third, model choice. We choose and compare models: which covariates x i j to include.
 
 61
-00:12:46,029 --> 00:12:59,512
-The variance. Square each a i and multiply by the variance 1. That gives 4, 1, and 0 point 2 5. The sum is 5 point 2 5. The b values are not used.
+00:11:36,291 --> 00:11:42,243
+Fourth, diagnostics. We check if the model and its assumptions are appropriate for the data.
 
 62
-00:12:59,962 --> 00:13:05,743
-So U is normal with mean 148 and variance 5 point 2 5.
+00:11:42,693 --> 00:11:53,317
+Question type B asks you to read a model: name each symbol, find a covariate value, and count the parameters. Method card B has four steps.
 
 63
-00:13:06,193 --> 00:13:16,903
-Why do these mean and variance formulas hold? Start with one variable. By linearity of expectation, the mean of a Z plus b is a mu plus b.
+00:11:53,767 --> 00:12:01,191
+Step 1: find the outcome y. It is the variable whose mean the model explains. Here it is brain weight.
 
 64
-00:13:17,353 --> 00:13:26,334
-Multiply Z by a equals 2. The orange curve is twice as wide. The variance is multiplied by a squared, which is 4.
+00:12:01,641 --> 00:12:09,321
+Step 2: the covariates are the other columns in the model. x i j is covariate j of row i.
 
 65
-00:13:26,784 --> 00:13:37,024
-Now add b equals 5. The green curve moves 5 to the right. Its width does not change. So b changes the mean, but not the variance.
+00:12:09,771 --> 00:12:19,520
+Step 3: count the parameters. There is one beta for each covariate, plus beta 0. The three covariate columns give 4 parameters.
 
 66
-00:13:37,474 --> 00:13:43,703
-For the sum U, linearity gives the mean: the sum of a i times E of Z i, plus b i.
+00:12:19,970 --> 00:12:27,031
+Step 4: write the model for one row with its numbers. The betas and the error of that row are unknown.
 
 67
-00:13:44,153 --> 00:14:00,815
-For the variance, the Z i are independent. So the variance of the sum is the sum of the variances. Each term gives a i squared sigma i squared. The slide states that U is normal. These two lines give its mean and its variance.
+00:12:27,481 --> 00:12:47,428
+Two questions of type B on the data of slide 23. Question 1: write the simple model with head size for row 3, and name the unknown values. Question 2: in the model with three covariates, what is x 5 2, and how many betas are there? Pause the video and try it.
 
 68
-00:14:01,265 --> 00:14:19,889
-A practice question. Z 1 is normal with mean 1 and variance 4. Z 2 is normal with mean 3 and variance 4. They are independent. Find the distribution of U equals 3 Z 1 minus 2 Z 2 plus 5. Pause the video and try it.
+00:12:47,878 --> 00:12:52,827
+Step 1 of card B: the outcome y is brain weight, the green column.
 
 69
-00:14:20,339 --> 00:14:35,229
-Read the constants: a 1 is 3, b 1 is 5, a 2 is minus 2, b 2 is 0. The mean is 3 times 1 plus 5, which is 8, plus minus 2 times 3, which is minus 6. So the mean is 2.
+00:12:53,277 --> 00:13:12,733
+Step 4: row 3 has head size 4261 and brain weight 1335. So 1335 equals beta 0, plus beta 1 times 4261, plus epsilon 3.
 
 70
-00:14:35,679 --> 00:14:53,279
-The variance is 3 squared times 4, which is 36, plus minus 2 squared times 4, which is 16. The total is 52. So U is normal with mean 2 and variance 52. The standard deviation is about 7 point 2 1.
+00:13:13,183 --> 00:13:25,813
+The unknown values are beta 0, beta 1 and epsilon 3. The numbers 1335 and 4261 are data.
 
 71
-00:14:53,729 --> 00:15:02,391
-Note that the minus sign of a 2 does not reduce the variance. Minus 2, squared, is plus 4. Variances always add.
+00:13:26,263 --> 00:13:35,564
+Question 2. Step 2: x 5 2 is covariate 2 of row 5. Covariate 2 is gender, so x 5 2 is M.
 
 72
-00:15:02,841 --> 00:15:19,758
-To recap. In the simple model, beta 0 is the intercept, beta 1 is the slope, and epsilon i is the vertical distance of point i from the line. When x increases by a, the mean changes by beta 1 times a.
+00:13:36,014 --> 00:13:41,305
+Step 3: the three covariate columns plus beta 0 give 4 parameters.
 
 73
-00:15:20,208 --> 00:15:28,955
-The multiple model has one beta for each covariate, plus beta 0. x i j is covariate j of row i.
+00:13:41,755 --> 00:13:55,728
+Now the normal distribution. Z follows a normal distribution with parameters mu and sigma squared. The blue curve is the standard normal: mu equals 0, and sigma squared equals 1.
 
 74
-00:15:29,405 --> 00:15:39,538
-The normal density has its peak at mu. Sigma squared sets the width. The standard normal has height 0 point 3 9 8 9 at 0.
+00:13:56,178 --> 00:14:14,162
+The density is 1 over the square root of 2 pi sigma squared, times e to the power minus z minus mu, squared, over 2 sigma squared. The exponent is 0 at z equals mu. So the peak is at mu, and the curve is symmetric about mu.
 
 75
-00:15:39,988 --> 00:15:58,377
-A linear combination of independent normals is normal. Its mean is the sum of a i mu i plus b i. Its variance is the sum of a i squared sigma i squared. Video 2 b builds the chi-square, t, and F distributions from standard normals.
+00:14:14,612 --> 00:14:21,545
+A change in mu moves the curve. The green curve has mu equals 2. Its shape stays the same.
+
+76
+00:14:21,995 --> 00:14:33,835
+A change in sigma squared changes the width. The orange curve has sigma squared equals 4. It is wider and lower, because the total area must stay equal to 1.
+
+77
+00:14:34,285 --> 00:14:47,555
+The moments: the expected value of Z is mu. The variance of Z is sigma squared. The standard deviation sigma is the distance from the peak to the point where the curve changes its bend.
+
+78
+00:14:48,005 --> 00:14:59,162
+Question type C: evaluate the normal density at a point. The likelihood in Lecture 2 multiplies such values. Method card C has four steps.
+
+79
+00:14:59,612 --> 00:15:04,199
+Step 1: read the mean mu, the variance sigma squared, and the point z.
+
+80
+00:15:04,649 --> 00:15:13,395
+Step 2: the exponent is minus z minus mu, squared, over 2 sigma squared. The orange arrow shows z minus mu.
+
+81
+00:15:13,845 --> 00:15:19,968
+Step 3: take e to the power of the exponent. A point far from mu gives a small value.
+
+82
+00:15:20,418 --> 00:15:28,887
+Step 4: divide by the square root of 2 pi sigma squared. The result is f of z, the height of the curve at z.
+
+83
+00:15:29,337 --> 00:15:36,036
+A type C question. Pause the video and try it. Calculate f of 0 for the standard normal.
+
+84
+00:15:36,486 --> 00:15:45,083
+Step 1 of card C: mu is 0, sigma squared is 1, and the point z is 0. The point is marked on the axis.
+
+85
+00:15:45,533 --> 00:15:53,512
+Step 2: the exponent is minus 0 minus 0, squared, over 2. That is 0, because the point is at mu.
+
+86
+00:15:53,962 --> 00:15:56,586
+Step 3: e to the power 0 is 1.
+
+87
+00:15:57,036 --> 00:16:05,740
+Step 4: divide by the square root of 2 pi times 1. The square root of 2 pi is 2 point 5 0 6 6.
+
+88
+00:16:06,190 --> 00:16:13,785
+So f of 0 is 0 point 3 9 8 9. It is the highest point of the standard normal curve.
+
+89
+00:16:14,235 --> 00:16:41,349
+A type C question with course numbers. Pause the video and try it. Tutorial 1 gives the fitted line 68 point 4 5 minus 0 point 4 1 0 4 x, and sigma hat squared 20 point 8 2. With these estimates, the cost at 88 hours is normal. Evaluate its density at the observed cost 40. The likelihood of Lecture 2 multiplies such values.
+
+90
+00:16:41,799 --> 00:16:58,695
+Step 1 of card C: mu is 68 point 4 5 minus 0 point 4 1 0 4 times 88, which is 32 point 3 3 5. Sigma squared is 20 point 8 2. The point is y equals 40.
+
+91
+00:16:59,145 --> 00:17:13,460
+Step 2: the exponent. 40 minus 32 point 3 3 5 is 7 point 6 6 5. Square it, and divide by 2 times 20 point 8 2, which is 41 point 6 4.
+
+92
+00:17:13,910 --> 00:17:28,587
+7 point 6 6 5 squared is 58 point 7 5. Divided by 41 point 6 4, this is 1 point 4 1 1. So the exponent is minus 1 point 4 1 1.
+
+93
+00:17:29,037 --> 00:17:35,757
+Step 3: e to the power minus 1 point 4 1 1 is 0 point 2 4 3 9.
+
+94
+00:17:36,207 --> 00:17:50,394
+Step 4: divide by the square root of 2 pi times 20 point 8 2, which is 11 point 4 4. So f of 40 is 0 point 0 2 1 3: the height of the green line.
+
+95
+00:17:50,844 --> 00:18:03,943
+Slide 25 also gives a key rule. Start with n independent normal variables, Z 1 to Z n. Variable Z i has mean mu i and variance sigma i squared.
+
+96
+00:18:04,393 --> 00:18:09,427
+Multiply each Z i by a constant a i, and add a constant b i.
+
+97
+00:18:09,877 --> 00:18:19,456
+Add all the terms. Call the sum U. The rule says: U is also normal. A linear combination of independent normals is normal.
+
+98
+00:18:19,906 --> 00:18:23,703
+The mean of U is the sum of a i mu i plus b i.
+
+99
+00:18:24,153 --> 00:18:38,895
+The variance of U is the sum of a i squared, times sigma i squared. The constants b i are not in the variance: a shift does not change the spread. The rule holds with a different variance for each i.
+
+100
+00:18:39,345 --> 00:18:55,985
+Why do the mean and the variance of U have this form? Start with one variable. By linearity of expectation, the mean of a Z plus b is a mu plus b. In the picture, a is 2 and b is 5: the mean moves from 0 to 5.
+
+101
+00:18:56,435 --> 00:19:08,787
+Multiply by a, and the variance is multiplied by a squared. The orange curve, 2 Z, is twice as wide, with variance 4. The shift b does not change the width.
+
+102
+00:19:09,237 --> 00:19:16,511
+For U, use line 1 for each term, and add. The mean of U is the sum of a i mu i plus b i.
+
+103
+00:19:16,961 --> 00:19:27,308
+The Z i are independent. So the variance of the sum is the sum of the variances. The bar shows the variances of the terms side by side.
+
+104
+00:19:27,758 --> 00:19:33,198
+Use line 2 for each term. Each term gives a i squared sigma i squared.
+
+105
+00:19:33,648 --> 00:19:45,445
+Slide 25 states that U is normal. So U is normal with this mean and this variance. Question type D uses the two formulas in steps 3 and 4.
+
+106
+00:19:45,895 --> 00:20:01,106
+Question type D: find the distribution of a linear combination of independent normals. Lecture 2 uses it for y i, and Lecture 3 uses it for beta 1 hat. Method card D has five steps.
+
+107
+00:20:01,556 --> 00:20:07,657
+Step 1: check the conditions. Each Z i is normal, and the Z i are independent.
+
+108
+00:20:08,107 --> 00:20:14,337
+Step 2: read the constants a i and b i, and the means and variances of the Z i.
+
+109
+00:20:14,787 --> 00:20:18,733
+Step 3: the mean is the sum of a i mu i plus b i.
+
+110
+00:20:19,183 --> 00:20:25,797
+Step 4: the variance is the sum of a i squared sigma i squared. The b i are not used.
+
+111
+00:20:26,247 --> 00:20:30,513
+Step 5: write U as normal, with this mean and this variance.
+
+112
+00:20:30,963 --> 00:20:52,681
+A type D question. Pause the video and try it. Z 1, Z 2 and Z 3 are independent normals, each with variance 1. Their means are 1, 2 and 300. U is 2 Z 1 plus 1, plus minus Z 2, plus 0 point 5 Z 3 minus 3. Find the distribution of U.
+
+113
+00:20:53,131 --> 00:20:59,637
+Step 1 of card D: each Z i is normal, and they are independent. So the rule applies.
+
+114
+00:21:00,087 --> 00:21:13,506
+Step 2: read the constants from U. a is 2, minus 1 and 0 point 5. b is 1, 0 and minus 3. The means are 1, 2 and 300, and each variance is 1.
+
+115
+00:21:13,956 --> 00:21:33,241
+Step 3: the mean terms. Term 1 is 2 times 1 plus 1, which is 3. Term 2 is minus 1 times 2, which is minus 2. Term 3 is 0 point 5 times 300 minus 3, which is 147. The sum is 148.
+
+116
+00:21:33,691 --> 00:21:51,163
+Step 4: the variance terms. 2 squared times 1 is 4. Minus 1, squared, times 1 is 1. 0 point 5 squared times 1 is 0 point 2 5. The sum is 5 point 2 5. The b values are not used.
+
+117
+00:21:51,613 --> 00:21:58,056
+Step 5: U is normal with mean 148 and variance 5 point 2 5.
+
+118
+00:21:58,506 --> 00:22:17,791
+A practice question of type D. Z 1 is normal with mean 1 and variance 4. Z 2 is normal with mean 3 and variance 4. They are independent. Find the distribution of U equals 3 Z 1 minus 2 Z 2 plus 5. Pause the video and try it.
+
+119
+00:22:18,241 --> 00:22:23,937
+Step 1 of card D: both are normal, and they are independent. The rule applies.
+
+120
+00:22:24,387 --> 00:22:34,457
+Step 2: a 1 is 3 and b 1 is 5. a 2 is minus 2 and b 2 is 0. The means are 1 and 3, and both variances are 4.
+
+121
+00:22:34,907 --> 00:22:44,443
+Step 3: the mean terms are 3 times 1 plus 5, which is 8, and minus 2 times 3, which is minus 6. The mean is 2.
+
+122
+00:22:44,893 --> 00:23:00,274
+Step 4: the variance terms are 3 squared times 4, which is 36, and minus 2, squared, times 4, which is 16. Each square is positive, so the variance is 36 plus 16, which is 52.
+
+123
+00:23:00,724 --> 00:23:11,583
+Step 5: U is normal with mean 2 and variance 52. The standard deviation is the square root of 52, about 7 point 2 1.
+
+124
+00:23:12,033 --> 00:23:32,107
+A type D question from Lecture 2, slide 13. Pause the video and try it. The model says y i equals beta 0 plus beta 1 x i plus epsilon i, with independent normal errors. The x i are fixed numbers. Find the distribution of y i.
+
+125
+00:23:32,557 --> 00:23:36,739
+Step 1 of card D: the errors are normal and independent.
+
+126
+00:23:37,189 --> 00:23:57,029
+Step 2: y i is the error times 1, plus the constant beta 0 plus beta 1 x i. So a is 1, and b is beta 0 plus beta 1 x i. The error has mean 0 and variance sigma squared. The dashed line is beta 0 plus beta 1 x.
+
+127
+00:23:57,479 --> 00:24:06,268
+Step 3: the mean is 1 times 0, plus beta 0 plus beta 1 x i. So the mean of y i is on the line.
+
+128
+00:24:06,718 --> 00:24:16,190
+Step 4: the variance is 1 squared times sigma squared, which is sigma squared. The orange curves show the same spread at each x.
+
+129
+00:24:16,640 --> 00:24:30,827
+Step 5: y i is normal with mean beta 0 plus beta 1 x i and variance sigma squared, independent over i. Slide 13 of Lecture 2 writes the model in this form.
+
+130
+00:24:31,277 --> 00:24:57,730
+The last type D question previews Lecture 3. Pause the video and try it. Beta 1 hat is the sum of w i times y i. The weight w i is x i minus x bar, over S x x. It is a fixed number. For the Tutorial 1 hours, x bar is 101 and S x x is 1294. Find the distribution of beta 1 hat.
+
+131
+00:24:58,180 --> 00:25:07,780
+Step 1 of card D: the y i are normal and independent, from the last example. Beta 1 hat is a linear combination of them.
+
+132
+00:25:08,230 --> 00:25:23,846
+Step 2: a i is w i, and b i is 0. The mean of y i is beta 0 plus beta 1 x i, and the variance is sigma squared. The bars show the seven weights for the Tutorial 1 hours.
+
+133
+00:25:24,296 --> 00:25:39,656
+Step 3: the mean is the sum of w i times beta 0 plus beta 1 x i. Split it into beta 0 times the sum of w i, plus beta 1 times the sum of w i x i.
+
+134
+00:25:40,106 --> 00:25:49,749
+The deviations x i minus 101 add to 0. So the sum of the weights is 0, and the beta 0 term drops out.
+
+135
+00:25:50,199 --> 00:26:07,457
+The sum of w i x i is the sum of x i minus x bar, times x i, over S x x. The top is 1294, the same as S x x. So the sum is 1, and the mean is beta 1.
+
+136
+00:26:07,907 --> 00:26:34,382
+Step 4: the variance is sigma squared times the sum of w i squared. The squared deviations add to 1294, so the sum of w i squared is 1294 over 1294 squared, which is 1 over 1294. The variance is sigma squared over 1294.
+
+137
+00:26:34,832 --> 00:26:52,795
+Step 5: beta 1 hat is normal, with mean beta 1 and variance sigma squared over 1294. In general, the variance is sigma squared over S x x. Lecture 3 uses this for confidence intervals and tests.
+
+138
+00:26:53,245 --> 00:27:04,807
+To recap. Card A: when x increases by a, the mean of y changes by beta 1 times a. With the estimate, use beta 1 hat, and give the units of y.
+
+139
+00:27:05,257 --> 00:27:16,351
+Card B reads a model. The outcome is y. x i j is covariate j of row i. There is one beta for each covariate, plus beta 0.
+
+140
+00:27:16,801 --> 00:27:29,707
+Card C evaluates the normal density: read mu, sigma squared and z, compute the exponent, take e to its power, and divide by the square root of 2 pi sigma squared.
+
+141
+00:27:30,157 --> 00:27:49,571
+Card D: a linear combination of independent normals is normal. Its mean is the sum of a i mu i plus b i. Its variance is the sum of a i squared sigma i squared. Video 2 b builds the chi-square, t, and F distributions from standard normals.

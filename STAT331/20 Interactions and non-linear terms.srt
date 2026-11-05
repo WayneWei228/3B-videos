@@ -3,509 +3,885 @@
 This is STAT 331, video 20. It covers Lecture 10: interactions and non-linear terms.
 
 2
-00:00:08,109 --> 00:00:26,093
-After this video, you can write a model in which each group has its own intercept and its own slope. You can interpret an interaction coefficient. You can fit and interpret quadratic terms. And you can solve the exercise and the three practice questions of Lecture 10.
+00:00:08,109 --> 00:00:14,573
+This video prepares you for three question types. Each type gets a method card and worked problems.
 
 3
-00:00:26,543 --> 00:00:42,073
-First, a short recap of Lecture 9. The data are the fishermen mercury data. MeHg is the concentration of methyl mercury in a hair sample. The colour shows fishpart, the parts of fish that a person eats.
+00:00:15,023 --> 00:00:21,465
+Type A: write the line of each group in a model with interaction terms, and interpret each beta.
 
 4
-00:00:42,523 --> 00:00:58,331
-In Lecture 9, we put fishpart into the model with indicator variables. An indicator variable is 1 when a condition is true, and 0 when it is false. The fitted model gives four parallel lines, one for each group.
+00:00:21,915 --> 00:00:33,094
+Type B: test an effect, or give a confidence interval for it. Use a t test for one linear combination, and an F test for a joint null hypothesis.
 
 5
-00:00:58,781 --> 00:01:15,976
-To test a joint null hypothesis, beta star equals 0, we use the F test. q is the length of beta star. Under the null hypothesis, F has an F distribution with q and n minus p plus 1 degrees of freedom.
+00:00:33,544 --> 00:00:43,869
+Type C: polynomial terms, such as x squared. Find the effect of x at a given x, compare models, and use the hierarchical principle.
 
 6
-00:01:16,426 --> 00:01:31,189
-Use a t test for one coefficient, or for one linear combination of coefficients. Use an F test for a joint null hypothesis about two or more coefficients. This video uses both tests again.
+00:00:44,319 --> 00:00:59,253
+Section 1. First, a short recap of Lecture 9. These are the fishermen mercury data. MeHg is the methyl mercury in a hair sample. The colour shows fishpart, the parts of fish that a person eats.
 
 7
-00:01:31,639 --> 00:01:46,252
-Slide 9 writes the same model with shorter names. M i is the indicator that subject i eats muscle tissue only. MW i and W i are the indicators of the other two eating groups.
+00:00:59,703 --> 00:01:17,217
+Lecture 9 puts fishpart into the model with indicator variables. M i is 1 if subject i eats muscle tissue only, and 0 if not. M W i and W i do the same for two other groups. Group N is the baseline.
 
 8
-00:01:46,702 --> 00:02:00,547
-The table shows the three indicators for each group. For group N, all three indicators are 0. N is the baseline category, also called the referent category. Its mean has no extra beta.
+00:01:17,667 --> 00:01:21,934
+The fitted model gives four parallel lines, one for each group.
 
 9
-00:02:00,997 --> 00:02:11,707
-Put the indicator values into the model. Each group gets its own intercept. For example, group M has the intercept beta 0 plus beta M.
+00:01:22,384 --> 00:01:28,720
+To test one coefficient, or one linear combination of coefficients, we use a t test.
 
 10
-00:02:12,157 --> 00:02:26,365
-But all four lines have the same slope, beta 1. So the model says: one more kilogram of weight changes the mean MeHg by the same amount in every group. This is the common slope model.
+00:01:29,170 --> 00:01:43,271
+To test a joint null hypothesis, beta star equals 0, we use the F test. Its degrees of freedom are q and n minus p plus 1. Question type B uses both tests again.
 
 11
-00:02:26,815 --> 00:02:43,391
-Now we let each group have its own slope. Slide 11 gives the model. Look at its design matrix X. Each row is one subject. Here is one subject from each group. The first five columns are the columns of the common slope model.
+00:01:43,721 --> 00:01:50,569
+Slide 9 writes the model with shorter names. The table shows the three indicators for each group.
 
 12
-00:02:43,841 --> 00:02:57,963
-Now add three product columns. Each one is weight i times one indicator. A product of two covariates in a model is an interaction term. A term with one covariate alone is a main effect.
+00:01:51,019 --> 00:01:58,849
+For group N, all three indicators are 0. N is the baseline category, also called the referent category.
 
 13
-00:02:58,413 --> 00:03:13,517
-A product column equals the weight when the subject is in that group. In all other rows, it is 0. For example, the column weight i times M i is 73 for the subject in group M, and 0 for the others.
+00:01:59,299 --> 00:02:10,008
+Put the indicator values into the model. Each group gets its own intercept. For example, group M has the intercept beta 0 plus beta M.
 
 14
-00:03:13,967 --> 00:03:28,005
-Each column has its own coefficient. beta 1 M, beta 1 M W, and beta 1 W are the coefficients of the interaction terms. The model has eight coefficients in total.
+00:02:10,458 --> 00:02:22,981
+But all four lines have the same slope, beta 1. One more kilogram changes the mean MeHg by the same amount in every group. This is the common slope model.
 
 15
-00:03:28,455 --> 00:03:35,196
-What is the mean when N i is 1, and when MW i is 1? Pause the video and try it.
+00:02:23,431 --> 00:02:33,073
+The problem: in the data, the slope can be different in each group. We need a term that gives each group its own slope. That term is an interaction.
 
 16
-00:03:35,646 --> 00:03:50,729
-For group N, all three indicators are 0. So all three product terms are also 0. The mean is beta 0 plus beta 1 times weight. The black line shows it. The picture uses made-up numbers.
+00:02:33,523 --> 00:02:50,526
+Section 2, question type A. Slide 11 gives each group its own slope. Look at the design matrix X. Each row is one subject. Here is one subject from each group. The first five columns are the columns of the common slope model.
 
 17
-00:03:51,179 --> 00:04:04,747
-For group MW, MW i is 1, and the other two indicators are 0. Two extra terms stay in the model: beta M W, and beta 1 M W times weight.
+00:02:50,976 --> 00:03:05,035
+Now add three product columns, in orange. Each one is weight i times one indicator. A product of two covariates is an interaction term. A term with one covariate alone is a main effect.
 
 18
-00:04:05,197 --> 00:04:20,727
-Group the terms. The intercept is beta 0 plus beta M W. The slope is beta 1 plus beta 1 M W. So group MW has its own intercept and its own slope. The teal line shows it.
+00:03:05,485 --> 00:03:20,311
+A product column equals the weight in the rows of its group. In all other rows, it is 0. For example, the column weight i times M i is 73 for the subject in group M, and 0 for the others.
 
 19
-00:04:21,177 --> 00:04:36,815
-Slide 15 asks: what is beta 1, and what is beta 1 M W. Take group N. Compare weight a plus 1 with weight a. The difference of the two means is beta 1. So beta 1 is the slope of the N line.
+00:03:20,761 --> 00:03:34,201
+Each column has its own coefficient. Beta 1 M, beta 1 M W, and beta 1 W are the coefficients of the interaction terms. The model has eight coefficients.
 
 20
-00:04:37,265 --> 00:04:48,123
-Do the same for group MW. The difference of the two means is beta 1 plus beta 1 M W. This is the slope of the MW line.
+00:03:34,651 --> 00:03:39,281
+Method card A solves every question of type A. It has four steps.
 
 21
-00:04:48,573 --> 00:05:03,251
-Subtract the two slopes. beta 1 M W is the change for MW, minus the change for N. Each change is a difference of two means. So beta 1 M W is a difference in differences.
+00:03:39,731 --> 00:03:49,565
+Step 1: fix the other covariate. Put each indicator to 0 or 1. For a continuous covariate x 2, put x 2 to one value.
 
 22
-00:05:03,701 --> 00:05:20,853
-In words: beta 1 M W is how much larger the change in mean MeHg per kilogram of weight is in group MW than in the baseline group N. If beta 1 M W is 0, the two lines are parallel.
+00:03:50,015 --> 00:04:04,309
+Step 2: collect the terms. Write the mean as an intercept plus a slope times x. Each group gets one line. The picture shows two lines, for groups N and M W. It uses made-up numbers.
 
 23
-00:05:21,303 --> 00:05:26,999
-The lecture R code fits both models to the mercury data. These are the data again.
+00:04:04,759 --> 00:04:19,265
+Step 3: name each beta. The baseline group gives the baseline intercept and slope. A main effect is an intercept difference. An interaction coefficient is a slope difference: the orange part on the right.
 
 24
-00:05:27,449 --> 00:05:30,969
-The common slope model gives four parallel lines.
+00:04:19,715 --> 00:04:32,323
+Step 4: say it in the units of the problem, for the mean of y. An intercept is the mean at x equals 0. It has a practical meaning only if x equals 0 is near the data.
 
 25
-00:05:31,419 --> 00:05:46,416
-The interaction model gives each group its own slope, so the lines are not parallel. The table gives each fitted slope, computed from the data. Each slope is beta 1 hat plus the interaction coefficient of the group.
+00:04:32,773 --> 00:04:44,720
+Here is the question of slides 11 to 13. Pause the video and try it. Write the mean of MeHg when N i is 1, and when M W i is 1.
 
 26
-00:05:46,866 --> 00:05:58,599
-Group N has only 10 subjects, and group W has 9. So the slopes of these two lines are uncertain. Look at the group sizes before you interpret a slope.
+00:04:45,170 --> 00:05:01,618
+Step 1 of card A: fix the group. For group N, the indicators M, M W and W are 0. So their three terms and the three product terms drop. The mean is beta 0 plus beta 1 times weight: the black line.
 
 27
-00:05:59,049 --> 00:06:16,436
-The next example uses the real estate data. Each row is one house that was sold. SalePrice is the price in thousands of dollars. SqrFeet is the floor area in square feet. The table shows the first six houses from slide 16.
+00:05:02,068 --> 00:05:15,743
+For group M W, M W i is 1, and the other two indicators are 0. Two extra terms stay, in orange: beta M W, and beta 1 M W times weight.
 
 28
-00:06:16,886 --> 00:06:24,417
-Air is an indicator variable. It is 1 if the house has air conditioning, A C. It is 0 if not.
+00:05:16,193 --> 00:05:32,107
+Step 2: collect the terms. The intercept is beta 0 plus beta M W. The slope is beta 1 plus beta 1 M W. So group M W has its own intercept and its own slope: the teal line.
 
 29
-00:06:24,867 --> 00:06:38,797
-The plot shows all 521 houses. Blue points have air conditioning, and black points do not. 433 houses have air conditioning. Larger houses have higher prices.
+00:05:32,557 --> 00:05:48,728
+Step 3: name the betas. Beta M W is the intercept of M W minus the intercept of N. Beta 1 M W is the slope of M W minus the slope of N: the orange part of the bar on the right.
 
 30
-00:06:39,247 --> 00:06:47,013
-We now compare three models. They differ in how the line for A C houses can differ from the line for the other houses.
+00:05:49,178 --> 00:05:56,709
+Groups M and W follow the same steps, with M i equal to 1 or W i equal to 1.
 
 31
-00:06:47,463 --> 00:07:02,012
-Model M1 has SqrFeet and Air. The two lines have a common slope, but different intercepts. The lines are parallel. The lines in these panels are fitted to the data, and drawn from 0 square feet.
+00:05:57,159 --> 00:06:12,583
+Slides 14 and 15 ask: what is beta 1, and what is beta 1 M W. Pause the video and try it. Take group N. Compare weight a plus 1 with weight a. The difference of the two means is beta 1.
 
 32
-00:07:02,462 --> 00:07:14,430
-Model M2 has SqrFeet and the product SqrFeet times Air, but not Air alone. The two lines have a common intercept, but different slopes. They start at the same point.
+00:06:13,033 --> 00:06:27,710
+Put in the N line: beta 0 plus beta 1 times a plus 1, minus beta 0 plus beta 1 a. This is beta 1. So beta 1 is the slope of the N line: the black step on the left.
 
 33
-00:07:14,880 --> 00:07:28,085
-Model M3 has Air, SqrFeet, and their product. The two lines have different intercepts and different slopes. In R, Air star SqrFeet is a short way to ask for these three terms.
+00:06:28,160 --> 00:06:37,589
+Do the same for group M W. The difference of the two means is beta 1 plus beta 1 M W, the slope of the teal line.
 
 34
-00:07:28,535 --> 00:07:42,231
-M3 has both main effects and the interaction. M2 leaves out the main effect of Air. Later in this video, the hierarchical principle says why M3 is usually the better choice.
+00:06:38,039 --> 00:06:48,578
+Line 3 minus line 1: beta 1 M W equals the M W slope minus the N slope. The bar on the right shows it in orange.
 
 35
-00:07:42,681 --> 00:07:50,255
-Slide 17 shows the data with the fitted lines of M1 and M3. We drew it again from the data.
+00:06:49,028 --> 00:06:58,948
+Each slope is a difference of two means. So beta 1 M W is a difference in differences. If it is 0, the two lines are parallel.
 
 36
-00:07:50,705 --> 00:08:00,006
-The solid lines are M1. They are parallel. The A C line is higher by 26.6 thousand dollars at every floor area.
+00:06:59,398 --> 00:07:05,094
+The lecture R code fits both models to the mercury data. These are the data again.
 
 37
-00:08:00,456 --> 00:08:07,603
-The dotted lines are M3. Each group has its own slope. The numbers are computed from the data.
+00:07:05,544 --> 00:07:09,064
+The common slope model gives four parallel lines.
 
 38
-00:08:08,053 --> 00:08:18,357
-In M3, the A C line is steeper. For small houses, the two lines are close. For large houses, A C houses have a much higher mean price.
+00:07:09,514 --> 00:07:21,461
+The interaction model gives each group its own slope, so the lines are not parallel. Step 2 of card A: the table gives the slope of each group, computed from the data.
 
 39
-00:08:18,807 --> 00:08:36,001
-Now interpret each coefficient of M3. beta 0 hat is minus 3.22. It is the mean price of a house without A C, and with 0 square feet. No house has 0 square feet. So this number has no practical meaning.
+00:07:21,911 --> 00:07:37,356
+Step 3: beta 1 M W hat is the M W slope minus the N slope. 0.1187 minus 0.0049 is 0.1137.
 
 40
-00:08:36,451 --> 00:08:51,129
-beta 1 hat, the coefficient of Air, is minus 78.87. It is the difference in mean price, A C minus no A C, at 0 square feet. Alone, it also has no practical meaning.
+00:07:37,806 --> 00:07:48,046
+Step 4: read the group sizes. Group N has only 10 subjects, and group W has 9. So the slopes of these two lines are uncertain.
 
 41
-00:08:51,579 --> 00:09:09,669
-beta 2 hat is 0.1049. For houses without A C, the mean price goes up by 0.1049 thousand dollars per square foot. Over 1000 square feet, that is 104.9 thousand dollars.
+00:07:48,496 --> 00:08:03,387
+The next example uses the real estate data of slide 16. Each row is one house that was sold. SalePrice is the price in thousands of dollars. SqrFeet is the floor area in square feet.
 
 42
-00:09:10,119 --> 00:09:28,487
-beta 3 hat, the interaction coefficient, is 0.0559. The A C slope is larger by this amount. The A C slope is 0.1608, or 160.8 thousand dollars per 1000 square feet.
+00:08:03,837 --> 00:08:11,367
+Air is an indicator variable. It is 1 if the house has air conditioning, A C. It is 0 if not.
 
 43
-00:09:28,937 --> 00:09:45,812
-With an interaction, the difference between the groups depends on the floor area. At 2000 square feet, it is minus 78.87, plus 0.0559 times 2000. That is 32.9 thousand dollars.
+00:08:11,817 --> 00:08:23,039
+The plot shows all 521 houses. Blue points have air conditioning, and black points do not. 433 houses have air conditioning.
 
 44
-00:09:46,262 --> 00:10:04,779
-This exercise is on slides 18 and 19. 59 students rated the course. I of Fast i is 1 if the student finds the pace fast. I of Grad i is 1 if the student considers grad school. The model has both indicators and their product.
+00:08:23,489 --> 00:08:41,345
+Slide 16 fits three models. Use steps 1 and 2 of card A on each. Model M1 has SqrFeet and Air. Put Air equal to 1: the intercept is beta 0 plus beta 2, and the slope stays beta 1. So the lines are parallel.
 
 45
-00:10:05,229 --> 00:10:23,533
-The slide gives the R output. coef gives the four estimates. vcov gives the estimated variance matrix of beta hat: sigma hat squared, times X transpose X inverse. The degrees of freedom are 59 minus 4, which is 55.
+00:08:41,795 --> 00:08:57,987
+Model M2 has SqrFeet and the product SqrFeet times Air, but not Air alone. Put Air equal to 1: the slope is beta 1 plus beta 2, and the intercept stays beta 0. The two lines start at the same point.
 
 46
-00:10:23,983 --> 00:10:39,919
-Put the 0 and 1 values into the model. Each cell of the table has its own mean. For example, a student with both indicators equal to 1 has the mean beta 0, plus beta 1, plus beta 2, plus beta 3.
+00:08:58,437 --> 00:09:11,642
+Model M3 has Air, SqrFeet, and their product. Put Air equal to 1: the intercept is beta 0 plus beta 1, and the slope is beta 2 plus beta 3. Both differ.
 
 47
-00:10:40,369 --> 00:10:47,687
-Question 1. Is the mean course rating associated with perceived lecture pace? Pause the video and try it.
+00:09:12,092 --> 00:09:29,052
+M3 has both main effects and the interaction. In R, Air star SqrFeet asks for these three terms. Later, the hierarchical principle says why M3 is the usual choice. The lines in the panels are fitted to the data.
 
 48
-00:10:48,137 --> 00:11:03,582
-Compare the two cells in each row. For students who do not consider grad school, a fast pace changes the mean by beta 1. For students who consider grad school, it changes the mean by beta 1 plus beta 3.
+00:09:29,502 --> 00:09:37,075
+Slide 17 shows the data with the fitted lines of M1 and M3. We drew it again from the data.
 
 49
-00:11:04,032 --> 00:11:25,109
-Pace has no association with the mean rating when both changes are 0. This is true exactly when beta 1 is 0 and beta 3 is 0. So the null hypothesis is beta 1 equals beta 3 equals 0. This is a joint null, so we use the F test with q equal to 2.
+00:09:37,525 --> 00:09:47,552
+The solid lines are M1. They are parallel. The A C line is higher by 26.63 thousand dollars at every floor area.
 
 50
-00:11:25,559 --> 00:11:43,757
-beta star hat is the vector of beta 1 hat and beta 3 hat. The vcov output already includes sigma hat squared. So F is beta star hat transpose, times the inverse of the 2 by 2 block of vcov, times beta star hat, over q.
+00:09:48,002 --> 00:09:55,426
+The dotted lines are M3. Each group has its own intercept and its own slope, computed from the data.
 
 51
-00:11:44,207 --> 00:12:09,209
-Invert the 2 by 2 block. Swap the two diagonal entries, change the sign of the other two, and divide by the determinant, 0.008411. Then multiply out. The quadratic form is 0.1167 over 0.008411. Divide by q, which is 2. F is 6.937.
+00:09:55,876 --> 00:10:09,103
+In M3, the A C slope, 0.1608, is larger. For small houses, the two lines are close. For large houses, A C houses have a much higher mean price.
 
 52
-00:12:09,659 --> 00:12:33,019
-The 95 percent quantile of F with 2 and 55 degrees of freedom is 3.165. The observed F is larger. The p-value is the upper tail area, 0.0021. So we reject the null hypothesis. The data give evidence that the mean rating is associated with lecture pace.
+00:10:09,553 --> 00:10:29,073
+Here is the question for model M3. Pause the video and try it. Step 1 of card A: put Air equal to 0. The mean is beta 0 hat plus beta 2 hat x: minus 3.22 plus 0.1049 x. The black line shows it.
 
 53
-00:12:33,469 --> 00:12:53,672
-Question 2. Test for association between pace and rating among students who consider grad school. Pause the video and try it. For these students, Grad is 1, so the pace effect is beta 1 plus beta 3. The null hypothesis is beta 1 plus beta 3 equals 0.
+00:10:29,523 --> 00:10:41,021
+Put Air equal to 1, and collect. The intercept is beta 0 hat plus beta 1 hat. The slope is beta 2 hat plus beta 3 hat. The blue line shows it.
 
 54
-00:12:54,122 --> 00:13:12,341
-This is one linear combination of coefficients, so we use a t test. Its variance is the variance of beta 1 hat, plus the variance of beta 3 hat, plus 2 times their covariance. The green and orange cells of vcov give these numbers.
+00:10:41,471 --> 00:10:57,834
+With numbers: minus 3.22 minus 78.87 is minus 82.09. 0.1049 plus 0.0559 is 0.1608.
 
 55
-00:13:12,791 --> 00:13:31,799
-The variance is 0.0907, plus 0.1834, minus 2 times 0.0907. That is 0.0927. The standard error is its square root, 0.3045.
+00:10:58,284 --> 00:11:07,372
+The gap between the two lines is line 2 minus line 1: beta 1 hat plus beta 3 hat x. It depends on the floor area.
 
 56
-00:13:32,249 --> 00:14:12,371
-The estimate is minus 0.4709 minus 0.5585, which is minus 1.0294. t is minus 1.0294 over 0.3045, which is minus 3.381. Its absolute value is larger than 2.004, the t quantile with 55 degrees of freedom. The p-value is 0.0013. We reject the null hypothesis. In this group, students who find the pace fast give a lower mean rating.
+00:11:07,822 --> 00:11:23,886
+At 2000 square feet: 0.0559 times 2000 is 111.8. Minus 78.87 plus 111.8 is 32.9 thousand dollars.
 
 57
-00:14:12,821 --> 00:14:28,437
-Question 3. Now take the students who do not consider grad school. Pause the video and try it. For them, Grad is 0, so the pace effect is beta 1 alone. The null hypothesis is beta 1 equals 0.
+00:11:24,336 --> 00:11:39,099
+Step 3 of card A: name each coefficient. Beta 0 hat, minus 3.22, is the mean price of a house without A C and with 0 square feet. It is the black line at x equals 0.
 
 58
-00:14:28,887 --> 00:14:47,724
-The standard error is the square root of 0.0907, which is 0.3012. t is minus 0.4709 over 0.3012, which is minus 1.563.
+00:11:39,549 --> 00:11:52,349
+Beta 1 hat, minus 78.87, is the difference in mean price, A C minus no A C, at 0 square feet: the gap of the two lines at x equals 0.
 
 59
-00:14:48,174 --> 00:15:05,134
-The absolute value of t is smaller than 2.004. The p-value is 0.124. We do not reject the null hypothesis. The data do not show an association between pace and rating in this group.
+00:11:52,799 --> 00:12:08,692
+Beta 2 hat, 0.1049, is the change in mean price per square foot for houses without A C. Over 1000 square feet, that is 104.9 thousand dollars: the black rise.
 
 60
-00:15:05,584 --> 00:15:15,056
-The answers to questions 2 and 3 are different. So the effect of pace depends on grad school interest. This is what an interaction means.
+00:12:09,142 --> 00:12:26,529
+Beta 3 hat, 0.0559, is the A C slope minus the no A C slope. The A C slope is 0.1608: 160.8 thousand dollars per 1000 square feet, the blue rise.
 
 61
-00:15:15,506 --> 00:15:30,631
-Items 4 and 5 ask for the mean rating of students in the morning or the afternoon section. The model has no section variable. So we cannot answer them as written. We show the same method for the four cells of the model.
+00:12:26,979 --> 00:12:41,784
+Step 4: no house has 0 square feet. So beta 0 hat and beta 1 hat alone have no practical meaning. Report the gap, beta 1 hat plus beta 3 hat x, at a floor area in the data.
 
 62
-00:15:31,081 --> 00:15:51,647
-The mean of a cell is c transpose beta, for a vector c of 0s and 1s. Its estimate is c transpose beta hat. Its variance is c transpose, times vcov, times c. The confidence interval is the estimate, plus or minus 2.004 times the standard error.
+00:12:42,234 --> 00:12:58,810
+Now a tutorial question of type A. Pause the video and try it. Tutorial 3, question 1 e, fits salary on district size and experience, with interactions. The output gives six estimates, beta 0 to beta 5.
 
 63
-00:15:52,097 --> 00:16:17,846
-For students who find the pace fast and do not consider grad school, c is 1, 1, 0, 0. The estimate is 4.1852 minus 0.4709, which is 3.714. The standard error is 0.2684. The 95 percent confidence interval is 3.176 to 4.252.
+00:12:59,260 --> 00:13:13,660
+Step 1 of card A: for size 1, both size indicators are 0. The line is 24079.59 plus 662.79 times experience.
 
 64
-00:16:18,296 --> 00:16:31,053
-The other three cells use the same steps. The plot shows all four estimates and intervals. The lowest mean is for students who find the pace fast and consider grad school: 3.5.
+00:13:14,110 --> 00:13:39,774
+For size 2, size f 2 is 1. Step 2: collect. The intercept is 24079.59 plus 5347.29, which is 29426.88. The slope is 662.79 minus 186.99, which is 475.80.
 
 65
-00:16:31,503 --> 00:16:48,229
-Now both covariates are continuous. The model has x i 1, x i 2, and their product. Fix x 2 at one value, for example 0. Then the mean is a straight line in x 1. The picture uses made-up numbers.
+00:13:40,224 --> 00:14:01,323
+For size 3, the intercept is 24079.59 plus 12004.24, which is 36083.83. The slope is 662.79 minus 518.91, which is 143.88.
 
 66
-00:16:48,679 --> 00:17:03,868
-Group the terms. The intercept is beta 0 plus beta 2 x 2. The slope is beta 1 plus beta 3 x 2. Both change when x 2 changes. The blue line is for x 2 equal to 1.
+00:14:01,773 --> 00:14:13,463
+Step 3 of card A: name each beta. Beta 0 is the mean salary in size 1 districts with experience 0: the black line at x equals 0.
 
 67
-00:17:04,318 --> 00:17:18,953
-Increase x 1 by one unit. The change in the mean is beta 1 plus beta 3 x 2. So the effect of x 1 depends on the value of x 2. The purple line is for x 2 equal to 2.
+00:14:13,913 --> 00:14:23,748
+Beta 1 is the difference in mean salary, size 2 minus size 1, at experience 0: the orange gap at x equals 0.
 
 68
-00:17:19,403 --> 00:17:31,264
-So beta 1 is the change in mean y for a one unit increase in x 1, when x 2 is 0. This answers the first part of the exercise on slide 20.
+00:14:24,198 --> 00:14:31,067
+Beta 2 is the difference in mean salary, size 3 minus size 1, at experience 0.
 
 69
-00:17:31,714 --> 00:17:47,863
-Practice question 2. Interpret beta 3 in this model. The hint says: write it as a difference of differences. Pause the video and try it. Let mu of x 1, x 2 be the mean of y. The table shows the mean at four points.
+00:14:31,517 --> 00:14:48,307
+Beta 3 is the change in mean salary for one more year of experience, in size 1 districts. The black step shows 5 years: 5 times 662.79, plus 3314 dollars.
 
 70
-00:17:48,313 --> 00:17:59,300
-In the row x 2 equals b, increase x 1 from a to a plus 1. From the last slide, the mean changes by beta 1 plus beta 3 times b.
+00:14:48,757 --> 00:15:12,586
+Beta 4 is the slope of size 2 minus the slope of size 1: 475.80 minus 662.79. It is a difference in differences. The blue step shows 5 years in size 2: 5 times 475.80, plus 2379 dollars.
 
 71
-00:17:59,750 --> 00:18:09,286
-In the row x 2 equals b plus 1, the same increase changes the mean by beta 1, plus beta 3 times b plus 1.
+00:15:13,036 --> 00:15:33,473
+Beta 5 is the slope of size 3 minus the slope of size 1: 143.88 minus 662.79. The purple step shows 5 years in size 3: 5 times 143.88, plus 719 dollars.
 
 72
-00:18:09,736 --> 00:18:25,992
-Subtract the two differences. The answer is beta 3. So beta 3 is how much the effect of a one unit increase in x 1 changes when x 2 increases by one unit. The same is true with x 1 and x 2 swapped.
+00:15:33,923 --> 00:15:46,126
+Step 4: the output does not give the range of experience. If experience 0 is far from the data, beta 0, beta 1 and beta 2 have no practical meaning.
 
 73
-00:18:26,442 --> 00:18:37,514
-Sometimes a straight line does not fit the data well. These points follow a curve. The gray dashed line misses the trend. The picture uses made-up numbers.
+00:15:46,576 --> 00:15:55,963
+Slides 20 and 21 take two continuous covariates and their product. Pause the video and try it. How do we interpret beta 1?
 
 74
-00:18:37,964 --> 00:18:46,284
-One way to make the model more flexible is to add a quadratic term, x i squared. The green curve is a parabola.
+00:15:56,413 --> 00:16:06,546
+Step 1 of card A: fix x 2 at one value. The mean is a function of x 1. For x 2 equal to 0, the black line shows it.
 
 75
-00:18:46,734 --> 00:18:59,875
-The model is still a linear regression model, because it is linear in the betas. X gets one more column, x i squared. So beta hat, the t tests and the F tests all work as before.
+00:16:06,996 --> 00:16:22,505
+Step 2: collect in x 1. The intercept is beta 0 plus beta 2 x 2. The slope is beta 1 plus beta 3 x 2. Both change with x 2. The blue line is for x 2 equal to 1.
 
 76
-00:19:00,325 --> 00:19:12,123
-The tortoise data have 18 measurements. NumEggs is the number of eggs in the hatch of a tortoise. CarapDiam is the diameter of its carapace, the shell.
+00:16:22,955 --> 00:16:27,179
+Now increase x 1 by one unit, and subtract the two means.
 
 77
-00:19:12,573 --> 00:19:16,242
-The table shows the first six rows from slide 24.
+00:16:27,629 --> 00:16:32,920
+Put in line 2 for both means. The purple line is for x 2 equal to 2.
 
 78
-00:19:16,692 --> 00:19:27,444
-The plot shows all 18 points. The number of eggs goes up at first. Then it goes down for the largest tortoises. A straight line cannot follow this.
+00:16:33,370 --> 00:16:44,271
+The intercept terms cancel, and x 1 cancels. The change is beta 1 plus beta 3 x 2. So the effect of x 1 depends on x 2.
 
 79
-00:19:27,894 --> 00:19:50,571
-Slide 25 fits the quadratic model. Here is its coefficient table. The rows are beta 0, beta 1, and beta 2. The estimates are minus 899.9, 5.857, and minus 0.009425. The letter e means a power of 10.
+00:16:44,721 --> 00:16:57,159
+Step 3: put x 2 equal to 0. The change is beta 1. So beta 1 is the change in mean y for a one-unit increase in x 1, when x 2 is 0.
 
 80
-00:19:51,021 --> 00:20:13,165
-Each t value is the estimate over its standard error. For the squared term, minus 0.009425 over 0.002829 is minus 3.332. The last column is the two-sided p-value of the t test of that coefficient equal to 0.
+00:16:57,609 --> 00:17:09,065
+Practice question 2 asks for beta 3. Pause the video and try it. Let mu of x 1, x 2 be the mean of y. The table shows the mean at four points.
 
 81
-00:20:13,615 --> 00:20:24,815
-The residual standard error is sigma hat, 2.671. Its degrees of freedom are n minus p plus 1: 18 minus 3, which is 15.
+00:17:09,515 --> 00:17:22,805
+In the row x 2 equals b, increase x 1 from a to a plus 1. From line 5 of the last slide, the mean changes by beta 1 plus beta 3 b: the orange arrow.
 
 82
-00:20:25,265 --> 00:20:37,916
-The first part of the output summarizes the residuals: the minimum, the first quartile, the median, the third quartile, and the maximum. The orange dots are the 18 residuals.
+00:17:23,255 --> 00:17:33,794
+In the row x 2 equals b plus 1, the same increase changes the mean by beta 1 plus beta 3 times b plus 1: the purple arrow.
 
 83
-00:20:38,366 --> 00:20:42,163
-Slide 26 shows the two fits. Here are the data.
+00:17:34,244 --> 00:17:45,700
+Line 2 minus line 1. Beta 1 cancels, and beta 3 times b cancels. What is left is beta 3. So beta 3 is a difference of differences.
 
 84
-00:20:42,613 --> 00:20:47,093
-The gray dashed line is the straight line fit. It is almost flat.
+00:17:46,150 --> 00:17:54,961
+In words: beta 3 is how much the effect of one more unit of x 1 changes when x 2 increases by one unit.
 
 85
-00:20:47,543 --> 00:20:54,306
-The green curve is the quadratic fit. It goes up and then down. It follows the data much better.
+00:17:55,411 --> 00:18:07,379
+Practice question 3 uses the real estate data. The model has SqrFeet, Bedrooms, and their product. Pause the video and try it. The table is computed from the data.
 
 86
-00:20:54,756 --> 00:21:07,855
-Slide 27 asks: what is beta 1 here. In the quadratic model, the change in mean outcome for a one unit change in x varies with x. So no single number is the slope.
+00:18:07,829 --> 00:18:19,605
+Step 3 of card A: name each beta. Beta 0 hat, minus 209.26, is the mean price at 0 square feet and 0 bedrooms.
 
 87
-00:21:08,305 --> 00:21:24,987
-As an aid, the slope of the curve at x is beta 1 plus 2 beta 2 x. At a diameter of 295, the slope is plus 0.296. In this region, larger tortoises have more eggs on average.
+00:18:20,055 --> 00:18:37,015
+Beta 1 hat, 0.2269, is the change in mean price per square foot, for a house with 0 bedrooms. Beta 2 hat, 30.22, is the change in mean price for one more bedroom, at 0 square feet.
 
 88
-00:21:25,437 --> 00:21:40,008
-At 325, the slope is minus 0.269. Here the mean goes down. The exact change from x to x plus 1 is beta 1, plus beta 2 times 2 x plus 1.
+00:18:37,465 --> 00:18:55,641
+Beta 3 hat is minus 0.0159. Each extra bedroom lowers the slope per square foot by 0.0159 thousand dollars. Its t value, minus 4.11, is large in absolute value.
 
 89
-00:21:40,458 --> 00:21:59,381
-The curve is highest where the slope is 0: at minus beta 1 hat over 2 beta 2 hat, which is 310.7. beta 1 alone is the slope at x equal to 0. That is far outside the data, so beta 1 alone has no useful meaning here.
+00:18:56,091 --> 00:19:08,933
+Step 4: no house has 0 square feet, and no house in the data has 0 bedrooms. So beta 0, beta 1 and beta 2 hat alone describe a house outside the data.
 
 90
-00:21:59,831 --> 00:22:12,396
-Slide 27 also asks how to test whether the quadratic model is more appropriate than the straight line. The two models differ only in the term beta 2 x i squared.
+00:19:09,383 --> 00:19:26,237
+Now plot the fitted line for a given number of bedrooms, k. Steps 1 and 2 of card A: put Bedrooms equal to k, and collect. The intercept is beta 0 hat plus beta 2 hat k. The slope is beta 1 hat plus beta 3 hat k.
 
 91
-00:22:12,846 --> 00:22:24,323
-So test the null hypothesis beta 2 equals 0 in the quadratic model. This is a t test with 18 minus 3, which is 15, degrees of freedom.
+00:19:26,687 --> 00:19:36,735
+k equals 0: the intercept is minus 209.26, and the slope is 0.2269. The black line.
 
 92
-00:22:24,773 --> 00:22:46,405
-From the table, t is minus 3.332. Its absolute value is larger than 2.131, the t quantile with 15 degrees of freedom. The p-value is 0.00455. We reject the null hypothesis. The quadratic model fits better.
+00:19:37,185 --> 00:20:00,758
+k equals 1: the intercept is minus 209.265 plus 30.222, which is minus 179.04. The slope is 0.22695 minus 0.01592, which is 0.2110. The blue line is a little flatter.
 
 93
-00:22:46,855 --> 00:23:03,325
-Beyond polynomial terms, linear regression can use any known functions of x. The model is the sum of beta j times f j of x i. Each f j is a known function, for example x, x squared, or log x.
+00:20:01,208 --> 00:20:26,061
+k equals 7: 7 times 30.222 is 211.554, so the intercept is 2.29. 7 times 0.01592 is 0.11144, so the slope is 0.1155. The pink line is much flatter. The interaction changes the slope.
 
 94
-00:23:03,775 --> 00:23:21,844
-It is easy to add too many terms. Then the model can overfit. Overfit means that the curve follows the random noise in this sample, and not the true mean. The red curve uses all powers of x up to 7. It is an illustration computed from the data.
+00:20:26,511 --> 00:20:39,354
+Step 4: only 3 houses have 7 bedrooms, all with 2812 square feet or more. No house has 0 bedrooms, so that line is an extrapolation.
 
 95
-00:23:22,294 --> 00:23:30,337
-Also, more terms make the coefficients harder to interpret. So there is a trade-off between fit and interpretability.
+00:20:39,804 --> 00:20:51,409
+Section 3, question type B. With interactions, the effect of a covariate is often a sum of betas. Method card B tests such an effect. It has five steps.
 
 96
-00:23:30,787 --> 00:23:52,163
-Slide 29 gives the hierarchical principle. In general, fit hierarchically well-formulated models. This means: if the model has a higher-order term, it also has all the lower-order terms under it. If you include x 1 times x 2, also include the main effects x 1 and x 2.
+00:20:51,859 --> 00:21:03,571
+Step 1: write the effect from the question. It is one linear combination, c transpose beta, or a set of betas that are all 0 under the null hypothesis.
 
 97
-00:23:52,613 --> 00:24:01,829
-If you include the three-way product x 1 x 2 x 3, also include all three two-way products, and all three main effects.
+00:21:04,021 --> 00:21:16,224
+Step 2: one combination: use a t test, or a confidence interval. Several betas equal to 0 together: use the F test. q is the number of these betas.
 
 98
-00:24:02,279 --> 00:24:15,975
-The same rule holds for polynomial terms. If you include x cubed, also include x squared and x. Without these terms, the model can have unexpected meanings. The next slide shows one.
+00:21:16,674 --> 00:21:34,615
+Step 3: compute. The estimate is c transpose beta hat. Its squared standard error is the sum of c j squared times V j j, plus 2 times the sum of c j c k times V j k. The V values come from the vcov output.
 
 99
-00:24:16,425 --> 00:24:30,313
-Here is a model that breaks the principle: beta 0 plus beta 2 x i squared, with no linear term. Its curve must have its lowest point at x equal to 0, if beta 2 is positive.
+00:21:35,065 --> 00:21:47,311
+Step 4: compare the statistic with the t or F quantile, or use the p-value. A confidence interval is the estimate plus or minus t times the standard error.
 
 100
-00:24:30,763 --> 00:24:41,301
-Now shift x by a fixed amount b. For example, center x at its mean, so b is x bar. The blue curve is the same curve, moved by b.
+00:21:47,761 --> 00:21:50,726
+Step 5: conclude in the words of the problem.
 
 101
-00:24:41,751 --> 00:24:49,666
-Expand the square. x i minus b, squared, is x i squared, minus 2 x i b, plus b squared.
+00:21:51,176 --> 00:22:10,888
+The exercise of slides 18 and 19 is a type B question. 59 students rated the course. I of Fast i is 1 if the student finds the pace fast. I of Grad i is 1 if the student considers grad school. The model has both indicators and their product.
 
 102
-00:24:50,116 --> 00:25:11,919
-Group the terms. The model now has a linear term: minus 2 b beta 2, times x i. It appears only because of the shift. So the model without the x term is not the same model after a change of origin. A hierarchically well-formulated model, with x and x squared, does not have this problem.
+00:22:11,338 --> 00:22:15,626
+The slide gives the R output. coef gives the four estimates.
 
 103
-00:25:12,369 --> 00:25:29,009
-Practice question 1 uses the tortoise data. y is NumEggs and x is CarapDiam. Part a: fit Model A, the straight line, and test beta 1 equals 0 at the 5 percent level. Pause the video and try it.
+00:22:16,076 --> 00:22:24,460
+vcov gives the estimated variance matrix of beta hat: sigma hat squared, times X transpose X inverse.
 
 104
-00:25:29,459 --> 00:25:45,373
-The fit, computed from the data: beta 1 hat is 0.0276, with a standard error of 0.0563. t is 0.490, with 16 degrees of freedom.
+00:22:24,910 --> 00:22:29,625
+The degrees of freedom are 59 minus 4, which is 55.
 
 105
-00:25:45,823 --> 00:26:03,786
-The t quantile with 16 degrees of freedom is 2.120. The absolute value of t is smaller. The p-value is 0.631. We do not reject the null hypothesis. The straight line shows no linear association.
+00:22:30,075 --> 00:22:45,179
+Put the 0 and 1 values into the model. Each cell of the table has its own mean. A student with both indicators equal to 1 has the mean beta 0, plus beta 1, plus beta 2, plus beta 3.
 
 106
-00:26:04,236 --> 00:26:18,337
-Part b: fit Model B, the quadratic model, and test beta 1 equals beta 2 equals 0. Pause the video and try it. This is a joint null, so use the F test with q equal to 2.
+00:22:45,629 --> 00:22:52,946
+Question 1. Is the mean course rating associated with perceived lecture pace? Pause the video and try it.
 
 107
-00:26:18,787 --> 00:26:44,814
-F is beta star hat transpose, times V star inverse, times beta star hat, over q sigma hat squared. Computed from the data, F is 5.747. The 95 percent quantile of F with 2 and 15 degrees of freedom is 3.682. The p-value is 0.0140. We reject the null hypothesis.
+00:22:53,396 --> 00:23:04,255
+Step 1 of card B: write the effect. For students with Grad equal to 0, a fast pace changes the mean by beta 1: the top row of the table.
 
 108
-00:26:45,264 --> 00:27:00,005
-This does not conflict with part a. Part a looks only for a straight-line trend. The mean goes up and then down, so the best straight line is almost flat. Model B can follow the curve, so it finds the association.
+00:23:04,705 --> 00:23:12,982
+For students with Grad equal to 1, a fast pace changes the mean by beta 1 plus beta 3: the bottom row.
 
 109
-00:27:00,455 --> 00:27:08,157
-Part c: fit Model C, which adds x cubed, and test beta 3 equals 0. Pause the video and try it.
+00:23:13,432 --> 00:23:28,451
+Pace has no association with the mean rating only when both changes are 0, so when beta 1 and beta 3 are 0. Step 2: two betas together, so we use the F test with q equal to 2.
 
 110
-00:27:08,607 --> 00:27:26,847
-Computed from the data, t for beta 3 hat is 0.613, with 14 degrees of freedom. The t quantile is 2.145. The p-value is 0.550. We do not reject the null hypothesis.
+00:23:28,901 --> 00:23:45,434
+Step 3 of card B: compute F. The vcov output already includes sigma hat squared. So F is beta star hat transpose, times the inverse of the 2 by 2 block of vcov, times beta star hat, over q.
 
 111
-00:27:27,297 --> 00:27:38,539
-The purple dashed cubic curve is almost on top of the green quadratic curve. The cubic term adds little. So Model C is not more appropriate than Model B.
+00:23:45,884 --> 00:23:53,308
+Take the block of the Fast and Fast:Grad rows and columns of vcov: the green and orange cells.
 
 112
-00:27:38,989 --> 00:28:05,869
-Part d: in Model C, test beta 2 equals beta 3 equals 0. Pause the video and try it. Use the F test with q equal to 2 and 14 degrees of freedom. Computed from the data, F is 5.508. The 95 percent quantile is 3.739. The p-value is 0.0172. We reject the null hypothesis.
+00:23:53,758 --> 00:24:16,222
+The determinant of the block: 0.09073 times 0.18343, minus 0.09073 squared. That is 0.016643 minus 0.008232, which is 0.008411.
 
 113
-00:28:06,319 --> 00:28:27,354
-This does not conflict with part c. Part c asks if x cubed helps when x squared is already in the model. Part d asks if x squared and x cubed together help, beyond x. Also, each single t value in Model C is small: all are below 0.75 in absolute value.
+00:24:16,672 --> 00:24:25,696
+Invert the 2 by 2 block. Swap the two diagonal entries, change the sign of the other two, and divide by the determinant.
 
 114
-00:28:27,804 --> 00:28:50,716
-The plot shows the reason. On the range 284 to 334, x squared and x cubed lie almost on a straight line. Their correlation is 0.9997. So they carry almost the same information. One of them alone adds little when the other is in the model. A later lecture studies this problem.
+00:24:26,146 --> 00:24:40,098
+Multiply out beta star hat transpose, times this matrix, times beta star hat. We keep the division by the determinant for later. Both estimates are negative, so the middle term is positive.
 
 115
-00:28:51,166 --> 00:29:00,318
-Part e: fit Model D, with x and x cubed, but no x squared. Test beta 2 equals 0. Pause the video and try it.
+00:24:40,548 --> 00:24:54,201
+The three terms are 0.0407, 0.0477 and 0.0283. Their sum is 0.1167.
 
 116
-00:29:00,768 --> 00:29:27,797
-In Model D, beta 2 is the coefficient of x cubed. Computed from the data, t is minus 3.317, with 15 degrees of freedom. The p-value is 0.0047. We reject the null hypothesis. Model D fits almost as well as Model B. The teal curve is close to the green curve, and sigma hat is 2.676, against 2.671.
+00:24:54,651 --> 00:25:12,998
+Divide by the determinant, 0.008411: 13.87. Divide by q, which is 2. F is 6.937. The plot shows the F density with 2 and 55 degrees of freedom, and the observed F.
 
 117
-00:29:28,247 --> 00:29:35,799
-But Model D has x cubed and not x squared. So it breaks the hierarchical principle. Prefer Model B.
+00:25:13,448 --> 00:25:35,037
+Step 4: the 95 percent quantile of F with 2 and 55 degrees of freedom is 3.165. The observed F is larger, and the p-value is 0.0021. Step 5: we reject the null hypothesis. Mean rating is associated with pace.
 
 118
-00:29:36,249 --> 00:29:47,343
-Practice question 3. Use the real estate data. The model has SqrFeet, Bedrooms, and their product. Interpret the results. Pause the video and try it.
+00:25:35,487 --> 00:25:56,501
+Question 2. Test for association between pace and rating among students who consider grad school. Pause the video and try it. Step 1: for these students, Grad is 1, so the pace effect is beta 1 plus beta 3. The null hypothesis is beta 1 plus beta 3 equals 0.
 
 119
-00:29:47,793 --> 00:30:02,875
-The table is computed from the data. beta 0 hat is minus 209.3. It is the mean price at 0 square feet and 0 bedrooms. No such house exists, so it has no practical meaning.
+00:25:56,951 --> 00:26:04,673
+Step 2: this is one linear combination, so we use a t test. The vector c is 0, 1, 0, 1.
 
 120
-00:30:03,325 --> 00:30:23,699
-beta 1 hat is 0.2269. For a house with 0 bedrooms, the mean price goes up by 0.2269 thousand dollars per square foot. beta 2 hat is 30.22. It is the change in mean price for one more bedroom, at 0 square feet.
+00:26:05,123 --> 00:26:16,622
+Step 3: the estimate is minus 0.4709 minus 0.5585, which is minus 1.0294.
 
 121
-00:30:24,149 --> 00:30:46,698
-beta 3 hat is minus 0.0159. Each extra bedroom lowers the slope per square foot by 0.0159 thousand dollars. So for houses with more bedrooms, one more square foot adds less to the mean price. Its t value is large in absolute value: minus 4.11.
+00:26:17,072 --> 00:26:40,261
+Its variance is the variance of beta 1 hat, plus the variance of beta 3 hat, plus 2 times their covariance: the green and orange cells. 0.09073 plus 0.18343 minus 2 times 0.09073 is 0.0927.
 
 122
-00:30:47,148 --> 00:31:01,377
-Now plot the fitted line for a given number of bedrooms. Put the number of bedrooms, k, into the model. The intercept is beta 0 plus beta 2 k. The slope is beta 1 plus beta 3 k.
+00:26:40,711 --> 00:26:55,623
+The standard error is the square root, 0.3045. t is minus 1.0294 over 0.3045, which is minus 3.381.
 
 123
-00:31:01,827 --> 00:31:18,382
-0 bedrooms: the intercept is minus 209.26, and the slope is 0.2269. No house in the data has 0 bedrooms. So this line is an extrapolation: it goes outside the data.
+00:26:56,073 --> 00:27:11,753
+Step 4: the absolute value of t, 3.381, is larger than 2.004, the t quantile with 55 degrees of freedom. The p-value is 0.0013.
 
 124
-00:31:18,832 --> 00:31:30,075
-1 bedroom: the intercept is minus 179.04, and the slope is 0.2110. The line is a little flatter.
+00:27:12,203 --> 00:27:22,102
+Step 5: we reject the null hypothesis. Among students who consider grad school, those who find the pace fast give a lower mean rating.
 
 125
-00:31:30,525 --> 00:31:50,834
-7 bedrooms: the intercept is 2.29, and the slope is 0.1155. This line is much flatter. Only 3 houses have 7 bedrooms, all with 2812 square feet or more. So the lines cross: the interaction changes the slope.
+00:27:22,552 --> 00:27:38,317
+Question 3. Now take the students who do not consider grad school. Pause the video and try it. Step 1: Grad is 0, so the pace effect is beta 1 alone. The null hypothesis is beta 1 equals 0.
 
 126
-00:31:51,284 --> 00:32:08,756
-To recap. An interaction term is a product of two covariates. With indicator times weight, each group gets its own intercept and its own slope. beta 1 M W is the MW slope minus the N slope: a difference in differences.
+00:27:38,767 --> 00:27:41,925
+Step 2: one coefficient, so we use a t test.
 
 127
-00:32:09,206 --> 00:32:24,545
-For two continuous covariates, the effect of x 1 is beta 1 plus beta 3 x 2. To test an effect inside one group, use a t test of a linear combination. For a joint null, use the F test.
+00:27:42,375 --> 00:28:02,385
+Step 3: the standard error is the square root of 0.09073, which is 0.3012. t is minus 0.4709 over 0.3012, which is minus 1.563.
 
 128
-00:32:24,995 --> 00:32:41,741
-A quadratic term lets the change in the mean depend on x. Test beta 2 equals 0 to compare with the straight line. Keep the lower-order terms, by the hierarchical principle, and do not overfit. This is the end of video 20.
+00:28:02,835 --> 00:28:12,073
+Step 4: the absolute value of t is smaller than 2.004. The p-value is 0.124.
+
+129
+00:28:12,523 --> 00:28:21,760
+Step 5: we do not reject the null hypothesis. The data do not show an association between pace and rating in this group.
+
+130
+00:28:22,210 --> 00:28:32,301
+Exercise 2 rejects and exercise 3 does not. So the effect of pace depends on grad school interest. This is what an interaction means.
+
+131
+00:28:32,751 --> 00:28:50,713
+Items 4 and 5 ask for a mean rating with a 95 percent confidence interval. They name a morning or afternoon section, but the model has only Fast and Grad. So we use the same method for the four cells of the model. Pause the video and try it.
+
+132
+00:28:51,163 --> 00:29:04,518
+Step 1 of card B: write the mean. For students who find the pace fast and do not consider grad school, the mean is beta 0 plus beta 1. So c is 1, 1, 0, 0.
+
+133
+00:29:04,968 --> 00:29:17,832
+Step 2: one combination, so the interval is the estimate plus or minus t times the standard error. The t quantile with 55 degrees of freedom is 2.004.
+
+134
+00:29:18,282 --> 00:29:29,482
+Step 3: the estimate is 4.1852 minus 0.4709, which is 3.7143.
+
+135
+00:29:29,932 --> 00:29:51,884
+The variance is V 0 0 plus V 1 1 plus 2 V 0 1: the green and orange cells of vcov. 0.01868 plus 0.09073 minus 2 times 0.01868 is 0.07205.
+
+136
+00:29:52,334 --> 00:30:03,150
+The standard error is 0.2684. 2.004 times 0.2684 is 0.538.
+
+137
+00:30:03,600 --> 00:30:23,845
+Step 4: the interval is 3.714 plus or minus 0.538: 3.176 to 4.252. The plot shows all four cells, computed with the same steps. The lowest mean, 3.5, is for Fast 1 and Grad 1.
+
+138
+00:30:24,295 --> 00:30:42,514
+A tutorial question of type B. Pause the video and try it. Tutorial 3, question 1 f. Step 1 of card B: the slope in size 1 is beta 3, and in size 2 it is beta 3 plus beta 4. They are equal when beta 4 is 0.
+
+139
+00:30:42,964 --> 00:30:54,975
+Step 2: one coefficient, so a t test. The model has 6 coefficients, so the degrees of freedom are 325 minus 6, which is 319.
+
+140
+00:30:55,425 --> 00:31:08,822
+Step 3: t is the estimate over its standard error: minus 186.99 over 147.33, which is minus 1.269.
+
+141
+00:31:09,272 --> 00:31:24,760
+Step 4: the absolute value, 1.269, is smaller than 1.967, the t quantile with 319 degrees of freedom. The p-value is 0.2053.
+
+142
+00:31:25,210 --> 00:31:37,370
+Step 5: we do not reject the null hypothesis. The data do not show that the relationship between salary and experience differs between districts of size 1 and 2.
+
+143
+00:31:37,820 --> 00:31:49,212
+Tutorial 3, question 1 g. Pause the video and try it. Step 1: with card A, the slope in size 3 districts is beta 3 plus beta 5.
+
+144
+00:31:49,662 --> 00:31:58,067
+Step 2: one combination, so we give a confidence interval: the estimate plus or minus t times the standard error.
+
+145
+00:31:58,517 --> 00:32:11,445
+Step 3: the estimate is 662.79 minus 518.91, which is 143.88 dollars per year of experience.
+
+146
+00:32:11,895 --> 00:32:33,549
+The variance comes from the vcov output: 3027.409 plus 24849.737 plus 2 times minus 3027.409. That is 21822.328.
+
+147
+00:32:33,999 --> 00:32:50,319
+The standard error is 147.7238. The t quantile with 319 degrees of freedom is 1.967428. The margin is 290.636.
+
+148
+00:32:50,769 --> 00:33:06,854
+Step 4: the interval is 143.88 plus or minus 290.636: minus 146.756 to 434.516.
+
+149
+00:33:07,304 --> 00:33:22,835
+Step 5: in size 3 districts, the estimated mean salary rises by 143.88 dollars per year of experience. The interval contains 0, so the data do not show a clear association.
+
+150
+00:33:23,285 --> 00:33:34,549
+Tutorial 3, question 1 h. The width of an interval is 2 times t times the standard error. The standard error stays the same, so only t changes.
+
+151
+00:33:34,999 --> 00:33:55,351
+A 90 percent interval uses the 0.95 quantile: 1.649644. The 95 percent interval uses the 0.975 quantile: 1.967428. The blue bar is the 90 percent interval.
+
+152
+00:33:55,801 --> 00:34:06,425
+The ratio is 1.649644 over 1.967428, which is 0.8385.
+
+153
+00:34:06,875 --> 00:34:14,747
+So the 90 percent interval is narrower. It is 0.84 times the width of the 95 percent interval.
+
+154
+00:34:15,197 --> 00:34:28,871
+Section 4, question type C. Sometimes a straight line does not fit the data well. These points follow a curve. The gray dashed line misses the trend. The picture uses made-up numbers.
+
+155
+00:34:29,321 --> 00:34:38,388
+One way to make the model more flexible is to add a quadratic term, beta 2 x i squared. The green curve is a parabola.
+
+156
+00:34:38,838 --> 00:34:51,979
+The model is still a linear regression model, because it is linear in the betas. X gets one more column, x i squared. So beta hat, the t tests and the F tests all work as before.
+
+157
+00:34:52,429 --> 00:34:57,293
+Method card C solves the questions of type C. It has four steps.
+
+158
+00:34:57,743 --> 00:35:08,111
+Step 1: add the columns x i squared, and maybe x i cubed, to X. The model stays linear in beta, so we fit and test it as usual.
+
+159
+00:35:08,561 --> 00:35:27,057
+Step 2: the effect of x changes with x. From x to x plus 1, the mean changes by beta 1 plus beta 2 times 2 x plus 1. The orange tangents show two slopes. The top of the curve is at minus beta 1 over 2 beta 2.
+
+160
+00:35:27,507 --> 00:35:36,937
+Step 3: compare models. Test the extra terms. For one term use a t test, and for several terms an F test, as in card B.
+
+161
+00:35:37,387 --> 00:35:47,072
+Step 4: keep the model hierarchical. With x cubed, keep x squared and x. With x 1 times x 2, keep x 1 and x 2.
+
+162
+00:35:47,522 --> 00:35:59,319
+The tortoise data have 18 measurements. NumEggs is the number of eggs in the hatch of a tortoise. CarapDiam is the diameter of its carapace, the shell.
+
+163
+00:35:59,769 --> 00:36:08,623
+The table shows the first six rows from slide 24. Row 1: a diameter of 284 and 3 eggs.
+
+164
+00:36:09,073 --> 00:36:19,825
+The plot shows all 18 points. The number of eggs goes up at first. Then it goes down for the largest tortoises. A straight line cannot follow this.
+
+165
+00:36:20,275 --> 00:36:44,253
+Slide 25 fits the quadratic model: step 1 of card C. Here is its coefficient table. The rows are beta 0, beta 1 and beta 2. The estimates are minus 899.9, 5.857, and minus 0.009425. The letter e means a power of 10.
+
+166
+00:36:44,703 --> 00:37:06,847
+Each t value is the estimate over its standard error. For the squared term, minus 0.009425 over 0.002829 is minus 3.332. The last column is the two-sided p-value of the t test of that coefficient equal to 0.
+
+167
+00:37:07,297 --> 00:37:18,497
+The residual standard error is sigma hat, 2.671. Its degrees of freedom are n minus p plus 1: 18 minus 3, which is 15.
+
+168
+00:37:18,947 --> 00:37:31,598
+The first part of the output summarizes the residuals: the minimum, the first quartile, the median, the third quartile, and the maximum. The orange dots are the 18 residuals.
+
+169
+00:37:32,048 --> 00:37:35,845
+Slide 26 shows the two fits. Here are the data.
+
+170
+00:37:36,295 --> 00:37:40,775
+The gray dashed line is the straight line fit. It is almost flat.
+
+171
+00:37:41,225 --> 00:37:47,988
+The green curve is the quadratic fit. It goes up and then down. It follows the data much better.
+
+172
+00:37:48,438 --> 00:38:00,299
+Slide 27 asks: what is beta 1 here. Pause the video and try it. In the quadratic model, the change in the mean for one more unit of x depends on x.
+
+173
+00:38:00,749 --> 00:38:06,147
+Step 2 of card C. Write the mean at x plus 1 minus the mean at x.
+
+174
+00:38:06,597 --> 00:38:15,343
+Expand x plus 1 squared. The change is beta 1 plus beta 2 times 2 x plus 1. It depends on x.
+
+175
+00:38:15,793 --> 00:38:21,724
+As an aid, the slope of the tangent at x is beta 1 plus 2 beta 2 x.
+
+176
+00:38:22,174 --> 00:38:45,086
+At a diameter of 295: 2 times 0.009425 times 295 is 5.561. 5.857 minus 5.561 is plus 0.296. Here larger tortoises have more eggs on average.
+
+177
+00:38:45,536 --> 00:38:57,440
+At 325, the slope is 5.857 minus 6.126, which is minus 0.269. Here the mean goes down.
+
+178
+00:38:57,890 --> 00:39:07,746
+The top of the curve is where the slope is 0: x equals minus beta 1 hat over 2 beta 2 hat, which is 310.7.
+
+179
+00:39:08,196 --> 00:39:25,369
+Put x equal to 0: the slope is beta 1. So beta 1 alone is the slope at a diameter of 0. That is far outside the data, 284 to 334, so beta 1 alone has no useful meaning here.
+
+180
+00:39:25,819 --> 00:39:41,499
+Slide 27 also asks how to test whether the quadratic model is more appropriate than the straight line. Pause the video and try it. Step 3 of card C: the line is the quadratic model with beta 2 equal to 0.
+
+181
+00:39:41,949 --> 00:39:52,744
+So test the null hypothesis beta 2 equals 0. This is one term, so a t test, with 18 minus 3, which is 15, degrees of freedom.
+
+182
+00:39:53,194 --> 00:40:09,322
+From the output, t is minus 3.332. Its absolute value is larger than 2.131, the t quantile with 15 degrees of freedom. The p-value is 0.00455.
+
+183
+00:40:09,772 --> 00:40:15,105
+We reject the null hypothesis. The quadratic model fits better than the line.
+
+184
+00:40:15,555 --> 00:40:28,611
+Tutorial 3, question 1, parts i to k. Pause the video and try it. Part i: write the fitted model. Here s 2 and s 3 are the size indicators, and x is experience.
+
+185
+00:40:29,061 --> 00:40:38,363
+Is it a linear model? Yes. Step 1 of card C: it is linear in the betas. X only gets one more column, the squared experience.
+
+186
+00:40:38,813 --> 00:40:56,775
+Part j: step 3 of card C. The test of beta 4 equal to 0 is a t test. t is minus 6.124 over 11.409, which is minus 0.537. The p-value is 0.59.
+
+187
+00:40:57,225 --> 00:41:09,044
+We do not reject. There is not enough evidence of a quadratic relationship. This does not prove that the relationship is linear, and the test checks only one kind of curve.
+
+188
+00:41:09,494 --> 00:41:25,942
+Part k: beta 3 equal to beta 4 equal to 0 means no association of mean salary with experience. The alternative is a linear or quadratic association. Two betas together, so it is an F test.
+
+189
+00:41:26,392 --> 00:41:40,067
+Part l. Pause the video and try it. With the squared term, beta 3 is the change at experience 0 only. So beta 3 alone has no simple meaning, and it is not useful to explain.
+
+190
+00:41:40,517 --> 00:41:50,821
+Step 2 of card C: from x to x plus 1 years, the mean salary changes by beta 3 hat plus beta 4 hat times 2 x plus 1.
+
+191
+00:41:51,271 --> 00:42:10,321
+From 10 to 11 years: 6.124 times 21 is 128.604. 730.652 minus 128.604 is 602.048 dollars.
+
+192
+00:42:10,771 --> 00:42:24,915
+From 20 to 21 years: 6.124 times 41 is 251.084. The change is 479.568 dollars.
+
+193
+00:42:25,365 --> 00:42:36,949
+So two ways to explain it: one, plot the fitted curve, here for size 1 districts. Two, give the change for one more year at chosen values of experience.
+
+194
+00:42:37,399 --> 00:42:53,869
+Beyond polynomial terms, linear regression can use any known functions of x. The model is the sum of beta j times f j of x i. Each f j is a known function, for example x, x squared, or log x.
+
+195
+00:42:54,319 --> 00:43:10,084
+It is easy to add too many terms. Then the model can overfit: the curve follows the random noise in this sample, and not the true mean. The red curve uses all powers of x up to 7. It is computed from the data.
+
+196
+00:43:10,534 --> 00:43:18,385
+More terms also make the coefficients harder to interpret. So there is a trade-off between fit and interpretability.
+
+197
+00:43:18,835 --> 00:43:38,931
+Step 4 of card C is the hierarchical principle of slide 29. Fit hierarchically well-formulated models: if the model has a higher-order term, it also has all the lower-order terms under it. With x 1 times x 2, include the main effects x 1 and x 2.
+
+198
+00:43:39,381 --> 00:43:47,381
+With the three-way product x 1 x 2 x 3, include all three two-way products, and all three main effects.
+
+199
+00:43:47,831 --> 00:43:56,129
+The same rule holds for polynomial terms. With x cubed, include x squared and x. The next slide shows why.
+
+200
+00:43:56,579 --> 00:44:08,377
+Slide 30 takes a model with x squared but no x term. Its curve must have its lowest point at x equal to 0, if beta 2 is positive. The black curve.
+
+201
+00:44:08,827 --> 00:44:19,365
+Now shift x by a fixed amount b. For example, center x at its mean, so b is x bar. The blue curve is the same curve, moved by b.
+
+202
+00:44:19,815 --> 00:44:27,730
+Expand the square. x i minus b, squared, is x i squared, minus 2 x i b, plus b squared.
+
+203
+00:44:28,180 --> 00:44:39,103
+Collect the powers of x. The model now has a linear term, minus 2 b beta 2, times x i, in orange. It appears only because of the shift.
+
+204
+00:44:39,553 --> 00:44:49,878
+So the model without the x term changes its form after a change of origin. A hierarchical model, with x and x squared, keeps its form.
+
+205
+00:44:50,328 --> 00:45:10,104
+Practice question 1 uses the tortoise data. Part a: fit Model A, the straight line, and test beta 1 equals 0 at the 5 percent level. Pause the video and try it. With card B: one coefficient, so a t test with 18 minus 2, which is 16, degrees of freedom.
+
+206
+00:45:10,554 --> 00:45:23,098
+Computed from the data, beta 1 hat is 0.0276, with a standard error of 0.0563. t is 0.490.
+
+207
+00:45:23,548 --> 00:45:42,577
+The t quantile with 16 degrees of freedom is 2.120. The absolute value of t is smaller, and the p-value is 0.631. We do not reject the null hypothesis. The line shows no evidence of a straight-line association.
+
+208
+00:45:43,027 --> 00:45:58,451
+Part b: fit Model B, the quadratic model, and test beta 1 equals beta 2 equals 0. Pause the video and try it. Two terms together, so an F test with q equal to 2 and 15 degrees of freedom.
+
+209
+00:45:58,901 --> 00:46:17,056
+Computed from the data, F is 5.747. The 95 percent quantile of F with 2 and 15 degrees of freedom is 3.682. The p-value is 0.0140. We reject the null hypothesis.
+
+210
+00:46:17,506 --> 00:46:31,991
+This does not conflict with part a. Part a looks only for a straight-line trend. The mean goes up and then down, so the best line is almost flat. Model B can follow the curve, so it finds the association.
+
+211
+00:46:32,441 --> 00:46:44,345
+Part c: fit Model C, which adds x cubed, and test beta 3 equals 0. Pause the video and try it. Step 1 of card C: X gets the column x cubed.
+
+212
+00:46:44,795 --> 00:47:02,566
+Step 3: one term, so a t test with 18 minus 4, which is 14, degrees of freedom. Computed from the data, t is 0.613. The t quantile is 2.145, and the p-value is 0.550.
+
+213
+00:47:03,016 --> 00:47:14,813
+We do not reject the null hypothesis. The purple dashed cubic curve is almost on the green quadratic curve. So Model C is not more appropriate than Model B.
+
+214
+00:47:15,263 --> 00:47:42,442
+Part d: in Model C, test beta 2 equals beta 3 equals 0. Pause the video and try it. Two terms, so an F test with q equal to 2 and 14 degrees of freedom. Computed from the data, F is 5.508. The 95 percent quantile is 3.739. The p-value is 0.0172. We reject the null hypothesis.
+
+215
+00:47:42,892 --> 00:48:02,049
+This does not conflict with part c. Part c asks if x cubed adds to x and x squared. Part d asks if x squared and x cubed together add to x. Also, every single t value in Model C is below 0.75 in absolute value.
+
+216
+00:48:02,499 --> 00:48:25,198
+The plot shows the reason. On the range 284 to 334, x squared and x cubed lie almost on a straight line. Their correlation is 0.9997. So they carry almost the same information, and one of them adds little when the other is in the model. A later lecture studies this problem.
+
+217
+00:48:25,648 --> 00:48:43,461
+Part e: fit Model D, with x and x cubed, but no x squared. Test beta 2 equals 0. Pause the video and try it. In Model D, beta 2 is the coefficient of x cubed. One term, so a t test with 15 degrees of freedom.
+
+218
+00:48:43,911 --> 00:49:05,181
+Computed from the data, t is minus 3.317, and the p-value is 0.0047. We reject the null hypothesis. The teal curve is close to the green curve, and sigma hat is 2.676, against 2.671 for Model B.
+
+219
+00:49:05,631 --> 00:49:16,276
+Step 4 of card C: Model D has x cubed and not x squared, so it is not hierarchical. The hierarchical principle chooses Model B.
+
+220
+00:49:16,726 --> 00:49:33,771
+To recap. Card A interprets an interaction model. Fix the group, collect the terms into an intercept and a slope, and name each beta. A main effect is an intercept difference. An interaction is a slope difference: a difference in differences.
+
+221
+00:49:34,221 --> 00:49:49,496
+Card B tests an effect. Write it as one linear combination, for a t test or a confidence interval, or as several betas equal to 0, for an F test. The standard error comes from the vcov output.
+
+222
+00:49:49,946 --> 00:50:04,687
+Card C handles curves. Add x squared to X: the model stays linear. The effect of x then depends on x. Test the extra terms, and keep the lower-order terms. This is the end of video 20.

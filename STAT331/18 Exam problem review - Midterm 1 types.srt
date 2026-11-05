@@ -3,277 +3,473 @@
 This is STAT 331, video 18. It is a review of the Midterm 1 question types.
 
 2
-00:00:07,362 --> 00:00:29,954
-After this video, you can place each Midterm 1 question in its type. You can write the two-sample problem as a regression, and derive its estimates. You can interpret the slope of a standardized x, and show why the p-value does not change. These are Tutorial 2, Question 2, and Assignment 1, Question 2, parts b and c.
+00:00:07,362 --> 00:00:13,826
+This video prepares you for three question types. Each type gets a method card and worked problems.
 
 3
-00:00:30,404 --> 00:00:41,391
-Every Midterm 1 question starts from the simple linear regression model. y i equals beta 0, plus beta 1 x i, plus epsilon i.
+00:00:14,276 --> 00:00:27,972
+Type A: two groups, coded x equals 0 and x equals 1. You interpret beta 1, write the null hypothesis, derive the estimates, and test. This is Tutorial 2, question 2.
 
 4
-00:00:41,841 --> 00:00:59,078
-Theory questions ask you to derive a mean, a variance, or a distribution. Or they ask which model assumption a result uses. Tutorial 1, Question 3, and Assignment 1, Question 1, are of this type. Earlier videos solve them.
+00:00:28,422 --> 00:00:38,235
+Type B: a new scale for x. You interpret the new slope and compare the p-values. This is Assignment 1, question 2, parts b and c.
 
 5
-00:00:59,528 --> 00:01:12,563
-Applied questions give a coefficient table or data summaries. You calculate t values, p-values, confidence intervals, and prediction intervals. Earlier videos also solve these.
+00:00:38,685 --> 00:00:45,320
+Type C: link a test and a confidence interval. This is Assignment 1, question 2, part a.
 
 6
-00:01:13,013 --> 00:01:28,757
-This video does one more theory type. The question changes the x variable. Then it asks what happens to the estimates and to the tests. Tutorial 2 codes x as 0 or 1. Assignment 1 standardizes x.
+00:00:45,770 --> 00:00:57,781
+Section 1. Every Midterm 1 question starts from the simple linear regression model. y i equals beta 0, plus beta 1 x i, plus epsilon i.
 
 7
-00:01:29,207 --> 00:01:52,332
-The two problems of this video use only four formulas from Lectures 2 and 3. First, the slope estimate. beta 1 hat equals S x y over S x x. S x x is the sum of x i minus x bar, squared. S x y is the sum of x i minus x bar, times y i minus y bar.
+00:00:58,231 --> 00:01:15,468
+Theory questions ask you to derive a mean, a variance, or a distribution. Or they ask which model assumption a result uses. Tutorial 1, question 3, and Assignment 1, question 1, are of this type. Earlier videos solve them.
 
 8
-00:01:52,782 --> 00:02:07,609
-Second, the intercept estimate. beta 0 hat equals y bar, minus beta 1 hat times x bar. So the fitted line goes through the point x bar, y bar. The purple lines show this point.
+00:01:15,918 --> 00:01:28,953
+Applied questions give a coefficient table or data summaries. You calculate t values, p-values, confidence intervals, and prediction intervals. Earlier videos also solve these.
 
 9
-00:02:08,059 --> 00:02:20,795
-Third, the standard error of beta 1 hat. It is sigma hat, over the square root of S x x. sigma hat squared is the sum of the squared residuals, over n minus 2.
+00:01:29,403 --> 00:01:40,027
+This video does three more types. Type A codes x as 0 or 1. Type B standardizes x. Type C links a test and a confidence interval.
 
 10
-00:02:21,245 --> 00:02:34,834
-Fourth, the t statistic. It is beta 1 hat minus theta 0, over the standard error. Under the null hypothesis, it has a t distribution with n minus 2 degrees of freedom.
+00:01:40,477 --> 00:02:04,583
+All three types use four formulas from Lectures 2 and 3. First, the slope estimate. beta 1 hat equals S x y over S x x. S x x is the sum of x i minus x bar, squared. S x y is the sum of x i minus x bar, times y i minus y bar. The green triangle shows the slope.
 
 11
-00:02:35,284 --> 00:02:43,924
-Tutorial 2, Question 2. The usual two-sample problem can be written as a regression problem. Pause the video and try it.
+00:02:05,033 --> 00:02:19,455
+Second, the intercept estimate. beta 0 hat equals y bar, minus beta 1 hat times x bar. So the fitted line goes through the point x bar, y bar. The ring marks this point.
 
 12
-00:02:44,374 --> 00:02:59,286
-The first n 1 subjects have x equal to 0. The other n 2 subjects have x equal to 1. So x only says which group a subject is in. In the picture, all points of a group are on one vertical line.
+00:02:19,905 --> 00:02:36,374
+Third, the standard error of beta 1 hat. It is sigma hat, over the square root of S x x. sigma hat squared is the sum of the squared residuals e i, over n minus 2. The orange segments are the residuals.
 
 13
-00:02:59,736 --> 00:03:08,568
-y bar 0 is the sample mean of group 0. y bar 1 is the sample mean of group 1. The purple marks show them.
+00:02:36,824 --> 00:02:50,413
+Fourth, the t statistic. It is beta 1 hat minus theta 0, over the standard error. Under the null hypothesis, it has a t distribution with n minus 2 degrees of freedom.
 
 14
-00:03:09,018 --> 00:03:22,586
-The pictures use our own small example. Group 0 has the values 3, 5, 4, and 6. Its mean is 4.5. Group 1 has 8, 7, and 9. Its mean is 8.
+00:02:50,863 --> 00:03:05,455
+Section 2. Question type A gives two groups. x is 0 in group 0, and 1 in group 1. Tutorial 2, question 2, is of this type. The picture shows an example with 4 and 3 values.
 
 15
-00:03:23,036 --> 00:03:36,668
-Part a. Put x equal to 0 into the mean of the model. The mean response of group 0 is beta 0. Each group has a normal distribution around its mean, with variance sigma squared.
+00:03:05,905 --> 00:03:20,028
+Method card A has five steps. Step 1: put x equal to 0 and x equal to 1 into the mean of the model. This gives the two group means, beta 0, and beta 0 plus beta 1.
 
 16
-00:03:37,118 --> 00:03:43,219
-Put x equal to 1. The mean response of group 1 is beta 0 plus beta 1.
+00:03:20,478 --> 00:03:31,401
+Step 2: beta 1 is the mean of group 1 minus the mean of group 0. No difference in means is the null hypothesis beta 1 equals 0.
 
 17
-00:03:43,669 --> 00:03:59,157
-Subtract the two means. beta 1 is the difference in mean response between group 1 and group 0. This is the slope interpretation of Lecture 2, with a step of one unit from x equal 0 to x equal 1.
+00:03:31,851 --> 00:03:41,195
+Step 3: use the 0 and 1 values to find x bar, S x x, and S x y. x bar is n 2 over n.
 
 18
-00:03:59,607 --> 00:04:15,885
-So the two groups have the same mean exactly when beta 1 is 0. The null hypothesis is beta 1 equals 0. The alternative is beta 1 is not 0. The red curve shows group 1 under the null hypothesis.
+00:03:41,645 --> 00:03:51,138
+Step 4: put them into the formulas for beta 1 hat and beta 0 hat. Simplify. The fitted line goes through both group means.
 
 19
-00:04:16,335 --> 00:04:33,743
-Part b. Pause the video and try it. The plan: find x bar, S x x, and S x y. Then use the two formulas for beta 1 hat and beta 0 hat. The picture shows the x values: n 1 zeros and n 2 ones.
+00:03:51,588 --> 00:04:04,089
+Step 5: the t test. Find sigma hat squared from the residuals, then the standard error and t. Compare t with the t quantile with n minus 2 degrees of freedom.
 
 20
-00:04:34,193 --> 00:04:48,507
-x bar is the sum of the x i, over n. The zeros add nothing. Each one adds 1. So the sum is n 2, and x bar is n 2 over n. In the example, x bar is 3 over 7.
+00:04:04,539 --> 00:04:13,179
+Tutorial 2, question 2. The usual two-sample problem can be written as a regression problem. Pause the video and try it.
 
 21
-00:04:48,957 --> 00:05:05,811
-Now the deviations from x bar. For group 0, x i minus x bar is minus n 2 over n. For group 1, it is 1 minus n 2 over n. This is n 1 over n, because n minus n 2 is n 1.
+00:04:13,629 --> 00:04:28,541
+The first n 1 subjects have x equal to 0. The other n 2 subjects have x equal to 1. So x only says which group a subject is in. In the picture, all points of a group are on one vertical line.
 
 22
-00:05:06,261 --> 00:05:30,709
-S x x adds the squared deviations. n 1 squares of n 2 over n, and n 2 squares of n 1 over n. Take out n 1 n 2 over n squared. What is left is n 2 plus n 1, which is n. So S x x is n 1 times n 2, over n. In the example, 4 times 3 over 7, which is 12 over 7.
+00:04:28,991 --> 00:04:37,823
+y bar 0 is the sample mean of group 0. y bar 1 is the sample mean of group 1. The purple marks show them.
 
 23
-00:05:31,159 --> 00:05:44,748
-Next, S x y. The sum of x i minus x bar, times y bar, is y bar times 0. So S x y is the sum of x i minus x bar, times y i.
+00:04:38,273 --> 00:04:54,956
+The pictures use our own small example. Group 0 has the values 3, 5, 4, and 6. They add to 18, so the mean is 4.5. Group 1 has 8, 7, and 9. They add to 24, so the mean is 8.
 
 24
-00:05:45,198 --> 00:05:57,166
-Each y value gets a weight: its x deviation. Every value in group 0 gets minus n 2 over n. Every value in group 1 gets n 1 over n.
+00:04:55,406 --> 00:05:10,553
+Part a. Step 1 of card A. Put x equal to 0 into the mean of the model. The mean response of group 0 is beta 0. Each group has a normal distribution around its mean, with variance sigma squared.
 
 25
-00:05:57,616 --> 00:06:17,349
-The sum of the y values in group 0 is n 1 times y bar 0. The sum in group 1 is n 2 times y bar 1. So S x y is minus n 2 over n, times n 1 y bar 0, plus n 1 over n, times n 2 y bar 1.
+00:05:11,003 --> 00:05:17,125
+Put x equal to 1. The mean response of group 1 is beta 0 plus beta 1.
 
 26
-00:06:17,799 --> 00:06:41,565
-Take out n 1 n 2 over n. S x y equals n 1 n 2 over n, times y bar 1 minus y bar 0. In the example: minus 3 over 7 times 18, plus 4 over 7 times 24. That is 6. And the formula gives 12 over 7, times 3.5, which is also 6.
+00:05:17,575 --> 00:05:33,362
+Step 2. Subtract line 1 from line 2. beta 1 is the difference in mean response between group 1 and group 0. This is the slope interpretation of Lecture 2, with a step of one unit from 0 to 1.
 
 27
-00:06:42,015 --> 00:06:58,121
-Divide S x y by S x x. The factor n 1 n 2 over n cancels. So beta 1 hat is y bar 1 minus y bar 0. In the example, 8 minus 4.5, which is 3.5.
+00:05:33,812 --> 00:05:42,388
+So the two groups have the same mean exactly when beta 1 is 0. The red curve shows group 1 under this hypothesis.
 
 28
-00:06:58,571 --> 00:07:14,806
-For beta 0 hat we need y bar, the mean of all n values. It is n 1 y bar 0 plus n 2 y bar 1, over n. In the example, it is 6. The purple point x bar, y bar is on the line.
+00:05:42,838 --> 00:05:53,611
+The answer: beta 1 is the difference in means. The null hypothesis is beta 1 equals 0. The alternative is beta 1 is not 0.
 
 29
-00:07:15,256 --> 00:07:35,181
-Now beta 0 hat is y bar, minus beta 1 hat times n 2 over n. Put everything over n. The n 2 y bar 1 terms cancel. What is left is n 1 plus n 2, times y bar 0, over n. So beta 0 hat is y bar 0.
+00:05:54,061 --> 00:06:11,235
+Part b. Pause the video and try it. Step 3 of card A: find x bar and S x x from the 0 and 1 values. Line 1: x bar is the sum of the x i, over n. The picture shows n 1 zeros and n 2 ones.
 
 30
-00:07:35,631 --> 00:07:47,237
-This is the result. beta 0 hat is the mean of group 0. beta 1 hat is the difference of the two group means. The fitted line goes through both group means.
+00:06:11,685 --> 00:06:18,959
+The zeros add nothing. Each one adds 1. So the sum is n 2, and x bar is n 2 over n.
 
 31
-00:07:47,687 --> 00:08:11,559
-Here is a second way to show part b. Write the least squares criterion S. For group 0, x i is 0, so each term is y i minus beta 0, squared. For group 1, x i is 1, so each term is y i minus beta 0 minus beta 1, squared. The gray line is one candidate line, with its residuals.
+00:06:19,409 --> 00:06:27,153
+Now the deviations from x bar. For group 0, x i minus x bar is minus n 2 over n.
 
 32
-00:08:12,009 --> 00:08:25,299
-Call beta 0 plus beta 1 by the name m. Then the first sum uses only beta 0, and the second sum uses only m. So we can make each sum a minimum on its own.
+00:06:27,603 --> 00:06:35,881
+For group 1, it is 1 minus n 2 over n. This is n 1 over n, because n minus n 2 is n 1.
 
 33
-00:08:25,749 --> 00:08:45,888
-Take the derivative of the first sum with respect to beta 0, and set it to 0. The sum of y i minus beta 0 is 0, so beta 0 is the mean of group 0. In the same way, m hat is the mean of group 1. Now the residuals are the distances to the group means.
+00:06:36,331 --> 00:06:45,568
+S x x adds the squared deviations. There are n 1 squares of n 2 over n, and n 2 squares of n 1 over n.
 
 34
-00:08:46,338 --> 00:08:57,474
-Then beta 1 hat is m hat minus beta 0 hat: y bar 1 minus y bar 0. This is the same answer. Use either way on the exam.
+00:06:46,018 --> 00:06:52,269
+Take out n 1 times n 2, over n squared. What is left is n 2 plus n 1.
 
 35
-00:08:57,924 --> 00:09:19,108
-Now use the example to test the null hypothesis, beta 1 equals 0. The fitted values are the group means. So each residual is y i minus its group mean. The squared residuals add to 5 plus 2, which is 7. Divide by n minus 2, which is 5. sigma hat squared is 1.4.
+00:06:52,719 --> 00:06:58,628
+n 2 plus n 1 is n. So S x x is n 1 times n 2, over n.
 
 36
-00:09:19,558 --> 00:09:47,633
-The standard error of beta 1 hat is sigma hat over the square root of S x x. The square root of 1.4, over the square root of 12 over 7, is 0.9037. The red tails show the rejection region at the 5 percent level. The critical value t 0.975 with 5 degrees of freedom is 2.571. On the exam, this quantile is given.
+00:06:59,078 --> 00:07:22,075
+Check with the example. n 1 is 4 and n 2 is 3. x bar is 3 over 7. S x x is 4 times 9 over 49, plus 3 times 16 over 49. That is 84 over 49, which is 12 over 7. The formula gives 4 times 3 over 7, also 12 over 7.
 
 37
-00:09:48,083 --> 00:10:11,677
-The t statistic is 3.5 over 0.9037, which is 3.873. It is larger than 2.571. The two-sided p-value is 0.0117. So we reject the null hypothesis at the 5 percent level. The data give evidence that the two group means are different.
+00:07:22,525 --> 00:07:31,507
+Still step 3: S x y. Line 1 is the definition. The picture shows the y values of the example in their groups.
 
 38
-00:10:12,127 --> 00:10:35,935
-This part is optional, and not on the slides. 1 over S x x is 1 over n 1, plus 1 over n 2. So the standard error is sigma hat times the square root of 1 over n 1 plus 1 over n 2. And sigma hat squared is the pooled variance of the two groups. So this regression test is the pooled two-sample t test.
+00:07:31,957 --> 00:07:36,927
+Multiply out the bracket y i minus y bar. We get two sums.
 
 39
-00:10:36,385 --> 00:10:57,676
-Assignment 1, Question 2, parts b and c. Model A is the usual model in x. Model C uses a new variable, x star. x star is x minus x bar, over s x. Part b asks for the meaning of beta 1 C. Part c compares the two p-values. Pause the video and try it.
+00:07:37,377 --> 00:07:50,604
+The deviations x i minus x bar add to 0. So the second sum is y bar times 0. S x y is the sum of x i minus x bar, times y i.
 
 40
-00:10:58,126 --> 00:11:08,174
-The pictures use the brainhead data. x is head size in cubic centimeters. The x star ruler measures the same head sizes in a new unit.
+00:07:51,054 --> 00:08:02,979
+Each y value gets its x deviation as a weight. Every value in group 0 gets minus n 2 over n. Every value in group 1 gets n 1 over n.
 
 41
-00:11:08,624 --> 00:11:19,227
-At x equal to x bar, 3637.9, x star is 0. So x star is 0 at the centre of the data.
+00:08:03,429 --> 00:08:21,755
+The sum of the y values in group 0 is n 1 times y bar 0. In the example, 18 equals 4 times 4.5. The sum in group 1 is n 2 times y bar 1. In the example, 24 equals 3 times 8.
 
 42
-00:11:19,677 --> 00:11:36,999
-One step on the x star ruler is s x, which is 361.1 cubic centimeters. s x is the square root of S x x over n minus 1. So one unit of x star is one standard deviation of x.
+00:08:22,205 --> 00:08:45,245
+Take out n 1 n 2 over n. S x y equals n 1 n 2 over n, times y bar 1 minus y bar 0. In the example: minus 3 over 7 times 18, plus 4 over 7 times 24, is 6. The formula gives 12 over 7 times 3.5, also 6.
 
 43
-00:11:37,449 --> 00:11:51,295
-Solve the definition of x star for x. x i equals x bar, plus s x times x i star. The picture shows the mean line of the brainhead data, with the x axis from 0.
+00:08:45,695 --> 00:08:55,231
+Step 4 of card A. Divide S x y by S x x. The factor n 1 n 2 over n is on the top and on the bottom.
 
 44
-00:11:51,745 --> 00:12:05,078
-Put this into the mean of Model A. In Model A, the intercept beta 0 is the mean of y at x equal to 0. For head size, x equal to 0 is far outside the data.
+00:08:55,681 --> 00:09:08,950
+It cancels. So beta 1 hat is y bar 1 minus y bar 0. In the example, 8 minus 4.5, which is 3.5. The green arrow shows this difference.
 
 45
-00:12:05,528 --> 00:12:20,312
-Multiply out and group the terms. The constant term is beta 0 plus beta 1 x bar. This is the mean of y at x equal to x bar, the purple point. It is the intercept of Model C.
+00:09:09,400 --> 00:09:29,048
+For beta 0 hat we need y bar, the mean of all n values. It is n 1 y bar 0 plus n 2 y bar 1, over n. In the example, 18 plus 24 is 42, and 42 over 7 is 6. The ring marks the point x bar, y bar.
 
 46
-00:12:20,762 --> 00:12:38,383
-The coefficient of x i star is s x times beta 1. This is the slope of Model C. It is the rise of the line over a run of one standard deviation. So both models describe the same mean line. Only the x scale changes.
+00:09:29,498 --> 00:09:47,205
+Now beta 0 hat is y bar, minus beta 1 hat times x bar. Put in beta 1 hat from line 2 and x bar equal to n 2 over n. In the example, 6 minus 3.5 times 3 over 7 is 4.5.
 
 47
-00:12:38,833 --> 00:12:45,553
-Part b. Here is the brainhead scatter plot. The x axis is head size in cubic centimeters.
+00:09:47,655 --> 00:09:53,372
+Put everything over n. The two terms n 2 y bar 1 have opposite signs.
 
 48
-00:12:46,003 --> 00:12:54,707
-Under it is the x star axis. Its 0 is at x bar. Each step of 1 is one standard deviation of head size.
+00:09:53,822 --> 00:10:07,411
+They cancel. What is left is n 1 plus n 2, times y bar 0, over n. n 1 plus n 2 is n. So beta 0 hat is y bar 0, the mean of group 0.
 
 49
-00:12:55,157 --> 00:12:58,379
-The fitted line is the same line in both scales.
+00:10:07,861 --> 00:10:19,467
+This is the result. beta 0 hat is the mean of group 0. beta 1 hat is the difference of the two group means. The fitted line goes through both group means.
 
 50
-00:12:58,829 --> 00:13:24,386
-beta 1 C is the difference in mean brain weight between two populations whose head sizes differ by one sample standard deviation, s x. For these data, beta 1 C hat is 361.1 times 0.2608, which is 94.19 grams. beta 0 C is the mean of y at x equal to x bar.
+00:10:19,917 --> 00:10:43,703
+Here is a second way to do step 4. Write the least squares criterion S. For group 0, x i is 0, so each term is y i minus beta 0, squared. For group 1, x i is 1, so each term is y i minus beta 0 minus beta 1, squared. The gray line is one candidate line, with its distances.
 
 51
-00:13:24,836 --> 00:13:42,991
-Now fit Model C with the least squares formulas. The x star values have mean 0. Their S x x is S x x of x, over s x squared. This is n minus 1, because s x squared is S x x over n minus 1.
+00:10:44,153 --> 00:10:58,319
+Call beta 0 plus beta 1 by the name m. Then the first sum uses only beta 0, and the second sum uses only m. The labels in the picture show which parameter each group uses.
 
 52
-00:13:43,441 --> 00:14:00,422
-Each x star deviation is the x deviation over s x. So S x star y is S x y over s x. Divide. beta 1 C hat is s x times beta 1 hat. The estimates obey the same rule as the parameters.
+00:10:58,769 --> 00:11:09,094
+So we can make each sum a minimum on its own. Take the derivative with respect to beta 0. Only the first sum, group 0, has beta 0.
 
 53
-00:14:00,872 --> 00:14:12,093
-beta 0 C hat is y bar, minus beta 1 C hat times the mean of x star. That mean is 0. So beta 0 C hat is y bar.
+00:11:09,544 --> 00:11:23,453
+Set it to 0. The sum of the y i in group 0 equals n 1 beta 0 hat. Divide by n 1. beta 0 hat is y bar 0, which is 4.5 in the example.
 
 54
-00:14:12,543 --> 00:14:31,786
-Now the fitted values. y bar plus beta 1 hat times x i minus x bar is the Model A fitted value. So the two models have the same fitted values and the same residuals. The orange segments are equal in both plots. So sigma hat is also the same.
+00:11:23,903 --> 00:11:30,645
+The same steps for the second sum give m hat equal to y bar 1, which is 8 in the example.
 
 55
-00:14:32,236 --> 00:14:43,009
-Part c. The test of beta 1 equals 0 in Model A uses t A: beta 1 hat, over sigma hat over the square root of S x x.
+00:11:31,095 --> 00:11:42,999
+Then beta 1 hat is m hat minus beta 0 hat: y bar 1 minus y bar 0. The orange residuals are now the distances to the group means.
 
 56
-00:14:43,459 --> 00:15:02,489
-In Model C, sigma hat is the same, and S x x is n minus 1. So the standard error is sigma hat over the square root of n minus 1. Since n minus 1 is S x x over s x squared, this is s x times the standard error of Model A.
+00:11:43,449 --> 00:11:47,225
+This is the same answer. Use either way on the exam.
 
 57
-00:15:02,939 --> 00:15:12,539
-So t C is s x beta 1 hat, over s x times the standard error. The factor s x cancels. t C equals t A.
+00:11:47,675 --> 00:12:01,179
+Step 5 of card A: the t test, with the example. The fitted values are the group means. So each residual is y i minus its group mean. The picture shows the seven residuals.
 
 58
-00:15:12,989 --> 00:15:35,133
-Both statistics have a t distribution with n minus 2 degrees of freedom under the null hypothesis. The same value and the same distribution give the same p-value. So the two p-values are equal. Also, beta 1 C is 0 exactly when beta 1 is 0, so the two null hypotheses say the same thing.
+00:12:01,629 --> 00:12:07,303
+Square them and add. Group 0 gives 5. Group 1 gives 2. The sum is 7.
 
 59
-00:15:35,583 --> 00:15:49,407
-Check this with the brainhead data. Here is the Model A table from Lecture 3, page 45. The residual standard error is 72.35 on 234 degrees of freedom.
+00:12:07,753 --> 00:12:12,980
+Divide by n minus 2, which is 5. sigma hat squared is 1.4.
 
 60
-00:15:49,857 --> 00:16:17,099
-We fit Model C to the same data. The slope estimate is 94.19, which is 361.1 times 0.26082. The standard error is 4.720, which is 361.1 times 0.01307. The t value is 19.957 in both tables. So the p-values are equal.
+00:12:13,430 --> 00:12:31,734
+The standard error of beta 1 hat is sigma hat over the square root of S x x. The square root of 1.4, over the square root of 12 over 7, is 0.9037. The curve is the t density with 5 degrees of freedom.
 
 61
-00:16:17,549 --> 00:16:36,152
-The intercept rows are different. Model A tests whether the mean at x equal 0 is 0. Model C tests whether the mean at x bar is 0. These are different hypotheses, at different points on the line. So do not compare intercept tests between the two models.
+00:12:32,184 --> 00:12:45,816
+The t statistic is 3.5 minus 0, over 0.9037. This is 3.873. The blue areas show values at least this far from 0.
 
 62
-00:16:36,602 --> 00:16:51,194
-The confidence intervals agree too. The 95 percent interval for beta 1 C is s x times the interval for beta 1. Both intervals exclude 0. This agrees with the equal p-values.
+00:12:46,266 --> 00:13:04,762
+The critical value t 0.975 with 5 degrees of freedom is 2.571. On the exam, this quantile is given. 3.873 is larger. The red tails show the rejection region at the 5 percent level.
 
 63
-00:16:51,644 --> 00:17:02,396
-The same steps work for any linear change of x. This slide is a summary, and not on the slides. The blue ruler is head size in cubic centimeters.
+00:13:05,212 --> 00:13:17,948
+The two-sided p-value is 2 times the probability that T 5 is at least 3.873. It is 0.0117, less than 0.05.
 
 64
-00:17:02,846 --> 00:17:19,145
-Units of 100 cubic centimeters: x prime is x over 100. The slope is multiplied by 100: 26.08 grams per 100 cubic centimeters. The t value does not change.
+00:13:18,398 --> 00:13:39,390
+So we reject the null hypothesis at the 5 percent level. The data give evidence that the two group means are different. The orange box is optional, and not on the slides. 1 over S x x is 1 over n 1 plus 1 over n 2. So this regression test is the pooled two-sample t test.
 
 65
-00:17:19,595 --> 00:17:31,541
-The standardized x star from the assignment is x minus x bar, over s x. The slope is multiplied by s x. The t value again does not change.
+00:13:39,840 --> 00:13:54,944
+Section 3. Question type B changes the x variable to a new scale. Then it asks for the meaning of the new coefficients and for the p-values. Assignment 1, question 2, parts b and c, is of this type.
 
 66
-00:17:31,991 --> 00:17:57,677
-In general, for x prime equal to x minus a, over b, the slope and its standard error are multiplied by b. The t statistic keeps its size, so the two-sided p-value is the same. If b is negative, t changes sign. For example, swap the group codes 0 and 1 in Tutorial 2: the slope changes sign. The new intercept is the mean of y at x equal to a.
+00:13:55,394 --> 00:14:08,301
+Method card B has five steps. Step 1: solve the new variable for x. For the standardized x star, x i equals x bar plus s x times x i star.
 
 67
-00:17:58,127 --> 00:18:14,361
-To recap. With two groups coded 0 and 1, beta 0 is the mean of group 0, and beta 1 is the difference of the group means. The least squares estimates are y bar 0 and y bar 1 minus y bar 0.
+00:14:08,751 --> 00:14:21,871
+Step 2: put this into the mean, beta 0 plus beta 1 x i, and group the terms. This gives the new intercept and the new slope. The red and purple points are the two intercepts.
 
 68
-00:18:14,811 --> 00:18:22,619
-A test of no difference in means is the test of beta 1 equals 0, with n minus 2 degrees of freedom.
+00:14:22,321 --> 00:14:32,667
+Step 3: interpret the new slope. It is the change in mean y for one unit of x star. One unit of x star is s x units of x.
 
 69
-00:18:23,069 --> 00:18:35,805
-With a standardized x, beta 1 C is s x times beta 1: the mean difference per one standard deviation of x. beta 0 C is the mean of y at x bar.
+00:14:33,117 --> 00:14:47,048
+Step 4: the fitted values, the residuals, and sigma hat do not change. S x star x star is S x x over s x squared, so the standard error is multiplied by s x.
 
 70
-00:18:36,255 --> 00:18:52,383
-The fitted values and sigma hat do not change. The slope and its standard error are both multiplied by s x. So the t statistic and the p-value of the slope test are the same. This is the end of the Midterm 1 review.
+00:14:47,498 --> 00:14:57,269
+Step 5: the factor s x cancels in t. The degrees of freedom are n minus 2 in both models. So the p-value is the same.
+
+71
+00:14:57,719 --> 00:15:19,009
+Assignment 1, question 2, parts b and c. Model A is the usual model in x. Model C uses a new variable, x star. x star is x minus x bar, over s x. Part b asks for the meaning of beta 1 C. Part c compares the two p-values. Pause the video and try it.
+
+72
+00:15:19,459 --> 00:15:34,371
+Step 1 of card B: see x star as a new scale for x. The pictures use the brainhead data. x is head size in cubic centimeters. The x star ruler measures the same head sizes in a new unit.
+
+73
+00:15:34,821 --> 00:15:45,424
+At x equal to x bar, 3637.9, x star is 0. So x star is 0 at the centre of the data.
+
+74
+00:15:45,874 --> 00:16:03,197
+One step on the x star ruler is s x, which is 361.1 cubic centimeters. s x is the square root of S x x over n minus 1. So one unit of x star is one standard deviation of x.
+
+75
+00:16:03,647 --> 00:16:22,569
+Step 1 of card B. Solve the definition of x star for x. Multiply by s x and add x bar. x i equals x bar, plus s x times x i star. The picture shows the mean line of the brainhead data, with the x axis from 0.
+
+76
+00:16:23,019 --> 00:16:37,761
+Step 2. Put this x i into the mean of Model A. In Model A, the intercept beta 0 is the mean of y at x equal to 0. For head size, x equal to 0 is far outside the data.
+
+77
+00:16:38,211 --> 00:16:50,221
+Multiply out and group the terms. The constant term is beta 0 plus beta 1 x bar. This is the mean of y at x equal to x bar, the purple point.
+
+78
+00:16:50,671 --> 00:17:07,333
+Match the terms with Model C. The constant is the intercept of Model C. The coefficient of x i star, s x times beta 1, is the slope of Model C. The triangle shows it: the rise over a run of s x.
+
+79
+00:17:07,783 --> 00:17:12,945
+So both models describe the same mean line. Only the x scale changes.
+
+80
+00:17:13,395 --> 00:17:21,950
+Part b, step 3 of card B. Here is the brainhead scatter plot. The x axis is head size in cubic centimeters.
+
+81
+00:17:22,400 --> 00:17:31,104
+Under it is the x star axis. Its 0 is at x bar. Each step of 1 is one standard deviation of head size.
+
+82
+00:17:31,554 --> 00:17:34,775
+The fitted line is the same line in both scales.
+
+83
+00:17:35,225 --> 00:18:02,681
+beta 1 C is the difference in mean brain weight between two populations whose head sizes differ by one sample standard deviation, s x. For these data, beta 1 C hat is s x times beta 1 hat: 361.13 times 0.26082, which is 94.19 grams. beta 0 C is the mean of y at x equal to x bar.
+
+84
+00:18:03,131 --> 00:18:16,123
+Step 4 of card B: fit Model C with the least squares formulas. Line 1: the x star values have mean 0. The bottom panel shows Model C, with 0 at the centre.
+
+85
+00:18:16,573 --> 00:18:28,691
+Line 2: S x star x star is S x x over s x squared. This is n minus 1, because s x squared is S x x over n minus 1.
+
+86
+00:18:29,141 --> 00:18:38,698
+Line 3: each x star deviation is the x deviation over s x. So S x star y is S x y over s x.
+
+87
+00:18:39,148 --> 00:18:51,927
+Line 4: divide. beta 1 C hat is s x times beta 1 hat, 94.19 for the brainhead data. The estimates follow the same rule as the parameters.
+
+88
+00:18:52,377 --> 00:19:07,694
+Line 5: beta 0 C hat is y bar, minus beta 1 C hat times the mean of x star. That mean is 0. So beta 0 C hat is y bar, 1284.3.
+
+89
+00:19:08,144 --> 00:19:21,051
+Line 6: the fitted values. y bar plus beta 1 hat times x i minus x bar is the Model A fitted value. The orange residuals are equal in both panels.
+
+90
+00:19:21,501 --> 00:19:34,045
+So the two models have the same fitted values and the same residuals. So sigma hat is also the same: 72.35 on 234 degrees of freedom.
+
+91
+00:19:34,495 --> 00:19:46,911
+Part c, step 5 of card B. The test of beta 1 equals 0 in Model A uses t A: beta 1 hat, over sigma hat over the square root of S x x.
+
+92
+00:19:47,361 --> 00:20:01,483
+Step 4 first: the standard error in Model C. sigma hat is the same, and S x star x star is n minus 1. So the standard error is sigma hat over the square root of n minus 1.
+
+93
+00:20:01,933 --> 00:20:12,536
+n minus 1 is S x x over s x squared. Put it in. The standard error is s x sigma hat, over the square root of S x x.
+
+94
+00:20:12,986 --> 00:20:24,442
+sigma hat over the square root of S x x is the standard error of Model A. So the Model C standard error is s x times the Model A standard error.
+
+95
+00:20:24,892 --> 00:20:36,540
+Step 5. t C is beta 1 C hat over its standard error. The top is s x times beta 1 hat. The bottom is s x times the standard error.
+
+96
+00:20:36,990 --> 00:20:40,745
+The factor s x cancels. t C equals t A.
+
+97
+00:20:41,195 --> 00:21:01,248
+Both statistics have a t distribution with n minus 2 degrees of freedom under the null hypothesis. The same value and the same distribution give the same p-value. Also, beta 1 C is 0 exactly when beta 1 is 0, so the two null hypotheses say the same thing.
+
+98
+00:21:01,698 --> 00:21:19,575
+Check this with the brainhead data. Here is the Model A table from Lecture 3, page 45. The residual standard error is 72.35 on 234 degrees of freedom. Step 4 of the card says it is the same in Model C.
+
+99
+00:21:20,025 --> 00:21:47,524
+We fit Model C to the same data. The slope estimate is 94.19, which is 361.13 times 0.26082. The standard error is 4.720, which is 361.13 times 0.01307. The t value is 19.957 in both tables. So the p-values are equal.
+
+100
+00:21:47,974 --> 00:22:08,710
+The intercept rows are different. Model A tests whether the mean at x equal 0 is 0, the red point. Model C tests whether the mean at x bar is 0, the purple point. These are different hypotheses, at different points on the line. So each intercept test answers its own question.
+
+101
+00:22:09,160 --> 00:22:23,752
+The confidence intervals agree too. The 95 percent interval for beta 1 C is s x times the interval for beta 1. Both intervals exclude 0. This agrees with the equal p-values.
+
+102
+00:22:24,202 --> 00:22:35,125
+The same card works for any linear change of x. This slide is a summary, and not on the slides. The blue ruler is head size in cubic centimeters.
+
+103
+00:22:35,575 --> 00:22:55,841
+Units of 100 cubic centimeters: x prime is x over 100. One unit of x prime is 100 units of x. So the slope is multiplied by 100: 26.08 grams per 100 cubic centimeters. The t value does not change.
+
+104
+00:22:56,291 --> 00:23:08,238
+The standardized x star from the assignment is x minus x bar, over s x. The slope is multiplied by s x. The t value again does not change.
+
+105
+00:23:08,688 --> 00:23:34,373
+In general, for x prime equal to x minus a, over b, the slope and its standard error are multiplied by b. The t statistic keeps its size, so the two-sided p-value is the same. If b is negative, t changes sign. For example, swap the group codes 0 and 1 in Tutorial 2: the slope changes sign. The new intercept is the mean of y at x equal to a.
+
+106
+00:23:34,823 --> 00:23:46,599
+Section 4. Question type C gives a test result and asks about the confidence interval, or the reverse. Assignment 1, question 2, part a, is of this type.
+
+107
+00:23:47,049 --> 00:24:06,079
+Method card C has four steps. Step 1: at level 0.05, we reject the null hypothesis beta 1 equals 0 when the absolute value of t is larger than t 0.975 with n minus 2 degrees of freedom.
+
+108
+00:24:06,529 --> 00:24:16,171
+Step 2: multiply both sides by the standard error. The left side becomes the absolute value of beta 1 hat minus 0.
+
+109
+00:24:16,621 --> 00:24:29,784
+Step 3: read the two sides on the number line. The left side is the distance from 0 to beta 1 hat. The right side is the half-width of the 95 percent confidence interval.
+
+110
+00:24:30,234 --> 00:24:39,429
+Step 4: so we reject at level 0.05 exactly when 0 is outside the 95 percent confidence interval.
+
+111
+00:24:39,879 --> 00:24:57,756
+Assignment 1, question 2, part a. A two-sided test of beta 1 equals 0 rejects at the 0.05 level. Pause the video and try it. Step 1 of card C: the rejection means the absolute t is larger than the quantile.
+
+112
+00:24:58,206 --> 00:25:05,950
+Step 2: multiply both sides by the standard error. It is positive, so the inequality keeps its direction.
+
+113
+00:25:06,400 --> 00:25:16,661
+Step 3: the left side is the distance from 0 to the centre of the interval. The right side is the half-width. So 0 is outside the interval.
+
+114
+00:25:17,111 --> 00:25:24,642
+Step 4, the answer: the 95 percent confidence interval for beta 1 does not contain 0.
+
+115
+00:25:25,092 --> 00:25:47,855
+Check with the two-group example. The half-width is 2.571 times 0.9037, which is 2.323. The interval is 1.177 to 5.823. It does not contain 0, and t, 3.873, is larger than 2.571.
+
+116
+00:25:48,305 --> 00:26:04,945
+Check with the brainhead data. t is 19.957, larger than 1.970. The interval is 0.2351 to 0.2866. It does not contain 0 either.
+
+117
+00:26:05,395 --> 00:26:29,139
+To recap. Card A, two groups coded 0 and 1. beta 0 is the mean of group 0, and beta 1 is the difference of the group means. The least squares estimates are y bar 0 and y bar 1 minus y bar 0. A test of no difference is the t test of beta 1 equals 0, with n minus 2 degrees of freedom.
+
+118
+00:26:29,589 --> 00:26:51,754
+Card B, a new scale for x. With a standardized x, beta 1 C is s x times beta 1: the mean difference per one standard deviation of x. The fitted values and sigma hat do not change. The slope and its standard error are both multiplied by s x, so t and the p-value do not change.
+
+119
+00:26:52,204 --> 00:27:08,268
+Card C, a test and a confidence interval. A two-sided test rejects at level 0.05 exactly when 0 is outside the 95 percent interval. This is the end of the Midterm 1 review.

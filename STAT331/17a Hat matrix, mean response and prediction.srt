@@ -3,209 +3,501 @@
 This is STAT 331, video 17 a. The topic is the hat matrix, the mean response, and prediction in multiple linear regression.
 
 2
-00:00:10,989 --> 00:00:33,325
-After this video, you can write the fitted values and the residuals with the hat matrix. You can derive their means and variances. You can build a confidence interval for a mean response, and a prediction interval for a new response. Video 17 b continues with the satisfaction example and the three practice questions of Lecture 8.
+00:00:10,989 --> 00:00:17,431
+This video prepares you for two question types. Each type gets a method card and worked problems.
 
 3
-00:00:33,775 --> 00:00:37,700
-Start with the model. y is a vector of n responses.
+00:00:17,881 --> 00:00:26,415
+Type A: find the mean and the variance of the fitted values, the residuals, an estimated mean response, and a prediction.
 
 4
-00:00:38,150 --> 00:00:49,713
-X is the design matrix. It has n rows and p plus 1 columns. The first column is all ones. Beta is the vector of p plus 1 coefficients.
+00:00:26,865 --> 00:00:33,777
+Type B: build a confidence interval for a mean response, and a prediction interval for a new response.
 
 5
-00:00:50,163 --> 00:01:00,275
-Epsilon is the vector of n errors. The errors are multivariate normal, with mean 0 and variance sigma squared times the identity.
+00:00:34,227 --> 00:00:44,573
+Video 17 b uses these results for three more types: questions on regression output, and practice questions 2 and 3 of Lecture 8.
 
 6
-00:01:00,725 --> 00:01:15,381
-The least squares estimator is beta hat equals X transpose X inverse, times X transpose y. Beta hat is normal, with mean beta and variance sigma squared times X transpose X inverse.
+00:00:45,023 --> 00:00:48,949
+Start with the model. y is a vector of n responses.
 
 7
-00:01:15,831 --> 00:01:27,116
-Also, beta hat and the residual vector e are independent. And y is multivariate normal with mean X beta. This video uses only these facts.
+00:00:49,399 --> 00:01:00,535
+X is the design matrix, with n rows and p plus 1 columns. Its first column is all ones. Beta is the vector of p plus 1 coefficients.
 
 8
-00:01:27,566 --> 00:01:40,302
-The fitted values are y hat equals X times beta hat. Put in the formula for beta hat. y hat is X, times X transpose X inverse, times X transpose y.
+00:01:00,985 --> 00:01:10,499
+Epsilon is the vector of n errors. It is multivariate normal, with mean 0 and variance sigma squared times the identity.
 
 9
-00:01:40,752 --> 00:01:57,136
-Move the brackets. y hat equals a matrix times y. The matrix is X, times X transpose X inverse, times X transpose. Its shape is n by n. We call it H, the hat matrix. H puts the hat on y.
+00:01:10,949 --> 00:01:18,245
+The least squares estimator is beta hat equals X transpose X inverse, times X transpose y.
 
 10
-00:01:57,586 --> 00:02:09,170
-The residuals are e equals y minus y hat. That is y minus H y. Take y out as a common factor: e equals I minus H, times y.
+00:01:18,695 --> 00:01:34,717
+From the last videos: beta hat is multivariate normal, with mean beta and variance sigma squared times X transpose X inverse. And y is multivariate normal, with mean X beta and variance sigma squared I.
 
 11
-00:02:09,620 --> 00:02:20,223
-So y splits into two parts. H y is the fitted part. I minus H, times y, is the residual part. The two parts add back to y.
+00:01:35,167 --> 00:01:46,217
+This video answers two questions. What are the mean and the variance of the fitted values and the residuals? And how sure is an estimate at new covariate values?
 
 12
-00:02:20,673 --> 00:02:36,331
-This picture is optional. It is not on the slides, but it shows what H does. Think of y as one point in n dimensions. The purple plane is every vector X times b, for any b. It is the column space of X.
+00:01:46,667 --> 00:01:53,579
+The fitted values are y hat equals X times beta hat. This is line 1 of slide 24.
 
 13
-00:02:36,781 --> 00:02:41,133
-y is the blue vector. In general, y is not in the plane.
+00:01:54,029 --> 00:02:03,267
+Put in the formula for beta hat: X transpose X inverse, times X transpose y. The picture shows the three matrices.
 
 14
-00:02:41,583 --> 00:02:55,343
-y hat equals X beta hat. So y hat is in the plane. Least squares picks the point of the plane that is nearest to y. H y is that point. So H is a projection onto the plane.
+00:02:03,717 --> 00:02:11,418
+Move the brackets. A product of matrices can be grouped in any way. So y hat is one matrix times y.
 
 15
-00:02:55,793 --> 00:03:06,481
-The residual e goes from y hat to y. It is perpendicular to the plane. This is the normal equations: X transpose e equals 0.
+00:02:11,868 --> 00:02:24,369
+This matrix is X, times X transpose X inverse, times X transpose. Its size is n by n. We call it H, the hat matrix, because it puts the hat on y.
 
 16
-00:03:06,931 --> 00:03:17,705
-If a vector is already in the plane, the projection does not change it. So H times y hat equals y hat. The next slide proves this with algebra.
+00:02:24,819 --> 00:02:32,286
+The residuals are e equals y minus y hat. Put in line 4: e equals y minus H y.
 
 17
-00:03:18,155 --> 00:03:33,344
-Fact 1. H is symmetric. The transpose of a product is the product of the transposes, in reverse order. X transpose X is symmetric, so its inverse is symmetric too. So H transpose equals H.
+00:02:32,736 --> 00:02:40,352
+Take y out as a common factor. y equals I times y, so e equals I minus H, times y.
 
 18
-00:03:33,794 --> 00:03:52,674
-Fact 2. H is idempotent. H times H equals H. Write out H twice. In the middle, X transpose X inverse times X transpose X is the identity. What is left is H. In the picture, projecting twice is the same as projecting once.
+00:02:40,802 --> 00:02:52,066
+So y splits into two parts: H y, the fitted part, and I minus H times y, the residual part. Type A uses these two forms in step 1.
 
 19
-00:03:53,124 --> 00:04:02,084
-Fact 3. I minus H is symmetric. Its transpose is I transpose minus H transpose. That is I minus H.
+00:02:52,516 --> 00:03:07,343
+This picture is optional. It is not on the slides, but it shows what H does. Think of y as one point in n dimensions. The purple plane is every vector X times b. It is the column space of X.
 
 20
-00:04:02,534 --> 00:04:22,182
-Fact 4. I minus H is idempotent. Multiply out. I times I is I. The two cross terms give minus 2 H. H times H is H. So the result is I minus 2 H plus H, which is I minus H. We use these four facts on the next slides.
+00:03:07,793 --> 00:03:12,145
+y is the blue vector. In general, y is not in the plane.
 
 21
-00:04:22,632 --> 00:04:31,293
-The mean of y hat. H is a constant matrix. So the expectation of H y is H times the expectation of y.
+00:03:12,595 --> 00:03:26,227
+y hat equals X beta hat, so y hat is in the plane. Least squares picks the point of the plane that is nearest to y. H y is that point. So H projects y onto the plane.
 
 22
-00:04:31,743 --> 00:04:47,637
-The expectation of y is X beta. Then X transpose X inverse, times X transpose X, is the identity. So the mean of y hat is X beta. The fitted values are unbiased for the true mean responses.
+00:03:26,677 --> 00:03:37,237
+The residual e goes from y hat to y. It is perpendicular to the plane. These are the normal equations: X transpose e equals 0.
 
 23
-00:04:48,087 --> 00:05:01,313
-The variance of y hat. For a constant matrix A, the variance of A y is A, times the variance of y, times A transpose. The picture shows the three n by n matrices.
+00:03:37,687 --> 00:03:48,396
+A vector in the plane does not change when we project it. So H times y hat equals y hat. The next slides prove the facts about H with algebra.
 
 24
-00:05:01,763 --> 00:05:18,041
-The variance of y is sigma squared times I. H transpose equals H, because H is symmetric. Then H times H equals H, because H is idempotent. So the variance of y hat is sigma squared times H.
+00:03:48,846 --> 00:03:59,257
+Fact 1 on slide 25: H is symmetric. Pause the video and try it. Start with H transpose. Write out the definition of H.
 
 25
-00:05:18,491 --> 00:05:27,045
-The mean of e. I minus H is a constant matrix. So the expectation of e is I minus H, times X beta.
+00:03:59,707 --> 00:04:05,061
+The transpose of a product is the product of the transposes, in reverse order.
 
 26
-00:05:27,495 --> 00:05:38,887
-Multiply out. X beta minus H X beta. And H X equals X, by the same cancellation as before. So the mean of e is the zero vector.
+00:04:05,511 --> 00:04:12,829
+The transpose of X transpose is X. The transpose of an inverse is the inverse of the transpose.
 
 27
-00:05:39,337 --> 00:05:47,273
-The variance of e. Use the same rule: the matrix, times the variance of y, times the matrix transpose.
+00:04:13,279 --> 00:04:18,761
+X transpose X is symmetric: its transpose is X transpose X again.
 
 28
-00:05:47,723 --> 00:05:58,390
-The variance of y is sigma squared I. I minus H is symmetric and idempotent. So the variance of e is sigma squared times I minus H.
+00:04:19,211 --> 00:04:25,718
+So H transpose equals X, X transpose X inverse, X transpose. That is H.
 
 29
-00:05:58,840 --> 00:06:15,672
-Look at one observation. The diagonal entry h i i of H gives the variance of one fitted value: sigma squared times h i i. The green bars show h i i for the 46 patients of the satisfaction data.
+00:04:26,168 --> 00:04:36,899
+Check it on a small example, not from the slides. X has a column of ones and x equals 1, 2, 3, 4. This is its 4 by 4 hat matrix.
 
 30
-00:06:16,122 --> 00:06:27,791
-The diagonal of I minus H is 1 minus h i i. So the variance of one residual is sigma squared times 1 minus h i i. The orange parts show it.
+00:04:37,349 --> 00:04:49,445
+The mirror entries are equal. Row 1, column 2 and row 2, column 1 are both 0.4. So H is symmetric. Type A uses this fact in step 4.
 
 31
-00:06:28,241 --> 00:06:46,460
-Each bar adds to 1. Here h i i is between 0.027 and 0.186. So the residuals vary less than the true errors. Also, the residuals are not independent, because I minus H is not diagonal.
+00:04:49,895 --> 00:04:58,193
+Fact 2: H is idempotent. That means H times H equals H. Pause the video and try it. Write H twice.
 
 32
-00:06:46,910 --> 00:07:06,131
-Now pick any covariate values. Put them in a row vector x 0. Its first entry is 1, for the intercept. The mean response at x 0 is mu 0, equals x 0 times beta. We estimate it with mu 0 hat, equals x 0 times beta hat.
+00:04:58,643 --> 00:05:04,787
+Group the two middle matrices: X transpose X inverse, times X transpose X.
 
 33
-00:07:06,581 --> 00:07:20,192
-The mean. x 0 is a constant. So the expectation of mu 0 hat is x 0 times the expectation of beta hat. That is x 0 beta. So mu 0 hat is unbiased.
+00:05:05,237 --> 00:05:08,437
+An inverse times its matrix is the identity.
 
 34
-00:07:20,642 --> 00:07:39,309
-The variance. Use the same rule. x 0, times the variance of beta hat, times x 0 transpose. The shapes are 1 by p plus 1, then p plus 1 by p plus 1, then p plus 1 by 1. The result is 1 by 1: one number.
+00:05:08,887 --> 00:05:16,269
+X times I is X. What is left is X, X transpose X inverse, X transpose. That is H.
 
 35
-00:07:39,759 --> 00:07:52,153
-Put in the variance of beta hat. The variance of mu 0 hat is sigma squared, times x 0, times X transpose X inverse, times x 0 transpose.
+00:05:16,719 --> 00:05:20,047
+Check it on the small example. Here is H again.
 
 36
-00:07:52,603 --> 00:08:05,041
-mu 0 hat is a linear combination of normal variables, so it is normal. Subtract its mean and divide by its standard deviation. The result is standard normal.
+00:05:20,497 --> 00:05:50,342
+Entry 1 1 of H times H is row 1 times column 1. 0.7 times 0.7, plus 0.4 times 0.4, plus 0.1 times 0.1, plus minus 0.2 times minus 0.2. That is 0.49 plus 0.16 plus 0.01 plus 0.04, which is 0.70. This is entry 1 1 of H.
 
 37
-00:08:05,491 --> 00:08:21,277
-sigma is unknown. Replace it with sigma hat, the square root of the unbiased estimator. By the same logic as for one coefficient, the result has a t distribution with n minus p plus 1 degrees of freedom.
+00:05:50,792 --> 00:05:59,155
+So H times H equals H. In the picture of the last slide: to project twice is the same as to project once.
 
 38
-00:08:21,727 --> 00:08:38,602
-So a 100 times 1 minus alpha percent confidence interval is mu 0 hat, plus or minus the t quantile, times sigma hat, times the square root of x 0, X transpose X inverse, x 0 transpose.
+00:05:59,605 --> 00:06:08,949
+Facts 3 and 4 are about I minus H. Pause the video and try them. The transpose of a difference is the difference of the transposes.
 
 39
-00:08:39,052 --> 00:08:52,620
-The picture shows the t distribution with 42 degrees of freedom, for the satisfaction data. The middle 95 percent lies between minus 2.018 and 2.018.
+00:06:09,399 --> 00:06:22,412
+The identity is symmetric, and H is symmetric by fact 1. So I minus H is symmetric. In the small example, the mirror entries of I minus H are both minus 0.4.
 
 40
-00:08:53,070 --> 00:09:16,153
-Example. Age and Stress are at their means, and Severity is 51.5. The standard error is sigma hat, 10.06, times the square root of 0.0245. That is 1.57. The t quantiles map to the interval: multiply by the standard error, and add the estimate.
+00:06:22,862 --> 00:06:31,545
+Now multiply I minus H by itself. Multiply out: I I, minus I H, minus H I, plus H H.
 
 41
-00:09:16,603 --> 00:09:30,043
-mu 0 hat is 61.09. The 95 percent confidence interval is 57.92 to 64.27. This matches the slide.
+00:06:31,995 --> 00:06:41,488
+I times H and H times I are both H. H times H is H, by fact 2. So we get I, minus 2 H, plus H.
 
 42
-00:09:30,493 --> 00:09:43,506
-Now we want to predict one new response, not its mean. A new observation with covariate row x new is y new equals x new times beta, plus its own error epsilon new.
+00:06:41,938 --> 00:07:05,661
+Minus 2 H plus H is minus H. So I minus H, times itself, is I minus H. In the example, row 1 times column 1 is 0.09 plus 0.16 plus 0.01 plus 0.04, which is 0.30. That is entry 1 1 of I minus H.
 
 43
-00:09:43,956 --> 00:09:51,636
-The prediction is y new hat, equals x new times beta hat. Its expectation is x new times beta.
+00:07:06,111 --> 00:07:12,297
+These are the four facts about the hat matrix. Type A uses them in step 4, to simplify.
 
 44
-00:09:52,086 --> 00:10:04,545
-Its variance has the same form as before: sigma squared, times x new, X transpose X inverse, x new transpose. The shapes are the same as for the mean response.
+00:07:12,747 --> 00:07:24,886
+Section 2. Question type A asks for the mean and the variance of a fitted value, a residual, or an estimate. Lecture 8 does it on slides 27 to 41.
 
 45
-00:10:04,995 --> 00:10:17,987
-So y new hat is the same number as mu 0 hat. But the target is different. y new is a random variable. It has its own error, epsilon new. So the interval must be wider.
+00:07:25,336 --> 00:07:35,000
+Method card A has four steps. Step 1: write the quantity as a constant matrix A times a random vector, y or beta hat.
 
 46
-00:10:18,437 --> 00:10:33,007
-Why are y new and y new hat independent? y new hat is a function of the old data y only. The green curve is its estimation error. Here we use the satisfaction numbers at Severity 62.
+00:07:35,450 --> 00:07:45,605
+Step 2: the mean. A constant matrix comes out of the expectation. Then put in the mean of y, X beta, or the mean of beta hat, beta.
 
 47
-00:10:33,457 --> 00:10:48,775
-y new depends on epsilon new. The new error is independent of the old errors. So y new and y new hat are independent. Both are normal. The orange curve is the new error. Its variance is sigma squared.
+00:07:46,055 --> 00:08:00,924
+Step 3: the variance. The variance of A y is A, times the variance of y, times A transpose. The picture shows the sizes. Put in sigma squared I, or sigma squared X transpose X inverse.
 
 48
-00:10:49,225 --> 00:10:57,886
-So the difference y new minus y new hat is normal. Its mean is x new beta minus x new beta, which is 0.
+00:08:01,374 --> 00:08:09,843
+Step 4: simplify with X transpose X inverse times X transpose X equals I, and with the facts about H.
 
 49
-00:10:58,336 --> 00:11:12,565
-For independent variables, the variances add. sigma squared, plus sigma squared times x new, X transpose X inverse, x new transpose. The purple curve is the sum. It is wider than both.
+00:08:10,293 --> 00:08:13,195
+Now we use the card for the fitted values.
 
 50
-00:11:13,015 --> 00:11:30,146
-Divide by its standard deviation, and replace sigma with sigma hat. The result has a t distribution with n minus p plus 1 degrees of freedom. sigma squared is a common factor, so we get the square root of 1 plus the quadratic form.
+00:08:13,645 --> 00:08:26,679
+Now a worked problem of type A, from slides 27 to 29. Pause the video and try it. Step 1 of card A: y hat equals H y. So the constant matrix is H.
 
 51
-00:11:30,596 --> 00:11:49,071
-So a 100 times 1 minus alpha percent prediction interval is y new hat, plus or minus the t quantile, times sigma hat, times the square root of 1 plus x new, X transpose X inverse, x new transpose. The 1 is the new error.
+00:08:27,129 --> 00:08:34,532
+Step 2: the mean. H is a constant, so it comes out. The mean of y hat is H times the mean of y.
 
 52
-00:11:49,521 --> 00:12:04,710
-To recap part a. The hat matrix maps y to the fitted values, and I minus H maps y to the residuals. Both are symmetric and idempotent. From this we get the means and variances of y hat and e.
+00:08:34,982 --> 00:08:38,225
+Put in the mean of y, X beta, and write out H.
 
 53
-00:12:05,160 --> 00:12:26,451
-The confidence interval for a mean response and the prediction interval for a new response have the same center. The prediction interval has an extra 1 under the square root, for the new error. So it is always wider. Video 17 b uses these intervals on the satisfaction data, and solves the practice questions.
+00:08:38,675 --> 00:08:55,187
+Step 4: simplify. X transpose X inverse, times X transpose X, is I. So the mean of y hat is X beta. In the picture, X beta is in the plane, so H does not change it. The fitted values are unbiased.
+
+54
+00:08:55,637 --> 00:09:05,002
+Step 3: the variance. H, times the variance of y, times H transpose. The picture shows three n by n matrices.
+
+55
+00:09:05,452 --> 00:09:11,127
+The variance of y is sigma squared I. H transpose is H, by fact 1.
+
+56
+00:09:11,577 --> 00:09:22,414
+Step 4: sigma squared is a number, so it moves to the front. H times H is H, by fact 2. So the variance of y hat is sigma squared H.
+
+57
+00:09:22,864 --> 00:09:28,560
+The results: the mean of y hat is X beta, and its variance is sigma squared H.
+
+58
+00:09:29,010 --> 00:09:38,909
+The same card for the residuals, slides 30 to 32. Pause the video and try it. Step 1: e equals I minus H, times y.
+
+59
+00:09:39,359 --> 00:09:43,540
+Step 2: I minus H is constant, so it comes out of the mean.
+
+60
+00:09:43,990 --> 00:09:47,574
+Write out H, and put in the mean of y, X beta.
+
+61
+00:09:48,024 --> 00:09:54,872
+Multiply out: X beta, minus X, X transpose X inverse, X transpose X, beta.
+
+62
+00:09:55,322 --> 00:10:09,061
+Step 4: X transpose X inverse times X transpose X is I. So we get X beta minus X beta, which is the zero vector. In the picture, H does not change X beta.
+
+63
+00:10:09,511 --> 00:10:16,657
+Step 3: the variance. I minus H, times the variance of y, times I minus H transpose.
+
+64
+00:10:17,107 --> 00:10:22,142
+The variance of y is sigma squared I. Sigma squared moves to the front.
+
+65
+00:10:22,592 --> 00:10:27,584
+Step 4: by fact 3, I minus H transpose is I minus H.
+
+66
+00:10:28,034 --> 00:10:37,399
+By fact 4, I minus H times I minus H is I minus H. So the variance of e is sigma squared times I minus H.
+
+67
+00:10:37,849 --> 00:10:44,121
+The results: the residuals have mean zero, and variance sigma squared times I minus H.
+
+68
+00:10:44,571 --> 00:11:02,662
+One observation uses one diagonal entry. Entry i i of sigma squared H is the variance of one fitted value: sigma squared times h i i. The green bars show h i i for the 46 patients of the satisfaction data.
+
+69
+00:11:03,112 --> 00:11:17,171
+The diagonal entry of I minus H is 1 minus h i i. So the variance of one residual is sigma squared times 1 minus h i i. The orange parts show it. Each bar adds to 1.
+
+70
+00:11:17,621 --> 00:11:34,986
+Here h i i is between 0.027 and 0.186. So each residual has a smaller variance than the true error. Also, the residuals are not independent, because I minus H is not diagonal.
+
+71
+00:11:35,436 --> 00:11:57,644
+Section 3. Now pick any covariate values, and put them in a row vector x 0. Its first entry is 1, for the intercept. The mean response is mu 0 equals x 0 beta. We estimate it with mu 0 hat equals x 0 beta hat. This is step 1 of card A, with beta hat as the random vector.
+
+72
+00:11:58,094 --> 00:12:02,147
+Step 2: x 0 is a constant, so it comes out of the mean.
+
+73
+00:12:02,597 --> 00:12:11,813
+The mean of beta hat is beta. So the mean of mu 0 hat is x 0 beta, which is mu 0. The estimate is unbiased.
+
+74
+00:12:12,263 --> 00:12:27,431
+Step 3: the variance is x 0, times the variance of beta hat, times x 0 transpose. The sizes are 1 by p plus 1, p plus 1 by p plus 1, and p plus 1 by 1.
+
+75
+00:12:27,881 --> 00:12:33,513
+Put in the variance of beta hat: sigma squared times X transpose X inverse.
+
+76
+00:12:33,963 --> 00:12:41,622
+Step 4: sigma squared is a number, so it moves to the front. The result is a 1 by 1 matrix: one number.
+
+77
+00:12:42,072 --> 00:12:55,491
+The results: mu 0 hat is unbiased, and its variance is sigma squared times x 0, X transpose X inverse, x 0 transpose. Type B uses this variance.
+
+78
+00:12:55,941 --> 00:13:08,015
+Slide 38 builds the interval. mu 0 hat is a linear function of the normal vector beta hat, so it is normal. Its mean and variance come from the last slide.
+
+79
+00:13:08,465 --> 00:13:16,316
+Subtract the mean and divide by the standard deviation. The result is standard normal. The gray curve shows it.
+
+80
+00:13:16,766 --> 00:13:32,873
+Sigma is unknown. Replace it with sigma hat. By the same logic as for one coefficient, the result has a t distribution with n minus p plus 1 degrees of freedom. For the satisfaction data, that is 42.
+
+81
+00:13:33,323 --> 00:13:42,048
+The middle area between minus t and t is 1 minus alpha. Here t is the 1 minus alpha over 2 quantile.
+
+82
+00:13:42,498 --> 00:13:57,367
+Solve the two inequalities for mu 0. The interval is mu 0 hat, plus or minus t, times sigma hat, times the square root of x 0, X transpose X inverse, x 0 transpose.
+
+83
+00:13:57,817 --> 00:14:02,617
+This is the confidence interval for a mean response. Type B uses it.
+
+84
+00:14:03,067 --> 00:14:13,307
+Question type B asks for a confidence interval for a mean response, or a prediction interval for a new response. Method card B has six steps.
+
+85
+00:14:13,757 --> 00:14:21,864
+Step 1: write the row vector x 0. The first entry is 1, for the intercept. Then the covariate values.
+
+86
+00:14:22,314 --> 00:14:29,567
+Step 2: the estimate is x 0 times beta hat. A prediction for a new response is the same number.
+
+87
+00:14:30,017 --> 00:14:38,807
+Step 3: compute h, the number x 0, X transpose X inverse, x 0 transpose. In the course, R computes it.
+
+88
+00:14:39,257 --> 00:14:55,171
+Step 4: the standard error. For a confidence interval, it is sigma hat times the square root of h. For a prediction interval, it is sigma hat times the square root of 1 plus h. The prediction part comes later in this video.
+
+89
+00:14:55,621 --> 00:15:03,429
+Step 5: the t quantile, 1 minus alpha over 2, with n minus p plus 1 degrees of freedom.
+
+90
+00:15:03,879 --> 00:15:09,810
+Step 6: the interval is the estimate, plus or minus t times the standard error.
+
+91
+00:15:10,260 --> 00:15:29,481
+Now a worked problem of type B, from slide 46. Pause the video and try it. The model is satisfaction on age, severity and stress, with 46 patients. Find a 95 percent confidence interval for the mean satisfaction at these covariate values.
+
+92
+00:15:29,931 --> 00:15:42,219
+Step 1 of card B: the row vector x 0. It is 1, then age 38.391, severity 51.5, and stress 2.287.
+
+93
+00:15:42,669 --> 00:15:52,653
+Step 2: x 0 times beta hat. Multiply each entry of x 0 by its coefficient. The coefficients are in the given box.
+
+94
+00:15:53,103 --> 00:16:13,093
+The products are minus 43.828, minus 22.763, and minus 30.806. Add them to 158.491. mu 0 hat is 61.094. The dot on the number line shows it.
+
+95
+00:16:13,543 --> 00:16:23,228
+Step 3: h. The computer gives x 0, X transpose X inverse, x 0 transpose: 0.02445.
+
+96
+00:16:23,678 --> 00:16:42,515
+Step 4: a confidence interval uses the square root of h. The square root of 0.02445 is 0.1564. Times sigma hat, 10.058, gives a standard error of 1.573.
+
+97
+00:16:42,965 --> 00:16:54,528
+Step 5: alpha is 0.05. The degrees of freedom are 46 minus 4, which is 42. The t quantile is 2.018.
+
+98
+00:16:54,978 --> 00:17:09,229
+Step 6: 2.018 times 1.573 is 3.174. So the interval is 61.094 plus or minus 3.174.
+
+99
+00:17:09,679 --> 00:17:19,087
+The interval is 57.92 to 64.27. This matches row 3 of the table on slide 46.
+
+100
+00:17:19,537 --> 00:17:32,422
+Section 4. Now we predict one new response, not its mean. A new observation with covariate row x new is y new equals x new beta, plus its own error, epsilon new.
+
+101
+00:17:32,872 --> 00:17:39,336
+The prediction is y new hat, equals x new times beta hat. This is step 1 of card A.
+
+102
+00:17:39,786 --> 00:17:43,498
+Step 2: the mean of y new hat is x new times beta.
+
+103
+00:17:43,948 --> 00:17:54,572
+Step 3: the variance is x new, times the variance of beta hat, times x new transpose. The sizes are the same as for the mean response.
+
+104
+00:17:55,022 --> 00:18:02,489
+Step 4: the variance is sigma squared times x new, X transpose X inverse, x new transpose.
+
+105
+00:18:02,939 --> 00:18:13,435
+So y new hat is the same number as mu 0 hat. But the target is different. y new is random, with its own error. So its interval must be wider.
+
+106
+00:18:13,885 --> 00:18:30,354
+Slide 42 says: y new and y new hat are independent and normal. Why? y new hat is a function of the old data y only. The green curve is its error, with standard deviation 5.9 at severity 62.
+
+107
+00:18:30,804 --> 00:18:45,865
+y new depends on epsilon new. The new error is independent of the old errors. So y new and y new hat are independent. The orange curve is the new error, with standard deviation sigma, here 10.1.
+
+108
+00:18:46,315 --> 00:18:53,718
+The mean of the difference y new minus y new hat is x new beta minus x new beta, which is 0.
+
+109
+00:18:54,168 --> 00:18:57,389
+For independent variables, the variances add.
+
+110
+00:18:57,839 --> 00:19:19,279
+The variance of y new is the variance of epsilon new: sigma squared. So the variance of the difference is sigma squared, plus sigma squared times x new, X transpose X inverse, x new transpose. The purple curve is the sum. Its standard deviation is 11.7, wider than both.
+
+111
+00:19:19,729 --> 00:19:29,884
+The difference is normal. Divide by its standard deviation. Sigma squared is a common factor, so the root has 1 plus the quadratic form.
+
+112
+00:19:30,334 --> 00:19:38,270
+Replace sigma with sigma hat. The result has a t distribution with n minus p plus 1 degrees of freedom.
+
+113
+00:19:38,720 --> 00:19:47,979
+Solve for y new, as for the confidence interval. The prediction interval has the square root of 1 plus h. The 1 is the new error.
+
+114
+00:19:48,429 --> 00:19:55,021
+This is the prediction interval. In card B, step 4 uses the square root of 1 plus h.
+
+115
+00:19:55,471 --> 00:20:12,068
+A worked problem of type B with a prediction interval, from slide 47. Pause the video and try it. Find a 95 percent prediction interval for one new patient at severity 62. Then compare it with the confidence interval.
+
+116
+00:20:12,518 --> 00:20:22,203
+Step 1 of card B: x new is 1, then age 38.391, severity 62, and stress 2.287.
+
+117
+00:20:22,653 --> 00:20:40,531
+Step 2: the age and stress terms are the same as before. The severity term is minus 0.4420 times 62, which is minus 27.404. The prediction is 56.453.
+
+118
+00:20:40,981 --> 00:20:54,229
+Step 3: the computer gives h equals 0.34174. It is larger than at severity 51.5, because 62 is far from the mean severity.
+
+119
+00:20:54,679 --> 00:21:10,892
+Step 4: a prediction interval uses the square root of 1 plus h. The square root of 1.34174 is 1.1583. Times 10.058 gives 11.651.
+
+120
+00:21:11,342 --> 00:21:18,915
+Step 5: the t quantile with 42 degrees of freedom is 2.018, as before.
+
+121
+00:21:19,365 --> 00:21:34,768
+Step 6: 2.018 times 11.651 is 23.512. So the interval is 56.453 plus or minus 23.512.
+
+122
+00:21:35,218 --> 00:21:46,183
+The prediction interval is 32.94 to 79.97. This matches row 5 on slide 47. The purple bar shows it.
+
+123
+00:21:46,633 --> 00:22:11,423
+For the confidence interval, step 4 uses the square root of h, 0.5846. The standard error is 5.880, and the half-width is 11.866. The interval is 44.59 to 68.32, the green bar. The prediction interval is about twice as wide, because of the 1 for the new error.
+
+124
+00:22:11,873 --> 00:22:30,582
+To recap. The hat matrix H maps y to the fitted values, and I minus H maps y to the residuals. Both are symmetric and idempotent. Card A gives means and variances: write A y, take A out of the mean, use the sandwich for the variance, and simplify.
+
+125
+00:22:31,032 --> 00:22:39,971
+Card B builds an interval at new covariates: x 0, the estimate, h, the standard error, the t quantile, and the interval.
+
+126
+00:22:40,421 --> 00:22:56,399
+The prediction interval has the same center as the confidence interval, but an extra 1 under the root, for the new error. At severity 62 it is about twice as wide. Video 17 b continues with more question types.

@@ -3,537 +3,881 @@
 This is STAT 331, video 19. It follows Lecture 9: categorical covariates, and hypothesis testing.
 
 2
-00:00:09,538 --> 00:00:31,213
-After this video, you can put a categorical covariate into a regression model with indicator variables. You can interpret the parameters of two parameterizations. You can compare two groups with a t test, and all groups with an F test. You can derive the F statistic, and solve the two practice questions of Lecture 9.
+00:00:09,538 --> 00:00:16,002
+This video prepares you for four question types. Each type gets a method card and worked problems.
 
 3
-00:00:31,663 --> 00:00:50,031
-First, a short recap. The model is y equals X beta plus epsilon. The errors are multivariate normal with mean 0 and variance sigma squared times I. The least squares estimate is X transpose X inverse, times X transpose y.
+00:00:16,452 --> 00:00:24,473
+Type A: write a regression model with indicator variables for a categorical covariate, and interpret its parameters.
 
 4
-00:00:50,481 --> 00:01:12,710
-beta hat has a normal distribution with mean beta, and variance sigma squared times X transpose X inverse. So one estimate, beta j hat, is normal with mean beta j, and variance sigma squared times V j j. V j j is the diagonal entry j j of X transpose X inverse.
+00:00:24,923 --> 00:00:34,715
+Type B: compare two groups, or estimate one mean. This is a t test or a confidence interval for one linear combination of the parameters.
 
 5
-00:01:13,160 --> 00:01:27,411
-Replace sigma by sigma hat. Then beta j hat minus beta j, over sigma hat times the square root of V j j, has a t distribution with n minus p plus 1 degrees of freedom.
+00:00:35,165 --> 00:00:40,264
+Type C: test whether all groups have the same mean. This is the F test.
 
 6
-00:01:27,861 --> 00:01:43,199
-From this t result, we get a confidence interval for beta j, and a test of beta j equal to theta 0. The p-value is the probability that the absolute value of T is at least the absolute observed t.
+00:00:40,714 --> 00:00:48,479
+Type D: derive the distribution of the F statistic, and show that F equals t squared when q is 1.
 
 7
-00:01:43,649 --> 00:01:54,935
-The same steps give a confidence interval for the mean response, and a prediction interval for a new y. This video adds one new type of covariate, and one new test.
+00:00:48,929 --> 00:01:13,335
+Section 1 puts a categorical covariate into a regression model. First, slides 3 to 7 recap the tools. The model is y equals X beta plus epsilon. The errors are multivariate normal with mean 0 and variance sigma squared times I. The least squares estimate is X transpose X inverse, times X transpose y.
 
 8
-00:01:55,385 --> 00:02:06,734
-The slide asks for the meaning of beta j. Fix all covariates except x j. Then the mean of y is a straight line in x j. The green line shows it.
+00:01:13,785 --> 00:01:35,182
+beta hat is normal with mean beta, and variance sigma squared times X transpose X inverse. So one estimate, beta j hat, is normal with mean beta j, and variance sigma squared times V j j. V j j is the diagonal entry j j of X transpose X inverse.
 
 9
-00:02:07,184 --> 00:02:22,416
-Increase x j by one unit, from a to a plus 1. The mean of y changes by beta j. So beta j is the difference in mean y for a one-unit increase in x j, with all other covariates fixed.
+00:01:35,632 --> 00:01:49,883
+Replace sigma by sigma hat. Then beta j hat minus beta j, over sigma hat times the square root of V j j, has a t distribution with n minus p plus 1 degrees of freedom.
 
 10
-00:02:22,866 --> 00:02:38,418
-Fix the other covariates at different values. The line moves, but its slope stays beta j. So this interpretation needs a covariate where one unit has a meaning. The next slides show a covariate where this is not true.
+00:01:50,333 --> 00:02:05,671
+From this t result, we get a confidence interval for beta j, and a test of beta j equal to theta 0. The p-value is the probability that the absolute value of T is at least the absolute observed t.
 
 11
-00:02:38,868 --> 00:02:56,767
-Here is the data example of Lecture 9. The file fishermen mercury dot c s v has 135 villagers from Kuwait. The outcome is MeHg: the concentration of methyl mercury in a hair sample, in milligrams per gram.
+00:02:06,121 --> 00:02:17,407
+The same steps give a confidence interval for the mean response, and a prediction interval for a new y. This video adds one new type of covariate, and one new test.
 
 12
-00:02:57,217 --> 00:03:20,129
-One covariate is fishpart: the parts of fish that a subject eats. Code 0 is none, N. Code 1 is muscle tissue only, M. Code 2 is muscle tissue and sometimes the whole fish, MW. Code 3 is the whole fish, W. The table shows the first rows from the slide. We also use weight, in kilograms.
+00:02:17,857 --> 00:02:29,697
+Slide 9 asks for the meaning of beta j. Fix all covariates except x j. Then the mean of y is a straight line in x j. The green line shows it.
 
 13
-00:03:20,579 --> 00:03:36,643
-fishpart is a categorical covariate. A categorical covariate puts each subject into one of a few categories, or levels. The plot shows MeHg for each level. The group sizes are 10, 28, 88, and 9.
+00:02:30,147 --> 00:02:46,403
+Increase x j by one unit, from a to a plus 1. The mean of y changes by beta j, the purple step. So beta j is the difference in mean y for a one-unit increase in x j, with all other covariates fixed.
 
 14
-00:03:37,093 --> 00:03:48,165
-The purple marks are the group means. Group N has a much lower mean than the other three groups. The next slides show how to put such a covariate into a regression model.
+00:02:46,853 --> 00:03:02,469
+Fix the other covariates at different values. The line moves, but its slope stays beta j. So this interpretation needs a covariate where one unit has a meaning. The next slides show a covariate where this is not true.
 
 15
-00:03:48,615 --> 00:04:00,369
-The first idea is to use the code as a number. The model is MeHg i equals beta 0, plus beta 1 times fishpart i, plus epsilon i.
+00:03:02,919 --> 00:03:20,817
+Here is the data example of Lecture 9. The file fishermen mercury dot c s v has 135 villagers from Kuwait. The outcome is MeHg: the concentration of methyl mercury in a hair sample, in milligrams per gram.
 
 16
-00:04:00,819 --> 00:04:10,121
-Then the mean of MeHg is a straight line in the code. The four groups sit on this line, at the codes 0, 1, 2, and 3.
+00:03:21,267 --> 00:03:44,179
+One covariate is fishpart: the parts of fish that a subject eats. Code 0 is none, N. Code 1 is muscle tissue only, M. Code 2 is muscle tissue and sometimes the whole fish, MW. Code 3 is the whole fish, W. The table shows the first rows from the slide. We also use weight, in kilograms.
 
 17
-00:04:10,571 --> 00:04:32,523
-beta 1 is the mean difference for a one-unit increase in fishpart. A one-unit increase can be N to M, M to MW, or MW to W. All three steps have the same mean difference, beta 1. This is a strong assumption. Nothing in the data tells us that the categories are equally spaced.
+00:03:44,629 --> 00:04:00,693
+fishpart is a categorical covariate. A categorical covariate puts each subject into one of a few categories, or levels. The plot shows MeHg for each level. The group sizes are 10, 28, 88, and 9.
 
 18
-00:04:32,973 --> 00:04:39,949
-Pause the video and try it. Write each mean difference between neighbouring categories, for two different codes.
+00:04:01,143 --> 00:04:12,215
+The purple marks are the group means. Group N has a much lower mean than the other three groups. The next slides show how to put such a covariate into a regression model.
 
 19
-00:04:40,399 --> 00:04:52,857
-With the code 0, 1, 2, 3, the means are beta 0, beta 0 plus beta 1, beta 0 plus 2 beta 1, and beta 0 plus 3 beta 1.
+00:04:12,665 --> 00:04:24,441
+The first idea is to use the code as a number. The model is MeHg i equals beta 0, plus beta 1 times fishpart i, plus epsilon i.
 
 20
-00:04:53,307 --> 00:04:56,657
-Subtract neighbours. Each difference is beta 1.
+00:04:24,891 --> 00:04:34,555
+Then the mean of MeHg is a straight line in the code. The four groups sit on this green line, at the codes 0, 1, 2, and 3.
 
 21
-00:04:57,107 --> 00:05:06,045
-Now code N as 0, M as 10, MW as 11, and W as 15. These numbers are only labels too.
+00:04:35,005 --> 00:04:56,253
+beta 1 is the mean difference for a one-unit increase in fishpart. A one-unit increase can be N to M, M to MW, or MW to W. The three purple steps all equal beta 1. This is a strong assumption. Nothing in the data tells us that the categories are equally spaced.
 
 22
-00:05:06,495 --> 00:05:13,685
-The means are on the same kind of line. But the categories are now at 0, 10, 11, and 15.
+00:04:56,703 --> 00:05:03,679
+Pause the video and try it. Write each mean difference between neighbouring categories, for two different codes.
 
 23
-00:05:14,135 --> 00:05:33,633
-Subtract neighbours again. M minus N is 10 beta 1. MW minus M is beta 1. W minus MW is 4 beta 1. So the code alone changes the assumption about the mean differences. Each choice is equally strong, and the data did not choose it.
+00:05:04,129 --> 00:05:16,588
+With the code 0, 1, 2, 3, the means are beta 0, beta 0 plus beta 1, beta 0 plus 2 beta 1, and beta 0 plus 3 beta 1.
 
 24
-00:05:34,083 --> 00:05:54,009
-We want a model with no assumption about the mean differences. Each category gets its own normal distribution. For category N, MeHg is normal with mean gamma N and variance sigma squared. The same holds for M, MW, and W, with the same sigma squared.
+00:05:17,038 --> 00:05:20,387
+Subtract neighbours. Each difference is beta 1.
 
 25
-00:05:54,459 --> 00:06:03,803
-The picture shows the four distributions. Each one has its own mean, gamma N, gamma M, gamma M W, and gamma W.
+00:05:20,837 --> 00:05:29,776
+Now code N as 0, M as 10, MW as 11, and W as 15. These numbers are only labels too.
 
 26
-00:06:04,253 --> 00:06:19,506
-To write this as a regression, we use the indicator function. I of A is 1 if the statement A is true, and 0 if it is false. The model has one indicator for each category, and each indicator has its own gamma.
+00:05:30,226 --> 00:05:37,394
+The means are on the same kind of line. But the categories are now at 0, 10, 11, and 15.
 
 27
-00:06:19,956 --> 00:06:34,335
-Put in each category. For a subject in N, only I of N is 1, so the mean is gamma N. For M, only I of M is 1, so the mean is gamma M. The same holds for MW and W.
+00:05:37,844 --> 00:05:48,809
+Subtract neighbours again. M minus N is 10 beta 1. MW minus M is beta 1. W minus MW is 4 beta 1.
 
 28
-00:06:34,785 --> 00:06:46,006
-So each gamma is the mean of one category. The model makes no assumption about the differences between the four means. The indicators are also called dummy variables.
+00:05:49,259 --> 00:05:57,963
+So the code alone changes the assumption about the mean differences. Each choice is equally strong, and the data did not choose it.
 
 29
-00:06:46,456 --> 00:06:56,803
-Here is another parameterization of the same model. It has an intercept beta 0, and indicators for M, MW, and W only.
+00:05:58,413 --> 00:06:18,339
+We want a model with no assumption about the mean differences. Each category gets its own normal distribution. For category N, MeHg is normal with mean gamma N and variance sigma squared. The same holds for M, MW, and W, with the same sigma squared.
 
 30
-00:06:57,253 --> 00:07:19,205
-Put in each category. For N, all three indicators are 0, so the mean is beta 0. For M, the mean is beta 0 plus beta M. For MW, it is beta 0 plus beta M W. For W, it is beta 0 plus beta W. The purple dashed line is the level beta 0.
+00:06:18,789 --> 00:06:28,133
+The picture shows the four distributions. Each one has its own mean, gamma N, gamma M, gamma M W, and gamma W.
 
 31
-00:07:19,655 --> 00:07:36,103
-So beta M is the mean of M minus the mean of N. beta M W and beta W are the differences from N in the same way. The arrows show them. This model also makes no assumption about the differences between categories.
+00:06:28,583 --> 00:06:43,836
+To write this as a regression, we use the indicator function. I of A is 1 if the statement A is true, and 0 if it is false. The model has one indicator for each category, and each indicator has its own gamma.
 
 32
-00:07:36,553 --> 00:07:48,798
-There is no indicator for N. N is the referent category, also called the baseline category. Its mean is beta 0. Every other beta is a difference from the baseline.
+00:06:44,286 --> 00:06:50,857
+Put in each category. For a subject in N, only I of N is 1, so the mean is gamma N.
 
 33
-00:07:49,248 --> 00:07:54,709
-The slide asks: how are gamma and beta related? Pause the video and try it.
+00:06:51,307 --> 00:06:56,107
+For a subject in M, only I of M is 1, so the mean is gamma M.
 
 34
-00:07:55,159 --> 00:08:18,583
-Both parameterizations give the mean of each category. So set the means equal. gamma N equals beta 0. gamma M equals beta 0 plus beta M, and so on. Solve for beta. beta 0 is gamma N, and beta M is gamma M minus gamma N. beta M W and beta W follow in the same way.
+00:06:56,557 --> 00:07:03,149
+The same holds for MW and W. Their means are gamma M W and gamma W.
 
 35
-00:08:19,033 --> 00:08:29,935
-So both parameterizations have four parameters for the four category means. They describe the same model. We can always get one set of parameters from the other.
+00:07:03,599 --> 00:07:14,820
+So each gamma is the mean of one category. The model makes no assumption about the differences between the four means. The indicators are also called dummy variables.
 
 36
-00:08:30,385 --> 00:08:42,310
-Now add weight to the model. Slide 20 asks for a model where mean MeHg is linear in weight for each level of fishpart, with a common slope but different intercepts.
+00:07:15,270 --> 00:07:25,617
+Here is another parameterization of the same model. It has an intercept beta 0, and indicators for M, MW, and W only.
 
 37
-00:08:42,760 --> 00:08:59,827
-Add weight to either parameterization. In the first one, each category has its own gamma, and gamma 1 is the coefficient of weight. In the second one, beta 0 and the three betas give the levels, and beta 1 is the coefficient of weight.
+00:07:26,067 --> 00:07:36,221
+Put in each category. For N, all three indicators are 0, so the mean is beta 0. The purple dashed line is the level beta 0.
 
 38
-00:09:00,277 --> 00:09:10,901
-Here is the fit of the second model to the data. There is one line for each category. The lines are parallel, because all four groups share the slope of weight.
+00:07:36,671 --> 00:07:41,919
+For M, only I of M is 1. The mean is beta 0 plus beta M.
 
 39
-00:09:11,351 --> 00:09:23,596
-The estimated common slope is 0.1511. So in each group, mean MeHg increases by about 1.5 for each 10 kilograms of weight.
+00:07:42,369 --> 00:07:51,116
+For MW, the mean is beta 0 plus beta M W. For W, it is beta 0 plus beta W.
 
 40
-00:09:24,046 --> 00:09:42,393
-Interpret the first parameterization. Pause the video and try it. For a subject in N, the mean is gamma N plus gamma 1 times weight. For M, MW, and W, use gamma M, gamma M W, or gamma W in place of gamma N.
+00:07:51,566 --> 00:08:08,014
+So beta M is the mean of M minus the mean of N. beta M W and beta W are the differences from N in the same way. The arrows show them. This model also makes no assumption about the differences between categories.
 
 41
-00:09:42,843 --> 00:10:04,709
-Put weight equal to 0. Then gamma N is the mean MeHg in group N at weight 0. The other gammas are the same for their groups. The plot extends the lines to weight 0. The dots at the left are the four estimates. Weight 0 is far outside the data, so these intercepts have no practical meaning.
+00:08:08,464 --> 00:08:20,709
+There is no indicator for N. N is the referent category, also called the baseline category. Its mean is beta 0. Every other beta is a difference from the baseline.
 
 42
-00:10:05,159 --> 00:10:19,431
-gamma 1 is the difference in mean MeHg for a one kilogram increase in weight, within one level x of fishpart. It is the same at every weight a, and in every group, because the lines are parallel.
+00:08:21,159 --> 00:08:27,069
+Slide 19 asks: how are gamma and beta related? Pause the video and try it.
 
 43
-00:10:19,881 --> 00:10:31,487
-Now the second parameterization. For N, the intercept is beta 0. For M, it is beta 0 plus beta M. The slope is beta 1 in every group.
+00:08:27,519 --> 00:08:39,295
+Both parameterizations give the mean of each category. So set the means equal. For N: gamma N equals beta 0. The purple dashed line is this level.
 
 44
-00:10:31,937 --> 00:10:45,078
-beta 0 is the mean MeHg in group N at weight 0. beta 1 is the mean difference for a one kilogram increase in weight, in any group. It is the same as gamma 1.
+00:08:39,745 --> 00:08:50,646
+For M: gamma M equals beta 0 plus beta M. Subtract line 1. So beta M is gamma M minus gamma N. The blue arrow shows it.
 
 45
-00:10:45,528 --> 00:11:08,483
-beta M is the difference in mean MeHg between group M and group N, at the same weight a. The lines are parallel, so this gap is the same at every weight. The arrows show beta M, beta M W, and beta W at three different weights. We say: beta M is the difference between M and N, adjusted for weight.
+00:08:51,096 --> 00:08:57,283
+For MW, in the same way: beta M W is gamma M W minus gamma N.
 
 46
-00:11:08,933 --> 00:11:26,661
-The estimates are 3.081 for beta M, 2.239 for beta M W, and 3.374 for beta W. So, at the same weight, the groups that eat fish have higher mean MeHg than group N.
+00:08:57,733 --> 00:09:02,127
+For W: beta W is gamma W minus gamma N.
 
 47
-00:11:27,111 --> 00:11:38,012
-Both parameterizations make the same assumptions about the data. So we can get the parameters of one from the other. They only differ in their natural interpretation.
+00:09:02,577 --> 00:09:13,479
+So both parameterizations have four parameters for the four category means. They describe the same model. We can always get one set of parameters from the other.
 
 48
-00:11:38,462 --> 00:11:59,539
-Next, we test whether mean MeHg varies by fishpart, with weight held constant. The null hypothesis says that the four groups have the same mean at each weight. In the first form, the four gammas are equal. In the second form, beta M, beta M W, and beta W are all 0.
+00:09:13,929 --> 00:09:23,529
+Question type A asks you to write a model with a categorical covariate, and to interpret its parameters. Method card A has four steps.
 
 49
-00:11:59,989 --> 00:12:06,667
-Under this null hypothesis, the four lines become one line. The gray dashed line shows it.
+00:09:23,979 --> 00:09:33,045
+Step 1: pick the referent level, and list the other levels. In the picture, N is the referent. Its mean is the dashed line, beta 0.
 
 50
-00:12:07,117 --> 00:12:16,098
-The second form sets parameters equal to 0. This is simpler to test. So from here on, we use the model with an intercept.
+00:09:33,495 --> 00:09:42,583
+Step 2: write the model. It has the intercept beta 0, one indicator for each other level, and the other covariates, such as weight.
 
 51
-00:12:16,548 --> 00:12:30,841
-First, test whether the mean of M equals the mean of N, at the same weight a. Write the difference with the parameters. The beta 0 terms and the beta 1 a terms cancel. The difference is beta M.
+00:09:43,033 --> 00:09:48,175
+Step 3: put in each level. You get a table with the mean of y for each level.
 
 52
-00:12:31,291 --> 00:12:56,230
-So the null hypothesis is beta M equals 0. This is one parameter, so the test is the usual t test. The model has p plus 1 equal to 5 parameters, so the degrees of freedom are 135 minus 5, which is 130. The red tails show the 5 percent rejection region. The critical value is 1.978.
+00:09:48,625 --> 00:10:04,219
+Step 4: read each parameter from the table. beta 0 is the mean of the referent. The beta of a level is its mean minus the referent mean, at the same values of the other covariates. The arrows show these differences.
 
 53
-00:12:56,680 --> 00:13:13,192
-From the data, beta M hat is 3.0815, and its standard error is 0.9533. So the observed t is 3.233. The two-sided p-value is 0.0016.
+00:10:04,669 --> 00:10:18,792
+Section 2 uses card A, now with weight in the model. Slide 20 asks for a model where mean MeHg is linear in weight for each level of fishpart, with a common slope but different intercepts.
 
 54
-00:13:13,642 --> 00:13:26,634
-The p-value is less than 0.05, so we reject the null hypothesis. At the same weight, the mean MeHg of group M is different from the mean of group N.
+00:10:19,242 --> 00:10:29,738
+Step 2 of card A: write the model. In the first parameterization, each category has its own gamma, and gamma 1 is the coefficient of weight.
 
 55
-00:13:27,084 --> 00:13:38,561
-Next, test whether the means of M and MW are equal, at the same weight. Neither group is the referent. Pause the video and try to write the null hypothesis.
+00:10:30,188 --> 00:10:40,428
+In the second parameterization, beta 0 and the three betas give the levels, and beta 1 is the coefficient of weight. N is the referent.
 
 56
-00:13:39,011 --> 00:13:53,177
-Write the difference with the parameters. beta 0 and beta 1 a cancel again. The difference is beta M minus beta M W. In the picture, it is the red gap between the blue and the teal lines.
+00:10:40,878 --> 00:10:51,502
+Here is the fit of the second model to the data. There is one line for each category. The lines are parallel, because all four groups share the slope of weight.
 
 57
-00:13:53,627 --> 00:14:07,707
-So the null hypothesis is beta M equals beta M W. This is the same as beta M minus beta M W equal to 0. It is a linear combination of the parameters.
+00:10:51,952 --> 00:11:07,995
+Step 4: read the slope. The estimated common slope is 0.1511. So in each group, mean MeHg increases by 1.51 for each 10 kilograms of weight. The green step shows it.
 
 58
-00:14:08,157 --> 00:14:26,503
-beta M hat minus beta M W hat is a linear combination of the normal vector beta hat. So it is normal. Subtract the null value 0, and divide by its standard deviation. The result is standard normal. We need the variance of the difference.
+00:11:08,445 --> 00:11:29,671
+Interpret the first parameterization. Pause the video and try it. Step 3 of card A: the table of means. For a subject in N, the mean is gamma N plus gamma 1 times weight. For M, MW, and W, use gamma M, gamma M W, or gamma W in place of gamma N.
 
 59
-00:14:26,953 --> 00:14:38,132
-The variance of a difference is the variance of the first, plus the variance of the second, minus 2 times their covariance. The green cells give the two variances.
+00:11:30,121 --> 00:11:45,929
+Step 4: read each parameter. Put weight equal to 0. Then gamma N is the mean MeHg in group N at weight 0. The plot extends the lines to weight 0. The dots at the left are the four intercepts.
 
 60
-00:14:38,582 --> 00:15:01,750
-The variance matrix of beta hat is sigma squared times V. Number its rows from 1, in the order beta 0, beta 1, beta M, beta M W, beta W. So the variances are sigma squared V 3 3 and sigma squared V 4 4. The covariance is sigma squared V 3 4, the orange cells.
+00:11:46,379 --> 00:12:03,830
+The estimates are minus 9.730, minus 6.649, minus 7.491, and minus 6.357. Weight 0 is far outside the data, so these intercepts have no practical meaning.
 
 61
-00:15:02,200 --> 00:15:25,005
-Replace sigma squared by sigma hat squared. For the data, sigma hat squared is 6.3695. The V entries give 0.05049. So the variance is 0.3216, and the standard error is 0.5671. These numbers are computed from the data.
+00:12:04,280 --> 00:12:18,552
+gamma 1 is the difference in mean MeHg for a one kilogram increase in weight, within one level x of fishpart. It is the same at every weight a, and in every group, because the lines are parallel.
 
 62
-00:15:25,455 --> 00:15:52,314
-Then compare with the t distribution with 130 degrees of freedom. The observed t is 0.8422 over 0.5671, which is 1.485. The p-value is 0.140. So we do not reject the null hypothesis. The data give no evidence that groups M and MW differ in mean MeHg, at the same weight.
+00:12:19,002 --> 00:12:32,634
+Now the second parameterization. Step 3 of card A: for N, the intercept is beta 0. For M, it is beta 0 plus beta M. The slope is beta 1 in every group.
 
 63
-00:15:52,764 --> 00:16:02,236
-Now the main question: whether mean MeHg varies by fishpart, adjusted for weight. The parameter vector has five entries.
+00:12:33,084 --> 00:12:46,823
+Step 4: beta 0 is the mean MeHg in group N at weight 0. beta 1 is the mean difference for a one kilogram increase in weight, in any group. It is the same as gamma 1.
 
 64
-00:16:02,686 --> 00:16:20,414
-Let beta star be the vector of beta M, beta M W, and beta W. Its length q is 3. We test the null hypothesis beta star equals 0, against the two-sided alternative, beta star not equal to 0.
+00:12:47,273 --> 00:13:10,227
+beta M is the difference in mean MeHg between group M and group N, at the same weight a. The lines are parallel, so this gap is the same at every weight. The arrows show beta M, beta M W, and beta W at three different weights. We say: beta M is the difference between M and N, adjusted for weight.
 
 65
-00:16:20,864 --> 00:16:40,171
-This null hypothesis is different from the ones we saw before. It does not set one parameter, or one linear combination, equal to a number. It sets three parameters to 0 together. This is a joint null hypothesis. A t test cannot do this. We need the F test.
+00:13:10,677 --> 00:13:28,405
+The estimates are 3.081 for beta M, 2.239 for beta M W, and 3.374 for beta W. So, at the same weight, the groups that eat fish have higher mean MeHg than group N.
 
 66
-00:16:40,621 --> 00:17:05,005
-As before, we measure how far the estimate is from 0, relative to its uncertainty. beta hat is normal. So the sub-vector beta star hat is normal too, with mean beta star, and variance sigma squared V star. V star is the sub-matrix of X transpose X inverse for the entries of beta star. It is the purple 3 by 3 block.
+00:13:28,855 --> 00:13:39,138
+Now the R example of Lecture 9, slide 43. First, the lecture fits the model with fishpart as a number, 0 to 3, and weight.
 
 67
-00:17:05,455 --> 00:17:17,252
-Define the F statistic. It is beta star hat transpose, times V star inverse, times beta star hat. Divide this by q times sigma hat squared.
+00:13:39,588 --> 00:14:03,332
+The slide gives this coefficient table. Each row has the estimate, its standard error, the t value, and the two-sided p-value. The t value is the estimate over the standard error. The degrees of freedom are 135 minus 3, which is 132. The line under the table gives the range and the median of the residuals.
 
 68
-00:17:17,702 --> 00:17:29,457
-We will show that under the null hypothesis, F has an F distribution, with q and n minus p plus 1 degrees of freedom. q is the length of beta star.
-
-69
-00:17:29,907 --> 00:17:44,200
-With one parameter, this is the squared estimate over its variance. With q parameters, V star inverse also accounts for the correlations between the estimates. The next slides derive the distribution.
-
-70
-00:17:44,650 --> 00:18:07,477
-We need one fact from linear algebra: the Cholesky decomposition. Any variance matrix V star can be written as L times L transpose. L is lower triangular: all entries above the diagonal are 0. Its diagonal entries are not negative. The left matrix is sigma hat squared V star for the mercury data.
-
-71
-00:18:07,927 --> 00:18:15,500
-Here is its L, computed from the data. Multiply L by L transpose, and you get the left matrix back.
-
-72
-00:18:15,950 --> 00:18:33,934
-When the matrix is positive-definite, all diagonal entries of L are positive. Here they are 0.953, 0.498, and 0.872. Then L has an inverse. We use L inverse on the next slide.
-
-73
-00:18:34,384 --> 00:18:46,523
-The blue cloud shows many possible values of beta star hat minus beta star, drawn for q equal to 2. The entries are correlated, and their spreads are not equal.
-
-74
-00:18:46,973 --> 00:18:58,066
-Let L be the Cholesky factor of sigma squared V star. It is q by q. Define z as L inverse, times beta star hat minus beta star.
-
-75
-00:18:58,516 --> 00:19:08,393
-Multiplying by L inverse turns the cloud into a round cloud. The entries of z are not correlated, and each one has variance 1.
-
-76
-00:19:08,843 --> 00:19:35,787
-Now compute z transpose z. The transpose of L inverse is the inverse of L transpose. L transpose inverse, times L inverse, is the inverse of L L transpose. And L L transpose is sigma squared V star. So z transpose z is 1 over sigma squared, times the quadratic form with V star inverse. This is the numerator of F, without the q.
-
-77
-00:19:36,237 --> 00:20:07,235
-The slides ask two questions. Why is z N 0 I, and why is z transpose z chi squared? Pause the video and try it. First, z is a linear transformation of a normal vector, so z is normal. Its mean is L inverse times 0, which is 0. Its variance is L inverse, times sigma squared V star, times L inverse transpose. Replace sigma squared V star by L L transpose. Everything cancels to the identity matrix I.
-
-78
-00:20:07,685 --> 00:20:21,701
-A multivariate normal vector with variance I has independent entries. So z 1 to z q are independent standard normals. The square of each one is chi squared with 1 degree of freedom.
-
-79
-00:20:22,151 --> 00:20:41,607
-The sum of q independent chi squared 1 variables is chi squared with q degrees of freedom. So under the null hypothesis, the quadratic form over sigma squared has a chi squared distribution with q degrees of freedom. The purple curve shows it for q equal to 3.
-
-80
-00:20:42,057 --> 00:20:55,646
-From Lecture 7, n minus p plus 1, times sigma hat squared over sigma squared, is chi squared with n minus p plus 1 degrees of freedom. It is independent of beta hat.
-
-81
-00:20:56,096 --> 00:21:09,749
-Now build the F statistic from two parts. The first part, X 1, is the quadratic form over sigma squared. Under the null hypothesis, it is chi squared with q degrees of freedom.
-
-82
-00:21:10,199 --> 00:21:28,738
-The second part, X 2, is n minus p plus 1, times sigma hat squared over sigma squared. It is chi squared with n minus p plus 1 degrees of freedom. It is independent of X 1, because sigma hat squared is independent of beta hat.
-
-83
-00:21:29,188 --> 00:21:40,537
-Recall from Lecture 1: divide each independent chi squared variable by its degrees of freedom, and take the ratio. The ratio has an F distribution.
-
-84
-00:21:40,987 --> 00:22:05,350
-In the ratio, sigma squared cancels, and the degrees of freedom n minus p plus 1 cancel. What is left is the F statistic: the quadratic form over q times sigma hat squared. Under the null hypothesis, it has an F distribution with q and n minus p plus 1 degrees of freedom. We can calculate it, because sigma is gone.
-
-85
-00:22:05,800 --> 00:22:24,445
-The slide computes the p-value as an upper tail probability, and asks why. Pause the video and try it. F is never negative. It is a quadratic form with a positive definite matrix, over a positive number. If beta star hat is close to 0, F is small.
-
-86
-00:22:24,895 --> 00:22:53,354
-A large F means that beta star hat is far from 0, relative to its uncertainty. This is evidence against the null hypothesis. So the p-value is the probability of an F at least as large as the observed one: the upper tail. A small F is not evidence against the null hypothesis. At the 5 percent level with 3 and 130 degrees of freedom, the critical value is 2.674.
-
-87
-00:22:53,804 --> 00:23:13,303
-These tests apply to any linear regression, not only to categorical covariates. Use a t test for one number: one coefficient, like beta j equal to theta 0. Or one linear combination of coefficients, like beta M minus beta M W equal to 0.
-
-88
-00:23:13,753 --> 00:23:24,163
-Use an F test for a joint null hypothesis: several coefficients equal to 0 together, or a sub-vector beta star equal to 0.
-
-89
-00:23:24,613 --> 00:23:35,728
-Both tests work for any covariates. When q is 1, the F test and the two-sided t test give the same answer. Practice question 1 asks you to show this.
-
-90
-00:23:36,178 --> 00:23:44,861
-Now the R example of Lecture 9. First, the lecture fits the model with fishpart as a number, 0 to 3, and weight.
-
-91
-00:23:45,311 --> 00:24:09,396
-The slide gives this coefficient table. Each row has the estimate, its standard error, the t value, and the two-sided p-value. The t value is the estimate over the standard error. The degrees of freedom are 135 minus 3, which is 132. The line under the table gives the range and the quartiles of the residuals.
-
-92
-00:24:09,846 --> 00:24:29,601
+00:14:03,782 --> 00:14:23,537
 The intercept is minus 10.43. It is the mean MeHg at weight 0 and fishpart 0, far outside the data. The weight slope is 0.1797 per kilogram, with t equal to 5.355 and a very small p-value.
 
-93
-00:24:30,051 --> 00:24:49,443
+69
+00:14:23,987 --> 00:14:43,379
 The fishpart estimate is 0.5406, with t equal to 1.690 and p equal to 0.0933. In the picture, this model gives four parallel lines with equal gaps of 0.5406.
 
-94
-00:24:49,893 --> 00:25:11,653
-So this fit assumes that each step, N to M, M to MW, and MW to W, changes the mean by the same amount. The group means we saw earlier do not follow equal steps. The lecture code says: imagine the code N 0, M 10, MW 11, W 20. The fit would change.
+70
+00:14:43,829 --> 00:14:57,994
+So this fit assumes that each step, N to M, M to MW, and MW to W, changes the mean by the same amount. The group means we saw earlier do not follow equal steps.
 
-95
-00:25:12,103 --> 00:25:21,660
+71
+00:14:58,444 --> 00:15:08,001
 The slide also shows the first rows of the design matrix X, from R. The first column is all 1s. It goes with the intercept.
 
-96
-00:25:22,110 --> 00:25:25,417
+72
+00:15:08,451 --> 00:15:11,758
 The second column holds the weight of each subject.
 
-97
-00:25:25,867 --> 00:25:36,619
+73
+00:15:12,208 --> 00:15:22,960
 The third column holds the fishpart code as a number. So one coefficient multiplies the code, and each step of one unit adds the same amount to the mean.
 
-98
-00:25:37,069 --> 00:25:49,186
+74
+00:15:23,410 --> 00:15:35,527
 Now the lecture recodes fishpart as a categorical variable. The table gives the count of each code: 10 none, 28 muscle, 88 muscle and whole, and 9 whole.
 
-99
-00:25:49,636 --> 00:25:56,015
+75
+00:15:35,977 --> 00:15:42,356
 R stores a categorical variable as a factor. A factor has a list of levels, in an order.
 
-100
-00:25:56,465 --> 00:26:16,731
-By default, R orders the levels alphabetically: muscle, muscle whole, none, whole. R uses the first level as the referent. So with the default order, the referent would be muscle. The lecture code sets the order none, muscle, muscle whole, whole. Then the referent is none, N, as on the slides.
+76
+00:15:42,806 --> 00:16:00,065
+This is step 1 of card A: the referent. R uses the first level as the referent. By default, R orders the levels alphabetically. The lecture code sets the order none, muscle, muscle whole, whole. Then the referent is none, N, as on the slides.
 
-101
-00:26:17,181 --> 00:26:40,669
-The slide fits both parameterizations in R. Mb is the model with an intercept. Its referent is N. The intercept is beta 0 hat, minus 9.730. The weight slope is 0.1511. The three fishpart rows are beta M hat, beta M W hat, and beta W hat.
+77
+00:16:00,515 --> 00:16:24,643
+Slide 46 fits both parameterizations in R. Mb is the model with an intercept. Its referent is N. The intercept is beta 0 hat, minus 9.730. The weight slope is 0.1511. The three fishpart rows are beta M hat, beta M W hat, and beta W hat.
 
-102
-00:26:41,119 --> 00:26:59,082
+78
+00:16:25,093 --> 00:16:43,077
 Mc is the model without an intercept. The minus 1 in the R formula removes it. Then R uses one indicator for each of the four levels. Its rows are the gamma hats. The weight slope is the same, 0.1511.
 
-103
-00:26:59,532 --> 00:27:24,172
-Check the relation gamma equals beta 0 plus beta. For M, minus 9.7302 plus 3.0815 is minus 6.6487. This is the fishpartmuscle row of Mc. MW and W agree too. And gamma N hat equals beta 0 hat. The two fits are the same lines.
+79
+00:16:43,527 --> 00:17:02,364
+Check the relation gamma equals beta 0 plus beta, with step 4 of card A. For M: minus 9.7302 plus 3.0815 is minus 6.6487. This is the fishpart muscle row of Mc.
 
-104
-00:27:24,622 --> 00:27:43,161
-The slide shows the design matrices of both models, for six subjects. In Mb, the columns are the intercept, weight, and the indicators of M, MW, and W. Subject 102 is in group N, so all three indicators are 0.
+80
+00:17:02,814 --> 00:17:14,654
+For MW: minus 9.7302 plus 2.2393 is minus 7.4909. This matches Mc.
 
-105
-00:27:43,611 --> 00:27:52,101
+81
+00:17:15,104 --> 00:17:33,088
+For W: minus 9.7302 plus 3.3736 is minus 6.3566. Mc gives minus 6.3565. The last digit differs only because we rounded the inputs.
+
+82
+00:17:33,538 --> 00:17:42,519
+And gamma N hat equals beta 0 hat, minus 9.7302. So the two fits give the same lines.
+
+83
+00:17:42,969 --> 00:18:04,793
+Slide 47 shows the design matrices of both models, for six subjects. This is step 2 of card A in matrix form. In Mb, the columns are the intercept, weight, and the indicators of M, MW, and W. Subject 102 is in group N, so all three indicators are 0.
+
+84
+00:18:05,243 --> 00:18:13,734
 In Mc, the columns are weight and the four indicators. Now subject 102 has a 1 in the N column.
 
-106
-00:27:52,551 --> 00:28:06,034
+85
+00:18:14,184 --> 00:18:27,667
 So in Mc, each row has exactly one 1 among the indicators. In Mb, a row of the referent group N has no 1 among the indicators. Its mean comes from the intercept only.
 
-107
-00:28:06,484 --> 00:28:24,639
-The slide compares the fitted values of the two models. The R output gives the range of their differences: from about minus 2 times 10 to the minus 15, to about 1 times 10 to the minus 14. The plot shows each subject's two fitted values.
+86
+00:18:28,117 --> 00:18:46,783
+Slide 48 compares the fitted values of the two models. The R output gives the range of their differences: from about minus 2 times 10 to the minus 15, to about 1 times 10 to the minus 14. The plot shows the two fitted values of each subject.
 
-108
-00:28:25,089 --> 00:28:45,953
+87
+00:18:47,233 --> 00:19:08,097
 These differences are only computer rounding error. All points lie on the line Mc equals Mb. So the two parameterizations give the same fitted values, the same residuals, and the same sigma hat. Intervals for a mean response, or for a new observation, are also the same.
 
+88
+00:19:08,547 --> 00:19:28,579
+Now a tutorial question of type A. Pause the video and try it. In Tutorial 3, question 1, the outcome is the average teacher salary of a school district. size coded is 1 for small, 2 for medium, and 3 for large districts. R fits salary on the factor of size.
+
+89
+00:19:29,029 --> 00:19:47,077
+Part a asks for n. The output says 322 degrees of freedom. The residual degrees of freedom are n minus p plus 1, and the model has 3 coefficients. So n is 322 plus 3, which is 325.
+
+90
+00:19:47,527 --> 00:19:57,170
+Part b. Step 1 of card A: the referent. R uses the first level, size 1, small districts. The other levels are 2 and 3.
+
+91
+00:19:57,620 --> 00:20:10,996
+Step 2: the model. Salary i equals beta 0, plus beta 1 times the indicator of size 2, plus beta 2 times the indicator of size 3, plus epsilon i.
+
+92
+00:20:11,446 --> 00:20:26,849
+Step 3: the table of means. Size 1 has mean beta 0. Size 2 has beta 0 plus beta 1. Size 3 has beta 0 plus beta 2. The purple marks are the three estimated means.
+
+93
+00:20:27,299 --> 00:20:39,032
+Step 4: read each estimate. beta 0 hat, 31799.0, is the estimated mean salary in small districts.
+
+94
+00:20:39,482 --> 00:20:49,743
+beta 1 hat, 3527.1, is the estimated difference in mean salary between medium and small districts.
+
+95
+00:20:50,193 --> 00:20:59,132
+beta 2 hat, 6035.2, is the estimated difference in mean salary between large and small districts.
+
+96
+00:20:59,582 --> 00:21:11,550
+Section 3 compares groups. Slide 25 says: both parameterizations make the same assumptions about the data. They only differ in their natural interpretation.
+
+97
+00:21:12,000 --> 00:21:33,376
+Lecture 9 asks whether mean MeHg varies by fishpart, with weight held constant. The null hypothesis says that the four groups have the same mean at each weight. In the first form, the four gammas are equal. In the second form, beta M, beta M W, and beta W are all 0.
+
+98
+00:21:33,826 --> 00:21:40,525
+Under this null hypothesis, the four lines become one line. The gray dashed line shows it.
+
+99
+00:21:40,975 --> 00:21:55,396
+The second form sets parameters equal to 0. This is simpler to test. So from here on, we use the model with an intercept. First we compare two groups. The test of all groups comes in section 4.
+
+100
+00:21:55,846 --> 00:22:08,710
+Question type B asks about one number made from the parameters. It can be the difference between two group means, or the mean response at one x. Method card B has five steps.
+
+101
+00:22:09,160 --> 00:22:25,075
+Step 1: write the quantity with the parameters. Call it theta. It is a sum of c j times beta j. In the picture, the red gap between M and MW at the same weight is beta M minus beta M W.
+
+102
+00:22:25,525 --> 00:22:29,514
+Step 2: estimate it. Put the estimates into the same sum.
+
+103
+00:22:29,964 --> 00:22:48,076
+Step 3: find its variance from sigma hat squared times V. R calls this matrix v cov. For a difference of two estimates, it is sigma hat squared times V j j plus V k k minus 2 V j k. The standard error is the square root.
+
+104
+00:22:48,526 --> 00:23:07,790
+Step 4: for a test, t is the estimate minus the null value, over the standard error. It has a t distribution with n minus p plus 1 degrees of freedom. For a confidence interval, take the estimate plus or minus the t quantile times the standard error.
+
+105
+00:23:08,240 --> 00:23:13,445
+Step 5: conclude in words. Say that the comparison is at the same weight.
+
+106
+00:23:13,895 --> 00:23:28,765
+Here is a type B question from slide 26. Pause the video and try it. Test whether the mean of M equals the mean of N, at the same weight a. Step 1 of card B: write the difference of the two means.
+
+107
+00:23:29,215 --> 00:23:38,516
+Put in the model. Group M has beta 0 plus beta 1 a plus beta M. Group N has beta 0 plus beta 1 a.
+
+108
+00:23:38,966 --> 00:23:53,835
+The beta 0 terms and the beta 1 a terms cancel. The difference is beta M: in the picture, the blue arrow from the N line up to the M line. So the null hypothesis is beta M equals 0.
+
 109
-00:28:46,403 --> 00:29:21,853
-The slide uses Mb for intervals. First, the mean MeHg of subjects in group W with weight 70. The row vector x 0 is 1, 70, 0, 0, 1: the intercept, the weight, and the indicators of M, MW, and W. So mu 0 hat is minus 9.7302, plus 0.15105 times 70, plus 3.3736. This is 4.2172, the fit in the R output.
+00:23:54,285 --> 00:24:00,131
+Step 2: the estimate. From the output, beta M hat is 3.0815.
 
 110
-00:29:22,303 --> 00:29:50,057
-The 95 percent confidence interval is mu 0 hat, plus or minus a margin. The margin is t with 130 degrees of freedom, times sigma hat, times the square root of x 0, X transpose X inverse, x 0 transpose. The standard error is 0.8548, computed from the data. So the interval is 2.526 to 5.908.
+00:24:00,581 --> 00:24:20,762
+Step 3: the variance is sigma hat squared times V 3 3. The standard error is sigma hat times the square root of V 3 3: 2.5238 times the square root of 0.14267, which is 0.9533.
 
 111
-00:29:50,507 --> 00:30:10,326
-Second, group N with weight 60. The fit is minus 0.667, with interval minus 2.395 to 1.061. MeHg cannot be negative. The negative values come from a straight line, outside most of the data of group N.
+00:24:21,212 --> 00:24:48,348
+Step 4: the observed t is 3.0815 over 0.9533, which is 3.233. The model has 5 parameters, so the degrees of freedom are 135 minus 5, which is 130. The red tails beyond 1.978 are the 5 percent rejection region. The two-sided p-value is 0.0016.
 
 112
-00:30:10,776 --> 00:30:32,557
-Third, a prediction interval for one new subject in W with weight 70. Add 1 under the square root, for the new error. The standard error becomes 2.6646. So the prediction interval is minus 1.054 to 9.489. It is much wider than the confidence interval.
+00:24:48,798 --> 00:25:02,814
+Step 5: the p-value is less than 0.05, so we reject the null hypothesis. At the same weight, the mean MeHg of group M is different from the mean of group N.
 
 113
-00:30:33,007 --> 00:30:49,690
-The last part of the R example tests whether fishpart is associated with MeHg, in the presence of weight. The null hypothesis is beta star equals 0, with beta star the three fishpart parameters. So q is 3.
+00:25:03,264 --> 00:25:18,069
+Another type B question, from slide 28. Pause the video and try it. Test whether the means of M and MW are equal, at the same weight. Neither group is the referent. Step 1: write the difference.
 
 114
-00:30:50,140 --> 00:31:17,468
-The estimate beta star hat is 3.0815, 2.2393, and 3.3736. The code takes the fishpart block of the estimated variance matrix. This block is sigma hat squared times V star. So it already contains the sigma hat squared of the denominator. The red tail shows the 5 percent rejection region, beyond 2.674.
+00:25:18,519 --> 00:25:29,698
+Put in the model. M has beta 0 plus beta 1 a plus beta M. MW has beta 0 plus beta 1 a plus beta M W.
 
 115
-00:31:17,918 --> 00:31:39,315
-The observed F is 4.007, computed from the data. The slide gives the p-value: 0.009127653. It is the upper tail area of the F distribution with 3 and 130 degrees of freedom, beyond 4.007.
+00:25:30,148 --> 00:25:48,196
+beta 0 and beta 1 a cancel again. The difference is beta M minus beta M W. In the picture, it is the red gap between the blue and the teal lines. So the null hypothesis is beta M minus beta M W equal to 0.
 
 116
-00:31:39,765 --> 00:31:52,843
-The p-value is less than 0.05. So we reject the null hypothesis. The data give evidence that mean MeHg varies by fishpart, adjusted for weight.
+00:25:48,646 --> 00:25:58,907
+Step 2: the estimate is 3.0815 minus 2.2393, which is 0.8422.
 
 117
-00:31:53,293 --> 00:32:10,999
-Practice question 1. It is also the exercise on page 41. Test beta j equal to 0 with the t statistic, and with the F statistic. Show that F equals t squared, and that the p-values are the same. Pause the video and try it.
+00:25:59,357 --> 00:26:20,883
+Step 3 needs the variance. beta M hat minus beta M W hat is a linear combination of the normal vector beta hat. So it is normal. Subtract the null value 0, and divide by its standard deviation. The result is standard normal. The next slide finds the variance of the difference.
 
 118
-00:32:11,449 --> 00:32:26,596
-Method 1. The t statistic is beta j hat, over sigma hat times the square root of V j j. Under the null hypothesis, it has a t distribution with n minus p plus 1 degrees of freedom.
+00:26:21,333 --> 00:26:35,605
+Step 3 of card B: the variance. The variance of a difference is the variance of the first, plus the variance of the second, minus 2 times their covariance. The green cells give the two variances.
 
 119
-00:32:27,046 --> 00:32:36,305
-Method 2. Let beta star be beta j alone. Then q is 1, and V star is the 1 by 1 matrix V j j.
+00:26:36,055 --> 00:26:59,223
+The variance matrix of beta hat is sigma squared times V. Number its rows from 1, in the order beta 0, beta 1, beta M, beta M W, beta W. So the variances are sigma squared V 3 3 and sigma squared V 4 4. The covariance is sigma squared V 3 4, the orange cells.
 
 120
-00:32:36,755 --> 00:32:57,149
-Put these into the F statistic. The numerator is beta j hat, times 1 over V j j, times beta j hat. The denominator is 1 times sigma hat squared. So F is beta j hat squared, over sigma hat squared V j j. This is the square of the t statistic.
+00:26:59,673 --> 00:27:24,291
+Replace sigma squared by sigma hat squared, 6.3695. The V entries are 0.14267, 0.11199, and 0.10208. They give 0.05049. The 0.05049 uses the unrounded entries.
 
 121
-00:32:57,599 --> 00:33:11,466
-Check with the data. For weight in Mb, t is 4.430, and t squared is 19.62. The F statistic for beta 1 alone is also 19.62.
+00:27:24,741 --> 00:27:34,533
+So the variance is 0.3216, and the standard error is the square root, 0.5671.
 
 122
-00:33:11,916 --> 00:33:21,068
-Now the p-values. The t test uses the t distribution with nu degrees of freedom. Here nu is n minus p plus 1.
+00:27:34,983 --> 00:27:51,645
+Step 4: the observed t is 0.8422 over 0.5671, which is 1.485. With 130 degrees of freedom, the two-sided p-value is 0.140.
 
 123
-00:33:21,518 --> 00:33:32,633
-The two-sided p-value is the probability that the absolute value of T is at least the absolute observed t. This is the area of the two blue tails.
+00:27:52,095 --> 00:28:07,625
+Step 5: the p-value is more than 0.05. So we do not reject the null hypothesis. The data give no evidence that groups M and MW differ in mean MeHg, at the same weight.
 
 124
-00:33:33,083 --> 00:33:55,120
-Recall from Lecture 1: T is Z over the square root of X over nu. Square it. T squared is Z squared over 1, divided by X over nu. Z squared is chi squared with 1 degree of freedom, and it is independent of X. So T squared has an F distribution with 1 and nu degrees of freedom.
+00:28:08,075 --> 00:28:22,582
+Now Tutorial 3, question 1 d. Pause the video and try it. What is the precise interpretation of beta 2 minus beta 1? Give an estimate and a 95 percent confidence interval.
 
 125
-00:33:55,570 --> 00:34:20,317
-The F test p-value is the probability that F is at least t observed squared. This is the probability that T squared is at least t observed squared. That is the same as the absolute value of T at least the absolute observed t. So the two p-values are equal. The critical values agree too: 3.914 is 1.978 squared.
+00:28:23,032 --> 00:28:41,592
+Step 1 of card B: write the quantity. beta 2 minus beta 1 is the size 3 mean, beta 0 plus beta 2, minus the size 2 mean, beta 0 plus beta 1. So it is the difference in mean salary between large and medium districts.
 
 126
-00:34:20,767 --> 00:34:37,535
-Practice question 2. The model has four coefficients, beta 1 to beta 4, and sigma is 10. The question gives X transpose X, and asks for the variance of beta 3 hat minus beta 4 hat. Pause the video and try it.
+00:28:42,042 --> 00:28:55,951
+Step 2: the estimate is 6035.2 minus 3527.1, which is 2508.1. The orange arrow shows this gap.
 
 127
-00:34:37,985 --> 00:34:56,097
-Look at the zeros. X transpose X has two blocks on the diagonal: A for beta 1 and beta 2, and B for beta 3 and beta 4. The other entries are 0. By the hint, the inverse is block diagonal too, with A inverse and B inverse.
+00:28:56,401 --> 00:29:23,281
+Step 3: R gives v cov, which is sigma hat squared times V. Add the two variances, 241977.18 and 136994.86, and subtract 2 times the covariance, 32012.55. The result is 314946.94.
 
 128
-00:34:56,547 --> 00:35:10,755
-The variance of the difference is sigma squared, times V 3 3 plus V 4 4 minus 2 V 3 4. These three entries are all in the B block of the inverse. So we only need B inverse.
+00:29:23,731 --> 00:29:28,446
+The standard error is the square root: 561.20.
 
 129
-00:35:11,205 --> 00:35:46,996
-Invert the 2 by 2 block B. Swap the diagonal entries, change the sign of the off-diagonal entries, and divide by the determinant. The determinant is 384 times 543, minus 355 squared. This is 82487. The off-diagonal entry of B is minus 355, so the off-diagonal entry of B inverse is plus 355 over 82487.
+00:29:28,896 --> 00:29:55,669
+Step 4: the t quantile with 322 degrees of freedom is 1.967. The margin is 1.967 times 561.20, which is 1104.1. So the interval is 1404.0 to 3612.2. The green bar shows it, measured up from the size 2 mean.
 
 130
-00:35:47,446 --> 00:36:07,073
-So V 3 3 is 543 over 82487. V 4 4 is 384 over 82487. V 3 4 is 355 over 82487.
+00:29:56,119 --> 00:30:24,386
+Step 5: beta 2 minus beta 1 is the difference in mean salary, large minus medium districts. The estimate is 2508.1, and the interval does not contain 0. The solution sheet uses unrounded numbers: 2508.041, and 1403.957 to 3612.125.
 
 131
-00:36:07,523 --> 00:36:33,955
-Now put them together. 543 plus 384 minus 710 is 217. Multiply by sigma squared, which is 100, and divide by 82487. The variance of beta 3 hat minus beta 4 hat is 0.2631. The positive covariance makes the variance of the difference smaller.
+00:30:24,836 --> 00:30:43,311
+Practice question 2 is step 3 of card B. The model has four coefficients, beta 1 to beta 4, and sigma is 10. The question gives X transpose X, and asks for the variance of beta 3 hat minus beta 4 hat. Pause the video and try it.
 
 132
-00:36:34,405 --> 00:36:52,111
-To recap. A numeric code for the categories forces fixed mean differences. Use indicator variables instead. The gamma form has one mean for each level. The beta form has the referent mean beta 0, and differences from it. They are the same model.
+00:30:43,761 --> 00:31:01,851
+Look at the zeros. X transpose X has two blocks on the diagonal: A for beta 1 and beta 2, and B for beta 3 and beta 4. The other entries are 0. By the hint, the inverse is block diagonal too, with A inverse and B inverse.
 
 133
-00:36:52,561 --> 00:37:02,631
-With weight in the model, each level has its own line, and the lines are parallel. beta M is the difference between M and N at the same weight.
+00:31:02,301 --> 00:31:16,509
+The variance of the difference is sigma squared, times V 3 3 plus V 4 4 minus 2 V 3 4. These three entries are all in the B block of the inverse. So we only need B inverse.
 
 134
-00:37:03,081 --> 00:37:11,913
-To test one parameter or one linear combination, use a t test. For a difference, the variance includes the covariance term.
+00:31:16,959 --> 00:31:38,442
+Invert the 2 by 2 block B. First the determinant: 384 times 543 is 208512. Minus 355 squared, 126025. The determinant is 82487.
 
 135
-00:37:12,363 --> 00:37:33,760
-To test several parameters together, use the F test. Under the null hypothesis, F has an F distribution with q and n minus p plus 1 degrees of freedom. The p-value is the upper tail. With q equal to 1, F is t squared. The next video adds interactions: lines with different slopes.
+00:31:38,892 --> 00:32:00,033
+Swap the diagonal entries, change the sign of the off-diagonal entries, and divide by the determinant. The off-diagonal entry of B is minus 355, so the off-diagonal entry of B inverse is plus 355 over 82487.
+
+136
+00:32:00,483 --> 00:32:20,025
+So V 3 3 is 543 over 82487. V 4 4 is 384 over 82487. V 3 4 is 355 over 82487.
+
+137
+00:32:20,475 --> 00:32:34,363
+Now put them together. 543 plus 384 minus 2 times 355 is 217. Multiply by sigma squared, which is 100.
+
+138
+00:32:34,813 --> 00:32:49,469
+Divide by 82487. The variance of beta 3 hat minus beta 4 hat is 0.2631. The positive covariance makes the variance of the difference smaller.
+
+139
+00:32:49,919 --> 00:33:14,303
+Slide 48 uses Mb for intervals. A mean response is also one linear combination, so card B works. Step 1: the mean MeHg of subjects in W with weight 70 is x 0 transpose beta. x 0 is 1, 70, 0, 0, 1: the intercept, the weight, and the indicators of M, MW, and W.
+
+140
+00:33:14,753 --> 00:33:32,566
+Step 2: mu 0 hat is minus 9.7302, plus 0.15105 times 70, plus 3.3736. This is 4.2172, the pink dot on the W line.
+
+141
+00:33:33,016 --> 00:33:47,501
+Step 3: the standard error is sigma hat times the square root of x 0 transpose, X transpose X inverse, x 0. From the data, it is 0.8548.
+
+142
+00:33:47,951 --> 00:34:06,063
+Step 4: the 95 percent confidence interval is 4.2172 plus or minus 1.978 times 0.8548. This is 2.526 to 5.908, the green bar.
+
+143
+00:34:06,513 --> 00:34:34,844
+The same steps for group N with weight 60. The fit is minus 9.7302 plus 9.0632, which is minus 0.667. The standard error is 0.8733, and the interval is minus 2.394 to 1.061. MeHg cannot be negative. The negative values come from a straight line, outside most of the data of group N.
+
+144
+00:34:35,294 --> 00:34:48,691
+Now a prediction interval for one new subject in W with weight 70. Add 1 under the square root, for the new error. The standard error becomes 2.6646.
+
+145
+00:34:49,141 --> 00:35:04,267
+So the prediction interval is minus 1.054 to 9.488. The R output on the slide agrees. It is much wider than the confidence interval, because it includes the error of the new subject.
+
+146
+00:35:04,717 --> 00:35:17,730
+Section 4 tests all groups at once. Slide 31 asks whether mean MeHg varies by fishpart, adjusted for weight. The parameter vector beta has five entries.
+
+147
+00:35:18,180 --> 00:35:35,908
+Let beta star be the vector of beta M, beta M W, and beta W. Its length q is 3. We test the null hypothesis beta star equals 0, against the two-sided alternative, beta star not equal to 0.
+
+148
+00:35:36,358 --> 00:35:55,686
+This null hypothesis is different from the ones of section 3. It does not set one parameter, or one linear combination, equal to a number. It sets three parameters to 0 together. This is a joint null hypothesis. A t test cannot do this. We need the F test.
+
+149
+00:35:56,136 --> 00:36:20,755
+As in a t test, we measure how far the estimate is from 0, relative to its uncertainty. beta hat is normal. So the sub-vector beta star hat is normal too, with mean beta star, and variance sigma squared V star. V star is the sub-matrix of X transpose X inverse for the entries of beta star. It is the purple 3 by 3 block.
+
+150
+00:36:21,205 --> 00:36:34,474
+Slide 32 defines the F statistic. It is beta star hat transpose, times V star inverse, times beta star hat. Divide this by q times sigma hat squared.
+
+151
+00:36:34,924 --> 00:36:45,505
+Under the null hypothesis, F has an F distribution, with q and n minus p plus 1 degrees of freedom. q is the length of beta star.
+
+152
+00:36:45,955 --> 00:37:01,145
+With one parameter, this is the squared estimate over its estimated variance. With q parameters, V star inverse also accounts for the correlations between the estimates. Section 5 derives the distribution.
+
+153
+00:37:01,595 --> 00:37:20,496
+Slide 40 computes the p-value as an upper tail probability, and asks why. Pause the video and try it. F is never negative. It is a quadratic form with a positive definite matrix, over a positive number. If beta star hat is close to 0, F is small.
+
+154
+00:37:20,946 --> 00:37:42,237
+A large F means that beta star hat is far from 0, relative to its uncertainty. This is evidence against the null hypothesis. So the p-value is the probability of an F at least as large as the observed one: the upper tail. A small F is not evidence against the null hypothesis.
+
+155
+00:37:42,687 --> 00:37:53,801
+At the 5 percent level with 3 and 130 degrees of freedom, the critical value is 2.674. The red area is the rejection region.
+
+156
+00:37:54,251 --> 00:38:04,833
+Question type C asks whether several parameters are 0 together, for example whether all groups have the same mean. Method card C has five steps.
+
+157
+00:38:05,283 --> 00:38:13,411
+Step 1: write the null hypothesis, beta star equals 0. q is the number of entries of beta star.
+
+158
+00:38:13,861 --> 00:38:25,530
+Step 2: take the estimate beta star hat, and its variance block, sigma hat squared V star. In R, these are the rows and columns of v cov for beta star.
+
+159
+00:38:25,980 --> 00:38:37,095
+Step 3: compute the observed F. It is beta star hat transpose, times the inverse of the variance block, times beta star hat, divided by q.
+
+160
+00:38:37,545 --> 00:38:50,750
+Step 4: the p-value is the upper tail of the F distribution with q and n minus p plus 1 degrees of freedom, beyond the observed F. The picture shows the curve and the tail.
+
+161
+00:38:51,200 --> 00:39:01,760
+Step 5: conclude. Reject the null hypothesis if the p-value is less than alpha. Say that the result is adjusted for the other covariates.
+
+162
+00:39:02,210 --> 00:39:17,805
+Slide 49 applies card C to the mercury data. Pause the video and try it. Step 1: the null hypothesis is beta star equals 0, with beta star the three fishpart parameters. So q is 3.
+
+163
+00:39:18,255 --> 00:39:38,436
+Step 2: beta star hat is 3.0815, 2.2393, and 3.3736. The variance block is the fishpart block of the estimated variance matrix, sigma hat squared times V star. It already contains sigma hat squared.
+
+164
+00:39:38,886 --> 00:39:54,822
+Step 3: multiply the inverse of this block by beta star hat. The computer solves this: 2.9401, minus 0.8407, and 1.4361.
+
+165
+00:39:55,272 --> 00:40:02,611
+Then multiply by beta star hat transpose. Each entry of beta star hat times the matching entry.
+
+166
+00:40:03,061 --> 00:40:18,975
+The three products are 9.060, minus 1.882, and 4.845. They add to 12.022. Divide by q, 3. The observed F is 4.007.
+
+167
+00:40:19,425 --> 00:40:44,961
+Step 4: the p-value is the upper tail of the F distribution with 3 and 130 degrees of freedom, beyond 4.007. It is 0.009128. The slide prints 0.009127653. The red area beyond 2.674 is the 5 percent rejection region.
+
+168
+00:40:45,411 --> 00:40:59,726
+Step 5: the p-value is less than 0.05. So we reject the null hypothesis. The data give evidence that mean MeHg varies by fishpart, adjusted for weight.
+
+169
+00:41:00,176 --> 00:41:19,845
+Tutorial 3, question 1 c, is type C. Pause the video and try it. Does the size of the school district matter? Step 1 of card C: the null hypothesis is beta 1 equals beta 2 equals 0, so sizes 2 and 3 have the same mean as size 1. q is 2.
+
+170
+00:41:20,295 --> 00:41:33,223
+Step 2: beta star hat is 3527.1 and 6035.2. The variance block is the size rows and columns of v cov.
+
+171
+00:41:33,673 --> 00:41:57,268
+Step 3: invert the 2 by 2 block. First the determinant: 136994.86 times 241977.18, minus 32012.55 squared. This is 3.2125 times 10 to the 10.
+
+172
+00:41:57,718 --> 00:42:14,166
+Swap the diagonal entries, change the sign of the off-diagonal entries, and divide by the determinant. Times beta star hat, this gives 0.020553 and 0.022222.
+
+173
+00:42:14,616 --> 00:42:40,024
+Multiply by beta star hat transpose: 3527.1 times 0.020553 is 72.494, and 6035.2 times 0.022222 is 134.115. The sum is 206.609.
+
+174
+00:42:40,474 --> 00:42:45,231
+Divide by q, 2. The observed F is 103.30.
+
+175
+00:42:45,681 --> 00:43:05,009
+Step 4: the null distribution is F with 2 and 322 degrees of freedom. Its 5 percent critical value is 3.024. 103.3 is far beyond it. The p-value is 2.19 times 10 to the minus 35.
+
+176
+00:43:05,459 --> 00:43:21,395
+Step 5: reject the null hypothesis. Mean salary differs among the district sizes. The R summary line shows the same F statistic: 103.3 on 2 and 322 degrees of freedom.
+
+177
+00:43:21,845 --> 00:43:43,456
+Slide 42: these tests apply to any linear regression, not only to categorical covariates. Card B uses a t test for one number: one coefficient, like beta j equal to theta 0. Or one linear combination of coefficients, like beta M minus beta M W equal to 0.
+
+178
+00:43:43,906 --> 00:43:55,191
+Card C uses an F test for a joint null hypothesis: several coefficients equal to 0 together, or a sub-vector beta star equal to 0.
+
+179
+00:43:55,641 --> 00:44:08,207
+Both tests work for any covariates. When q is 1, the F test and the two-sided t test give the same answer. Practice question 1, in section 5, asks you to show this.
+
+180
+00:44:08,657 --> 00:44:21,094
+Section 5 derives the distribution of F. Question type D asks for this derivation, or for the special case q equals 1. Method card D has four steps.
+
+181
+00:44:21,544 --> 00:44:24,680
+Step 1: write the statistic with the estimates.
+
+182
+00:44:25,130 --> 00:44:41,983
+Step 2: standardize. Write sigma squared V star as L times L transpose. Then z, L inverse times beta star hat minus beta star, is standard normal with variance I. For one number, Z is standard normal.
+
+183
+00:44:42,433 --> 00:44:53,420
+Step 3: square and add. z transpose z is the sum of q squared standard normals: chi squared with q degrees of freedom. The purple box shows it.
+
+184
+00:44:53,870 --> 00:45:05,945
+Step 4: divide by the independent chi squared variable from sigma hat squared. Divide each one by its degrees of freedom. The ratio has an F distribution.
+
+185
+00:45:06,395 --> 00:45:32,165
+Step 2 of card D needs one fact from linear algebra: the Cholesky decomposition, slide 33. Any variance matrix V star can be written as L times L transpose. L is lower triangular: all entries above the diagonal are 0. Its diagonal entries are not negative. The left matrix is sigma hat squared V star for the mercury data.
+
+186
+00:45:32,615 --> 00:45:40,210
+Here is its L, computed from the data. Multiply L by L transpose, and you get the left matrix back.
+
+187
+00:45:40,660 --> 00:45:58,281
+When the matrix is positive-definite, all diagonal entries of L are positive. Here they are 0.953, 0.498, and 0.872. Then L has an inverse. We use L inverse in step 2.
+
+188
+00:45:58,731 --> 00:46:13,750
+Step 1 of card D: the statistic. The blue cloud shows many possible values of beta star hat minus beta star, drawn for q equal to 2. The entries are correlated, and their spreads are not equal.
+
+189
+00:46:14,200 --> 00:46:29,987
+Step 2: let L be the Cholesky factor of sigma squared V star. Define z as L inverse, times beta star hat minus beta star. Multiplying by L inverse turns the cloud into the round green cloud.
+
+190
+00:46:30,437 --> 00:46:42,533
+Step 3 needs z transpose z. The transpose of a product is the product of the transposes, in the other order. So we get L inverse transpose, times L inverse.
+
+191
+00:46:42,983 --> 00:46:47,249
+The transpose of L inverse is the inverse of L transpose.
+
+192
+00:46:47,699 --> 00:46:53,737
+L transpose inverse, times L inverse, is the inverse of L L transpose.
+
+193
+00:46:54,187 --> 00:47:14,197
+And L L transpose is sigma squared V star. So z transpose z is 1 over sigma squared, times the quadratic form with V star inverse. Under the null hypothesis, beta star is 0. Then this is the numerator of F over sigma squared, without the q.
+
+194
+00:47:14,647 --> 00:47:31,287
+The slides ask: why is z N 0 I? Pause the video and try it. z is a linear map of a normal vector, so z is normal. Its mean is L inverse times the mean of beta star hat minus beta star, which is 0.
+
+195
+00:47:31,737 --> 00:47:38,329
+Its variance is L inverse, times sigma squared V star, times L inverse transpose.
+
+196
+00:47:38,779 --> 00:47:42,321
+Replace sigma squared V star by L L transpose.
+
+197
+00:47:42,771 --> 00:47:52,392
+L inverse times L is I, and L transpose times its inverse is I. So the variance of z is the identity matrix I.
+
+198
+00:47:52,842 --> 00:48:02,442
+A multivariate normal vector with variance I has independent entries. So z 1 to z q are independent standard normals.
+
+199
+00:48:02,892 --> 00:48:09,527
+Step 3 of card D: square each one. Each square is chi squared with 1 degree of freedom.
+
+200
+00:48:09,977 --> 00:48:20,323
+The sum of q independent chi squared 1 variables is chi squared with q degrees of freedom. The purple curve shows it for q equal to 3.
+
+201
+00:48:20,773 --> 00:48:42,725
+So under the null hypothesis, the quadratic form over sigma squared is chi squared with q degrees of freedom. For step 4: from Lecture 7, n minus p plus 1, times sigma hat squared over sigma squared, is chi squared with n minus p plus 1 degrees of freedom, independent of beta hat.
+
+202
+00:48:43,175 --> 00:49:00,263
+Step 4 of card D builds F from two parts, as on slides 37 to 39. The first part, X 1, is the quadratic form over sigma squared. Under the null hypothesis, it is chi squared with q degrees of freedom.
+
+203
+00:49:00,713 --> 00:49:19,252
+The second part, X 2, is n minus p plus 1, times sigma hat squared over sigma squared. It is chi squared with n minus p plus 1 degrees of freedom. It is independent of X 1, because sigma hat squared is independent of beta hat.
+
+204
+00:49:19,702 --> 00:49:31,051
+Recall from Lecture 1: divide each independent chi squared variable by its degrees of freedom, and take the ratio. The ratio has an F distribution.
+
+205
+00:49:31,501 --> 00:49:40,632
+Put in X 1 and X 2. In the denominator, n minus p plus 1 cancels. The two marked sigma squared terms remain.
+
+206
+00:49:41,082 --> 00:49:48,741
+They cancel too. What is left is the F statistic: the quadratic form over q times sigma hat squared.
+
+207
+00:49:49,191 --> 00:50:05,340
+So under the null hypothesis, F has an F distribution with q and n minus p plus 1 degrees of freedom. We can calculate it, because the unknown sigma is gone. Card C, step 4, uses this distribution.
+
+208
+00:50:05,790 --> 00:50:24,457
+Practice question 1 is type D. It is also the exercise on page 41. Test beta j equal to 0 with the t statistic, and with the F statistic. Show that F equals t squared, and that the p-values are the same. Pause the video and try it.
+
+209
+00:50:24,907 --> 00:50:43,552
+Step 1 of card D: write both statistics. Method 1: the t statistic is beta j hat, over sigma hat times the square root of V j j. Under the null hypothesis, it has a t distribution with n minus p plus 1 degrees of freedom.
+
+210
+00:50:44,002 --> 00:50:53,111
+Method 2: let beta star be beta j alone. Then q is 1, and V star is the 1 by 1 matrix V j j.
+
+211
+00:50:53,561 --> 00:51:05,700
+Put these into the F statistic. The inverse of a 1 by 1 matrix is 1 over its entry. So F is beta j hat squared, over sigma hat squared V j j.
+
+212
+00:51:06,150 --> 00:51:12,166
+Write it as a square. The inside is the t statistic. So F equals t squared.
+
+213
+00:51:12,616 --> 00:51:26,483
+Check with the data. For weight in Mb, t is 4.430, and t squared is 19.62. The F statistic for beta 1 alone is also 19.62.
+
+214
+00:51:26,933 --> 00:51:39,135
+Now the p-values. The t test uses the t distribution with nu degrees of freedom. Here nu is n minus p plus 1, which is 130 in the example.
+
+215
+00:51:39,585 --> 00:51:50,700
+The two-sided p-value is the probability that the absolute value of T is at least the absolute observed t. This is the area of the two blue tails.
+
+216
+00:51:51,150 --> 00:52:16,089
+Steps 2 to 4 of card D, for one number. Recall from Lecture 1: T is Z over the square root of X over nu. Square it. T squared is Z squared over 1, divided by X over nu. Z squared is chi squared with 1 degree of freedom, and it is independent of X. So T squared has an F distribution with 1 and nu degrees of freedom.
+
+217
+00:52:16,539 --> 00:52:42,331
+The F test p-value is the probability that F is at least t observed squared. This is the probability that T squared is at least t observed squared. That is the same as the absolute value of T at least the absolute observed t. So the two p-values are equal. The critical values agree too: 3.914 is 1.978 squared, up to rounding.
+
+218
+00:52:42,781 --> 00:53:00,637
+To recap. Card A: a numeric code forces fixed mean differences, so use indicators. Pick the referent, write beta 0 plus one indicator for each other level, make the table of means, and read each beta as a difference from the referent, at the same weight.
+
+219
+00:53:01,087 --> 00:53:11,497
+Card B: for one linear combination, write theta, estimate it, find the variance with the covariance term, and use a t test or a confidence interval.
+
+220
+00:53:11,947 --> 00:53:26,241
+Card C: for a joint null hypothesis, compute F from beta star hat and its variance block, and use the upper tail of the F distribution with q and n minus p plus 1 degrees of freedom.
+
+221
+00:53:26,691 --> 00:53:46,595
+Card D derives this distribution: standardize with L inverse, square and add to get chi squared, and divide by the independent chi squared from sigma hat squared. With q equal to 1, F is t squared. The next video adds interactions: lines with different slopes.

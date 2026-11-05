@@ -1,199 +1,587 @@
 1
-00:00:00,000 --> 00:00:06,592
-This is STAT 331, video 10 b. We solve the exam problems on prediction.
+00:00:00,000 --> 00:00:08,960
+This is STAT 331, video 10 b. We solve the exam problems on prediction. Video 10 a gave the theory.
 
 2
-00:00:07,042 --> 00:00:20,930
-We solve Tutorial 2 question 1, parts e and f. Then the two practice questions of Lecture 4. Then Assignment 1 question 3, with the berries data. Video 10 a gave the theory.
+00:00:09,410 --> 00:00:22,594
+This video has five question types. Each type gets a method card and worked problems. Type A: a confidence interval for a mean response, or a prediction interval for a new response.
 
 3
-00:00:21,380 --> 00:00:36,505
-Tutorial 2, question 1. There are 25 patients. The response is satisfaction. The covariate is the severity of the illness. The question gives the R output of the fit. We read only the numbers we need.
+00:00:23,044 --> 00:00:26,116
+Type B: decide if we can trust a prediction.
 
 4
-00:00:36,955 --> 00:00:49,713
-The Estimate column gives the fitted line. Beta 0 hat is 179.1312. Beta 1 hat is minus 2.3283.
+00:00:26,566 --> 00:00:31,302
+Type C: compute the maximum likelihood estimates from summary numbers.
 
 5
-00:00:50,163 --> 00:01:01,533
-The residual standard error is sigma hat. It is 13.52, on 23 degrees of freedom. That is n minus 2, because n is 25.
+00:00:31,752 --> 00:00:35,656
+Type D: pick the t quantile from given probabilities.
 
 6
-00:01:01,983 --> 00:01:18,645
-The question also gives the mean of severity, 50.48, and the sum of squares, S x x, equal to 532.24. Now we have every number for the intervals. Pause the video and try parts e and f.
+00:00:36,106 --> 00:00:41,375
+Type E: a confidence interval or a test for beta one or beta zero.
 
 7
-00:01:19,095 --> 00:01:40,065
-Step 1. The predicted value is beta 0 hat plus beta 1 hat times 55. 179.1312 minus 2.3283 times 55 is 51.0747. This is also the estimated mean from part d.
+00:00:41,825 --> 00:00:54,305
+Section 1. Question type A gives a fitted model and a new x value. It asks for a confidence interval for the mean response, or a prediction interval for one new response.
 
 8
-00:01:40,515 --> 00:02:03,001
-Step 2. Compute the x part. 1 over n is 1 over 25, which is 0.04. 55 minus 50.48 is 4.52. Its square is 20.4304. Divide by 532.24. The sum is 0.07839.
+00:00:54,755 --> 00:01:07,897
+Method card A has five steps. Step 1: read beta zero hat, beta one hat, sigma hat and its degrees of freedom, n minus 2. Also read x bar, S x x and n.
 
 9
-00:02:03,451 --> 00:02:24,933
-Step 3. For a prediction, add 1. Sigma hat times the square root of 1.07839 is 13.52 times 1.03845. That is 14.04. The t quantile with 23 degrees of freedom is 2.069.
+00:01:08,347 --> 00:01:17,051
+Step 2: the point estimate. Put x new into the fitted line. The green dot is mu zero hat, which is also y new hat.
 
 10
-00:02:25,383 --> 00:02:53,714
-Step 4. The half-width is 2.069 times 14.04, which is 29.04. So the 95 percent prediction interval is 22.03 to 80.12. The confidence interval for the mean, from part d, is 43.24 to 58.91. The prediction interval is much wider, because one new patient also has the error epsilon new.
+00:01:17,501 --> 00:01:32,135
+Step 3: the x part. It is 1 over n, plus x new minus x bar squared, over S x x. For a prediction interval, add 1, for the error of the new response. The bar shows the three pieces.
 
 11
-00:02:54,164 --> 00:03:18,399
-Part f. We do not have the 25 data points. But S x x gives the sample standard deviation of severity. s x is the square root of 532.24 over 24. That is 4.71. The purple region is x bar plus or minus 2 s x. Most of the severity values are in a region like this.
+00:01:32,585 --> 00:01:42,953
+Step 4: the standard error is sigma hat times the square root of the x part. The quantile is t 1 minus alpha over 2, n minus 2.
 
 12
-00:03:18,849 --> 00:03:28,662
-At severity 55, we are inside this region. The green bar is the confidence interval, and the orange bar is the prediction interval.
+00:01:43,403 --> 00:01:56,033
+Step 5: the interval is the estimate plus or minus t times the standard error. Check: the prediction interval, in orange, is wider than the confidence interval, in green.
 
 13
-00:03:29,112 --> 00:03:45,667
-Severity 100 is 10.5 standard deviations above x bar. The formula still gives a number: y hat is minus 53.7. The prediction interval is minus 120.2 to 12.8.
+00:01:56,483 --> 00:02:14,147
+Tutorial 2, question 1. There are 25 patients. The response is satisfaction. The covariate is the severity of the illness. The question gives the R output of the fit. Parts d, e and f ask about severity 55 and 100.
 
 14
-00:03:46,117 --> 00:04:02,565
-But we should not trust it. This is extrapolation. We have no data near 100. So we cannot check that the relation is linear there, or that the variance is the same. The interval formula assumes the model is correct at x new.
+00:02:14,597 --> 00:02:30,554
+Step 1 of card A: read the output. The Estimate column gives the fitted line. Beta zero hat is 179.1312. Beta one hat is minus 2.3283.
 
 15
-00:04:03,015 --> 00:04:08,199
-Lecture 4, practice question 1. Pause the video and try parts a and b.
+00:02:31,004 --> 00:02:42,161
+The residual standard error is sigma hat. It is 13.52, on 23 degrees of freedom. That is n minus 2, 25 minus 2.
 
 16
-00:04:08,649 --> 00:04:32,009
-Part a. The sample variance of x is s x squared. It equals S x x over n minus 1. So S x x equals n minus 1 times s x squared. Then beta 1 hat is S x y over n minus 1 times s x squared. Beta 0 hat is y bar minus beta 1 hat times x bar.
+00:02:42,611 --> 00:02:54,025
+The question also prints the mean of severity, 50.48, and the sum of squared deviations, S x x, equal to 532.24.
 
 17
-00:04:32,459 --> 00:04:41,568
-Under the normal model, the MLEs of beta 0 and beta 1 are the least squares estimates. Video 5 showed this.
+00:02:54,475 --> 00:03:01,195
+Now every number for parts d, e and f is known. Pause the video and try parts d and e.
 
 18
-00:04:42,018 --> 00:04:52,258
-Part b. The two estimators of sigma squared use the same S S E. Sigma hat squared divides by n minus 2. Here that is 18.
+00:03:01,645 --> 00:03:10,007
+Part d. Pause the video and try it. We follow card A. Step 1 is done: the given values are in the bar at the top.
 
 19
-00:04:52,708 --> 00:04:57,913
-The MLE divides by n, which is 20. So the MLE is smaller.
+00:03:10,457 --> 00:03:24,047
+Step 2: put x new equals 55 into the fitted line. Mu zero hat is 179.1312 minus 2.3283 times 55.
 
 20
-00:04:58,363 --> 00:05:12,102
-The ratio of the variances is 20 over 18. Take the square root. Sigma hat over sigma hat MLE is the square root of 20 over 18. That is 1.054.
+00:03:24,497 --> 00:03:39,259
+2.3283 times 55 is 128.0565. So mu zero hat is 51.0747. The green dot on the line shows it.
 
 21
-00:05:12,552 --> 00:05:23,069
-Part c. We have n, S x x, x bar, S x y, and the sum of x i y i. We do not have y bar. Pause the video and try it.
+00:03:39,709 --> 00:03:55,176
+Step 3: the x part. Put in n equals 25, x bar equals 50.48, and S x x equals 532.24. The distance from x bar to 55 is 4.52.
 
 22
-00:05:23,519 --> 00:05:48,138
-Use the short form of S x y. S x y equals the sum of x i y i, minus n x bar y bar. Solve for y bar. y bar is 3378 minus 353, over 50 times 4.8. That is 3025 over 240, which is 12.6042.
+00:03:55,626 --> 00:04:19,263
+1 over 25 is 0.04. 4.52 squared is 20.4304, and 20.4304 over 532.24 is 0.03839. The x part is 0.07839. The bar shows the two pieces.
 
 23
-00:05:48,588 --> 00:05:58,892
-Beta 1 hat is S x y over S x x. 353 over 180 is 1.9611.
+00:04:19,713 --> 00:04:32,641
+Step 4: the standard error is sigma hat times the square root of the x part. 13.52 times 0.27998 is 3.7853.
 
 24
-00:05:59,342 --> 00:06:19,822
-Beta 0 hat is y bar minus beta 1 hat x bar. 12.6042 minus 1.9611 times 4.8 is 3.1908. The chain shows the order: first y bar, then beta 1 hat, then beta 0 hat.
+00:04:33,091 --> 00:04:44,078
+The quantile for 95 percent with 23 degrees of freedom is t 0.975, 23, which is 2.0687.
 
 25
-00:06:20,272 --> 00:06:39,045
-Practice question 2. The degrees of freedom are n minus 2, which is 8. The question gives three probabilities for t with 8 degrees of freedom. First decide which quantile each one gives. P of T greater than minus 1.86 is 0.95.
+00:04:44,528 --> 00:05:00,464
+Step 5: the interval is 51.0747 plus or minus 2.0687 times 3.7853. That is plus or minus 7.8307.
 
 26
-00:06:39,495 --> 00:06:55,090
-The t density is symmetric. So P of T greater than 1.86 is 0.05. So 1.86 is t 0.95, 8. A 90 percent interval needs this quantile.
+00:05:00,914 --> 00:05:21,757
+So the 95 percent confidence interval for the mean satisfaction at severity 55 is 43.24 to 58.91. The posted solution uses unrounded estimates and gets 43.25 to 58.91. The difference comes from rounding.
 
 27
-00:06:55,540 --> 00:07:09,897
-P of T less than 2.31 is 0.975. So 2.31 is t 0.975, 8. A 95 percent interval needs this quantile.
+00:05:22,207 --> 00:05:29,695
+Part e: predict the satisfaction of one new patient with severity 55. Pause the video and try it.
 
 28
-00:07:10,347 --> 00:07:27,009
-P of the absolute value of T greater than 2.75 is 0.025. That is a 97.5 percent interval. No part of the question needs it. Pause the video and try parts a, b and c.
+00:05:30,145 --> 00:05:38,337
+Step 2: the predicted value is the same number as in part d. Y new hat is 51.0747.
 
 29
-00:07:27,459 --> 00:07:41,773
-Part a. The standard error of beta 1 hat is sigma hat over the square root of S x x. 0.4 over the square root of 16 is 0.4 over 4, which is 0.1.
+00:05:38,787 --> 00:05:57,837
+Step 3: take the x part of part d, 0.07839, and add 1. The 1 comes from the error epsilon new of the new patient. The sum is 1.07839. In the bar, the 1 is much larger than the two other pieces.
 
 30
-00:07:42,223 --> 00:07:58,778
-For 95 percent, use t 0.975, 8, which is 2.31. So the interval is 5 plus or minus 0.231. That is 4.769 to 5.231.
+00:05:58,287 --> 00:06:15,567
+Step 4: the standard error for a prediction is 13.52 times the square root of 1.07839. That is 13.52 times 1.03846, which is 14.040.
 
 31
-00:07:59,228 --> 00:08:19,729
-Part b. The standard error of beta 0 hat is sigma hat times the square root of 1 over n, plus x bar squared over S x x. x bar is 0, so the second term is 0. 0.4 times the square root of 0.1 is 0.1265.
+00:06:16,017 --> 00:06:22,545
+The level is 95 percent again, so the quantile is the same, 2.0687.
 
 32
-00:08:20,179 --> 00:08:37,374
-The interval is minus 2 plus or minus 2.31 times 0.1265. That is minus 2 plus or minus 0.292, so minus 2.292 to minus 1.708.
+00:06:22,995 --> 00:06:37,801
+Step 5: 51.0747 plus or minus 2.0687 times 14.040. That is plus or minus 29.045.
 
 33
-00:08:37,824 --> 00:08:44,032
-Part c. The predicted value is minus 2 plus 5 times 5. That is 23.
+00:06:38,251 --> 00:07:00,117
+So the 95 percent prediction interval is 22.03 to 80.12. The posted solution gives 22.04 to 80.12. The check of step 5: it is much wider than the confidence interval of part d, because one new patient also has the error epsilon new.
 
 34
-00:08:44,482 --> 00:09:09,165
-The standard error for a prediction is sigma hat times the square root of 1 plus 1 over n plus x new minus x bar squared over S x x. Here that is 1 plus 0.1 plus 25 over 16, which is 2.6625. The square root is 1.632, and 0.4 times that is 0.6527.
+00:07:00,567 --> 00:07:08,162
+Question type B asks if we can trust a prediction at a new x value. Method card B has four steps.
 
 35
-00:09:09,615 --> 00:09:20,879
-A 90 percent interval has alpha equal to 0.1. So we need t 0.95, 8. From the first probability, it is 1.86.
+00:07:08,612 --> 00:07:15,375
+Step 1: find the range of x in the data. That is the smallest and the largest observed x.
 
 36
-00:09:21,329 --> 00:09:42,022
-The half-width is 1.86 times 0.6527, which is 1.214. So the 90 percent prediction interval is 21.786 to 24.214. Do not use 2.31 here. That quantile is for 95 percent.
+00:07:15,825 --> 00:07:23,547
+Step 2: compare x new with this range. It also helps to measure the distance in standard deviations of x.
 
 37
-00:09:42,472 --> 00:10:04,723
-Assignment 1, question 3. There are 90 berries. x is the sugar content in grams per litre. y is the chewiness in millijoules. Part a is the scatterplot. The sugar values take only 6 levels, from 176.5 to 258.5. Pause the video and try the question.
+00:07:23,997 --> 00:07:30,376
+Step 3: if x new is inside the range, the model was fitted and checked there. Use the interval.
 
 38
-00:10:05,173 --> 00:10:20,405
-Part b. We compute the least squares estimates from the data. Beta 0 hat is 7.6629. Beta 1 hat is minus 0.02280. The green line is the fitted line.
+00:07:30,826 --> 00:07:44,629
+Step 4: if x new is outside the range, the prediction is an extrapolation. We have no data there. So linearity and constant variance were not checked there, and the interval is not trustworthy.
 
 39
-00:10:20,855 --> 00:10:32,012
-Interpretation of beta 1 hat. For each additional gram per litre of sugar, the estimated mean chewiness is 0.0228 millijoules lower.
+00:07:45,079 --> 00:07:52,631
+Part f: should we trust a prediction at severity 100? Pause the video and try it. We follow card B.
 
 40
-00:10:32,462 --> 00:10:47,993
-Interpretation of beta 0 hat. It is the estimated mean chewiness of berries with 0 grams per litre of sugar. No berry in the data has sugar near 0. So this number has no useful meaning by itself.
+00:07:53,081 --> 00:08:01,870
+Step 1: the range of x. The posted solution says the largest observed severity is 62. The blue line marks it.
 
 41
-00:10:48,443 --> 00:11:12,848
-Part c. First the standard error. Sigma hat is 0.9178, and S x x is 70657.4. The standard error of beta 1 hat is 0.9178 over the square root of 70657.4. That is 0.003453.
+00:08:02,320 --> 00:08:08,784
+Step 2: compare. 100 is greater than 62. The red region has no data.
 
 42
-00:11:13,298 --> 00:11:27,805
-The t statistic is beta 1 hat minus 0, over its standard error. Minus 0.02280 over 0.003453 is minus 6.60.
+00:08:09,234 --> 00:08:22,610
+We can also measure the distance with S x x. The sample standard deviation of x is the square root of 532.24 over 24. That is 4.71.
 
 43
-00:11:28,255 --> 00:11:49,737
-The test is two-sided, with 88 degrees of freedom. The p-value is 2 times the probability that t 88 is above 6.60. That is 3.0 times 10 to the minus 9. On the plot, t is far beyond the critical values, plus or minus 1.987.
+00:08:23,060 --> 00:08:39,508
+100 minus 50.48 is 49.52. 49.52 over 4.71 is 10.5. So severity 100 is 10.5 standard deviations above x bar.
 
 44
-00:11:50,187 --> 00:12:04,587
-The p-value is less than 0.05, so we reject H 0 at the 5 percent level. The data give strong evidence of a linear association between sugar content and mean chewiness.
+00:08:39,958 --> 00:08:56,278
+Step 4: x new is outside the range. The formula still gives a number. Y new hat is 179.1312 minus 2.3283 times 100, which is minus 53.70.
 
 45
-00:12:05,037 --> 00:12:52,797
-Part d. At 220 grams per litre, the estimated mean chewiness is 7.6629 minus 0.02280 times 220. That is 2.6475. The standard error is sigma hat times the square root of 1 over 90 plus 220 minus 217.33 squared over S x x. That is 0.0972. With t 0.975, 88 equal to 1.987, the 95 percent confidence interval is 2.454 to 2.841. It is narrow, because 220 is near x bar.
+00:08:56,728 --> 00:09:16,973
+The prediction interval also gives numbers. The x part plus 1 is 1, plus 0.04, plus 49.52 squared over 532.24, which is 4.6074. The sum is 5.6474.
 
 46
-00:12:53,247 --> 00:13:14,473
-Part e. At 110 grams per litre, the predicted chewiness is 5.155. For a prediction, add 1 under the square root. The standard error is 0.9945. The 95 percent prediction interval is 3.179 to 7.132.
+00:09:17,423 --> 00:09:31,610
+The standard error is 13.52 times the square root of 5.6474. That is 13.52 times 2.3764, which is 32.13.
 
 47
-00:13:14,923 --> 00:13:35,019
-Why mistrust this interval? 110 is far below the smallest sugar value in the data, 176.5. The red region has no data. We cannot check the linear model, or the constant variance, there. This is extrapolation, as in Tutorial 2 part f.
+00:09:32,060 --> 00:09:51,388
+The interval is minus 53.70 plus or minus 2.0687 times 32.13. That is plus or minus 66.47, so minus 120.2 to 12.8. The red bar shows it.
 
 48
-00:13:35,469 --> 00:13:47,352
-To recap. Read beta 0 hat, beta 1 hat, sigma hat, and the degrees of freedom from the output. Then the prediction interval needs x bar and S x x.
+00:09:51,838 --> 00:10:06,537
+But we cannot trust it. We have no data near 100. So we cannot check that the relation is linear there, or that the variance is the same. The interval formula assumes that the model is correct at x new.
 
 49
-00:13:47,802 --> 00:14:06,255
-Pick the t quantile from the level. A 90 percent interval uses t 0.95. A 95 percent interval uses t 0.975. Use the short forms for S x x and S x y when the question gives summary numbers.
+00:10:06,987 --> 00:10:20,853
+Section 2. Question type C gives summary numbers, such as n, x bar and S x y, and asks for the maximum likelihood estimates. Lecture 4, practice question 1, is this type.
 
 50
-00:14:06,705 --> 00:14:17,116
-An x value far outside the data gives an interval, but we should not trust it. The next video starts the matrix review for multiple linear regression.
+00:10:21,303 --> 00:10:39,223
+Method card C has four steps. Step 1: for beta zero and beta one, the MLEs are the least squares estimates. Beta one hat is S x y over S x x. Beta zero hat is y bar minus beta one hat x bar.
+
+51
+00:10:39,673 --> 00:10:51,321
+Step 2: for sigma squared, the MLE divides S S E by n. The unbiased estimate, sigma hat squared, divides S S E by n minus 2.
+
+52
+00:10:51,771 --> 00:11:07,430
+Step 3: some quantities are missing. Write each one with a short form. S x x equals n minus 1 times s x squared. S x y equals the sum of x i y i, minus n x bar y bar.
+
+53
+00:11:07,880 --> 00:11:16,392
+Step 4: solve for the missing value. Then compute in order: first y bar, then beta one hat, then beta zero hat.
+
+54
+00:11:16,842 --> 00:11:28,447
+Lecture 4, practice question 1 a. Write the MLEs with x bar, y bar, S x y and the sample variance of x. Pause the video and try it.
+
+55
+00:11:28,897 --> 00:11:42,743
+The sample variance is missing from the formulas, so we start with step 3 of card C. By definition, s x squared is the sum of x i minus x bar squared, over n minus 1.
+
+56
+00:11:43,193 --> 00:11:54,457
+The sum of x i minus x bar squared is S x x. So s x squared is S x x over n minus 1. The blue bar is S x x.
+
+57
+00:11:54,907 --> 00:12:08,027
+Multiply by n minus 1. S x x equals n minus 1 times s x squared. The bar is cut into n minus 1 equal pieces, and each piece is s x squared.
+
+58
+00:12:08,477 --> 00:12:23,453
+Step 1: the MLE of beta one is the least squares estimate, S x y over S x x. Put in line 3. Beta one hat is S x y over n minus 1 times s x squared.
+
+59
+00:12:23,903 --> 00:12:31,007
+The MLE of beta zero is y bar minus beta one hat x bar. These are the answers.
+
+60
+00:12:31,457 --> 00:12:39,947
+Part b. For n equals 20, find the ratio of sigma hat to sigma hat MLE. Pause the video and try it.
+
+61
+00:12:40,397 --> 00:12:55,053
+Step 2 of card C. The unbiased estimate divides S S E by n minus 2. Here that is 18. In the picture, S S E is cut into 18 pieces, and sigma hat squared is one piece.
+
+62
+00:12:55,503 --> 00:13:01,818
+The MLE divides the same S S E by n, which is 20. So its piece is smaller.
+
+63
+00:13:02,268 --> 00:13:10,396
+Divide line 1 by line 2. S S E cancels. The ratio of the variances is n over n minus 2.
+
+64
+00:13:10,846 --> 00:13:18,270
+Take the square root. Sigma hat over sigma hat MLE is the square root of n over n minus 2.
+
+65
+00:13:18,720 --> 00:13:29,856
+With n equals 20, this is the square root of 20 over 18, which is the square root of 1.1111. That is 1.0541.
+
+66
+00:13:30,306 --> 00:13:40,909
+Part c. We have n, S x x, x bar, S x y, and the sum of x i y i. Y bar is not given. Pause the video and try it.
+
+67
+00:13:41,359 --> 00:13:53,199
+Step 3 of card C: write S x y with a short form. Start from the definition: the sum of x i minus x bar, times y i minus y bar.
+
+68
+00:13:53,649 --> 00:14:02,417
+Multiply out. There are four terms. The sums of x i and of y i are underlined, because the next line replaces them.
+
+69
+00:14:02,867 --> 00:14:12,979
+The sum of x i is n x bar, and the sum of y i is n y bar. So the two middle terms are both minus n x bar y bar.
+
+70
+00:14:13,429 --> 00:14:19,679
+Collect. S x y equals the sum of x i y i, minus n x bar y bar.
+
+71
+00:14:20,129 --> 00:14:28,897
+Step 4: solve this for y bar. Y bar is the sum of x i y i minus S x y, over n x bar.
+
+72
+00:14:29,347 --> 00:14:48,505
+Put in the numbers. 3378 minus 353 is 3025. 50 times 4.8 is 240. 3025 over 240 is 12.60417.
+
+73
+00:14:48,955 --> 00:15:00,005
+Then beta one hat is S x y over S x x. 353 over 180 is 1.96111.
+
+74
+00:15:00,455 --> 00:15:25,991
+Last, beta zero hat is y bar minus beta one hat x bar. 1.96111 times 4.8 is 9.41333. 12.60417 minus 9.41333 is 3.19084, about 3.1908. The chain on the right shows the order.
+
+75
+00:15:26,441 --> 00:15:38,260
+Section 3. In an exam, you get no t table. The question gives some probabilities of a t distribution instead. Question type D: pick the right quantile from them.
+
+76
+00:15:38,710 --> 00:15:43,723
+Method card D. Step 1: the degrees of freedom are n minus 2.
+
+77
+00:15:44,173 --> 00:15:59,576
+Step 2: a 100 times 1 minus alpha percent interval needs t 1 minus alpha over 2, n minus 2. That is the point with area 1 minus alpha over 2 to its left. The green area shows it.
+
+78
+00:16:00,026 --> 00:16:16,218
+Step 3: write each given probability as an area to the left of a point c. Use symmetry. The probability that T is above minus c equals the probability that T is below c. Each red tail has area alpha over 2.
+
+79
+00:16:16,668 --> 00:16:22,599
+Step 4: match the area with 1 minus alpha over 2. That point is the quantile.
+
+80
+00:16:23,049 --> 00:16:38,707
+Lecture 4, practice question 2. The question gives n, the estimates, S x x, x bar and sigma hat. It also gives three probabilities for t with 8 degrees of freedom. Pause the video and pick the quantiles.
+
+81
+00:16:39,157 --> 00:16:45,963
+Step 1 of card D: the degrees of freedom are n minus 2, which is 10 minus 2, which is 8.
+
+82
+00:16:46,413 --> 00:17:01,154
+Step 2: parts a and b ask for 95 percent intervals, so they need area 0.975 to the left. Part c asks for 90 percent, so it needs area 0.95 to the left.
+
+83
+00:17:01,604 --> 00:17:11,887
+Step 3: the first probability. The probability that T is above minus 1.86 is 0.95. The blue area shows it.
+
+84
+00:17:12,337 --> 00:17:29,809
+Mirror the picture. By symmetry, the probability that T is below 1.86 is also 0.95. This matches 0.95, so t 0.95, 8 is 1.86. Part c uses it.
+
+85
+00:17:30,259 --> 00:17:48,029
+The third probability. The probability that T is below 2.31 is 0.975. This matches 0.975, so t 0.975, 8 is 2.31. Parts a and b use it.
+
+86
+00:17:48,479 --> 00:18:10,239
+The second probability. The probability that the absolute value of T is above 2.75 is 0.025. Each tail has 0.0125, so the area to the left of 2.75 is 0.9875. No part of the question needs it.
+
+87
+00:18:10,689 --> 00:18:24,620
+Question type E asks for a confidence interval for beta one or beta zero, or for a test of beta one equals 0. Video 8 gave the theory. Method card E has four steps.
+
+88
+00:18:25,070 --> 00:18:41,155
+Step 1: the standard error. For beta one hat, it is sigma hat over the square root of S x x. For beta zero hat, it is sigma hat times the square root of 1 over n plus x bar squared over S x x.
+
+89
+00:18:41,605 --> 00:18:48,027
+Step 2: the quantile t 1 minus alpha over 2, n minus 2. Card D finds it.
+
+90
+00:18:48,477 --> 00:18:57,010
+Step 3: the confidence interval is beta j hat plus or minus t times its standard error. The green bar shows it.
+
+91
+00:18:57,460 --> 00:19:18,047
+Step 4: the test of H 0, beta j equals 0. The t statistic is beta j hat over its standard error. The p-value is 2 times the probability that t n minus 2 is above the absolute value of t. Reject H 0 if the p-value is less than alpha.
+
+92
+00:19:18,497 --> 00:19:37,419
+Parts a and b. Pause the video and try them. We follow card E. Step 1: the standard error of beta one hat is sigma hat over the square root of S x x. 0.4 over the square root of 16 is 0.4 over 4, which is 0.1.
+
+93
+00:19:37,869 --> 00:19:48,451
+Step 2: for 95 percent, the quantile is t 0.975, 8, which is 2.31. We found it on the last slide.
+
+94
+00:19:48,901 --> 00:20:04,367
+Step 3: the interval is 5 plus or minus 2.31 times 0.1. That is 5 plus or minus 0.231, so 4.769 to 5.231.
+
+95
+00:20:04,817 --> 00:20:22,545
+Part b. Step 1: the standard error of beta zero hat is sigma hat times the square root of 1 over n, plus x bar squared over S x x. Put in n equals 10, x bar equals 0, and S x x equals 16.
+
+96
+00:20:22,995 --> 00:20:39,251
+X bar is 0, so the second term is 0. 0.4 times the square root of 0.1 is 0.4 times 0.3162, which is 0.1265.
+
+97
+00:20:39,701 --> 00:20:56,555
+Step 3: minus 2 plus or minus 2.31 times 0.1265. That is minus 2 plus or minus 0.292, so minus 2.292 to minus 1.708.
+
+98
+00:20:57,005 --> 00:21:01,741
+The green box gives both answers. The number lines show both intervals.
+
+99
+00:21:02,191 --> 00:21:07,183
+Part c is question type A again, with card A. Pause the video and try it.
+
+100
+00:21:07,633 --> 00:21:15,611
+Step 2: the predicted value at x new equals 5 is minus 2 plus 5 times 5. That is 23.
+
+101
+00:21:16,061 --> 00:21:34,344
+Step 3: a prediction, so the x part gets the 1. 1, plus 1 over 10, plus 5 minus 0 squared over 16. That is 1 plus 0.1 plus 1.5625, which is 2.6625.
+
+102
+00:21:34,794 --> 00:21:50,666
+Step 4: the standard error is 0.4 times the square root of 2.6625. That is 0.4 times 1.6317, which is 0.6527.
+
+103
+00:21:51,116 --> 00:22:01,868
+A 90 percent interval has alpha equal to 0.1, so it needs t 0.95, 8. From card D, it is 1.86.
+
+104
+00:22:02,318 --> 00:22:13,134
+Step 5: 23 plus or minus 1.86 times 0.6527. That is plus or minus 1.214.
+
+105
+00:22:13,584 --> 00:22:21,413
+So the 90 percent prediction interval is 21.786 to 24.214.
+
+106
+00:22:21,863 --> 00:22:36,306
+Section 4: one full problem, Assignment 1, question 3. There are 90 berries. x is the sugar content in grams per litre. y is the chewiness in millijoules. The question has five parts.
+
+107
+00:22:36,756 --> 00:22:46,953
+Part a is the scatterplot. The sugar values take only 6 levels, from 176.5 to 258.5.
+
+108
+00:22:47,403 --> 00:22:53,718
+Part b asks for the least squares estimates and their meaning. Video 4 has the cards for this.
+
+109
+00:22:54,168 --> 00:22:58,733
+Part c is a test of beta one equals 0. That is card E.
+
+110
+00:22:59,183 --> 00:23:05,455
+Part d is a confidence interval for the mean chewiness at 220. That is card A.
+
+111
+00:23:05,905 --> 00:23:16,679
+Part e is a prediction interval at 110, and a reason to mistrust it. That is card A, then card B. Pause the video and try the question.
+
+112
+00:23:17,129 --> 00:23:31,550
+Part b. Card B of video 4 computes the estimates. Step 1: from the data file, x bar is 217.333 and y bar is 2.70833.
+
+113
+00:23:32,000 --> 00:23:42,645
+Step 2: S x x is 70657.4, and S x y is minus 1610.78.
+
+114
+00:23:43,095 --> 00:23:59,863
+Step 3: beta one hat is S x y over S x x. Minus 1610.78 over 70657.4 is minus 0.022797.
+
+115
+00:24:00,313 --> 00:24:28,793
+Step 4: beta zero hat is y bar minus beta one hat x bar. 0.022797 times 217.333 is 4.95454. 2.70833 plus 4.95454 is 7.66287, about 7.6629. The green line is the fitted line.
+
+116
+00:24:29,243 --> 00:24:38,097
+Now card C of video 4 interprets them. Step 1: the units. x is in grams per litre, and y is in millijoules.
+
+117
+00:24:38,547 --> 00:24:48,595
+Step 2: for each additional gram per litre of sugar, the estimated mean chewiness decreases by 0.0228 millijoules.
+
+118
+00:24:49,045 --> 00:25:02,357
+Step 3: beta zero hat, 7.6629 millijoules, is the estimated mean chewiness at sugar content 0. It is the height of the line at x equals 0.
+
+119
+00:25:02,807 --> 00:25:18,359
+Step 4: the sugar values in the data go from 176.5 to 258.5. Sugar 0 is far outside this range. So beta zero hat has no practical meaning here.
+
+120
+00:25:18,809 --> 00:25:40,611
+Part c. Pause the video and try it. Card E, step 1. Sigma hat is the square root of S S E over n minus 2. From the data, S S E is 74.126. Over 88, that is 0.84234, and its square root is 0.9178.
+
+121
+00:25:41,061 --> 00:26:00,901
+The standard error of beta one hat is 0.9178 over the square root of 70657.4. That is 0.9178 over 265.81, which is 0.003453.
+
+122
+00:26:01,351 --> 00:26:22,983
+Step 4: the t statistic is beta one hat minus 0, over its standard error. Minus 0.022797 over 0.003453 is minus 6.60. The blue line marks it on the t density with 88 degrees of freedom.
+
+123
+00:26:23,433 --> 00:26:39,284
+The test is two-sided. The p-value is 2 times the probability that t 88 is above 6.60. That is 3.0 times 10 to the minus 9: the area beyond plus and minus 6.60.
+
+124
+00:26:39,734 --> 00:26:54,625
+Step 2 gives the same decision. The critical value t 0.975, 88 is 1.987, and the absolute value of t, 6.60, is much larger.
+
+125
+00:26:55,075 --> 00:27:09,475
+The p-value is less than 0.05, so we reject H 0 at the 5 percent level. The data give strong evidence of a linear association between sugar content and mean chewiness.
+
+126
+00:27:09,925 --> 00:27:21,125
+Part d. Pause the video and try it. We follow card A. Step 1 is in the bar: the estimates, sigma hat, x bar, S x x and n come from the data.
+
+127
+00:27:21,575 --> 00:27:40,561
+Step 2: mu zero hat is 7.66288 minus 0.022797 times 220. The product is 5.01534, so mu zero hat is 2.6475.
+
+128
+00:27:41,011 --> 00:27:56,393
+Step 3: the x part. 1 over 90 is 0.011111. 220 minus 217.3333, squared, is 7.1111.
+
+129
+00:27:56,843 --> 00:28:14,229
+7.1111 over 70657.4 is 0.000101. The sum is 0.011212. In the bar, the second piece is very small.
+
+130
+00:28:14,679 --> 00:28:33,517
+Step 4: the standard error is 0.9178 times the square root of 0.011212. That is 0.9178 times 0.10589, which is 0.09719.
+
+131
+00:28:33,967 --> 00:28:41,796
+The quantile for 95 percent with 88 degrees of freedom is 1.9873.
+
+132
+00:28:42,246 --> 00:28:56,923
+Step 5: 2.6475 plus or minus 1.9873 times 0.09719. That is plus or minus 0.1931.
+
+133
+00:28:57,373 --> 00:29:09,064
+So the 95 percent confidence interval is 2.454 to 2.841. It is narrow, because 220 is close to x bar.
+
+134
+00:29:09,514 --> 00:29:17,237
+Part e: predict the chewiness of a berry with 110 grams per litre of sugar. Pause the video and try it.
+
+135
+00:29:17,687 --> 00:29:36,972
+Card A, step 2: y new hat is 7.66288 minus 0.022797 times 110. The product is 2.50767, so y new hat is 5.1552.
+
+136
+00:29:37,422 --> 00:29:50,755
+Step 3: a prediction, so the x part gets the 1. 110 minus 217.3333, squared, is 11520.44.
+
+137
+00:29:51,205 --> 00:30:08,784
+11520.44 over 70657.4 is 0.163046. The sum is 1.174157. The bar shows the three pieces.
+
+138
+00:30:09,234 --> 00:30:28,647
+Step 4: the standard error is 0.9178 times the square root of 1.174157. That is 0.9178 times 1.08359, which is 0.99452.
+
+139
+00:30:29,097 --> 00:30:47,380
+Step 5: 5.1552 plus or minus 1.9873 times 0.99452. That is plus or minus 1.9764, so 3.179 to 7.132.
+
+140
+00:30:47,830 --> 00:30:57,067
+Now card B: why might we mistrust this interval? Step 1: the smallest sugar value in the data is 176.5.
+
+141
+00:30:57,517 --> 00:31:07,523
+Step 2: 110 is less than 176.5, so x new is outside the range. The red region has no data.
+
+142
+00:31:07,973 --> 00:31:21,605
+Step 4: this is extrapolation. We cannot check the linear model, or the constant variance, below 176.5. So we mistrust the interval, as in Tutorial 2 part f.
+
+143
+00:31:22,055 --> 00:31:38,417
+To recap. Card A gives an interval at a new x: read the output, compute y hat, the x part, plus 1 for a prediction, then the standard error and the quantile, and last the estimate plus or minus t times the standard error.
+
+144
+00:31:38,867 --> 00:31:46,825
+Card B decides if we can trust it: inside the range of the data, use it. Outside, it is extrapolation.
+
+145
+00:31:47,275 --> 00:31:55,061
+Card C computes the MLEs from summary numbers, with the short forms of S x x and S x y.
+
+146
+00:31:55,511 --> 00:32:09,271
+Card D picks the t quantile from given probabilities. A 90 percent interval uses t 0.95. A 95 percent interval uses t 0.975.
+
+147
+00:32:09,721 --> 00:32:19,449
+Card E gives a confidence interval or a test for a coefficient. The next video starts the matrix review for multiple linear regression.

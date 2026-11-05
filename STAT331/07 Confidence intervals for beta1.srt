@@ -3,305 +3,501 @@
 This is STAT 331, video 7. The topic is confidence intervals for beta one.
 
 2
-00:00:07,277 --> 00:00:31,789
-After this video, you can derive the 95 percent confidence interval for beta one, when sigma is known, and when it is unknown. You can explain why the t distribution appears. You can calculate the standard error and the interval, and interpret it correctly. And you can solve Tutorial 1, question 1, parts c and d, and Assignment 1, question 1, part c.
+00:00:07,277 --> 00:00:13,741
+This video prepares you for three question types. Each type gets a method card and worked problems.
 
 3
-00:00:32,239 --> 00:00:45,977
-Start from the last video. Beta one hat is Normal, with mean beta one, and variance sigma squared over S x x. Its standard deviation is sigma over the square root of S x x.
+00:00:14,191 --> 00:00:22,895
+Type A: derive the confidence interval for beta one. Lecture 3 does it when sigma is known, and when sigma is unknown.
 
 4
-00:00:46,427 --> 00:00:52,721
-First, subtract beta one. The centre of the distribution moves from beta one to zero.
+00:00:23,345 --> 00:00:33,947
+Type B: compute the standard error of beta one hat and the interval, from data or from R output. Tutorial 1 and Tutorial 2 ask this.
 
 5
-00:00:53,171 --> 00:01:08,637
-Then divide by the standard deviation, sigma over root S x x. The point beta one plus one standard deviation moves to 1. The point beta one minus one standard deviation moves to minus 1.
+00:00:34,397 --> 00:00:44,339
+Type C: interpret the interval in the units of the problem, and say when it is valid. Assignment 1, question 1 c, asks about validity.
 
 6
-00:01:09,087 --> 00:01:26,837
-The result is a standard Normal variable, Z. Beta one hat minus beta one, over sigma over root S x x, has the N 0 1 distribution. It contains the unknown beta one. We use it to make an interval for beta one.
+00:00:44,789 --> 00:01:03,626
+Tutorial 1, question 1 d, asks for a 95 percent confidence interval for beta one. The estimate is minus 0.4104. To see the problem, use our own example from video 6. There, the true slope beta one is 0.5.
 
 7
-00:01:27,287 --> 00:01:47,127
-Suppose sigma is known. For a standard Normal Z, the probability that Z is between minus 1.96 and 1.96 is 0.95. The green area in the middle is 0.95. Each red tail has area 0.025.
+00:01:04,076 --> 00:01:11,884
+We draw a sample of 10 points and fit the line. Sample 1 gives beta one hat equal to 0.600.
 
 8
-00:01:47,577 --> 00:01:50,414
-Put in the standardized beta one hat for Z.
+00:01:12,334 --> 00:01:15,769
+Sample 2 gives 0.359.
 
 9
-00:01:50,864 --> 00:01:59,525
-Multiply all three parts by sigma over root S x x. It is positive, so the inequalities keep their direction.
+00:01:16,219 --> 00:01:25,008
+Sample 3 gives 0.611. Each sample gives a different estimate. None of them is exactly 0.5.
 
 10
-00:01:59,975 --> 00:02:20,135
-Multiply all parts by minus 1. This reverses the inequalities. Then write them in the same order again. Because the limits are symmetric, they stay the same: minus 1.96 sigma over root S x x, and plus 1.96 sigma over root S x x.
+00:01:25,458 --> 00:01:39,026
+One number does not show how far it can be from beta one. We want an interval that covers beta one with probability 0.95. This is a 95 percent confidence interval.
 
 11
-00:02:20,585 --> 00:02:25,727
-Add beta one hat to all three parts. Now beta one is alone in the middle.
+00:01:39,476 --> 00:01:51,487
+The tool is the distribution of beta one hat from video 6. It is normal, with mean beta one and variance sigma squared over S x x. The green curve shows it.
 
 12
-00:02:26,177 --> 00:02:37,547
-So a 95 percent confidence interval for beta one is beta one hat, plus or minus 1.96 times sigma over root S x x.
+00:01:51,937 --> 00:02:04,737
+Section 2. Question type A asks you to derive the confidence interval. Lecture 3 does it in two cases: sigma known, and sigma unknown. Method card A has five steps.
 
 13
-00:02:37,997 --> 00:03:05,773
-Look at the meaning with our own example from video 6. The true slope is 0.5, and sigma is 1. S x x is 82.5. So the half width is 1.96 times 1 over root 82.5, which is 0.216. Sample 1 gave beta one hat equal to 0.600. Its interval is 0.384 to 0.816.
+00:02:05,187 --> 00:02:20,291
+Step 1: write the pivot. A pivot contains beta one, and its distribution has no unknown parameter. With known sigma it is standard normal. With unknown sigma it is t with n minus 2 degrees of freedom.
 
 14
-00:03:06,223 --> 00:03:16,613
-Sample 2 gave 0.359. Its interval moves to the left: 0.143 to 0.574.
+00:02:20,741 --> 00:02:33,370
+Step 2: write 1 minus alpha as the probability that the pivot is between minus q and q. The middle area is 1 minus alpha. Each tail has area alpha over 2.
 
 15
-00:03:17,063 --> 00:03:25,511
-Sample 3 gave 0.611. Its interval is 0.395 to 0.826.
+00:02:33,820 --> 00:02:48,668
+Step 3: multiply all three parts by the standard deviation, or by the standard error. It is positive, so the inequalities keep their direction. The axis becomes beta one hat minus beta one.
 
 16
-00:03:25,961 --> 00:03:40,595
-The interval changes from sample to sample. Beta one does not change. The probability statement is about the random interval. Over many samples, 95 percent of the intervals cover the true beta one.
+00:02:49,118 --> 00:02:59,657
+Step 4: get beta one alone. Multiply by minus 1, which flips the inequalities, and add beta one hat. The axis becomes beta one.
 
 17
-00:03:41,045 --> 00:03:51,243
-In practice, sigma is unknown and must be estimated. We have three facts. First, Z, the standardized beta one hat, is standard Normal.
+00:03:00,107 --> 00:03:08,277
+Step 5: read the interval: beta one hat, plus or minus q times the standard deviation or the standard error.
 
 18
-00:03:51,693 --> 00:04:06,135
-Second, V, which is 1 over sigma squared times the sum of the squared residuals, has a chi squared distribution with n minus 2 degrees of freedom. The picture uses n minus 2 equal to 5.
+00:03:08,727 --> 00:03:28,311
+Card A, step 1: write the pivot. Pause the video and try it. Start from video 6, slide 24. Beta one hat is normal, with mean beta one and variance sigma squared over S x x. Its standard deviation, S D, is sigma over root S x x.
 
 19
-00:04:06,585 --> 00:04:12,559
-Third, it can be shown that Z and V are independent. The slides state this without proof.
+00:03:28,761 --> 00:03:38,212
+Subtract beta one. The mean moves from beta one to 0. The variance does not change. On the right, the curve moves to 0.
 
 20
-00:04:13,009 --> 00:04:28,241
-Recall from Lecture 1: for independent Z and V, Z over the square root of V over nu has a t distribution with nu degrees of freedom. The green t curve is like the Normal curve, but it has heavier tails.
+00:03:38,662 --> 00:03:49,478
+Divide by the standard deviation, sigma over root S x x. The variance becomes 1. The point beta one plus one S D moves to 1.
 
 21
-00:04:28,691 --> 00:04:41,853
-So we divide Z by the square root of V over n minus 2. The result has a t distribution with n minus 2 degrees of freedom. On the next slide, we simplify this ratio.
+00:03:49,928 --> 00:04:02,920
+Call the result Z. Z is standard normal. Z contains the unknown beta one, but its distribution has no unknown parameter. So Z is the pivot for steps 2 to 5.
 
 22
-00:04:42,303 --> 00:05:01,759
-Write the ratio out. The numerator is Z: beta one hat minus beta one, over sigma over root S x x. The denominator is the square root of V over n minus 2: 1 over sigma squared, times the sum of the squared residuals, over n minus 2.
+00:04:03,370 --> 00:04:23,295
+Now steps 2 to 5 of card A, for known sigma. Pause the video and try it. Step 2: for a standard normal Z, the probability that Z is between minus 1.96 and 1.96 is 0.95. Each tail has area 0.025.
 
 23
-00:05:02,209 --> 00:05:15,052
-The numerator has 1 over sigma. The denominator also has 1 over sigma, from the square root of 1 over sigma squared. So sigma cancels. The unknown parameter is gone.
+00:04:23,745 --> 00:04:30,913
+Put the pivot in place of Z. Line 2 is the same event, written with beta one hat and beta one.
 
 24
-00:05:15,502 --> 00:05:33,187
-The denominator is now the square root of the sum of e i squared over n minus 2. That is sigma hat. So beta one hat minus beta one, over sigma hat over root S x x, has a t distribution with n minus 2 degrees of freedom.
+00:04:31,363 --> 00:04:46,083
+Step 3: multiply all three parts by sigma over root S x x. It is positive, so the inequalities keep their direction. On the right, the axis now shows beta one hat minus beta one.
 
 25
-00:05:33,637 --> 00:05:53,477
-This is the same form as Z, with sigma hat in place of sigma. The price is a t distribution in place of the Normal. Its tails are heavier, so its 95 percent cut-off is larger than 1.96. With 5 degrees of freedom, it is 2.571.
+00:04:46,533 --> 00:05:03,024
+Step 4: get beta one alone. Multiply by minus 1. This flips the inequalities. Write them in the same order again. The limits are symmetric, so they do not change. The axis is now beta one minus beta one hat.
 
 26
-00:05:53,927 --> 00:06:07,730
-We need a number q, such that the t variable is between minus q and q with probability 1 minus alpha. For a 95 percent interval, 1 minus alpha is 0.95.
+00:05:03,474 --> 00:05:12,839
+Add beta one hat to all three parts. Now beta one is alone in the middle. On the right, the interval is centred at beta one hat.
 
 27
-00:06:08,180 --> 00:06:28,489
-Each tail has area alpha over 2. So q is the 1 minus alpha over 2 quantile of the t distribution with n minus 2 degrees of freedom. It is written t, 1 minus alpha over 2, n minus 2. The slide finds it with software, as the upper alpha over 2 point.
+00:05:13,289 --> 00:05:26,815
+Step 5: read the interval. A 95 percent confidence interval for beta one is beta one hat, plus or minus 1.96 times sigma over root S x x.
 
 28
-00:06:28,939 --> 00:06:45,537
-Then do the same algebra as before. Beta one is between beta one hat minus q times sigma hat over root S x x, and beta one hat plus q times sigma hat over root S x x, with probability 0.95.
+00:05:27,265 --> 00:06:01,669
+Look at the meaning with our own example from video 6. The true slope is 0.5, and sigma is 1. S x x is 82.5. So the half width is 1.96 times 1 over root 82.5, which is 1.96 times 0.1101, or 0.216. Sample 1 gave beta one hat equal to 0.600. Its interval is 0.384 to 0.816.
 
 29
-00:06:45,987 --> 00:07:10,755
-The table shows q for a 95 percent interval. With 2 degrees of freedom, q is 4.303. With 5, it is 2.571. With 30, it is 2.042. With 234, it is 1.970, very near the Normal value 1.96. Small samples need a larger q.
+00:06:02,119 --> 00:06:12,509
+Sample 2 gave 0.359. Its interval moves to the left: 0.143 to 0.575.
 
 30
-00:07:11,205 --> 00:07:23,322
-So the confidence interval for beta one is beta one hat, plus or minus t, 1 minus alpha over 2, n minus 2, times sigma hat over root S x x.
+00:06:12,959 --> 00:06:21,577
+Sample 3 gave 0.611. Its interval is 0.395 to 0.827.
 
 31
-00:07:23,772 --> 00:07:33,393
-The standard error has a precise meaning. Here is the sampling distribution of beta one hat again. Its spread is its standard deviation.
+00:06:22,027 --> 00:06:37,899
+The interval changes from sample to sample. Beta one does not change. The probability 0.95 is about the random interval. Over many samples, 95 percent of the intervals cover the true beta one.
 
 32
-00:07:33,843 --> 00:07:42,227
-The standard deviation of beta one hat is sigma over root S x x. It is a fixed number, but sigma is unknown.
+00:06:38,349 --> 00:06:53,155
+In practice, sigma is unknown, and Z contains sigma. So card A, step 1 needs a new pivot. Slide 31 uses three facts. Fact 1: Z, the standardized beta one hat, is standard normal.
 
 33
-00:07:42,677 --> 00:07:55,648
-The standard error of beta one hat is the estimated standard deviation. Put sigma hat in place of sigma: sigma hat over root S x x. We can calculate it from the data.
+00:06:53,605 --> 00:07:08,623
+Fact 2: V, which is 1 over sigma squared times the sum of the squared residuals, has a chi squared distribution with n minus 2 degrees of freedom. The picture uses n minus 2 equal to 5.
 
 34
-00:07:56,098 --> 00:08:12,205
-So we can write the confidence interval as beta one hat, plus or minus t, 1 minus alpha over 2, n minus 2, times the standard error of beta one hat. Estimate, plus or minus quantile times standard error.
+00:07:09,073 --> 00:07:14,257
+Fact 3: Z and V are independent. The slides state this without proof.
 
 35
-00:08:12,655 --> 00:08:35,844
-Here is the example from the slides: the brainhead data. Brain weight in grams against head size in cubic centimetres, for 236 people. So the degrees of freedom are 234. Beta one hat is 0.2608. Sigma hat is 72.35. S x x is about 30.6 million.
+00:07:14,707 --> 00:07:29,385
+From Lecture 1: for independent Z and V, Z over the square root of V over nu has a t distribution with nu degrees of freedom. The green t curve is like the normal curve, but its tails are heavier.
 
 36
-00:08:36,294 --> 00:08:45,553
-The standard error is 72.35 over the square root of S x x. That is 0.01307.
+00:07:29,835 --> 00:07:42,421
+So divide Z by the square root of V over n minus 2. The result has a t distribution with n minus 2 degrees of freedom. The next slide simplifies this ratio.
 
 37
-00:08:46,003 --> 00:09:04,157
-The quantile is t, 0.975, 234, which is 1.970. The margin is 1.970 times 0.01307, which is 0.02575.
+00:07:42,871 --> 00:07:58,487
+Write the ratio out. Pause the video and try it. The numerator is Z: beta one hat minus beta one, over sigma over root S x x. The denominator is the square root of V over n minus 2.
 
 38
-00:09:04,607 --> 00:09:20,437
-The interval is 0.2608 plus or minus 0.0258. It goes from 0.235 to 0.287. The number line shows the estimate in the centre.
+00:07:58,937 --> 00:08:12,164
+The numerator has 1 over sigma. The denominator also has 1 over sigma, from the square root of 1 over sigma squared. These two factors cancel. The unknown parameter is gone.
 
 39
-00:09:20,887 --> 00:09:24,556
-The two arms each have length q times the standard error.
+00:08:12,614 --> 00:08:31,729
+The denominator is now the square root of the sum of e i squared over n minus 2. That is sigma hat, from video 5. So beta one hat minus beta one, over sigma hat over root S x x, has a t distribution with n minus 2 degrees of freedom.
 
 40
-00:09:25,006 --> 00:09:33,603
-The end points are 0.235 and 0.287. These are the values on slide 37.
+00:08:32,179 --> 00:08:50,440
+This is the same form as Z, with sigma hat in place of sigma, and t in place of the normal. The t tails are heavier, so its 95 percent cut-off is larger than 1.96. With 5 degrees of freedom, it is 2.571.
 
 41
-00:09:34,053 --> 00:09:52,080
-The same method gives an interval for beta zero. Its standard error uses the variance from video 6. Sigma hat times the square root of 1 over n plus x bar squared over S x x. For the brainhead data, it is 47.78.
+00:08:50,890 --> 00:09:01,407
+Step 2 of card A, now with the t pivot. We need a number q. The pivot must be between minus q and q with probability 1 minus alpha.
 
 42
-00:09:52,530 --> 00:10:04,818
-The interval is 335.43 plus or minus 1.970 times 47.78. The margin is 94.13.
+00:09:01,857 --> 00:09:10,455
+The green middle area is 1 minus alpha. For a 95 percent interval, 1 minus alpha is 0.95.
 
 43
-00:10:05,268 --> 00:10:15,209
-So the 95 percent interval for beta zero goes from 241.31 to 429.56.
+00:09:10,905 --> 00:09:27,715
+Each tail has area alpha over 2. So q is the 1 minus alpha over 2 quantile of t with n minus 2 degrees of freedom. We write it t, 1 minus alpha over 2, n minus 2. The slide finds it with software.
 
 44
-00:10:15,659 --> 00:10:30,721
-Slide 37 shows both intervals, as software prints them. The columns 2.5 percent and 97.5 percent are the lower and upper end points. Our hand calculations give the same numbers.
+00:09:28,165 --> 00:09:39,963
+The table shows q for a 95 percent interval. With 2 degrees of freedom, q is 4.303. With 5, q is 2.571.
 
 45
-00:10:31,171 --> 00:10:44,440
-Slide 37 asks a question. Does this interval mean that the probability that beta one is between 0.235 and 0.287 is 95 percent?
+00:09:40,413 --> 00:09:54,343
+With 10, q is 2.228. With 30, it is 2.042. With 234, it is 1.970, near the normal value 1.960.
 
 46
-00:10:44,890 --> 00:11:01,253
-Look at what is random. The two end points are now fixed numbers. Beta one is also a fixed number. If beta one is inside, the statement is true, with probability 1. If beta one is outside, it is false, with probability 0.
+00:09:54,793 --> 00:10:08,425
+Small samples have heavier t tails, so they need a larger q. For 95 percent, alpha is 0.05, and q is t, 0.975, n minus 2.
 
 47
-00:11:01,703 --> 00:11:13,649
-So the answer is no. The 95 percent describes the method. Before we take the sample, the random interval has probability 0.95 to cover beta one.
+00:10:08,875 --> 00:10:23,830
+Steps 3 to 5 are the same algebra as before, with sigma hat and q. Pause the video and try it. Line 1 is step 2: the t pivot is between minus q and q with probability 0.95.
 
 48
-00:11:14,099 --> 00:11:29,139
-Slide 39 shows the correct meaning with a picture. We draw samples repeatedly. For each sample, we build the interval in the same way. Here are the first 10 intervals, from our own simulation with n equal to 10.
+00:10:24,280 --> 00:10:37,165
+Step 3: multiply all three parts by sigma hat over root S x x. It is positive, so the inequalities stay. The axis is now beta one hat minus beta one.
 
 49
-00:11:29,589 --> 00:11:38,677
-Here are 40 intervals. They have different centres and different widths. The width changes because sigma hat changes from sample to sample.
+00:10:37,615 --> 00:10:48,794
+Step 4: multiply by minus 1. The inequalities flip. Write them in the same order again. The axis is now beta one minus beta one hat.
 
 50
-00:11:39,127 --> 00:11:47,234
-The red intervals miss the true beta one. Here, 4 of the 40 intervals miss it. So 36 of 40 cover it.
+00:10:49,244 --> 00:10:54,108
+Add beta one hat to all three parts. Beta one is alone in the middle.
 
 51
-00:11:47,684 --> 00:12:03,663
-With 4000 samples, 94.9 percent of the intervals cover beta one. This is near 95 percent. Any given interval may or may not cover the truth. On average, 95 percent cover it.
+00:10:54,558 --> 00:11:09,555
+Step 5: the confidence interval for beta one is beta one hat, plus or minus t, 1 minus alpha over 2, n minus 2, times sigma hat over root S x x. This is slide 34.
 
 52
-00:12:04,113 --> 00:12:25,425
-Now Tutorial 1, question 1. The data give the monthly maintenance cost, in hundreds of dollars, and the machine hours, for 7 months. Part c asks for the standard error of beta one hat. Part d asks for a 95 percent confidence interval for beta one. Pause the video and try it.
+00:11:10,005 --> 00:11:22,443
+Slide 35 gives a short name to sigma hat over root S x x. Here is the sampling distribution of beta one hat again. Its spread is its standard deviation.
 
 53
-00:12:25,875 --> 00:12:43,069
-Video 4 did parts a and b. Here are the numbers we need. n is 7. x bar is 101, and y bar is 27. S x x is 1294, and S x y is minus 531.
+00:11:22,893 --> 00:11:31,277
+The standard deviation of beta one hat is sigma over root S x x. It is a fixed number, but sigma is unknown.
 
 54
-00:12:43,519 --> 00:13:05,258
-So beta one hat is minus 531 over 1294, which is minus 0.4104. Beta zero hat is 68.446. The green line is the fitted line. The slope is negative: more machine hours go with a lower mean cost.
+00:11:31,727 --> 00:11:44,697
+The standard error of beta one hat is the estimated standard deviation. Put sigma hat in place of sigma: sigma hat over root S x x. We can calculate it from the data.
 
 55
-00:13:05,708 --> 00:13:32,033
-For the standard error, we need sigma hat. So we need the residuals. For each month, the fitted value is 68.446 minus 0.4104 times x. For example, at x equal to 110, the fitted value is 23.307. The residual is 26 minus 23.307, which is 2.693.
+00:11:45,147 --> 00:12:02,470
+So the confidence interval is beta one hat, plus or minus t, 1 minus alpha over 2, n minus 2, times the standard error of beta one hat: estimate, plus or minus quantile times standard error. Type B uses this form.
 
 56
-00:13:32,483 --> 00:13:46,115
-The orange segments are the residuals. Square each residual and add. The sum of squared errors, S S E, is 104.10. Check: the residuals add to zero.
+00:12:02,920 --> 00:12:15,848
+Section 3. Question type B asks you to compute the standard error and the interval. The data come as a table, as in Tutorial 1, or as R output, as in Tutorial 2.
 
 57
-00:13:46,565 --> 00:13:57,445
-Divide by n minus 2, which is 5. Sigma hat squared is 20.82. Sigma hat is the square root: 4.563.
+00:12:16,298 --> 00:12:26,581
+Step 1 of method card B: get beta one hat, S x x and n. With a data table, use card B of video 4. With output, read them.
 
 58
-00:13:57,895 --> 00:14:16,861
-The standard error of beta one hat is sigma hat over root S x x. That is 4.563 over the square root of 1294, which is 35.97. The result is 0.1268.
+00:12:27,031 --> 00:12:40,172
+Step 2: sigma hat is the square root of S S E over n minus 2. S S E is the sum of the squared residuals. R prints sigma hat as the residual standard error.
 
 59
-00:14:17,311 --> 00:14:40,884
-For part d, the degrees of freedom are n minus 2, which is 5. For 95 percent, alpha is 0.05. So q is t, 0.975, 5, which is 2.571. The green area between minus 2.571 and 2.571 is 0.95.
+00:12:40,622 --> 00:12:49,817
+Step 3: the standard error of beta one hat is sigma hat over root S x x. R prints it in the column Std. Error.
 
 60
-00:14:41,334 --> 00:14:52,918
-The margin is q times the standard error: 2.571 times 0.1268, which is 0.3261.
+00:12:50,267 --> 00:13:01,061
+Step 4: q is t, 1 minus alpha over 2, n minus 2. For 95 percent, it is t, 0.975, n minus 2.
 
 61
-00:14:53,368 --> 00:15:07,747
-The interval is minus 0.4104 plus or minus 0.3261. It goes from minus 0.736 to minus 0.084.
+00:13:01,511 --> 00:13:10,386
+Step 5: the interval is beta one hat, plus or minus q times the standard error. Give the lower and the upper end point.
 
 62
-00:15:08,197 --> 00:15:20,079
-On the number line, zero is outside the interval. The whole interval is below zero. So the data support a negative slope. Video 8 makes this into a formal test.
+00:13:10,836 --> 00:13:35,561
+A type B question from data. Pause the video and try it. Tutorial 1, question 1 c: find the standard error of beta one hat. Step 1 of card B: video 4 found beta one hat, minus 0.4104, beta zero hat, 68.446, and S x x, 1294. n is 7.
 
 63
-00:15:20,529 --> 00:15:34,865
-Now write the interval in words. Beta one is the difference in mean cost, for one more machine hour. The cost is in hundreds of dollars. So minus 0.410 means 41 dollars lower.
+00:13:36,011 --> 00:13:53,910
+Step 2 needs the residuals. Row 1: x is 110. The fitted value is 68.4459 minus 0.410355 times 110, which is 23.307.
 
 64
-00:15:35,315 --> 00:15:44,361
-Multiply the end points by 100. The interval is minus 73.6 dollars to minus 8.4 dollars.
+00:13:54,360 --> 00:14:05,837
+The residual is y minus the fitted value: 26 minus 23.307, which is 2.693. The orange segment shows it.
 
 65
-00:15:44,811 --> 00:16:03,563
-So we are 95 percent confident that, for each additional machine hour per month, the mean monthly cost is between 8.4 and 73.6 dollars lower. Here, 95 percent confident refers to the method, as on slide 39.
+00:14:06,287 --> 00:14:18,362
+Do the same for each column, and square each residual. The sum of the squares is S S E, 104.10. Check: the residuals add to 0.
 
 66
-00:16:04,013 --> 00:16:17,047
-Assignment 1, question 1, part c. If the independence assumption does not hold, is the usual confidence interval for beta one valid? Explain. Pause the video and try it.
+00:14:18,812 --> 00:14:31,761
+Divide S S E by n minus 2, which is 5. Sigma hat squared is 20.820. Sigma hat is its square root, 4.5629.
 
 67
-00:16:17,497 --> 00:16:37,828
-Find each place where the derivation used independence. First, the variance. Variance of the sum of w i y i equals sigma squared times the sum of w i squared. We added the variances. That needs independence. With correlated errors, covariance terms appear.
+00:14:32,211 --> 00:14:52,862
+Step 3: the standard error is sigma hat over root S x x. That is 4.5629 over the square root of 1294, which is 35.972. The standard error of beta one hat is 0.1268.
 
 68
-00:16:38,278 --> 00:16:46,875
-Second, the chi squared distribution of the sum of squared residuals over sigma squared. It needs independent Normal errors.
+00:14:53,312 --> 00:15:15,691
+Part d. Pause the video and try it. Step 4 of card B: n minus 2 is 5. For 95 percent, q is t, 0.975, 5, which is 2.571. The green area between minus 2.571 and 2.571 is 0.95.
 
 69
-00:16:47,325 --> 00:16:51,528
-Third, the independence of Z and V. The t result needs it.
+00:15:16,141 --> 00:15:27,639
+Step 5: the margin is q times the standard error: 2.571 times 0.1268, which is 0.326.
 
 70
-00:16:51,978 --> 00:16:58,805
-So the standard error does not estimate the true standard deviation, and the t quantile is not correct.
+00:15:28,089 --> 00:15:42,148
+The interval is minus 0.4104 plus or minus 0.326. It goes from minus 0.736 to minus 0.084.
 
 71
-00:16:59,255 --> 00:17:13,569
-The answer is no. Beta one hat is still unbiased, because the mean needs only errors with mean zero. But the usual interval is not valid. Its true coverage is not 95 percent in general.
+00:15:42,598 --> 00:15:53,969
+On the number line, 0 is outside the interval. Every value in it is negative. So the data support a negative slope. Video 8 makes this a formal test.
 
 72
-00:17:14,019 --> 00:17:31,363
-Here is a check with our own simulation. We use 20 x values and 4000 samples, with the usual interval. With independent errors, 94.5 percent of the intervals cover beta one. This is near 95 percent.
+00:15:54,419 --> 00:16:18,781
+A type B question from R output. Pause the video and try it. Tutorial 2, question 1 c, gives R output for 25 patients. Step 1 of card B: the slope estimate is minus 2.3283. S x x is 532.24. The output has 23 degrees of freedom, so n minus 2 is 23.
 
 73
-00:17:31,813 --> 00:17:46,512
-Now make the errors correlated. Each error is 0.6 times the previous error, plus new noise. Neighbouring points are similar. Now only 69.2 percent of the intervals cover beta one.
+00:16:19,231 --> 00:16:24,266
+Step 2: sigma hat is the residual standard error, 13.52.
 
 74
-00:17:46,962 --> 00:17:56,135
-The standard error is too small for this case, so the interval is too narrow. This is why the independence assumption matters for the interval.
+00:16:24,716 --> 00:16:33,847
+Step 3: the standard error of beta one hat is in the column Std. Error: 0.5859.
 
 75
-00:17:56,585 --> 00:18:18,495
-To recap. When sigma is known, the standardized beta one hat is standard Normal. The interval is beta one hat plus or minus 1.96 sigma over root S x x. When sigma is unknown, we use sigma hat, and the ratio has a t distribution with n minus 2 degrees of freedom.
+00:16:34,297 --> 00:16:52,387
+Check it with the formula: 13.52 over the square root of 532.24, which is 23.070. The result is 0.586. It agrees with the output, to the rounding of sigma hat.
 
 76
-00:18:18,945 --> 00:18:38,529
-The standard error is sigma hat over root S x x. The interval is the estimate, plus or minus the t quantile times the standard error. In an exam, calculate beta one hat, S S E, sigma hat, the standard error, and q, in this order. Then give the interval with units.
+00:16:52,837 --> 00:16:59,984
+Step 4: q is t, 0.975, 23, which is 2.069.
 
 77
-00:18:38,979 --> 00:18:54,744
-95 percent is a property of the method. About 95 percent of such intervals cover beta one. And the interval needs all four model assumptions. The next video uses the same t ratio for hypothesis tests.
+00:17:00,434 --> 00:17:09,671
+Step 5: the margin is 2.069 times 0.5859, which is 1.212.
+
+78
+00:17:10,121 --> 00:17:25,225
+The interval is minus 2.3283 plus or minus 1.212: from minus 3.540 to minus 1.116. This agrees with the tutorial solution.
+
+79
+00:17:25,675 --> 00:17:49,419
+The example of slides 36 and 37 uses the brainhead data from lecture 2: brain weight in grams against head size in cubic centimetres, for 236 people. Step 1 of card B: beta one hat is 0.26082. S x x is about 30.6 million. n is 236.
+
+80
+00:17:49,869 --> 00:17:54,861
+Step 2: from the lecture 2 fit, sigma hat is 72.35.
+
+81
+00:17:55,311 --> 00:18:11,653
+Step 3: the standard error is 72.35 over the square root of S x x. The square root is 5536.0. So the standard error is 0.01307.
+
+82
+00:18:12,103 --> 00:18:23,004
+Step 4: n minus 2 is 234. q is t, 0.975, 234, which is 1.970.
+
+83
+00:18:23,454 --> 00:18:34,377
+Step 5: the margin is 1.970 times 0.01307, which is 0.02575.
+
+84
+00:18:34,827 --> 00:18:57,333
+The interval is 0.26082 plus or minus 0.02575: from 0.23507 to 0.28657. Rounded, this is 0.235 to 0.287, the values on slide 36.
+
+85
+00:18:57,783 --> 00:19:18,925
+The same card gives an interval for beta zero. Only step 3 changes: we need the standard error of beta zero hat. Step 1: beta zero hat is 335.432, x bar is 3637.86, and n is 236.
+
+86
+00:19:19,375 --> 00:19:35,780
+Step 3: the variance of beta zero hat is from video 6 and Assignment 1, question 1 a. Put sigma hat in place of sigma: sigma hat times the square root of 1 over n plus x bar squared over S x x.
+
+87
+00:19:36,230 --> 00:19:49,649
+Put in the values: 72.35 times the square root of 1 over 236 plus 3637.86 squared over S x x.
+
+88
+00:19:50,099 --> 00:20:03,645
+The two fractions are 0.00424 and 0.43182. The bar shows them. x bar is far from 0, so the second part is much larger.
+
+89
+00:20:04,095 --> 00:20:21,695
+Their sum is 0.43606, and its square root is 0.66035. So the standard error is 72.35 times 0.66035, which is 47.78.
+
+90
+00:20:22,145 --> 00:20:32,044
+Step 5: the margin is 1.970 times 47.78, which is 94.127.
+
+91
+00:20:32,494 --> 00:20:47,321
+The interval is 335.432 plus or minus 94.127: from 241.305 to 429.559.
+
+92
+00:20:47,771 --> 00:21:03,067
+Slide 37 shows both intervals as R prints them. The columns 2.5 percent and 97.5 percent are the lower and the upper end points. The intercept row agrees with our calculation.
+
+93
+00:21:03,517 --> 00:21:13,607
+Section 4. Question type C asks you to interpret a confidence interval, and to say when it is valid. Method card C has four steps.
+
+94
+00:21:14,057 --> 00:21:28,948
+Step 1: write the units of x and of y. Beta one is a change in the mean of y for one more unit of x, so its interval is in units of y. If y is in hundreds of dollars, convert the end points.
+
+95
+00:21:29,398 --> 00:21:45,035
+Step 2: write the sentence. We are 95 percent confident that, for each one-unit increase in x, the mean of y changes by between the lower and the upper end point. Say increases or decreases, from the signs.
+
+96
+00:21:45,485 --> 00:21:59,587
+Step 3: the 95 percent belongs to the method. Over many samples, about 95 percent of the intervals cover beta one. In the picture, one of 10 intervals, in red, does not cover it.
+
+97
+00:22:00,037 --> 00:22:09,786
+Step 4: the 95 percent needs the model assumptions: a linear mean, independent errors, normal errors, and a constant variance.
+
+98
+00:22:10,236 --> 00:22:26,492
+Slide 37 asks a question about the brainhead interval. Does it mean that the probability that beta one is between 0.235 and 0.287 is 95 percent? Pause the video and try it.
+
+99
+00:22:26,942 --> 00:22:38,035
+After the data are in, the two end points are fixed numbers: 0.235 and 0.287. Beta one is also a fixed number.
+
+100
+00:22:38,485 --> 00:22:44,331
+If beta one is inside the interval, the statement is true. Its probability is 1.
+
+101
+00:22:44,781 --> 00:23:03,597
+If beta one is outside, the statement is false. Its probability is 0. So the answer of slide 38 is no. The 95 percent describes the method: before we take the sample, the random interval covers beta one with probability 0.95.
+
+102
+00:23:04,047 --> 00:23:21,113
+Slide 39 shows this meaning with a picture. We draw samples again and again. For each sample, we build the interval in the same way. Here are the first 10 intervals, from our own simulation with n equal to 10. 10 of them cover beta one.
+
+103
+00:23:21,563 --> 00:23:30,651
+Here are 40 intervals. They have different centres and different widths. The width changes because sigma hat changes from sample to sample.
+
+104
+00:23:31,101 --> 00:23:39,208
+The red intervals miss the true beta one. Here, 4 of the 40 intervals miss it. So 36 of 40 cover it.
+
+105
+00:23:39,658 --> 00:23:55,637
+With 4000 samples, 94.9 percent of the intervals cover beta one. This is near 95 percent. Any given interval may or may not cover the truth. On average, 95 percent cover it.
+
+106
+00:23:56,087 --> 00:24:09,996
+Now the words for Tutorial 1, question 1 d. Pause the video and try it. Step 1 of card C: x is machine hours per month. y is the monthly maintenance cost in hundreds of dollars.
+
+107
+00:24:10,446 --> 00:24:29,155
+So multiply the end points by 100 dollars. Minus 0.736 becomes minus 73.6 dollars. Minus 0.084 becomes minus 8.4 dollars. The number line shows the interval in dollars.
+
+108
+00:24:29,605 --> 00:24:47,120
+Step 2: both end points are negative, so the mean cost decreases. We are 95 percent confident that, for each additional machine hour per month, the mean monthly maintenance cost is between 8.4 and 73.6 dollars lower.
+
+109
+00:24:47,570 --> 00:24:53,778
+Step 3: 95 percent confident refers to the method, as on slide 39.
+
+110
+00:24:54,228 --> 00:25:13,044
+A type C question. Pause the video and try it. Tutorial 2, question 1 c: interpret the estimated association, and give the interval. Step 1 of card C: x is the severity index. y is the satisfaction score. A higher score means more satisfied.
+
+111
+00:25:13,494 --> 00:25:27,830
+First the estimate, as in video 4. Beta one hat is minus 2.3283. So for each one-unit increase in severity, the estimated mean satisfaction is 2.33 points lower.
+
+112
+00:25:28,280 --> 00:25:50,125
+Step 2: the interval from Section 3 is minus 3.540 to minus 1.116. Both ends are negative. We are 95 percent confident that, for each one-unit increase in severity, the mean satisfaction is between 1.12 and 3.54 points lower.
+
+113
+00:25:50,575 --> 00:25:59,557
+Step 3: the 95 percent describes the method. About 95 percent of the intervals built this way cover beta one.
+
+114
+00:26:00,007 --> 00:26:07,452
+Step 4: this holds if the four model assumptions hold. The next problem asks what happens when one fails.
+
+115
+00:26:07,902 --> 00:26:24,179
+Assignment 1, question 1 c. If the independence assumption does not hold, is the usual confidence interval for beta one valid? Explain. Pause the video and try it. This is step 4 of card C: check the assumptions.
+
+116
+00:26:24,629 --> 00:26:45,024
+Find each place where the derivation used independence. First, the variance. The variance of the sum of w i y i equals sigma squared times the sum of w i squared. We added the variances. That needs independence. With correlated errors, covariance terms appear.
+
+117
+00:26:45,474 --> 00:26:54,071
+Second, the chi squared distribution of the sum of squared residuals over sigma squared. It needs independent normal errors.
+
+118
+00:26:54,521 --> 00:26:58,724
+Third, the independence of Z and V. The t result needs it.
+
+119
+00:26:59,174 --> 00:27:05,979
+So the standard error does not estimate the true standard deviation, and the t quantile is not correct.
+
+120
+00:27:06,429 --> 00:27:20,765
+The answer is no. Beta one hat is still unbiased, because its mean needs only errors with mean zero. But the usual interval is not valid. Its true coverage is not 95 percent in general.
+
+121
+00:27:21,215 --> 00:27:38,559
+Here is a check with our own simulation. We use 20 x values and 4000 samples, with the usual interval. With independent errors, 94.5 percent of the intervals cover beta one. This is near 95 percent.
+
+122
+00:27:39,009 --> 00:27:54,412
+Now make the errors correlated. Each error is 0.6 times the previous error, plus new noise. Neighbouring points have similar errors. Now only 69.2 percent of the intervals cover beta one.
+
+123
+00:27:54,862 --> 00:28:03,182
+The standard error is too small in this case, so the interval is too narrow. So the interval needs the independence assumption.
+
+124
+00:28:03,632 --> 00:28:22,576
+To recap. Card A derives the interval. Write the pivot, normal when sigma is known, t with n minus 2 degrees of freedom when sigma is unknown. Put it between minus q and q, multiply by the standard deviation or the standard error, and get beta one alone.
+
+125
+00:28:23,026 --> 00:28:35,421
+Card B computes it: beta one hat, S x x and n; sigma hat; the standard error; the quantile q; and the estimate plus or minus q times the standard error.
+
+126
+00:28:35,871 --> 00:28:51,743
+Card C interprets it: the units, the sentence with 95 percent confident, the 95 percent as a property of the method, and the four assumptions. The next video uses the same t pivot for hypothesis tests.

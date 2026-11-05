@@ -3,337 +3,709 @@
 This is STAT 331, video 3. The topic is the simple linear regression model.
 
 2
-00:00:07,063 --> 00:00:24,621
-After this video, you can use the rules for mean, variance, covariance and correlation. You can write the model in two equivalent forms. You can interpret beta 0 and beta 1 in words. And you can name the four model assumptions, and draw them.
+00:00:07,063 --> 00:00:13,527
+This video prepares you for four question types. Each type gets a method card and worked problems.
 
 3
-00:00:25,071 --> 00:00:40,687
-We start with a short review from Lecture 2. The mean, or expectation, of a random variable Y is the integral of y times f of y. On the density, E of Y is the center. Here E of Y is 1.
+00:00:13,977 --> 00:00:20,591
+Type A: compute sample summaries. These are the mean, the variance, the covariance and the correlation.
 
 4
-00:00:41,137 --> 00:01:01,745
-Expectation is linear. The expectation of a sum of a i Y i plus b i is the sum of a i times E of Y i, plus the sum of the b i. The picture shows one term. Y moves to 2 Y plus 1. So the mean moves from 1 to 2 times 1 plus 1, which is 3.
+00:00:21,041 --> 00:00:30,342
+Type B: find the distribution of y i under the model, for example to simulate data, as in Assignment 1, question 4.
 
 5
-00:01:02,195 --> 00:01:14,931
-For observed data y 1 to y n, the sample mean y bar is the sum of the y i, divided by n. Here are the brain weights of the first five people in the brainhead data.
+00:00:30,792 --> 00:00:37,192
+Type C: interpret beta zero and beta one, and their estimates, in the units of the problem.
 
 6
-00:01:15,381 --> 00:01:22,165
-y bar is 1406.8 grams. It is the center of the five points.
+00:00:37,642 --> 00:00:44,575
+Type D: state the four model assumptions for a given set-up, as in Tutorial 2, question 2.
 
 7
-00:01:22,615 --> 00:01:32,385
-The variance of Y is the expected squared distance from its mean. An equivalent form is E of Y squared, minus E of Y, squared.
+00:00:45,025 --> 00:00:59,831
+Section 1 reviews the tools of Lecture 2. The mean, or expectation, of a random variable Y is the integral of y times f of y. It is the centre of the density. Here E of Y is 1.
 
 8
-00:01:32,835 --> 00:01:44,867
-Two properties. First, the variance of a Y plus b is a squared times the variance of Y. Adding a constant b moves the density, but the spread stays the same.
+00:01:00,281 --> 00:01:11,545
+Expectation is linear. The expectation of a sum of a i Y i plus b i is the sum of a i times E of Y i, plus the sum of the b i.
 
 9
-00:01:45,317 --> 00:02:03,259
-Multiplying by a changes the spread. With a equal to 2, the standard deviation doubles, and the variance is 4 times larger. Second, for independent X and Y, the variance of X plus Y is the variance of X plus the variance of Y.
+00:01:11,995 --> 00:01:21,232
+Use the rule on 2 Y plus 1. Here a is 2 and b is 1. So E of 2 Y plus 1 is 2 times E of Y, plus 1.
 
 10
-00:02:03,709 --> 00:02:16,658
-The sample variance uses the data. It is the sum of y i minus y bar, squared, divided by n minus 1. The right plot shows the five brain weights and y bar.
+00:01:21,682 --> 00:01:32,775
+E of Y is 1. So the mean is 2 times 1 plus 1, which is 3. The dashed curve is the density of 2 Y plus 1. Its centre is at 3.
 
 11
-00:02:17,108 --> 00:02:40,105
-The orange segments are the deviations y i minus y bar. Their squares add to 81,526.8. Divide by 4, which is n minus 1. The sample variance is 20,381.7 grams squared. The standard deviation is 142.8 grams.
+00:01:33,225 --> 00:01:46,281
+For observed data y 1 to y n, the sample mean y bar is the sum of the y i, divided by n. The dots are the brain weights of the first five people of the brainhead data.
 
 12
-00:02:40,555 --> 00:02:53,334
-The covariance of X and Y is the expected product of the two deviations from the means. The plot shows the five people, with x bar and y bar as purple dashed lines.
+00:01:46,731 --> 00:01:59,254
+The five weights add to 7034. 7034 over 5 is 1406.8 grams. It is the centre of the five dots.
 
 13
-00:02:53,784 --> 00:03:04,323
-Each point makes a rectangle with the center point, x bar, y bar. Its area is x i minus x bar, times y i minus y bar.
+00:01:59,704 --> 00:02:21,848
+The variance of Y is the expected squared distance from the mean. Write mu for E of Y. Slide 5 gives a second form. Pause the video and try to show it. On the right, an example: Y is 0 or 2, each with probability one half. Mu is 1. Each distance is 1, so line 1 gives a variance of 1.
 
 14
-00:03:04,773 --> 00:03:19,322
-A point at the upper right or lower left gives a positive product. It is blue. A point at the upper left or lower right gives a negative product. It is red. Here four products are positive and one is negative.
+00:02:22,298 --> 00:02:29,850
+Line 2: expand the square. Y minus mu, squared, is Y squared minus 2 mu Y plus mu squared.
 
 15
-00:03:19,772 --> 00:03:41,596
-The sample covariance adds the signed areas and divides by n minus 1. The sum is 133,363. Divided by 4, the sample covariance is 33,340.75. It is positive, so large x goes with large y.
+00:02:30,300 --> 00:02:43,676
+Line 3: use linearity. Mu is a constant, so it comes out of the expectation. In the example, E of Y squared is one half times 0, plus one half times 4, which is 2.
 
 16
-00:03:42,046 --> 00:03:58,665
-Three properties. The covariance of X with itself is the variance of X. Constants a and b multiply the covariance, and the added constants c and d have no effect. And covariance of sums expands into all pairs of terms.
+00:02:44,126 --> 00:02:49,630
+Line 4: E of Y is mu. So 2 mu times E of Y is 2 mu squared.
 
 17
-00:03:59,115 --> 00:04:09,376
-The correlation coefficient rho divides the covariance by the two standard deviations. Correlation measures the strength of a linear relationship.
+00:02:50,080 --> 00:03:03,499
+Line 5: collect the mu squared terms. The variance is E of Y squared minus E of Y, squared. In the example, 2 minus 1 squared is 1. This is the same as line 1.
 
 18
-00:04:09,826 --> 00:04:32,503
-The sample correlation r uses the sample versions. The factors 1 over n minus 1 cancel. So r is S x y over the square root of S x x times S y y. S x y is the sum of the products of the deviations. S x x and S y y are the sums of the squared deviations.
+00:03:03,949 --> 00:03:08,983
+So the variance has two forms. Both forms appear in later derivations.
 
 19
-00:04:32,953 --> 00:04:42,468
-For all 236 people in the brainhead data, r is 0.79. The points show a clear upward linear trend.
+00:03:09,433 --> 00:03:25,028
+Slide 5 lists two properties. The first: the variance of a Y plus b is a squared times the variance of Y. Pause the video and try to show it. Line 1 is the definition of the variance of a Y plus b.
 
 20
-00:04:42,918 --> 00:04:56,209
-Two sets of our own simulated data, for comparison. With no linear trend, r is near 0. With a downward trend, r is negative. r is always between minus 1 and 1.
+00:03:25,478 --> 00:03:30,107
+Line 2: by linearity, E of a Y plus b is a mu plus b.
 
 21
-00:04:56,659 --> 00:05:09,459
-Now the regression set-up. For observation i, y i is the outcome, and x i is the covariate. The index i goes from 1 to n. Each point on the plot is one person.
+00:03:30,557 --> 00:03:43,720
+Line 3: put line 2 into line 1. The b cancels. On the right, Y plus 3 has the same spread as Y. Adding a constant moves the density, but the spread stays the same.
 
 22
-00:05:09,909 --> 00:05:21,322
-For example, person 1 has x 1 equal to 4512 cubic centimeters and y 1 equal to 1530 grams.
+00:03:44,170 --> 00:03:55,242
+Line 4: factor out a from the bracket. On the right, 2 Y plus 6 has a standard deviation of 1. That is 2 times the standard deviation of Y.
 
 23
-00:05:21,772 --> 00:05:35,425
-We have two possible goals. First, describe how y changes with x. Second, predict y for a given x. For example, what brain weight do we expect for a head size of 4000?
+00:03:55,692 --> 00:04:09,879
+Line 5: a squared is a constant, so it comes out of the expectation. The rest is the variance of Y. So the standard deviation doubles, and the variance is 2 squared, which is 4, times larger.
 
 24
-00:05:35,875 --> 00:05:49,379
-The data example of the course is the brainhead data from 1905. It has 236 people. x is head size in cubic centimeters. y is brain weight in grams.
+00:04:10,329 --> 00:04:19,395
+The second property: for independent X and Y, the variance of X plus Y is the variance of X plus the variance of Y.
 
 25
-00:05:49,829 --> 00:05:53,989
-The table shows the first six people, as the slide prints them.
+00:04:19,845 --> 00:04:34,053
+The covariance of X and Y is the expected product of the two deviations from the means. The plot shows the first five people of the brainhead data. The purple dashed lines are x bar and y bar.
 
 26
-00:05:54,439 --> 00:06:01,415
-On the plot, these six people are the dark blue points with their numbers. The light points are the other people.
+00:04:34,503 --> 00:04:43,677
+Each point makes a rectangle with the mean point. Its signed area is x i minus x bar, times y i minus y bar.
 
 27
-00:06:01,865 --> 00:06:17,503
-Before we fit a model, we look at the data. This is exploratory data analysis. The first histogram shows head size. It goes from about 2800 to about 4700 cubic centimeters.
+00:04:44,127 --> 00:04:56,884
+Upper right or lower left gives a positive product, in blue. Upper left or lower right gives a negative product, in red. Person 3 is lower right, so the product is negative.
 
 28
-00:06:17,953 --> 00:06:26,315
-The second histogram shows brain weight. It goes from about 1000 to about 1650 grams.
+00:04:57,334 --> 00:05:02,689
+The sample covariance adds the signed areas and divides by n minus 1.
 
 29
-00:06:26,765 --> 00:06:34,253
-Both histograms have one peak, near the middle, and they are roughly symmetric. No value is far from the others.
+00:05:03,139 --> 00:05:08,323
+Three properties. The covariance of X with itself is the variance of X.
 
 30
-00:06:34,703 --> 00:06:42,319
-The scatter plot shows the two variables together. Each point is one person: head size across, brain weight up.
+00:05:08,773 --> 00:05:15,173
+Constants a and b multiply the covariance. The added constants c and d have no effect.
 
 31
-00:06:42,769 --> 00:06:49,873
-The purple dashed lines are x bar and y bar. Most points are in the upper right and lower left parts.
+00:05:15,623 --> 00:05:20,060
+The covariance of two sums expands into all pairs of terms.
 
 32
-00:06:50,323 --> 00:07:03,699
-So people with a larger head size tend to have a larger brain weight. The trend is close to a straight line. The correlation is 0.79. A linear model is a reasonable start.
+00:05:20,510 --> 00:05:35,635
+The correlation coefficient rho divides the covariance by the two standard deviations. It measures the strength of a linear relationship. The plot on the right shows all 236 people of the brainhead data.
 
 33
-00:07:04,149 --> 00:07:19,488
-Here is the simple linear regression model. y i equals beta 0, plus beta 1 times x i, plus epsilon i. The gray dashed line is beta 0 plus beta 1 x. It is the true line.
+00:05:36,085 --> 00:05:45,835
+The sample correlation r puts the sample versions into this formula. Each of the three sums has a factor 1 over n minus 1.
 
 34
-00:07:19,938 --> 00:07:33,869
-Each observation is the value on the line, plus an error epsilon i. The orange segments are the errors. A point above the line has a positive error. A point below the line has a negative error.
+00:05:46,285 --> 00:05:57,805
+Give the marked sums their names. The sum of the products of the deviations is S x y. The sums of the squared deviations are S y y and S x x.
 
 35
-00:07:34,319 --> 00:07:48,740
-The errors are iid normal, with mean 0 and variance sigma squared. The orange curve shows this normal distribution at one x. Most errors are small. Large errors are less likely.
+00:05:58,255 --> 00:06:11,801
+The two square roots each hold 1 over n minus 1. The root of a times the root of a is a. So the bottom is 1 over n minus 1 times the root of S x x times S y y.
 
 36
-00:07:49,190 --> 00:07:58,577
-iid means independent and identically distributed. Each error has the same distribution, and no error depends on another.
+00:06:12,251 --> 00:06:25,947
+Cancel 1 over n minus 1 on the top and on the bottom. r equals S x y over the square root of S x x times S y y. Question type A uses this in step 4.
 
 37
-00:07:59,027 --> 00:08:08,413
-In practice, we observe only the points. We do not see the true line or the errors. Our job is to learn about the line from the points.
+00:06:26,397 --> 00:06:35,912
+For all 236 people of the brainhead data, r is 0.79. The points show a clear upward linear trend.
 
 38
-00:08:08,863 --> 00:08:30,858
-The model has an equivalent form. Take the expectation of y i. Beta 0, beta 1 and x i are constants. So by linearity, E of y i is beta 0 plus beta 1 x i, plus E of epsilon i. E of epsilon i is 0. So the mean of y i is on the line.
+00:06:36,362 --> 00:06:48,501
+Two sets of our own simulated data. With no linear trend, r is near 0. With a downward trend, r is negative. r is always between minus 1 and 1.
 
 39
-00:08:31,308 --> 00:08:42,295
-Now the variance. Adding a constant does not change the variance. So the variance of y i is the variance of epsilon i, which is sigma squared.
+00:06:48,951 --> 00:06:59,617
+Question type A asks for sample summaries: the mean, the variance, the covariance or the correlation. The data come as a table or as computer output.
 
 40
-00:08:42,745 --> 00:09:04,014
-A normal variable plus a constant is normal. The errors are independent, so the y i are independent. So y i is independent normal, with mean beta 0 plus beta 1 x i, and variance sigma squared. Note: identically distributed is gone. Each y i has its own mean.
+00:07:00,067 --> 00:07:06,083
+Method card A has five steps. Step 1: find the means, x bar and y bar.
 
 41
-00:09:04,464 --> 00:09:13,573
-This is the picture of the model. At each x, the possible values of y have a normal distribution. Its center is on the line.
+00:07:06,533 --> 00:07:12,720
+Step 2: find the deviations from the means. Each column of deviations adds to 0.
 
 42
-00:09:14,023 --> 00:09:19,975
-All the normal curves have the same width, because the variance is sigma squared at every x.
+00:07:13,170 --> 00:07:20,914
+Step 3: find the three sums, S x x, S y y and S x y. With computer output, read them.
 
 43
-00:09:20,425 --> 00:09:32,436
-The model has different kinds of quantities. Look at how one observation is made. First, x i. We treat x i as fixed. It is a known number, not a random variable.
+00:07:21,364 --> 00:07:38,601
+Step 4: divide. The sample variance is S y y over n minus 1. The sample covariance is S x y over n minus 1. The correlation r is S x y over the root of S x x times S y y.
 
 44
-00:09:32,886 --> 00:09:43,873
-Then the mean beta 0 plus beta 1 x i. Beta 0, beta 1 and sigma squared are parameters. They are fixed numbers, but we do not know them.
+00:07:39,051 --> 00:07:48,033
+Step 5: check. A variance is never negative. r has the sign of S x y. And r is between minus 1 and 1.
 
 45
-00:09:44,323 --> 00:09:49,357
-Then we add the error epsilon i. It is random, and we cannot observe it.
+00:07:48,483 --> 00:08:04,781
+A type A problem with the slide data. Pause the video and try it. The table has the head size x and the brain weight y of the first five people. Find y bar, the sample variance of y, the sample covariance, and r.
 
 46
-00:09:49,807 --> 00:10:03,290
-The result is y i. It is random, because epsilon i is random. And we observe it. So the data are the pairs x i, y i. From the data, we estimate the three parameters.
+00:08:05,231 --> 00:08:22,938
+Step 1 of card A: the means. The x values add to 20465, so x bar is 4093. The y values add to 7034, so y bar is 1406.8 grams.
 
 47
-00:10:03,740 --> 00:10:14,300
-Now the meaning of the two coefficients. The mean of y i, given x i, is beta 0 plus beta 1 x i. This is the regression line.
+00:08:23,388 --> 00:08:42,268
+Step 2: the deviations. In row 1, 4512 minus 4093 is plus 419, and 1530 minus 1406.8 is plus 123.2.
 
 48
-00:10:14,750 --> 00:10:29,875
-Put x i equal to 0. Then beta 1 times 0 is 0. So the mean of y at x equal to 0 is beta 0. On the plot, beta 0 is where the line crosses the vertical axis.
+00:08:42,718 --> 00:08:48,819
+Step 5 is a check, and we can do it now. Each deviation column adds to 0.
 
 49
-00:10:30,325 --> 00:10:37,344
-So beta 0 is the intercept. It is the mean outcome for units with covariate equal to 0.
+00:08:49,269 --> 00:09:06,059
+Step 3: square the y deviations. In row 1, 123.2 squared is 15178.24. The sum is S y y, which is 81526.8.
 
 50
-00:10:37,794 --> 00:10:45,879
-Now the slope. Take any value x star. The mean of y at x star is beta 0 plus beta 1 x star.
+00:09:06,509 --> 00:09:22,573
+Square the x deviations. In row 1, 419 squared is 175561. The sum is S x x, which is 436722.
 
 51
-00:10:46,329 --> 00:10:54,820
-Now go up by one unit, to x star plus 1. The mean is beta 0 plus beta 1 times x star plus 1.
+00:09:23,023 --> 00:09:44,100
+Multiply the two deviations in each row. In row 1, the product is plus 51620.8. The sum is S x y, which is 133363. On the right, it is the total signed area of the rectangles. Person 1 is marked.
 
 52
-00:10:55,270 --> 00:11:07,579
-Subtract the two means. Beta 0 cancels. Beta 1 x star cancels. Only beta 1 stays. On the plot, it is the rise of the line over a run of 1.
+00:09:44,550 --> 00:10:04,881
+Step 4: divide. The sample variance is S y y over n minus 1. 81526.8 over 4 is 20381.7 grams squared. The standard deviation is the root, 142.8 grams.
 
 53
-00:11:08,029 --> 00:11:18,504
-So beta 1 is the change in the mean of y when x increases by one unit. The answer is the same for every x star, because the line is straight.
+00:10:05,331 --> 00:10:17,747
+The sample covariance is S x y over 4. 133363 over 4 is 33340.75.
 
 54
-00:11:18,954 --> 00:11:30,623
-Lecture 3 gives a more careful wording. Think of all units with x equal to x star. This is one population. Its y values have a normal distribution.
+00:10:18,197 --> 00:10:44,863
+r is S x y over the root of S x x times S y y. The root of 436722 times 81526.8 is 188692. 133363 over 188692 is 0.707.
 
 55
-00:11:31,073 --> 00:11:36,108
-All units with x equal to x star plus 1 make a second population.
+00:10:45,313 --> 00:10:57,793
+Step 5: check. The variance is positive. The covariance and r are both positive, like S x y. And 0.707 is between minus 1 and 1.
 
 56
-00:11:36,558 --> 00:11:50,915
-Beta 1 is the difference between the two population means. It compares a population with x to a population with x one unit lower. It does not say that one unit's y changes if we change its x.
+00:10:58,243 --> 00:11:14,243
+A second type A problem, now from computer output. Pause the video and try it. Tutorial 1, question 2, gives R output for 100 aircraft. Find the sample correlation between flight hours and maintenance cost.
 
 57
-00:11:51,365 --> 00:12:01,243
-Beta 1 hat, from the data, is an estimate of this mean difference. Use this wording in exam answers. Say mean difference, and give the units.
+00:11:14,693 --> 00:11:26,107
+R did steps 1 to 3 of card A for us. Step 1: the means are 148.8 hours and 1822 thousand dollars.
 
 58
-00:12:01,693 --> 00:12:20,957
-Now apply this to the brainhead data. The next video shows how to calculate the estimates. The slide gives beta 0 hat equal to 335.4323, and beta 1 hat equal to 0.2608. The green line is the fitted line.
+00:11:26,557 --> 00:11:35,901
+Step 3: read the sums. The sum of the squared x deviations is S x x, 731093.
 
 59
-00:12:21,407 --> 00:12:42,633
-Interpret beta 1 hat. A population with a head size 1 cubic centimeter larger has a mean brain weight 0.26 grams higher. One cubic centimeter is small. So we can also say 260.8 grams per 1000 cubic centimeters. The plot shows this rise.
+00:11:36,351 --> 00:11:45,524
+The sum of the squared y deviations is S y y, 47854282.
 
 60
-00:12:43,083 --> 00:12:58,123
-Beta 0 hat is the estimated mean brain weight at head size 0. That is 335.4 grams. On the plot, we must extend the line far to the left to reach x equal to 0.
+00:11:45,974 --> 00:11:53,803
+The sum of the products of the deviations is S x y, 4686071.
 
 61
-00:12:58,573 --> 00:13:19,395
-But no person has a head size of 0. The data go from 2773 to 4747. So beta 0 hat has no useful meaning here. It only fixes the height of the line. Always check if x equal to 0 is inside the range of the data.
+00:11:54,253 --> 00:11:59,800
+Step 4: r is S x y over the root of S x x times S y y.
 
 62
-00:13:19,845 --> 00:13:31,237
-The model makes four assumptions. One: linearity. The mean of y is a straight-line function of x. This comes from beta 0 plus beta 1 x i.
+00:12:00,250 --> 00:12:25,594
+The root of 731093 times 47854282 is 5914891. 4686071 over 5914891 is 0.792.
 
 63
-00:13:31,687 --> 00:13:38,684
-Two: independence. The errors are independent. One error gives no information about another error.
+00:12:26,044 --> 00:12:38,844
+Step 5: check. 0.792 is between minus 1 and 1. It is positive, like S x y, and like the slope estimate 6.410 in the output.
 
 64
-00:13:39,134 --> 00:13:46,771
-Three: normality. The errors have a normal distribution. So at each x, y has a normal distribution.
+00:12:39,294 --> 00:12:54,654
+Section 2 is the model. First the set-up of slide 8. For observation i, y i is the outcome, and x i is the covariate. The index i goes from 1 to n. Each point on the plot is one person.
 
 65
-00:13:47,221 --> 00:13:55,691
-Four: equal variance. The variance sigma squared is the same at every x. The name for this is homoskedasticity.
+00:12:55,104 --> 00:13:06,517
+For example, person 1 has x 1 equal to 4512 cubic centimetres and y 1 equal to 1530 grams.
 
 66
-00:13:56,141 --> 00:14:09,517
-Each assumption comes from one part of the model. Linearity from the line. Independence, normality and equal variance from epsilon i, iid normal, with one variance sigma squared.
+00:13:06,967 --> 00:13:20,493
+There are two possible goals. First, describe how y changes with x. Second, predict y for a given x. For example, what brain weight do we expect for a head size of 4000?
 
 67
-00:14:09,967 --> 00:14:23,449
-This slide is optional. It is not on the slides. It shows two data sets of our own. In the left plot, the mean of y follows a curve. A straight line misses the pattern. Linearity fails.
+00:13:20,943 --> 00:13:34,447
+The data example of the course is the brainhead data from 1905. It has 236 people. x is head size in cubic centimetres. y is brain weight in grams.
 
 68
-00:14:23,899 --> 00:14:31,345
-In the right plot, the spread of y grows as x grows. The points make a fan shape. Equal variance fails.
+00:13:34,897 --> 00:13:39,142
+The table shows the first six people, as slide 10 prints them.
 
 69
-00:14:31,795 --> 00:14:39,795
-Later lectures check the assumptions with residual plots. For now, look at the scatter plot before you use the model.
+00:13:39,592 --> 00:13:48,445
+On the plot, these six people are the dark blue points with their numbers. Person 1 is marked. The light points are the other people.
 
 70
-00:14:40,245 --> 00:14:54,431
-Practice with our own numbers. The model has beta 0 equal to 2, beta 1 equal to 0.5, and sigma squared equal to 1. Answer the four questions. Pause the video and try it.
+00:13:48,895 --> 00:13:57,471
+Before we fit a model, we look at the data. This is exploratory data analysis. The first histogram shows head size.
 
 71
-00:14:54,881 --> 00:15:10,839
-Part a. Use the equivalent form. At x equal to 4, the mean is 2 plus 0.5 times 4, which is 4. The variance is sigma squared, which is 1. So y is normal with mean 4 and variance 1.
+00:13:57,921 --> 00:14:06,135
+Head size goes from 2773 to 4747 cubic centimetres.
 
 72
-00:15:11,289 --> 00:15:27,587
-Part b. Standardize. 5 minus 4, divided by 1, is 1. The probability that Z is larger than 1 is 1 minus Phi of 1. That is 0.1587. The red area of the curve shows it.
+00:14:06,585 --> 00:14:08,931
+The second histogram shows brain weight.
 
 73
-00:15:28,037 --> 00:15:35,333
-Part c. The mean difference for 3 more units of x is 3 times beta 1. That is 1.5.
+00:14:09,381 --> 00:14:15,205
+Brain weight goes from 1012 to 1635 grams.
 
 74
-00:15:35,783 --> 00:15:43,933
-Part d. No. The variance of y i is sigma squared at every x. This is the equal variance assumption.
+00:14:15,655 --> 00:14:23,143
+Both histograms have one peak, near the middle, and they are roughly symmetric. No value is far from the others.
 
 75
-00:15:44,383 --> 00:16:02,751
-Practice 2 uses the estimates of Tutorial 1, question 2. y is the maintenance cost of a Boeing 787 aircraft, in thousands of dollars. x is the number of flight hours. Interpret both estimates. Pause the video and try it.
+00:14:23,593 --> 00:14:31,209
+The scatter plot shows the two variables together. Each point is one person: head size across, brain weight up.
 
 76
-00:16:03,201 --> 00:16:21,035
-Beta 1 hat is 6.410. Comparing aircraft with one more flight hour, the mean maintenance cost is 6.410 thousand dollars higher. That is 6410 dollars. Give the units of x and of y.
+00:14:31,659 --> 00:14:38,977
+The purple dashed lines are x bar and y bar. Most points are in the upper right and the lower left parts.
 
 77
-00:16:21,485 --> 00:16:31,085
-For 50 more flight hours, the mean difference is 50 times 6.410. That is 320.5 thousand dollars.
+00:14:39,427 --> 00:14:53,144
+So people with a larger head size tend to have a larger brain weight. The trend is close to a straight line, and the correlation is 0.79. A linear model is a reasonable start.
 
 78
-00:16:31,535 --> 00:16:51,226
-Beta 0 hat is 868.487. It is the estimated mean cost at 0 flight hours. The data mean is 148.8 hours, and we do not know if any aircraft has close to 0 hours. So use beta 0 hat with care.
+00:14:53,594 --> 00:15:10,149
+Here is the simple linear regression model. y i equals beta zero, plus beta one times x i, plus epsilon i. The gray dashed line is beta zero plus beta one x. It is the true line, and it is unknown.
 
 79
-00:16:51,676 --> 00:17:05,521
-The model has unknown beta 0 and beta 1. How do we estimate them from the data? Here is one candidate line. The orange segments show how far the points are from it. Many segments are long.
+00:15:10,599 --> 00:15:26,428
+Each observation is the value on the line, plus an error epsilon i. The orange segments are the errors. Epsilon 1 is above the line, so it is positive. Epsilon 4 is below the line, so it is negative.
 
 80
-00:17:05,971 --> 00:17:10,729
-Here is a steeper candidate line. Again, many points are far from it.
+00:15:26,878 --> 00:15:41,299
+The errors are iid normal, with mean 0 and variance sigma squared. The orange curve shows this normal distribution at one x. Most errors are small. Large errors are less likely.
 
 81
-00:17:11,179 --> 00:17:19,477
-We want the line that is closest to the points, in a sense that we must define. The next video defines it: least squares.
+00:15:41,749 --> 00:15:51,136
+iid means independent and identically distributed. Each error has the same distribution, and no error depends on another.
 
 82
-00:17:19,927 --> 00:17:34,903
-To recap. Expectation is linear. The variance of a Y plus b is a squared times the variance of Y. The sample correlation is S x y over the square root of S x x times S y y.
+00:15:51,586 --> 00:15:59,906
+In practice, we observe only the points. We do not see the true line or the errors. We learn about the line from the points.
 
 83
-00:17:35,353 --> 00:17:55,023
-The simple linear regression model is y i equals beta 0 plus beta 1 x i plus epsilon i, with iid normal errors. Equivalently, y i is independent normal with mean beta 0 plus beta 1 x i and variance sigma squared.
+00:16:00,356 --> 00:16:12,367
+The model has different kinds of quantities. Look at how one observation is made. First, x i. We treat x i as fixed. It is a known number, not a random variable.
 
 84
-00:17:55,473 --> 00:18:08,955
-Beta 0 is the mean of y at x equal to 0. Beta 1 is the mean difference for x one unit higher. Always give the units, and check if x equal to 0 is near the data.
+00:16:12,817 --> 00:16:23,889
+Then the mean, beta zero plus beta one x i. Beta zero, beta one and sigma squared are parameters. They are fixed numbers, but we do not know them.
 
 85
-00:18:09,405 --> 00:18:21,181
-The four assumptions are linearity, independence, normality, and equal variance. The next video shows how to estimate beta 0 and beta 1 by least squares.
+00:16:24,339 --> 00:16:29,373
+Then we add the error epsilon i. It is random, and we cannot observe it.
+
+86
+00:16:29,823 --> 00:16:43,306
+The result is y i. It is random, because epsilon i is random. And we observe it. So the data are the pairs x i, y i. From the data, we estimate the three parameters.
+
+87
+00:16:43,756 --> 00:16:53,633
+Question type B asks for the distribution of y i, for a given x. Assignment 1, question 4, needs it to simulate data.
+
+88
+00:16:54,083 --> 00:17:08,206
+Method card B has four steps. Step 1: the mean. E of y i is beta zero plus beta one x i. Put in the value of x i. On the right, the mean is the point on the line.
+
+89
+00:17:08,656 --> 00:17:18,491
+Step 2: the variance of y i is sigma squared. It is the same at every x. The orange bar is one standard deviation, sigma.
+
+90
+00:17:18,941 --> 00:17:25,362
+Step 3: y i is normal, with this mean and this variance, and the y i are independent.
+
+91
+00:17:25,812 --> 00:17:40,724
+Step 4, if the question asks for a probability: standardize. z is c minus the mean, over sigma. Then the probability that y i is larger than c is 1 minus Phi of z. It is the red area.
+
+92
+00:17:41,174 --> 00:17:56,470
+Slide 13 gives a second form of the model. Card B derives it. Pause the video and try it. Line 1 is the model. y i is a constant, beta zero plus beta one x i, plus a random error.
+
+93
+00:17:56,920 --> 00:18:07,416
+Step 1 of card B: the mean. By linearity, E of y i is E of beta zero plus beta one x i, plus E of epsilon i.
+
+94
+00:18:07,866 --> 00:18:21,690
+Beta zero, beta one and x i are constants, so the first part is beta zero plus beta one x i. E of epsilon i is 0. So the mean of y i is on the line.
+
+95
+00:18:22,140 --> 00:18:30,908
+Step 2: the variance. y i is epsilon i plus the constant b, which is beta zero plus beta one x i.
+
+96
+00:18:31,358 --> 00:18:46,739
+The variance of a Y plus b is a squared times the variance of Y. Here a is 1. So the variance of y i is the variance of epsilon i, sigma squared. The spread of y i is the spread of the error.
+
+97
+00:18:47,189 --> 00:19:09,547
+Step 3: a normal variable plus a constant is normal. The errors are independent, so the y i are independent. So y i is independent normal, with mean beta zero plus beta one x i, and variance sigma squared. On the right, every normal curve has its centre on the line and the same width.
+
+98
+00:19:09,997 --> 00:19:23,714
+This is the equivalent form. The y i are independent, but they are not identically distributed: each y i has its own mean. Type B uses steps 1 to 3 of this derivation.
+
+99
+00:19:24,164 --> 00:19:51,684
+A type B problem from Assignment 1, question 4. The true model has ten known x values. Part b uses beta zero equal to 1, beta one equal to 0.25, and sigma equal to 1. Which normal distribution does the R function r norm use for Y 1 and for Y 2? We add one part: the probability that Y 2 is larger than 4.5. Pause the video and try it.
+
+100
+00:19:52,134 --> 00:20:02,609
+Step 1 of card B: the mean. x 1 is 1. So E of Y 1 is 1 plus 0.25 times 1, which is 1.25.
+
+101
+00:20:03,059 --> 00:20:10,760
+x 2 is 10. So E of Y 2 is 1 plus 0.25 times 10, which is 3.5.
+
+102
+00:20:11,210 --> 00:20:16,245
+Step 2: the variance is sigma squared. 1 squared is 1, for every i.
+
+103
+00:20:16,695 --> 00:20:29,324
+Step 3: Y 1 is normal with mean 1.25 and variance 1. Y 2 is normal with mean 3.5 and variance 1. These are the two r norm calls.
+
+104
+00:20:29,774 --> 00:20:40,099
+Step 4: standardize. 4.5 minus 3.5, over 1, is 1. So we need the probability that Z is larger than 1.
+
+105
+00:20:40,549 --> 00:20:54,373
+That is 1 minus Phi of 1. Phi of 1 is 0.8413, so the probability is 0.1587. It is the red area of the curve at x equals 10.
+
+106
+00:20:54,823 --> 00:21:06,471
+Part c sets beta one to 0. Then every mean is 1, and every Y i is normal with mean 1 and variance 1. The mean of Y does not depend on x.
+
+107
+00:21:06,921 --> 00:21:19,636
+Part d sets sigma to 0.5. The variance is 0.5 squared, which is 0.25. The means stay the same, and the normal curves are narrower.
+
+108
+00:21:20,086 --> 00:21:32,950
+Section 3 is the meaning of the two coefficients. Slide 14: the mean of y i, given x i, is beta zero plus beta one x i. This is the regression line.
+
+109
+00:21:33,400 --> 00:21:39,373
+Put x i equal to 0. The mean is beta zero plus beta one times 0.
+
+110
+00:21:39,823 --> 00:21:52,175
+Beta one times 0 is 0. So the mean of y at x equal to 0 is beta zero. On the plot, beta zero is the height of the line at x equal to 0.
+
+111
+00:21:52,625 --> 00:22:01,777
+So beta zero is the intercept. It is the mean outcome for units with x equal to 0. Type C uses this in step 3.
+
+112
+00:22:02,227 --> 00:22:11,571
+Now the slope, slide 16. Take any value x star. The mean of y at x star is beta zero plus beta one x star.
+
+113
+00:22:12,021 --> 00:22:20,064
+Go up by one unit, to x star plus 1. The mean is beta zero plus beta one times x star plus 1.
+
+114
+00:22:20,514 --> 00:22:22,733
+Subtract line 1 from line 2.
+
+115
+00:22:23,183 --> 00:22:33,679
+Beta zero cancels, and beta one x star cancels. Only beta one stays. On the plot, it is the rise of the line over a run of 1.
+
+116
+00:22:34,129 --> 00:22:46,758
+So beta one is the change in the mean of y when x increases by one unit. It is the same for every x star, because the line is straight. Type C uses this in step 2.
+
+117
+00:22:47,208 --> 00:22:58,877
+Lecture 3 gives a more careful wording. Think of all units with x equal to x star. This is one population. Its y values have a normal distribution.
+
+118
+00:22:59,327 --> 00:23:04,383
+All units with x equal to x star plus 1 make a second population.
+
+119
+00:23:04,833 --> 00:23:19,639
+Beta one is the difference between the two population means. It compares a population with x to a population with x one unit lower. It does not say that the y of one unit changes if we change its x.
+
+120
+00:23:20,089 --> 00:23:27,321
+Beta one hat, from the data, is an estimate of this mean difference. Use this wording in exam answers.
+
+121
+00:23:27,771 --> 00:23:36,411
+Question type C asks you to interpret beta zero and beta one, or their estimates. Method card C has four steps.
+
+122
+00:23:36,861 --> 00:23:42,834
+Step 1: write the units of x and of y. Every sentence of the answer uses them.
+
+123
+00:23:43,284 --> 00:23:58,879
+Step 2: beta one is the mean difference in y, comparing a population with x to a population with x one unit lower. For beta one hat, say estimated. The sign says higher or lower. The triangle shows it.
+
+124
+00:23:59,329 --> 00:24:07,073
+Step 3: beta zero is the mean of y when x is 0. It is the height of the line at x equal to 0.
+
+125
+00:24:07,523 --> 00:24:17,571
+Step 4: check the range of x in the data. If x equal to 0 is far outside this range, beta zero hat has no practical meaning.
+
+126
+00:24:18,021 --> 00:24:35,855
+A type C problem. Pause the video and try it. Slide 38 gives the estimates for the brainhead data. Beta zero hat is 335.4323, and beta one hat is 0.2608. Interpret both.
+
+127
+00:24:36,305 --> 00:24:43,367
+Step 1 of card C: x is head size in cubic centimetres, and y is brain weight in grams.
+
+128
+00:24:43,817 --> 00:25:06,985
+Step 2: comparing populations with head sizes one cubic centimetre apart, the estimated mean brain weight is 0.26 grams higher in the larger one. One cubic centimetre is small, so we can also say 260.8 grams per 1000 cubic centimetres. The triangle shows this rise.
+
+129
+00:25:07,435 --> 00:25:21,856
+Step 3: beta zero hat, 335.4 grams, is the estimated mean brain weight at head size 0. We must extend the line far to the left to reach x equal to 0.
+
+130
+00:25:22,306 --> 00:25:40,802
+Step 4: the head sizes in the data go from 2773 to 4747. Head size 0 is far outside this range. So beta zero hat has no practical meaning here. It only fixes the height of the line.
+
+131
+00:25:41,252 --> 00:25:59,407
+A type C problem from Tutorial 2, question 2 a. Pause the video and try it. x i is 0 for the first n 1 subjects, group 0, and 1 for the others, group 1. Interpret beta one, and write a null hypothesis for no difference in means.
+
+132
+00:25:59,857 --> 00:26:08,667
+Step 1 of card C: x has no units here. x equal to 0 means group 0, and x equal to 1 means group 1.
+
+133
+00:26:09,117 --> 00:26:15,901
+Step 2 needs the two means. Put x equal to 0: the mean of group 0 is beta zero.
+
+134
+00:26:16,351 --> 00:26:21,535
+Put x equal to 1: the mean of group 1 is beta zero plus beta one.
+
+135
+00:26:21,985 --> 00:26:35,404
+Subtract line 1 from line 2. Beta one is the mean of group 1 minus the mean of group 0. This is the answer: beta one is the difference in mean response between the two groups.
+
+136
+00:26:35,854 --> 00:26:40,035
+Step 3: beta zero is the mean response of group 0.
+
+137
+00:26:40,485 --> 00:26:48,336
+Step 4: x equal to 0 is one of the two groups in the data. So here beta zero has a practical meaning.
+
+138
+00:26:48,786 --> 00:27:03,442
+No difference in means is the same as beta one equal to 0. So test H 0, beta one equals 0, against H 1, beta one is not 0. Video 8 shows how to do the test.
+
+139
+00:27:03,892 --> 00:27:24,137
+A type C problem from Tutorial 2, question 1. Pause the video and try it. y is patient satisfaction, and x is the severity of the illness. Part c asks to interpret the estimated association. Part f asks if we can trust a prediction at severity 100.
+
+140
+00:27:24,587 --> 00:27:31,883
+Step 1 of card C: y is a satisfaction score, and x is a severity index. Both are in points.
+
+141
+00:27:32,333 --> 00:27:50,403
+Step 2: beta one hat is minus 2.3283. Patients with severity one point higher have an estimated mean satisfaction 2.33 points lower. The triangle shows 10 points more severity: 23.3 points lower.
+
+142
+00:27:50,853 --> 00:28:00,197
+Step 3: beta zero hat, 179.13, is the estimated mean satisfaction at severity 0.
+
+143
+00:28:00,647 --> 00:28:14,129
+Step 4: the range of x. The output gives only x bar and S x x. But each squared deviation is one term of S x x, so it is at most 532.24.
+
+144
+00:28:14,579 --> 00:28:20,681
+Take the root. Each x i is at most 23.07 from 50.48.
+
+145
+00:28:21,131 --> 00:28:34,101
+So every severity in the data is between 27.41 and 73.55. Severity 0 is outside, so beta zero hat has no practical meaning.
+
+146
+00:28:34,551 --> 00:28:52,151
+Part f: severity 100 is larger than 73.55, so it is outside the data. The tutorial solution says the largest severity is 62. A prediction at 100 is an extrapolation, so we do not trust it.
+
+147
+00:28:52,601 --> 00:28:59,727
+One more type C problem, with the estimates of Tutorial 1, question 2. Pause the video and try it.
+
+148
+00:29:00,177 --> 00:29:07,878
+Step 1 of card C: y is the maintenance cost in thousands of dollars. x is the number of flight hours.
+
+149
+00:29:08,328 --> 00:29:23,688
+Step 2: beta one hat is 6.410. Aircraft with one more flight hour have an estimated mean cost 6.410 thousand dollars higher. That is 6410 dollars.
+
+150
+00:29:24,138 --> 00:29:35,786
+For 50 more flight hours, the difference is 50 times 6.410, which is 320.5 thousand dollars. The triangle shows it.
+
+151
+00:29:36,236 --> 00:29:45,559
+Step 3: beta zero hat, 868.487, is the estimated mean cost at 0 flight hours.
+
+152
+00:29:46,009 --> 00:30:00,302
+Step 4: the output gives x bar, 148.8 hours, but not the range of x. We cannot tell if x equal to 0 is near the data. So use beta zero hat with care.
+
+153
+00:30:00,752 --> 00:30:14,384
+Section 4 is the assumptions. Slide 18 lists four. One: linearity. The mean of y is a straight-line function of x. This comes from beta zero plus beta one x i.
+
+154
+00:30:14,834 --> 00:30:24,647
+Two: independence. The errors are independent. One error gives no information about another error. This comes from the i of iid.
+
+155
+00:30:25,097 --> 00:30:34,441
+Three: normality. The errors have a normal distribution. So at each x, y has a normal distribution. This comes from the N.
+
+156
+00:30:34,891 --> 00:30:43,361
+Four: equal variance. The variance sigma squared is the same at every x. The name for this is homoskedasticity.
+
+157
+00:30:43,811 --> 00:30:47,800
+So each assumption comes from one part of the model equation.
+
+158
+00:30:48,250 --> 00:31:00,133
+Question type D asks what the model assumptions say for a given set-up. A question often says: with the usual assumptions. Method card D lists them in a fixed order.
+
+159
+00:31:00,583 --> 00:31:08,540
+Step 1: linearity. The mean of y i is beta zero plus beta one x i. The means lie on a line.
+
+160
+00:31:08,990 --> 00:31:14,707
+Step 2: independence. The errors are independent, so the y i are independent.
+
+161
+00:31:15,157 --> 00:31:20,192
+Step 3: normality. Each error is normal, so each y i is normal.
+
+162
+00:31:20,642 --> 00:31:30,327
+Step 4: equal variance. The variance of each error is sigma squared, the same at every x. The orange bars have the same length.
+
+163
+00:31:30,777 --> 00:31:46,649
+A type D problem from Tutorial 2, question 2. Pause the video and try it. x is 0 for group 0 and 1 for group 1. The model has the usual assumptions. What do they say about the responses of each group?
+
+164
+00:31:47,099 --> 00:31:58,086
+Step 1 of card D: linearity. With x equal to 0, the mean is beta zero. With x equal to 1, the mean is beta zero plus beta one.
+
+165
+00:31:58,536 --> 00:32:03,955
+Step 2: independence. The responses of all n subjects are independent.
+
+166
+00:32:04,405 --> 00:32:07,882
+Step 3: normality. Each response is normal.
+
+167
+00:32:08,332 --> 00:32:17,185
+Step 4: equal variance. The variance is sigma squared in both groups. On the right, the two orange bars have the same length.
+
+168
+00:32:17,635 --> 00:32:32,718
+So group 0 is normal with mean beta zero, group 1 is normal with mean beta zero plus beta one, and both have variance sigma squared. This is the usual two-sample problem with equal variances.
+
+169
+00:32:33,168 --> 00:32:48,208
+This slide is optional. It is not on the slides. It shows two data sets of our own. In the left plot, the mean of y follows a curve. A straight line misses the pattern. Linearity, step 1 of card D, fails.
+
+170
+00:32:48,658 --> 00:32:56,743
+In the right plot, the spread of y grows as x grows. The points make a fan shape. Equal variance, step 4, fails.
+
+171
+00:32:57,193 --> 00:33:05,193
+Later lectures check the assumptions with residual plots. For now, look at the scatter plot before you use the model.
+
+172
+00:33:05,643 --> 00:33:20,726
+Slide 18 ends with a question: how do we estimate beta zero and beta one from the data? Here is one candidate line, with slope 0.10. The orange segments show how far the points are from it.
+
+173
+00:33:21,176 --> 00:33:28,579
+Here is a steeper candidate line, with slope 0.45. Again, many points are far from it.
+
+174
+00:33:29,029 --> 00:33:36,154
+We need a rule that picks one line. Video 4 gives the rule: least squares. It gives the green line.
+
+175
+00:33:36,604 --> 00:33:51,196
+To recap. Card A computes sample summaries: the means, the deviations, the three sums, then divide, then check. The correlation is S x y over the root of S x x times S y y.
+
+176
+00:33:51,646 --> 00:34:04,318
+Card B gives the distribution of y i: mean beta zero plus beta one x i, variance sigma squared, normal and independent. For a probability, standardize.
+
+177
+00:34:04,768 --> 00:34:18,315
+Card C interprets the coefficients: the units, beta one as a mean difference for x one unit higher, beta zero as the mean at x equal to 0, and a check of the range of x.
+
+178
+00:34:18,765 --> 00:34:30,733
+Card D states the four assumptions: linearity, independence, normality and equal variance. The next video estimates beta zero and beta one by least squares.

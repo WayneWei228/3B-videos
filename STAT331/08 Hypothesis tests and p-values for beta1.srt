@@ -3,369 +3,613 @@
 This is STAT 331, video 8. The topic is hypothesis tests and p-values for the slope beta 1.
 
 2
-00:00:08,727 --> 00:00:30,679
-After this video, you can test a null hypothesis about beta 1 with the t statistic. You can calculate and interpret a p-value, two-sided or one-sided. You can read the coefficient table. And you can solve Tutorial 1 question 2, parts c and d, and Assignment 1, question 2 a and question 4.
+00:00:08,727 --> 00:00:15,191
+This video prepares you for four question types. Each type gets a method card and worked problems.
 
 3
-00:00:31,129 --> 00:00:48,388
-We want to test a null hypothesis, H 0: beta 1 equals theta 0. The alternative is H 1: beta 1 is not equal to theta 0. Theta 0 is a fixed number that we choose. Often theta 0 is 0.
+00:00:15,641 --> 00:00:27,225
+Type A: test the null hypothesis beta 1 equals theta 0 against a two-sided alternative. The slides, two tutorials and Assignment 1 ask it.
 
 4
-00:00:48,838 --> 00:01:06,182
-Suppose H 0 is true. Then beta 1 hat has a normal distribution with mean theta 0 and variance sigma squared over S x x. This is the purple curve. If our estimate falls near theta 0, the data are not surprising.
+00:00:27,675 --> 00:00:32,241
+Type B: a one-sided test, when the question names one direction.
 
 5
-00:01:06,632 --> 00:01:20,755
-If our estimate falls far out in a tail, the data would be very surprising if H 0 were true. So the goal of a test is to measure this surprise: how extreme are our data, if H 0 is true?
+00:00:32,691 --> 00:00:42,013
+Type C: explain a test result. What a p-value means, how a test is linked to the confidence interval, and the type one error rate.
 
 6
-00:01:21,205 --> 00:01:31,487
-To measure the distance from theta 0, we use a test statistic. On the beta 1 scale, we mark theta 0 and our estimate beta 1 hat.
+00:00:42,463 --> 00:00:47,306
+Type D: simulate p-values, as in Assignment 1, question 4.
 
 7
-00:01:31,937 --> 00:01:45,207
-The raw distance is beta 1 hat minus theta 0. But this number has units. It also depends on the noise in the data. So the raw distance alone does not tell us if it is large.
+00:00:47,756 --> 00:01:07,489
+Section 1 builds the tool that all four question types use. We test the null hypothesis H 0: beta 1 equals theta 0, against H 1: beta 1 is not equal to theta 0. Theta 0 is a fixed number from the question. Often it is 0.
 
 8
-00:01:45,657 --> 00:01:58,990
-We measure the distance in standard errors. The standard error of beta 1 hat is sigma hat over the square root of S x x. In this picture, the distance is two and a half standard errors.
+00:01:07,939 --> 00:01:20,419
+Suppose H 0 is true. Then beta 1 hat is normal, with mean theta 0 and variance sigma squared over S x x. The purple curve shows this distribution.
 
 9
-00:01:59,440 --> 00:02:13,563
-So we divide by the standard error. The result is the t statistic. Here t equals 2.5. Under H 0, this statistic has a t distribution with n minus 2 degrees of freedom.
+00:01:20,869 --> 00:01:26,075
+An estimate near theta 0 is not surprising if H 0 is true.
 
 10
-00:02:14,013 --> 00:02:24,957
-This comes from the last two videos. Beta 1 hat minus beta 1, over sigma over root S x x, is standard normal. But sigma is unknown.
+00:01:26,525 --> 00:01:34,887
+An estimate far out in a tail is surprising if H 0 is true. Such an estimate is evidence against H 0.
 
 11
-00:02:25,407 --> 00:02:41,044
-We put sigma hat in place of sigma. Sigma hat squared is the sum of squared residuals over n minus 2. Then the ratio has a t distribution with n minus 2 degrees of freedom. It has wider tails than the normal.
+00:01:35,337 --> 00:01:43,401
+So a test measures one thing. How extreme are our data, if H 0 is true? Slide 41 gives this goal.
 
 12
-00:02:41,494 --> 00:02:54,337
-Under H 0, beta 1 equals theta 0. So we can put theta 0 in place of beta 1. Then T contains only the data and theta 0. We can calculate it.
+00:01:43,851 --> 00:02:00,406
+Where does the test statistic come from? Line 1, from video 6: beta 1 hat is normal, with mean beta 1 and variance sigma squared over S x x. The arrow is its standard deviation, sigma over root S x x.
 
 13
-00:02:54,787 --> 00:03:11,981
-The p-value answers this question: if H 0 is true, what is the probability of a test statistic as extreme as, or more extreme than, the one we observed? Here is an example with 10 degrees of freedom, and t observed equals 2.1.
+00:02:00,856 --> 00:02:14,403
+Line 2: subtract the mean, beta 1, and divide by the standard deviation. The result is standard normal, with mean 0 and standard deviation 1. The marked sigma is unknown.
 
 14
-00:03:12,431 --> 00:03:23,269
-More extreme means farther from 0. First, the right tail: the probability that T is at least 2.1. This area is 0.031.
+00:02:14,853 --> 00:02:28,378
+Line 3: put sigma hat in place of sigma, as in video 7. Then the ratio has a t distribution with n minus 2 degrees of freedom. Its tails are wider than the normal tails.
 
 15
-00:03:23,719 --> 00:03:31,164
-A value below minus 2.1 is just as extreme. By symmetry, the left tail has the same area.
+00:02:28,828 --> 00:02:44,423
+Line 4: under H 0, beta 1 equals theta 0. So put theta 0 in place of the marked beta 1. The numerator, beta 1 hat minus theta 0, is the distance on the beta 1 scale.
 
 16
-00:03:31,614 --> 00:03:49,363
-So the p-value is two times the right tail. 2 times 0.031 is 0.062. In formula form, p equals 2 times 1 minus P of T less than or equal to the absolute value of t observed.
+00:02:44,873 --> 00:02:57,267
+Line 5: the marked denominator, sigma hat over root S x x, is the standard error of beta 1 hat. In the picture, the distance is two and a half standard errors.
 
 17
-00:03:49,813 --> 00:04:04,747
-Slide 42 writes minus absolute t inside the last probability. That is a sign slip. Use plus absolute t, or equivalently, 2 times P of T less than or equal to minus absolute t.
+00:02:57,717 --> 00:03:13,013
+So T counts the standard errors from theta 0 to beta 1 hat. Here t equals 2.5. T uses only the data and theta 0, so we can compute it. Question type A uses it in step 2.
 
 18
-00:04:05,197 --> 00:04:23,863
-Now the decision. We choose a level alpha, usually 0.05. The two red tails together have area 0.05. They start at the quantile t 0.975 with 10 degrees of freedom, which is 2.228.
+00:03:13,463 --> 00:03:34,989
+The p-value answers one question. If H 0 is true, what is the probability of a test statistic as extreme as the observed one, or more extreme? The example on the right has 10 degrees of freedom and t observed 2.1. More extreme means farther from 0: the two orange tails.
 
 19
-00:04:24,313 --> 00:04:37,199
-Our t of 2.1 is inside the critical values. Its p-value is 0.062, above 0.05. So we do not reject H 0.
+00:03:35,439 --> 00:03:48,068
+Line 2: the two tails are two separate events. T is at least 2.1, or T is at most minus 2.1. Each tail has an area of 0.031.
 
 20
-00:04:37,649 --> 00:04:57,979
-If t were 3.0, it would fall in a tail. Its p-value is 0.013, below 0.05. Then we reject H 0. The two rules always agree: p is below alpha exactly when the absolute value of t is above the critical value.
+00:03:48,518 --> 00:03:56,177
+Line 3: the t curve is symmetric, so the two tails are equal. The p-value is two times the right tail.
 
 21
-00:04:58,429 --> 00:05:16,136
-Here is the example from the slides. The data are 236 people, with brain weight y in grams and head size x in cubic centimeters. We test H 0: beta 1 equals 0, against beta 1 not equal to 0.
+00:03:56,627 --> 00:04:06,440
+Line 4: the right tail is 1 minus the area to the left of 2.1. That area, in blue, is 0.969.
 
 22
-00:05:16,586 --> 00:05:40,437
-Beta 1 hat is 0.2608. Its standard error is 0.01307. So t observed is 0.2608 over 0.01307, which is 19.957. The critical value with 234 degrees of freedom is 1.97.
+00:04:06,890 --> 00:04:21,098
+So p equals 2 times 1 minus 0.969. That is 2 times 0.031, which is 0.062. Question type A uses this in step 4.
 
 23
-00:05:40,887 --> 00:05:55,991
-The t value is far beyond the curve. The p-value is 2 times P of T greater than 19.957. It is 2.03 times 10 to the power minus 52. This is almost zero.
+00:04:21,548 --> 00:04:34,497
+Now the decision. Choose a level alpha before you look at the data. Often alpha is 0.05. Slide 43 rejects H 0 when the p-value is below alpha.
 
 24
-00:05:56,441 --> 00:06:11,502
-The p-value is below 0.05. So we reject the null hypothesis at the 5 percent level. The data give very strong evidence of a linear association between head size and brain weight.
+00:04:34,947 --> 00:04:41,987
+Put in the p-value from the last slide: 2 times P of T at least the absolute value of t observed.
 
 25
-00:06:11,952 --> 00:06:19,909
-The slide also gives the coefficient table for this fit. The course does not need the code. But you must read the numbers.
+00:04:42,437 --> 00:04:52,165
+Divide by 2. The right tail beyond the absolute t must be smaller than alpha over 2. Each red tail has area alpha over 2.
 
 26
-00:06:20,359 --> 00:06:35,399
-Each row is one coefficient. The Estimate column gives beta 1 hat, 0.26082. The Std. Error column gives its standard error, 0.01307.
+00:04:52,615 --> 00:05:13,394
+The tail to the right of t 1 minus alpha over 2, with n minus 2 degrees of freedom, has area exactly alpha over 2. A smaller tail starts farther right. So reject when the absolute value of t is above this critical value. With 10 degrees of freedom, it is 2.228.
 
 27
-00:06:35,849 --> 00:06:56,159
-The t value column is the estimate over the standard error: 0.26082 over 0.01307 is 19.957. So the t value counts the standard errors from 0 to beta 1 hat. Here there are about 20 of them.
+00:05:13,844 --> 00:05:28,095
+Check with t equal to 2.1. It is inside the critical values, and its p-value, 0.062, is above 0.05. Both rules say: do not reject.
 
 28
-00:06:56,609 --> 00:07:17,195
-The last column is the two-sided p-value for H 0: beta 1 equals 0. Less than 2 times 10 to the minus 16 means it is too small to print. This table always tests theta 0 equal to 0. For other values of theta 0, calculate t yourself.
+00:05:28,545 --> 00:05:45,931
+Now t equal to 3.0. It is in a tail, and its p-value, 0.013, is below 0.05. Both rules say: reject. The two rules always agree. Question type A uses them in step 4.
 
 29
-00:07:17,645 --> 00:07:31,789
-The intercept row tests H 0: beta 0 equals 0. Its t value is 335.43 over 47.78, which is 7.021.
+00:05:46,381 --> 00:06:01,827
+Section 2. Question type A: test H 0, beta 1 equals theta 0, against a two-sided alternative. The slides do it for the brain data. Tutorial 1, Tutorial 2 and Assignment 1 ask it.
 
 30
-00:07:32,239 --> 00:07:45,295
-The residual standard error is sigma hat, 72.35. The degrees of freedom are n minus 2, which is 234. So n is 236.
+00:06:02,277 --> 00:06:12,730
+Method card A has five steps. Step 1: write the hypotheses. Take theta 0 from the question, in the units of y per unit of x.
 
 31
-00:07:45,745 --> 00:07:58,759
-What if the p-value is above 0.05? Would we accept the null? No. We only say: we do not have enough evidence to reject it. Here is an example with our own numbers.
+00:06:13,180 --> 00:06:28,924
+Step 2: compute t observed. It is beta 1 hat minus theta 0, over the standard error. The standard error is sigma hat over root S x x, or read it from the output. The blue line marks t observed.
 
 32
-00:07:59,209 --> 00:08:13,097
-The 95 percent confidence interval is 0.4 plus or minus 2.086 times 0.3. That is from minus 0.23 to 1.03.
+00:06:29,374 --> 00:06:42,089
+Step 3: the reference distribution is t with n minus 2 degrees of freedom. Find the critical value, t 1 minus alpha over 2, n minus 2. The red tails start there.
 
 33
-00:08:13,547 --> 00:08:20,395
-The value 0 is inside the interval. So the test does not reject beta 1 equals 0.
+00:06:42,539 --> 00:06:55,787
+Step 4: reject H 0 if the absolute value of t observed is above the critical value. This is the same as a p-value below alpha. The orange tails are the p-value.
 
 34
-00:08:20,845 --> 00:08:36,653
-But 0.5 and 0.9 are also inside the interval. The data agree with all of them. So we cannot conclude that beta 1 is 0. We can only say that the data do not show that it is different from 0.
+00:06:56,237 --> 00:07:06,797
+Step 5: conclude in words, with the variables of the question. When you do not reject, say: the data do not give enough evidence against H 0.
 
 35
-00:08:37,103 --> 00:08:53,316
-Does the p-value equal the probability that beta 1 equals 0? No. The p-value starts from an assumption. We assume H 0 is true. Then T has a known t curve, and the p-value is the tail area beyond our t.
+00:07:07,247 --> 00:07:26,447
+Here is the example of the slides. Pause the video and try it. 236 adults, brain weight y in grams and head size x in cubic centimeters. Step 1 of card A: H 0, beta 1 equals 0, against beta 1 not equal to 0.
 
 36
-00:08:53,766 --> 00:09:03,238
-Beta 1 is a fixed, unknown constant. It is not random. So the p-value is not the probability that H 0 is true.
+00:07:26,897 --> 00:07:51,409
+Step 2: beta 1 hat is 0.26082, and its standard error is 0.01307. t observed is 0.26082 over 0.01307, which is 19.96. R prints 19.957, because it uses more digits.
 
 37
-00:09:03,688 --> 00:09:21,565
-The correct meaning: under the null hypothesis, the p-value is the probability of a test statistic as extreme as the one we observed. A small p-value says our data would be rare under H 0. That is why it is evidence against H 0.
+00:07:51,859 --> 00:08:06,131
+Step 3: there are 234 degrees of freedom: 236 minus 2. The critical value t 0.975, 234 is 1.970.
 
 38
-00:09:22,015 --> 00:09:36,394
-Now suppose we use this rule: reject H 0 whenever the p-value is below 5 percent. Suppose H 0 is true, and we repeat the experiment many times. Each time, we calculate t.
+00:08:06,581 --> 00:08:12,127
+Step 4: 19.96 is far above 1.970.
 
 39
-00:09:36,844 --> 00:09:46,828
-Each dot is one simulated experiment with 10 points, where the true beta 1 is 0. Most t values are between the critical values.
+00:08:12,577 --> 00:08:26,423
+The p-value is 2 times P of T at least 19.957. Slide 43 gives 2.03 times 10 to the minus 52. It is below 0.05.
 
 40
-00:09:47,278 --> 00:09:56,771
-Here are 40 experiments. 2 of them fall in the red tails. In those experiments, we reject H 0, but H 0 is true.
+00:08:26,873 --> 00:08:37,582
+Step 5: reject H 0 at the 5 percent level. The data give strong evidence of a linear association between head size and brain weight.
 
 41
-00:09:57,221 --> 00:10:12,069
-This mistake is a type one error. With the 5 percent rule, the long-run proportion of type one errors is 5 percent. This is the type one error rate. Here, 2 out of 40 is exactly 5 percent.
+00:08:38,032 --> 00:08:48,208
+Slide 45 gives the R output for the same fit. You do not need the code, but you must read the numbers. Each row is one coefficient.
 
 42
-00:10:12,519 --> 00:10:22,951
-So far the alternative was two-sided: beta 1 is not equal to theta 0. Evidence against H 0 can then point in either direction.
+00:08:48,658 --> 00:09:03,847
+Card A, step 2. In the x row, the Estimate column gives beta 1 hat, 0.26082. The Std. Error column gives its standard error, 0.01307.
 
 43
-00:10:23,401 --> 00:10:32,639
-With two sides, both tails count. For t equal to 2.1 with 10 degrees of freedom, p is 0.062.
+00:09:04,297 --> 00:09:17,759
+The t value column is the estimate over the standard error: 19.957. It counts the standard errors from 0 to beta 1 hat. The ruler shows about 20 of them.
 
 44
-00:10:33,089 --> 00:10:50,902
-Sometimes we care about one direction only. For example, H 1: beta 1 is greater than theta 0. Then only large values of beta 1 hat minus theta 0 are evidence for H 1. So only large values of T count.
+00:09:18,209 --> 00:09:30,966
+Step 4. The last column is the two-sided p-value for H 0, beta 1 equals 0. Less than 2 times 10 to the minus 16 means: too small to print.
 
 45
-00:10:51,352 --> 00:11:08,717
-So the p-value includes only one tail: P of T at least t observed. Here it is 0.031, half of the two-sided value. If t observed is negative, the one-sided p-value is above one half, and we do not reject.
+00:09:31,416 --> 00:09:41,208
+The table always uses theta 0 equal to 0. For another theta 0, compute t observed yourself, with step 2 of card A.
 
 46
-00:11:09,167 --> 00:11:17,381
-Here is the procedure as five steps. Step 1: write the hypotheses with the value theta 0 from the question.
+00:09:41,658 --> 00:09:55,098
+The intercept row tests H 0, beta 0 equals 0, in the same way. 335.43 over 47.78 is 7.021.
 
 47
-00:11:17,831 --> 00:11:24,700
-Step 2: calculate t observed. Beta 1 hat minus theta 0, over the standard error.
+00:09:55,548 --> 00:10:11,377
+Step 3 needs the degrees of freedom. The last line gives sigma hat, 72.35, on 234 degrees of freedom. 234 is n minus 2, so n is 236.
 
 48
-00:11:25,150 --> 00:11:30,291
-Step 3: the reference distribution is t with n minus 2 degrees of freedom.
+00:10:11,827 --> 00:10:32,670
+Now Tutorial 1, question 2 c. Pause the video and try it. Test the significance of beta 1 at the 5 percent level. Significance of beta 1 means theta 0 equals 0. Step 1: H 0, beta 1 equals 0, against beta 1 not equal to 0.
 
 49
-00:11:30,741 --> 00:11:43,776
-Step 4: find the p-value. Use two tails for a two-sided alternative, and one tail for a one-sided alternative. Or compare the absolute value of t with the critical value.
+00:10:33,120 --> 00:10:53,173
+Step 2: the hours row gives beta 1 hat, 6.410, and its standard error, 0.499. t observed is 6.410 minus 0, over 0.499, which is 12.85. The output prints 12.8.
 
 50
-00:11:44,226 --> 00:11:53,954
-Step 5: conclude in words, in the context of the question. Say reject or do not reject, and say what that means for the variables.
+00:10:53,623 --> 00:11:06,530
+Step 3: the output gives 98 degrees of freedom, 100 minus 2. The critical value t 0.975, 98 is 1.984.
 
 51
-00:11:54,404 --> 00:12:04,879
-Now the tutorial. Question 2 has 100 aircraft. y is the maintenance cost in thousands of dollars. x is the number of flight hours.
+00:11:06,980 --> 00:11:20,143
+Step 4: 12.85 is far above 1.984. The p-value in the last column is less than 2 times 10 to the minus 16. It is below 0.05.
 
 52
-00:12:05,329 --> 00:12:21,713
-The question gives this output. The row for hours gives beta 1 hat equals 6.410 and a standard error of 0.499. There are 98 degrees of freedom, because n minus 2 is 98.
+00:11:20,593 --> 00:11:31,622
+Step 5: reject H 0 at the 5 percent level. The data give strong evidence that the mean maintenance cost changes with the number of flight hours.
 
 53
-00:12:22,163 --> 00:12:29,992
-On the beta 1 scale, 0 is about 12.85 standard errors away from the estimate. That is far.
+00:11:32,072 --> 00:11:48,627
+Part d. Pause the video and try it. Step 1: y is in thousands of dollars. So 6000 dollars is 6 thousand, and theta 0 is 6. H 0: beta 1 equals 6, against beta 1 not equal to 6.
 
 54
-00:12:30,442 --> 00:12:40,789
-Part d asks about the value 6. It is very close to the estimate, less than one standard error away. Pause the video and try parts c and d.
+00:11:49,077 --> 00:12:10,325
+Step 2: t observed is 6.410 minus 6, over 0.499. That is 0.41 over 0.499, which is 0.82. The t value in the output uses theta 0 equal to 0, so compute this t yourself.
 
 55
-00:12:41,239 --> 00:12:50,881
-Part c. Significance of beta 1 means: test H 0, beta 1 equals 0, against beta 1 not equal to 0.
+00:12:10,775 --> 00:12:17,537
+Step 3: 98 degrees of freedom again. The critical value is 1.984.
 
 56
-00:12:51,331 --> 00:13:03,107
-The t statistic is 6.410 minus 0, over 0.499. That is 12.85. The output prints it as 12.8.
+00:12:17,987 --> 00:12:25,795
+Step 4: 0.82 is inside the critical values, plus and minus 1.984.
 
 57
-00:13:03,557 --> 00:13:16,507
-Under H 0, T has a t distribution with 98 degrees of freedom. The critical value t 0.975, 98 is 1.984.
+00:12:26,245 --> 00:12:38,277
+The p-value is 2 times P of T at least 0.82, with 98 degrees of freedom. It is 0.413, above 0.05.
 
 58
-00:13:16,957 --> 00:13:27,645
-12.85 is much larger than 1.984. The p-value is less than 2 times 10 to the minus 16, from the last column.
+00:12:38,727 --> 00:12:50,631
+Step 5: do not reject H 0 at the 5 percent level. The data do not give enough evidence against an average increase of 6000 dollars per flight hour.
 
 59
-00:13:28,095 --> 00:13:40,596
-So we reject H 0 at the 5 percent level. There is strong evidence that the mean maintenance cost changes with the number of flight hours. The estimate says the cost increases.
+00:12:51,081 --> 00:13:10,153
+A type A question from Tutorial 2, question 1 b. Pause the video and try it. Does satisfaction depend on severity? This asks if beta 1 is different from 0. Step 1: H 0, beta 1 equals 0, against beta 1 not equal to 0.
 
 60
-00:13:41,046 --> 00:13:59,947
-Part d. y is in thousands of dollars. So an increase of 6000 dollars per hour is beta 1 equals 6. This is the most common mistake: theta 0 is 6, not 6000. The test is H 0: beta 1 equals 6, two-sided.
+00:13:10,603 --> 00:13:33,046
+Step 2: the Severity row gives the estimate, minus 2.3283, and the standard error, 0.5859. t observed is minus 2.3283 over 0.5859, which is minus 3.974. The t value column shows the same number.
 
 61
-00:14:00,397 --> 00:14:16,760
-The t statistic is 6.410 minus 6, over 0.499. That is 0.82. The table cannot give this value: its t value always uses theta 0 equal to 0.
+00:13:33,496 --> 00:13:46,275
+Step 3: the output gives 23 degrees of freedom, 25 minus 2. The critical value t 0.975, 23 is 2.069.
 
 62
-00:14:17,210 --> 00:14:23,930
-0.82 is well inside the critical values plus and minus 1.984.
+00:13:46,725 --> 00:14:04,623
+Step 4: t is negative, so use its absolute value, 3.974. It is above 2.069. The last column gives the p-value, 0.000601. It is below 0.05.
 
 63
-00:14:24,380 --> 00:14:33,319
-The p-value is 2 times P of T at least 0.82, with 98 degrees of freedom. It is 0.41.
+00:14:05,073 --> 00:14:17,276
+Step 5: reject H 0. Satisfaction depends on severity. The estimate is negative, so the estimated mean satisfaction decreases as severity increases.
 
 64
-00:14:33,769 --> 00:14:51,966
-The p-value is above 0.05. So we do not reject H 0 at the 5 percent level. The data agree with an average increase of 6000 dollars per flight hour. This does not prove that the increase is exactly 6000 dollars.
+00:14:17,726 --> 00:14:30,910
+The last type A problem is Assignment 1, question 3 c. Pause the video and try it. Step 1: H 0, beta 1 equals 0, against beta 1 not equal to 0.
 
 65
-00:14:52,416 --> 00:15:08,053
-Assignment 1, question 2 a. We reject H 0, beta 1 equals 0, at the 0.05 level. What does that say about the 95 percent confidence interval? Pause the video and try it.
+00:14:31,360 --> 00:14:58,752
+Step 2 needs the standard error. Sigma hat is 0.9178 and S x x is 70657.4. The square root of 70657.4 is 265.81. 0.9178 over 265.81 is 0.003453.
 
 66
-00:15:08,503 --> 00:15:26,210
-The top line is the t scale. We do not reject when the absolute value of t is at most t star. t star is t 0.975 with n minus 2 degrees of freedom. Here is a t of 1.4, inside the green region.
+00:14:59,202 --> 00:15:10,978
+Then t observed is minus 0.02280 over 0.003453, which is minus 6.603.
 
 67
-00:15:26,660 --> 00:15:46,329
-The bottom line is the beta 1 scale. The confidence interval is beta 1 hat plus or minus t star times the standard error. Its half-width is t star standard errors. Beta 1 hat is only 1.4 standard errors from 0. So the interval contains 0.
+00:15:11,428 --> 00:15:22,585
+Step 3: 88 degrees of freedom, 90 minus 2. The critical value t 0.975, 88 is 1.987.
 
 68
-00:15:46,779 --> 00:15:53,862
-Now take t equal to 3.2. It is outside the green region, so we reject H 0.
+00:15:23,035 --> 00:15:38,715
+Step 4: the absolute value, 6.603, is above 1.987. The p-value, 2 times P of T at least 6.603, is 2.95 times 10 to the minus 9.
 
 69
-00:15:54,312 --> 00:16:05,512
-Beta 1 hat is now 3.2 standard errors from 0. The half-width is only t star standard errors. So the interval does not contain 0.
+00:15:39,165 --> 00:15:57,896
+Step 5: reject H 0 at the 0.05 level. The data give strong evidence of a linear association. The estimated mean chewiness decreases as sugar increases. Report t equals minus 6.603 and the p-value.
 
 70
-00:16:05,962 --> 00:16:26,079
-In symbols: the absolute value of t is above t star, exactly when the absolute value of beta 1 hat is above t star times the standard error, exactly when 0 is outside the interval. So the answer: the 95 percent confidence interval does not contain 0.
+00:15:58,346 --> 00:16:12,383
+Section 3. So far the alternative was two-sided. Then both tails count. For t observed 2.1 with 10 degrees of freedom, the two-sided p-value is 0.062.
 
 71
-00:16:26,529 --> 00:16:45,580
-We can check this result with Tutorial 1. The 95 percent confidence interval for beta 1 is 6.410 plus or minus 1.984 times 0.499. That is from 5.42 to 7.40.
+00:16:12,833 --> 00:16:20,705
+Sometimes the question names one direction. For example, H 1: beta 1 is greater than theta 0.
 
 72
-00:16:46,030 --> 00:16:53,539
-The value 0 is outside the interval. This matches part c, where we rejected beta 1 equals 0.
+00:16:21,155 --> 00:16:29,177
+Slide 49: then only large values of beta 1 hat minus theta 0 are evidence for H 1.
 
 73
-00:16:53,989 --> 00:17:14,171
-The value 6 is inside the interval. This matches part d, where we did not reject beta 1 equals 6. So a two-sided test at level alpha rejects theta 0 exactly when theta 0 is outside the 100 times 1 minus alpha percent confidence interval.
+00:16:29,627 --> 00:16:37,136
+Divide by the standard error, which is positive. So only large values of T are evidence for H 1.
 
 74
-00:17:14,621 --> 00:17:26,930
-Assignment 1, question 4, is a simulation. The true model has 10 fixed x values, and normal errors. Step one: simulate 10 values of y from this model.
+00:16:37,586 --> 00:16:47,741
+So the p-value has one tail only: P of T at least t observed. Here it is 0.031, half of the two-sided value.
 
 75
-00:17:27,380 --> 00:17:40,863
-Here is one simulated data set, with beta 1 equal to 0.25 and sigma equal to 1. The gray dashed line is the true line, 1 plus 0.25 x.
+00:16:48,191 --> 00:17:03,551
+When t observed is positive, the one-sided p-value is half of the two-sided p-value. When t observed is negative, it is above one half, and we do not reject. Question type B uses this in step 3.
 
 76
-00:17:41,313 --> 00:17:51,745
-Step two: fit the least squares line to the simulated data. The green line is the fit. It is not equal to the true line, because of the random errors.
+00:17:04,001 --> 00:17:08,886
+Method card B solves every one-sided test. It has five steps.
 
 77
-00:17:52,195 --> 00:18:02,371
-Step three: calculate the t statistic and the two-sided p-value for H 0: beta 1 equals 0. There are 8 degrees of freedom.
+00:17:09,336 --> 00:17:23,672
+Step 1: read the direction in the question. Increases, or more than, gives H 1: beta 1 greater than theta 0. Decreases, or less than, gives H 1: beta 1 less than theta 0.
 
 78
-00:18:02,821 --> 00:18:17,199
-Step four: repeat this 2000 times, and keep each p-value. The assignment does this in R. This video shows only the results. We used our own random seed, so your numbers will be a little different.
+00:17:24,122 --> 00:17:29,050
+Step 2: compute t observed, as in card A. The blue line marks it.
 
 79
-00:18:17,649 --> 00:18:31,025
-Part b. Beta 1 equals 0.25 and sigma equals 1. The histogram shows the 2000 p-values. The red bar is the p-values below 0.05.
+00:17:29,500 --> 00:17:45,436
+Step 3: the p-value has one tail, in the direction of H 1. For greater than, it is P of T at least t observed. For less than, it is P of T at most t observed. Here it is the orange tail, 0.031.
 
 80
-00:18:31,475 --> 00:18:43,955
-Many p-values are small, but not all. We reject H 0 in 48.8 percent of the samples. So in about half of the samples, the test misses a real slope.
+00:17:45,886 --> 00:17:56,275
+Step 4: reject H 0 if p is below alpha. Here 0.031 is below 0.05, so we reject.
 
 81
-00:18:44,405 --> 00:18:48,992
-Part c. Now beta 1 equals 0, so H 0 is true.
+00:17:56,725 --> 00:18:00,949
+Step 5: conclude in words, with the direction of the question.
 
 82
-00:18:49,442 --> 00:19:02,711
-The p-values are spread evenly from 0 to 1. The histogram is flat. We reject in 4.9 percent of the samples. This is close to 5 percent: the type one error rate.
+00:18:01,399 --> 00:18:17,463
+A type B question on the Tutorial 1 output. Pause the video and try it. Does 1 more flight hour increase the mean cost by more than 6000 dollars? Step 1: more than gives H 1: beta 1 greater than 6.
 
 83
-00:19:03,161 --> 00:19:10,180
-Part d repeats b and c with a smaller error standard deviation, sigma equals 0.5.
+00:18:17,913 --> 00:18:28,857
+Step 2: t observed is 6.410 minus 6, over 0.499, which is 0.82, as in part d.
 
 84
-00:19:10,630 --> 00:19:22,577
-With beta 1 equal to 0.25, almost all p-values are below 0.05. We reject in 97.2 percent of the samples.
+00:18:29,307 --> 00:18:43,473
+Step 3: one tail, to the right: P of T at least 0.82, with 98 degrees of freedom. It is 0.207, half of the two-sided 0.413.
 
 85
-00:19:23,027 --> 00:19:27,720
-With beta 1 equal to 0, the null hypothesis is true again.
+00:18:43,923 --> 00:18:52,093
+Step 4: 0.207 is above 0.05, so we do not reject H 0.
 
 86
-00:19:28,170 --> 00:19:42,826
-The histogram is flat again. We reject in 4.1 percent of the samples. This is about 5 percent. With 2000 samples, values from about 4 to 6 percent are normal random variation.
+00:18:52,543 --> 00:19:01,183
+Step 5: the data do not give enough evidence that the mean cost increases by more than 6000 dollars per flight hour.
 
 87
-00:19:43,276 --> 00:20:08,087
-Part e asks us to explain. Look at the t values. The standard deviation of beta 1 hat is sigma over root S x x. Here S x x is 76. With sigma equal to 1, the true slope is 2.18 standard deviations from 0. The t values center near this value. About half of them pass the critical value 2.306.
+00:19:01,633 --> 00:19:16,076
+A type B question on the Tutorial 2 output. Pause the video and try it. Does the mean satisfaction decrease as severity increases? Step 1: decrease gives H 1: beta 1 less than 0.
 
 88
-00:20:08,537 --> 00:20:23,577
-With sigma equal to 0.5, the standard deviation is half as large. The true slope is now 4.36 standard deviations from 0. So almost all t values pass the critical value.
+00:19:16,526 --> 00:19:21,987
+Step 2: the output gives t observed, minus 3.974.
 
 89
-00:20:24,027 --> 00:20:43,568
-So the explanation. When H 0 is true, T has a t distribution with 8 degrees of freedom, for any sigma. So we reject about 5 percent of the time. When beta 1 is not 0, a smaller sigma gives a more precise estimate, a larger t, and more rejections.
+00:19:22,437 --> 00:19:39,483
+Step 3: one tail, to the left, the direction of H 1. The output gives the two-sided p-value, 0.000601. The left tail is half of it: 0.000300.
 
 90
-00:20:44,018 --> 00:21:01,042
-To recap. The t statistic is beta 1 hat minus theta 0, over the standard error. Compare it with t with n minus 2 degrees of freedom. A two-sided p-value uses two tails, and a one-sided p-value uses one tail.
+00:19:39,933 --> 00:19:49,191
+Step 4: 0.000300 is below 0.05, so we reject H 0.
 
 91
-00:21:01,492 --> 00:21:11,583
-Reject when p is below alpha. Not rejecting does not prove H 0. And the p-value is not the probability that beta 1 is 0.
+00:19:49,641 --> 00:19:56,895
+Step 5: the data give strong evidence that the mean satisfaction decreases as severity increases.
 
 92
-00:21:12,033 --> 00:21:26,838
-The coefficient table tests theta 0 equal to 0 only. Watch the units of theta 0. A two-sided test rejects theta 0 exactly when theta 0 is outside the confidence interval.
+00:19:57,345 --> 00:20:04,726
+Section 4. Question type C asks you to explain a test result. Method card C has four steps.
 
 93
-00:21:27,288 --> 00:21:38,424
-When H 0 is true, the p-values are spread evenly, so the type one error rate is alpha. The next video estimates the mean response at a given x.
+00:20:05,176 --> 00:20:11,149
+Step 1: say what the p-value measures. It starts from an assumption: H 0 is true.
+
+94
+00:20:11,599 --> 00:20:17,594
+Then T has a known curve: the t distribution with n minus 2 degrees of freedom.
+
+95
+00:20:18,044 --> 00:20:35,260
+The p-value is the area in the tails beyond the observed t. So the p-value is a probability about the data, computed under H 0. Beta 1 is a fixed, unknown constant. Slides 46 and 47 give this meaning.
+
+96
+00:20:35,710 --> 00:20:50,451
+Step 2: compare p with alpha. If p is below alpha, reject H 0: the data give evidence against H 0. If not, do not reject: the data do not give enough evidence against H 0.
+
+97
+00:20:50,901 --> 00:21:08,608
+Step 3, for a question about the confidence interval. A two-sided test at level alpha rejects theta 0 exactly when theta 0 is outside the 100 times 1 minus alpha percent confidence interval. The next slide derives it.
+
+98
+00:21:09,058 --> 00:21:21,730
+Step 4, for a question about error rates. If H 0 is true, the rule p below alpha rejects in a fraction alpha of repeated samples. This is the type one error rate.
+
+99
+00:21:22,180 --> 00:21:39,375
+Here is the reason for step 3 of card C. Line 1: from card A, reject H 0 when the absolute value of t observed is above t star. t star is t 1 minus alpha over 2, with n minus 2 degrees of freedom.
+
+100
+00:21:39,825 --> 00:21:47,718
+Line 2: write t observed. It is the distance from theta 0 to beta 1 hat, over the standard error.
+
+101
+00:21:48,168 --> 00:21:59,325
+Line 3: multiply both sides by the standard error, which is positive. Now the distance is compared with t star standard errors, the green half-width.
+
+102
+00:21:59,775 --> 00:22:15,583
+Line 4: open the absolute value. Theta 0 is more than t star standard errors below beta 1 hat, or more than t star standard errors above it. In the picture, theta 0 is outside the green band.
+
+103
+00:22:16,033 --> 00:22:32,140
+Line 5: the green band, beta 1 hat plus or minus t star standard errors, is the 100 times 1 minus alpha percent confidence interval of video 7. So theta 0 is outside the interval.
+
+104
+00:22:32,590 --> 00:22:48,377
+The result: a two-sided test at level alpha rejects theta 0 exactly when theta 0 is outside the 100 times 1 minus alpha percent confidence interval. Question type C uses it in step 3.
+
+105
+00:22:48,827 --> 00:23:11,120
+Assignment 1, question 2 a. Pause the video and try it. We reject H 0, beta 1 equals 0, at the 0.05 level. What does this say about the 95 percent confidence interval? This is step 3 of card C, with theta 0 equal to 0 and alpha equal to 0.05.
+
+106
+00:23:11,570 --> 00:23:23,410
+First, a case where we do not reject. The top line is the t scale. t equal to 1.4 is inside the green region, between minus t star and t star.
+
+107
+00:23:23,860 --> 00:23:38,345
+The bottom line is the beta 1 scale. Beta 1 hat is 1.4 standard errors from 0. The half-width of the interval is t star standard errors, which is more. So the interval contains 0.
+
+108
+00:23:38,795 --> 00:23:44,470
+Now a case where we reject. t equal to 3.2 is outside the green region.
+
+109
+00:23:44,920 --> 00:23:53,965
+Beta 1 hat is now 3.2 standard errors from 0, more than the half-width. So the interval does not contain 0.
+
+110
+00:23:54,415 --> 00:24:07,279
+The answer: the 95 percent confidence interval for beta 1 does not contain 0. The reason is the chain on the last slide, with theta 0 equal to 0.
+
+111
+00:24:07,729 --> 00:24:32,860
+Check card C, step 3, with Tutorial 1. The 95 percent confidence interval is 6.410 plus or minus 1.984 times 0.499. 1.984 times 0.499 is 0.990. So the interval is from 5.42 to 7.40.
+
+112
+00:24:33,310 --> 00:24:40,734
+0 is outside the interval. This matches part c, where the test rejected beta 1 equals 0.
+
+113
+00:24:41,184 --> 00:24:48,779
+6 is inside the interval. This matches part d, where the test did not reject beta 1 equals 6.
+
+114
+00:24:49,229 --> 00:25:08,194
+Slide 44 asks what to say when the p-value is above 0.05. Our own numbers: beta 1 hat is 0.4, the standard error is 0.3, with 20 degrees of freedom. t is 1.33, and p is 0.20.
+
+115
+00:25:08,644 --> 00:25:27,161
+The 95 percent confidence interval is 0.4 plus or minus 2.086 times 0.3. That is 0.4 plus or minus 0.626, from minus 0.23 to 1.03.
+
+116
+00:25:27,611 --> 00:25:33,606
+0 is inside the interval, so the test does not reject beta 1 equals 0.
+
+117
+00:25:34,056 --> 00:25:41,544
+But 0.5 and 0.9 are also inside. The data agree with all of these values.
+
+118
+00:25:41,994 --> 00:25:57,973
+So the conclusion of card C, step 2: do not reject H 0. The data do not give enough evidence against beta 1 equals 0. Slide 44 says it in the same way: we do not have enough evidence to reject.
+
+119
+00:25:58,423 --> 00:26:12,140
+Card C, step 4. Use the rule: reject H 0 when p is below 5 percent. Suppose H 0 is true, and we repeat the experiment many times. Each time we compute t.
+
+120
+00:26:12,590 --> 00:26:27,310
+Each dot is one simulated experiment with 10 points, where the true beta 1 is 0. Here are the first 20. Most t values are between the critical values, plus and minus 2.306.
+
+121
+00:26:27,760 --> 00:26:29,936
+Here are 20 more experiments.
+
+122
+00:26:30,386 --> 00:26:40,861
+2 of the 40 t values fall in the red regions. In those experiments we reject H 0, but H 0 is true. This is a type one error.
+
+123
+00:26:41,311 --> 00:26:55,625
+In the long run, the rule p below 0.05 rejects a true H 0 in 5 percent of the experiments. This is the type one error rate. Here 2 out of 40 is 5 percent.
+
+124
+00:26:56,075 --> 00:27:06,166
+Section 5. Question type D asks you to simulate p-values, as in Assignment 1, question 4. Method card D has six steps.
+
+125
+00:27:06,616 --> 00:27:21,336
+Step 1: fix the x values and the true beta 0, beta 1 and sigma. Simulate each y i from a normal distribution with mean beta 0 plus beta 1 x i and variance sigma squared.
+
+126
+00:27:21,786 --> 00:27:29,338
+Step 2: fit least squares to the simulated data. Find beta 1 hat, sigma hat, and the standard error.
+
+127
+00:27:29,788 --> 00:27:36,999
+Step 3: compute t observed and the two-sided p-value for H 0, beta 1 equals 0.
+
+128
+00:27:37,449 --> 00:27:44,851
+Step 4: repeat steps 1 to 3 many times, for example 2000 times. Store each p-value.
+
+129
+00:27:45,301 --> 00:27:53,664
+Step 5: draw a histogram of the p-values. The share of p-values below 0.05 is the rejection rate.
+
+130
+00:27:54,114 --> 00:28:07,575
+Step 6: explain the rate. If H 0 is true, it is close to alpha. If beta 1 is not 0, the rate grows with beta 1 over the standard deviation of beta 1 hat.
+
+131
+00:28:08,025 --> 00:28:29,316
+Assignment 1, question 4 a. Pause the video and try it. The true model has 10 fixed x values and beta 0 equal to 1. Step 1 of card D: take beta 1 equal to 0.25 and sigma equal to 1. The gray line is the true mean, 1 plus 0.25 x.
+
+132
+00:28:29,766 --> 00:28:41,265
+Simulate one y for each x, from a normal distribution with this mean and standard deviation 1. The table and the blue points show one simulated data set.
+
+133
+00:28:41,715 --> 00:28:52,616
+Step 2: fit least squares. First S x x. x bar is 5. The last row holds x i minus 5, squared. These add to 76.
+
+134
+00:28:53,066 --> 00:29:04,266
+The fit gives beta 1 hat equal to 0.1946 and sigma hat equal to 0.9885. The green line is the fitted line.
+
+135
+00:29:04,716 --> 00:29:22,636
+Step 3: the standard error is 0.9885 over root 76, which is 0.1134. t observed is 0.1946 over 0.1134, which is 1.716.
+
+136
+00:29:23,086 --> 00:29:34,798
+There are 10 minus 2, so 8 degrees of freedom. The two-sided p-value, 2 times P of T at least 1.716, is 0.124.
+
+137
+00:29:35,248 --> 00:29:54,149
+Step 4: store this p-value, and repeat 2000 times. This data set does not reject, but the true beta 1 is 0.25. The assignment does this in R. The video uses Python with its own random numbers, so your numbers differ a little.
+
+138
+00:29:54,599 --> 00:30:09,746
+Part b: beta 1 equals 0.25 and sigma equals 1. Step 5 of card D: the histogram of the 2000 p-values. The red bar holds the p-values below 0.05.
+
+139
+00:30:10,196 --> 00:30:26,367
+975 of the 2000 p-values are below 0.05. So we reject in 48.75 percent of the samples. In about half of the samples, the test does not detect the true slope.
+
+140
+00:30:26,817 --> 00:30:31,339
+Part c: now beta 1 equals 0, so H 0 is true.
+
+141
+00:30:31,789 --> 00:30:49,517
+The p-values spread evenly from 0 to 1, and the histogram is flat. 98 of 2000 are below 0.05: 4.9 percent. This is close to 5 percent, the type one error rate of card C, step 4.
+
+142
+00:30:49,967 --> 00:31:01,530
+Part d repeats parts b and c with a smaller error standard deviation, sigma equals 0.5. First, beta 1 equals 0.25.
+
+143
+00:31:01,980 --> 00:31:13,436
+Almost all p-values are below 0.05: 1944 of 2000. We reject in 97.2 percent of the samples.
+
+144
+00:31:13,886 --> 00:31:17,982
+Now beta 1 equals 0, so H 0 is true again.
+
+145
+00:31:18,432 --> 00:31:35,179
+The histogram is flat again. 82 of 2000 are below 0.05: 4.1 percent, about 5 percent. With 2000 samples, values from about 4 to 6 percent are normal random variation.
+
+146
+00:31:35,629 --> 00:31:51,991
+Part e asks you to explain. Step 6 of card D. The standard deviation of beta 1 hat is sigma over root S x x. Here S x x is 76, and root 76 is 8.718.
+
+147
+00:31:52,441 --> 00:32:13,583
+With sigma equal to 1, the true slope 0.25 is 0.25 times 8.718, which is 2.18 standard deviations from 0. The simulated t values center near 2.18. About half of them pass the critical value 2.306.
+
+148
+00:32:14,033 --> 00:32:28,497
+With sigma equal to 0.5, the standard deviation is half as large. The true slope is 4.36 standard deviations from 0. Almost all t values pass the critical value.
+
+149
+00:32:28,947 --> 00:32:38,355
+When H 0 is true, T has a t distribution with 8 degrees of freedom, for every sigma. So the rate is about 5 percent.
+
+150
+00:32:38,805 --> 00:32:56,170
+So the answer: when H 0 is true, we reject about 5 percent of the time, for every sigma. When beta 1 is not 0, a smaller sigma makes beta 1 hat more precise. Then the absolute t is larger, and we reject more often.
+
+151
+00:32:56,620 --> 00:33:13,281
+To recap. Card A tests beta 1 equals theta 0 against a two-sided alternative. Write the hypotheses, compute t observed, find the critical value with n minus 2 degrees of freedom, compare, and conclude in words.
+
+152
+00:33:13,731 --> 00:33:21,561
+Card B is the one-sided test. The direction in the question gives H 1, and the p-value has one tail.
+
+153
+00:33:22,011 --> 00:33:40,613
+Card C explains a result. The p-value is computed under H 0. Not rejecting means not enough evidence. A two-sided test rejects theta 0 exactly when theta 0 is outside the confidence interval. The type one error rate is alpha.
+
+154
+00:33:41,063 --> 00:33:53,821
+Card D simulates p-values. When H 0 is true, about 5 percent are below 0.05. The next video estimates the mean response at a given x.

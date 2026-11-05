@@ -3,389 +3,613 @@
 This is STAT 331, video 22. It covers Lecture 12: multicollinearity.
 
 2
-00:00:07,191 --> 00:00:24,365
-After this video, you can explain least squares as a projection. You can say what multicollinearity is, and why it makes standard errors larger. You can compute the variance inflation factor. And you can solve the two practice questions of Lecture 12.
+00:00:07,191 --> 00:00:13,655
+This video prepares you for three question types. Each type gets a method card and worked problems.
 
 3
-00:00:24,815 --> 00:00:39,769
-Lecture 12 starts with a recap of Lecture 11. SSTotal is the sum of squared distances of y i from y bar. The full bar shows it for the real estate model that we use later in this video.
+00:00:14,105 --> 00:00:23,023
+Type A: compute the variance inflation factor, the VIF, of one coefficient. Practice questions 1 and 2 a ask this.
 
 4
-00:00:40,219 --> 00:00:51,633
-SSReg is the part that the regression model explains. It is the sum of squared distances of the fitted values from y bar. The green part of the bar shows it.
+00:00:23,473 --> 00:00:34,651
+Type B: reason about VIFs. Show that a VIF is at least 1, and say what happens when we add a covariate, as in Practice question 2 b.
 
 5
-00:00:52,083 --> 00:01:04,499
-SSRes is the part that the model does not explain. It is the sum of the squared residuals. The orange part shows it. SSTotal is SSReg plus SSRes.
+00:00:35,101 --> 00:00:42,056
+Type C: use the idealized design matrix X star. Practice question 1 a and b ask this.
 
 6
-00:01:04,949 --> 00:01:23,679
-R squared, the coefficient of determination, is SSReg over SSTotal. It is the proportion of the variability in y that the model explains. Here it is 0.6874. We use R squared again for the variance inflation factor.
+00:00:42,506 --> 00:00:57,461
+Lecture 12 starts with a recap of Lecture 11. SSTotal is the sum of squared distances of y i from y bar. The full bar shows it for the real estate model that we use later in this video.
 
 7
-00:01:24,129 --> 00:01:33,964
-The ANOVA table and the F tests of slides 5 to 12 are in video 21. This video starts with the geometry of least squares.
+00:00:57,911 --> 00:01:09,324
+SSReg is the part that the regression model explains. It is the sum of squared distances of the fitted values from y bar. The green part of the bar shows it.
 
 8
-00:01:34,414 --> 00:01:53,102
-Slide 13 is an aside: the geometry of least squares. The columns of X are vectors in n-dimensional space: the column of ones, x 1, up to x p. Their linear combinations form a set called the column space of X. The blue plane shows it.
+00:01:09,774 --> 00:01:22,190
+SSRes is the part that the model does not explain. It is the sum of the squared residuals. The orange part shows it. SSTotal is SSReg plus SSRes.
 
 9
-00:01:53,552 --> 00:02:01,872
-The response vector y is also a vector in n-dimensional space. In general, y is not in the column space.
+00:01:22,640 --> 00:01:41,861
+R squared is SSReg over SSTotal: 6769.1 over 9847.9, which is 0.6874. It is the proportion of the variability in y that the model explains.
 
 10
-00:02:02,322 --> 00:02:14,077
-Every vector X times b is in the column space. So the fitted vector, y hat equals X beta hat, is a point in the plane. It is also H times y.
+00:01:42,311 --> 00:01:52,743
+Type A uses the R squared of a regression of one covariate on the other covariates. The ANOVA table and the F tests are in video 21.
 
 11
-00:02:14,527 --> 00:02:24,959
-The residual vector e is y minus y hat. It goes from the plane to y. Least squares chooses beta hat so that e is as short as possible.
+00:01:53,193 --> 00:02:11,113
+Slide 13 is an aside: the geometry of least squares. The columns of X are vectors in n-dimensional space: the column of ones, x 1, up to x p. Their linear combinations form the column space of X. The blue plane shows it.
 
 12
-00:02:25,409 --> 00:02:50,091
-The shortest e is perpendicular to the plane. So X transpose e is 0: e is perpendicular to every column of X. Slide 14 shows this. X transpose e is X transpose y, minus X transpose X, times X transpose X inverse, times X transpose y. The middle terms cancel, so the result is 0.
+00:02:11,563 --> 00:02:19,883
+The response vector y is also a vector in n-dimensional space. In general, y is not in the column space.
 
 13
-00:02:50,541 --> 00:03:10,360
-Slide 15. Suppose X has the columns 1, x 1, x 2 and x 3. Now suppose x 3 is a linear combination of the other columns: a 0 times 1, plus a 1 times x 1, plus a 2 times x 2. The table is our own small example.
+00:02:20,333 --> 00:02:29,656
+Every vector X times b is in the column space. So the fitted vector, y hat equals X beta hat, is a point in the plane.
 
 14
-00:03:10,810 --> 00:03:19,173
-Build each value of x 3 as a stack. Start with the gray block, a 0 times 1, which is 1 in every row.
+00:02:30,106 --> 00:02:40,538
+The residual vector e is y minus y hat. It goes from the plane to y. Least squares chooses beta hat so that e is as short as possible.
 
 15
-00:03:19,623 --> 00:03:21,777
-Add x i 1, in blue.
+00:02:40,988 --> 00:02:53,767
+The shortest e is perpendicular to the plane, so it is perpendicular to every column of X. In symbols, X transpose e is 0. The next slide shows this with algebra.
 
 16
-00:03:22,227 --> 00:03:36,414
-Add 2 times x i 2, in orange. The tops of the stacks are 2, 5, 4 and 7. These are exactly the values of x 3. So here a 0 is 1, a 1 is 1, and a 2 is 2.
+00:02:54,217 --> 00:03:09,107
+Slide 14 proves that X transpose e is 0. Line 1: e is y minus y hat, and y hat is H y. So e is I minus H, times y. The orange arrow in the picture is e.
 
 17
-00:03:36,864 --> 00:03:48,085
-Then the columns of X are linearly dependent. X transpose X shows it: its column 4 is column 1, plus column 2, plus 2 times column 3.
+00:03:09,557 --> 00:03:16,576
+Line 2: multiply out the bracket. We get X transpose y, minus X transpose H y.
 
 18
-00:03:48,535 --> 00:04:01,741
-So the determinant of X transpose X is 0. The matrix has no inverse, and the least squares estimator beta hat cannot be computed. This is called perfect multicollinearity.
+00:03:17,026 --> 00:03:28,119
+Line 3: put in the hat matrix H, which is X, times X transpose X inverse, times X transpose. The picture marks H y, the fitted vector.
 
 19
-00:04:02,191 --> 00:04:13,092
-Least squares requires no perfect multicollinearity. In words: x 3 cannot explain anything that x 1 and x 2 do not already explain.
+00:03:28,569 --> 00:03:36,719
+Line 4: X transpose X, times its inverse, is the identity. So the middle term is X transpose y.
 
 20
-00:04:13,542 --> 00:04:23,483
-Slide 16 asks: what if a covariate is not exactly a linear combination of the other covariates, but only strongly correlated with them?
+00:03:37,169 --> 00:03:48,710
+Line 5: X transpose y minus X transpose y is 0. So e is perpendicular to every column of X, as the right angle in the picture shows.
 
 21
-00:04:23,933 --> 00:04:35,048
-Here is one data set from the simulation of the lecture. Each point is one subject, with its values of x 1 and x 2. The points lie close to a line.
+00:03:49,160 --> 00:04:03,731
+The result: y hat is the projection of y onto the column space of X. So y hat depends only on the column space, not on the columns that we choose to span it. Type C uses this in step 3.
 
 22
-00:04:35,498 --> 00:04:46,933
-The correlation of x 1 and x 2 is 0.99. Correlation measures linear dependence, so x 2 is almost a linear function of x 1.
+00:04:04,181 --> 00:04:23,999
+Slide 15. Suppose X has the columns 1, x 1, x 2 and x 3. Now suppose x 3 is a linear combination of the other columns: a 0 times 1, plus a 1 times x 1, plus a 2 times x 2. The table is our own small example.
 
 23
-00:04:47,383 --> 00:05:04,940
-The lecture runs a simulation in R. It regresses y on x 1 only. We call this model M1. Then it regresses y on both x 1 and x 2. We call this model M2. The question is: what happens when we add x 2?
+00:04:24,449 --> 00:04:32,812
+Build each value of x 3 as a stack. Start with the gray block, a 0 times 1, which is 1 in every row.
 
 24
-00:05:05,390 --> 00:05:21,518
-Slides 17 and 18 give the R code of the simulation. Step 1 is the true model. beta 0 is 1, beta 1 is 2, and beta 2 is 0. The errors are normal with standard deviation 1.5.
+00:04:33,262 --> 00:04:35,417
+Add x i 1, in blue.
 
 25
-00:05:21,968 --> 00:05:36,688
-Step 2 generates the covariates. There are 100 subjects. x 1 and x 2 come from a multivariate normal distribution with mean 0, variance 1, and correlation 0.99.
+00:04:35,867 --> 00:04:50,864
+Add 2 times x i 2, in orange. The tops of the stacks are 2, 5, 4 and 7. These are exactly the values of x 3 in the table. So here a 0 is 1, a 1 is 1, and a 2 is 2.
 
 26
-00:05:37,138 --> 00:05:50,045
-Step 3 fits both models to the same data: M1 with x 1 only, and M2 with x 1 and x 2. It stores beta 1 hat and its standard error from each model.
+00:04:51,314 --> 00:05:07,165
+Then the columns of X are linearly dependent, and X transpose X shows it. Its column 4 is column 1, plus column 2, plus 2 times column 3. In row 1: 4 plus 10 plus 2 times 2 is 18.
 
 27
-00:05:50,495 --> 00:06:06,111
-The code repeats steps 2 and 3 for 1000 replicates. Then we compare the 1000 values of beta 1 hat from M1 with the 1000 values from M2. We ran the lecture code in R to get the results.
+00:05:07,615 --> 00:05:20,820
+So the determinant of X transpose X is 0. The matrix has no inverse, and the least squares estimator beta hat cannot be computed. This is called perfect multicollinearity.
 
 28
-00:06:06,561 --> 00:06:21,067
-beta 2 is 0, so x 2 has no effect on y. So both models are correct models for y. The only difference is the extra covariate x 2, which is highly correlated with x 1.
+00:05:21,270 --> 00:05:32,193
+Least squares requires no perfect multicollinearity. In words: x 3 cannot explain anything that x 1 and x 2 do not already explain.
 
 29
-00:06:21,517 --> 00:06:40,035
-Here are the results. The green histogram shows the 1000 values of beta 1 hat from M1. Their mean is 2.01, and their standard deviation is 0.15. The mean of the reported standard errors is also 0.15.
+00:05:32,643 --> 00:05:42,584
+Slide 16 asks: what if a covariate is not exactly a linear combination of the other covariates, but only strongly correlated with them?
 
 30
-00:06:40,485 --> 00:06:54,351
-The orange histogram shows beta 1 hat from M2. Its mean is 2.05, but its standard deviation is 1.05. The mean standard error is 1.08.
+00:05:43,034 --> 00:05:54,149
+Here is one data set from the simulation of the lecture. Each point is one subject, with its values of x 1 and x 2. The points lie close to a line.
 
 31
-00:06:54,801 --> 00:07:03,548
-Both histograms are centred close to the true value, beta 1 equals 2. So both estimators are close to unbiased.
+00:05:54,599 --> 00:06:06,033
+The correlation of x 1 and x 2 is 0.99. Correlation measures linear dependence, so x 2 is almost a linear function of x 1.
 
 32
-00:07:03,998 --> 00:07:20,745
-But M2 spreads much more. Its standard error is 1.08 over 0.15, which is about 7.2 times larger. Adding the correlated covariate x 2 inflates the standard error of beta 1 hat.
+00:06:06,483 --> 00:06:14,633
+The lecture runs a simulation in R. First it regresses y on x 1 only. We call this model M1.
 
 33
-00:07:21,195 --> 00:07:44,043
-Slide 19 gives the intuition. It is difficult to pull apart the variability explained by x 1 from the variability explained by x 2. The picture shows this. Each orange point is beta 1 hat and beta 2 hat from M2 in one replicate. beta 1 hat goes from minus 1.32 to 5.46.
+00:06:15,083 --> 00:06:20,480
+Then it regresses y on both x 1 and x 2. We call this model M2.
 
 34
-00:07:44,493 --> 00:08:01,282
-The points lie along a line: beta 1 hat plus beta 2 hat equals 2. The correlation of the two estimates is minus 0.99. When beta 1 hat is too large, beta 2 hat is too small by almost the same amount.
+00:06:20,930 --> 00:06:25,261
+The question is: what happens to beta 1 hat when we add x 2?
 
 35
-00:08:01,732 --> 00:08:14,724
-The green point is the truth: beta 1 is 2 and beta 2 is 0. Because x 1 and x 2 are almost the same, the data fit almost equally well at every point on this line.
+00:06:25,711 --> 00:06:41,839
+Slides 17 and 18 give the R code of the simulation. Step 1 is the true model. beta 0 is 1, beta 1 is 2, and beta 2 is 0. The errors are normal with standard deviation 1.5.
 
 36
-00:08:15,174 --> 00:08:29,873
-So multicollinearity has two implications. The standard errors are inflated. And the estimates are unstable: a small change in the data moves beta 1 hat and beta 2 hat far, in opposite directions.
+00:06:42,289 --> 00:06:57,009
+Step 2 generates the covariates. There are 100 subjects. x 1 and x 2 come from a multivariate normal distribution with mean 0, variance 1, and correlation 0.99.
 
 37
-00:08:30,323 --> 00:08:43,720
-How do we detect multicollinearity? Slide 20: for two covariates, look at the scatterplot of x 1 and x 2, and compute their correlation. Here the correlation is 0.99.
+00:06:57,459 --> 00:07:10,344
+Step 3 fits both models to the same data: M1 with x 1 only, and M2 with x 1 and x 2. It stores beta 1 hat and its standard error from each model.
 
 38
-00:08:44,170 --> 00:09:00,021
-Slide 21: for many covariates, look at the scatterplots and the correlation matrix of X. Here is the correlation matrix of the three real estate covariates. SqrFeet and Bedrooms have correlation 0.56.
+00:07:10,794 --> 00:07:26,410
+The code repeats steps 2 and 3 for 1000 replicates. Then we compare the 1000 values of beta 1 hat from M1 with the 1000 values from M2. We ran the lecture code in R to get the results.
 
 39
-00:09:00,471 --> 00:09:12,204
-But a covariate can be moderately correlated with each other covariate, and still be close to a linear combination of all of them together. Pairwise correlations do not show this.
+00:07:26,860 --> 00:07:41,367
+beta 2 is 0, so x 2 has no effect on y. So both models are correct models for y. The only difference is the extra covariate x 2, which is highly correlated with x 1.
 
 40
-00:09:12,654 --> 00:09:18,734
-So we must look at all the other covariates together. The next slides do this with a regression.
+00:07:41,817 --> 00:08:00,782
+Here are the results. The green histogram shows the 1000 values of beta 1 hat from M1. In the table, their mean is 2.01, their standard deviation is 0.15, and the mean of the standard errors is also 0.15.
 
 41
-00:09:19,184 --> 00:09:37,467
-Slide 22. Treat x j as the outcome, and regress it on X minus j: the matrix of all the other covariates, with the column of ones. This is a multiple linear regression. alpha is its coefficient vector, and epsilon star is its error.
+00:08:01,232 --> 00:08:15,099
+The orange histogram shows beta 1 hat from M2. Its mean is 2.05, but its standard deviation is 1.05. The mean standard error is 1.08.
 
 42
-00:09:37,917 --> 00:10:00,679
-Slide 23 recalls a fact. In simple linear regression, the squared correlation of y and x is R squared. In multiple linear regression, the squared correlation of y and the fitted values y hat is R squared. For the Practice Q1 model, both numbers are 0.6874.
+00:08:15,549 --> 00:08:26,066
+Both histograms are centred close to the true value, beta 1 equals 2, the dashed purple line. So both estimators are close to unbiased.
 
 43
-00:10:01,129 --> 00:10:10,217
-Example: regress SqrFeet on Bedrooms and Lotsize. The plot shows SqrFeet against its fitted value, x hat i 1.
+00:08:26,516 --> 00:08:47,529
+But M2 spreads much more. The bars under the plot show plus and minus one standard deviation. The standard error is 1.08 over 0.15, which is 7.2 times larger. Adding the correlated covariate x 2 inflates the standard error of beta 1 hat.
 
 44
-00:10:10,667 --> 00:10:32,470
-The squared correlation of x j and x hat j is R j squared, the R squared of this regression. Here the correlation is 0.5690, so R 1 squared is 0.3238. R j squared measures how well the other covariates together explain x j.
+00:08:47,979 --> 00:09:09,569
+Slide 19 gives the intuition: it is difficult to pull apart the variability explained by x 1 from the variability explained by x 2. Each orange point is beta 1 hat and beta 2 hat from M2 in one replicate. beta 1 hat goes from minus 1.32 to 5.46.
 
 45
-00:10:32,920 --> 00:10:46,872
-Slide 25. In the simple linear regression of y on x j, the variance of the slope estimate is sigma squared, over the sum of squared distances of x i j from x bar j.
+00:09:10,019 --> 00:09:26,808
+The points lie along a line: beta 1 hat plus beta 2 hat equals 2. The correlation of the two estimates is minus 0.99. When beta 1 hat is too large, beta 2 hat is too small by almost the same amount.
 
 46
-00:10:47,322 --> 00:11:04,133
-In multiple linear regression, the variance of beta j hat is sigma squared times the j j entry of X transpose X inverse. One can show that this equals the same fraction, times 1 over 1 minus R j squared.
+00:09:27,258 --> 00:09:42,213
+The green point is the truth: beta 1 is 2 and beta 2 is 0. It is on the same line. Because x 1 and x 2 are almost the same, the data fit almost equally well at every point on this line.
 
 47
-00:11:04,583 --> 00:11:21,244
-The factor 1 over 1 minus R j squared is the variance inflation factor, VIF j. The curve shows it as a function of R j squared. It starts at 1, and it grows without limit as R j squared goes to 1.
+00:09:42,663 --> 00:09:48,636
+So multicollinearity has two implications. First, the standard errors are inflated.
 
 48
-00:11:21,694 --> 00:11:40,190
-For SqrFeet in the real estate model, R 1 squared is 0.3238. So the VIF is 1.479. The variance of beta 1 hat is 1.479 times the variance it would have without the correlation.
+00:09:49,086 --> 00:09:59,411
+Second, the estimates are unstable: a small change in the data moves beta 1 hat and beta 2 hat far, in opposite directions along the line.
 
 49
-00:11:40,640 --> 00:12:04,299
-In the simulation, x 1 on x 2 gives R squared close to 0.99 squared, which is 0.9801. The VIF is 50.25. The standard error grows by the square root of the VIF, which is 7.09. This agrees with the 7.2 that the simulation gave.
-
-50
-00:12:04,749 --> 00:12:28,343
-Check the formula with the real estate model of Practice Q1. The full model gives sigma hat equal to 77,168.55, with 517 degrees of freedom. The sum of squared distances of SqrFeet from its mean is 263,407,931.
-
-51
-00:12:28,793 --> 00:12:36,217
-The base part is sigma hat squared over this sum. It is 22.61. The blue bar shows it.
-
-52
-00:12:36,667 --> 00:12:48,657
-Multiply by the VIF, 1.4788. The orange part is the extra variance, 10.83. The product is 33.43.
-
-53
-00:12:49,107 --> 00:13:05,576
-This is exactly the squared standard error of beta 1 hat in the R output of the full model: 5.7821 squared is 33.43. So the formula of slide 25 holds for these data.
-
-54
-00:13:06,026 --> 00:13:16,373
-Slide 26 lists three properties. First, standard errors are larger when R j squared is larger. The curve goes up from left to right.
-
-55
-00:13:16,823 --> 00:13:38,113
-Second, the VIF is at least 1. R j squared is between 0 and 1, so 1 minus R j squared is at most 1, and its inverse is at least 1. The VIF is exactly 1 when R j squared is 0, that is, when x j is uncorrelated with the other covariates.
-
-56
-00:13:38,563 --> 00:13:56,697
-Third, a balance. A new covariate can increase R j squared, and so the VIF. But it can also explain more of the variability in y. Then the estimate of sigma squared gets smaller. Both changes act on the variance of beta j hat.
-
-57
-00:13:57,147 --> 00:14:16,581
-Slide 27 gives a note of caution. The name suggests that the VIF is the variance of beta j hat in the multiple regression, divided by the variance of the slope in the simple regression on x j alone. This is not true. Why? Pause the video and think about it.
-
-58
-00:14:17,031 --> 00:14:38,279
-Look at the real estate data. The simple regression of price on SqrFeet gives a standard error of 4.8241, with sigma hat 78,294. The full model gives 5.7821, with sigma hat 77,169.
-
-59
-00:14:38,729 --> 00:14:54,473
-The ratio of the squared standard errors is 33.43 over 23.27, which is 1.4367. The VIF is 1.4788. The two numbers are different.
-
-60
-00:14:54,923 --> 00:15:08,619
-The reason: sigma squared means something different in each model. In the simple regression, the error includes the effects of Bedrooms and Lotsize. And the estimates of sigma squared are also different.
-
-61
-00:15:09,069 --> 00:15:25,325
-The correct statement: the VIF is the variance of beta j hat, divided by the variance of beta j star hat. beta star hat is the least squares estimator for a model with an idealized design matrix, X star.
-
-62
-00:15:25,775 --> 00:15:47,258
-The idealized design matrix X star must satisfy three conditions. One: its column j is x j. Two: it has the same column space as X, so it gives the same fitted values and the same sigma hat squared. Three: its column j is uncorrelated with its other columns.
-
-63
-00:15:47,708 --> 00:16:04,988
-Slide 28 builds such a matrix. Keep x j as column j. The blue arrow shows x j. For every other covariate x l, use the residuals of the regression of x l on x j. We call them e l given j.
-
-64
-00:16:05,438 --> 00:16:14,398
-The black arrow is x l. Its fitted value from the regression on x j, x hat l, is the green part along x j.
-
-65
-00:16:14,848 --> 00:16:30,699
-The residual e l given j is x l minus x hat l. It is the orange arrow, perpendicular to x j. Residuals are uncorrelated with the covariate of their regression. So condition 3 holds.
-
-66
-00:16:31,149 --> 00:16:47,234
-x j and e l given j span the same plane as x j and x l. So the column space does not change, and condition 2 holds. Condition 1 holds by construction. Practice Q1 checks this with data.
-
-67
-00:16:47,684 --> 00:17:01,785
+00:09:59,861 --> 00:10:13,963
 Slide 29 asks: what if we are interested in beta 1 plus beta 2? Recall the interpretation. It is the mean difference in y for a 1-unit increase in both x 1 and x 2.
 
-68
-00:17:02,235 --> 00:17:14,950
+50
+00:10:14,413 --> 00:10:27,127
 Slide 30 adds beta 1 hat plus beta 2 hat to the simulation. The orange histogram is beta 1 hat of M2 again. Its standard deviation is 1.05.
 
-69
-00:17:15,400 --> 00:17:33,960
+51
+00:10:27,577 --> 00:10:46,137
 The blue histogram is beta 1 hat plus beta 2 hat of M2. Its mean is 2.01. Its standard deviation and its mean standard error are both 0.15. The standard error uses the vector c equal to 0, 1, 1.
 
+52
+00:10:46,587 --> 00:10:59,814
+The bars under the plot compare the two spreads. The sum has no variance inflation. Its standard error, 0.15, is the same as that of beta 1 hat in M1.
+
+53
+00:11:00,264 --> 00:11:21,277
+Slide 31 explains. x 1 and x 2 are highly correlated. Changes in y track changes in x 1, but also changes in x 2. So we cannot pick apart the association with x 1 from the association with x 2. The points spread far along the purple line.
+
+54
+00:11:21,727 --> 00:11:38,111
+beta 1 plus beta 2 is the change in mean y when both covariates increase by 1. It does not matter how this change splits between x 1 and x 2. The blue arrow shows this direction. The points spread very little in it.
+
+55
+00:11:38,561 --> 00:11:48,737
+The slide says the same holds when we estimate a mean response or predict a new response. Practice question 1 b shows this with data.
+
+56
+00:11:49,187 --> 00:12:01,475
+So be most concerned about multicollinearity when you interpret individual coefficients, beta j. Combinations that move the correlated covariates together are estimated well.
+
+57
+00:12:01,925 --> 00:12:15,323
+How do we detect multicollinearity? Slide 20: for two covariates, look at the scatterplot of x 1 and x 2, and compute their correlation. Here the correlation is 0.99.
+
+58
+00:12:15,773 --> 00:12:31,623
+Slide 21: for many covariates, look at the scatterplots and the correlation matrix of X. Here is the correlation matrix of the three real estate covariates. SqrFeet and Bedrooms have correlation 0.56.
+
+59
+00:12:32,073 --> 00:12:43,807
+But a covariate can be moderately correlated with each other covariate, and still be close to a linear combination of all of them together. Pairwise correlations do not show this.
+
+60
+00:12:44,257 --> 00:12:50,337
+So we look at all the other covariates together, with a regression. The next section does this.
+
+61
+00:12:50,787 --> 00:13:09,069
+Slide 22. Treat x j as the outcome, and regress it on X minus j: the matrix of all the other covariates, with the column of ones. This is a multiple linear regression. alpha is its coefficient vector, and epsilon star is its error.
+
+62
+00:13:09,519 --> 00:13:32,282
+Slide 23 recalls a fact. In simple linear regression, the squared correlation of y and x is R squared. In multiple linear regression, the squared correlation of y and the fitted values y hat is R squared. For the Practice Q1 model, both numbers are 0.6874.
+
+63
+00:13:32,732 --> 00:13:41,820
+Example: regress SqrFeet on Bedrooms and Lotsize. The plot shows SqrFeet against its fitted value, x hat i 1.
+
+64
+00:13:42,270 --> 00:13:48,755
+The correlation of x 1 and x hat 1 is 0.5690.
+
+65
+00:13:49,205 --> 00:14:01,941
+Its square, 0.3238, is R 1 squared, the R squared of this regression. R j squared measures how well the other covariates together explain x j.
+
+66
+00:14:02,391 --> 00:14:16,343
+Slide 25. In the simple linear regression of y on x j, the variance of the slope estimate is sigma squared, over the sum of squared distances of x i j from x bar j.
+
+67
+00:14:16,793 --> 00:14:33,775
+In multiple linear regression, the variance of beta j hat is sigma squared times the j j entry of X transpose X inverse. The slide states that this equals the same fraction, times 1 over 1 minus R j squared.
+
+68
+00:14:34,225 --> 00:14:50,886
+The factor 1 over 1 minus R j squared is the variance inflation factor, VIF j. The curve shows it as a function of R j squared. It starts at 1, and it grows without limit as R j squared goes to 1.
+
+69
+00:14:51,336 --> 00:15:11,304
+For SqrFeet in the real estate model, R 1 squared is 0.3238. 1 minus 0.3238 is 0.6762, and 1 over 0.6762 is 1.479. The blue point shows it.
+
 70
-00:17:34,410 --> 00:17:44,266
-So the sum has no variance inflation. Its standard error, 0.15, is the same as that of beta 1 hat in M1.
+00:15:11,754 --> 00:15:39,509
+In the simulation, x 1 on x 2 gives R squared close to 0.99 squared, which is 0.9801. 1 minus 0.9801 is 0.0199, so the VIF is 50.25. The standard error grows by the square root of the VIF, 7.09. This agrees with the 7.2 of the simulation.
 
 71
-00:17:44,716 --> 00:18:02,551
-Slide 31 explains. x 1 and x 2 are highly correlated. Changes in y track changes in x 1, but also changes in x 2. So we cannot pick apart the association with x 1 from the association with x 2.
+00:15:39,959 --> 00:15:52,887
+Slide 26 lists three properties. First, standard errors are larger when R j squared is larger. The curve goes up from left to right along the R j squared axis.
 
 72
-00:18:03,001 --> 00:18:22,649
-beta 1 plus beta 2 is the change in mean y when both covariates increase by 1. It does not matter how this change splits between x 1 and x 2. In the picture, the points spread far along the line, but very little in the direction of beta 1 plus beta 2.
+00:15:53,337 --> 00:16:06,158
+Second, the VIF is at least 1: the curve never goes below the dashed line at 1. The slide asks why. This is a type B question, and we solve it after method card B.
 
 73
-00:18:23,099 --> 00:18:33,275
-The slide says the same holds when we estimate a mean response or predict a new response. Practice Q1 part b shows this with data.
+00:16:06,608 --> 00:16:24,763
+Third, a balance. A new covariate can increase R j squared, and so the VIF. But it can also explain more of the variability in y. Then the estimate of sigma squared gets smaller. Both changes act on the variance of beta j hat.
 
 74
-00:18:33,725 --> 00:18:46,695
-So be most concerned about multicollinearity when you want to interpret individual coefficients, beta j. Combinations that move the correlated covariates together are estimated well.
+00:16:25,213 --> 00:16:39,293
+Question type A asks for the VIF of one coefficient. The data come as a data file, as in Practice question 1, or as R output of other model fits, as in Practice question 2.
 
 75
-00:18:47,145 --> 00:19:02,484
-Practice question 1, slide 32. Use the real estate data. Fit the model of sale price on SqrFeet, Bedrooms and Lotsize. Compute the VIF for beta 1. Pause the video and try it.
+00:16:39,743 --> 00:16:45,993
+Step 1 of method card A: pick x j, the covariate of the coefficient beta j.
 
 76
-00:19:02,934 --> 00:19:20,427
-The VIF needs R 1 squared. Regress SqrFeet, the covariate of beta 1, on the other two covariates, Bedrooms and Lotsize. There are 521 houses. R 1 squared is 0.3238.
+00:16:46,443 --> 00:16:54,635
+Step 2: find the regression of x j on all the other covariates. In this regression, x j is the outcome.
 
 77
-00:19:20,877 --> 00:19:33,912
-VIF 1 is 1 over 1 minus 0.3238. That is 1 over 0.6762, which is 1.4788.
+00:16:55,085 --> 00:17:02,061
+Step 3: read R j squared. In R output, it is the Multiple R-squared of that regression.
 
 78
-00:19:34,362 --> 00:19:46,415
-So the variance of beta 1 hat is 1.48 times the variance it would have if SqrFeet were uncorrelated with the other covariates. This is a moderate inflation.
+00:17:02,511 --> 00:17:07,183
+Step 4: the VIF is 1 over 1 minus R j squared.
 
 79
-00:19:46,865 --> 00:19:54,993
-Part a. Fit a second model with the idealized design matrix, and check the VIF. Pause the video and try it.
+00:17:07,633 --> 00:17:22,823
+Step 5: say what it means. The variance of beta j hat is VIF j times the variance with an uncorrelated x j. The standard error is the square root of VIF j times larger.
 
 80
-00:19:55,443 --> 00:20:17,310
-Build X star. Keep the column of ones and x 1, SqrFeet. Replace Bedrooms by e 2 given 1, the residuals of Bedrooms on SqrFeet. Replace Lotsize by e 3 given 1, the residuals of Lotsize on SqrFeet. Both residual columns have correlation 0 with SqrFeet.
+00:17:23,273 --> 00:17:41,321
+Now a practice question of type A. Pause the video and try it. Practice question 1 uses the real estate data with 521 houses. Fit sale price on SqrFeet, Bedrooms and Lotsize, and compute the VIF for beta 1.
 
 81
-00:20:17,760 --> 00:20:37,984
-Fit both models. The SqrFeet coefficient changes from 161.9143 to 159.0863. Sigma hat is the same, 77,168.55, because the column space is the same.
+00:17:41,771 --> 00:17:49,301
+Step 1 of card A: beta 1 is the coefficient of SqrFeet. So x j is x 1, SqrFeet.
 
 82
-00:20:38,434 --> 00:20:59,554
-The standard error is 5.7821 with X, and 4.7547 with X star. The ratio of the variances is 33.43 over 22.61, which is 1.4788. This is the VIF from the question. The check holds.
+00:17:49,751 --> 00:18:02,146
+Step 2: regress SqrFeet on the other two covariates, Bedrooms and Lotsize. SqrFeet is the outcome. We fit it to the 521 houses of the data file.
 
 83
-00:21:00,004 --> 00:21:08,196
-Part b. How do the fitted values compare between the two models? And their confidence intervals? Pause the video and try it.
+00:18:02,596 --> 00:18:08,548
+Step 3: read R 1 squared. It is 0.3238.
 
 84
-00:21:08,646 --> 00:21:24,347
-Plot the fitted values of the X star model against those of the X model. All 521 points lie on the line of equality. The largest difference is less than 10 to the minus 6 dollars: rounding error only.
+00:18:08,998 --> 00:18:13,990
+Step 4: VIF 1 is 1 over 1 minus R 1 squared.
 
 85
-00:21:24,797 --> 00:21:44,680
-The table gives the 95 percent confidence intervals for the mean response at the first three houses. Both models give the same intervals. For house 1, both give 385,978 to 406,177 dollars.
+00:18:14,440 --> 00:18:20,243
+Put in R 1 squared from the table: 0.3238.
 
 86
-00:21:45,130 --> 00:22:03,135
-The reason: both design matrices have the same column space. So they have the same hat matrix H, the same fitted values, the same sigma hat squared, and the same confidence intervals for the mean response. Only the individual coefficients change.
+00:18:20,693 --> 00:18:27,029
+1 minus 0.3238 is 0.6762.
 
 87
-00:22:03,585 --> 00:22:21,207
-Practice question 2. We fit y on x 1, x 2 and x 3, with 300 observations. Compute the VIFs for beta 1, beta 2 and beta 3 from the R output of other model fits. Pause the video and try it.
+00:18:27,479 --> 00:18:35,436
+1 over 0.6762 is 1.479. The blue point on the curve shows it.
 
 88
-00:22:21,657 --> 00:22:48,494
-The appendix has the regression of each covariate on the other two. The table shows their multiple R squared values. For VIF 1, use g 1 23, the regression of x 1 on x 2 and x 3. R 1 squared is 0.2497. VIF 1 is 1 over 0.7503, which is 1.3328.
+00:18:35,886 --> 00:18:55,299
+Step 5: the variance of beta 1 hat is 1.479 times the variance with an uncorrelated SqrFeet. The standard error is the square root of 1.479, which is 1.216 times larger. This is a moderate inflation.
 
 89
-00:22:48,944 --> 00:23:08,869
-For VIF 2, use g 2 13, the regression of x 2 on x 1 and x 3. R 2 squared is 0.7056. VIF 2 is 1 over 0.2944, which is 3.3967.
+00:18:55,749 --> 00:19:21,264
+Now check the formula of slide 25 with the same data. The base part is sigma hat squared over the sum of squared distances of SqrFeet from its mean. Sigma hat is 77,168.55, with 517 degrees of freedom. The sum is 263,407,931.
 
 90
-00:23:09,319 --> 00:23:25,682
-For VIF 3, use g 3 12. R 3 squared is 0.7107. VIF 3 is 1 over 0.2893, which is 3.4566.
+00:19:21,714 --> 00:19:26,727
+Square sigma hat: 5.955 times 10 to the 9.
 
 91
-00:23:26,132 --> 00:23:44,159
-x 2 and x 3 are strongly related to the other covariates, with R squared about 0.71. Their variances are inflated about 3.4 times. The models that only have y as the outcome do not give the VIFs.
+00:19:27,177 --> 00:19:33,343
+Divide by the sum: the base part is 22.61. The blue bar shows it.
 
 92
-00:23:44,609 --> 00:23:55,873
-Part b. Now we add a fourth covariate, x 4. What can you say about the VIFs for beta 1, beta 2 and beta 3? Pause the video and try it.
+00:19:33,793 --> 00:19:45,889
+The R output of the full model gives the standard error of beta 1 hat, 5.7821. Its square is 33.43. The bracket shows it.
 
 93
-00:23:56,323 --> 00:24:08,312
-Take VIF 1. R 1 squared now comes from the regression of x 1 on x 2, x 3 and x 4. This regression has one more covariate than before.
+00:19:46,339 --> 00:19:58,648
+Divide: 33.43 over 22.61 is 1.479. This is VIF 1. The orange part is the extra variance.
 
 94
-00:24:08,762 --> 00:24:24,570
-Least squares with one more column can make SSRes smaller, or keep it the same, but never larger. So R j squared is non-decreasing when we add covariates. The blue arrow shows the point that can only move right.
+00:19:59,098 --> 00:20:06,586
+So the data agree with slide 25: the squared standard error is the base part times the VIF.
 
 95
-00:24:25,020 --> 00:24:41,212
-1 over 1 minus R j squared is non-decreasing in R j squared. So each VIF for beta 1, beta 2 and beta 3 stays the same or increases. This is the solution on slide 39.
+00:20:07,036 --> 00:20:23,975
+Practice question 2 is type A with R output. Pause the video and try it. We fit y on x 1, x 2 and x 3, with 300 observations. Compute the VIFs for beta 1, beta 2 and beta 3.
 
 96
-00:24:41,662 --> 00:24:57,577
-To recap. The fitted vector y hat is the projection of y onto the column space of X, so X transpose e is 0. Perfect multicollinearity means dependent columns: then X transpose X has no inverse.
+00:20:24,425 --> 00:20:36,350
+Steps 1 and 2 of card A for beta 1: the covariate is x 1. In the appendix, g 1 23 is the regression of x 1 on x 2 and x 3.
 
 97
-00:24:58,027 --> 00:25:18,848
-Strongly correlated covariates inflate the standard errors and make the estimates unstable. The variance of beta j hat is sigma squared over the sum of squares of x j around its mean, times the VIF. The VIF is 1 over 1 minus R j squared, and it is at least 1.
+00:20:36,800 --> 00:20:43,989
+Step 3: its Multiple R-squared is R 1 squared, 0.2497.
 
 98
-00:25:19,298 --> 00:25:37,986
-Get R j squared by regressing x j on the other covariates. More covariates cannot make a VIF smaller. And combinations such as beta 1 plus beta 2, mean responses and predictions are not inflated. This is the end of video 22.
+00:20:44,439 --> 00:20:58,455
+Step 4: VIF 1 is 1 over 1 minus 0.2497. That is 1 over 0.7503, which is 1.3328.
+
+99
+00:20:58,905 --> 00:21:20,025
+Repeat steps 2 to 4 for beta 2. g 2 13 is the regression of x 2 on x 1 and x 3. R 2 squared is 0.7056, and VIF 2 is 1 over 0.2944, which is 3.3967.
+
+100
+00:21:20,475 --> 00:21:36,283
+For beta 3, g 3 12 gives R 3 squared equal to 0.7107. VIF 3 is 1 over 0.2893, which is 3.4566.
+
+101
+00:21:36,733 --> 00:21:56,317
+Step 5: the variances of beta 2 hat and beta 3 hat are about 3.4 times larger. Their standard errors are 1.84 and 1.86 times larger. Only the regressions with a covariate as the outcome give the R j squared values.
+
+102
+00:21:56,767 --> 00:22:12,597
+Question type B asks you to reason about VIFs, with no data. Slide 26 asks why a VIF is at least 1. Practice question 2 b asks what happens to the VIFs when we add a covariate.
+
+103
+00:22:13,047 --> 00:22:20,236
+Step 1 of method card B: write VIF j equals 1 over 1 minus R j squared.
+
+104
+00:22:20,686 --> 00:22:31,459
+Step 2: find what the question says about R j squared. It can be its range, or a change in the regression of x j on the other covariates.
+
+105
+00:22:31,909 --> 00:22:44,944
+Step 3: use the facts of R squared. R j squared is at least 0 and less than 1. One more covariate cannot increase SSRes, so R j squared cannot decrease.
+
+106
+00:22:45,394 --> 00:22:55,015
+Step 4: 1 over 1 minus r increases with r. So conclude for the VIF and for the standard error of beta j hat.
+
+107
+00:22:55,465 --> 00:23:05,385
+A type B question from slide 26. Pause the video and try it. Show that VIF j is at least 1. When is it exactly 1?
+
+108
+00:23:05,835 --> 00:23:12,299
+Step 1 of card B: write VIF j equals 1 over 1 minus R j squared.
+
+109
+00:23:12,749 --> 00:23:19,021
+Step 2: this question is about the range of R j squared, on the horizontal axis.
+
+110
+00:23:19,471 --> 00:23:36,175
+Step 3: R squared is a proportion of SSTotal, so R j squared is at least 0. R j squared equal to 1 means perfect multicollinearity, which least squares excludes. So R j squared is less than 1.
+
+111
+00:23:36,625 --> 00:23:44,561
+Multiply by minus 1 and add 1. Then 1 minus R j squared is greater than 0, and at most 1.
+
+112
+00:23:45,011 --> 00:23:58,430
+Step 4: take 1 over this number. A number in the interval from 0 to 1 has an inverse of at least 1. So VIF j is at least 1. The curve is never below the dashed line.
+
+113
+00:23:58,880 --> 00:24:10,101
+Equality: VIF j is 1 only when 1 minus R j squared is 1, that is, when R j squared is 0. The green point shows it.
+
+114
+00:24:10,551 --> 00:24:19,106
+So VIF j is at least 1. It is exactly 1 only when x j is uncorrelated with the other covariates.
+
+115
+00:24:19,556 --> 00:24:31,716
+Part b is type B. Pause the video and try it. Now we add a fourth covariate, x 4. What can you say about the VIFs for beta 1, beta 2 and beta 3?
+
+116
+00:24:32,166 --> 00:24:38,822
+Step 1 of card B: take VIF 1. It is 1 over 1 minus R 1 squared.
+
+117
+00:24:39,272 --> 00:24:54,824
+Step 2: what changes? Before, R 1 squared came from g 1 23, the regression of x 1 on x 2 and x 3. It was 0.2497. The blue point shows VIF 1.
+
+118
+00:24:55,274 --> 00:25:04,021
+After, R 1 squared comes from the regression of x 1 on x 2, x 3 and x 4. It has one more covariate.
+
+119
+00:25:04,471 --> 00:25:13,623
+Step 3: least squares can put 0 on x 4 and keep the old fit. So the new minimum of SSRes is at most the old one.
+
+120
+00:25:14,073 --> 00:25:27,257
+SSTotal of x 1 does not change. So the new R 1 squared, 1 minus SSRes over SSTotal, is at least 0.2497.
+
+121
+00:25:27,707 --> 00:25:40,336
+Step 4: 1 over 1 minus r increases with r. So the new VIF 1 is at least 1.3328. The arrow shows that the point can only move right.
+
+122
+00:25:40,786 --> 00:25:54,226
+The same steps hold for beta 2 and beta 3. So VIF 2 is at least 3.3967, and VIF 3 is at least 3.4566.
+
+123
+00:25:54,676 --> 00:26:04,425
+So the VIFs of beta 1, beta 2 and beta 3 stay the same or increase. This is the solution on slide 39.
+
+124
+00:26:04,875 --> 00:26:21,003
+Slide 27 asks: is VIF j the ratio of the variance of beta j hat in the multiple regression to the variance of the slope in the simple regression of y on x j alone? Pause the video and think about it.
+
+125
+00:26:21,453 --> 00:26:31,928
+Look at the real estate data. The simple regression of price on SqrFeet gives one standard error and one sigma hat. The full model gives others.
+
+126
+00:26:32,378 --> 00:26:48,165
+The ratio of the squared standard errors is 33.43 over 23.27, which is 1.437. The VIF is 1.479. So the VIF is a different number.
+
+127
+00:26:48,615 --> 00:27:08,711
+The reason: sigma squared means something different in each model. In the simple regression, the error includes the effects of Bedrooms and Lotsize. And the estimates of sigma squared are also different: 78,294 and 77,169.
+
+128
+00:27:09,161 --> 00:27:25,758
+The slide gives the correct statement: the VIF is the variance of beta j hat, divided by the variance of beta j star hat. beta star hat is the least squares estimator with an idealized design matrix, X star.
+
+129
+00:27:26,208 --> 00:27:47,691
+The idealized design matrix X star must satisfy three conditions. One: its column j is x j. Two: it has the same column space as X, so it gives the same fitted values and the same sigma hat squared. Three: its column j is uncorrelated with its other columns.
+
+130
+00:27:48,141 --> 00:28:05,421
+Slide 28 builds such a matrix. Keep x j as column j. The blue arrow shows x j. For every other covariate x l, use the residuals of the regression of x l on x j. We call them e l given j.
+
+131
+00:28:05,871 --> 00:28:14,831
+The black arrow is x l. Its fitted value from the regression on x j, x hat l, is the green part along x j.
+
+132
+00:28:15,281 --> 00:28:31,131
+The residual e l given j is x l minus x hat l. It is the orange arrow, perpendicular to x j. Residuals are uncorrelated with the covariate of their regression. So condition 3 holds.
+
+133
+00:28:31,581 --> 00:28:44,701
+x j and e l given j span the same plane as x j and x l. So the column space does not change, and condition 2 holds. Condition 1 holds by construction.
+
+134
+00:28:45,151 --> 00:28:58,869
+Question type C uses the idealized design matrix. Practice question 1 a asks you to check the VIF with it, and part b asks you to compare fitted values and confidence intervals.
+
+135
+00:28:59,319 --> 00:29:04,417
+Step 1 of method card C: keep x j as column j of X star.
+
+136
+00:29:04,867 --> 00:29:13,699
+Step 2: for each other covariate x l, regress it on x j. Its residuals, e l given j, replace x l.
+
+137
+00:29:14,149 --> 00:29:25,541
+Step 3: fit y on X star. The column space is the same, so the fitted values, sigma hat, and the confidence intervals for the mean response are the same.
+
+138
+00:29:25,991 --> 00:29:40,434
+Step 4: VIF j is the variance of beta j hat over the variance of beta j star hat. Both models have the same sigma hat, so this is the ratio of the squared standard errors.
+
+139
+00:29:40,884 --> 00:29:54,260
+Practice question 1 a is type C. Pause the video and try it. Fit a second model with the idealized design matrix, and check that VIF 1 is the ratio of the two variances.
+
+140
+00:29:54,710 --> 00:29:59,574
+Step 1 of card C: keep the column of ones and x 1, SqrFeet.
+
+141
+00:30:00,024 --> 00:30:17,688
+Step 2: replace Bedrooms by e 2 given 1, the residuals of Bedrooms on SqrFeet. Replace Lotsize by e 3 given 1, the residuals of Lotsize on SqrFeet. Both residual columns have correlation 0 with SqrFeet.
+
+142
+00:30:18,138 --> 00:30:30,981
+Step 3: fit both models. The SqrFeet coefficient changes from 161.9143 to 159.0863.
+
+143
+00:30:31,431 --> 00:30:41,329
+Sigma hat is the same in both models, 77,168.55, because the column space is the same.
+
+144
+00:30:41,779 --> 00:30:51,913
+Step 4: with X, the standard error is 5.7821, so the variance is 33.43. The bracket shows it.
+
+145
+00:30:52,363 --> 00:31:02,283
+With X star, the standard error is 4.7547, so the variance is 22.61. The blue bar shows it.
+
+146
+00:31:02,733 --> 00:31:13,847
+Divide: 33.43 over 22.61 is 1.479. This is VIF 1 from type A. The check holds.
+
+147
+00:31:14,297 --> 00:31:22,489
+Part b. How do the fitted values compare between the two models? And their confidence intervals? Pause the video and try it.
+
+148
+00:31:22,939 --> 00:31:39,153
+Step 3 of card C. Plot the fitted values of the X star model against those of the X model. All 521 points lie on the line of equality. The largest difference is less than 10 to the minus 6 dollars.
+
+149
+00:31:39,603 --> 00:31:59,485
+The table gives the 95 percent confidence intervals for the mean response at the first three houses. Both models give the same intervals. For house 1, both give 385,978 to 406,177 dollars.
+
+150
+00:31:59,935 --> 00:32:17,941
+The reason: both design matrices have the same column space. So they have the same hat matrix H, the same fitted values, the same sigma hat squared, and the same confidence intervals for the mean response. Only the individual coefficients change.
+
+151
+00:32:18,391 --> 00:32:35,052
+To recap. Card A computes a VIF: pick x j, regress it on the other covariates, read R j squared, and take 1 over 1 minus R j squared. The standard error grows by the square root of the VIF.
+
+152
+00:32:35,502 --> 00:32:48,601
+Card B reasons about VIFs. R j squared is at least 0 and less than 1, and more covariates cannot make it smaller. 1 over 1 minus r increases with r.
+
+153
+00:32:49,051 --> 00:33:08,187
+Card C uses the idealized design matrix: keep x j, and replace each other covariate by its residuals on x j. The fitted values, sigma hat and the confidence intervals stay the same, and the VIF is the ratio of the squared standard errors.
+
+154
+00:33:08,637 --> 00:33:31,506
+And the facts behind the cards: X transpose e is 0. Perfect multicollinearity leaves X transpose X with no inverse. Correlated covariates inflate the standard errors of individual coefficients, but not of beta 1 plus beta 2, mean responses or predictions. This is the end of video 22.

@@ -3,369 +3,777 @@
 This is STAT 331, video 11. The topic is the matrix tools that we need for multiple linear regression.
 
 2
-00:00:09,218 --> 00:00:30,829
-After this video, you can write the regression model in matrix form, and give the size of each part. You can use the rules for transpose, inverse and trace. You can take the derivative of a linear form and of a quadratic form with respect to a vector. And you can check each rule by hand on small matrices.
+00:00:09,218 --> 00:00:15,682
+This video prepares you for four question types. Each type gets a method card and worked problems.
 
 3
-00:00:31,279 --> 00:00:51,545
-First, a short recap. The simple linear regression model says y i equals beta zero plus beta one x i, plus an error epsilon i. The errors are I I D normal with mean 0 and variance sigma squared. The gray dashed line is the true line. We do not know it.
+00:00:16,132 --> 00:00:24,943
+Type A: write a regression model in matrix form, with the size of each part. Tutorial 2, question 3 b, asks this.
 
 4
-00:00:51,995 --> 00:01:09,510
-The second form says the same thing. Each y i is normal, with mean beta zero plus beta one x i, and variance sigma squared. The y i are independent. Each orange curve is the distribution of y at one value of x.
+00:00:25,393 --> 00:00:38,278
+Type B: compute by hand. Products, X transpose X, the inverse of a 2 by 2 matrix, and a trace. Tutorial 2 asks this in question 3 c and in question 2 b.
 
 5
-00:01:09,960 --> 00:01:16,211
-The data are one draw from these distributions. Each point is the line plus its own error.
+00:00:38,728 --> 00:00:45,469
+Type C: prove a matrix rule. Lecture 5 lists the rules for transpose, inverse and trace.
 
 6
-00:01:16,661 --> 00:01:24,853
-The last two lectures used the fitted line for two jobs. Here is the brainhead data again, with the fitted line in green.
+00:00:45,919 --> 00:00:55,157
+Type D: take the gradient of a linear form and of a quadratic form. Lecture 6 uses this to find the least squares estimate.
 
 7
-00:01:25,303 --> 00:01:47,937
-Job one: estimate the mean response mu zero at x zero. The confidence interval is mu zero hat, plus or minus t, times sigma hat, times the square root of 1 over n plus x zero minus x bar squared over S x x. The green band shows these intervals for all x. It is narrow.
+00:00:55,607 --> 00:01:20,119
+Section 1. We write the regression model in matrix form. First, a short recap. The simple linear regression model says y i equals beta zero plus beta one x i, plus an error epsilon i. The errors are I I D normal with mean 0 and variance sigma squared. The gray dashed line is the true line. We do not know it.
 
 8
-00:01:48,387 --> 00:02:01,059
-Job two: predict one new response. The prediction interval has an extra 1 inside the square root. The 1 comes from the new error epsilon new. So the purple band is much wider.
+00:01:20,569 --> 00:01:38,083
+The second form says the same thing. Each y i is normal, with mean beta zero plus beta one x i, and variance sigma squared. The y i are independent. Each orange curve is the distribution of y at one value of x.
 
 9
-00:02:01,509 --> 00:02:29,477
-At a head size of 4000, mu zero hat is 1378.7 grams. The 95 percent confidence interval is 1366 to 1392. The 95 percent prediction interval is 1236 to 1522. These formulas have one covariate. With more covariates, we need matrices.
+00:01:38,533 --> 00:01:44,784
+The data are one draw from these distributions. Each point is the line plus its own error.
 
 10
-00:02:29,927 --> 00:02:35,879
-In simple linear regression, the mean of y i depends on one covariate, x i.
+00:01:45,234 --> 00:01:53,426
+The last two lectures used the fitted line for two jobs. Here is the brainhead data again, with the fitted line in green.
 
 11
-00:02:36,329 --> 00:03:00,927
-In multiple linear regression, the mean depends on p covariates, x i 1 up to x i p. Each row of the data table is one observation: its response y i, and its p covariate values. The model has the same two forms. Line plus I I D normal error. Or: given x i, y i is normal with that mean and variance sigma squared.
+00:01:53,876 --> 00:02:16,511
+Job one: estimate the mean response mu zero at x zero. The confidence interval is mu zero hat, plus or minus t, times sigma hat, times the square root of 1 over n plus x zero minus x bar squared over S x x. The green band shows these intervals for all x. It is narrow.
 
 12
-00:03:01,377 --> 00:03:09,185
-So we have n equations, one for each row. Matrix notation writes all n equations as one equation.
+00:02:16,961 --> 00:02:30,529
+Job two: predict one new response. The prediction interval has an extra 1 inside the square root, in orange. The 1 comes from the new error epsilon new. So the purple band is much wider.
 
 13
-00:03:09,635 --> 00:03:16,867
-Stack the n responses into one column. This is the vector y. It has n rows and 1 column.
+00:02:30,979 --> 00:02:58,947
+At a head size of 4000, mu zero hat is 1378.7 grams. The 95 percent confidence interval is 1366 to 1392. The 95 percent prediction interval is 1236 to 1522. These formulas have one covariate. With more covariates, we need matrices.
 
 14
-00:03:17,317 --> 00:03:26,767
-Now build the matrix X, one column at a time. The first column is all ones. It multiplies the intercept beta zero.
+00:02:59,397 --> 00:03:05,349
+In simple linear regression, the mean of y i depends on one covariate, x i.
 
 15
-00:03:27,217 --> 00:03:44,049
-Column 2 holds covariate 1 for every observation: x 1 1 to x n 1. Then covariate 2, and so on, up to covariate p. So X has n rows and p plus 1 columns. We call X the design matrix.
+00:03:05,799 --> 00:03:30,396
+In multiple linear regression, the mean depends on p covariates, x i 1 up to x i p. Each row of the data table is one observation: its response y i, and its p covariate values. The model has the same two forms. Line plus I I D normal error. Or: given x i, y i is normal with that mean and variance sigma squared.
 
 16
-00:03:44,499 --> 00:03:51,411
-The parameters go into the vector beta: beta zero up to beta p. It has p plus 1 rows.
+00:03:30,846 --> 00:03:39,550
+So we have n equations, one for each row of the table. Matrix notation writes all n equations as one equation.
 
 17
-00:03:51,861 --> 00:03:55,467
-The errors go into the vector epsilon, with n rows.
+00:03:40,000 --> 00:03:47,232
+Stack the n responses into one column. This is the vector y. It has n rows and 1 column.
 
 18
-00:03:55,917 --> 00:04:21,666
-Read row i of the equation. Row i of X times beta gives 1 times beta zero, plus x i 1 times beta one, and so on. Add epsilon i, and you get the model for y i. The sizes match: n by p plus 1, times p plus 1 by 1, gives n by 1. So y equals X beta plus epsilon holds all n equations.
+00:03:47,682 --> 00:03:57,133
+Now build the matrix X, one column at a time. The first column is all ones. It multiplies the intercept beta zero.
 
 19
-00:04:22,116 --> 00:04:36,196
-Here is a small example with our own numbers. There are 4 observations and 2 covariates. So X is 4 by 3. Take beta equal to 1, 2, and minus 1. Pause the video and try it.
+00:03:57,583 --> 00:04:14,479
+The next column holds covariate 1 for every observation: x 1 1 to x n 1. Then covariate 2, and so on, up to covariate p. So X has n rows and p plus 1 columns. We call X the design matrix.
 
 20
-00:04:36,646 --> 00:04:49,851
-Row 1 of X is 1, 2, 0. Multiply each entry by the matching entry of beta, and add. 1 times 1, plus 2 times 2, plus 0 times minus 1, is 5.
+00:04:14,929 --> 00:04:21,841
+The parameters go into the vector beta: beta zero up to beta p. It has p plus 1 rows.
 
 21
-00:04:50,301 --> 00:04:54,931
-Row 2 is 1, 3, 1. 1 plus 6 minus 1 is 6.
+00:04:22,291 --> 00:04:25,917
+The errors go into the vector epsilon, with n rows.
 
 22
-00:04:55,381 --> 00:04:59,626
-Row 3 is 1, 5, 0. 1 plus 10 is 11.
+00:04:26,367 --> 00:04:52,117
+Read row i of the equation. Row i of X times beta gives 1 times beta zero, plus x i 1 times beta one, and so on. Add epsilon i, and you get the model for y i. The sizes match: n by p plus 1, times p plus 1 by 1, gives n by 1. So y equals X beta plus epsilon holds all n equations.
 
 23
-00:05:00,076 --> 00:05:12,471
-Row 4 is 1, 4, 2. 1 plus 8 minus 2 is 7. So X beta is the column 5, 6, 11, 7. Each entry is the mean of one y i.
+00:04:52,567 --> 00:05:04,769
+Question type A asks you to write a model in matrix form, and to give the size of each part. Method card A has five steps. The picture uses a model with two covariates.
 
 24
-00:05:12,921 --> 00:05:25,187
-The first rule defines the transpose. The entry in row i, column j of C transpose is the entry in row j, column i of C. Here C is 2 by 3.
+00:05:05,219 --> 00:05:17,209
+Step 1: write the model for one row i. Here y i equals beta zero, plus beta one x i 1, plus beta two x i 2, plus epsilon i.
 
 25
-00:05:25,637 --> 00:05:34,256
-Row 1 of C becomes column 1 of C transpose. Row 2 becomes column 2. So C transpose is 3 by 2.
+00:05:17,659 --> 00:05:24,336
+Step 2: stack the responses y 1 to y n in one column. This is y, n by 1.
 
 26
-00:05:34,706 --> 00:05:51,517
-Check two entries. C 1 3 is 3, and it moves to position 3 1. C 2 1 is 4, and it moves to position 1 2. An m by n matrix becomes an n by m matrix. A column vector becomes a row vector.
+00:05:24,786 --> 00:05:37,074
+Step 3: X has one column for each beta of the model, in the same order. The column of ones belongs to beta zero. Use it only if the model has an intercept.
 
 27
-00:05:51,967 --> 00:06:02,761
-C is symmetric if C transpose equals C. Look at the diagonal of this 3 by 3 matrix. Transpose flips the matrix across this diagonal.
+00:05:37,524 --> 00:05:44,649
+Step 4: beta holds the parameters in the order of the columns of X. Epsilon is n by 1.
 
 28
-00:06:03,211 --> 00:06:18,785
-The flip moves each entry to its mirror position. The matrix does not change only if each mirror pair is equal. Here c 1 2 equals c 2 1, c 1 3 equals c 3 1, and c 2 3 equals c 3 2.
+00:05:45,099 --> 00:05:56,299
+Step 5: check. The sizes must match: n by 3, times 3 by 1, gives n by 1. And row i of X beta must be the mean of y i.
 
 29
-00:06:19,235 --> 00:06:28,984
-So this C is symmetric. A symmetric matrix must be square. In regression, X transpose X is symmetric. The next rule shows why.
+00:05:56,749 --> 00:06:10,872
+Here is a check of step 5 with our own numbers. There are 4 observations and 2 covariates. So X is 4 by 3. Take beta equal to 1, 2, and minus 1. Pause the video and try it.
 
 30
-00:06:29,434 --> 00:06:42,085
-The transpose of a product is the product of the transposes, in the opposite order. Look at the sizes first. A is m by n, and B is n by k. So A B is m by k.
+00:06:11,322 --> 00:06:24,549
+Row 1 of X is 1, 2, 0. Multiply each entry by the matching entry of beta, and add. 1 times 1, plus 2 times 2, plus 0 times minus 1, is 5.
 
 31
-00:06:42,535 --> 00:06:44,945
-The transpose of A B is k by m.
+00:06:24,999 --> 00:06:29,607
+Row 2 is 1, 3, 1. 1 plus 6 minus 1 is 6.
 
 32
-00:06:45,395 --> 00:07:01,779
-B transpose is k by n, and A transpose is n by m. Their product is k by m. The sizes match. In the other order, A transpose B transpose, the sizes do not match in general. So the order must reverse.
+00:06:30,057 --> 00:06:35,177
+Row 3 is 1, 5, 0. 1 plus 10 plus 0 is 11.
 
 33
-00:07:02,229 --> 00:07:27,275
-Now the proof, one entry at a time. Entry i j of A B transpose is entry j i of A B. That is the sum over l of a j l times b l i. Now b l i is entry i l of B transpose, and a j l is entry l j of A transpose. So the sum is entry i j of B transpose times A transpose.
+00:06:35,627 --> 00:06:48,021
+Row 4 is 1, 4, 2. 1 plus 8 minus 2 is 7. So X beta is the column 5, 6, 11, 7. Each entry is the mean of one y i.
 
 34
-00:07:27,725 --> 00:07:42,039
-A numeric check. A is 2 by 3, and B is 3 by 2. A B is 7, 2; 3, 1. Its transpose is 7, 3; 2, 1. B transpose times A transpose gives the same matrix.
+00:06:48,471 --> 00:07:09,762
+Now a tutorial question of type A. Pause the video and try it. Tutorial 2, question 3, has 5 regions. x i j is 1 if promotion j is used in region i, and 0 if not. y is the increase in market share. The model has no intercept. Write down X and y.
 
 35
-00:07:42,489 --> 00:08:00,516
-Use the rule on X transpose X. Its transpose is X transpose, times X transpose transpose. The transpose of a transpose is the original matrix. So we get X transpose X again. X transpose X is always symmetric.
+00:07:10,212 --> 00:07:26,809
+Step 1 of card A: the model for row i. y i equals beta one x i 1 plus beta two x i 2 plus epsilon i. Region 1 uses both promotions, so x 1 1 and x 1 2 are both 1.
 
 36
-00:08:00,966 --> 00:08:15,089
-The inverse of B is the matrix that gives the identity I when you multiply it by B, on either side. Here B is 2, 1; 1, 1, and B inverse is 1, minus 1; minus 1, 2.
+00:07:27,259 --> 00:07:33,787
+Step 2: stack the responses. y is 11, 2, 8, 4, 6. It is 5 by 1.
 
 37
-00:08:15,539 --> 00:08:34,035
-Check the product. Row 1 of B times column 1 of B inverse is 2 minus 1, which is 1. Row 1 times column 2 is minus 2 plus 2, which is 0. Row 2 times column 2 is minus 1 plus 2, which is 1. So the product is I.
+00:07:34,237 --> 00:07:48,872
+Step 3: the columns of X. The model has no beta zero, so X has no column of ones. Column 1 belongs to beta one: 1 if P1 is used. That gives 1, 1, 0, 1, 0.
 
 38
-00:08:34,485 --> 00:08:43,573
-Only square matrices can have an inverse, and only nonsingular ones. The columns of this B point in two different directions.
+00:07:49,322 --> 00:07:59,178
+Column 2 belongs to beta two: 1 if P2 is used. That gives 1, 0, 1, 0, 1. So X is 5 by 2.
 
 39
-00:08:44,023 --> 00:09:04,929
-Now take the matrix with columns 2, 4 and 1, 2. Column 1 is two times column 2. Both columns lie on one line. This matrix is singular. It has no inverse. In regression, we need the inverse of X transpose X. So the columns of X must not be on one line like this.
+00:07:59,628 --> 00:08:05,879
+Step 4: beta is beta one, beta two, 2 by 1. Epsilon is 5 by 1.
 
 40
-00:09:05,379 --> 00:09:19,843
-The inverse of a product is the product of the inverses, in the opposite order. To prove it, multiply A B by the candidate, B inverse A inverse. If the result is I, the candidate is the inverse.
+00:08:06,329 --> 00:08:20,686
+Step 5: check. 5 by 2 times 2 by 1 gives 5 by 1. Row 1 of X beta is beta one plus beta two: the mean change with both promotions. This is the posted answer.
 
 41
-00:09:20,293 --> 00:09:27,845
-Matrix multiplication is associative. So we can move the brackets. The middle pair is B times B inverse.
+00:08:21,136 --> 00:08:33,595
+Section 2. Slide 7 lists the matrix rules. Question type C asks you to prove a rule, or to use the rules to show a result. Method card C has four steps.
 
 42
-00:09:28,295 --> 00:09:31,111
-B times B inverse is the identity.
+00:08:34,045 --> 00:08:38,482
+Step 1: write the goal. The left side must equal the right side.
 
 43
-00:09:31,561 --> 00:09:48,308
-A times I is A. Then A times A inverse is I. So B inverse A inverse is the inverse of A B. The order matters. A inverse times B inverse is not the inverse in general. The script checks both on a numeric example.
+00:08:38,932 --> 00:08:52,372
+Step 2: choose the tool. For most rules, compare entry i j of both sides. For an inverse, multiply the matrix by the candidate, and show that the product is the identity I.
 
 44
-00:09:48,758 --> 00:09:58,529
-The inverse of a transpose is the transpose of the inverse. Again, multiply A transpose by the candidate, A inverse transpose.
+00:08:52,822 --> 00:08:58,113
+Step 3: one rule per line. Write the rule that you use beside each line.
 
 45
-00:09:58,979 --> 00:10:11,203
-Use the product rule for transposes, from right to left. B transpose A transpose is A B, transpose. So the product is A inverse times A, all transposed.
+00:08:58,563 --> 00:09:03,512
+Step 4: stop when the line is the right side. First, the definitions.
 
 46
-00:10:11,653 --> 00:10:13,999
-A inverse times A is the identity.
+00:09:03,962 --> 00:09:16,229
+The first rule defines the transpose. The entry in row i, column j of C transpose is the entry in row j, column i of C. Here C is 2 by 3.
 
 47
-00:10:14,449 --> 00:10:22,300
-The identity is symmetric, so its transpose is I. So A inverse transpose is the inverse of A transpose.
+00:09:16,679 --> 00:09:19,985
+Row 1 of C becomes column 1 of C transpose.
 
 48
-00:10:22,750 --> 00:10:37,107
-A useful result: if A is symmetric, A inverse is symmetric too. The transpose of A inverse is the inverse of A transpose, which is the inverse of A. So X transpose X inverse is symmetric.
+00:09:20,435 --> 00:09:25,385
+Row 2 of C becomes column 2. So C transpose is 3 by 2.
 
 49
-00:10:37,557 --> 00:10:47,648
-The trace of a square matrix is the sum of its diagonal entries. For this A, the diagonal is 2, 5 and 1. So the trace of A is 8.
+00:09:25,835 --> 00:09:32,341
+Check one entry. C 1 3 is 3. It moves to position 3 1 of C transpose.
 
 50
-00:10:48,098 --> 00:11:01,282
-For B, the diagonal is 1, 0 and 3, so the trace is 4. When you add two matrices, you add the diagonal entries. The diagonal of A plus B is 3, 5 and 4.
+00:09:32,791 --> 00:09:36,567
+C 2 1 is 4. It moves to position 1 2.
 
 51
-00:11:01,732 --> 00:11:14,660
-So the trace of A plus B is 12, which is 8 plus 4. Also, 3 A has diagonal 6, 15 and 3. Its trace is 24, which is 3 times 8. The trace is linear.
+00:09:37,017 --> 00:09:43,972
+So an m by n matrix becomes an n by m matrix. A column vector becomes a row vector.
 
 52
-00:11:15,110 --> 00:11:25,115
-A transpose flips the matrix across the diagonal. The diagonal entries do not move. So the trace of A transpose equals the trace of A.
+00:09:44,422 --> 00:09:56,177
+C is symmetric if C transpose equals C. Look at the diagonal of this 3 by 3 matrix, in purple. Transpose flips the matrix across this diagonal.
 
 53
-00:11:25,565 --> 00:11:34,760
-The last rule is the most useful one. The trace of A B equals the trace of B A. Here A is 2 by 3, and B is 3 by 2.
+00:09:56,627 --> 00:10:08,467
+The flip moves each entry to its mirror position. The matrix stays the same only if each mirror pair is equal. Here c 1 2 equals c 2 1. Both are 1.
 
 54
-00:11:35,210 --> 00:11:41,503
-A B is 2 by 2: 7, 2; 3, 1. Its trace is 7 plus 1, which is 8.
+00:10:08,917 --> 00:10:12,394
+c 1 3 equals c 3 1. Both are 2.
 
 55
-00:11:41,953 --> 00:11:48,396
-B A is 3 by 3. Its diagonal is 1, 1 and 6. Its trace is also 8.
+00:10:12,844 --> 00:10:16,577
+c 2 3 equals c 3 2. Both are 0.
 
 56
-00:11:48,846 --> 00:11:57,059
-So A B and B A have different sizes, but the same trace. A B is not equal to B A. Only the traces are equal.
+00:10:17,027 --> 00:10:25,646
+So this C is symmetric. A symmetric matrix is square. In regression, X transpose X is symmetric. We prove it soon.
 
 57
-00:11:57,509 --> 00:12:19,931
-Here is the proof. Diagonal entry i of A B is the sum over j of a i j times b j i. Add over i. Now change the order of the two sums. The inner sum over i of b j i times a i j is diagonal entry j of B A. So the double sum is the trace of B A.
+00:10:26,096 --> 00:10:41,072
+The transpose of a product is the product of the transposes, in the opposite order. Step 1 of card C: the goal. First look at the sizes. A is m by n, and B is n by k. So A B is m by k.
 
 58
-00:12:20,381 --> 00:12:45,085
-Now matrix calculus. z is one number that depends on k variables, y 1 to y k. Collect the variables in a vector y. The derivative of z with respect to y is the column of the k partial derivatives. It has the same size as y. On the left, z depends on two variables. Each blue curve joins points with the same z.
+00:10:41,522 --> 00:10:55,986
+The transpose of A B is k by m. B transpose is k by n, and A transpose is n by m. The inner sizes match, and their product is k by m. So the sizes of the two sides agree.
 
 59
-00:12:45,535 --> 00:12:49,780
-Take one point, y equal to 1, 2. Here z is 18.
+00:10:56,436 --> 00:11:10,132
+Step 2: the tool is entry i j. Pause the video and try it. Line 1: entry i j of A B transpose is entry j i of A B. This is the definition of the transpose.
 
 60
-00:12:50,230 --> 00:13:06,891
-The gradient at this point is the vector 8, 14. It points in the direction in which z grows fastest. It is perpendicular to the curve of equal z. To find a minimum, we set the gradient to zero. Least squares does exactly this.
+00:11:10,582 --> 00:11:23,425
+Step 3, one rule per line. Line 2: entry j i of A B is row j of A times column i of B. That is the sum over l of a j l times b l i.
 
 61
-00:13:07,341 --> 00:13:20,291
-The first rule: z equals a transpose y. Multiply the row a transpose by the column y. You get one number: a 1 y 1, plus a 2 y 2, up to a k y k.
+00:11:23,875 --> 00:11:34,179
+Line 3: b l i is entry i l of B transpose, and a j l is entry l j of A transpose. Write them in this order.
 
 62
-00:13:20,741 --> 00:13:34,437
-Take the partial derivative with respect to y 1. Only the term a 1 y 1 contains y 1. So the derivative is a 1. In the same way, the derivative with respect to y 2 is a 2.
+00:11:34,629 --> 00:11:48,474
+Step 4. Line 4: this sum is row i of B transpose times column j of A transpose. That is entry i j of B transpose A transpose. This is the right side.
 
 63
-00:13:34,887 --> 00:13:39,601
-And so on, to the derivative with respect to y k, which is a k.
+00:11:48,924 --> 00:12:03,239
+A numeric check. A is 2 by 3, and B is 3 by 2. A B is 7, 2; 3, 1. Its transpose is 7, 3; 2, 1. B transpose times A transpose gives the same matrix.
 
 64
-00:13:40,051 --> 00:13:56,457
-Stack the k derivatives into a column. The column is a. So the derivative of a transpose y is a. For example, z equal to 3 y 1 minus y 2 plus 2 y 3 has gradient 3, minus 1, 2.
+00:12:03,689 --> 00:12:12,883
+The result: the transpose of a product reverses the order. We use it for X transpose X, and for the sum of squares S of beta.
 
 65
-00:13:56,907 --> 00:14:06,592
-The second rule is for a quadratic form, z equals y transpose A y. A is a square matrix. We show it for k equal to 2.
+00:12:13,333 --> 00:12:27,456
+The inverse of B is the matrix that gives the identity I when you multiply it by B, on either side. Here B is 2, 1; 1, 1, and B inverse is 1, minus 1; minus 1, 2.
 
 66
-00:14:07,042 --> 00:14:20,973
-y transpose A y has one term for each entry of A: a i j times y i times y j. The diagonal entries give the squares. The off-diagonal entries give the cross terms.
+00:12:27,906 --> 00:12:36,717
+Check the product, one entry at a time. Row 1 of B times column 1 of B inverse is 2 minus 1, which is 1.
 
 67
-00:14:21,423 --> 00:14:30,873
-So z is a 1 1 y 1 squared, plus a 1 2 plus a 2 1, times y 1 y 2, plus a 2 2 y 2 squared.
+00:12:37,167 --> 00:12:41,689
+Row 1 times column 2 is minus 2 plus 2, which is 0.
 
 68
-00:14:31,323 --> 00:14:45,105
-Take the partial derivatives. With respect to y 1: 2 a 1 1 y 1, plus a 1 2 plus a 2 1, times y 2. Split this into two sums. With respect to y 2, do the same.
+00:12:42,139 --> 00:12:46,427
+Row 2 times column 1 is 1 minus 1, which is 0.
 
 69
-00:14:45,555 --> 00:14:56,520
-The first sum in each line is row i of A y. The second sum is row i of A transpose y. So the gradient is A y plus A transpose y.
+00:12:46,877 --> 00:12:53,043
+Row 2 times column 2 is minus 1 plus 2, which is 1. So the product is I.
 
 70
-00:14:56,970 --> 00:15:05,973
-If A is symmetric, A transpose equals A. Then A y plus A transpose y is 2 A y. This is the form we use most.
+00:12:53,493 --> 00:13:02,709
+Only square matrices can have an inverse, and only nonsingular ones. The two columns of this B point in two different directions.
 
 71
-00:15:06,423 --> 00:15:18,177
-A numeric check. A is 2, 1; 1, 3, and y is 1, 2. z is 2 times 1, plus 2 times 1 times 2, plus 3 times 4. That is 18.
+00:13:03,159 --> 00:13:23,831
+Now take the matrix with columns 2, 4 and 1, 2. Column 1 is two times column 2. Both columns lie on one line. This matrix is singular. It has no inverse. In regression, we need the inverse of X transpose X. So the columns of X must point in different directions.
 
 72
-00:15:18,627 --> 00:15:23,513
-A times y is 2 plus 2, and 1 plus 6. That is 4, 7.
+00:13:24,281 --> 00:13:44,377
+The inverse of a product is the product of the inverses, in the opposite order. Steps 1 and 2 of card C: the goal, and the tool. The tool is: multiply A B by the candidate, B inverse A inverse. If the product is I, the candidate is the inverse. Pause the video and try it.
 
 73
-00:15:23,963 --> 00:15:48,859
-So 2 A y is 8, 14. Check it directly. z is 2 y 1 squared, plus 2 y 1 y 2, plus 3 y 2 squared. The partial derivative with respect to y 1 is 4 y 1 plus 2 y 2, which is 8. With respect to y 2, it is 2 y 1 plus 6 y 2, which is 14. The red arrow on the plot is this gradient.
+00:13:44,827 --> 00:13:53,531
+Line 1: matrix multiplication is associative, so we can move the brackets. The middle pair is B times B inverse.
 
 74
-00:15:49,309 --> 00:16:06,183
-This slide is a preview of Lecture 6. It is not on these slides. Least squares in matrix form minimizes S of beta: y minus X beta, transposed, times y minus X beta. This is the sum of the squared errors.
+00:13:53,981 --> 00:13:57,970
+Line 2: B times B inverse is the identity I.
 
 75
-00:16:06,633 --> 00:16:16,404
-Multiply out the brackets. The transpose of X beta is beta transpose X transpose. This is the product rule for transposes.
+00:13:58,420 --> 00:14:00,660
+Line 3: A times I is A.
 
 76
-00:16:16,854 --> 00:16:29,334
-y transpose X beta is one number. A one by one matrix equals its transpose. So it equals beta transpose X transpose y, and the two middle terms combine.
+00:14:01,110 --> 00:14:05,355
+Line 4: A times A inverse is I. This is the right side.
 
 77
-00:16:29,784 --> 00:16:52,184
-Now take the gradient with respect to beta. The linear rule, with a equal to X transpose y, gives minus 2 X transpose y. X transpose X is symmetric, so the quadratic rule gives 2 X transpose X beta. Set the gradient to zero, and you get X transpose X beta equals X transpose y.
+00:14:05,805 --> 00:14:12,739
+So B inverse A inverse is the inverse of A B. As for the transpose, the order reverses.
 
 78
-00:16:52,634 --> 00:17:05,797
-Exercise 1. A is 1, 2; 0, 1, and B is 3, 0; 1, 2. Find A B transpose, B transpose A transpose, and the two traces. Pause the video and try it.
+00:14:13,189 --> 00:14:28,143
+The inverse of a transpose is the transpose of the inverse. Steps 1 and 2 of card C: the goal, and the tool. Multiply A transpose by the candidate, A inverse transpose. Pause the video and try it.
 
 79
-00:17:06,247 --> 00:17:22,140
-A B: row 1 of A times the columns of B gives 3 plus 2, which is 5, and 0 plus 4, which is 4. Row 2 gives 1 and 2. So A B is 5, 4; 1, 2. Its transpose is 5, 1; 4, 2.
+00:14:28,593 --> 00:14:41,863
+Line 1: use the product rule for transposes, from right to left. B transpose A transpose is A B, transposed. So the product is A inverse times A, all transposed.
 
 80
-00:17:22,590 --> 00:17:37,267
-B transpose is 3, 1; 0, 2. A transpose is 1, 0; 2, 1. Their product is 5, 1; 4, 2. It is the same as A B transpose. Also, B A is 3, 6; 1, 4.
+00:14:42,313 --> 00:14:45,811
+Line 2: A inverse times A is the identity.
 
 81
-00:17:37,717 --> 00:17:48,640
-The trace of A B is 5 plus 2, which is 7. The trace of B A is 3 plus 4, which is also 7. But A B and B A are different matrices.
+00:14:46,261 --> 00:14:52,491
+Line 3: the identity is symmetric, so its transpose is I. This is the right side.
 
 82
-00:17:49,090 --> 00:17:59,095
-Exercise 2. Part a is a linear form. Part b is a quadratic form with a matrix that is not symmetric. Pause the video and try it.
+00:14:52,941 --> 00:15:04,759
+A useful result follows. If A is symmetric, A inverse is symmetric too. The transpose of A inverse is the inverse of A transpose, which is the inverse of A.
 
 83
-00:17:59,545 --> 00:18:08,292
-Part a. z is a transpose y, with a equal to 3, minus 1, 2. So the gradient is a: 3, minus 1, 2.
+00:15:05,209 --> 00:15:23,684
+A type C question. Pause the video and try it. Show that X transpose X and its inverse are symmetric, for every design matrix X. Step 1: the goal is that each matrix equals its transpose. Step 2: the tool is the rules that we proved.
 
 84
-00:18:08,742 --> 00:18:30,225
-Part b. A is not symmetric, so use A y plus A transpose y. A y is 1 plus 2, and 0 plus 3: that is 3, 3. A transpose is 1, 0; 2, 3. A transpose y is 1, 5. The sum is 4, 8. The formula 2 A y would give 6, 6, which is wrong here.
+00:15:24,134 --> 00:15:32,475
+Line 1: use the transpose of a product, with A equal to X transpose and B equal to X. The order reverses.
 
 85
-00:18:30,675 --> 00:18:48,381
-Check by expanding. z is y 1 squared, plus 2 plus 0, times y 1 y 2, plus 3 y 2 squared. The partial derivatives are 2 y 1 plus 2 y 2, which is 4, and 2 y 1 plus 6 y 2, which is 8.
+00:15:32,925 --> 00:15:46,984
+Line 2: the transpose of X transpose is X. So the transpose of X transpose X is X transpose X. It is symmetric. In the example on the right, the mirror entries are 10 and 10.
 
 86
-00:18:48,831 --> 00:19:01,823
-Exercise 3. In simple regression, X has two columns: a column of ones, and the column of x values. Take x equal to 1, 2, 3, 4. Pause the video and try it.
+00:15:47,434 --> 00:15:53,941
+Now the inverse. Line 3: the transpose of an inverse is the inverse of the transpose.
 
 87
-00:19:02,273 --> 00:19:22,156
-X transpose X is 2 by 2. Entry 1 1 is the sum of ones squared, which is n, 4. The off-diagonal entries are both the sum of x i, 10. Entry 2 2 is the sum of x i squared, 30. The two orange entries are equal, so the matrix is symmetric.
+00:15:54,391 --> 00:16:09,751
+Line 4: by line 2, the transpose of X transpose X is X transpose X. So the inverse is symmetric too. In the example, the mirror entries are minus 0.5 and minus 0.5.
 
 88
-00:19:22,606 --> 00:19:37,390
-The determinant is 4 times 30, minus 10 times 10, which is 20. This equals n times S x x. Here S x x is 5. The determinant is not zero, so the inverse exists.
+00:16:10,201 --> 00:16:18,009
+Both matrices are symmetric. Section 3 computes the example numbers. Lecture 6 uses this result.
 
 89
-00:19:37,840 --> 00:19:56,144
-For a 2 by 2 matrix, swap the diagonal entries, change the sign of the other two, and divide by the determinant. That gives 1.5, minus 0.5; minus 0.5, 0.2. It is symmetric too, as the rule says.
+00:16:18,459 --> 00:16:28,549
+The trace of a square matrix is the sum of its diagonal entries. For this A, the diagonal is 2, 5 and 1. So the trace of A is 8.
 
 90
-00:19:56,594 --> 00:20:09,735
-To recap. Multiple linear regression in matrix form is y equals X beta plus epsilon. X has n rows, and p plus 1 columns. Its first column is all ones.
+00:16:28,999 --> 00:16:34,269
+For B, the diagonal is 1, 0 and 3, so the trace of B is 4.
 
 91
-00:20:10,185 --> 00:20:27,337
-Transpose swaps rows and columns. The transpose of a product reverses the order, so X transpose X is symmetric. The inverse of a product also reverses the order. The inverse of a transpose is the transpose of the inverse.
+00:16:34,719 --> 00:16:45,876
+When you add two matrices, you add the diagonal entries. The diagonal of A plus B is 3, 5 and 4. Its trace is 12, which is 8 plus 4.
 
 92
-00:20:27,787 --> 00:20:34,593
-The trace is the sum of the diagonal. It is linear. The trace of A B equals the trace of B A.
+00:16:46,326 --> 00:16:54,838
+3 A has diagonal 6, 15 and 3. Its trace is 24, which is 3 times 8. So the trace is linear.
 
 93
-00:20:35,043 --> 00:20:51,853
-The derivative of a transpose y is a. The derivative of y transpose A y is A y plus A transpose y, which is 2 A y when A is symmetric. The next video covers random vectors and the multivariate normal distribution.
+00:16:55,288 --> 00:17:05,293
+A transpose flips the matrix across the diagonal. The diagonal entries do not move. So the trace of A transpose equals the trace of A.
+
+94
+00:17:05,743 --> 00:17:18,778
+The last rule of slide 7: the trace of A B equals the trace of B A. Step 1 of card C: the goal. Here is an example first. A is 2 by 3, and B is 3 by 2.
+
+95
+00:17:19,228 --> 00:17:25,521
+A B is 2 by 2: 7, 2; 3, 1. Its trace is 7 plus 1, which is 8.
+
+96
+00:17:25,971 --> 00:17:36,553
+B A is 3 by 3. Its diagonal is 1, 1 and 6. Its trace is also 8. A B and B A have different sizes, but the same trace.
+
+97
+00:17:37,003 --> 00:17:49,099
+Now the proof. Pause the video and try it. Step 2: the tool is the sum of the diagonal entries. Line 1: the trace of A B is the sum of its diagonal entries.
+
+98
+00:17:49,549 --> 00:18:00,685
+Line 2: diagonal entry i of A B is row i of A times column i of B. In the example, row 1 of A times column 1 of B gives 7.
+
+99
+00:18:01,135 --> 00:18:04,207
+Line 3: change the order of the two sums.
+
+100
+00:18:04,657 --> 00:18:18,971
+Line 4: the inner sum over i is row j of B times column j of A. That is diagonal entry j of B A. In the example, it gives 1. So the double sum is the trace of B A.
+
+101
+00:18:19,421 --> 00:18:25,373
+The result holds whenever both products exist. The two products can have different sizes.
+
+102
+00:18:25,823 --> 00:18:42,101
+Section 3. Question type B asks you to compute with matrices by hand. Tutorial 2 asks for X transpose X and its inverse. Method card B has five steps. The picture uses the A and B of the trace slide.
+
+103
+00:18:42,551 --> 00:18:54,988
+Step 1: the sizes. An m by n matrix times an n by k matrix gives an m by k matrix. Here, 2 by 3 times 3 by 2 gives 2 by 2.
+
+104
+00:18:55,438 --> 00:19:20,611
+Step 2: entry i j of a product is row i of the left matrix times column j of the right matrix. Here, row 1 of A times column 1 of B is 1 plus 0 plus 6, which is 7. For X transpose X, row i of X transpose is column i of X. So entry i j is column i of X times column j of X.
+
+105
+00:19:21,061 --> 00:19:28,080
+Step 3: a transpose swaps i and j. A trace adds the diagonal: 7 plus 1 is 8.
+
+106
+00:19:28,530 --> 00:19:42,055
+Step 4: the inverse of a 2 by 2 matrix a, b; c, d. Find the determinant, a d minus b c. Swap a and d, change the sign of b and c, and divide by the determinant.
+
+107
+00:19:42,505 --> 00:19:50,335
+Step 5: check. X transpose X must be symmetric. And the matrix times its inverse must give I.
+
+108
+00:19:50,785 --> 00:20:05,953
+A type B exercise with our own numbers. A is 1, 2; 0, 1, and B is 3, 0; 1, 2. Find A B transpose, B transpose A transpose, and the two traces. Pause the video and try it.
+
+109
+00:20:06,403 --> 00:20:13,784
+Step 1 of card B: the sizes. All matrices are 2 by 2, so every product is 2 by 2.
+
+110
+00:20:14,234 --> 00:20:24,517
+Step 2: row 1 of A times the columns of B. 1 times 3 plus 2 times 1 is 5. 1 times 0 plus 2 times 2 is 4.
+
+111
+00:20:24,967 --> 00:20:30,919
+Row 2 of A is 0, 1. It gives 1 and 2. So A B is 5, 4; 1, 2.
+
+112
+00:20:31,369 --> 00:20:36,873
+Step 3: transpose. Swap the rows and the columns: 5, 1; 4, 2.
+
+113
+00:20:37,323 --> 00:20:51,317
+B transpose is 3, 1; 0, 2. A transpose is 1, 0; 2, 1. Their product is 5, 1; 4, 2. Step 5: it is the same as A B transpose, as the rule says.
+
+114
+00:20:51,767 --> 00:20:57,101
+B A: rows of B times columns of A. That gives 3, 6; 1, 4.
+
+115
+00:20:57,551 --> 00:21:11,247
+Step 3: the traces. The trace of A B is 5 plus 2, which is 7. The trace of B A is 3 plus 4, also 7. A B and B A are different matrices, but they have the same trace.
+
+116
+00:21:11,697 --> 00:21:27,057
+An exercise of type B for simple regression. x is 1, 2, 3, 4. So X has a column of ones and the column of x values. Find X transpose X and its inverse. Pause the video and try it.
+
+117
+00:21:27,507 --> 00:21:37,235
+Step 1 of card B: the sizes. X transpose is 2 by 4, and X is 4 by 2. So X transpose X is 2 by 2.
+
+118
+00:21:37,685 --> 00:21:46,431
+Step 2: entry 1 1 is column 1 times column 1. That is 1 plus 1 plus 1 plus 1, which is n, 4.
+
+119
+00:21:46,881 --> 00:21:55,884
+Entry 1 2 is column 1 times column 2. That is the sum of the x i, 10. Entry 2 1 is the same product.
+
+120
+00:21:56,334 --> 00:22:05,870
+Entry 2 2 is column 2 times column 2: the sum of x i squared, 1 plus 4 plus 9 plus 16, which is 30.
+
+121
+00:22:06,320 --> 00:22:13,040
+Step 5, the first check: the mirror entries are both 10. So X transpose X is symmetric.
+
+122
+00:22:13,490 --> 00:22:27,229
+Step 4: the determinant is 4 times 30, minus 10 times 10, which is 20. It equals n times S x x, 4 times 5. It is not zero, so the inverse exists.
+
+123
+00:22:27,679 --> 00:22:41,823
+Swap 4 and 30, change the sign of the two 10s, and divide by 20. That gives 1.5, minus 0.5; minus 0.5, 0.2. It is symmetric too.
+
+124
+00:22:42,273 --> 00:22:54,689
+Step 5: check. X transpose X times the inverse gives 6 minus 5, minus 2 plus 2; 15 minus 15, minus 5 plus 6. That is the identity.
+
+125
+00:22:55,139 --> 00:23:05,549
+Tutorial 2, question 3 c, continues with the X of part b. Calculate the inverse of X transpose X. Pause the video and try it.
+
+126
+00:23:05,999 --> 00:23:14,639
+Step 1 of card B: X transpose is 2 by 5, and X is 5 by 2. So X transpose X is 2 by 2.
+
+127
+00:23:15,089 --> 00:23:24,988
+Step 2: entry 1 1 is column 1 times column 1. The column has three ones: the regions that use P1. So it is 3.
+
+128
+00:23:25,438 --> 00:23:36,297
+Entry 1 2 is column 1 times column 2. Only region 1 has a 1 in both columns. So it is 1, and entry 2 1 is also 1.
+
+129
+00:23:36,747 --> 00:23:43,253
+Entry 2 2 is column 2 times column 2: three regions use P2, so it is 3.
+
+130
+00:23:43,703 --> 00:23:49,357
+Step 5, first check: the mirror entries are both 1. The matrix is symmetric.
+
+131
+00:23:49,807 --> 00:23:55,567
+Step 4: the determinant is 3 times 3 minus 1 times 1, which is 8.
+
+132
+00:23:56,017 --> 00:24:16,817
+Swap the two 3s, change the sign of the 1s, and divide by 8. That gives 0.375, minus 0.125; minus 0.125, 0.375. This is the posted answer. Parts d and f use it in the next videos.
+
+133
+00:24:17,267 --> 00:24:37,085
+Step 5: check row 1. 3 times 0.375 plus 1 times minus 0.125 is 1. 3 times minus 0.125 plus 0.375 is 0. Row 2 is the mirror image. So the product is I.
+
+134
+00:24:37,535 --> 00:24:54,794
+Tutorial 2, question 2 b, has two groups. x i is 0 in group 0, with n 1 subjects, and 1 in group 1, with n 2 subjects. The posted solution needs X transpose X and its inverse. Pause the video and try it.
+
+135
+00:24:55,244 --> 00:25:07,916
+First card A: the model has an intercept. So X has a column of ones, and the column of x values. The picture uses n 1 equal to 3 and n 2 equal to 4.
+
+136
+00:25:08,366 --> 00:25:12,419
+Step 1 of card B: X transpose X is 2 by 2.
+
+137
+00:25:12,869 --> 00:25:22,192
+Step 2: entry 1 1 is column 1 times column 1. Each row gives 1 times 1. So it is n, 7 in the picture.
+
+138
+00:25:22,642 --> 00:25:33,970
+Entry 1 2 is column 1 times column 2: the sum of the x i. Only the n 2 rows of group 1 have x equal to 1. So it is n 2.
+
+139
+00:25:34,420 --> 00:25:42,868
+Entry 2 2 is the sum of x i squared. 1 squared is 1 and 0 squared is 0, so it is also n 2.
+
+140
+00:25:43,318 --> 00:25:57,483
+Step 4: the determinant is n times n 2 minus n 2 squared. That is n 2 times n minus n 2. And n minus n 2 is n 1. So the determinant is n 1 times n 2.
+
+141
+00:25:57,933 --> 00:26:05,848
+The inverse: swap n and n 2, change the sign of the two n 2 entries, and divide by n 1 n 2.
+
+142
+00:26:06,298 --> 00:26:22,938
+Step 5: check with the picture. The determinant is 7 times 4 minus 4 times 4, which is 12. And n 1 times n 2 is 3 times 4, which is also 12. The posted solution uses this inverse to get beta hat.
+
+143
+00:26:23,388 --> 00:26:48,433
+Section 4: matrix calculus. z is one number that depends on k variables, y 1 to y k. Collect the variables in a vector y. The derivative of z with respect to y is the column of the k partial derivatives. It has the same size as y. On the left, z depends on two variables. Each blue curve joins points with the same z.
+
+144
+00:26:48,883 --> 00:26:55,710
+Take one point, y equal to 1, 2. Here z is 2 plus 4 plus 12, which is 18.
+
+145
+00:26:56,160 --> 00:27:13,973
+The partial derivatives at this point are 8 and 14. So the gradient is the vector 8, 14, the red arrow. It points in the direction in which z grows fastest. To find a minimum, we set the gradient to zero. Least squares does exactly this.
+
+146
+00:27:14,423 --> 00:27:24,471
+Question type D asks for the gradient of an expression in a vector. Slide 8 gives two rules. Method card D uses them in four steps.
+
+147
+00:27:24,921 --> 00:27:37,828
+Step 1: expand z into terms of two kinds: a transpose y, and y transpose A y. Name the vector a and the matrix A. A term without y has derivative 0.
+
+148
+00:27:38,278 --> 00:27:42,630
+Step 2: a linear term, a transpose y, has derivative a.
+
+149
+00:27:43,080 --> 00:27:53,000
+Step 3: a quadratic term, y transpose A y, has derivative A y plus A transpose y. If A is symmetric, this is 2 A y.
+
+150
+00:27:53,450 --> 00:28:04,415
+Step 4: add the parts. Check that the result has the size of y. You can also check one partial derivative by hand. Next, we prove the two rules.
+
+151
+00:28:04,865 --> 00:28:18,540
+The first rule: z equals a transpose y. Line 1: multiply the row a transpose by the column y. You get one number: a 1 y 1, plus a 2 y 2, up to a k y k.
+
+152
+00:28:18,990 --> 00:28:29,166
+Line 2: take the partial derivative with respect to y 1. Only the term a 1 y 1 contains y 1. So the derivative is a 1.
+
+153
+00:28:29,616 --> 00:28:35,355
+Line 3: in the same way, the derivative with respect to any y j is a j.
+
+154
+00:28:35,805 --> 00:28:43,805
+Line 4: stack the k derivatives into a column. The column is a. It is k by 1, the size of y.
+
+155
+00:28:44,255 --> 00:28:49,311
+So the derivative of a transpose y is a. This is step 2 of card D.
+
+156
+00:28:49,761 --> 00:29:01,473
+The second rule is for a quadratic form, z equals y transpose A y. A is a square matrix. We show it for k equal to 2. Pause the video and try it.
+
+157
+00:29:01,923 --> 00:29:12,717
+Line 1: y transpose A y has one term for each entry of A: a i j times y i times y j. The grid shows the four terms.
+
+158
+00:29:13,167 --> 00:29:23,621
+Line 2: the two off-diagonal terms both contain y 1 y 2. Collect them: a 1 2 plus a 2 1, times y 1 y 2.
+
+159
+00:29:24,071 --> 00:29:40,476
+Line 3: take the partial derivative with respect to y 1. y 1 appears in row 1 and in column 1 of the grid. The square gives 2 a 1 1 y 1. The cross term gives a 1 2 plus a 2 1, times y 2.
+
+160
+00:29:40,926 --> 00:29:46,451
+Line 4: split this into two sums. Each sum has one a 1 1 y 1.
+
+161
+00:29:46,901 --> 00:29:52,917
+Line 5: the first sum is row 1 of A times y. That is entry 1 of A y.
+
+162
+00:29:53,367 --> 00:30:02,519
+The second sum uses column 1 of A. Column 1 of A is row 1 of A transpose. So it is entry 1 of A transpose y.
+
+163
+00:30:02,969 --> 00:30:13,103
+Line 6: the derivative with respect to y 2 works the same way. Stack the two entries. The gradient is A y plus A transpose y.
+
+164
+00:30:13,553 --> 00:30:21,169
+If A is symmetric, A transpose equals A. Then the gradient is 2 A y. This is step 3 of card D.
+
+165
+00:30:21,619 --> 00:30:34,440
+A worked example of type D. Pause the video and try it. z is y transpose A y, with A equal to 2, 1; 1, 3. Find the gradient at y equal to 1, 2.
+
+166
+00:30:34,890 --> 00:30:43,637
+Step 1 of card D: name A. Its two off-diagonal entries are both 1, so A transpose equals A. A is symmetric.
+
+167
+00:30:44,087 --> 00:30:47,905
+Step 3: for a symmetric A, the gradient is 2 A y.
+
+168
+00:30:48,355 --> 00:30:58,147
+A times y: 2 times 1 plus 1 times 2 is 4. 1 times 1 plus 3 times 2 is 7. So A y is 4, 7.
+
+169
+00:30:58,597 --> 00:31:03,909
+So 2 A y is 8, 14. The red arrow on the plot is this gradient.
+
+170
+00:31:04,359 --> 00:31:15,133
+Step 4: check by hand. Expand y transpose A y. z is 2 y 1 squared, plus 2 y 1 y 2, plus 3 y 2 squared.
+
+171
+00:31:15,583 --> 00:31:23,071
+The partial derivative with respect to y 1 is 4 y 1 plus 2 y 2. At 1, 2, that is 8.
+
+172
+00:31:23,521 --> 00:31:30,667
+With respect to y 2, it is 2 y 1 plus 6 y 2, which is 14. Both entries agree.
+
+173
+00:31:31,117 --> 00:31:34,189
+So the gradient at 1, 2 is 8, 14.
+
+174
+00:31:34,639 --> 00:31:45,754
+Exercise 3 has two parts. Part a is a linear form. Part b is a quadratic form with a matrix that is not symmetric. Pause the video and try it.
+
+175
+00:31:46,204 --> 00:31:52,711
+Part a. Step 1 of card D: z is a transpose y, with a equal to 3, minus 1, 2.
+
+176
+00:31:53,161 --> 00:31:58,579
+Step 2: the gradient of a linear form is a. So it is 3, minus 1, 2.
+
+177
+00:31:59,029 --> 00:32:12,320
+Part b. Step 1: name A, and compare it with A transpose. a 1 2 is 2, but a 2 1 is 0. So A is not symmetric, and we use the general rule, A y plus A transpose y.
+
+178
+00:32:12,770 --> 00:32:21,218
+Step 3: A y. Row 1 of A times y is 1 plus 2, which is 3. Row 2 is 0 plus 3, which is 3.
+
+179
+00:32:21,668 --> 00:32:31,076
+A transpose y. Row 1 of A transpose times y is 1 plus 0, which is 1. Row 2 is 2 plus 3, which is 5.
+
+180
+00:32:31,526 --> 00:32:37,435
+Add them: 3 plus 1 is 4, and 3 plus 5 is 8. The gradient is 4, 8.
+
+181
+00:32:37,885 --> 00:32:48,125
+Step 4: check by hand. Expand z. It is y 1 squared, plus 2 plus 0, times y 1 y 2, plus 3 y 2 squared.
+
+182
+00:32:48,575 --> 00:32:57,855
+The partial derivatives are 2 y 1 plus 2 y 2, which is 4, and 2 y 1 plus 6 y 2, which is 8. They agree.
+
+183
+00:32:58,305 --> 00:33:15,351
+The last worked problem comes from Lecture 6, slide 13. Least squares minimizes S of beta: y minus X beta, transposed, times y minus X beta. Find the gradient and set it to zero. Pause the video and try it.
+
+184
+00:33:15,801 --> 00:33:22,969
+Step 1 of card D: expand S. Line 1 is the sum of the squared errors in matrix form.
+
+185
+00:33:23,419 --> 00:33:32,357
+Line 2: the transpose of X beta is beta transpose X transpose. This is the rule for the transpose of a product.
+
+186
+00:33:32,807 --> 00:33:36,903
+Line 3: multiply out the brackets. There are four terms.
+
+187
+00:33:37,353 --> 00:33:57,321
+Line 4: beta transpose X transpose y is one number, a 1 by 1 matrix. The picture shows the sizes. A 1 by 1 matrix equals its transpose, which is y transpose X beta. So the two middle terms combine into minus 2 y transpose X beta.
+
+188
+00:33:57,771 --> 00:34:13,238
+Line 5: name a and A. y transpose X beta is X transpose y, transposed, times beta. So a is X transpose y. The quadratic term has A equal to X transpose X. It is symmetric.
+
+189
+00:34:13,688 --> 00:34:33,059
+Line 6: steps 2 to 4 of card D. y transpose y has no beta, so it gives 0. The linear term gives minus 2 X transpose y. The quadratic term gives 2 X transpose X beta. The result is p plus 1 by 1, the size of beta.
+
+190
+00:34:33,509 --> 00:34:43,770
+Line 7: set the gradient to zero, divide by 2, and put a hat on beta. X transpose X beta hat equals X transpose y.
+
+191
+00:34:44,220 --> 00:34:58,385
+If the columns of X are linearly independent, X transpose X has an inverse. Then beta hat is X transpose X inverse, times X transpose y. Video 13 continues from here.
+
+192
+00:34:58,835 --> 00:35:12,083
+To recap. Card A writes a model in matrix form. Write the model for row i, stack y, build X with one column for each beta, put beta in the same order, and check the sizes.
+
+193
+00:35:12,533 --> 00:35:27,552
+Card C proves a rule. Write the goal, choose the tool, use one rule per line, and stop at the right side. Transpose and inverse of a product reverse the order. The trace of A B equals the trace of B A.
+
+194
+00:35:28,002 --> 00:35:37,389
+Card B computes by hand. Sizes, entries as row times column, transpose and trace, the 2 by 2 inverse, and a check.
+
+195
+00:35:37,839 --> 00:35:56,676
+Card D takes a gradient. The derivative of a transpose y is a. The derivative of y transpose A y is A y plus A transpose y, which is 2 A y when A is symmetric. The next video covers random vectors and the multivariate normal distribution.
