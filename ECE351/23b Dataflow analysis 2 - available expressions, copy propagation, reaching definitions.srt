@@ -1,0 +1,911 @@
+1
+00:00:00,000 --> 00:00:08,299
+Part 2 of dataflow analysis of straight-line code. In part 1, we found the optimizations by intuition.
+
+2
+00:00:08,749 --> 00:00:17,154
+Now we compute the facts behind them with equations: available expressions, copy propagation, and reaching definitions.
+
+3
+00:00:17,604 --> 00:00:28,697
+Every dataflow analysis has the same ingredients. Solving the equations is how the compiler understands the program: you can eyeball it, but a compiler cannot.
+
+4
+00:00:29,147 --> 00:00:39,259
+Ingredient 1: the set of dataflow facts. It is a finite set, collected from the syntax of the program: expressions, statements, or assignments.
+
+5
+00:00:39,709 --> 00:00:48,157
+Ingredient 2: the confluence operator. A may analysis uses union. A must analysis uses intersection.
+
+6
+00:00:48,607 --> 00:00:52,639
+Ingredient 3: the Gen and Kill sets of each statement.
+
+7
+00:00:53,089 --> 00:01:00,364
+Ingredient 4: construct the equations from the program. Ignore branches and loops while you construct them.
+
+8
+00:01:00,814 --> 00:01:04,846
+Ingredient 5: solve the system for the In and Out sets.
+
+9
+00:01:05,296 --> 00:01:16,112
+Without loops, as in straight-line code, we solve by substitution. With loops, we iterate to a fixed point. This video always uses substitution.
+
+10
+00:01:16,562 --> 00:01:28,317
+First analysis: available expressions. Here is the question type, from questions post 8.2: perform the analysis, and find where C S E can be applied.
+
+11
+00:01:28,767 --> 00:01:38,772
+Ingredient 1, the facts: all expressions computed in the program. That is every non-trivial expression on the right-hand side of an assignment.
+
+12
+00:01:39,222 --> 00:01:44,939
+Line 1 computes x plus y. It becomes the first fact, with its own column.
+
+13
+00:01:45,389 --> 00:01:48,803
+Line 2 computes t plus z: the second fact.
+
+14
+00:01:49,253 --> 00:01:56,079
+Line 3 computes x plus y again. It is already a fact, so the set of facts does not change.
+
+15
+00:01:56,529 --> 00:02:04,700
+Line 4 computes u times z: the third fact. So D F is x plus y, t plus z and u times z.
+
+16
+00:02:05,150 --> 00:02:17,545
+Ingredients 2 and 4: the equations. For available expressions, In of s is the intersection of Out of all predecessors of s. Intersection makes it a must analysis.
+
+17
+00:02:17,995 --> 00:02:22,603
+Out of s is Gen of s, union In of s minus Kill of s.
+
+18
+00:02:23,053 --> 00:02:30,242
+In is the set of expressions available at the beginning of the statement. Out is the set available at its end.
+
+19
+00:02:30,692 --> 00:02:38,372
+Kill is the set of expressions killed by the statement's assignment. Gen is the set of expressions the statement computes.
+
+20
+00:02:38,822 --> 00:02:46,673
+So a statement first removes the facts it kills from In. Then it adds the facts it generates. The result is Out.
+
+21
+00:02:47,123 --> 00:02:59,240
+In straight-line code, each statement has one predecessor, the line before it. So the intersection has only one set: In 2 is Out 1, In 3 is Out 2, and so on.
+
+22
+00:02:59,690 --> 00:03:07,413
+The rule: Out is Gen union In minus Kill, and in straight-line code, In of s is Out of s minus 1.
+
+23
+00:03:07,863 --> 00:03:24,161
+Back to Example 3 of slide 8, now in three-address code. Line 3 assigns 7 to x. Part 1 said that available expressions detects that C S E is not applicable. Watch the facts travel through the code.
+
+24
+00:03:24,611 --> 00:03:30,947
+Before line 1, no expression is computed yet. So the set at the start, In 1, is empty.
+
+25
+00:03:31,397 --> 00:03:39,205
+Line 1 assigns t, so it kills t plus z. t plus z is not in the set yet, so nothing is removed.
+
+26
+00:03:39,655 --> 00:03:45,991
+Line 1 computes x plus y. The fact x plus y enters the set after line 1.
+
+27
+00:03:46,441 --> 00:03:53,012
+Line 2 assigns a. No fact uses a, so x plus y passes down unchanged.
+
+28
+00:03:53,462 --> 00:03:59,307
+Line 2 computes t plus z. Now the set holds x plus y and t plus z.
+
+29
+00:03:59,757 --> 00:04:11,299
+Line 3 assigns 7 to x. x plus y uses x, so its old value is no longer correct. Line 3 kills x plus y: the fact stops here.
+
+30
+00:04:11,749 --> 00:04:18,127
+Only t plus z passes down. Line 3 computes no expression, so it adds nothing.
+
+31
+00:04:18,577 --> 00:04:26,108
+Line 4 assigns u. It kills u times z, which is not in the set. So t plus z passes down.
+
+32
+00:04:26,558 --> 00:04:32,531
+Line 4 computes x plus y again. The fact enters the set again after line 4.
+
+33
+00:04:32,981 --> 00:04:41,067
+But before line 4, In 4 holds only t plus z. So x plus y is not available on entry to line 4.
+
+34
+00:04:41,517 --> 00:04:46,637
+Line 5 assigns b. Nothing uses b, so both facts pass down.
+
+35
+00:04:47,087 --> 00:04:52,591
+Line 5 computes u times z. The set at the end holds all three facts.
+
+36
+00:04:53,041 --> 00:05:08,273
+C S E can reuse x plus y on line 4 only if x plus y is available on entry to line 4. It is not. So line 4 must compute x plus y again, as part 1 found by intuition.
+
+37
+00:05:08,723 --> 00:05:16,552
+The rule: a fact enters the set at a line that computes it, and it stops at a line that assigns one of its variables.
+
+38
+00:05:17,002 --> 00:05:26,410
+Now the formal method of the slides, on the program without x equals 7. Ingredient 3: the Gen and Kill sets of each line.
+
+39
+00:05:26,860 --> 00:05:37,121
+Gen is the expression on the right-hand side, unless the left-hand side occurs in it. For example, x equals x plus y generates nothing.
+
+40
+00:05:37,571 --> 00:05:47,619
+Kill is every fact that uses the variable assigned. Ignore statement order: with a loop around the code, line 2 could run before line 1.
+
+41
+00:05:48,069 --> 00:05:54,960
+Line 1 computes x plus y, and t does not occur in it. So Gen 1 is x plus y.
+
+42
+00:05:55,410 --> 00:06:01,085
+Line 1 assigns t. T plus z uses t, so Kill 1 is t plus z.
+
+43
+00:06:01,535 --> 00:06:08,020
+Line 2 computes t plus z, and a does not occur in it. So Gen 2 is t plus z.
+
+44
+00:06:08,470 --> 00:06:13,953
+Line 2 assigns a. No fact uses a, so Kill 2 is the empty set.
+
+45
+00:06:14,403 --> 00:06:21,336
+Line 3 computes x plus y, and u does not occur in it. So Gen 3 is x plus y.
+
+46
+00:06:21,786 --> 00:06:27,610
+Line 3 assigns u. U times z uses u, so Kill 3 is u times z.
+
+47
+00:06:28,060 --> 00:06:34,844
+Line 4 computes u times z, and b does not occur in it. So Gen 4 is u times z.
+
+48
+00:06:35,294 --> 00:06:41,033
+Line 4 assigns b. No fact uses b, so Kill 4 is the empty set.
+
+49
+00:06:41,483 --> 00:06:51,936
+The rule: Gen is the right-hand side, unless the left-hand side occurs in it. Kill is every fact that uses the assigned variable, in any line.
+
+50
+00:06:52,386 --> 00:07:02,050
+Ingredient 4: construct the equations. Line 1 has no predecessor, so nothing is available on entry: In 1 is the empty set.
+
+51
+00:07:02,500 --> 00:07:17,689
+Each other line has one predecessor, the line before it. So In 2 is Out 1, In 3 is Out 2, and In 4 is Out 3. Each Out is Gen union In minus Kill. The labels on the left show these equations.
+
+52
+00:07:18,139 --> 00:07:24,411
+Ingredient 5: there are no branches or loops, so solve by substitution, from the top.
+
+53
+00:07:24,861 --> 00:07:30,621
+In 1 is empty, so line 1 adds x plus y. Out 1 is x plus y.
+
+54
+00:07:31,071 --> 00:07:35,061
+Line 2 kills nothing, so x plus y passes down.
+
+55
+00:07:35,511 --> 00:07:40,780
+Line 2 adds t plus z. Out 2 is x plus y and t plus z.
+
+56
+00:07:41,230 --> 00:07:48,846
+Line 3 kills u times z, which is not in In 3. So x plus y and t plus z pass down.
+
+57
+00:07:49,296 --> 00:07:59,365
+Line 3 generates x plus y, but it is already in the set. The union adds nothing new. Out 3 is x plus y and t plus z.
+
+58
+00:07:59,815 --> 00:08:04,658
+Line 4 kills nothing, so x plus y and t plus z pass down.
+
+59
+00:08:05,108 --> 00:08:11,721
+Line 4 adds u times z. Out 4 is x plus y, t plus z and u times z.
+
+60
+00:08:12,171 --> 00:08:19,723
+The rule: solve from the top. Out is Gen union In minus Kill, and each Out is the In of the next line.
+
+61
+00:08:20,173 --> 00:08:24,589
+Which statement can C S E rewrite? Pause the video and think about it.
+
+62
+00:08:25,039 --> 00:08:33,850
+C S E uses In intersect Gen: an expression that the line computes, and that is already available on entry to the line.
+
+63
+00:08:34,300 --> 00:08:39,143
+Line 1: In 1 is empty, so In 1 intersect Gen 1 is empty.
+
+64
+00:08:39,593 --> 00:08:46,803
+Line 2: x plus y is available, but line 2 computes t plus z. The intersection is empty.
+
+65
+00:08:47,253 --> 00:08:56,619
+Line 3: x plus y is available, and line 3 computes x plus y. In 3 intersect Gen 3 is x plus y.
+
+66
+00:08:57,069 --> 00:09:02,914
+Line 4: u times z is not available on entry. The intersection is empty.
+
+67
+00:09:03,364 --> 00:09:14,009
+So line 3 becomes u equals t, provided t still holds x plus y. In three-address code each temporary is assigned once, so it does.
+
+68
+00:09:14,459 --> 00:09:25,083
+The rule: C S E rewrites a line where In intersect Gen is not empty. The expression is already in a variable, so the line takes that variable.
+
+69
+00:09:25,533 --> 00:09:34,664
+Here is the method card for available expressions. It has five steps. The picture on the right is the solved example of the slides.
+
+70
+00:09:35,114 --> 00:09:40,170
+Step 1: the facts are the non-trivial expressions on the right-hand sides.
+
+71
+00:09:40,620 --> 00:09:50,988
+Step 2: Gen is the right-hand side, unless the left-hand side occurs in it. Kill is every fact that uses the assigned variable, in any line.
+
+72
+00:09:51,438 --> 00:10:00,227
+Step 3: the equations. In 1 is empty, In of s is Out of s minus 1, and Out is Gen union In minus Kill.
+
+73
+00:10:00,677 --> 00:10:03,941
+Step 4: solve from the top, by substitution.
+
+74
+00:10:04,391 --> 00:10:12,455
+Step 5: where In intersect Gen is not empty, C S E uses the variable that already holds the expression.
+
+75
+00:10:12,905 --> 00:10:25,791
+Question 8.2.1 of questions post. Perform available expressions analysis on these five lines, and find where C S E can be performed. Pause the video and try it.
+
+76
+00:10:26,241 --> 00:10:33,686
+Step 1: the facts are the right-hand side expressions: y times z, x plus y, and t times u.
+
+77
+00:10:34,136 --> 00:10:42,456
+Line 1: Gen 1 is y times z. It assigns t, and t times u uses t, so Kill 1 is t times u.
+
+78
+00:10:42,906 --> 00:10:51,226
+Line 2: Gen 2 is x plus y. It assigns u, and t times u uses u, so Kill 2 is t times u.
+
+79
+00:10:51,676 --> 00:10:59,975
+Line 3: Gen 3 is y times z. It assigns a, and no fact uses a, so Kill 3 is the empty set.
+
+80
+00:11:00,425 --> 00:11:08,723
+Line 4: Gen 4 is x plus y. It assigns v, and no fact uses v, so Kill 4 is the empty set.
+
+81
+00:11:09,173 --> 00:11:17,579
+Line 5: Gen 5 is t times u. It assigns b, and no fact uses b, so Kill 5 is the empty set.
+
+82
+00:11:18,029 --> 00:11:25,623
+Step 3: line 1 has no predecessor, so In 1 is empty. Each other In is the Out of the line before.
+
+83
+00:11:26,073 --> 00:11:28,185
+Step 4: solve from the top.
+
+84
+00:11:28,635 --> 00:11:34,587
+In 1 is empty, so line 1 adds y times z. Out 1 is y times z.
+
+85
+00:11:35,037 --> 00:11:41,267
+Line 2 kills t times u, which is not in In 2. So y times z passes down.
+
+86
+00:11:41,717 --> 00:11:47,327
+Line 2 adds x plus y. Out 2 is y times z and x plus y.
+
+87
+00:11:47,777 --> 00:11:52,855
+Line 3 kills nothing, so y times z and x plus y pass down.
+
+88
+00:11:53,305 --> 00:12:03,779
+Line 3 generates y times z, but it is already in the set. The union adds nothing new. Out 3 is y times z and x plus y.
+
+89
+00:12:04,229 --> 00:12:09,285
+Line 4 kills nothing, so y times z and x plus y pass down.
+
+90
+00:12:09,735 --> 00:12:19,997
+Line 4 generates x plus y, but it is already in the set. The union adds nothing new. Out 4 is y times z and x plus y.
+
+91
+00:12:20,447 --> 00:12:25,609
+Line 5 kills nothing, so y times z and x plus y pass down.
+
+92
+00:12:26,059 --> 00:12:33,270
+Line 5 adds t times u. Out 5 is y times z, x plus y and t times u.
+
+93
+00:12:33,720 --> 00:12:42,659
+Step 5: In intersect Gen. Lines 1, 2 and 5 give the empty set: what they compute is not available on entry.
+
+94
+00:12:43,109 --> 00:12:57,999
+Line 3 computes y times z, and y times z is in In 3. So In 3 intersect Gen 3 is y times z. t already holds y times z, so line 3 becomes a equals t.
+
+95
+00:12:58,449 --> 00:13:09,031
+Line 4 computes x plus y, and x plus y is in In 4. u already holds x plus y, so line 4 becomes v equals u.
+
+96
+00:13:09,481 --> 00:13:17,033
+This matches the posted solution: line 3 becomes a equals t, and line 4 becomes v equals u.
+
+97
+00:13:17,483 --> 00:13:24,096
+Second analysis: copy propagation. Here is the program after C S E, from part 1.
+
+98
+00:13:24,546 --> 00:13:30,349
+A copy is a statement that assigns a variable, or a constant, to another variable.
+
+99
+00:13:30,799 --> 00:13:37,135
+Line 3, u equals t, assigns the variable t to u. So line 3 is a copy.
+
+100
+00:13:37,585 --> 00:13:49,254
+The facts of copy propagation are all the copies in the program. We name a copy by its target variable and its line: u 3 is the copy into u at line 3.
+
+101
+00:13:49,704 --> 00:13:58,856
+The equations are the same as for available expressions: intersection over the predecessors, and Out is Gen union In minus Kill.
+
+102
+00:13:59,306 --> 00:14:12,234
+Only the values in the sets differ. In and Out are the copies available at the beginning and at the end. Gen is the copies a statement creates. Kill is the copies its assignment kills.
+
+103
+00:14:12,684 --> 00:14:25,164
+Ingredient 3, Gen and Kill. Gen is the copies created in the statement. Kill is the copies killed by the statement: any re-assignment of either variable in the copy.
+
+104
+00:14:25,614 --> 00:14:33,166
+Line 1 is not a copy. It assigns t, and the copy u 3 contains t, so Kill 1 is u 3.
+
+105
+00:14:33,616 --> 00:14:39,952
+Line 2 is not a copy. No other copy contains a, so Kill 2 is the empty set.
+
+106
+00:14:40,402 --> 00:14:48,765
+Line 3 is a copy, so Gen 3 is u 3. No other copy contains u, so Kill 3 is the empty set.
+
+107
+00:14:49,215 --> 00:14:55,849
+Line 4 is not a copy. No other copy contains b, so Kill 4 is the empty set.
+
+108
+00:14:56,299 --> 00:15:03,275
+So line 1 kills u 3, although u 3 comes later: Kill ignores statement order, as before.
+
+109
+00:15:03,725 --> 00:15:16,248
+Why does Kill consider both variables of a copy? Slide 35 shows a similar program: line 4 assigns 7 to t. Pause the video and think about line 5.
+
+110
+00:15:16,698 --> 00:15:24,463
+The facts are u 3 and t 4. t equals 7 is also a copy, because it assigns a constant to t.
+
+111
+00:15:24,913 --> 00:15:33,191
+Before line 1, no copy exists, so In 1 is empty. Lines 1 and 2 are not copies, so the set stays empty.
+
+112
+00:15:33,641 --> 00:15:42,131
+Line 3 is the copy u equals t. The fact u 3 enters the set: from here, u holds the value of t.
+
+113
+00:15:42,581 --> 00:15:53,248
+Line 4 assigns 7 to t. Now u holds the old value of t, not its current value. So line 4 kills u 3: the fact stops here.
+
+114
+00:15:53,698 --> 00:15:57,879
+Line 4 is also a copy, so t 4 enters the set.
+
+115
+00:15:58,329 --> 00:16:02,105
+Line 5 kills nothing, so t 4 passes down.
+
+116
+00:16:02,555 --> 00:16:14,459
+Line 5 uses u. But u 3 is not in In 5. So we cannot change line 5 to b equals t times z: u holds a copy of the old value of t.
+
+117
+00:16:14,909 --> 00:16:21,757
+That is why Kill considers both variables: a re-assignment of the source t also ends the copy.
+
+118
+00:16:22,207 --> 00:16:32,405
+Back to our program. Construct the equations: line 1 has no predecessor, so In 1 is empty. Each other In is the Out of the line before.
+
+119
+00:16:32,855 --> 00:16:37,783
+Line 1 adds nothing and In 1 is empty. Out 1 is the empty set.
+
+120
+00:16:38,233 --> 00:16:43,161
+Line 2 adds nothing and In 2 is empty. Out 2 is the empty set.
+
+121
+00:16:43,611 --> 00:16:48,645
+In 3 is empty, so line 3 adds u 3. Out 3 is u 3.
+
+122
+00:16:49,095 --> 00:16:54,386
+Line 4 kills nothing, so u 3 passes down. Out 4 is u 3.
+
+123
+00:16:54,836 --> 00:17:03,156
+Now the optimization. A copy in In whose target the line uses can be replaced by its source: In intersect Use.
+
+124
+00:17:03,606 --> 00:17:08,683
+Lines 1 to 3 have an empty In, so In intersect Use is empty there.
+
+125
+00:17:09,133 --> 00:17:16,707
+Line 4 uses u and z, and u 3 is in In 4. So In 4 intersect Use 4 is u 3.
+
+126
+00:17:17,157 --> 00:17:23,087
+So line 4 uses the original, t, instead of u: b equals t times z.
+
+127
+00:17:23,537 --> 00:17:30,620
+The rule: where a copy is in In and the line uses its target, the line can use the source instead.
+
+128
+00:17:31,070 --> 00:17:38,729
+Here is the method card for copy propagation. The picture on the right is the solved example of the slides.
+
+129
+00:17:39,179 --> 00:17:43,381
+Step 1: the facts are the copies, named by target and line.
+
+130
+00:17:43,831 --> 00:17:52,535
+Step 2: Gen is the copy the line makes. Kill is every other copy whose target or source the line assigns, in any line.
+
+131
+00:17:52,985 --> 00:17:56,975
+Step 3: the same equations as for available expressions.
+
+132
+00:17:57,425 --> 00:18:00,689
+Step 4: solve from the top, by substitution.
+
+133
+00:18:01,139 --> 00:18:08,819
+Step 5: for a copy in In intersect Use, the line uses the source of the copy instead of its target.
+
+134
+00:18:09,269 --> 00:18:24,138
+A worked problem: questions post 8.1.1 again. Part 1 solved it by intuition. Here is its code after C S E. Do copy propagation with equations. Pause the video and try it.
+
+135
+00:18:24,588 --> 00:18:33,612
+Step 1: lines 4 and 5 are copies: v equals t, and w equals u. The facts are v 4 and w 5.
+
+136
+00:18:34,062 --> 00:18:41,742
+Line 1 is not a copy. It assigns t, and the copy v 4 contains t, so Kill 1 is v 4.
+
+137
+00:18:42,192 --> 00:18:50,683
+Line 2 is not a copy. It assigns u, and the copy w 5 contains u, so Kill 2 is w 5.
+
+138
+00:18:51,133 --> 00:18:57,703
+Line 3 is not a copy. No other copy contains a, so Kill 3 is the empty set.
+
+139
+00:18:58,153 --> 00:19:06,580
+Line 4 is a copy, so Gen 4 is v 4. No other copy contains v, so Kill 4 is the empty set.
+
+140
+00:19:07,030 --> 00:19:16,289
+Line 5 is a copy, so Gen 5 is w 5. No other copy contains w, so Kill 5 is the empty set.
+
+141
+00:19:16,739 --> 00:19:23,245
+Line 6 is not a copy. No other copy contains b, so Kill 6 is the empty set.
+
+142
+00:19:23,695 --> 00:19:28,730
+Step 3: In 1 is empty, and each other In is the Out of the line before.
+
+143
+00:19:29,180 --> 00:19:34,108
+Line 1 adds nothing and In 1 is empty. Out 1 is the empty set.
+
+144
+00:19:34,558 --> 00:19:39,486
+Line 2 adds nothing and In 2 is empty. Out 2 is the empty set.
+
+145
+00:19:39,936 --> 00:19:45,099
+Line 3 adds nothing and In 3 is empty. Out 3 is the empty set.
+
+146
+00:19:45,549 --> 00:19:50,754
+In 4 is empty, so line 4 adds v 4. Out 4 is v 4.
+
+147
+00:19:51,204 --> 00:19:55,001
+Line 5 kills nothing, so v 4 passes down.
+
+148
+00:19:55,451 --> 00:20:00,657
+Line 5 adds w 5. Out 5 is v 4 and w 5.
+
+149
+00:20:01,107 --> 00:20:08,893
+Line 6 kills nothing, so v 4 and w 5 pass down. Out 6 is v 4 and w 5.
+
+150
+00:20:09,343 --> 00:20:16,447
+Step 5: In intersect Use. Line 6 uses v and w, and both copies are in In 6.
+
+151
+00:20:16,897 --> 00:20:25,111
+So line 6 takes the sources: b equals t times u. This matches the copy-propagation column of part 1.
+
+152
+00:20:25,561 --> 00:20:32,899
+Third analysis: reaching definitions. Here is the program after copy propagation, from part 1.
+
+153
+00:20:33,349 --> 00:20:39,173
+A definition is a statement that assigns to a variable. The variable is defined there.
+
+154
+00:20:39,623 --> 00:20:49,053
+The facts are all the definitions in the program. We name a definition by its variable and its line: t 1 defines t at line 1.
+
+155
+00:20:49,503 --> 00:20:58,719
+x, y and z come in from before the code. Line 0 stands for their definitions: x 0, y 0 and z 0.
+
+156
+00:20:59,169 --> 00:21:08,022
+These facts look like copy-propagation facts, but they are completely different: every assignment is a definition, not only a copy.
+
+157
+00:21:08,472 --> 00:21:17,517
+The equations of reaching definitions have one difference: In of s is the union of Out of the predecessors, not the intersection.
+
+158
+00:21:17,967 --> 00:21:26,863
+Compare the two analyses. Available expressions works with sets of expressions. Reaching definitions works with sets of definitions.
+
+159
+00:21:27,313 --> 00:21:35,015
+In available expressions, In is the intersection over the predecessors. In reaching definitions, it is the union.
+
+160
+00:21:35,465 --> 00:21:40,478
+So the confluence operator is intersection for one, and union for the other.
+
+161
+00:21:40,928 --> 00:21:47,371
+Intersection means the fact must arrive on all paths. Union means it may arrive on any path.
+
+162
+00:21:47,821 --> 00:21:54,327
+So available expressions is a must analysis, and reaching definitions is a may analysis.
+
+163
+00:21:54,777 --> 00:22:00,303
+Both are forward analyses: the facts flow from the top of the code to the bottom.
+
+164
+00:22:00,753 --> 00:22:11,419
+Must and may only show with branches or loops. Straight-line code has one predecessor per statement, so the confluence operator is never really used.
+
+165
+00:22:11,869 --> 00:22:21,747
+Gen and Kill. Gen is the variable defined, the left-hand side, plus the line number. Kill is any other definition of the same variable.
+
+166
+00:22:22,197 --> 00:22:31,925
+Line 0 generates the definitions of x, y and z before the code: x 0, y 0 and z 0. It kills nothing.
+
+167
+00:22:32,375 --> 00:22:40,012
+Line 1 defines t: Gen 1 is t 1. No other line defines t, so Kill 1 is the empty set.
+
+168
+00:22:40,462 --> 00:22:47,950
+Line 2 defines a: Gen 2 is a 2. No other line defines a, so Kill 2 is the empty set.
+
+169
+00:22:48,400 --> 00:22:56,315
+Line 3 defines u: Gen 3 is u 3. No other line defines u, so Kill 3 is the empty set.
+
+170
+00:22:56,765 --> 00:23:04,786
+Line 4 defines b: Gen 4 is b 4. No other line defines b, so Kill 4 is the empty set.
+
+171
+00:23:05,236 --> 00:23:11,465
+Kill is the empty set everywhere, because each variable is defined only once in this code.
+
+172
+00:23:11,915 --> 00:23:24,267
+Why do we need an analysis here? Slide 44 shows a similar program with two assignments to u: line 3 and line 4. Pause the video and think about which one is dead.
+
+173
+00:23:24,717 --> 00:23:33,144
+Line 0 defines x, y and z, so Out 0, which is In 1, holds x 0, y 0 and z 0.
+
+174
+00:23:33,594 --> 00:23:40,293
+Lines 1 to 3 each add their definition: t 1, a 2 and u 3. Nothing is killed yet.
+
+175
+00:23:40,743 --> 00:23:51,345
+Line 4 defines u again. Its definition overrides the definition on line 3: Kill 4 is u 3. So u 3 stops at line 4.
+
+176
+00:23:51,795 --> 00:23:56,019
+The other definitions pass down, and line 4 adds u 4.
+
+177
+00:23:56,469 --> 00:24:02,720
+Line 5 uses u. The definitions of u that reach line 5 are only u 4.
+
+178
+00:24:03,170 --> 00:24:12,045
+The definition u 3 does not reach line 5, where u is used. So u 3 is a dead store: line 3 can be deleted.
+
+179
+00:24:12,495 --> 00:24:20,729
+Two assignments to u: one is a dead store, the other is live. To find which one, the compiler needs the analysis.
+
+180
+00:24:21,179 --> 00:24:30,673
+Construct the equations. Line 1's predecessor is line 0. So In 1 is Out 0: x 0, y 0 and z 0.
+
+181
+00:24:31,123 --> 00:24:36,840
+Each other In is the Out of the line before. Solve from the top, by substitution.
+
+182
+00:24:37,290 --> 00:24:42,922
+Line 1 kills nothing, so x 0, y 0 and z 0 pass down.
+
+183
+00:24:43,372 --> 00:24:49,623
+Line 1 adds t 1. Out 1 is x 0, y 0, z 0 and t 1.
+
+184
+00:24:50,073 --> 00:24:56,217
+Line 2 kills nothing, so x 0, y 0, z 0 and t 1 pass down.
+
+185
+00:24:56,667 --> 00:25:03,259
+Line 2 adds a 2. Out 2 is x 0, y 0, z 0, t 1 and a 2.
+
+186
+00:25:03,709 --> 00:25:10,258
+Line 3 kills nothing, so x 0, y 0, z 0, t 1 and a 2 pass down.
+
+187
+00:25:10,708 --> 00:25:18,431
+Line 3 adds u 3. Out 3 is x 0, y 0, z 0, t 1, a 2 and u 3.
+
+188
+00:25:18,881 --> 00:25:26,262
+Line 4 kills nothing, so x 0, y 0, z 0, t 1, a 2 and u 3 pass down.
+
+189
+00:25:26,712 --> 00:25:35,160
+Line 4 adds b 4. Out 4 is x 0, y 0, z 0, t 1, a 2, u 3 and b 4.
+
+190
+00:25:35,610 --> 00:25:44,890
+Kill is empty everywhere, so the set only grows: each line adds one definition. The slide's spoiler: u 3 is a dead store.
+
+191
+00:25:45,340 --> 00:25:55,623
+Now the dead stores. A store is live when some line uses it. In intersect Use is the set of definitions in In whose variable the line uses.
+
+192
+00:25:56,073 --> 00:26:02,259
+Line 1 uses x and y. In 1 intersect Use 1 is x 0 and y 0.
+
+193
+00:26:02,709 --> 00:26:08,512
+Line 2 uses t and z. In 2 intersect Use 2 is z 0 and t 1.
+
+194
+00:26:08,962 --> 00:26:13,421
+Line 3 uses t. In 3 intersect Use 3 is t 1.
+
+195
+00:26:13,871 --> 00:26:19,929
+Line 4 uses t and z. In 4 intersect Use 4 is z 0 and t 1.
+
+196
+00:26:20,379 --> 00:26:26,801
+LiveStores is the union of these sets: x 0, y 0, z 0 and t 1.
+
+197
+00:26:27,251 --> 00:26:35,827
+DeadStores is All minus Live: u 3, a 2 and b 4. u 3, u equals t, is never used: a dead store.
+
+198
+00:26:36,277 --> 00:26:50,805
+But we assumed that a and b are used later. That assumption has to go into the equations. Our way: the end of the code is one more line that uses a and b, as line 0 defines x, y and z.
+
+199
+00:26:51,255 --> 00:27:00,876
+Then a 2 and b 4 are live too, and the only dead store is u 3. Dead store elimination deletes line 3, as in part 1.
+
+200
+00:27:01,326 --> 00:27:08,558
+Here is the method card for reaching definitions and dead stores. The picture is the solved example.
+
+201
+00:27:09,008 --> 00:27:18,395
+Step 1: the facts are the definitions, named by variable and line. Line 0 defines the variables that come in from before.
+
+202
+00:27:18,845 --> 00:27:25,799
+Step 2: Gen is the definition the line makes. Kill is every other definition of the same variable.
+
+203
+00:27:26,249 --> 00:27:34,164
+Step 3: In 1 is Out 0, each In is the Out of the line before, and Out is Gen union In minus Kill.
+
+204
+00:27:34,614 --> 00:27:37,878
+Step 4: solve from the top, by substitution.
+
+205
+00:27:38,328 --> 00:27:50,147
+Step 5: LiveStores is the union of In intersect Use, plus the live-out uses at the end. DeadStores is All minus Live. Delete the dead stores.
+
+206
+00:27:50,597 --> 00:28:04,165
+A worked problem: questions post 8.1.1 after copy propagation. Find the dead stores with reaching definitions. a and b are used afterwards. Pause the video and try it.
+
+207
+00:28:04,615 --> 00:28:15,793
+Step 1: line 0 defines x, y, k and n. Lines 1 to 6 define t, u, a, v, w and b. These ten definitions are the facts.
+
+208
+00:28:16,243 --> 00:28:24,585
+Step 2: each line generates its own definition, and Kill is empty everywhere: no variable is defined twice.
+
+209
+00:28:25,035 --> 00:28:31,093
+Steps 3 and 4: In 1 is Out 0, and the set grows by one definition per line.
+
+210
+00:28:31,543 --> 00:28:37,730
+Line 1 uses x and y. In 1 intersect Use 1 is x 0 and y 0.
+
+211
+00:28:38,180 --> 00:28:44,303
+Line 2 uses k and n. In 2 intersect Use 2 is k 0 and n 0.
+
+212
+00:28:44,753 --> 00:28:50,278
+Line 3 uses t and u. In 3 intersect Use 3 is t 1 and u 2.
+
+213
+00:28:50,728 --> 00:28:55,229
+Line 4 uses t. In 4 intersect Use 4 is t 1.
+
+214
+00:28:55,679 --> 00:29:00,351
+Line 5 uses u. In 5 intersect Use 5 is u 2.
+
+215
+00:29:00,801 --> 00:29:06,647
+Line 6 uses t and u. In 6 intersect Use 6 is t 1 and u 2.
+
+216
+00:29:07,097 --> 00:29:18,958
+LiveStores is the union: x 0, y 0, k 0, n 0, t 1 and u 2. All minus Live is a 3, v 4, w 5 and b 6.
+
+217
+00:29:19,408 --> 00:29:27,515
+a and b are live-out: the end uses a 3 and b 6. So the dead stores are v 4 and w 5.
+
+218
+00:29:27,965 --> 00:29:42,151
+Dead store elimination deletes lines 4 and 5. The result is the posted answer: t equals x plus y, u equals k plus n, a equals t plus u, b equals t times u.
+
+219
+00:29:42,601 --> 00:29:58,303
+The summary of slides 9 a. The original two lines go through three-address code, C S E, copy propagation and dead store elimination. C S E uses available expressions, a forward must analysis.
+
+220
+00:29:58,753 --> 00:30:04,918
+C S E rewrote line 3 because x plus y was in In 3 intersect Gen 3.
+
+221
+00:30:05,368 --> 00:30:14,776
+Copy propagation rewrote line 4 because the copy u 3 was in In 4 intersect Use 4. It is also forward and must.
+
+222
+00:30:15,226 --> 00:30:24,549
+Dead store elimination deleted u equals t because u 3 is in All minus Live. Reaching definitions is forward and may.
+
+223
+00:30:24,999 --> 00:30:35,473
+Each optimization is informed by a dataflow analysis. On straight-line code, each analysis is solved by substitution, from the top.
+
+224
+00:30:35,923 --> 00:30:46,014
+Recap of part 2. Every analysis has five ingredients: the facts, the confluence operator, Gen and Kill, the equations, and the solution.
+
+225
+00:30:46,464 --> 00:30:57,259
+Available expressions is a must analysis with intersection. Its facts are right-hand sides. C S E applies where In intersect Gen is not empty.
+
+226
+00:30:57,709 --> 00:31:09,357
+Copy propagation is also must. Its facts are the copies, and Kill acts on either variable. A line uses the source where In intersect Use is not empty.
+
+227
+00:31:09,807 --> 00:31:21,007
+Reaching definitions is a may analysis with union. Its facts are definitions, with line 0 for the inputs. The dead stores are All minus Live.
+
+228
+00:31:21,457 --> 00:31:29,969
+On straight-line code, each In is the Out of the line before, and Out is Gen union In minus Kill. Solve from the top.

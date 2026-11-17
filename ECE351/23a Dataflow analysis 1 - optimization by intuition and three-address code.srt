@@ -1,0 +1,647 @@
+1
+00:00:00,000 --> 00:00:09,216
+This video starts slides 9 a: dataflow analysis of straight-line code. Straight-line code has no branches and no loops.
+
+2
+00:00:09,666 --> 00:00:19,181
+Part 1 optimizes code by intuition and converts it to three-address code. Part 2 computes the same results with equations.
+
+3
+00:00:19,631 --> 00:00:30,639
+Here is the question type of this part, from questions post 8.1. You get a few lines of code, and you optimize them by intuition, in four steps.
+
+4
+00:00:31,089 --> 00:00:37,169
+Step 1: rewrite the code in three-address code. Then each statement does one operation.
+
+5
+00:00:37,619 --> 00:00:45,320
+Step 2: common subexpression elimination. An expression that the code computes twice is computed only once.
+
+6
+00:00:45,770 --> 00:00:52,319
+Step 3: copy propagation. A later use of a copy takes the original variable instead.
+
+7
+00:00:52,769 --> 00:00:58,316
+Step 4: dead store elimination. An assignment that nothing uses is deleted.
+
+8
+00:00:58,766 --> 00:01:10,265
+The question bank calls step 4 dead code elimination. The slides call it dead store elimination. It is the same step. First, the background from the slides.
+
+9
+00:01:10,715 --> 00:01:18,693
+The slides teach dataflow analysis as a learning progression: the same idea, on harder and harder programs.
+
+10
+00:01:19,143 --> 00:01:33,821
+First, programs in F, the functional language of the course. F has no re-assignment, so a name always holds the same value. There, common subexpression elimination needs no dataflow analysis.
+
+11
+00:01:34,271 --> 00:01:43,145
+Re-assignment is what creates the need. When a variable can change, the same expression can give a different value later in the code.
+
+12
+00:01:43,595 --> 00:01:51,041
+Next, C-ish programs. They have re-assignment. First we optimize them by intuition. That is this part.
+
+13
+00:01:51,491 --> 00:01:59,213
+Then we use equations, on programs without loops. We solve the equations by substitution. That is part 2.
+
+14
+00:01:59,663 --> 00:02:13,039
+Last, programs with loops. There, we solve by iteration to a fixed point, the technique you started in Lab 4. The new step is to choose clever initial values. That comes after this video.
+
+15
+00:02:13,489 --> 00:02:20,273
+Two words we use all the time: optimization and dataflow analysis. They are different things.
+
+16
+00:02:20,723 --> 00:02:25,630
+An optimization transforms the program. It does not need much math.
+
+17
+00:02:26,080 --> 00:02:33,867
+A dataflow analysis does not change the program. It only provides information, and it uses a lot of math.
+
+18
+00:02:34,317 --> 00:02:43,085
+An analysis informs an optimization. For example, available expressions informs common subexpression elimination.
+
+19
+00:02:43,535 --> 00:02:57,956
+Dataflow analysis also serves other compiler tasks. The Java Language Specification requires every variable to be definitely assigned before use. Checking that takes a dataflow analysis.
+
+20
+00:02:58,406 --> 00:03:04,678
+So the rule is: each optimization is informed by at least one dataflow analysis.
+
+21
+00:03:05,128 --> 00:03:15,624
+In math, optimization has an exact definition: you know when a result is better. The only wrinkle is a local optimum versus the global optimum.
+
+22
+00:03:16,074 --> 00:03:21,749
+Compilers are an empirical engineering discipline: we manipulate real machines.
+
+23
+00:03:22,199 --> 00:03:28,129
+What we do to a program might not make it faster on every machine. The slide asks why.
+
+24
+00:03:28,579 --> 00:03:37,241
+The course notes give the reason. An optimization usually trades one resource for another, for example space to save time.
+
+25
+00:03:37,691 --> 00:03:46,075
+The memory hierarchy decides how expensive that space is. So the same change can help on one machine and hurt on another.
+
+26
+00:03:46,525 --> 00:03:56,765
+Some optimizations are even inverses of other optimizations. So in a compiler, optimization means improvement, not a proven optimum.
+
+27
+00:03:57,215 --> 00:04:08,265
+Here is the secret of dataflow analysis in this course. Almost any question small enough for an exam can be done in your head, without equations, by intuition.
+
+28
+00:04:08,715 --> 00:04:16,331
+The good news: you then almost always know what answer your equations should produce. Use that answer to check them.
+
+29
+00:04:16,781 --> 00:04:22,243
+So we start with optimization by intuition. The equations come in part 2.
+
+30
+00:04:22,693 --> 00:04:35,941
+Common subexpression elimination, C S E, removes work that the code does twice. Here is Example 1 from slide 6. Take x equals 2, y equals 3 and z equals 4.
+
+31
+00:04:36,391 --> 00:04:43,196
+Line 1 computes x plus y. The values 2 and 3 travel into the addition, and give 5.
+
+32
+00:04:43,646 --> 00:04:54,547
+Line 2 computes x plus y again. Nothing changed x or y in between, so the result is 5 again. The code does the same work twice.
+
+33
+00:04:54,997 --> 00:05:00,693
+So compute x plus y once, and keep the value in a new temporary variable, t.
+
+34
+00:05:01,143 --> 00:05:07,223
+Line 1 of the original becomes a equals t plus z, because t holds x plus y.
+
+35
+00:05:07,673 --> 00:05:15,439
+Line 2 becomes b equals t times z. Now x plus y is computed one time, not two times.
+
+36
+00:05:15,889 --> 00:05:21,073
+Check with the values. Both versions give a equals 9 and b equals 20.
+
+37
+00:05:21,523 --> 00:05:31,443
+The rule: when an expression is computed again, and no operand changed in between, compute it once into a temporary, and use the temporary.
+
+38
+00:05:31,893 --> 00:05:40,298
+Example 2, from slide 7. Line 2 now has y plus x, not x plus y. Pause the video and try it.
+
+39
+00:05:40,748 --> 00:05:47,255
+Line 1 computes x plus y. With x equals 2 and y equals 3, that is 5.
+
+40
+00:05:47,705 --> 00:05:53,699
+Line 2 computes y plus x. Plus is commutative, so this is also 5.
+
+41
+00:05:54,149 --> 00:06:01,403
+So sort the operands: write y plus x as x plus y. Now the two expressions match exactly.
+
+42
+00:06:01,853 --> 00:06:06,482
+Then it is Example 1 again. Compute x plus y once, into t.
+
+43
+00:06:06,932 --> 00:06:12,372
+Both lines use t: a equals t plus z, and b equals t times z.
+
+44
+00:06:12,822 --> 00:06:20,161
+The rule: sort the operands of a commutative operator, such as plus, before you compare two expressions.
+
+45
+00:06:20,611 --> 00:06:27,565
+Example 3, from slide 8. Here line 2 assigns 7 to x. Pause the video and try it.
+
+46
+00:06:28,015 --> 00:06:34,522
+Line 1 computes x plus y. With x equals 2 and y equals 3, that is 5.
+
+47
+00:06:34,972 --> 00:06:41,415
+Line 2 assigns 7 to x. The value of x changes in place, from 2 to 7.
+
+48
+00:06:41,865 --> 00:06:48,179
+Line 3 computes x plus y with the new x. 7 plus 3 is 10, not 5.
+
+49
+00:06:48,629 --> 00:06:57,952
+The two expressions look the same, but their values differ. So C S E is not applicable. Line 3 must compute x plus y again.
+
+50
+00:06:58,402 --> 00:07:03,245
+Available expressions analysis will detect this. Part 2 shows how.
+
+51
+00:07:03,695 --> 00:07:10,564
+The rule: an expression is common only if no operand is re-assigned between the two computations.
+
+52
+00:07:11,014 --> 00:07:21,745
+Example 4, from slide 9. Both lines compute x plus y, then times z. The code does 4 operations. Pause the video and try it.
+
+53
+00:07:22,195 --> 00:07:26,547
+One round of C S E finds x plus y in both lines.
+
+54
+00:07:26,997 --> 00:07:29,983
+It computes x plus y once, into t.
+
+55
+00:07:30,433 --> 00:07:38,796
+Both lines use t: a equals t times z, and b equals t times z. Now the code does 3 operations.
+
+56
+00:07:39,246 --> 00:07:45,369
+After this round, both lines compute t times z. That is a new common subexpression.
+
+57
+00:07:45,819 --> 00:08:01,499
+A second round of C S E is needed to find it. Our second round computes t times z once, into u. Then a and b both take u. Now only 2 operations remain, and all versions give 20 for a and for b.
+
+58
+00:08:01,949 --> 00:08:07,047
+The rule: run C S E again until no expression is computed twice.
+
+59
+00:08:07,497 --> 00:08:18,356
+Loop invariant code motion, L I C M, works on loops. Here is Example 1 from slide 10. The loop body, line 2, computes x plus y.
+
+60
+00:08:18,806 --> 00:08:25,953
+Run the loop with x equals 2 and y equals 3. In iteration 0, x plus y is 5.
+
+61
+00:08:26,403 --> 00:08:29,923
+In iteration 1, x plus y is 5 again.
+
+62
+00:08:30,373 --> 00:08:39,909
+In iteration 2, it is 5 again. The loop assigns only i and a of i, never x or y. So the value cannot change.
+
+63
+00:08:40,359 --> 00:08:48,529
+An expression with the same value in every iteration is loop invariant. So compute it once, before the loop, into t.
+
+64
+00:08:48,979 --> 00:08:55,017
+The loop stays, and a of i takes t. The addition now runs one time, not n times.
+
+65
+00:08:55,467 --> 00:08:59,819
+The rule: a loop-invariant computation moves before the loop.
+
+66
+00:09:00,269 --> 00:09:10,743
+Example 2, from slide 11. The body computes b equals x plus y, then a of i equals b times b. Pause the video and try it.
+
+67
+00:09:11,193 --> 00:09:18,191
+With x equals 2 and y equals 3, b is 5 in every iteration, as in Example 1.
+
+68
+00:09:18,641 --> 00:09:28,731
+b times b uses only b, and b is 5 every time. So b times b is 25 every time: it is loop invariant too.
+
+69
+00:09:29,181 --> 00:09:32,296
+Move x plus y before the loop, into t.
+
+70
+00:09:32,746 --> 00:09:40,426
+Then move b times b before the loop. b holds the value of t, so it becomes u equals t times t.
+
+71
+00:09:40,876 --> 00:09:43,969
+The loop body only stores u into a of i.
+
+72
+00:09:44,419 --> 00:09:53,571
+This rewrite removes the assignment to b. That is correct only if b is not used after the loop. The slide states this assumption.
+
+73
+00:09:54,021 --> 00:10:00,208
+The rule: a computation whose operands are all loop invariant is loop invariant too.
+
+74
+00:10:00,658 --> 00:10:09,149
+Example 3, from slide 12. The body computes b equals x plus y times i. Pause the video and try it.
+
+75
+00:10:09,599 --> 00:10:14,335
+In iteration 0, b is 2 plus 3 times 0, which is 2.
+
+76
+00:10:14,785 --> 00:10:19,307
+In iteration 1, b is 2 plus 3 times 1, which is 5.
+
+77
+00:10:19,757 --> 00:10:24,408
+In iteration 2, b is 8. So b varies with each iteration.
+
+78
+00:10:24,858 --> 00:10:34,031
+b uses i, and the loop assigns i in plus plus i. So b is not loop invariant, and L I C M is not applicable.
+
+79
+00:10:34,481 --> 00:10:40,199
+Reaching definitions analysis can detect this. Part 2 teaches that analysis.
+
+80
+00:10:40,649 --> 00:10:46,665
+The rule: an expression that uses a variable assigned in the loop is not loop invariant.
+
+81
+00:10:47,115 --> 00:10:58,741
+Example 3 cannot be hoisted, but it can be made cheaper. The values of b are 2, 5 and 8. Each value is the value before it plus y, which is 3.
+
+82
+00:10:59,191 --> 00:11:10,797
+So start with b equals x, and add y at the end of each iteration. The multiplication y times i becomes an addition carried from one iteration to the next.
+
+83
+00:11:11,247 --> 00:11:14,937
+This is called strength reduction. It is not in this course.
+
+84
+00:11:15,387 --> 00:11:27,419
+C S E needs two clean-up passes: copy propagation and dead store elimination. Real compilers run many passes, and keep each pass as simple as possible.
+
+85
+00:11:27,869 --> 00:11:34,568
+Here is the code of Example 1 in three-address form. Line 3 computes x plus y again.
+
+86
+00:11:35,018 --> 00:11:41,183
+Before we optimize, we must know what is used after this snippet. Pause the video and think about it.
+
+87
+00:11:41,633 --> 00:11:48,353
+a and b are used afterwards: they are live-out. x, y and z come in from before: they are live-in.
+
+88
+00:11:48,803 --> 00:11:56,014
+C S E: x plus y on line 3 is already in t, so line 3 becomes u equals t.
+
+89
+00:11:56,464 --> 00:12:09,200
+Line 3 is now a copy: it assigns one variable to another. Copy propagation lets line 4 use t instead of u, because neither u nor t changes in between.
+
+90
+00:12:09,650 --> 00:12:17,415
+Now nothing uses u. Line 4 uses t, and u is not live-out. So u equals t is a dead store.
+
+91
+00:12:17,865 --> 00:12:23,369
+Dead store elimination deletes it. The result computes x plus y only once.
+
+92
+00:12:23,819 --> 00:12:34,187
+The rule: C S E leaves copies, copy propagation uses the original instead, and dead store elimination deletes the unused copy.
+
+93
+00:12:34,637 --> 00:12:44,152
+Programmers sometimes like to write complex expressions. This Java method computes the positive root of the quadratic formula in one line.
+
+94
+00:12:44,602 --> 00:12:52,581
+Line 2 does nine operations: five multiplications, an addition, a subtraction, a square root and a division.
+
+95
+00:12:53,031 --> 00:13:03,377
+Compiler engineers want to break such an expression into simple statements, one operation each. That form is easier to analyze and to optimize.
+
+96
+00:13:03,827 --> 00:13:10,398
+As with desugaring, we work with a form that is convenient for machines, and less so for people.
+
+97
+00:13:10,848 --> 00:13:22,261
+Three-address code: each statement has at most three variables, so it does at most one operation. Here is the method on b equals x plus y, times z.
+
+98
+00:13:22,711 --> 00:13:29,901
+Step 1: construct the abstract syntax tree. The parentheses put x plus y below the times node.
+
+99
+00:13:30,351 --> 00:13:43,279
+Step 2: visit the tree in post-order, bottom-up: the children before their parent. The first internal node we finish is the plus node. It gets number 1 and a new temporary, t.
+
+100
+00:13:43,729 --> 00:13:47,953
+The plus node becomes the statement t equals x plus y.
+
+101
+00:13:48,403 --> 00:13:58,621
+Next comes the root, the times node. Its children are now t and z. The root assigns the original variable: b equals t times z.
+
+102
+00:13:59,071 --> 00:14:09,205
+The rule: build the A S T, visit it in post-order, and give each internal node a new temporary. The root assigns the original variable.
+
+103
+00:14:09,655 --> 00:14:16,695
+Now the quadratic formula. Pause the video and try it: build the tree, and name the internal nodes.
+
+104
+00:14:17,145 --> 00:14:31,225
+The tree follows Java precedence: times and divide bind tighter than plus and minus. Equal operators group from left to right. So 4 times a times c is 4 times a, then times c.
+
+105
+00:14:31,675 --> 00:14:38,928
+Post-order starts at the far left. The first finished node is minus 1 times b. Name it neg B.
+
+106
+00:14:39,378 --> 00:14:43,495
+Next, inside the square root: b times b becomes b 2.
+
+107
+00:14:43,945 --> 00:14:46,335
+Then 4 times a becomes four A.
+
+108
+00:14:46,785 --> 00:14:49,281
+Then four A times c becomes four A C.
+
+109
+00:14:49,731 --> 00:14:55,405
+The minus node takes b 2 and four A C: disc equals b 2 minus four A C.
+
+110
+00:14:55,855 --> 00:15:00,890
+The square root node: sqrt equals Math dot sqrt of disc.
+
+111
+00:15:01,340 --> 00:15:05,287
+The plus node: num equals neg B plus sqrt.
+
+112
+00:15:05,737 --> 00:15:09,406
+The right subtree of the root: den equals 2 times a.
+
+113
+00:15:09,856 --> 00:15:16,619
+Last, the root: q equals num divided by den. Nine internal nodes give nine statements.
+
+114
+00:15:17,069 --> 00:15:24,301
+Slide 18 writes the result as a Java method, with longer names. Each line does one operation.
+
+115
+00:15:24,751 --> 00:15:34,628
+Lines 4 and 5 split 4 times a times c. Java groups it as 4 times a, then times c, as the tree on the right shows.
+
+116
+00:15:35,078 --> 00:15:43,185
+One complex return statement became eight simple statements and a return of numerator divided by denominator.
+
+117
+00:15:43,635 --> 00:15:51,720
+Now the whole pipeline of Example 1 in one picture. The original two lines become four lines of three-address code.
+
+118
+00:15:52,170 --> 00:15:55,413
+C S E changes line 3 to u equals t.
+
+119
+00:15:55,863 --> 00:16:00,321
+Copy propagation changes line 4 to b equals t times z.
+
+120
+00:16:00,771 --> 00:16:05,443
+Dead store elimination deletes u equals t. Three lines remain.
+
+121
+00:16:05,893 --> 00:16:16,475
+Each optimization is informed by a dataflow analysis. C S E uses available expressions. It works forward, and it is a must analysis.
+
+122
+00:16:16,925 --> 00:16:24,626
+Copy propagation uses an analysis with the same name, copy propagation. It is also forward and must.
+
+123
+00:16:25,076 --> 00:16:34,399
+Dead store elimination uses reaching definitions. It is forward, and it is a may analysis. Part 2 explains must and may.
+
+124
+00:16:34,849 --> 00:16:50,977
+Slides 20 to 22 give the reason for each step. C S E: the expression x plus y is available on line 3. Neither x nor y has been re-assigned since x plus y was last computed, on line 1.
+
+125
+00:16:51,427 --> 00:17:00,899
+Copy propagation: the copy u equals t from line 3 propagates to line 4. Neither u nor t is re-assigned on the way.
+
+126
+00:17:01,349 --> 00:17:08,730
+Dead store elimination: u equals t is a dead store. This definition of u is not used anywhere.
+
+127
+00:17:09,180 --> 00:17:18,631
+Each reason is a fact about the lines between two points of the program. A dataflow analysis computes such facts. Part 2 shows how.
+
+128
+00:17:19,081 --> 00:17:23,646
+Here is the method card for this question type. It has five steps.
+
+129
+00:17:24,096 --> 00:17:34,869
+Step 1: write the three-address code. Build the A S T with Java precedence, visit it in post-order, and give each internal node a new temporary.
+
+130
+00:17:35,319 --> 00:17:49,463
+Step 2: C S E. When an expression is computed again, and no operand was re-assigned in between, use the temporary of the first computation. Sort the operands of plus and times first.
+
+131
+00:17:49,913 --> 00:18:00,153
+Step 3: copy propagation. After a copy u equals t, a later use of u takes t, as long as neither u nor t is re-assigned.
+
+132
+00:18:00,603 --> 00:18:08,582
+Step 4: dead store elimination. Delete an assignment whose variable is not used later and is not live-out.
+
+133
+00:18:09,032 --> 00:18:12,893
+Step 5: repeat steps 2 to 4 until nothing changes.
+
+134
+00:18:13,343 --> 00:18:24,074
+Question 8.1.1 of questions post. Optimize these two lines by intuition. a and b are used afterwards. Pause the video and try it.
+
+135
+00:18:24,524 --> 00:18:33,228
+Step 1: three-address code. In line 1, the post-order visit finishes x plus y first: t equals x plus y.
+
+136
+00:18:33,678 --> 00:18:39,907
+Then k plus n becomes u equals k plus n. The root gives a equals t plus u.
+
+137
+00:18:40,357 --> 00:18:50,043
+Line 2 the same way, with new temporaries: v equals x plus y, w equals k plus n, and b equals v times w.
+
+138
+00:18:50,493 --> 00:19:01,266
+Step 2: C S E. x plus y on line 4 is already in t, and neither x nor y changed. So line 4 becomes v equals t.
+
+139
+00:19:01,716 --> 00:19:08,116
+k plus n on line 5 is already in u. So line 5 becomes w equals u.
+
+140
+00:19:08,566 --> 00:19:21,174
+Step 3: copy propagation. Line 6 uses v and w. v is a copy of t, and w is a copy of u. So line 6 becomes b equals t times u.
+
+141
+00:19:21,624 --> 00:19:30,691
+Step 4: dead store elimination. Now nothing uses v or w, and they are not live-out. Delete lines 4 and 5.
+
+142
+00:19:31,141 --> 00:19:36,175
+Step 5: repeat. No expression is computed twice now, so we stop.
+
+143
+00:19:36,625 --> 00:19:40,849
+The answer has four lines. It matches the posted solution.
+
+144
+00:19:41,299 --> 00:19:45,246
+Question 8.1.2. Pause the video and try it.
+
+145
+00:19:45,696 --> 00:19:58,560
+Step 1: three-address code. Times binds tighter than plus. So in line 1, y times z is computed first: t equals y times z, then a equals x plus t.
+
+146
+00:19:59,010 --> 00:20:07,053
+In line 2, z times x is computed first: u equals z times x, then b equals u plus y.
+
+147
+00:20:07,503 --> 00:20:18,276
+Step 2: C S E. The four expressions are y times z, x plus t, z times x, and u plus y. No expression is computed twice.
+
+148
+00:20:18,726 --> 00:20:27,003
+So steps 3 and 4 have nothing to do, and the code cannot be optimized. The question tests operator precedence.
+
+149
+00:20:27,453 --> 00:20:31,443
+Question 8.1.3. Pause the video and try it.
+
+150
+00:20:31,893 --> 00:20:44,415
+Step 1: three-address code. Java computes y times z first. Then the plus and minus operators group from left to right: x plus t, then plus k, then minus n.
+
+151
+00:20:44,865 --> 00:20:55,148
+Line 2 the same way: h equals y times z, i equals x minus h, j equals i minus n, and b equals j plus k.
+
+152
+00:20:55,598 --> 00:21:03,598
+Step 2: C S E. y times z on line 5 is already in t. So line 5 becomes h equals t.
+
+153
+00:21:04,048 --> 00:21:14,331
+The other expressions differ: x plus t is not x minus h, and u plus k is not i minus n. So only y times z is common.
+
+154
+00:21:14,781 --> 00:21:24,125
+Step 3: copy propagation. Line 6 uses h, a copy of t. So line 6 becomes i equals x minus t.
+
+155
+00:21:24,575 --> 00:21:30,356
+Step 4: dead store elimination. Nothing uses h now. Delete line 5.
+
+156
+00:21:30,806 --> 00:21:41,153
+Step 5: repeat. Nothing else is common. This is our solution. Java's left-to-right order keeps every value the same as in the original code.
+
+157
+00:21:41,603 --> 00:21:50,733
+Recap of part 1. An analysis provides information. An optimization changes the program, and an analysis informs it.
+
+158
+00:21:51,183 --> 00:22:00,485
+C S E computes an expression once, if no operand is re-assigned in between. Sort the operands of plus and times first.
+
+159
+00:22:00,935 --> 00:22:07,484
+L I C M moves a computation with the same value in every iteration before the loop.
+
+160
+00:22:07,934 --> 00:22:15,529
+Three-address code: build the A S T, visit it in post-order, and give each internal node a new temporary.
+
+161
+00:22:15,979 --> 00:22:22,976
+Copy propagation and dead store elimination clean up after C S E. Live-out variables stay.
+
+162
+00:22:23,426 --> 00:22:32,535
+Part 2 computes the facts behind these steps with equations: available expressions, copy propagation, and reaching definitions.
