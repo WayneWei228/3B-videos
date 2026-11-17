@@ -1,0 +1,887 @@
+1
+00:00:00,000 --> 00:00:12,480
+This is ECE 320, video 22a: multicore, part 1. It covers pages 1 to 55 of unit 12, shared memory multiprocessors.
+
+2
+00:00:12,930 --> 00:00:20,845
+After this video you can do four things. One: explain threads, hardware multithreading and the shared memory model.
+
+3
+00:00:21,295 --> 00:00:26,265
+Two: trace two threads that share memory, and find the final value in memory.
+
+4
+00:00:26,715 --> 00:00:33,094
+Three: find the order of instructions that breaks a lock, and fix the lock with an atomic swap.
+
+5
+00:00:33,544 --> 00:00:39,944
+Four: show why private caches can return an old value. This is the cache coherence problem.
+
+6
+00:00:40,394 --> 00:00:50,805
+Unit 12 has five topics: thread-level parallelism, the shared memory model, synchronization, cache coherence, and memory consistency models.
+
+7
+00:00:51,255 --> 00:01:02,476
+This video covers the first three, and the start of cache coherence: why private caches cause a problem. Video 22b covers the coherence protocols.
+
+8
+00:01:02,926 --> 00:01:08,238
+Video 22c covers the last topic, memory consistency models.
+
+9
+00:01:08,688 --> 00:01:20,229
+There are five reasons to build multiprocessors. Reason 1 is performance. Instruction-level parallelism is limited, so the performance of one core is limited.
+
+10
+00:01:20,679 --> 00:01:29,405
+Reason 2 is power efficiency. More cores at a lower clock frequency give more throughput, but maybe a longer latency.
+
+11
+00:01:29,855 --> 00:01:38,303
+Reason 3 is cost. Big systems are built from ordinary cores, and a chip has enough transistors for many cores.
+
+12
+00:01:38,753 --> 00:01:47,009
+Reasons 4 and 5: an upgrade can add cores, and if one processor fails, the other N minus 1 still work.
+
+13
+00:01:47,459 --> 00:01:55,245
+On one processor, concurrency comes from software threads. A thread runs a stream of instructions of a program.
+
+14
+00:01:55,695 --> 00:02:03,994
+Each thread has private state: its context, which is the PC and the registers, and its own stack for local variables.
+
+15
+00:02:04,444 --> 00:02:12,956
+Shared state, like global variables and the heap, is the same for all threads. The threads share one memory address space.
+
+16
+00:02:13,406 --> 00:02:18,249
+A software process is like a thread, but it has its own memory space.
+
+17
+00:02:18,699 --> 00:02:27,744
+The operating system manages the threads. In a single-core system, all threads share one processor. Thread 0 runs first.
+
+18
+00:02:28,194 --> 00:02:37,154
+A hardware timer interrupt triggers the OS. The OS saves thread 0 and loads thread 1. This is a context switch.
+
+19
+00:02:37,604 --> 00:02:49,593
+The OS keeps swapping. Quick swaps give the illusion of concurrent execution. Rule: threads share memory, and each thread has its own PC, registers and stack.
+
+20
+00:02:50,043 --> 00:03:00,113
+Now run two threads on hardware. The first way is the multiplexed uniprocessor: one core, and the OS or runtime swaps the threads.
+
+21
+00:03:00,563 --> 00:03:06,685
+The threads interleave in time, but they never run at the same time. There is no parallelism.
+
+22
+00:03:07,135 --> 00:03:18,975
+The second way is multiprocessing. The simplest multiprocessor replicates the entire processor pipeline: two PCs, two register files, two ALUs.
+
+23
+00:03:19,425 --> 00:03:30,113
+The exception: here both pipelines share the instruction cache and the data cache. The shared cache becomes a bottleneck, and the end of this video comes back to it.
+
+24
+00:03:30,563 --> 00:03:37,347
+Now each thread has its own pipeline, so both threads run at the same time. This is parallelism.
+
+25
+00:03:37,797 --> 00:03:47,333
+Both pipelines load and store through the shared data cache to one memory. Their memory accesses interleave. This is the shared memory model.
+
+26
+00:03:47,783 --> 00:03:54,119
+The third way is hardware multithreading. Several threads share one pipeline, with its caches.
+
+27
+00:03:54,569 --> 00:04:05,151
+The hardware replicates only the thread context: one PC and one register file per thread. The select signal, T H R, picks the thread.
+
+28
+00:04:05,601 --> 00:04:19,787
+The reason: one program often leaves the pipeline idle. In this example, thread 0 issues in cycles 1 to 3, then waits for a cache miss. It issues in the same cycles in both rows.
+
+29
+00:04:20,237 --> 00:04:31,651
+Thread 0 issues again in cycles 10 and 11. It uses 5 of 12 slots. This is under 50 percent, as the slides say for single programs.
+
+30
+00:04:32,101 --> 00:04:37,199
+With multithreading, thread 1 issues in the slots that thread 0 leaves empty.
+
+31
+00:04:37,649 --> 00:04:43,452
+Now all 12 slots are used. So multithreading improves utilization and throughput.
+
+32
+00:04:43,902 --> 00:04:52,947
+Thread 0 still finishes in cycle 11, so it is not faster. A thread can even run slower, because it shares the pipeline.
+
+33
+00:04:53,397 --> 00:05:02,592
+Rule: multithreading improves utilization and throughput, but not single-thread performance. It has the same shared memory model.
+
+34
+00:05:03,042 --> 00:05:13,581
+Processors can communicate in two ways. With message passing, a processor sends explicit messages, for example between the computers of a cluster.
+
+35
+00:05:14,031 --> 00:05:22,841
+With shared memory, processors communicate through one shared address space, with loads and stores. The course uses this model.
+
+36
+00:05:23,291 --> 00:05:34,193
+Shared memory has three related issues. Issue 1 is synchronization: how to regulate access to shared data with critical sections. This video covers it.
+
+37
+00:05:34,643 --> 00:05:46,184
+Issue 2 is cache coherence: how a write to a location shows up to the other processors. This video shows the problem, and video 22b the protocols.
+
+38
+00:05:46,634 --> 00:05:58,858
+Issue 3 is the memory consistency model: how to keep shared memory simple while the hardware optimizes, for example with store buffers. Video 22c covers it.
+
+39
+00:05:59,308 --> 00:06:07,905
+The example is a bank. A loop goes over all transactions. Each transaction has an account id and an amount to debit.
+
+40
+00:06:08,355 --> 00:06:13,390
+A transaction debits the account only if the balance is at least the amount.
+
+41
+00:06:13,840 --> 00:06:24,315
+Different transactions can run in parallel. This is thread-level parallelism: a collection of asynchronous tasks that are not started and stopped together.
+
+42
+00:06:24,765 --> 00:06:37,522
+One transaction compiles to five RISC-V instructions. x 1 holds the id, and x 2 the amount. Instruction 0 puts the address of the balance into x 3.
+
+43
+00:06:37,972 --> 00:06:47,039
+The array accts is shared, so the compiler cannot keep a balance in a register. Instruction 1 loads the balance into x 4.
+
+44
+00:06:47,489 --> 00:06:55,958
+Instruction 2 skips the debit if the balance is less than the amount. Instruction 3 subtracts the amount in x 4.
+
+45
+00:06:56,408 --> 00:06:59,928
+Instruction 4 stores the new balance back to memory.
+
+46
+00:07:00,378 --> 00:07:09,253
+Rule: a thread reads shared data with a load and writes it with a store. Between them, the value is a private copy in a register.
+
+47
+00:07:09,703 --> 00:07:22,823
+Two people withdraw 100 dollars from account 241 at two ATMs. Each transaction runs as a thread on its own processor. The balance starts at 500.
+
+48
+00:07:23,273 --> 00:07:32,169
+Thread 0 starts. Instruction 0 only computes the address of the balance into x 3, so memory does not change.
+
+49
+00:07:32,619 --> 00:07:41,749
+Instruction 1 loads the balance. The value 500 travels from memory into x 4 of thread 0: a private copy.
+
+50
+00:07:42,199 --> 00:07:50,327
+Instruction 2 compares: 500 is not less than 100, so there is enough money. The branch is not taken.
+
+51
+00:07:50,777 --> 00:08:02,831
+Instruction 3 subtracts: x 4 becomes 500 minus 100, which is 400. Only the private copy changes. Memory still holds 500.
+
+52
+00:08:03,281 --> 00:08:11,793
+Instruction 4 stores x 4. The value 400 travels into memory, so the shared balance is now 400.
+
+53
+00:08:12,243 --> 00:08:22,653
+Then thread 1 runs the same code. It computes the same address, and its load reads 400, because thread 0 already stored 400.
+
+54
+00:08:23,103 --> 00:08:32,575
+400 is not less than 100. Thread 1 subtracts: 400 minus 100 is 300, in its own x 4.
+
+55
+00:08:33,025 --> 00:08:35,713
+Thread 1 stores 300 into memory.
+
+56
+00:08:36,163 --> 00:08:46,830
+The result is 300: two withdrawals of 100 from 500. It is correct, because thread 1 loaded the balance after thread 0 stored it.
+
+57
+00:08:47,280 --> 00:08:57,840
+This question type gives an order of instructions from two threads and asks for the final value in memory. The problem on screen is from page 14.
+
+58
+00:08:58,290 --> 00:09:06,290
+The method card has five steps. Step 1: write the instructions in time order, one row for each instruction.
+
+59
+00:09:06,740 --> 00:09:12,607
+Step 2: a load copies the memory value into the register of the thread that runs it.
+
+60
+00:09:13,057 --> 00:09:18,945
+Step 3: arithmetic changes only that thread's register. Memory does not change.
+
+61
+00:09:19,395 --> 00:09:25,453
+Step 4: a store copies the register into memory. The old value in memory is lost.
+
+62
+00:09:25,903 --> 00:09:31,941
+Step 5: compare the final value with the result of running the threads one after the other.
+
+63
+00:09:32,391 --> 00:09:35,804
+Pause the video and try it: find the final balance.
+
+64
+00:09:36,254 --> 00:09:43,059
+Here is the solution. Step 1: write the instructions in time order. Thread 0 runs first.
+
+65
+00:09:43,509 --> 00:09:47,307
+Thread 0 computes the address of the balance in x 3.
+
+66
+00:09:47,757 --> 00:09:53,175
+Step 2: the load copies 500 from memory into x 4 of thread 0.
+
+67
+00:09:53,625 --> 00:09:58,233
+500 is not less than 100, so thread 0 goes on.
+
+68
+00:09:58,683 --> 00:10:08,518
+Step 3: thread 0 subtracts in its own register. 500 minus 100 is 400. Memory still holds 500.
+
+69
+00:10:08,968 --> 00:10:16,733
+Now an interrupt stops thread 0 before its store. The value 400 waits in x 4 of thread 0.
+
+70
+00:10:17,183 --> 00:10:22,346
+Thread 1 runs. It computes the same address, so it uses the same balance.
+
+71
+00:10:22,796 --> 00:10:31,201
+Step 2 again: thread 1 loads the balance. Memory still holds 500, so thread 1 also gets 500.
+
+72
+00:10:31,651 --> 00:10:43,086
+500 is not less than 100, so thread 1 goes on. Step 3: it subtracts in its own x 4: 500 minus 100 is 400.
+
+73
+00:10:43,536 --> 00:10:49,424
+Step 4: thread 1 stores 400. The balance in memory becomes 400.
+
+74
+00:10:49,874 --> 00:10:58,813
+Thread 0 continues with instruction 4. It stores its old copy, 400, and overwrites memory with 400.
+
+75
+00:10:59,263 --> 00:11:08,692
+Step 5: compare. One after the other, the result is 300. Here it is 400, so one withdrawal of 100 is lost.
+
+76
+00:11:09,142 --> 00:11:16,950
+The cause: both threads loaded 500 before either stored. The fix is to synchronize access to the balance.
+
+77
+00:11:17,400 --> 00:11:27,469
+The fix is synchronization. It regulates access to shared data, so that only one thread at a time uses it. This is mutual exclusion.
+
+78
+00:11:27,919 --> 00:11:37,263
+The low-level tool is a lock. Higher-level tools are called semaphores or mutexes. The code adds a shared variable named lock.
+
+79
+00:11:37,713 --> 00:11:42,001
+A lock has two operations: acquire lock, and release lock.
+
+80
+00:11:42,451 --> 00:11:50,003
+The code between acquire and release is the critical section. Here it holds the test and the debit of the balance.
+
+81
+00:11:50,453 --> 00:11:58,880
+Acquire and release must interleave. Thread 0 acquires the lock, runs its critical section, and releases the lock.
+
+82
+00:11:59,330 --> 00:12:07,949
+If thread 1 calls acquire while thread 0 holds the lock, acquire blocks. Thread 1 enters only after the release.
+
+83
+00:12:08,399 --> 00:12:12,793
+Rule: only one thread at a time can be between acquire and release.
+
+84
+00:12:13,243 --> 00:12:24,934
+Problem from page 16: the same order of instructions, but now each thread calls acquire before its critical section and release after it. Pause the video and try it.
+
+85
+00:12:25,384 --> 00:12:35,816
+Solution, step 1: write the rows in time order. Thread 0 calls acquire. The lock is 0, so thread 0 gets it and lock becomes 1.
+
+86
+00:12:36,266 --> 00:12:42,666
+Thread 0 computes the address and loads the balance: 500 travels into its x 4.
+
+87
+00:12:43,116 --> 00:12:51,457
+500 is not less than 100, so thread 0 subtracts in its own register: x 4 becomes 400.
+
+88
+00:12:51,907 --> 00:12:58,542
+An interrupt stops thread 0 inside its critical section. Thread 0 still holds the lock.
+
+89
+00:12:58,992 --> 00:13:06,843
+Thread 1 calls acquire. The lock is 1, so thread 1 spins. It waits in acquire and does not touch the balance.
+
+90
+00:13:07,293 --> 00:13:10,258
+Another interrupt switches back to thread 0.
+
+91
+00:13:10,708 --> 00:13:15,956
+Thread 0 stores 400. The balance in memory becomes 400.
+
+92
+00:13:16,406 --> 00:13:20,054
+Thread 0 calls release, so lock becomes 0.
+
+93
+00:13:20,504 --> 00:13:28,163
+Thread 1 is still in acquire. Now it sees lock equal to 0 and gets the lock, so lock becomes 1 again.
+
+94
+00:13:28,613 --> 00:13:35,759
+Thread 1 loads the balance. Memory holds 400, so 400 travels into its x 4.
+
+95
+00:13:36,209 --> 00:13:44,145
+400 is not less than 100, so thread 1 subtracts: 400 minus 100 is 300.
+
+96
+00:13:44,595 --> 00:13:47,283
+Thread 1 stores 300 into memory.
+
+97
+00:13:47,733 --> 00:13:51,040
+Thread 1 calls release, and lock becomes 0.
+
+98
+00:13:51,490 --> 00:14:00,535
+Step 5: compare. The result is 300, the same as one after the other. The lock made the critical sections take turns.
+
+99
+00:14:00,985 --> 00:14:11,375
+Now build acquire and release. The first idea is a spin lock in software. Acquire waits while lock is not 0, then sets lock to 1.
+
+100
+00:14:11,825 --> 00:14:17,649
+A0 loads lock into x 6. Lock is 0 here, so x 6 gets 0.
+
+101
+00:14:18,099 --> 00:14:28,189
+A1 branches back to A0 while x 6 is not 0. So the thread spins while lock is 1. Here x 6 is 0, so it goes on.
+
+102
+00:14:28,639 --> 00:14:33,205
+A2 adds 1: x 6 becomes 0 plus 1, which is 1.
+
+103
+00:14:33,655 --> 00:14:39,585
+A3 stores x 6 into lock. Lock is now 1, so this thread holds the lock.
+
+104
+00:14:40,035 --> 00:14:46,009
+Release stores x 0, which always holds 0, into lock. The lock is free again.
+
+105
+00:14:46,459 --> 00:14:56,016
+Next, check if this acquire works. The test in A0 and A1 and the set in A3 are separate instructions, so atomicity matters.
+
+106
+00:14:56,466 --> 00:15:05,405
+This question type gives the code of a lock and asks if it works. The problem on screen uses the spin lock of page 17.
+
+107
+00:15:05,855 --> 00:15:11,849
+Step 1: find the test, which is the load of lock, and the set, which is the store to lock.
+
+108
+00:15:12,299 --> 00:15:18,678
+Step 2: run thread 0 through its test. It sees lock equal to 0, so it will enter.
+
+109
+00:15:19,128 --> 00:15:26,232
+Step 3: switch to thread 1 before thread 0 runs its set. Thread 1's test also sees 0.
+
+110
+00:15:26,682 --> 00:15:32,997
+Step 4: both threads set lock to 1, and both enter the critical section. The lock fails.
+
+111
+00:15:33,447 --> 00:15:40,956
+Step 5: if the test and the set are one atomic instruction, no switch fits between them, and the lock works.
+
+112
+00:15:41,406 --> 00:15:45,310
+Pause the video and try it: find the order of instructions.
+
+113
+00:15:45,760 --> 00:15:55,488
+Solution. Step 1: the test is A0 and A1, the load and the branch. The set is A3, the store. Lock starts at 0.
+
+114
+00:15:55,938 --> 00:16:03,554
+Step 2: run thread 0 through its test. A0 loads lock, so x 6 of thread 0 gets 0.
+
+115
+00:16:04,004 --> 00:16:09,103
+A1: x 6 is 0, so thread 0 does not loop. It will enter.
+
+116
+00:16:09,553 --> 00:16:17,851
+Step 3: switch to thread 1 before thread 0's set. A0 of thread 1 loads lock, and lock is still 0.
+
+117
+00:16:18,301 --> 00:16:23,016
+A1 of thread 1 also sees 0, so thread 1 will also enter.
+
+118
+00:16:23,466 --> 00:16:28,095
+Step 4: thread 0 runs A2, so its x 6 becomes 1.
+
+119
+00:16:28,545 --> 00:16:34,007
+Thread 0 runs A3: lock becomes 1. Thread 0 holds the lock.
+
+120
+00:16:34,457 --> 00:16:40,601
+Thread 1 runs A2. Its x 6 becomes 1, because its copy of lock was 0.
+
+121
+00:16:41,051 --> 00:16:45,957
+Thread 1 runs A3. It stores 1 into lock, which is already 1.
+
+122
+00:16:46,407 --> 00:16:49,202
+Thread 0 enters the critical section.
+
+123
+00:16:49,652 --> 00:16:56,052
+Thread 1 also enters the critical section. Both threads are inside, so the lock failed.
+
+124
+00:16:56,502 --> 00:17:06,721
+The cause: the loads and stores of two acquire sequences can interleave. The acquire is not atomic, so we have the same problem as before.
+
+125
+00:17:07,171 --> 00:17:18,755
+A correct implementation puts acquire in a system call, an OS call. Only the kernel can control the interleaving, because only the kernel can disable interrupts.
+
+126
+00:17:19,205 --> 00:17:29,018
+A1 disables interrupts. No interrupt can switch threads now, so A2 to A5, the test and the set, run as one atomic block.
+
+127
+00:17:29,468 --> 00:17:40,476
+A6 enables interrupts again before the return. If the lock was busy, A3 jumps to A0, which enables interrupts, so other threads can run.
+
+128
+00:17:40,926 --> 00:17:49,971
+If an interrupt arrives inside the block, it is taken only after A6. So no switch can fall between the test and the set.
+
+129
+00:17:50,421 --> 00:17:56,693
+It works, but it is inefficient: every acquire pays the large overhead of a system call.
+
+130
+00:17:57,143 --> 00:18:05,805
+A better spin lock uses an atomic instruction of the ISA. An example is atomic swap, written A M O swap.
+
+131
+00:18:06,255 --> 00:18:17,519
+A M O swap x 1, lock, does three things as one: copy x 1 into a temporary x 2, load lock into x 1, and store x 2 into lock.
+
+132
+00:18:17,969 --> 00:18:24,817
+The new acquire puts 1 into x 1 first. Case 1: the lock is free, so lock holds 0.
+
+133
+00:18:25,267 --> 00:18:30,003
+First, the old x 1, which is 1, goes into the temporary x 2.
+
+134
+00:18:30,453 --> 00:18:33,674
+Then lock, which is 0, goes into x 1.
+
+135
+00:18:34,124 --> 00:18:38,199
+Then the temporary 1 goes into lock. The lock is now 1.
+
+136
+00:18:38,649 --> 00:18:46,350
+A1 tests x 1. It is 0, so the lock was free. This thread now holds the lock and leaves the loop.
+
+137
+00:18:46,800 --> 00:18:56,229
+Case 2: the lock is busy, so lock holds 1. The swap puts 1 into x 1 and 1 into lock, so the lock does not change.
+
+138
+00:18:56,679 --> 00:19:08,199
+A1 sees x 1 equal to 1, so the thread keeps looping. Rule: the swap reads and sets the lock in one instruction, so at most one thread holds the lock.
+
+139
+00:19:08,649 --> 00:19:23,497
+Problem from page 23: both threads run the new acquire. The question is whether the lock works. Step 1: the test and the set are both inside A0, the A M O swap. Pause the video and try it.
+
+140
+00:19:23,947 --> 00:19:31,307
+Step 2: thread 0 runs A0. The swap loads lock, which is 0, into x 1 of thread 0.
+
+141
+00:19:31,757 --> 00:19:37,837
+In the same instruction, the old x 1, which is 1, goes into lock. Lock is now 1.
+
+142
+00:19:38,287 --> 00:19:44,218
+A1: x 1 of thread 0 is 0, so thread 0 leaves the loop with the lock.
+
+143
+00:19:44,668 --> 00:19:50,961
+Step 3: switch to thread 1. Its swap loads lock, which is already 1, into its x 1.
+
+144
+00:19:51,411 --> 00:19:57,961
+In the same instruction, thread 1's old x 1, which is 1, goes into lock. Lock stays 1.
+
+145
+00:19:58,411 --> 00:20:01,184
+Thread 0 runs its critical section.
+
+146
+00:20:01,634 --> 00:20:06,775
+A1 of thread 1: x 1 is 1, so thread 1 loops back to A0.
+
+147
+00:20:07,225 --> 00:20:11,492
+Thread 1 swaps again. It gets 1 again, and lock stays 1.
+
+148
+00:20:11,942 --> 00:20:16,251
+Thread 1 keeps spinning until thread 0 releases the lock.
+
+149
+00:20:16,701 --> 00:20:27,133
+Step 5: no switch can fall between the test and the set, because they are one instruction. The lock works. It is often called a test and set lock.
+
+150
+00:20:27,583 --> 00:20:38,591
+Building an atomic swap in hardware is not easy. No other memory operation may come between the load and the store, so other threads must be blocked for a moment.
+
+151
+00:20:39,041 --> 00:20:49,217
+Also, a load and a store in one instruction is not very RISC-like. One approach is an instruction pair: load reserved and store conditional.
+
+152
+00:20:49,667 --> 00:20:57,454
+Load reserved, L R, loads lock into x 1. It also remembers the address of lock as reserved.
+
+153
+00:20:57,904 --> 00:21:05,221
+In this example, thread 1 also runs L R. It also loads 0, and it also reserves lock.
+
+154
+00:21:05,671 --> 00:21:19,645
+Store conditional, S C, checks for a change at the reserved address. Lock has not changed since thread 1's L R, so the store happens: 1 goes into lock, and S C returns 0 for success.
+
+155
+00:21:20,095 --> 00:21:24,105
+Lock changed, so the reservation of thread 0 is lost.
+
+156
+00:21:24,555 --> 00:21:35,414
+Thread 0's S C sees the change. It does not store, and it returns 1 for failure. So thread 0 must try again. Only one thread got the lock.
+
+157
+00:21:35,864 --> 00:21:45,123
+The test and set lock works, but it performs poorly. Take 3 processors. Processor 2 holds the lock and runs its critical section.
+
+158
+00:21:45,573 --> 00:21:55,599
+Processors 0 and 1 wait in acquire. Each loop runs an A M O swap, and every A M O swap writes lock: it includes a store.
+
+159
+00:21:56,049 --> 00:22:02,407
+So every loop puts a store on the interconnect. Here P 0 swaps, then P 1 swaps.
+
+160
+00:22:02,857 --> 00:22:10,473
+They keep spinning. With 3 loops each, that is 6 stores while P 2 holds the lock, and all of them are useless.
+
+161
+00:22:10,923 --> 00:22:17,771
+Rule: repeated stores by several processors are costly. They make useless interconnect traffic.
+
+162
+00:22:18,221 --> 00:22:24,941
+The fix is the test and test and set lock. It is not a new instruction, only different software.
+
+163
+00:22:25,391 --> 00:22:30,809
+A0 and A1 spin with a simple load. The thread loops while lock is 1.
+
+164
+00:22:31,259 --> 00:22:41,990
+Only when the load sees 0, A2 sets x 1 to 1, and A3 does the A M O swap. A4 loops back if the swap found the lock busy.
+
+165
+00:22:42,440 --> 00:22:56,563
+A busy lock stays in each processor's own cache, so the spinning loads hit locally. Only the first load of P 0 and of P 1 uses the interconnect: 2 transfers instead of 6 stores.
+
+166
+00:22:57,013 --> 00:23:06,591
+When the lock changes, the cache block is invalidated, so the waiting processors load the new value. Video 22b shows how.
+
+167
+00:23:07,041 --> 00:23:13,505
+Rule: spin with a load in your own cache, and do the A M O swap only when the lock looks free.
+
+168
+00:23:13,955 --> 00:23:21,742
+Back to the simplest multiprocessor: both pipelines share the level 1 caches. This design has two problems.
+
+169
+00:23:22,192 --> 00:23:31,259
+Every access of every core goes to the same cache. This is a bandwidth and latency problem, and the cores can also thrash the cache.
+
+170
+00:23:31,709 --> 00:23:44,061
+The solution: each processor gets its own private cache. A cache coherence protocol coordinates the private caches. The rest of this video shows why the protocol is needed.
+
+171
+00:23:44,511 --> 00:23:54,580
+The programmer's conceptual model is simple: processors P 0 to P 3 share one memory. Life would be easy if systems looked like this.
+
+172
+00:23:55,030 --> 00:24:04,374
+Real systems look more like this: processors have caches, memory may be physically distributed, and an interconnect links everything.
+
+173
+00:24:04,824 --> 00:24:15,661
+Back to the bank example. Each withdrawal runs on its own processor, and a lock protects the critical section. First assume the processors have no caches.
+
+174
+00:24:16,111 --> 00:24:21,999
+Processor 0 loads 500 from memory and stores 400 to memory.
+
+175
+00:24:22,449 --> 00:24:34,289
+Processor 1 then loads 400 from memory and stores 300. Each load reads memory, so it sees the last store: no problem. Next, add caches.
+
+176
+00:24:34,739 --> 00:24:47,838
+Scenario 2: one on-chip cache, shared by all processors. P 0, P 1 and P 2 reach it through the interconnect. Memory holds A, the balance, equal to 500.
+
+177
+00:24:48,288 --> 00:24:56,928
+P 1 loads A. The request goes over the interconnect to the shared cache. The shared cache does not have A, so it is a miss.
+
+178
+00:24:57,378 --> 00:25:00,002
+So the shared cache asks memory for A.
+
+179
+00:25:00,452 --> 00:25:06,596
+Memory sends 500. The shared cache keeps a copy: tag A, data 500.
+
+180
+00:25:07,046 --> 00:25:12,529
+The shared cache sends 500 to P 1, so the load returns 500.
+
+181
+00:25:12,979 --> 00:25:19,208
+Now P 1 stores 400 to A. The store goes over the interconnect to the shared cache.
+
+182
+00:25:19,658 --> 00:25:24,309
+The store writes into the shared cache, so its data becomes 400.
+
+183
+00:25:24,759 --> 00:25:31,159
+The shared cache marks the block dirty. Memory is not updated: it still holds 500.
+
+184
+00:25:31,609 --> 00:25:42,681
+There is only one copy in the caches, so every core sees 400. But the shared cache is a bottleneck, because every access of every core goes to it.
+
+185
+00:25:43,131 --> 00:25:50,619
+Now add a private cache to each core. These are write-back caches. They reduce latency and increase throughput.
+
+186
+00:25:51,069 --> 00:25:58,173
+P 1 loads A. It misses in its own cache and in the shared cache, so the request goes on to memory.
+
+187
+00:25:58,623 --> 00:26:06,793
+Memory sends 500. The shared cache keeps A equal to 500, marked clean, because it matches memory.
+
+188
+00:26:07,243 --> 00:26:13,323
+The shared cache sends 500 up to P 1's cache, and the load returns 500.
+
+189
+00:26:13,773 --> 00:26:22,179
+P 1 stores 400. A write-back cache writes only its own copy, so P 1's cache now holds 400.
+
+190
+00:26:22,629 --> 00:26:28,239
+P 1 marks its block dirty. The shared cache and memory still hold 500.
+
+191
+00:26:28,689 --> 00:26:35,068
+Now P 0 loads A. It misses in its own cache, so the request goes to the shared cache.
+
+192
+00:26:35,518 --> 00:26:41,555
+The shared cache has A equal to 500, so it sends 500 to P 0's cache.
+
+193
+00:26:42,005 --> 00:26:50,539
+P 0 gets 500, but the last store wrote 400 into P 1's cache. P 0 got the wrong balance.
+
+194
+00:26:50,989 --> 00:26:58,135
+Rule: with private write-back caches, a load can return a stale value. The caches are incoherent.
+
+195
+00:26:58,585 --> 00:27:10,724
+This question type gives the caches and a list of loads and stores, and asks which value a load returns. The problem uses private write-through caches, from page 48.
+
+196
+00:27:11,174 --> 00:27:15,718
+Step 1: look in the core's own cache. A hit returns that copy.
+
+197
+00:27:16,168 --> 00:27:20,840
+Step 2: on a miss, ask the shared cache. On a miss there, ask memory.
+
+198
+00:27:21,290 --> 00:27:27,626
+Step 3: a write-back store changes only the core's own cache, and marks the block dirty.
+
+199
+00:27:28,076 --> 00:27:35,223
+Step 4: a write-through store also writes the shared cache and memory. It never writes another private cache.
+
+200
+00:27:35,673 --> 00:27:41,305
+Step 5: the value is stale if a newer store is not in the place where the load reads.
+
+201
+00:27:41,755 --> 00:27:46,405
+Pause the video and try it: what does the last load of P 1 return?
+
+202
+00:27:46,855 --> 00:27:55,197
+Here is the solution. The caches are write-through now. All caches start empty, and memory holds A equal to 500.
+
+203
+00:27:55,647 --> 00:28:03,540
+Steps 1 and 2: P 1 loads A. It misses in its own cache and in the shared cache, so the request goes to memory.
+
+204
+00:28:03,990 --> 00:28:13,761
+Memory sends 500. It travels up to P 1's cache, and the shared cache also keeps a copy. The load returns 500.
+
+205
+00:28:14,211 --> 00:28:20,867
+P 1 stores 400. Step 4: a write-through store first writes P 1's own cache.
+
+206
+00:28:21,317 --> 00:28:28,314
+Then the store goes through: 400 travels down to memory, and the shared cache also gets 400.
+
+207
+00:28:28,764 --> 00:28:35,676
+P 0 loads A. Step 1: it misses in its own cache, so the request goes to the shared cache.
+
+208
+00:28:36,126 --> 00:28:42,846
+The shared cache holds 400, so P 0 gets 400. This time the value is right.
+
+209
+00:28:43,296 --> 00:28:47,584
+P 0 stores 300. It writes its own cache first.
+
+210
+00:28:48,034 --> 00:28:52,962
+Then the store goes through: memory and the shared cache now hold 300.
+
+211
+00:28:53,412 --> 00:28:59,364
+P 1 loads A again. Step 1: P 1's own cache still has A, so it is a hit.
+
+212
+00:28:59,814 --> 00:29:07,323
+Step 5: the hit returns 400, but the last store wrote 300. P 1 read a stale value.
+
+213
+00:29:07,773 --> 00:29:16,883
+Rule: write-through updates memory, but never the other private caches. So a hit in a private cache can still return a stale value.
+
+214
+00:29:17,333 --> 00:29:25,951
+There are four options. Option 1: no caches. Then every access goes to memory: correct, but slow and unacceptable.
+
+215
+00:29:26,401 --> 00:29:35,681
+Option 2: do not cache shared data. Private data stays fast, but it is still too slow, because the whole accts database is shared.
+
+216
+00:29:36,131 --> 00:29:43,449
+Option 3: flush all other caches on every write to shared data. Then we may as well not have caches.
+
+217
+00:29:43,899 --> 00:29:59,237
+The solution is hardware cache coherence. The rough goal: all caches have the same data at all times. Minimal flushing and maximum caching give the best performance. Video 22b shows the protocols.
+
+218
+00:29:59,687 --> 00:30:10,674
+Recap. Threads share memory, and each thread has its own PC, registers and stack. All three hardware ways to run threads give the shared memory model.
+
+219
+00:30:11,124 --> 00:30:21,641
+A load copies shared data into a private register, and a store overwrites memory. So an interleaving can lose an update. Trace it row by row.
+
+220
+00:30:22,091 --> 00:30:33,334
+A lock makes the critical section mutually exclusive. Its test and its set must be atomic, with A M O swap or with load reserved and store conditional.
+
+221
+00:30:33,784 --> 00:30:41,101
+The test and test and set lock spins with loads in its own cache, and swaps only when the lock looks free.
+
+222
+00:30:41,551 --> 00:30:54,309
+Private caches keep copies. With write-back or write-through caches, a load can return a stale value. So the hardware needs cache coherence, the topic of video 22b.

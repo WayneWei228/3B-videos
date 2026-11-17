@@ -1,0 +1,1143 @@
+1
+00:00:00,000 --> 00:00:12,992
+This is ECE 320, video 22b. The topic is cache coherence: the protocols that keep private caches correct. It continues video 22a.
+
+2
+00:00:13,442 --> 00:00:21,741
+After this video, you can do four things. One: explain what a coherence controller does, and the events it reacts to.
+
+3
+00:00:22,191 --> 00:00:29,209
+Two: use the VI, MSI and MESI tables to find the next state of a cache block.
+
+4
+00:00:29,659 --> 00:00:36,891
+Three: trace a snooping bus, step by step, and give the states, the data and memory after each operation.
+
+5
+00:00:37,341 --> 00:00:45,491
+Four: trace a directory protocol, with its owner and its sharers, and explain the O state of MOESI.
+
+6
+00:00:45,941 --> 00:00:57,247
+Video 22a ended with this system. Each core has a private write-back cache. P1 stored 400 to A, so P1's copy is dirty.
+
+7
+00:00:57,697 --> 00:01:06,188
+The shared cache and memory still hold 500 for A. A write-back cache updates the next level only when it evicts the block.
+
+8
+00:01:06,638 --> 00:01:12,846
+Now P0 loads A. P0's cache does not hold A, so the load is a miss.
+
+9
+00:01:13,296 --> 00:01:16,496
+The miss goes over the interconnect to the shared cache.
+
+10
+00:01:16,946 --> 00:01:22,151
+The shared cache holds 500 for A, so it sends 500 to P0.
+
+11
+00:01:22,601 --> 00:01:31,028
+But the last write to A was 400, in P1's cache. P0 read an old value. The caches are incoherent.
+
+12
+00:01:31,478 --> 00:01:46,134
+Video 22a showed that no caches, uncachable shared data, or flushing all caches are too slow. The solution is hardware cache coherence: all caches have the same data at all times.
+
+13
+00:01:46,584 --> 00:01:58,445
+The coherence goal says that all caches have the same data at all times. Simple multiprocessors reach it with a bus. Each processor has a private cache on the bus.
+
+14
+00:01:58,895 --> 00:02:02,842
+P0 puts a request on the bus: a read of block A.
+
+15
+00:02:03,292 --> 00:02:09,116
+The bus is one shared set of wires. So every cache sees the request at the same time.
+
+16
+00:02:09,566 --> 00:02:18,099
+A second request, from P3, must wait until the bus is free. So every cache sees the two requests in the same order.
+
+17
+00:02:18,549 --> 00:02:25,163
+The rule: on a bus, all processors see all requests at the same time, and in the same order.
+
+18
+00:02:25,613 --> 00:02:34,914
+Coherence answers one question: how do other CPUs see a memory update? All copies must have the same data at all times.
+
+19
+00:02:35,364 --> 00:02:44,132
+Each cache gets a coherence controller, C C. It examines the bus traffic: addresses and data. This is called snooping.
+
+20
+00:02:44,582 --> 00:02:54,011
+The controller executes the coherence protocol. The protocol says what to do with the local copy, for each event that the controller sees.
+
+21
+00:02:54,461 --> 00:03:07,901
+The protocol keeps two rules. The first is SWMR: single writer, multiple readers. For a location A, at one time, only one core may write A. It may also read A.
+
+22
+00:03:08,351 --> 00:03:12,895
+At another time, some number of cores may read A, but none may write it.
+
+23
+00:03:13,345 --> 00:03:26,764
+The second rule is DVI, the data-value invariant. A read returns the value of the last write. Here P0 wrote 400, so every later read returns 400.
+
+24
+00:03:27,214 --> 00:03:39,801
+The controller reacts to events. Three events come from the local processor: Load, Store, and Repl. Repl is a replacement: the cache evicts a block, with a write-back.
+
+25
+00:03:40,251 --> 00:03:47,227
+A local event can put a request on the bus. A load miss puts Own GetS. A store puts Own GetM.
+
+26
+00:03:47,677 --> 00:03:52,541
+An eviction puts Put. It is PutS or PutM, for the state of the block.
+
+27
+00:03:52,991 --> 00:04:02,761
+Two events come from other processors. OtherGetS is a read miss of another processor. OtherGetM is a write miss of another processor.
+
+28
+00:04:03,211 --> 00:04:11,873
+One bus request has two names. P0's GetS is Own GetS for P0, and OtherGetS for every other cache.
+
+29
+00:04:12,323 --> 00:04:21,432
+So each protocol is a table. A state and an event give an action and a next state. Every question in this video uses this table.
+
+30
+00:04:21,882 --> 00:04:37,349
+The first protocol is VI, valid-invalid. It is also called MI. Each block in a cache is in one of two states. V means the cache has the block. I means it does not. One valid bit can hold this state.
+
+31
+00:04:37,799 --> 00:04:44,796
+A local load or store needs the block. So from I, the cache issues Get on the bus, and goes to V.
+
+32
+00:04:45,246 --> 00:04:51,305
+In V, a load or a store hits. The block is already here, so nothing goes on the bus.
+
+33
+00:04:51,755 --> 00:05:04,576
+When another processor wants to read or write the block, this cache gives it up. It goes to I, and sends its data if the copy is dirty. A replacement also goes to I, with a write-back.
+
+34
+00:05:05,026 --> 00:05:10,957
+In I, requests from other processors need no action, because the cache has no copy.
+
+35
+00:05:11,407 --> 00:05:18,916
+This is an invalidate protocol: when another processor wants the block, the local copy becomes invalid.
+
+36
+00:05:19,366 --> 00:05:28,305
+The same protocol, as a table. Rows are states. Columns are events. Each cell gives the action, a slash, and the next state.
+
+37
+00:05:28,755 --> 00:05:35,795
+State I, Load or Store: issue Get, then go to V. Events from other processors: nothing to do.
+
+38
+00:05:36,245 --> 00:05:38,783
+State V, Load or Store: a hit.
+
+39
+00:05:39,233 --> 00:05:43,457
+State V, Repl: issue Put with the data, then go to I.
+
+40
+00:05:43,907 --> 00:05:51,929
+State V, OtherGetS or OtherGetM: send the data, then go to I. Each cell matches one edge of the diagram.
+
+41
+00:05:52,379 --> 00:06:00,933
+Send Data puts the block on the bus, for memory and for the requester. Memory sends the data when no processor responds.
+
+42
+00:06:01,383 --> 00:06:10,749
+The memory controller has its own table. It must remember the state of each cache line: I, no cache has it, or V, one cache has it.
+
+43
+00:06:11,199 --> 00:06:18,281
+State I, bus event Get: no cache can respond, so memory sends the data. The line goes to V.
+
+44
+00:06:18,731 --> 00:06:25,515
+State V, Put: a cache writes the block back. Memory updates the block, and the line goes to I.
+
+45
+00:06:25,965 --> 00:06:33,880
+State V, Send Data: one cache sends the block to another. Memory updates its copy too, and the line stays V.
+
+46
+00:06:34,330 --> 00:06:43,845
+Here is the bank example of video 22a, now with the VI protocol. Both caches start in I. Memory holds 500.
+
+47
+00:06:44,295 --> 00:06:56,007
+Processor 0 runs load word. Its cache is in I, and the event is Load: issue Get, go to V. No other cache has A, so memory sends 500.
+
+48
+00:06:56,457 --> 00:07:06,163
+Processor 0 stores 400. Its cache is in V, so the store hits. Memory keeps 500, because the cache is write-back.
+
+49
+00:07:06,613 --> 00:07:17,237
+Processor 1 runs load word and issues Get. For processor 0 this is an OtherGetS. Processor 0 is in V: send data, go to I.
+
+50
+00:07:17,687 --> 00:07:23,362
+The data goes to processor 1. CPU 1 now holds V with 400.
+
+51
+00:07:23,812 --> 00:07:28,527
+Send Data also goes to memory, so memory now holds 400.
+
+52
+00:07:28,977 --> 00:07:40,518
+Processor 1 stores 300. It is in V, so the store hits. The balance is correct: 500 minus 100 minus 100 is 300.
+
+53
+00:07:40,968 --> 00:07:47,517
+So VI keeps at most one cached copy. Every new reader takes the block away from the last one.
+
+54
+00:07:47,967 --> 00:07:56,650
+VI is inefficient. It allows only one cached copy of a block in the whole system. Here P0 holds A in V.
+
+55
+00:07:57,100 --> 00:08:03,671
+P1 reads A. P0 must give the block up, so P1 now holds the only copy.
+
+56
+00:08:04,121 --> 00:08:16,046
+P2 reads A, and P1 gives it up. Multiple copies cannot exist, even when all processors only read. This is a big problem in real programs.
+
+57
+00:08:16,496 --> 00:08:24,987
+The solution splits V into two states. M, modified: a local dirty copy. S, shared: a local clean copy.
+
+58
+00:08:25,437 --> 00:08:31,474
+Then a block has either many read-only copies in S, or one read-write copy in M.
+
+59
+00:08:31,924 --> 00:08:37,343
+MSI has three states: I, invalid; S, shared; and M, modified.
+
+60
+00:08:37,793 --> 00:08:43,211
+From I, a load issues GetS and gets a clean copy. The block goes to S.
+
+61
+00:08:43,661 --> 00:08:49,059
+From I, a store issues GetM and gets the only copy. The block goes to M.
+
+62
+00:08:49,509 --> 00:08:57,957
+In S, a load hits. A read from another processor, OtherGetS, is also fine: the copy stays clean and shared.
+
+63
+00:08:58,407 --> 00:09:05,873
+In S, a store needs write permission. The cache issues GetM, and goes to M. This is called an upgrade.
+
+64
+00:09:06,323 --> 00:09:18,227
+In S, OtherGetM means another processor will write, so the copy becomes invalid. A replacement also goes to I, with no write-back, because the copy is clean.
+
+65
+00:09:18,677 --> 00:09:23,200
+In M, loads and stores hit. This cache has the only copy.
+
+66
+00:09:23,650 --> 00:09:32,205
+In M, OtherGetS means another processor wants to read. The cache sends its dirty data, and keeps a clean copy in S.
+
+67
+00:09:32,655 --> 00:09:40,911
+In M, OtherGetM sends the data and goes to I. A replacement writes the block back with PutM, and goes to I.
+
+68
+00:09:41,361 --> 00:09:44,945
+In I, requests from other processors need no action.
+
+69
+00:09:45,395 --> 00:09:53,309
+Here is the MSI table. It holds the same information as the diagram: one cell for each state and event.
+
+70
+00:09:53,759 --> 00:10:02,975
+Row I. Load issues GetS and goes to S. Store issues GetM and goes to M. Events from other processors: nothing to do.
+
+71
+00:10:03,425 --> 00:10:08,887
+Row S. A load hits. A store issues GetM and goes to M: the upgrade.
+
+72
+00:10:09,337 --> 00:10:19,470
+S with Repl goes to I with no action, because the copy is clean. S with OtherGetM goes to I. S with OtherGetS needs nothing.
+
+73
+00:10:19,920 --> 00:10:22,395
+Row M. Loads and stores hit.
+
+74
+00:10:22,845 --> 00:10:32,935
+M with Repl issues PutM and goes to I. OtherGetS sends the data and goes to S. OtherGetM sends the data and goes to I.
+
+75
+00:10:33,385 --> 00:10:41,108
+The upgrade: a local store to a shared block sends the other S copies to I. The local copy goes to M.
+
+76
+00:10:41,558 --> 00:10:50,347
+The main question type gives the caches and memory, then one CPU operation. You give the new states, the data and memory.
+
+77
+00:10:50,797 --> 00:10:58,115
+Step 1: find the cache line of the address, and check hit or miss. A block in state I counts as a miss.
+
+78
+00:10:58,565 --> 00:11:06,138
+Step 2: if the line holds another valid block, replace it first. A block in M is written back with PutM.
+
+79
+00:11:06,588 --> 00:11:13,159
+Step 3: read the requester's table cell. It gives the bus request: GetS, GetM, or none.
+
+80
+00:11:13,609 --> 00:11:22,505
+Step 4: every other cache that holds the block sees OtherGetS or OtherGetM. Read its cell. A cache in M sends the data.
+
+81
+00:11:22,955 --> 00:11:30,187
+Step 5: fill the line, then write the store value. When a cache sends data, memory takes a copy too.
+
+82
+00:11:30,637 --> 00:11:45,826
+Here is the slide example. P1 holds A in state M, with 500. The shared cache and memory hold an old value, 1000. The shared cache state, Modified, records that a core has the dirty copy.
+
+83
+00:11:46,276 --> 00:11:53,785
+P0 loads A. P0's cache has no copy of A, so the load misses. That is step 1 of the method.
+
+84
+00:11:54,235 --> 00:12:03,174
+P0 is in I, and the event is Load. The cell says: issue GetS. The request, GetS for address A, goes on the bus.
+
+85
+00:12:03,624 --> 00:12:13,373
+Every controller on the bus sees the GetS. For P1 and P2, it is an OtherGetS. P2 has no copy, so P2 does nothing.
+
+86
+00:12:13,823 --> 00:12:22,698
+P1 holds A in M. The cell M, OtherGetS says: send data, go to S. P1 follows the edge from M to S.
+
+87
+00:12:23,148 --> 00:12:28,716
+P1 puts its data on the bus: response, address A, data 500.
+
+88
+00:12:29,166 --> 00:12:35,011
+The block travels to P0. P0's line now holds A, with 500.
+
+89
+00:12:35,461 --> 00:12:42,459
+P0's own cell, I with Load, ends in S. So P0 follows the edge from I to S.
+
+90
+00:12:42,909 --> 00:12:48,285
+Send Data also goes to the memory side, so the shared cache takes 500.
+
+91
+00:12:48,735 --> 00:12:58,185
+Two cores now share A, and the shared cache differs from memory. So its state becomes Shared, Dirty. Memory still holds 1000.
+
+92
+00:12:58,635 --> 00:13:03,883
+The load completes. P0 reads 500, the value of the last write.
+
+93
+00:13:04,333 --> 00:13:13,400
+Next, P0 stores 400 to A. P0 holds A in S, so it may not write yet. S with Store is the upgrade.
+
+94
+00:13:13,850 --> 00:13:20,869
+The cell S, Store says: issue GetM, go to M. P0 puts GetM, for address A, on the bus.
+
+95
+00:13:21,319 --> 00:13:26,417
+The other controllers see an OtherGetM. P2 has no copy, and does nothing.
+
+96
+00:13:26,867 --> 00:13:34,355
+P1 holds A in S. The cell S, OtherGetM says: go to I. P1's copy becomes invalid.
+
+97
+00:13:34,805 --> 00:13:43,019
+The shared cache sees the GetM too. One core will hold the only dirty copy, so its state becomes Modified, Dirty.
+
+98
+00:13:43,469 --> 00:13:53,154
+Now P0 is the only holder. P0 follows the edge from S to M. It needs no data, because its copy is already valid.
+
+99
+00:13:53,604 --> 00:14:01,839
+The store writes 400 into P0's line. The shared cache and memory keep old values, until a write-back.
+
+100
+00:14:02,289 --> 00:14:15,686
+Before: P1 held A in M. After: P0 holds A in M with 400, and P1 is invalid. A read shares the dirty block. A write invalidates the other copies.
+
+101
+00:14:16,136 --> 00:14:26,760
+Assignment 8, question 1 a. The caches use MSI on a snooping bus. Each cache is direct-mapped, with four blocks, B0 to B3.
+
+102
+00:14:27,210 --> 00:14:34,933
+Each block holds two 4-byte words. The figure shows two hex digits per word. The low word is on the right.
+
+103
+00:14:35,383 --> 00:14:50,871
+To find the block of an address, split its bits. Address 120 is 0001 0010 0000. A block is 8 bytes, so the low 3 bits are the offset.
+
+104
+00:14:51,321 --> 00:15:01,731
+Four blocks need 2 index bits: the next two bits. For 120 they are 0 0, so address 120 goes to block B0.
+
+105
+00:15:02,181 --> 00:15:11,013
+The same split gives the block of every address. 110 and 130 both go to B2, so they compete for one line.
+
+106
+00:15:11,463 --> 00:15:23,175
+Each part starts again from this state. The answer lists each changed block as P i dot B j, state, address, data. A memory change is M, address, data.
+
+107
+00:15:23,625 --> 00:15:30,239
+Pause the video and try it. Part 2: P0 writes 80 to address 120.
+
+108
+00:15:30,689 --> 00:15:43,083
+Step 1: address 120 goes to block B0. P0's B0 holds 100, in state I. So the write misses, and nothing needs a write-back.
+
+109
+00:15:43,533 --> 00:15:53,475
+Step 3: P0's cell, I with Store, says: issue GetM. GetM 120 goes on the bus. Every other cache sees an OtherGetM.
+
+110
+00:15:53,925 --> 00:16:08,282
+Step 4: P15's B0 holds 120 in S. The cell S, OtherGetM says: go to I. P1's B0 holds another block, 100, so P1 does nothing.
+
+111
+00:16:08,732 --> 00:16:20,039
+No cache holds 120 in M, so memory sends the block, 00 20. It fills P0's B0, with address 120.
+
+112
+00:16:20,489 --> 00:16:23,305
+P0 follows the edge from I to M.
+
+113
+00:16:23,755 --> 00:16:32,736
+The store writes 80 into the word at 120, the low word on the right. B0 holds 00 80.
+
+114
+00:16:33,186 --> 00:16:47,501
+Answer: P0 dot B0 is M, 120, 00 80. P15 dot B0 is I, 120, 00 20. Memory does not change.
+
+115
+00:16:47,951 --> 00:16:53,497
+Pause the video and try it. Part 4: P1 reads address 110.
+
+116
+00:16:53,947 --> 00:17:03,825
+Step 1: 110 goes to block B2. P1's B2 holds 110, but in state I. An invalid block is a miss.
+
+117
+00:17:04,275 --> 00:17:13,149
+Step 3: P1's cell, I with Load, says: issue GetS. GetS 110 goes on the bus. The others see an OtherGetS.
+
+118
+00:17:13,599 --> 00:17:29,215
+Step 4: P0's B2 holds 110 in M, with 00 30. The cell M, OtherGetS says: send data, go to S. P15's B2 is invalid, so P15 does nothing.
+
+119
+00:17:29,665 --> 00:17:35,617
+P0 sends its block, 00 30. It fills P1's B2.
+
+120
+00:17:36,067 --> 00:17:38,606
+P1 follows the edge from I to S.
+
+121
+00:17:39,056 --> 00:17:47,931
+Send Data also goes to memory. Memory 110 changes from 00 10 to 00 30.
+
+122
+00:17:48,381 --> 00:18:04,359
+Answer: P0 dot B2 is S, 110, 00 30. P1 dot B2 is S, 110, 00 30. Memory 110 is 00 30.
+
+123
+00:18:04,809 --> 00:18:11,380
+Pause the video and try it. Part 6: P0 writes 78 to address 130.
+
+124
+00:18:11,830 --> 00:18:22,518
+Step 1: 130 goes to block B2, the same block as 110. P0's B2 holds 110, so the write misses.
+
+125
+00:18:22,968 --> 00:18:32,333
+Step 2: the old block, 110, is in M, so it must leave first. The cell M, Repl says: issue PutM, go to I.
+
+126
+00:18:32,783 --> 00:18:39,034
+PutM writes the dirty block back. Memory 110 becomes 00 30.
+
+127
+00:18:39,484 --> 00:18:51,239
+Step 3: P0's cell, I with Store, says: issue GetM. GetM 130 goes on the bus. No other cache holds 130, so no cache changes.
+
+128
+00:18:51,689 --> 00:19:01,097
+Memory sends block 130, 00 30. It fills P0's B2, now with address 130.
+
+129
+00:19:01,547 --> 00:19:04,363
+P0 follows the edge from I to M.
+
+130
+00:19:04,813 --> 00:19:10,594
+The store writes 78 into the low word. B2 holds 00 78.
+
+131
+00:19:11,044 --> 00:19:22,564
+Answer: P0 dot B2 is M, 130, 00 78. Memory 110 is 00 30, from the write-back.
+
+132
+00:19:23,014 --> 00:19:33,297
+MSI has a cost for private data. A load gets S. So the first store needs a second bus request, GetM, even with no other copy.
+
+133
+00:19:33,747 --> 00:19:42,131
+Most modern protocols add a fourth state, E, exclusive. It means: I have the only cached copy, and it is clean.
+
+134
+00:19:42,581 --> 00:19:51,242
+Processor 0 loads A. No other cache holds A, so the load gets E. CPU 0 holds E, with 500.
+
+135
+00:19:51,692 --> 00:20:01,420
+Processor 0 stores 400. In E, the store needs no bus request. The block changes to M, instantly and silently.
+
+136
+00:20:01,870 --> 00:20:08,590
+Processor 1 loads A. Processor 0 is in M, so it sends the data and goes to S.
+
+137
+00:20:09,040 --> 00:20:16,059
+Processor 1 gets S with 400, because a sharer exists. Memory also gets 400.
+
+138
+00:20:16,509 --> 00:20:25,149
+Processor 1 stores 300. It is in S, so it issues GetM and goes to M. Processor 0 goes to I.
+
+139
+00:20:25,599 --> 00:20:34,196
+On an eviction, a block in M is dirty and must be written back. A block in E is clean, so its data need not be written back.
+
+140
+00:20:34,646 --> 00:20:44,331
+So E is the only copy, and it is clean. A load miss with no sharers gets E, and a store to E goes to M with no bus traffic.
+
+141
+00:20:44,781 --> 00:20:53,400
+The MESI table is the MSI table with a new row, E. The gray cells are the same as in MSI.
+
+142
+00:20:53,850 --> 00:21:03,599
+One old cell changes. I with Load issues GetS, then goes to S or E. It goes to E when no other processor caches the block.
+
+143
+00:21:04,049 --> 00:21:10,065
+E with Load is a hit. E with Store is also a hit, and the state changes to M.
+
+144
+00:21:10,515 --> 00:21:20,499
+E with Repl issues PutM and goes to I. OtherGetS sends the data and goes to S. OtherGetM sends the data and goes to I.
+
+145
+00:21:20,949 --> 00:21:29,440
+Compare rows E and M. Only the Store cell differs: a store to E needs no request, but the state changes to M.
+
+146
+00:21:29,890 --> 00:21:37,015
+Here is the MSI diagram with the new state E. The gray edges are the same as in MSI.
+
+147
+00:21:37,465 --> 00:21:43,183
+From I, a load with no sharers goes to E. A load with sharers still goes to S.
+
+148
+00:21:43,633 --> 00:21:45,382
+In E, a load hits.
+
+149
+00:21:45,832 --> 00:21:49,800
+In E, a store goes to M. No request goes on the bus.
+
+150
+00:21:50,250 --> 00:21:53,749
+In E, OtherGetS sends the data, and goes to S.
+
+151
+00:21:54,199 --> 00:22:02,455
+In E, OtherGetM sends the data, and goes to I. The table also sends E to I on a replacement, with PutM.
+
+152
+00:22:02,905 --> 00:22:11,993
+MESI removes the cost of coherence when there is no sharing. So single-threaded programs stay fast on multicores.
+
+153
+00:22:12,443 --> 00:22:25,285
+Here is the MESI example on a shared bus. All three caches are empty. The shared cache and memory hold A equal to 500, and B equal to 123.
+
+154
+00:22:25,735 --> 00:22:30,791
+P0 loads A. P0's cache is empty, so the load misses.
+
+155
+00:22:31,241 --> 00:22:37,065
+P0 is in I with Load: issue GetS. GetS, address A, goes on the bus.
+
+156
+00:22:37,515 --> 00:22:42,785
+All controllers see it. No other cache holds A, so no cache responds.
+
+157
+00:22:43,235 --> 00:22:47,523
+So the shared cache responds: address A, data 500.
+
+158
+00:22:47,973 --> 00:22:55,311
+P0 will get the only copy, and may write it silently. So the shared cache marks A as Modified.
+
+159
+00:22:55,761 --> 00:22:57,724
+The block travels to P0.
+
+160
+00:22:58,174 --> 00:23:06,131
+No other cache holds A, so the cell gives E. P0 follows the edge from I to E, and reads 500.
+
+161
+00:23:06,581 --> 00:23:12,768
+Now P0 stores 600 to A. P0 holds A in E, so the store hits.
+
+162
+00:23:13,218 --> 00:23:20,706
+The cell E, Store says: hit, go to M. P0 changes to M silently. Nothing goes on the bus.
+
+163
+00:23:21,156 --> 00:23:28,537
+The store writes 600. The shared cache still holds 500, but it already marked A as Modified.
+
+164
+00:23:28,987 --> 00:23:33,489
+P1 loads A. P1's cache is empty, so the load misses.
+
+165
+00:23:33,939 --> 00:23:41,491
+P1's cell, I with Load, says: issue GetS. All controllers see it. For P0, it is an OtherGetS.
+
+166
+00:23:41,941 --> 00:23:47,701
+P0 holds A in M. The cell M, OtherGetS says: send data, go to S.
+
+167
+00:23:48,151 --> 00:23:53,079
+P0 puts its data on the bus: address A, data 600.
+
+168
+00:23:53,529 --> 00:23:55,470
+The block travels to P1.
+
+169
+00:23:55,920 --> 00:24:04,176
+Another cache holds A, so P1's cell gives S. P1 follows the edge from I to S, and reads 600.
+
+170
+00:24:04,626 --> 00:24:07,933
+The shared cache takes the data too: 600.
+
+171
+00:24:08,383 --> 00:24:15,615
+Two cores share A, and memory still holds 500. So the shared cache marks A as Shared, Dirty.
+
+172
+00:24:16,065 --> 00:24:24,918
+A shared bus cannot scale to large core counts. Every request goes to every core, and the bus carries one request at a time.
+
+173
+00:24:25,368 --> 00:24:33,773
+Large chips use another interconnect, for example a network-on-chip. A directory protocol replaces the broadcast.
+
+174
+00:24:34,223 --> 00:24:46,042
+Memory is distributed: each node holds part of the address space, and local accesses are faster. The home of an address holds its memory and its directory entry.
+
+175
+00:24:46,492 --> 00:24:57,628
+For each block, the directory tracks two things. The owner is the processor with a dirty copy, in M. The sharers are the processors with clean copies, in S.
+
+176
+00:24:58,078 --> 00:25:05,310
+A processor sends each coherence request to the home directory. The local node is where the request starts.
+
+177
+00:25:05,760 --> 00:25:11,904
+The home sends messages only to the processors that care. Here, that is the one sharer.
+
+178
+00:25:12,354 --> 00:25:20,973
+On the cache side, the directory protocol is like bus-based MSI. It has the same three states and the same actions.
+
+179
+00:25:21,423 --> 00:25:28,591
+But some arcs never trigger an action: in I, OtherGetS and OtherGetM; and in S, OtherGetS.
+
+180
+00:25:29,041 --> 00:25:36,763
+With a directory, these messages never arrive. The directory does not bother a cache unless the cache must act.
+
+181
+00:25:37,213 --> 00:25:52,189
+The directory runs its own protocol for each block. Its states are U, uncached, and S, shared, with the set of sharers, S h. The third is M, modified, with the owner, O w. P is the requester.
+
+182
+00:25:52,639 --> 00:26:03,157
+Its actions: Invalidate goes to all sharers. Fetch gets the data from the owner and sends it home. DataReply sends the data to the requester.
+
+183
+00:26:03,607 --> 00:26:11,692
+U with GetS: the directory replies with the data. The block goes to S, and the sharer set holds only the requester.
+
+184
+00:26:12,142 --> 00:26:17,881
+S with GetS: another reader. DataReply, and add the requester to the sharers.
+
+185
+00:26:18,331 --> 00:26:23,515
+U with GetM: DataReply, go to M. The requester becomes the owner.
+
+186
+00:26:23,965 --> 00:26:31,559
+S with GetM: invalidate all sharers. The requester becomes the owner, and the sharer set becomes empty.
+
+187
+00:26:32,009 --> 00:26:38,601
+M with GetS: fetch the data from the owner. The old owner and the requester become the sharers.
+
+188
+00:26:39,051 --> 00:26:47,222
+M with GetM: fetch the data and invalidate the old owner. Reply with the data. The requester becomes the owner.
+
+189
+00:26:47,672 --> 00:26:55,800
+PutM from the owner sends the block to U. PutS removes one sharer. When the last sharer leaves, the block goes to U.
+
+190
+00:26:56,250 --> 00:27:03,567
+The second question type gives the caches and the directory. You give the new states, the directory entry, and memory.
+
+191
+00:27:04,017 --> 00:27:11,313
+Step 1: the requester checks its line, as before. A miss sends GetS for a load, or GetM for a store.
+
+192
+00:27:11,763 --> 00:27:18,931
+Step 2: the request goes to the home directory. Read the entry state of the block: U, S or M.
+
+193
+00:27:19,381 --> 00:27:28,448
+Step 3: the directory acts on its edge. It sends a DataReply from home, fetches from the owner, or invalidates the sharers.
+
+194
+00:27:28,898 --> 00:27:34,615
+Step 4: each cache that gets a message changes state, by the MSI table.
+
+195
+00:27:35,065 --> 00:27:45,028
+Step 5: update the directory entry: its state, and the owner or the sharers. Memory changes only when the owner sends data home.
+
+196
+00:27:45,478 --> 00:27:58,470
+Now the same operations with a directory. P1 holds A in M, with 500. The directory entry of A says Modified, with owner P1. Memory holds 1000.
+
+197
+00:27:58,920 --> 00:28:01,245
+P0 loads A, and misses.
+
+198
+00:28:01,695 --> 00:28:11,658
+P0's cell, I with Load, says: issue GetS. P0 sends GetS, address A, to the home directory only. There is no broadcast.
+
+199
+00:28:12,108 --> 00:28:16,887
+The directory blocks A. Other requests for A wait until this one ends.
+
+200
+00:28:17,337 --> 00:28:27,406
+The entry says Modified, with owner P1. So the directory forwards the request to P1 only: GetS forward, requester P0.
+
+201
+00:28:27,856 --> 00:28:35,323
+P1 is in M, and sees a read from another processor. The MSI cell says: send data, go to S.
+
+202
+00:28:35,773 --> 00:28:42,173
+P1 sends the data straight to P0: response, address A, data 500.
+
+203
+00:28:42,623 --> 00:28:45,033
+The block arrives in P0's line.
+
+204
+00:28:45,483 --> 00:28:49,665
+P0 follows I to S, and the load reads 500.
+
+205
+00:28:50,115 --> 00:28:56,685
+P0 tells the directory that it has the data: unblock, address A, data 500.
+
+206
+00:28:57,135 --> 00:29:04,218
+The directory takes the data, so its copy of A becomes 500. Memory still holds 1000.
+
+207
+00:29:04,668 --> 00:29:15,185
+Directory edge M to S: the old owner and the requester become the sharers. The entry is Shared, Dirty, with sharer bits for P0 and P1.
+
+208
+00:29:15,635 --> 00:29:22,441
+Next, P0 stores 400 to A. P0 holds A in S, so it needs an upgrade.
+
+209
+00:29:22,891 --> 00:29:31,531
+P0's cell, S with Store, says: issue GetM. P0 sends upgrade GetM, address A, to the home directory.
+
+210
+00:29:31,981 --> 00:29:33,922
+The directory blocks A again.
+
+211
+00:29:34,372 --> 00:29:43,161
+The entry is Shared. The directory invalidates every sharer except the requester: here, only P1. Acks equals 1.
+
+212
+00:29:43,611 --> 00:29:48,091
+P1's MSI cell, S with OtherGetM, says: go to I.
+
+213
+00:29:48,541 --> 00:29:56,435
+P1 sends its acknowledgement straight to P0. Acks equals 1 told P0 to wait for exactly one.
+
+214
+00:29:56,885 --> 00:30:00,810
+With all acknowledgements in, P0 follows S to M.
+
+215
+00:30:01,260 --> 00:30:03,223
+The store writes 400.
+
+216
+00:30:03,673 --> 00:30:06,083
+P0 unblocks the directory.
+
+217
+00:30:06,533 --> 00:30:14,320
+Directory edge S to M: P0 is the owner, and no sharers remain. The entry is Modified, Dirty.
+
+218
+00:30:14,770 --> 00:30:26,397
+Before: P1 owned A. After: P0 owns A with 400, and P1 is invalid. The directory sent each message only to the caches that hold A.
+
+219
+00:30:26,847 --> 00:30:35,743
+MESI with a directory. P1 holds A in S. Block B is uncached: its entry is Idle, with no sharers.
+
+220
+00:30:36,193 --> 00:30:38,475
+P0 loads B, and misses.
+
+221
+00:30:38,925 --> 00:30:43,064
+P0 sends GetS, address B, to the home directory.
+
+222
+00:30:43,514 --> 00:30:45,178
+The directory blocks B.
+
+223
+00:30:45,628 --> 00:30:54,929
+The entry of B is Idle: no cache holds B. So the directory replies with the data: address B, data 123.
+
+224
+00:30:55,379 --> 00:30:57,790
+The block arrives in P0's line.
+
+225
+00:30:58,240 --> 00:31:06,411
+No other cache holds B, so P0 gets E. P0 follows I to E, and reads 123.
+
+226
+00:31:06,861 --> 00:31:11,725
+P0 unblocks the directory, with the data 123.
+
+227
+00:31:12,175 --> 00:31:21,028
+A block in E can change to M with no message. So the directory records P0 as the owner: P0 is Modified.
+
+228
+00:31:21,478 --> 00:31:28,625
+Next, P0 stores 456 to B. P0 holds B in E, so the store hits.
+
+229
+00:31:29,075 --> 00:31:34,109
+E with Store: go to M, silently. No message goes to the directory.
+
+230
+00:31:34,559 --> 00:31:42,154
+The store writes 456. The directory is still correct: it already lists P0 as the owner.
+
+231
+00:31:42,604 --> 00:31:51,457
+Assignment 8, question 1 b, uses the same caches with a directory. Memory holds a directory entry for each block.
+
+232
+00:31:51,907 --> 00:31:56,579
+The states DI, DS and DM are the slides' U, S and M.
+
+233
+00:31:57,029 --> 00:32:07,760
+The entry also lists the owner or the sharers. Memory is not updated on a write to a block that is M in another cache. Each part starts from this state.
+
+234
+00:32:08,210 --> 00:32:16,978
+Pause the video and try it. Part 6: P0 reads 120, then P1 writes 80 to 120.
+
+235
+00:32:17,428 --> 00:32:28,457
+First, P0 reads 120. B0 holds 100 in I, so it misses. P0 sends GetS 120 to the home.
+
+236
+00:32:28,907 --> 00:32:39,681
+The entry is DS, with sharer P15. Edge S, GetS: DataReply. The data, 00 20, goes to P0's B0.
+
+237
+00:32:40,131 --> 00:32:42,307
+P0 follows I to S.
+
+238
+00:32:42,757 --> 00:32:49,327
+The directory adds P0. The entry is DS, with sharers P15 and P0.
+
+239
+00:32:49,777 --> 00:33:00,636
+Next, P1 writes 120. P1's B0 holds 100 in I: a miss. P1 sends GetM 120 home.
+
+240
+00:33:01,086 --> 00:33:07,657
+The entry is DS. Edge S, GetM: invalidate all sharers. P15 goes to I.
+
+241
+00:33:08,107 --> 00:33:11,904
+P0 is a sharer too, so P0 goes to I.
+
+242
+00:33:12,354 --> 00:33:20,845
+P1 has no copy, so the directory also sends the data. 00 20 fills P1's B0.
+
+243
+00:33:21,295 --> 00:33:23,129
+P1 follows I to M.
+
+244
+00:33:23,579 --> 00:33:28,443
+P1 writes 80. B0 holds 00 80.
+
+245
+00:33:28,893 --> 00:33:35,187
+The entry becomes DM, with owner P1. Memory keeps 00 20.
+
+246
+00:33:35,637 --> 00:33:59,338
+Answer: P0 dot B0 is I, 120, 00 20. P15 dot B0 is I, 120, 00 20. P1 dot B0 is M, 120, 00 80. The entry is DM, 120, owner P1, data 00 20.
+
+247
+00:33:59,788 --> 00:34:08,641
+Pause the video and try it. Part 7: P0 writes 80 to 120, then P1 reads 120.
+
+248
+00:34:09,091 --> 00:34:19,523
+First, P0 writes 120. B0 holds 100 in I: a miss. P0 sends GetM 120 home.
+
+249
+00:34:19,973 --> 00:34:28,315
+The entry is DS, with sharer P15. Edge S, GetM: invalidate P15. P15 goes to I.
+
+250
+00:34:28,765 --> 00:34:37,063
+P0 has no copy, so the directory sends the data. 00 20 fills P0's B0.
+
+251
+00:34:37,513 --> 00:34:39,732
+P0 follows I to M.
+
+252
+00:34:40,182 --> 00:34:45,259
+P0 writes 80. B0 holds 00 80.
+
+253
+00:34:45,709 --> 00:34:49,080
+The entry becomes DM, with owner P0.
+
+254
+00:34:49,530 --> 00:34:55,951
+Next, P1 reads 120: a miss. P1 sends GetS 120 home.
+
+255
+00:34:56,401 --> 00:35:04,721
+The entry is DM, with owner P0. Edge M, GetS: fetch from the owner. P0 follows M to S.
+
+256
+00:35:05,171 --> 00:35:11,571
+Fetch sends P0's data home. Memory 120 becomes 00 80.
+
+257
+00:35:12,021 --> 00:35:16,693
+DataReply sends 00 80 to P1's B0.
+
+258
+00:35:17,143 --> 00:35:18,978
+P1 follows I to S.
+
+259
+00:35:19,428 --> 00:35:28,004
+Edge M to S: the old owner and the requester become the sharers. The entry is DS, with P0 and P1.
+
+260
+00:35:28,454 --> 00:35:47,697
+Answer: P0 dot B0 and P1 dot B0 are S, 120, 00 80. P15 dot B0 is I. The entry is DS, 120, sharers P0 and P1, data 00 80.
+
+261
+00:35:48,147 --> 00:35:57,853
+Pause the video and try it. Part 8: P0 writes 80 to 120, then P1 writes 90 to 120.
+
+262
+00:35:58,303 --> 00:36:10,485
+The first write is the same as in part 7. P15 goes to I, P0 holds M with 00 80, and the entry is DM with owner P0.
+
+263
+00:36:10,935 --> 00:36:17,292
+Next, P1 writes 120: a miss. P1 sends GetM 120 home.
+
+264
+00:36:17,742 --> 00:36:25,785
+The entry is DM, with owner P0. Edge M, GetM: fetch and invalidate. P0 goes to I.
+
+265
+00:36:26,235 --> 00:36:32,037
+P0's data, 00 80, goes on to P1's B0.
+
+266
+00:36:32,487 --> 00:36:34,322
+P1 follows I to M.
+
+267
+00:36:34,772 --> 00:36:39,892
+P1 writes 90. B0 holds 00 90.
+
+268
+00:36:40,342 --> 00:36:48,022
+The entry becomes DM, with owner P1. Memory is not updated: it keeps 00 20.
+
+269
+00:36:48,472 --> 00:37:09,912
+Answer: P0 dot B0 is I, 120, 00 80. P1 dot B0 is M, 120, 00 90. P15 dot B0 is I. The entry is DM, 120, owner P1, data 00 20.
+
+270
+00:37:10,362 --> 00:37:22,245
+In MSI and MESI, a GetS to a block in M or E sends the data to two places. One is the requester. The other is the memory controller.
+
+271
+00:37:22,695 --> 00:37:31,804
+The shared cache must take the copy, because it becomes the owner of the block. It answers later requests while the block is in I or S.
+
+272
+00:37:32,254 --> 00:37:38,931
+The problem: when the block is written again soon, each of these writes to the shared cache is unnecessary.
+
+273
+00:37:39,381 --> 00:37:48,853
+One solution adds an owner state, O. On OtherGetS in M or E, the cache sends the data only to the requester, and goes to O.
+
+274
+00:37:49,303 --> 00:37:58,754
+The O cache becomes the owner. It answers reads of the block, and it writes the block back when it is evicted. The shared cache is not updated.
+
+275
+00:37:59,204 --> 00:38:03,684
+With the owner state O, the protocol is called MOESI.
+
+276
+00:38:04,134 --> 00:38:17,595
+Pause the video and try it. Assignment 8, question 2: add the state O, owned, to MESI, and draw the MOESI diagram. Gray edges are from MESI.
+
+277
+00:38:18,045 --> 00:38:29,736
+In A8, a block in M goes to O on OtherGetS. It sends the data only to the requester. This edge replaces the MESI edge from M to S.
+
+278
+00:38:30,186 --> 00:38:37,546
+In O, a load hits. An OtherGetS keeps the state O: the O cache sends the dirty data to the reader.
+
+279
+00:38:37,996 --> 00:38:44,759
+In O, a local store needs the only copy. The cache invalidates the sharers, and goes to M.
+
+280
+00:38:45,209 --> 00:38:53,699
+In O, OtherGetM invalidates the block. A replacement writes the block back, because O is the owner. Both go to I.
+
+281
+00:38:54,149 --> 00:39:05,115
+Other caches with the block stay in S. E keeps its MESI edges, as in the posted solution. The slide also allows E to go to O.
+
+282
+00:39:05,565 --> 00:39:17,341
+To recap. The coherence controller reacts to local loads, stores and replacements, and to OtherGetS and OtherGetM from the bus. Each protocol is a table.
+
+283
+00:39:17,791 --> 00:39:30,932
+VI allows one copy. MSI allows many clean copies or one dirty copy. MESI adds E, the only clean copy, so a store to E needs no bus request.
+
+284
+00:39:31,382 --> 00:39:41,729
+A snooping trace has five steps: find the line, replace, request, the other caches, then fill, write and memory. Use the table cell at every step.
+
+285
+00:39:42,179 --> 00:39:51,800
+A directory trace sends each request home. The entry state picks the edge, and the directory messages only the caches that hold the block.
+
+286
+00:39:52,250 --> 00:40:06,117
+MOESI adds O, so a shared dirty block does not go to the shared cache each time. That is the end of video 22b. Video 22c is about memory consistency.

@@ -1,0 +1,823 @@
+1
+00:00:00,000 --> 00:00:08,597
+This is ECE 320, video 22 c, part 3 of the multicore unit: memory consistency.
+
+2
+00:00:09,047 --> 00:00:16,599
+After this video, you can do four things. One: explain how a store buffer changes what another core sees.
+
+3
+00:00:17,049 --> 00:00:22,489
+Two: decide if a result is possible under sequential consistency, and prove it.
+
+4
+00:00:22,939 --> 00:00:30,001
+Three: decide if a result is allowed under IBM 370 or under total store order.
+
+5
+00:00:30,451 --> 00:00:34,312
+Four: use fences to restore the order that a program needs.
+
+6
+00:00:34,762 --> 00:00:43,786
+This is the roadmap of the multicore unit. The earlier parts covered threads, the shared memory model, locks, and cache coherence.
+
+7
+00:00:44,236 --> 00:00:52,940
+The last topic is memory consistency models. A model says in which order other cores see the loads and stores of a core.
+
+8
+00:00:53,390 --> 00:01:05,294
+A tricky example. All variables start at 0. Thread 1 stores 1 to A, then 1 to flag. Thread 2 waits while flag is 0, then prints A. What can it print?
+
+9
+00:01:05,744 --> 00:01:10,757
+First, in program order. Thread 1 stores 1 to A, so A becomes 1.
+
+10
+00:01:11,207 --> 00:01:15,517
+Then it stores 1 to flag. Flag tells thread 2 that A is ready.
+
+11
+00:01:15,967 --> 00:01:19,487
+Thread 2 reads flag and sees 1, so its loop ends.
+
+12
+00:01:19,937 --> 00:01:24,673
+Thread 2 prints A. A became 1 before flag did, so it prints 1.
+
+13
+00:01:25,123 --> 00:01:35,192
+Now let thread 1 reorder its two stores. They use different addresses, so thread 1 alone sees no difference. Flag becomes 1 first.
+
+14
+00:01:35,642 --> 00:01:39,269
+Thread 2 sees flag equal to 1 and leaves its loop.
+
+15
+00:01:39,719 --> 00:01:43,367
+It prints A, which is still 0. So it prints 0.
+
+16
+00:01:43,817 --> 00:01:50,750
+The store to A comes too late. A reorder that is safe on one core changes the result on another core.
+
+17
+00:01:51,200 --> 00:01:59,413
+First, a unicore. One processor runs all threads. The scheduling policy is not defined, and there are no caches.
+
+18
+00:01:59,863 --> 00:02:09,762
+Each thread keeps its program order. Memory sees one access at a time, so it sees one interleaving: here A 1, A 2, B 1, B 2.
+
+19
+00:02:10,212 --> 00:02:18,980
+Another run can switch threads at other times and give another interleaving. So the output can change. This is non-determinacy.
+
+20
+00:02:19,430 --> 00:02:28,262
+Now a multicore. Each core runs one thread in program order. One core accesses memory at a time, and there are no caches.
+
+21
+00:02:28,712 --> 00:02:34,963
+So memory again sees one interleaving. The possible outputs are the same as on the unicore.
+
+22
+00:02:35,413 --> 00:02:41,322
+That simple model made two assumptions. One: processors do not cache global data.
+
+23
+00:02:41,772 --> 00:02:50,391
+For performance, processors must cache global data. This causes the cache coherence problem, which the earlier part solved.
+
+24
+00:02:50,841 --> 00:02:53,934
+Two: each thread executes in program order.
+
+25
+00:02:54,384 --> 00:03:04,965
+For performance, we want out-of-order execution. Then a program can mean something else on a multicore, so we must know the memory consistency model.
+
+26
+00:03:05,415 --> 00:03:16,274
+A unicore reorders only when the control and data dependences allow it. The two stores of thread 1 use different addresses, so core 0 may swap them.
+
+27
+00:03:16,724 --> 00:03:27,604
+But thread 2 needs that order, and core 1 does not know what core 0 reordered. We need rules that keep programming intuitive and keep out-of-order performance.
+
+28
+00:03:28,054 --> 00:03:35,115
+Memory consistency uses the cache coherence protocol, but the two terms answer different questions.
+
+29
+00:03:35,565 --> 00:03:43,608
+Coherence says how other processors see an update to one location. Every processor sees the writes to A in one order.
+
+30
+00:03:44,058 --> 00:03:54,042
+Consistency says when another processor sees an update. It is about the order of the updates to all locations, and which orders are acceptable.
+
+31
+00:03:54,492 --> 00:04:04,583
+The consistency model defines correct behavior. It is a contract between the system and the programmer, like the ISA, and software can see it.
+
+32
+00:04:05,033 --> 00:04:10,195
+The coherence protocol is only a means to an end. Software cannot see it.
+
+33
+00:04:10,645 --> 00:04:18,091
+So the consistency model restricts the order of loads and stores, not the order of coherence messages.
+
+34
+00:04:18,541 --> 00:04:24,301
+Recall the store buffer from the caching lecture. It hides the latency of store misses.
+
+35
+00:04:24,751 --> 00:04:29,167
+On a load miss, the load needs the data, so the pipeline must stall.
+
+36
+00:04:29,617 --> 00:04:35,441
+On a store miss, no instruction waits for the data. So there is no reason to stall.
+
+37
+00:04:35,891 --> 00:04:42,803
+The store puts its address and value into the store buffer, here A equals 1, and the processor keeps going.
+
+38
+00:04:43,253 --> 00:04:47,733
+The store buffer writes the store into the data cache in the background.
+
+39
+00:04:48,183 --> 00:04:55,180
+A load must search the store buffer and the data cache, because the newest value can still be in the buffer.
+
+40
+00:04:55,630 --> 00:05:04,803
+The writeback buffer is different: it sits behind the data cache and hides writebacks. On a multicore, the store buffer causes a problem.
+
+41
+00:05:05,253 --> 00:05:17,925
+Here is the same program on two processors. Processor 0 writes A, then flag. Processor 1 spins until flag is 1, then prints A. Intuition says it prints 1.
+
+42
+00:05:18,375 --> 00:05:27,271
+Processor 0 executes A equals 1. The store misses the cache, so it waits in the store buffer. Memory A is still 0.
+
+43
+00:05:27,721 --> 00:05:35,849
+Processor 0 keeps going. flag equals 1 hits the cache and completes at once. Memory flag becomes 1.
+
+44
+00:05:36,299 --> 00:05:40,353
+Processor 1 reads flag and sees 1, so it leaves its loop.
+
+45
+00:05:40,803 --> 00:05:48,504
+Processor 1 prints A. Memory A is still 0, because A equals 1 waits in the store buffer. It prints 0.
+
+46
+00:05:48,954 --> 00:05:56,037
+Later, the store buffer writes A equals 1 to memory. Too late: processor 1 already printed 0.
+
+47
+00:05:56,487 --> 00:06:06,855
+Coherence says nothing here. It orders the writes to one location, but processor 1 saw the writes to two locations, flag and A, out of order.
+
+48
+00:06:07,305 --> 00:06:16,627
+The store buffer reordered the writes. Real systems do this. What is allowed is part of the ISA: the memory consistency model.
+
+49
+00:06:17,077 --> 00:06:25,547
+A memory consistency model is a contract between the software and the memory. Models differ in the reorders that they allow.
+
+50
+00:06:25,997 --> 00:06:36,173
+Program order is the order of one processor's own accesses, as its program gives it. A 1 comes before B 1, and A 2 before B 2.
+
+51
+00:06:36,623 --> 00:06:45,924
+Visibility order is the order of all accesses, as the processors observe them. It merges all accesses into one sequence.
+
+52
+00:06:46,374 --> 00:06:54,502
+The slides write it as a V-order list, here A 1, A 2, B 1, B 2. A model says which V-orders are allowed.
+
+53
+00:06:54,952 --> 00:07:05,299
+The strongest model is strict consistency. A read of x returns the value of the most recent write to x, no matter how soon the read comes.
+
+54
+00:07:05,749 --> 00:07:17,098
+Case 1: CPU 1 writes X first, then CPU 2 reads X twice. Can u, v be 1, 1? Yes, with the V-order A 1, B 1, B 2.
+
+55
+00:07:17,548 --> 00:07:24,481
+Can case 1 give 0, 1? No. That needs B 1 before A 1, but A 1 came first in time.
+
+56
+00:07:24,931 --> 00:07:35,043
+Case 2: CPU 2 reads X before CPU 1 writes it. Now 0, 1 is correct, with the V-order B 1, A 1, B 2.
+
+57
+00:07:35,493 --> 00:07:43,088
+Strict consistency needs a global clock to find the most recent write, and writes that happen at once, everywhere.
+
+58
+00:07:43,538 --> 00:07:56,125
+That fails in distributed shared memory, where a local access is faster than a remote one. With caches, a write must first invalidate the other copies. So it is not practical.
+
+59
+00:07:56,575 --> 00:08:03,444
+So what do we assume when we write multithreaded programs? The next model: sequential consistency.
+
+60
+00:08:03,894 --> 00:08:13,537
+Sequential consistency is slightly weaker. It does not fix what a read returns in real time. It says which reads and writes could happen.
+
+61
+00:08:13,987 --> 00:08:24,781
+Lamport, 1979: the result of any execution is the same as if the operations of all processors ran in some sequential order,
+
+62
+00:08:25,231 --> 00:08:30,970
+and the operations of each processor appear in this sequence in the order of its program.
+
+63
+00:08:31,420 --> 00:08:40,423
+So two rules. Rule 1: all instructions run in some sequential order. Rule 2: each processor keeps its program order.
+
+64
+00:08:40,873 --> 00:08:50,515
+The model has one memory, no caches and no store buffers. A switch connects one processor at a time, so memory sees one interleaving.
+
+65
+00:08:50,965 --> 00:09:04,597
+The slide example. CPU 1 writes X, then reads Y into u. CPU 2 writes Y, then reads X into v. All start at 0. Which u, v are possible under SC?
+
+66
+00:09:05,047 --> 00:09:13,751
+Build one interleaving, one operation at a time. A 1: CPU 1 stores 1 to X. Memory X becomes 1.
+
+67
+00:09:14,201 --> 00:09:19,065
+A 2: CPU 2 stores 1 to Y. Memory Y becomes 1.
+
+68
+00:09:19,515 --> 00:09:25,553
+B 1: CPU 1 loads Y into u. Y is already 1, so u becomes 1.
+
+69
+00:09:26,003 --> 00:09:31,485
+B 2: CPU 2 loads X into v. X is 1, so v becomes 1.
+
+70
+00:09:31,935 --> 00:09:42,239
+Each CPU kept its program order, so this interleaving is legal. So 1, 1 is possible, with the V-order A 1, A 2, B 1, B 2.
+
+71
+00:09:42,689 --> 00:09:47,767
+Start again from 0 with another order: A 2, B 2, A 1, B 1.
+
+72
+00:09:48,217 --> 00:09:53,081
+A 2: CPU 2 stores 1 to Y. Memory Y becomes 1.
+
+73
+00:09:53,531 --> 00:09:59,952
+B 2: CPU 2 loads X into v. No one has written X yet, so v gets 0.
+
+74
+00:10:00,402 --> 00:10:07,485
+A 1: CPU 1 stores 1 to X. Memory X becomes 1, but v already holds 0.
+
+75
+00:10:07,935 --> 00:10:13,503
+B 1: CPU 1 loads Y into u. Y is 1, so u becomes 1.
+
+76
+00:10:13,953 --> 00:10:19,777
+So 1, 0 is also possible, with the V-order A 2, B 2, A 1, B 1.
+
+77
+00:10:20,227 --> 00:10:28,141
+Can u, v be 0, 0? Program order gives two arrows: A 1 before B 1, and A 2 before B 2.
+
+78
+00:10:28,591 --> 00:10:35,290
+u equals 0 means B 1 read Y before A 2 wrote it. So B 1 comes before A 2.
+
+79
+00:10:35,740 --> 00:10:42,183
+v equals 0 means B 2 read X before A 1 wrote it. So B 2 comes before A 1.
+
+80
+00:10:42,633 --> 00:10:54,921
+Follow the arrows: A 1, B 1, A 2, B 2, back to A 1. This is a cycle, so no sequential order obeys all four arrows. 0, 0 is not possible.
+
+81
+00:10:55,371 --> 00:11:04,459
+The slides give the V-order B 1, B 2, A 1, A 2 for this result. It breaks the program order of both CPUs.
+
+82
+00:11:04,909 --> 00:11:14,914
+The enumeration agrees. The 6 interleavings give 0, 1 once, 1, 1 four times, and 1, 0 once. Never 0, 0.
+
+83
+00:11:15,364 --> 00:11:22,596
+Sequential consistency constrains all memory operations. A read after a write stays in order.
+
+84
+00:11:23,046 --> 00:11:25,414
+A write after a write stays in order.
+
+85
+00:11:25,864 --> 00:11:29,192
+A read or a write after a read stays in order.
+
+86
+00:11:29,642 --> 00:11:40,821
+This is simple to reason about. But modern processors reorder all the time for performance, for example with store buffers, where a read passes an earlier write.
+
+87
+00:11:41,271 --> 00:11:50,657
+The question type: under sequential consistency, is a result possible? Or: list all possible results. This method solves both.
+
+88
+00:11:51,107 --> 00:11:56,462
+Step 1: label the memory operations, and draw the program-order arrows.
+
+89
+00:11:56,912 --> 00:12:06,683
+Step 2: for each value that a read returns, draw an arrow. The initial value puts the read before the write. A written value puts it after.
+
+90
+00:12:07,133 --> 00:12:13,959
+Step 3: no cycle means the result is possible. Follow the arrows to write a V-order as proof.
+
+91
+00:12:14,409 --> 00:12:20,809
+Step 4: a cycle, or a property that every interleaving keeps, means it is not possible.
+
+92
+00:12:21,259 --> 00:12:29,665
+To list all results, find the reads that decide the result. Try each combination of their values with steps 2 to 4.
+
+93
+00:12:30,115 --> 00:12:44,301
+The first example of the slides. CPU 1 writes X, then Y. CPU 2 reads Y into u, then X into v. Is 1, 1 possible? Is 1, 0? Pause the video and try it.
+
+94
+00:12:44,751 --> 00:12:48,762
+Step 1: label the operations and draw the program order.
+
+95
+00:12:49,212 --> 00:12:56,807
+For 1, 1: u equals 1 means A 2 read Y after B 1 wrote it. So B 1 comes before A 2.
+
+96
+00:12:57,257 --> 00:13:06,985
+v equals 1 puts B 2 after A 1. There is no cycle, so 1, 1 is possible, with the V-order A 1, B 1, A 2, B 2.
+
+97
+00:13:07,435 --> 00:13:11,893
+For 1, 0: u equals 1 again puts B 1 before A 2.
+
+98
+00:13:12,343 --> 00:13:18,786
+v equals 0 means B 2 read X before A 1 wrote it. So B 2 comes before A 1.
+
+99
+00:13:19,236 --> 00:13:26,980
+Now the arrows form a cycle: A 1, B 1, A 2, B 2, back to A 1. So 1, 0 is not possible.
+
+100
+00:13:27,430 --> 00:13:38,929
+The answer slide for 1, 0 is not in the PDF, but the enumeration agrees. If CPU 2 sees the second write, it must also see the first.
+
+101
+00:13:39,379 --> 00:13:52,925
+Assignment 9, question 1. Three processors share X, which starts at 0. Each has a register R. Under SC, can X end as 4, 5 or 6? Pause the video and try it.
+
+102
+00:13:53,375 --> 00:14:03,231
+Part a. 4 is 2 plus 2. Use the order of the solution. First all of C: it stores 6, loads 6, doubles it, and stores 12.
+
+103
+00:14:03,681 --> 00:14:08,801
+Next B 1 to B 3: B loads 12, adds 1, and stores 13.
+
+104
+00:14:09,251 --> 00:14:15,651
+Next all of A. A 1 overwrites X with 1. Then A loads 1, doubles it, and stores 2.
+
+105
+00:14:16,101 --> 00:14:22,715
+Last B 4 to B 6: B loads 2, doubles it, and stores 4. So X can end as 4.
+
+106
+00:14:23,165 --> 00:14:32,914
+Part b. The last store to X is A 4, B 6 or C 4. Each stores R plus R, which is even. So 5 is not possible.
+
+107
+00:14:33,364 --> 00:14:41,620
+Part c. Can X end as 6? 6 is 3 plus 3. Start again from 0 with the order C, then A, then B.
+
+108
+00:14:42,070 --> 00:14:45,313
+All of C runs first. X becomes 12.
+
+109
+00:14:45,763 --> 00:14:50,371
+Then all of A. A 1 overwrites 12 with 1, and A 4 stores 2.
+
+110
+00:14:50,821 --> 00:14:55,386
+Then B 1 to B 3. B loads 2, adds 1, and stores 3.
+
+111
+00:14:55,836 --> 00:15:02,151
+Then B 4 to B 6. B loads 3, doubles it, and stores 6. So the answer is yes.
+
+112
+00:15:02,601 --> 00:15:14,419
+Part d. Every memory operation uses the same address, X. So the operations of a processor depend on each other and stay in order. No new result is possible.
+
+113
+00:15:14,869 --> 00:15:20,821
+The enumeration confirms it. Every final value is even, and 4 and 6 both appear.
+
+114
+00:15:21,271 --> 00:15:37,954
+Assignment 9, question 2. Two RISC-V processors. x 1 holds the address of A. A to E start at 0, F is 1, and G is 2. Under SC, list all final values of C, D and E. Pause the video and try it.
+
+115
+00:15:38,404 --> 00:15:47,513
+Step 1: D gets the value that P 1 loads from B in line 5. E gets the value that P 2 loads from A in line 5.
+
+116
+00:15:47,963 --> 00:15:55,643
+C gets 1 from P 1 and 2 from P 2, both in line 4. The last of these two stores decides C.
+
+117
+00:15:56,093 --> 00:16:06,653
+Step 2: D equals 0 puts P 1 line 5 before P 2 line 2. E equals 0 puts P 2 line 5 before P 1 line 2.
+
+118
+00:16:07,103 --> 00:16:14,101
+With program order, this is a cycle, as in the slide example. So D and E are never both 0.
+
+119
+00:16:14,551 --> 00:16:26,775
+If D is 0, P 1 line 4 comes before P 2 line 4, so P 2 stores C last: C is 2. In the same way, E equal to 0 gives C equal to 1.
+
+120
+00:16:27,225 --> 00:16:36,739
+Step 3: write one interleaving for each remaining case. All of P 1, then all of P 2: C, D, E equal 2, 0, 1.
+
+121
+00:16:37,189 --> 00:16:42,693
+P 1 lines 1 to 4, then P 2, then the rest of P 1: 2, 1, 1.
+
+122
+00:16:43,143 --> 00:16:51,250
+P 1 lines 1 to 3, then P 2, then the rest of P 1. Now P 1 stores C last: 1, 1, 1.
+
+123
+00:16:51,700 --> 00:16:55,689
+All of P 2, then all of P 1: 1, 1, 0.
+
+124
+00:16:56,139 --> 00:17:09,174
+Step 4: every other combination breaks a rule. D and E both 0 is a cycle. D equal to 0 needs C equal to 2, and E equal to 0 needs C equal to 1.
+
+125
+00:17:09,624 --> 00:17:17,624
+So there are exactly four results. The enumeration of all 924 interleavings gives the same four.
+
+126
+00:17:18,074 --> 00:17:33,946
+Spring 2020 quiz 2, question 5. A and B are memory. u, v, w and x are registers. All start at 0. Part A: under SC, list the possible values. Pause the video and try it.
+
+127
+00:17:34,396 --> 00:17:43,377
+Step 1: A 3 loads A after A 1, and only 1 is ever written to A. So u is always 1. B 1 sets v to 1.
+
+128
+00:17:43,827 --> 00:17:53,513
+w loads B in A 2: 1 if B 2 comes first, else 0. x loads A in B 3: 1 if A 1 comes first, else 0.
+
+129
+00:17:53,963 --> 00:18:04,757
+Step 2: w and x both 0 needs A 2 before B 2, and B 3 before A 1. With program order, this is a cycle. So it is not possible.
+
+130
+00:18:05,207 --> 00:18:13,975
+Step 3: the other cases have interleavings. All of CPU A, then CPU B: w is 0 and x is 1.
+
+131
+00:18:14,425 --> 00:18:20,015
+All of CPU B, then CPU A: w is 1 and x is 0.
+
+132
+00:18:20,465 --> 00:18:26,353
+A 1, then all of CPU B, then the rest of A: w is 1 and x is 1.
+
+133
+00:18:26,803 --> 00:18:32,925
+So the results are 1, 1, 0, 1; 1, 1, 1, 0; and 1, 1, 1, 1.
+
+134
+00:18:33,375 --> 00:18:43,594
+Back to the example where SC forbids 0, 0. Now each core has a store buffer, as real processors do. Can we get 0, 0?
+
+135
+00:18:44,044 --> 00:18:51,084
+CPU 1 executes X equals 1. The store goes into its store buffer, not into memory.
+
+136
+00:18:51,534 --> 00:18:57,465
+CPU 2 executes Y equals 1. This store also waits in its buffer.
+
+137
+00:18:57,915 --> 00:19:07,216
+CPU 1 loads Y. Its buffer has no entry for Y, so it reads memory. Y is still 0, so u becomes 0.
+
+138
+00:19:07,666 --> 00:19:16,882
+CPU 2 loads X. Its buffer has no entry for X, so it reads memory. X is still 0, so v becomes 0.
+
+139
+00:19:17,332 --> 00:19:20,553
+Now the store buffers drain. X becomes 1.
+
+140
+00:19:21,003 --> 00:19:33,846
+Then Y becomes 1. The loads read before the stores reached memory, so u, v is 0, 0: sequentially inconsistent. The V-order is B 1, B 2, A 1, A 2.
+
+141
+00:19:34,296 --> 00:19:44,515
+SC also needs atomic writes: a write becomes visible to all processors at once. Here CPU 3 waits for B, then prints A.
+
+142
+00:19:44,965 --> 00:19:53,029
+CPU 1 writes A equals 1 into its own copy, and sends an update to CPU 2 and CPU 3.
+
+143
+00:19:53,479 --> 00:19:59,025
+CPU 2 gets the update. Its copy of A becomes 1, so it leaves its loop.
+
+144
+00:19:59,475 --> 00:20:04,915
+CPU 2 writes B equals 1 and sends an update to CPU 3.
+
+145
+00:20:05,365 --> 00:20:11,189
+CPU 3 gets the update for B before the update for A. So it leaves its loop.
+
+146
+00:20:11,639 --> 00:20:15,565
+CPU 3 prints its copy of A, which is still 0.
+
+147
+00:20:16,015 --> 00:20:29,945
+Then the update for A arrives, too late. CPU 2 saw A equal 1 before it wrote B, so CPU 3 must see A equal 1 after B. The cause is the read-others'-write-early optimization.
+
+148
+00:20:30,395 --> 00:20:37,926
+Sequential consistency limits program-order relaxation. So it forbids three performance optimizations.
+
+149
+00:20:38,376 --> 00:20:42,280
+First: store buffers, where a read passes an earlier write.
+
+150
+00:20:42,730 --> 00:20:47,850
+Second: reading another core's write early, as in the three-CPU example.
+
+151
+00:20:48,300 --> 00:20:52,183
+Third: reading the core's own write early, from its store buffer.
+
+152
+00:20:52,633 --> 00:21:01,657
+To get the performance back, relax the program order or the atomicity, on each core. The next models relax the write-to-read order.
+
+153
+00:21:02,107 --> 00:21:10,448
+The first relaxed model is IBM 370. It relaxes only one order: a write followed by a read.
+
+154
+00:21:10,898 --> 00:21:21,479
+A read can complete before an earlier write to a different address. X equals 1 waits in the buffer, and the read of Y goes to memory. u gets 0.
+
+155
+00:21:21,929 --> 00:21:31,913
+A read of the same address must wait until all processors have seen the write. So the read of X waits until X equals 1 reaches memory.
+
+156
+00:21:32,363 --> 00:21:35,137
+Now the read of X returns 1 from memory.
+
+157
+00:21:35,587 --> 00:21:43,736
+So IBM 370 allows store buffers, but no forwarding: a core cannot read its own write early.
+
+158
+00:21:44,186 --> 00:21:53,509
+The slides ask: 0, 0 is not SC, but is it legal under IBM 370? Pause the video and try it.
+
+159
+00:21:53,959 --> 00:21:58,929
+In each CPU, the read goes to a different address than the write before it.
+
+160
+00:21:59,379 --> 00:22:13,054
+So IBM 370 relaxes both program-order arrows, and the cycle is gone. V-order: B 1, B 2, A 1, A 2, the store-buffer execution from before.
+
+161
+00:22:13,504 --> 00:22:20,053
+So 0, 0 is legal under IBM 370, but not under SC.
+
+162
+00:22:20,503 --> 00:22:26,925
+The second model is total store order, TSO. It also relaxes only the write-to-read order.
+
+163
+00:22:27,375 --> 00:22:36,036
+A read can complete before a write is seen by all processors. CPU 1 stores X equals 1 into its buffer.
+
+164
+00:22:36,486 --> 00:22:45,766
+CPU 1 reads X. TSO lets a core read its own write early, so the 1 comes from the store buffer. This is forwarding.
+
+165
+00:22:46,216 --> 00:22:56,392
+CPU 2 reads X. Other processors cannot see the new value until all processors see it. So CPU 2 reads 0 from memory.
+
+166
+00:22:56,842 --> 00:23:06,762
+Then X equals 1 reaches memory. So TSO is a store buffer with forwarding. IBM 370 is a store buffer without it.
+
+167
+00:23:07,212 --> 00:23:21,420
+Each CPU writes a variable, reads it back, and reads the other variable. Is 1, 1, 0, 0 legal under SC, IBM 370 and TSO? Pause the video and try it.
+
+168
+00:23:21,870 --> 00:23:28,441
+w equals 0 puts C 1 before A 2. x equals 0 puts C 2 before A 1.
+
+169
+00:23:28,891 --> 00:23:38,384
+SC: program order adds A 1, B 1, C 1, and the same in CPU 2. This makes a cycle, so it is not SC.
+
+170
+00:23:38,834 --> 00:23:53,447
+IBM 370: B 1 reads X, the same address as A 1. So B 1 waits until all processors see A 1, and C 1 comes after B 1. The cycle stays: not legal.
+
+171
+00:23:53,897 --> 00:24:05,204
+TSO: B 1 reads its own write early from the store buffer, so the arrow from A 1 to B 1 goes away. The same holds in CPU 2. No cycle is left.
+
+172
+00:24:05,654 --> 00:24:15,190
+Follow the arrows: B 1, B 2, C 1, C 2, A 1, A 2, the V-order of the slides. It is legal under TSO only.
+
+173
+00:24:15,640 --> 00:24:24,003
+The second question type: is a result allowed under IBM 370 or TSO, but not under SC?
+
+174
+00:24:24,453 --> 00:24:30,127
+Step 1: check SC first. If SC allows the result, every model allows it.
+
+175
+00:24:30,577 --> 00:24:35,484
+Step 2: draw the arrows of the result: program order and the read arrows.
+
+176
+00:24:35,934 --> 00:24:49,865
+Step 3: relax each arrow from a write to a later read. IBM 370: only if the addresses differ. TSO: also for the same address, because the read takes its own write early.
+
+177
+00:24:50,315 --> 00:24:57,909
+Step 4: no cycle means allowed; write the V-order with the early reads first. A cycle means not allowed.
+
+178
+00:24:58,359 --> 00:25:05,079
+Part B: find a result that TSO allows but SC does not. Pause the video and try it.
+
+179
+00:25:05,529 --> 00:25:14,639
+Step 1: part A showed that w and x both 0 is not SC, because of the cycle A 1, A 2, B 2, B 3.
+
+180
+00:25:15,089 --> 00:25:26,673
+Step 3: A 2 reads B after A 1 writes A, a different address. TSO relaxes this arrow, and also B 2 to B 3. Replay it with store buffers.
+
+181
+00:25:27,123 --> 00:25:30,963
+A 1 puts A equals 1 into the buffer of CPU A.
+
+182
+00:25:31,413 --> 00:25:33,162
+B 1 sets v to 1.
+
+183
+00:25:33,612 --> 00:25:37,815
+B 2 puts B equals 1 into the buffer of CPU B.
+
+184
+00:25:38,265 --> 00:25:45,411
+A 2 loads B. The buffer of CPU A has no B, so it reads memory: w becomes 0.
+
+185
+00:25:45,861 --> 00:25:53,072
+B 3 loads A. The buffer of CPU B has no A, so it reads memory: x becomes 0.
+
+186
+00:25:53,522 --> 00:26:01,330
+A 3 loads A. The buffer of CPU A holds A equals 1, so TSO forwards it: u becomes 1.
+
+187
+00:26:01,780 --> 00:26:11,721
+A 4 and B 4 only add stores to the buffers. So the result is 1, 1, 0, 0: allowed by TSO, not by SC.
+
+188
+00:26:12,171 --> 00:26:23,691
+Sometimes a program needs the order, for example between a lock and its data. The fix is a fence, or memory barrier: a special instruction of the ISA.
+
+189
+00:26:24,141 --> 00:26:32,056
+Put a fence between the store and the load in each CPU. CPU 1 stores X equals 1 into its buffer.
+
+190
+00:26:32,506 --> 00:26:36,431
+CPU 2 stores Y equals 1 into its buffer.
+
+191
+00:26:36,881 --> 00:26:46,119
+CPU 1 reaches its fence. A fence stalls until the store buffer is empty, so X equals 1 goes to memory first.
+
+192
+00:26:46,569 --> 00:26:56,851
+The buffer is empty, so the fence ends, and CPU 1 loads Y. Y still waits in the buffer of CPU 2, so u becomes 0.
+
+193
+00:26:57,301 --> 00:27:03,680
+CPU 2 reaches its fence. Its buffer drains: Y equals 1 goes to memory.
+
+194
+00:27:04,130 --> 00:27:15,565
+CPU 2 loads X, which is already 1, so v becomes 1. With fences, the second load always sees the other store, so 0, 0 cannot happen.
+
+195
+00:27:16,015 --> 00:27:26,425
+In a lock, fences go after acquire and before release. They make locks even slower, so use a synchronization library, and do not write your own.
+
+196
+00:27:26,875 --> 00:27:40,934
+Dekker's algorithm, from 1965, gives two CPUs mutual exclusion with plain loads and stores. Each CPU sets its flag and enters only if the other flag is false.
+
+197
+00:27:41,384 --> 00:27:53,245
+Under SC it works: one flag write comes first, so the other CPU sees that flag as true. The enumeration never finds both CPUs in the critical section.
+
+198
+00:27:53,695 --> 00:28:03,082
+Under IBM 370 it breaks. CPU 0 writes flag 0 equals true, and the store waits in its buffer.
+
+199
+00:28:03,532 --> 00:28:08,055
+CPU 1 writes flag 1 equals true into its own buffer.
+
+200
+00:28:08,505 --> 00:28:20,131
+CPU 0 reads flag 1. The address differs from its buffered store, so the read goes to memory and gets false. CPU 0 enters the critical section.
+
+201
+00:28:20,581 --> 00:28:29,584
+CPU 1 reads flag 0 from memory, also gets false, and enters too. Both CPUs are in the critical section.
+
+202
+00:28:30,034 --> 00:28:38,055
+The fix is a fence after each flag write. With the fences, the enumeration never finds both CPUs inside.
+
+203
+00:28:38,505 --> 00:28:49,876
+Summary. A consistency model says in which order other cores see the loads and stores of a core. Coherence is about one location; consistency is about all.
+
+204
+00:28:50,326 --> 00:29:00,502
+Sequential consistency is one interleaving that keeps each program order. Draw the order arrows: no cycle, possible; a cycle, not possible.
+
+205
+00:29:00,952 --> 00:29:10,488
+Store buffers relax the write-to-read order. IBM 370 has no forwarding. TSO forwards a core's own writes.
+
+206
+00:29:10,938 --> 00:29:18,661
+A fence stalls until the store buffer is empty, so it restores the order. This completes the multicore unit.
