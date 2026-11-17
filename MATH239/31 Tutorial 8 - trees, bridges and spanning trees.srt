@@ -1,0 +1,619 @@
+1
+00:00:00,000 --> 00:00:12,032
+This is MATH 239, video 31. It solves all the problems of Tutorial 8. They are about trees, regular graphs, bridges and spanning trees.
+
+2
+00:00:12,482 --> 00:00:22,679
+For each problem, we first see the principle that it needs, on a small graph. Then we do the method once on a small example. Then we solve the problem.
+
+3
+00:00:23,129 --> 00:00:32,004
+Problem T8-1 asks for the number of vertices of degree 4 in a tree. It uses a rule that links the degrees of a tree.
+
+4
+00:00:32,454 --> 00:00:41,691
+Problem T8-2 has five true or false statements. They use bipartite graphs, connected graphs, bridges and spanning trees.
+
+5
+00:00:42,141 --> 00:00:52,552
+Problem T8-3 asks for all graphs G such that G minus e is a tree for every edge e. It uses the cycle in a tree plus one edge.
+
+6
+00:00:53,002 --> 00:01:02,858
+Before each solution, pause the video and try the problem. In your answers, name each theorem that you use, and give a reason for every step.
+
+7
+00:01:03,308 --> 00:01:19,265
+Problem T8-1 gives the number of vertices of each degree in a tree, except one number. To find the missing number, we need a rule that links the degrees of a tree. We find this rule on a small tree with 9 vertices.
+
+8
+00:01:19,715 --> 00:01:30,467
+Write the degree next to each vertex. The colour shows the degree. The 5 green vertices have degree 1. A vertex of degree 1 in a tree is a leaf.
+
+9
+00:01:30,917 --> 00:01:48,197
+Each edge has two ends, shown as orange dots. The degree of a vertex counts the ends at that vertex. So the degrees add up to 2 times the number of edges. This is Theorem 4.3.1. Here 16 equals 2 times 8.
+
+10
+00:01:48,647 --> 00:01:58,909
+A tree with p vertices has p minus 1 edges, by Theorem 5.1.5. Here p is 9, so the tree has 8 edges.
+
+11
+00:01:59,359 --> 00:02:09,087
+Put p minus 1 into the first line. In a tree, the degrees add up to 2 p minus 2. Here 16 equals 18 minus 2.
+
+12
+00:02:09,537 --> 00:02:23,361
+Now subtract 2 at each vertex. There are p vertices, so the right side loses 2 p, and minus 2 is left. Each label changes to the degree minus 2. The leaves show minus 1.
+
+13
+00:02:23,811 --> 00:02:45,720
+Group the vertices by degree. A vertex of degree r adds r minus 2. So the leaves add minus n 1, and vertices of degree 2 add 0. Vertices of degree 3 add n 3, and vertices of degree 4 add 2 n 4. No vertex has degree 0, because the tree is connected.
+
+14
+00:02:46,170 --> 00:02:59,461
+Add n 1 plus 2 to both sides. The number of leaves is 2, plus the sum over r at least 3 of r minus 2, times n r. Here 5 equals 2 plus 1 plus 2.
+
+15
+00:02:59,911 --> 00:03:17,425
+The rule: in a tree, n 1 equals 2 plus the sum of r minus 2, times n r, over r at least 3. Vertices of degree 2 do not change the number of leaves. This is the alternate proof of Theorem 5.1.8 in the notes.
+
+16
+00:03:17,875 --> 00:03:32,339
+Here is the method on a small example. A tree has 3 vertices of degree 2, 2 vertices of degree 3, and 1 vertex of degree 4. All other vertices are leaves. Find the number of leaves.
+
+17
+00:03:32,789 --> 00:03:41,237
+Step 1: write the counts from the question. n 4 is 1, n 3 is 2, and n 2 is 3. The unknown is n 1.
+
+18
+00:03:41,687 --> 00:03:54,679
+Step 2: write the leaf rule. The largest degree is 4, so the sum has two terms: 1 times n 3, and 2 times n 4. Degree 2 adds 0, so n 2 is not in the rule.
+
+19
+00:03:55,129 --> 00:04:05,625
+Step 3: put in the values from step 1. n 3 is 2 and n 4 is 1. So n 1 equals 2, plus 1 times 2, plus 2 times 1.
+
+20
+00:04:06,075 --> 00:04:12,539
+Step 4: add. n 1 is 6, so the tree has 6 leaves. The 6 leaves join the picture.
+
+21
+00:04:12,989 --> 00:04:19,795
+Step 5: check. Move the 12 vertices into the shape of a tree. Each vertex shows its degree.
+
+22
+00:04:20,245 --> 00:04:35,797
+Draw the 11 edges. Each vertex now has the degree that is written in it. The degrees add up to 6, plus 6, plus 6, plus 4, which is 22. That is 2 times 11, so Theorem 4.3.1 holds.
+
+23
+00:04:36,247 --> 00:04:55,681
+Problem T8-1. A tree T has 75 vertices of degree 1, 50 vertices of degree 2, 25 vertices of degree 3, and the rest of its vertices have degree 4. How many vertices of degree 4 does T contain? Pause the video and try it.
+
+24
+00:04:56,131 --> 00:05:06,030
+Step 1: write the counts from the question. n 1 is 75, n 2 is 50, and n 3 is 25. The unknown is n 4.
+
+25
+00:05:06,480 --> 00:05:15,397
+Step 2: write the leaf rule. The degrees are at most 4, so the sum has two terms: 1 times n 3, and 2 times n 4.
+
+26
+00:05:15,847 --> 00:05:32,167
+Step 3: put in the values from line 1. 75 equals 2, plus 1 times 25, plus 2 times n 4. The 50 vertices of degree 2 are not in the rule. In the picture, the two bars have the same length.
+
+27
+00:05:32,617 --> 00:05:42,708
+Step 4: solve for n 4. First add 2 and 25, which gives 27. So 75 equals 27 plus 2 n 4.
+
+28
+00:05:43,158 --> 00:05:52,651
+Subtract 27 from both sides. 2 n 4 is 48. In the picture, 48 is the part of the lower bar that is left.
+
+29
+00:05:53,101 --> 00:06:06,627
+Divide by 2. n 4 is 24: the part of length 48 is 24 blocks of 2. So T has 24 vertices of degree 4. This agrees with the posted solution.
+
+30
+00:06:07,077 --> 00:06:30,266
+Step 5: check. T has 75 plus 50 plus 25 plus 24 vertices, which is 174. So it has 173 edges. The degrees add up to 75, plus 100, plus 75, plus 96, which is 346. That is 2 times 173.
+
+31
+00:06:30,716 --> 00:06:38,524
+Problem T8-2 has five statements, a to e. For each one, decide if it is true or false, and give a reason.
+
+32
+00:06:38,974 --> 00:06:48,681
+Each statement is a claim about every graph of some kind. For example, statement a is about every 3-regular graph on 10 vertices.
+
+33
+00:06:49,131 --> 00:06:58,645
+So first, try to build a graph that breaks the claim. Start with small graphs that you know: cycles, K 4, K 3 3, and trees.
+
+34
+00:06:59,095 --> 00:07:07,586
+If you find such a graph, the statement is false. This graph is a counterexample. Check every condition of the statement on it.
+
+35
+00:07:08,036 --> 00:07:15,353
+If no such graph can exist, the statement is true. Then prove it for every graph, with a theorem from the notes.
+
+36
+00:07:15,803 --> 00:07:35,878
+Statement a says that a 3-regular graph on 10 vertices cannot be bipartite. A graph is k-regular if every vertex has degree k. A graph is bipartite if its vertices split into two sets A and B, so that every edge joins A to B. The 3-cube from the notes is 3-regular.
+
+37
+00:07:36,328 --> 00:07:42,792
+To find A and B, put one vertex in A. Here 000 goes into A, in blue.
+
+38
+00:07:43,242 --> 00:07:55,509
+An edge inside A is not allowed, so every neighbour of 000 must go into B. So 001, 010 and 100 go into B, in purple.
+
+39
+00:07:55,959 --> 00:08:04,300
+Their neighbours must go into A, for the same reason. So 011, 101 and 110 go into A.
+
+40
+00:08:04,750 --> 00:08:15,331
+The last vertex, 111, has all its neighbours in A, so it goes into B. Now every edge joins a blue vertex to a purple vertex.
+
+41
+00:08:15,781 --> 00:08:20,603
+Move the A vertices to the top row, and the B vertices to the bottom row.
+
+42
+00:08:21,053 --> 00:08:29,138
+Draw the edges again. Every edge goes from the top row to the bottom row. This shows that the 3-cube is bipartite.
+
+43
+00:08:29,588 --> 00:08:46,121
+Now count the edges in two ways. Each edge has exactly one end in A, shown as an orange dot. Each vertex of A has 3 ends. So the number of edges is 3 times the size of A. Here 12 equals 3 times 4.
+
+44
+00:08:46,571 --> 00:08:54,358
+Each edge also has exactly one end in B. So the number of edges is also 3 times the size of B.
+
+45
+00:08:54,808 --> 00:09:11,960
+So A and B have the same size. On 10 vertices, each side has 5 vertices, and there are 15 edges. The rule: a 3-regular bipartite graph has sides of the same size. This allows 10 vertices, so we try to build one.
+
+46
+00:09:12,410 --> 00:09:24,122
+Here is a method that builds a 3-regular bipartite graph, on 6 vertices first. Put the 6 vertices on a circle. Here 2 m is 6, so m is 3.
+
+47
+00:09:24,572 --> 00:09:31,207
+Step 1: draw the cycle v 1, v 2, up to v 6. Each vertex now has degree 2.
+
+48
+00:09:31,657 --> 00:09:45,139
+Step 2: put the odd vertices in A and the even vertices in B. Each cycle edge joins two numbers next to each other, one odd and one even. So each cycle edge joins A and B.
+
+49
+00:09:45,589 --> 00:10:01,632
+Step 3: add the edges v i v i plus 3: v 1 v 4, v 2 v 5, and v 3 v 6. 3 is odd, so i and i plus 3 have different parity. So each new edge also joins A and B.
+
+50
+00:10:02,082 --> 00:10:09,570
+Step 4: check the degrees. Each vertex has 2 cycle edges and 1 new edge, so its degree is 3.
+
+51
+00:10:10,020 --> 00:10:14,116
+Check the sides: move A to the top row and B to the bottom row.
+
+52
+00:10:14,566 --> 00:10:23,611
+Draw the edges again. All 9 edges join the two rows. So the graph is 3-regular and bipartite. It is K 3 3.
+
+53
+00:10:24,061 --> 00:10:31,421
+Back to statement a. Use the same method with 10 vertices, so m is 5. Pause the video and try it.
+
+54
+00:10:31,871 --> 00:10:35,242
+Step 1: draw the 10-cycle, v 1 to v 10.
+
+55
+00:10:35,692 --> 00:10:45,377
+Step 2: the odd vertices go into A, the even vertices into B. Every cycle edge joins an odd vertex and an even vertex.
+
+56
+00:10:45,827 --> 00:10:58,734
+Step 3: add the 5 edges v i v i plus 5, with the indices mod 10. 5 is odd, so each new edge also joins an odd vertex and an even vertex.
+
+57
+00:10:59,184 --> 00:11:05,435
+Step 4: each vertex has 2 cycle edges and 1 new edge. So every degree is 3.
+
+58
+00:11:05,885 --> 00:11:08,935
+Move A to the top row and B to the bottom row.
+
+59
+00:11:09,385 --> 00:11:22,271
+All 15 edges join the two rows. So this graph is 3-regular, has 10 vertices, and is bipartite. Statement a is false. This is the graph of the posted solution.
+
+60
+00:11:22,721 --> 00:11:38,102
+Statement b says that a 3-regular graph on 10 vertices must be connected. A graph is connected if every two vertices are joined by a path. To show that b is false, we need one such graph that is not connected.
+
+61
+00:11:38,552 --> 00:11:57,069
+Theorem 4.8.5 gives a test. A graph is not connected exactly when some proper nonempty set X of vertices has an empty cut. The cut of X is the set of edges with exactly one end in X. In the picture, no edge leaves X.
+
+62
+00:11:57,519 --> 00:12:11,151
+Which sizes can a 3-regular graph have? The degree sum is 3 p. By Theorem 4.3.1, it is 2 times the number of edges, so 3 p is even. So p is even.
+
+63
+00:12:11,601 --> 00:12:23,185
+A vertex of degree 3 needs 3 other vertices, so p is at least 4. K 4 has 4 vertices, and K 3 3 has 6. Both are 3-regular.
+
+64
+00:12:23,635 --> 00:12:33,854
+The rule: put two 3-regular graphs side by side. Every degree stays 3, and no edge joins the two parts, so the graph is not connected.
+
+65
+00:12:34,304 --> 00:12:41,493
+Here is the method on 8 vertices. We want a 3-regular graph on 8 vertices that is not connected.
+
+66
+00:12:41,943 --> 00:12:48,365
+Step 1: split 8 into even parts, each of size at least 4. 8 is 4 plus 4.
+
+67
+00:12:48,815 --> 00:12:53,273
+Step 2: draw K 4 on each part. K 4 is 3-regular.
+
+68
+00:12:53,723 --> 00:13:02,769
+Step 3: check the degrees. Every vertex has degree 3, because each K 4 is 3-regular, and no edge joins the parts.
+
+69
+00:13:03,219 --> 00:13:16,680
+Step 4: let X be the vertices of the left part. No edge has exactly one end in X, so the cut of X is empty. By Theorem 4.8.5, the graph is not connected.
+
+70
+00:13:17,130 --> 00:13:21,717
+Back to statement b, with 10 vertices. Pause the video and try it.
+
+71
+00:13:22,167 --> 00:13:28,716
+Step 1: split 10 into even parts, each of size at least 4. 10 is 4 plus 6.
+
+72
+00:13:29,166 --> 00:13:32,302
+Step 2: draw K 4 on the 4 vertices.
+
+73
+00:13:32,752 --> 00:13:35,568
+Draw K 3 3 on the 6 vertices.
+
+74
+00:13:36,018 --> 00:13:42,461
+Step 3: every vertex has degree 3. The graph has 10 vertices and 15 edges.
+
+75
+00:13:42,911 --> 00:13:57,951
+Step 4: let X be the vertices of K 4. The cut of X is empty, so the graph is not connected. Statement b is false. The posted solution uses the same graph: K 4 together with K 3 3.
+
+76
+00:13:58,401 --> 00:14:11,819
+Statement c says that a 3-regular graph cannot have a bridge. An edge e is a bridge if G minus e has more components than G. Here is a connected graph with 7 vertices.
+
+77
+00:14:12,269 --> 00:14:23,192
+Remove the edge a b. It lies on the triangle, so a and b are still joined by the path through x. The graph stays connected, so a b is not a bridge.
+
+78
+00:14:23,642 --> 00:14:34,181
+Put a b back, and remove the edge x y. No other path joins x and y, so the graph splits into two components. So x y is a bridge.
+
+79
+00:14:34,631 --> 00:14:47,665
+This is Theorem 4.10.3: an edge is a bridge if and only if it is in no cycle. The edge a b is on a cycle. The edge x y is on no cycle.
+
+80
+00:14:48,115 --> 00:15:00,830
+Lemma 4.10.2: when we remove a bridge x y from a connected graph, exactly two components are left. One contains x, and the other contains y.
+
+81
+00:15:01,280 --> 00:15:11,797
+The rule: an edge is a bridge exactly when no cycle contains it. So a graph with a bridge x y has two parts, joined only by x y.
+
+82
+00:15:12,247 --> 00:15:18,946
+Here is a method that checks a bridge. The example is two triangles joined by the edge x y.
+
+83
+00:15:19,396 --> 00:15:23,172
+Step 1: remove the edge x y. It is now dashed.
+
+84
+00:15:23,622 --> 00:15:27,398
+Step 2: grow a set X of vertices, starting with x.
+
+85
+00:15:27,848 --> 00:15:35,101
+Add the neighbours of x, which are a and b. They join X, because the edges x a and x b remain.
+
+86
+00:15:35,551 --> 00:15:44,149
+Step 3: a and b have no neighbours outside X, so X stops growing. X holds x, a and b, and y is not in X.
+
+87
+00:15:44,599 --> 00:15:59,127
+Step 4: no edge leaves X, so G minus x y is not connected. So x y is a bridge. This agrees with Theorem 4.10.3: no cycle contains x y.
+
+88
+00:15:59,577 --> 00:16:21,827
+Back to statement c. To show that it is false, we build a 3-regular graph with a bridge x y. Pause the video and try it. By Lemma 4.10.2, removing x y leaves two parts. In its part, x has degree 2, and every other vertex has degree 3. So we build one such part first.
+
+89
+00:16:22,277 --> 00:16:26,053
+Start with K 4. Every vertex has degree 3.
+
+90
+00:16:26,503 --> 00:16:32,029
+Remove one edge, p 2 p 4. Now p 2 and p 4 have degree 2.
+
+91
+00:16:32,479 --> 00:16:43,721
+Add a new vertex x, and join it to p 2 and p 4. Now p 2 and p 4 have degree 3 again, and x has degree 2. This is the part we need.
+
+92
+00:16:44,171 --> 00:16:49,078
+Build the second part in the same way, with the new vertex y of degree 2.
+
+93
+00:16:49,528 --> 00:16:56,333
+Add the edge x y. Now x and y have degree 3. All 10 vertices have degree 3.
+
+94
+00:16:56,783 --> 00:17:06,575
+Check that x y is a bridge with the method. Remove x y, and grow X from x. X stops with the 5 vertices of the left part.
+
+95
+00:17:07,025 --> 00:17:14,023
+y is not in X, so no edge leaves X in G minus x y. So x y is a bridge.
+
+96
+00:17:14,473 --> 00:17:21,961
+So this 3-regular graph has a bridge, and statement c is false. It is the graph of the posted solution.
+
+97
+00:17:22,411 --> 00:17:37,109
+Statement d says that no graph has exactly 2 spanning trees. A spanning tree of G is a spanning subgraph that is a tree. It has all p vertices of G. Here is a graph G with 6 vertices.
+
+98
+00:17:37,559 --> 00:17:44,365
+Here is one spanning tree T, in blue. It has all 6 vertices and 5 edges, and no cycle.
+
+99
+00:17:44,815 --> 00:17:56,484
+Take the edge e from 1 to 5, which is not in T. By Lemma 5.1.3, T has exactly one path from 1 to 5. It is marked in orange.
+
+100
+00:17:56,934 --> 00:18:10,929
+Add e to T. The path and e form a cycle C. Every cycle in T plus e must use e, because T has no cycle. So C is the only cycle. This is Theorem 5.2.3.
+
+101
+00:18:11,379 --> 00:18:27,443
+Now remove another edge of C, for example the edge from 3 to 4. The rest of C still joins 3 and 4, so the graph stays connected. It has p minus 1 edges, so it is a tree, by Corollary 5.2.2.
+
+102
+00:18:27,893 --> 00:18:33,589
+The rule: each edge of C gives a spanning tree. Remove that edge from T plus e.
+
+103
+00:18:34,039 --> 00:18:40,097
+Here is the method on a small graph: a triangle a b c, and one more edge c d.
+
+104
+00:18:40,547 --> 00:18:47,310
+Step 1: find a spanning tree T. Here T has the edges a b, b c and c d, in blue.
+
+105
+00:18:47,760 --> 00:18:56,400
+Step 2: add the edge e equals a c, which is not in T. T plus e has one cycle C: the triangle a b c.
+
+106
+00:18:56,850 --> 00:19:02,610
+Step 3: remove one edge of C. Remove a b: the result is a spanning tree.
+
+107
+00:19:03,060 --> 00:19:06,900
+Remove b c instead: this gives another spanning tree.
+
+108
+00:19:07,350 --> 00:19:09,995
+Remove a c: this gives T itself.
+
+109
+00:19:10,445 --> 00:19:23,651
+Step 4: C has 3 edges, so we get 3 spanning trees. They are different, because each one misses a different edge of C. The edge c d is a bridge, so it is in every spanning tree.
+
+110
+00:19:24,101 --> 00:19:32,527
+Back to statement d. Pause the video and try it. We look at the number of spanning trees of any graph G. There are three cases.
+
+111
+00:19:32,977 --> 00:19:41,809
+Case 1: G is not connected. By Theorem 5.2.1, G has no spanning tree. So the number is 0.
+
+112
+00:19:42,259 --> 00:19:56,254
+Case 2: G is a tree. A spanning tree of G has p minus 1 edges, and G has exactly p minus 1 edges. So the only spanning tree is G itself. The number is 1.
+
+113
+00:19:56,704 --> 00:20:09,312
+Case 3: G is connected, and not a tree. By Theorem 5.2.1, G has a spanning tree T. G is not a tree, so G has an edge e that is not in T.
+
+114
+00:20:09,762 --> 00:20:26,935
+T plus e has exactly one cycle C, by Theorem 5.2.3. A graph has no loops and no multiple edges, so C has at least 3 edges. Each edge of C gives a different spanning tree. So the number is at least 3.
+
+115
+00:20:27,385 --> 00:20:37,433
+So the number of spanning trees is 0, 1, or at least 3. It is never 2. Statement d is true. This agrees with the posted solution.
+
+116
+00:20:37,883 --> 00:20:50,299
+Statement e says: G is bipartite if and only if G minus e is bipartite for every edge e. An if and only if statement has two directions, and both must hold.
+
+117
+00:20:50,749 --> 00:21:05,704
+First direction. If G is bipartite, remove any edge e. The same sets A and B still work, because removing an edge cannot put an edge inside A or inside B. So G minus e is bipartite.
+
+118
+00:21:06,154 --> 00:21:10,399
+Now look at an odd cycle, C 5. Put vertex 1 in A.
+
+119
+00:21:10,849 --> 00:21:19,745
+Go along the path 1, 2, 3, 4, 5. Each edge changes the side, so the sides alternate: A, B, A, B, A.
+
+120
+00:21:20,195 --> 00:21:35,705
+Vertex 5 is in A, and vertex 1 is in A. The last edge, 5 1, joins A to A. So C 5 has no bipartition. This is Lemma 5.3.1: an odd cycle is not bipartite.
+
+121
+00:21:36,155 --> 00:21:43,643
+The rule, Theorem 5.3.2: a graph is bipartite if and only if it has no odd cycle.
+
+122
+00:21:44,093 --> 00:21:48,765
+Here is the 2-colour test on the smallest odd cycle, the triangle.
+
+123
+00:21:49,215 --> 00:21:51,817
+Step 1: put vertex a in A, in blue.
+
+124
+00:21:52,267 --> 00:21:57,622
+Step 2: the neighbours of a go into B. So b and c go into B, in purple.
+
+125
+00:21:58,072 --> 00:22:07,736
+Step 3: the edge b c has both ends in B. With a, it closes the odd cycle a b c. So the triangle is not bipartite.
+
+126
+00:22:08,186 --> 00:22:22,138
+Now test C 3 minus b c. This graph is a path. a goes into A, and b and c go into B. Step 4: no edge lies inside A or inside B, so the path is bipartite.
+
+127
+00:22:22,588 --> 00:22:25,852
+Back to statement e. Pause the video and try it.
+
+128
+00:22:26,302 --> 00:22:35,561
+The direction from left to right is true. If G is bipartite, then every G minus e is bipartite, with the same sets A and B.
+
+129
+00:22:36,011 --> 00:22:51,371
+Test the other direction on an odd cycle, G equals C 5. The sides alternate along the cycle, and the edge 5 1 joins A to A. By Lemma 5.3.1, C 5 is not bipartite.
+
+130
+00:22:51,821 --> 00:23:04,194
+Now remove any edge e of C 5. What is left is a path. The 2-colour test gives a bipartition for each of the 5 paths. So every G minus e is bipartite.
+
+131
+00:23:04,644 --> 00:23:18,020
+So the right side holds, but G is not bipartite. The direction from right to left fails, and statement e is false. Any odd cycle is a counterexample, as the posted solution says.
+
+132
+00:23:18,470 --> 00:23:37,841
+Problem T8-3 asks for all graphs G such that G minus e is a tree for every edge e. We need two facts about a tree plus one edge. Here is a tree T with 7 vertices and 6 edges. By Lemma 5.1.4, every edge of a tree is a bridge.
+
+133
+00:23:38,291 --> 00:23:48,275
+Take two vertices u and v. By Lemma 5.1.3, T has exactly one path from u to v. It is marked in orange.
+
+134
+00:23:48,725 --> 00:23:58,666
+Add a new edge f from u to v. The path and f form a cycle C. By Theorem 5.2.3, it is the only cycle.
+
+135
+00:23:59,116 --> 00:24:10,273
+Remove an edge of C, for example r t. The rest of C still joins r and t, so the graph stays connected. It has 6 edges again, so it is a tree.
+
+136
+00:24:10,723 --> 00:24:23,566
+Put r t back, and remove an edge that is not on C, for example s w. This edge is on no cycle, so it is a bridge. w is cut off, so the graph is not a tree.
+
+137
+00:24:24,016 --> 00:24:34,960
+The rule: a connected graph with p vertices and p edges has exactly one cycle C. And G minus e is a tree exactly when e is on C.
+
+138
+00:24:35,410 --> 00:24:43,858
+Here is the method on two graphs. Each one has 5 vertices. We ask if G minus e is a tree for every edge e.
+
+139
+00:24:44,308 --> 00:24:56,511
+Step 1: count. If every G minus e is a tree, then G has p minus 1 plus 1 edges, which is p. Both graphs have 5 vertices and 5 edges.
+
+140
+00:24:56,961 --> 00:24:59,350
+Step 2: both graphs are connected.
+
+141
+00:24:59,800 --> 00:25:07,992
+Step 3: each graph has exactly one cycle. In G 1 it is the triangle. In G 2 it is the whole graph.
+
+142
+00:25:08,442 --> 00:25:23,269
+Step 4: in G 1, the edges c d and d e are not on the cycle, so they are bridges. G 1 minus c d is not connected, so G 1 fails. In G 2, every edge is on the cycle.
+
+143
+00:25:23,719 --> 00:25:33,703
+Step 5: check G 2. Remove any edge, for example 3 4. A path is left, and a path is a tree. So G 2 has the property.
+
+144
+00:25:34,153 --> 00:25:43,987
+Problem T8-3. Find all graphs G such that G minus e is a tree for every edge e of G. Pause the video and try it.
+
+145
+00:25:44,437 --> 00:26:01,739
+Step 1. Let G have p vertices, and take an edge e. We assume that G has an edge, as the posted solution does. G minus e is a tree. So it is connected, and it has p minus 1 edges, by Theorem 5.1.5.
+
+146
+00:26:02,189 --> 00:26:11,490
+Add e back. So G is connected, and it has p edges. The picture shows one connected graph with p vertices and p edges.
+
+147
+00:26:11,940 --> 00:26:31,567
+Step 2. G minus e is connected, so e is not a bridge. By Theorem 4.10.3, e is on a cycle. This holds for every edge e. In the picture, the edges s w and t z are on no cycle, so a graph with the property cannot have them.
+
+148
+00:26:32,017 --> 00:26:52,198
+Step 3. G is connected, so it has a spanning tree T, by Theorem 5.2.1. T has p minus 1 edges, so exactly one edge f of G is not in T. By Theorem 5.2.3, T plus f, which is G, has exactly one cycle C.
+
+149
+00:26:52,648 --> 00:27:05,448
+Step 4. Every edge is on a cycle, and C is the only cycle. So every edge is on C. G is connected, so every vertex is on C too. So G is the cycle C.
+
+150
+00:27:05,898 --> 00:27:18,933
+Step 5. Check the converse. If G is a cycle with p vertices, p at least 3, then C p minus e is a path. A path is connected and has no cycle, so it is a tree.
+
+151
+00:27:19,383 --> 00:27:24,929
+So the answer is: exactly the cycles. This agrees with the posted solution.
+
+152
+00:27:25,379 --> 00:27:32,462
+To recap. T8-1: the leaf rule from the degree sum gives 24 vertices of degree 4.
+
+153
+00:27:32,912 --> 00:27:48,869
+T8-2 a, b and c are false. Each one has a graph that breaks it: the 10-cycle with the edges v i v i plus 5, K 4 together with K 3 3, and two parts from K 4 joined by a bridge.
+
+154
+00:27:49,319 --> 00:28:00,519
+T8-2 d is true: a graph has 0, 1, or at least 3 spanning trees. T8-2 e is false: an odd cycle is a counterexample.
+
+155
+00:28:00,969 --> 00:28:09,588
+T8-3: a graph with every G minus e a tree has p edges, no bridge, and one cycle. So it is a cycle.
